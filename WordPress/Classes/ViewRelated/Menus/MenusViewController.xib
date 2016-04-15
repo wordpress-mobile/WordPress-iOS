@@ -190,7 +190,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="3sy-f5-O7T" secondAttribute="trailing" constant="10" id="frX-s2-VlH"/>
                                                     </constraints>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS" customClass="MenusActionButton">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS">
                                                     <rect key="frame" x="494" y="6" width="36" height="40"/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -201,7 +201,7 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5" customClass="MenusActionButton">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5">
                                                     <rect key="frame" x="540" y="6" width="60" height="40"/>
                                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
