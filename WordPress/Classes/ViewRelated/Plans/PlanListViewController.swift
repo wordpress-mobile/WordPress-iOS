@@ -92,16 +92,16 @@ enum PlanListViewModel {
         }
     }
     
-    func tableFooterView() -> UIView? {
+    func tableFooterViewModelWithPresenter(presenter: UIViewController) -> (title: NSAttributedString, action: () -> Void)? {
         switch self {
         case .Ready:
-            let title = footerTitle
-            let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
-        
-            footerView.attributedTitle = title
-            footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
+            let action = { [weak presenter] in
+                let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
+                let navController = UINavigationController(rootViewController: webViewController)
+                presenter?.presentViewController(navController, animated: true, completion: nil)
+            }
             
-            return footerView
+            return (footerTitle, action)
         default:
             return nil
         }
@@ -190,15 +190,31 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
     
     func updateFooterView() {
-        tableView.tableFooterView = viewModel.tableFooterView()
-
-        if let footerView = tableView.tableFooterView {
-            // Don't add a recognizer if we already have one
-            if footerView.gestureRecognizers?.count > 0 { return }
+        let footerViewModel = viewModel.tableFooterViewModelWithPresenter(self)
+        
+        tableView.tableFooterView = tableFooterViewWithViewModel(footerViewModel)
+    }
+    
+    private var footerTapAction: (() -> Void)?
+    private func tableFooterViewWithViewModel(viewModel: (title: NSAttributedString, action: () -> Void)?) -> UIView? {
+        guard let viewModel = viewModel else { return nil }
+        
+        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
+        
+        let title = viewModel.title
+        footerView.attributedTitle = title
+        footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
+        
+        // Don't add a recognizer if we already have one
+        let recognizers = footerView.gestureRecognizers
+        if recognizers == nil || recognizers?.count == 0 {
+            footerTapAction = viewModel.action
             
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
             footerView.addGestureRecognizer(tapRecognizer)
         }
+        
+        return footerView
     }
     
     private let noResultsView = WPNoResultsView()
@@ -271,9 +287,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
     
     func footerTapped() {
-        let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
-        let navController = UINavigationController(rootViewController: webViewController)
-        presentViewController(navController, animated: true, completion: nil)
+        footerTapAction?()
     }
 }
 
