@@ -37,6 +37,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Preventing MultiTouch Scenarios
+        view.exclusiveTouch = true
+        
         ImmuTable.registerRows([
             NavigationItemRow.self,
             BadgeNavigationItemRow.self,
@@ -66,7 +69,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         animateDeselectionInteractively()
     }
 
-    func reloadViewModel() {
+    private func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
         let badgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
@@ -76,19 +79,19 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map(headerView)
+        tableView.tableHeaderView = account.map { headerViewForAccount($0) }
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
+    
+    private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
+        headerView.displayName = account.displayName
+        headerView.username = account.username
+        headerView.gravatarEmail = account.email
 
-    func headerView(account: WPAccount) -> MeHeaderView {
-        let header = cachedHeaderView
-        header.setDisplayName(account.displayName)
-        header.setUsername(account.username)
-        header.setGravatarEmail(account.email)
-        return header
+        return headerView
     }
 
-    func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+    private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
             icon: Gridicon.iconOfType(.User),
@@ -101,6 +104,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         let appSettings = NavigationItemRow(
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
+            icon: Gridicon.iconOfType(.Phone),
             action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
@@ -113,11 +117,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
             action: pushHelp())
-
-        let about = NavigationItemRow(
-            title: NSLocalizedString("About", comment: "Link to About section (contains info about the app)"),
-            icon: Gridicon.iconOfType(.Info),
-            action: pushAbout())
 
         let logIn = ButtonRow(
             title: NSLocalizedString("Connect to WordPress.com", comment: "Label for connecting to WordPress.com account"),
@@ -140,8 +139,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
-                            helpAndSupport,
-                            about
+                            helpAndSupport
                             ]),
                         ImmuTableSection(
                             headerText: wordPressComAccount,
@@ -157,8 +155,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
-                            helpAndSupport,
-                            about
+                            helpAndSupport
                             ]),
                         ImmuTableSection(
                             headerText: wordPressComAccount,
@@ -174,8 +171,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         appSettings,
                         ]),
                     ImmuTableSection(rows: [
-                        helpAndSupport,
-                        about
+                        helpAndSupport
                         ]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
@@ -188,7 +184,20 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Actions
 
-    func pushMyProfile() -> ImmuTableAction {
+    private func presentGravatarPicker() {
+        let pickerViewController = GravatarPickerViewController()
+        pickerViewController.onCompletion = { [weak self] image in
+            if let updatedGravatarImage = image {
+                self?.uploadGravatarImage(updatedGravatarImage)
+            }
+            
+            self?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        pickerViewController.modalPresentationStyle = .FormSheet
+        presentViewController(pickerViewController, animated: true, completion: nil)
+    }
+    
+    private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             guard let account = self.defaultAccount() else {
                 let error = "Tried to push My Profile without a default account. This shouldn't happen"
@@ -203,7 +212,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushAccountSettings() -> ImmuTableAction {
+    private func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
             if let account = self.defaultAccount() {
                 WPAppAnalytics.track(.OpenedAccountSettings)
@@ -215,6 +224,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
+            WPAppAnalytics.track(.OpenedAppSettings)
             let controller = AppSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -233,15 +243,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
-
-    func pushAbout() -> ImmuTableAction {
-        return { [unowned self] row in
-            let controller = AboutViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-
-    func presentLogin() -> ImmuTableAction {
+    
+    private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
             controller.onlyDotComAllowed = true
@@ -255,7 +258,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func confirmLogout() -> ImmuTableAction {
+    private func confirmLogout() -> ImmuTableAction {
         return { [unowned self] row in
             let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
@@ -280,17 +283,34 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    
     // MARK: - Notification observers
 
     func refreshModelWithNotification(notification: NSNotification) {
         reloadViewModel()
     }
 
+    
+    // MARK: - Gravatar Helpers
+    
+    private func uploadGravatarImage(newGravatar: UIImage) {
+        gravatarUploadInProgress = true
+        headerView.overrideGravatarImage(newGravatar)
+
+        let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
+        service?.uploadImage(newGravatar) { [weak self] error in
+            dispatch_async(dispatch_get_main_queue(), {
+                self?.gravatarUploadInProgress = false
+                self?.reloadViewModel()
+            })
+        }
+    }
+    
     // MARK: - Helpers
 
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
     // and initializing stuff with safer values like userID
-    func defaultAccount() -> WPAccount? {
+    private func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let account = service.defaultWordPressComAccount()
@@ -299,18 +319,32 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return account
     }
 
-    func refreshAccountDetails() {
+    private func refreshAccountDetails() {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
-    func logOut() {
+    private func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
     }
 
-    lazy var cachedHeaderView = MeHeaderView()
+    // MARK: - Private Properties
+    private var gravatarUploadInProgress = false {
+        didSet {
+            headerView.showsActivityIndicator = gravatarUploadInProgress
+            headerView.userInteractionEnabled = !gravatarUploadInProgress
+        }
+    }
+    
+    private lazy var headerView : MeHeaderView = {
+        let headerView = MeHeaderView()
+        headerView.onGravatarPress = { [weak self] in
+            self?.presentGravatarPicker()
+        }
+        return headerView
+    }()
 }

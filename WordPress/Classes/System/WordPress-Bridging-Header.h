@@ -102,6 +102,8 @@
 
 #import <WordPressComAnalytics/WPAnalytics.h>
 
+#import <WPMediaPicker/WPMediaPicker.h>
+
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
