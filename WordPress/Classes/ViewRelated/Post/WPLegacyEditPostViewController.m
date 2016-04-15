@@ -522,8 +522,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
                                                               style:UIBarButtonItemStylePlain
                                                              target:self
-                                                             action:@selector(saveAction)];
-        _saveBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+                                                             action:@selector(saveAction)];        
     }
 
     return _saveBarButtonItem;
@@ -691,7 +690,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
