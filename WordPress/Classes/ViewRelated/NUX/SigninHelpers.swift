@@ -118,9 +118,9 @@ import WordPressComAnalytics
         }
 
         path = path
-            .trimSuffix("/wp-login.php")
-            .trimSuffix("/wp-admin/?")
-            .trimSuffix("/?")
+            .trimSuffix(regexp: "/wp-login.php")
+            .trimSuffix(regexp: "/wp-admin/?")
+            .trimSuffix(regexp: "/?")
 
         return path
     }
