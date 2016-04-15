@@ -132,6 +132,7 @@ import WordPressShared
         siteURLField.enabled = !loading
 
         configureSubmitButton(animating: loading)
+        navigationItem.hidesBackButton = loading
     }
 
 
