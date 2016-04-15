@@ -171,8 +171,6 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [[WPStyleGuide lightGrey] CGColor]);
-    CGContextFillEllipseInRect(context, self.sourceCell.drawingRectForRadioButton);
-    
     CGRect labelRect = self.sourceCell.drawingRectForLabel;
     CGContextFillRect(context, labelRect);
 }

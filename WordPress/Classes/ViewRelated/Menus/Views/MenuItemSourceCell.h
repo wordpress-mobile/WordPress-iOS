@@ -7,7 +7,6 @@
 @property (nonatomic, copy) NSString *badgeTitle;
 @property (nonatomic, assign) NSUInteger sourceHierarchyIndentation;
 
-- (CGRect)drawingRectForRadioButton;
 - (CGRect)drawingRectForLabel;
 
 @end

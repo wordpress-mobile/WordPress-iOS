@@ -20,7 +20,7 @@
 
 #pragma mark - MenuItemSourceOptionView
 
-static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
+static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 
 @interface MenuItemSourceCell ()
 
@@ -28,7 +28,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
-@property (nonatomic, strong) MenuItemSourceRadioButton *radioButton;
 @property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
 @property (nonatomic, strong) NSLayoutConstraint *topLayoutConstraintForContentViewIndentation;
 @property (nonatomic, strong) NSLayoutConstraint *topLayoutDefaultConstraint;
@@ -48,7 +47,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
     if (self) {
         {
             self.backgroundColor = [UIColor whiteColor];
-            self.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -57,10 +55,11 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
             stackView.axis = UILayoutConstraintAxisHorizontal;
             
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = MenusDesignDefaultContentSpacing / 2.0;
+            margins.top = 10.0;
             margins.left = MenusDesignDefaultContentSpacing;
             margins.right = MenusDesignDefaultContentSpacing;
-            margins.bottom = MenusDesignDefaultContentSpacing / 2.0;
+            margins.bottom = 10.0;
+            
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
@@ -79,28 +78,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
             
             self.stackView = stackView;
         }
-        
-        UIFont *labelFont = [WPFontManager systemRegularFontOfSize:16.0];
-        const CGFloat labelFontLineHeight = ceilf(labelFont.ascender + fabs(labelFont.descender));
-        {
-            MenuItemSourceRadioButton *radioButton = [[MenuItemSourceRadioButton alloc] init];
-            radioButton.translatesAutoresizingMaskIntoConstraints = NO;
-            radioButton.selected = NO;
-            
-            [radioButton setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            [radioButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            
-            [self.stackView addArrangedSubview:radioButton];
-            const CGSize size = CGSizeMake(labelFontLineHeight, labelFontLineHeight);
-            NSLayoutConstraint *heightConstraint = [radioButton.heightAnchor constraintEqualToConstant:size.height];
-            heightConstraint.priority = 999;
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [radioButton.widthAnchor constraintEqualToConstant:size.width],
-                                                      heightConstraint
-                                                      ]];
-            self.radioButton = radioButton;
-        }
         {
             UIStackView *labelsStackView = [[UIStackView alloc] init];
             labelsStackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,7 +92,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
         {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.font = labelFont;
+            label.font = [WPStyleGuide tableviewTextFont];
             label.textColor = [WPStyleGuide greyDarken30];
             label.backgroundColor = [UIColor whiteColor];
             label.numberOfLines = 0;
@@ -132,12 +109,18 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self updateSeparatorInsets];
+}
+
 - (void)setSourceSelected:(BOOL)sourceSelected
 {
     if (_sourceSelected != sourceSelected) {
         _sourceSelected = sourceSelected;
-        
-        self.radioButton.selected = sourceSelected;
+        self.accessoryType = sourceSelected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
 }
 
@@ -165,28 +148,16 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 {
     if (_sourceHierarchyIndentation != sourceHierarchyIndentation) {
         _sourceHierarchyIndentation = sourceHierarchyIndentation;
-        self.leadingLayoutConstraintForContentViewIndentation.constant = sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationLength;
-        
-        if (sourceHierarchyIndentation) {
-            
-            if (self.topLayoutDefaultConstraint.active) {
-                [NSLayoutConstraint deactivateConstraints:@[self.topLayoutDefaultConstraint]];
-                [NSLayoutConstraint activateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
-            }
-            
-        } else  {
-            
-            if (self.topLayoutConstraintForContentViewIndentation.active) {
-                [NSLayoutConstraint deactivateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
-                [NSLayoutConstraint activateConstraints:@[self.topLayoutDefaultConstraint]];
-            }
-        }
+        self.leadingLayoutConstraintForContentViewIndentation.constant = sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationWidth;
+        [self updateSeparatorInsets];
     }
 }
 
-- (CGRect)drawingRectForRadioButton
+- (void)updateSeparatorInsets
 {
-    return [self convertRect:self.radioButton.frame fromView:self.radioButton.superview];
+    CGFloat left = self.sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationWidth;
+    left += self.stackView.layoutMargins.left;
+    self.separatorInset = UIEdgeInsetsMake(0, left, 0, 0);
 }
 
 - (CGRect)drawingRectForLabel
@@ -217,80 +188,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
         
         [self.labelsStackView addArrangedSubview:label];
         self.badgeLabel = label;
-    }
-}
-
-#pragma mark - touches
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesBegan:touches withEvent:event];
-    
-    self.radioButton.drawsHighlighted = YES;
-}
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesEnded:touches withEvent:event];
-    
-    self.radioButton.drawsHighlighted = NO;
-}
-
-- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesCancelled:touches withEvent:event];
-    
-    self.radioButton.drawsHighlighted = NO;
-}
-
-@end
-
-#pragma mark - MenuItemSourceRadioButton
-
-@implementation MenuItemSourceRadioButton
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-    }
-    
-    return self;
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    if (_selected != selected) {
-        _selected = selected;
-        [self setNeedsDisplay];
-    }
-}
-
-- (void)setDrawsHighlighted:(BOOL)drawsHighlighted
-{
-    if (_drawsHighlighted != drawsHighlighted) {
-        _drawsHighlighted = drawsHighlighted;
-        [self setNeedsDisplay];
-    }
-}
-
-- (void)drawRect:(CGRect)rect
-{    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 1.0);
-    if (self.drawsHighlighted) {
-        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
-    } else  {
-        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten10] CGColor]);
-    }
-    const CGRect strokeRect = CGRectInset(rect, 1, 1);
-    CGContextStrokeEllipseInRect(context, strokeRect);
-    
-    if (self.selected) {
-        const CGRect fillRect = CGRectInset(strokeRect, 4.0, 4.0);
-        CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
-        CGContextFillEllipseInRect(context, fillRect);
     }
 }
 
