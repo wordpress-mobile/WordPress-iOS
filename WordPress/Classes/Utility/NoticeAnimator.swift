@@ -3,9 +3,9 @@ import WordPressShared
 
 /// NoticeAnimator is a helper class to animate error messages.
 ///
-/// The error messages show at the top of the target view, and are meant to
-/// appear to be attached to a navigation bar. The expected usage is to display
-/// offline status or requests taking longer than usual.
+/// The notices show at the top of the target view, and are meant to appear to 
+/// be attached to a navigation bar. The expected usage is to display offline 
+/// status or requests taking longer than usual.
 ///
 /// To use an NoticeAnimator, you need to keep a reference to it, and call two
 /// methods:
