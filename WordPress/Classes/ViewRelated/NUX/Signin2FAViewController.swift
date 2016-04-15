@@ -140,6 +140,7 @@ import WordPressShared
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
         configureSubmitButton(animating: loading)
+        navigationItem.hidesBackButton = loading
     }
 
 
