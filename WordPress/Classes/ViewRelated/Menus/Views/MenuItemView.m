@@ -161,6 +161,12 @@
     }
     
     if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, endedPoint)) {
+        
+        CGRect orderingButttonRect = [self convertRect:self.orderingButton.frame fromView:self.orderingButton.superview];
+        if (CGRectContainsPoint(orderingButttonRect, endedPoint)) {
+            // Ignore the selection if the touch ended within the ordering button.
+            return;
+        }
         [self.delegate itemViewSelected:self];
     }
     
