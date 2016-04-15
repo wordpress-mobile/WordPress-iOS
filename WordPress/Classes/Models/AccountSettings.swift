@@ -34,10 +34,6 @@ extension AccountSettings {
     }
     
     var emailForDisplay : String {
-        if let unwrappedPendingEmail = emailPendingAddress where unwrappedPendingEmail.isEmpty == false {
-            return unwrappedPendingEmail
-        }
-
-        return email
+        return emailPendingAddress?.nonEmptyString() ?? email
     }
 }
