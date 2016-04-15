@@ -27,6 +27,8 @@
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="email" attributeType="String" syncable="YES"/>
+        <attribute name="emailPendingAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="emailPendingChange" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="firstName" attributeType="String" syncable="YES"/>
         <attribute name="language" attributeType="String" syncable="YES"/>
         <attribute name="lastName" attributeType="String" syncable="YES"/>
@@ -608,7 +610,7 @@
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
+        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="600"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>

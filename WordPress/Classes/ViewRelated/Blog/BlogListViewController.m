@@ -229,10 +229,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     if ([self numSites] > 0) {
         return;
     }
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (!defaultAccount) {
+    if (![self defaultWordPressComAccount]) {
         [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
@@ -630,11 +627,15 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [self showAddNewWordPressController];
-                                                                  }];
+    if ([self defaultWordPressComAccount]) {
+        UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction *action) {
+                                                                          [self showAddNewWordPressController];
+                                                                      }];
+        [addSiteAlertController addAction:addNewWordPressAction];
+    }
+
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {
@@ -643,7 +644,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
-    [addSiteAlertController addAction:addNewWordPressAction];
+
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
     addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
@@ -652,10 +653,16 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.addSiteAlertController = addSiteAlertController;
 }
 
+- (WPAccount *)defaultWordPressComAccount
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    return [accountService defaultWordPressComAccount];
+}
+
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-    
     CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
     [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
 }
@@ -665,12 +672,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self setEditing:NO animated:NO];
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.cancellable = YES;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    if (!defaultAccount) {
+
+    if (![self defaultWordPressComAccount]) {
         loginViewController.prefersSelfHosted = YES;
     }
     loginViewController.dismissBlock = ^(BOOL cancelled){
