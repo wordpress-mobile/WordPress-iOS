@@ -1858,15 +1858,17 @@ EditImageDetailsViewControllerDelegate
                                   if (!strongSelf) {
                                       return;
                                   }
-                                  createMediaProgress.completedUnitCount++;
-                                  if (error || !media || !media.absoluteLocalURL) {
-                                      [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
-                                      [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                                                    @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                                          message:error.localizedDescription];
-                                      return;
-                                  }
-                                  [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                      createMediaProgress.completedUnitCount++;
+                                      if (error || !media || !media.absoluteLocalURL) {
+                                          [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                          [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                                                        @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                                              message:error.localizedDescription];
+                                          return;
+                                      }
+                                      [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                  }];
                               }];
 }
 
