@@ -1189,7 +1189,6 @@
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
-		74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
 		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPostViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		74F313ED1A9B97A200AA8B45 /* WPTooltip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTooltip.h; sourceTree = "<group>"; };
@@ -3244,7 +3243,6 @@
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
 				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
-				74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */,
 				74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */,
 				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
 				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
