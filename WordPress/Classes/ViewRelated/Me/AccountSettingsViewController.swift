@@ -73,7 +73,7 @@ private struct AccountSettingsController: SettingsController {
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
-            action: presenter.present(insideNavigationController(editEmailAddress(settings, service: service)))
+            action: presenter.prompt(editEmailAddress(settings, service: service))
         )
         
         let primarySite = EditableTextRow(
@@ -85,7 +85,7 @@ private struct AccountSettingsController: SettingsController {
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.present(insideNavigationController(editWebAddress(service)))
+            action: presenter.prompt(editWebAddress(service))
         )
         
         return ImmuTable(sections: [
@@ -101,15 +101,14 @@ private struct AccountSettingsController: SettingsController {
     
     
     // MARK: - Actions
-
-    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+    
+    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
             let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
             let settingsViewController =  self.controllerForEditableText(editableRow,
                                                                          changeType: AccountSettingsChange.Email,
                                                                          hint: hint,
-                                                                         displaysNavigationButtons: true,
                                                                          service: service)
             settingsViewController.mode = .Email
             settingsViewController.notice = self.noticeForAccountSettings(settings)
@@ -124,9 +123,9 @@ private struct AccountSettingsController: SettingsController {
         }
     }
     
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+    func editWebAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
         let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
-        return editText(AccountSettingsChange.WebAddress, hint: hint, displaysNavigationButtons: true, service: service)
+        return editText(AccountSettingsChange.WebAddress, hint: hint, service: service)
     }
     
     func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
