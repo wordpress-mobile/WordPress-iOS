@@ -635,6 +635,12 @@ import WordPressComAnalytics
     }
 
     private func toggleLikeForPost(post: ReaderPost) {
+        if !post.isLiked {
+            // Consider a like from the list to be enough to push a page view.
+            // Solves a long-standing question from folks who ask 'why do I
+            // have more likes than page views?'.
+            ReaderHelpers.bumpPageViewForPost(post);
+        }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
             if let anError = error {
