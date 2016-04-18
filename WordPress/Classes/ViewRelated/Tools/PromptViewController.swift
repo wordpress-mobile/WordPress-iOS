@@ -68,13 +68,13 @@ class PromptViewController : UIViewController
     // MARK: - KVO Rocks!
     
     private func startListeningToProperties(viewController: UIViewController) {
-        for key in Properties.all {
+        for key in Properties.all where viewController.respondsToSelector(NSSelectorFromString(key.rawValue)) {
             viewController.addObserver(self, forKeyPath: key.rawValue, options: [.Initial, .New], context: nil)
         }
     }
     
     private func stopListeningToProperties(viewController: UIViewController) {
-        for key in Properties.all {
+        for key in Properties.all where viewController.respondsToSelector(NSSelectorFromString(key.rawValue)) {
             viewController.removeObserver(self, forKeyPath: key.rawValue)
         }
     }
