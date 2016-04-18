@@ -52,7 +52,9 @@
 /**
  *  Protocol with a few methods that indicate various aspects of the login process.
  */
-@protocol LoginFacadeDelegate
+@protocol LoginFacadeDelegate <NSObject>
+
+@optional
 
 /**
  *  This is called when we need to indicate to the a messagea about the current login (e.g. "Signing In", "Authenticating", "Syncing", etc.)
