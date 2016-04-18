@@ -44,10 +44,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) WPNoResultsView *loadingView;
 @property (nonatomic, strong) UILabel *itemsLoadingLabel;
+@property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
 @property (nonatomic, assign) BOOL savingEnabled;
+@property (nonatomic, assign) BOOL isSaving;
 
 @end
 
@@ -98,6 +100,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.detailsView.delegate = self;
     self.itemsView.delegate = self;
     
+    {
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonSystemItemSave target:self action:@selector(saveBarButtonItemPressed:)];
+        self.navigationItem.rightBarButtonItem = button;
+        button.enabled = NO;
+        self.saveButtonItem = button;
+    }
     {
         WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
         loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
@@ -280,7 +288,19 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     if (_savingEnabled != savingEnabled) {
         _savingEnabled = savingEnabled;
-        self.detailsView.savingEnabled = savingEnabled;
+        self.saveButtonItem.enabled = savingEnabled;
+    }
+}
+
+- (void)setIsSaving:(BOOL)isSaving
+{
+    if (_isSaving != isSaving) {
+        _isSaving = isSaving;
+        if (isSaving) {
+            [self.saveButtonItem setTitle:NSLocalizedString(@"Saving...", @"Menus save button title while it is saving a Menu.")];
+        } else {
+            [self.saveButtonItem setTitle:NSLocalizedString(@"Save", @"Menus save button title")];
+        }
     }
 }
 
@@ -304,6 +324,90 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     highestInteger = highestInteger + 1;
     NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
     return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
+}
+
+#pragma mark - Bar button items
+
+- (void)saveBarButtonItemPressed:(id)sender
+{
+    [self.detailsView resignFirstResponder];
+    
+    // Buckle up, we gotta save this Menu!
+    Menu *menuToSave = self.selectedMenuLocation.menu;
+    
+    // Check if user is trying to save the Default Menu.
+    if (menuToSave.menuID.integerValue == MenuDefaultID) {
+        
+        // Create a new menu to use instead of the Default Menu.
+        Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
+        newMenu.blog = self.blog;
+        if ([menuToSave.name isEqualToString:[Menu defaultMenuName]]) {
+            // Don't use "Default Menu" as the name of the menu.
+            newMenu.name = [self generateIncrementalMenuName];
+        } else {
+            newMenu.name = menuToSave.name;
+        }
+        
+        Menu *defaultMenu = menuToSave;
+        // We'll save the newMenu instead.
+        menuToSave = newMenu;
+        // Use the items the user customized on the Default Menu as the items on the newMenu to save.
+        menuToSave.items = defaultMenu.items;
+        
+        // Reset the Default Menu.
+        defaultMenu.items = nil;
+        defaultMenu.name = [Menu defaultMenuName];
+        
+        // Add and select the new Menu in the UI.
+        self.selectedMenuLocation.menu = menuToSave;
+        [self.headerView addMenu:menuToSave];
+        [self.headerView setSelectedMenu:menuToSave];
+        [self setViewsWithMenu:menuToSave];
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    void(^toggleIsSaving)(BOOL) = ^(BOOL saving) {
+        // Disable user interaction while we are processing the save.
+        weakSelf.scrollView.userInteractionEnabled = !saving;
+        // Toggle the detailsView button for "Saving...".
+        weakSelf.isSaving = saving;
+    };
+    
+    void(^failureToSave)(NSError *) = ^(NSError *error) {
+        toggleIsSaving(NO);
+        // Present the error message.
+        NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
+        [WPError showNetworkingAlertWithError:error title:errorTitle];
+    };
+    
+    void(^updateMenu)() = ^() {
+        [weakSelf.menusService updateMenu:menuToSave
+                                  forBlog:weakSelf.blog
+                                  success:^() {
+                                      // Refresh the items stack since the items may have changed.
+                                      [weakSelf.itemsView reloadItems];
+                                      toggleIsSaving(NO);
+                                      weakSelf.savingEnabled = NO;
+                                  }
+                                  failure:failureToSave];
+    };
+    
+    toggleIsSaving(YES);
+    
+    if (!menuToSave.menuID.integerValue) {
+        // Need to create the menu first.
+        [self.menusService createMenuWithName:menuToSave.name
+                                         blog:self.blog
+                                      success:^(NSNumber *menuID) {
+                                          // Set the new menuID and continue the update.
+                                          menuToSave.menuID = menuID;
+                                          updateMenu();
+                                      } failure:failureToSave];
+    } else {
+        // Update the menu.
+        updateMenu();
+    }
 }
 
 #pragma mark - MenusHeaderViewDelegate
@@ -343,87 +447,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
     self.savingEnabled = YES;
-}
-
-- (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView
-{
-    [self.detailsView resignFirstResponder];
-    
-    // Buckle up, we gotta save this Menu!
-    Menu *menuToSave = menuDetailView.menu;
-    
-    // Check if user is trying to save the Default Menu.
-    if (menuToSave.menuID.integerValue == MenuDefaultID) {
-        
-        // Create a new menu to use instead of the Default Menu.
-        Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
-        newMenu.blog = self.blog;
-        if ([menuToSave.name isEqualToString:[Menu defaultMenuName]]) {
-            // Don't use "Default Menu" as the name of the menu.
-            newMenu.name = [self generateIncrementalMenuName];
-        } else {
-            newMenu.name = menuToSave.name;
-        }
-        
-        Menu *defaultMenu = menuToSave;
-        // We'll save the newMenu instead.
-        menuToSave = newMenu;
-        // Use the items the user customized on the Default Menu as the items on the newMenu to save.
-        menuToSave.items = defaultMenu.items;
-        
-        // Reset the Default Menu.
-        defaultMenu.items = nil;
-        defaultMenu.name = [Menu defaultMenuName];
-        
-        // Add and select the new Menu in the UI.
-        self.selectedMenuLocation.menu = menuToSave;
-        [self.headerView addMenu:menuToSave];
-        [self.headerView setSelectedMenu:menuToSave];
-        [self setViewsWithMenu:menuToSave];
-    }
-    
-    __weak __typeof(self) weakSelf = self;
-    
-    void(^toggleIsSaving)(BOOL) = ^(BOOL saving) {
-        // Disable user interaction while we are processing the save.
-        weakSelf.scrollView.userInteractionEnabled = !saving;
-        // Toggle the detailsView button for "Saving...".
-        weakSelf.detailsView.isSaving = saving;
-    };
-    
-    void(^failureToSave)(NSError *) = ^(NSError *error) {
-        toggleIsSaving(NO);
-        // Present the error message.
-        NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
-        [WPError showNetworkingAlertWithError:error title:errorTitle];
-    };
-    
-    void(^updateMenu)() = ^() {
-        [weakSelf.menusService updateMenu:menuToSave
-                                  forBlog:weakSelf.blog
-                                  success:^() {
-                                      // Refresh the items stack since the items may have changed.
-                                      [weakSelf.itemsView reloadItems];
-                                      toggleIsSaving(NO);
-                                  }
-                                  failure:failureToSave];
-    };
-    
-    toggleIsSaving(YES);
-    
-    if (!menuToSave.menuID.integerValue) {
-        // Need to create the menu first.
-        [self.menusService createMenuWithName:menuToSave.name
-                            blog:self.blog
-                         success:^(NSNumber *menuID) {
-                             // Set the new menuID and continue the update.
-                             menuToSave.menuID = menuID;
-                             updateMenu();
-                         } failure:failureToSave];
-    } else {
-        // Update the menu.
-        updateMenu();
-    }
 }
 
 - (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView
