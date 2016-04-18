@@ -566,7 +566,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         // Publish date
         cell = [self getWPTableViewCell];
         if (self.apost.dateCreated) {
-            if ([self.apost isScheduled]) {
+            if ([self.apost hasFuturePublishDate]) {
                 cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
             } else {
                 cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
@@ -844,7 +844,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }];
 
     NSDictionary *statusDict = @{
-                                 @"DefaultValue": PostStatusPublish,
+                                 @"DefaultValue": [self.apost availableStatusForPublishOrScheduled],
                                  @"Title" : NSLocalizedString(@"Status", nil),
                                  @"Titles" : titles,
                                  @"Values" : statuses,
