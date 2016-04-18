@@ -70,10 +70,10 @@ class PlanDetailViewController: UIViewController {
     }
 
     private let cellIdentifier = "PlanFeatureListItem"
-    
+
     private let tableViewHorizontalMargin: CGFloat = 24.0
     private let planImageDropshadowRadius: CGFloat = 3.0
-    
+
     private var tableViewModel = ImmuTable.Empty {
         didSet {
             tableView?.reloadData()
@@ -90,9 +90,9 @@ class PlanDetailViewController: UIViewController {
             }
         }
     }
-    
+
     private let noResultsView = WPNoResultsView()
-    
+
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
@@ -108,7 +108,7 @@ class PlanDetailViewController: UIViewController {
             tableView.addSubviewWithFadeAnimation(noResultsView)
         }
     }
-    
+
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
@@ -135,11 +135,9 @@ class PlanDetailViewController: UIViewController {
         wrapper.translatesAutoresizingMaskIntoConstraints = false
         wrapper.addSubview(label)
         wrapper.pinSubviewToAllEdges(label)
-        
+
         return wrapper
     }()
-    
-    @IBOutlet weak var headerInfoStackView: UIStackView!
 
     class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
@@ -149,42 +147,38 @@ class PlanDetailViewController: UIViewController {
 
         return controller
     }
-    
+
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         configureAppearance()
         configureTableView()
         populateHeader()
         updateNoResults()
     }
-    
+
     private func configureAppearance() {
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
         planDescriptionLabel.textColor = WPStyleGuide.grey()
         planPriceLabel.textColor = WPStyleGuide.grey()
-        
+
         purchaseButton?.tintColor = WPStyleGuide.wordPressBlue()
-        
+
         dropshadowImageView.backgroundColor = UIColor.whiteColor()
         configurePlanImageDropshadow()
-        
+
         separator.backgroundColor = WPStyleGuide.greyLighten30()
     }
-    
+
     private func configureTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 80.0
-
-        // This is required to remove the extra grouped tableview
-        // padding at the top of the tableview
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
     }
-    
+
     private func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
         dropshadowImageView.layer.shadowColor = WPStyleGuide.greyLighten30().CGColor
@@ -193,8 +187,9 @@ class PlanDetailViewController: UIViewController {
         dropshadowImageView.layer.shadowOffset = .zero
         dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
-    
-    lazy var paddingView = UIView()
+
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var purchaseWrapperView: UIView!
     
     private func populateHeader() {
         let plan = viewModel.plan
@@ -202,18 +197,37 @@ class PlanDetailViewController: UIViewController {
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.tagline
         planPriceLabel.text = viewModel.priceText
-        
+
         if viewModel.isActivePlan {
             purchaseButton?.removeFromSuperview()
-            headerInfoStackView.addArrangedSubview(currentPlanLabel)
+            purchaseWrapperView.addSubview(currentPlanLabel)
+            purchaseWrapperView.pinSubviewToAllEdgeMargins(currentPlanLabel)
         } else if plan.isFreePlan {
             purchaseButton?.removeFromSuperview()
-            headerInfoStackView.addArrangedSubview(paddingView)
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        layoutHeaderIfNeeded()
+    }
+    
+    private func layoutHeaderIfNeeded() {
+        headerView.layoutIfNeeded()
+        
+        // Table header views don't automatically resize using Auto Layout,
+        // so we need to calculate the correct size to fit the content, update the frame,
+        // and then reset the tableHeaderView property so that the new size takes effect.
+        let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        if size.height != headerView.frame.size.height {
+            headerView.frame.size.height = size.height
+            tableView.tableHeaderView = headerView
         }
     }
     
     //MARK: - IBActions
-    
+
     @IBAction private func purchaseTapped() {
         guard let identifier = viewModel.plan.productIdentifier else {
             return
@@ -245,20 +259,20 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = tableViewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
-        
+
         row.configureCell(cell)
-        
+
         return cell
     }
-    
+
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? FeatureItemCell else { return }
-        
+
         let separatorInset: CGFloat = 15
         let isLastCellInSection = indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1
         let isLastSection = indexPath.section == self.numberOfSectionsInTableView(tableView) - 1
-        
-        // The separator for the last cell in each section has no insets, 
+
+        // The separator for the last cell in each section has no insets,
         // except for in the last section, where there's no separator at all.
         if isLastCellInSection {
             if isLastSection {
@@ -270,11 +284,11 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             cell.separatorInset = UIEdgeInsets(top: 0, left: separatorInset, bottom: 0, right: separatorInset)
         }
     }
-    
+
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return tableViewModel.sections[section].headerText
     }
-    
+
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let title = self.tableView(tableView, titleForHeaderInSection: section) where !title.isEmpty {
             let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
@@ -282,6 +296,14 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             return header
         } else {
             return nil
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let headerView = self.tableView(tableView, viewForHeaderInSection: section) as? WPTableViewSectionHeaderFooterView {
+            return WPTableViewSectionHeaderFooterView.heightForHeader(headerView.title, width: CGRectGetWidth(view.bounds))
+        } else {
+            return 0
         }
     }
 }
@@ -292,7 +314,7 @@ class FeatureItemCell: WPTableViewCell {
     @IBOutlet weak var featureDescriptionLabel: UILabel!
     @IBOutlet weak var separator: UIView!
     @IBOutlet var separatorEdgeConstraints: [NSLayoutConstraint]!
-    
+
     override var separatorInset: UIEdgeInsets {
         didSet {
             for constraint in separatorEdgeConstraints {
@@ -302,28 +324,28 @@ class FeatureItemCell: WPTableViewCell {
                     constraint.constant = separatorInset.right
                 }
             }
-            
+
             separator.layoutIfNeeded()
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         layoutMargins = UIEdgeInsetsZero
-        
+
         separator.backgroundColor = WPStyleGuide.greyLighten30()
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         separator.hidden = false
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         // This is required to fix an issue where only the first line of text would
         // is displayed on the iPhone 6(s) Plus due to a fractional Y position.
         featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
@@ -332,35 +354,35 @@ class FeatureItemCell: WPTableViewCell {
 
 struct FeatureItemRow : ImmuTableRow {
     static let cell = ImmuTableCell.Class(FeatureItemCell)
-    
+
     let title: String
     let description: String
     let iconURL: NSURL
     let action: ImmuTableAction? = nil
-    
+
     func configureCell(cell: UITableViewCell) {
         guard let cell = cell as? FeatureItemCell else { return }
-        
+
         cell.featureTitleLabel?.text = title
-        
+
         if let featureDescriptionLabel = cell.featureDescriptionLabel {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
-        
+
         cell.featureIconImageView?.setImageWithURL(iconURL, placeholderImage: nil)
-        
+
         cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
         cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
         WPStyleGuide.configureTableViewCell(cell)
     }
-    
+
     private func attributedDescriptionText(text: String, font: UIFont) -> NSAttributedString {
         let lineHeight: CGFloat = 18
-        
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.maximumLineHeight = lineHeight
         paragraphStyle.minimumLineHeight = lineHeight
-        
+
         let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: font])
         return attributedText
     }

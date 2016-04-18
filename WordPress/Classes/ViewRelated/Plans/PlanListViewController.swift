@@ -20,6 +20,7 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+        cell.detailTextLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
         cell.separatorInset = UIEdgeInsetsZero
     }
 
@@ -37,8 +38,8 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
-            NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(14.0),
+            NSForegroundColorAttributeName: WPStyleGuide.grey()
         ]
 
         static func attributedTitle(title: String, price: String, active: Bool) -> NSAttributedString {
@@ -89,6 +90,49 @@ enum PlanListViewModel {
                 buttonTitle: NSLocalizedString("Contact support", comment: "")
             )
         }
+    }
+    
+    func tableFooterViewModelWithPresenter(presenter: UIViewController) -> (title: NSAttributedString, action: () -> Void)? {
+        switch self {
+        case .Ready:
+            let action = { [weak presenter] in
+                let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
+                let navController = UINavigationController(rootViewController: webViewController)
+                presenter?.presentViewController(navController, animated: true, completion: nil)
+            }
+            
+            return (footerTitle, action)
+        default:
+            return nil
+        }
+    }
+    
+    private var footerTitle: NSAttributedString {
+        let bodyColor = WPStyleGuide.greyDarken10().hexString()
+        let linkColor = WPStyleGuide.wordPressBlue().hexString()
+        
+        let bodyStyles = "body { font-family: -apple-system; font-size: 12px; color: \(bodyColor); }"
+        let linkStyles = "a { text-decoration: none; color: \(linkColor); }"
+        
+        // Non-breaking space entity prevents an orphan word if the text wraps
+        let tos = NSLocalizedString("By checking out, you agree to our <a>fascinating terms and&nbsp;conditions</a>.", comment: "Terms of Service link displayed when a user is making a purchase. Text inside <a> tags will be highlighted.")
+        let styledTos = "<style>" + bodyStyles + linkStyles + "</style>" + tos
+        
+        let attributedTos = try! NSMutableAttributedString(
+            data: styledTos.dataUsingEncoding(NSUTF8StringEncoding)!,
+            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
+        
+        // Apply a paragaraph style to remove extra padding at the top and bottom
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 0
+        paragraphStyle.paragraphSpacingBefore = 0
+        
+        attributedTos.addAttribute(NSParagraphStyleAttributeName,
+                                   value: paragraphStyle, 
+                                   range: NSMakeRange(0, attributedTos.string.characters.count - 1))
+        
+        return attributedTos
     }
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
@@ -141,18 +185,48 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         didSet {
             handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
             updateNoResults()
+            updateFooterView()
         }
     }
-
-    private let noResultsView = WPNoResultsView()
-
-    func updateNoResults() {
-            if let noResultsViewModel = viewModel.noResultsViewModel {
-                showNoResults(noResultsViewModel)
-            } else {
-                hideNoResults()
-            }
+    
+    func updateFooterView() {
+        let footerViewModel = viewModel.tableFooterViewModelWithPresenter(self)
+        
+        tableView.tableFooterView = tableFooterViewWithViewModel(footerViewModel)
     }
+    
+    private var footerTapAction: (() -> Void)?
+    private func tableFooterViewWithViewModel(viewModel: (title: NSAttributedString, action: () -> Void)?) -> UIView? {
+        guard let viewModel = viewModel else { return nil }
+        
+        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
+        
+        let title = viewModel.title
+        footerView.attributedTitle = title
+        footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
+        
+        // Don't add a recognizer if we already have one
+        let recognizers = footerView.gestureRecognizers
+        if recognizers == nil || recognizers?.count == 0 {
+            footerTapAction = viewModel.action
+            
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
+            footerView.addGestureRecognizer(tapRecognizer)
+        }
+        
+        return footerView
+    }
+    
+    private let noResultsView = WPNoResultsView()
+    
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+    
     func showNoResults(viewModel: WPNoResultsView.Model) {
         noResultsView.bindViewModel(viewModel)
         if noResultsView.isDescendantOfView(tableView) {
@@ -161,7 +235,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             tableView.addSubviewWithFadeAnimation(noResultsView)
         }
     }
-
+    
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
@@ -210,6 +284,10 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
                 self.viewModel = .Error(String(error))
             }
         )
+    }
+    
+    func footerTapped() {
+        footerTapAction?()
     }
 }
 
