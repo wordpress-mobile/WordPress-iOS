@@ -18,10 +18,13 @@ protocol PresentedViewController
 class PromptViewController : UIViewController
 {
     deinit {
-        stopListeningToProperties(childrenViewController)
+        stopListeningToProperties(childViewController)
     }
     
     init(viewController: UIViewController) {
+        // You stay with us, sir
+        childViewController = viewController
+        
         super.init(nibName: nil, bundle: nil)
         assert(viewController.conformsToProtocol(PresentedViewController))
         
@@ -32,7 +35,6 @@ class PromptViewController : UIViewController
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
         fatalError("Not meant for Nib usage!")
     }
     
@@ -46,9 +48,6 @@ class PromptViewController : UIViewController
         view.addSubview(viewController.view)
         addChildViewController(viewController)
         viewController.didMoveToParentViewController(self)
-        
-        // You stay with us, sir
-        childrenViewController = viewController
     }
     
     private func setupChildrenViewConstraints(childrenView : UIView) {
@@ -64,13 +63,13 @@ class PromptViewController : UIViewController
     // MARK: - KVO Rocks!
     
     private func startListeningToProperties(viewController: UIViewController) {
-        for key in Properties.allKeys {
+        for key in Properties.all {
             viewController.addObserver(self, forKeyPath: key.rawValue, options: [.Initial, .New], context: nil)
         }
     }
     
     private func stopListeningToProperties(viewController: UIViewController) {
-        for key in Properties.allKeys {
+        for key in Properties.all {
             viewController.removeObserver(self, forKeyPath: key.rawValue)
         }
     }
@@ -81,9 +80,9 @@ class PromptViewController : UIViewController
         }
         
         switch property {
-        case .titleKey:
+        case .title:
             title = change?[NSKeyValueChangeNewKey] as? String ?? String()
-        case .doneButtonEnabledKey:
+        case .doneButtonEnabled:
             navigationItem.rightBarButtonItem?.enabled = change?[NSKeyValueChangeNewKey] as? Bool ?? true
         }
     }
@@ -102,22 +101,22 @@ class PromptViewController : UIViewController
     }
     
     @IBAction func cancelButtonWasPressed(sender: AnyObject) {
-        (childrenViewController as? PresentedViewController)?.cancelButtonWasPressed(sender)
+        (childViewController as? PresentedViewController)?.cancelButtonWasPressed(sender)
     }
     
     @IBAction func doneButtonWasPressed(sender: AnyObject) {
-        (childrenViewController as? PresentedViewController)?.doneButtonWasPressed(sender)
+        (childViewController as? PresentedViewController)?.doneButtonWasPressed(sender)
     }
 
     
  
     // MARK: - Private Constants
     private enum Properties : String {
-        case titleKey               = "title"
-        case doneButtonEnabledKey   = "doneButtonEnabled"
-        static let allKeys          = [titleKey, doneButtonEnabledKey]
+        case title              = "title"
+        case doneButtonEnabled  = "doneButtonEnabled"
+        static let all          = [title, doneButtonEnabled]
     }
     
     // MARK: - Private Properties
-    private var childrenViewController : UIViewController!
+    private let childViewController : UIViewController
 }
