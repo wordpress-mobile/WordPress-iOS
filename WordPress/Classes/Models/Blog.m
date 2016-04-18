@@ -524,7 +524,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (NSSet *)allowedFileTypes
 {
-    NSArray * allowedFileTypes = self.options[@"allowed_file_types"][@"value"];
+    NSArray *allowedFileTypes = [self.options arrayForKeyPath:@"allowed_file_types.value"];
     if (!allowedFileTypes || allowedFileTypes.count == 0) {
         return nil;
     }

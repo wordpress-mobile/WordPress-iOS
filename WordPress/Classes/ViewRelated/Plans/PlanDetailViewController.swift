@@ -205,17 +205,27 @@ class PlanDetailViewController: UIViewController {
         } else if plan.isFreePlan {
             purchaseButton?.removeFromSuperview()
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
+        layoutHeaderIfNeeded()
+    }
+    
+    private func layoutHeaderIfNeeded() {
         headerView.layoutIfNeeded()
         
         // Table header views don't automatically resize using Auto Layout,
         // so we need to calculate the correct size to fit the content, update the frame,
-        // and then reset the tableHeaderView property so that the new size takes effect. 
+        // and then reset the tableHeaderView property so that the new size takes effect.
         let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        headerView.frame.size.height = size.height
-        tableView.tableHeaderView = headerView
+        if size.height != headerView.frame.size.height {
+            headerView.frame.size.height = size.height
+            tableView.tableHeaderView = headerView
+        }
     }
-
+    
     //MARK: - IBActions
 
     @IBAction private func purchaseTapped() {
