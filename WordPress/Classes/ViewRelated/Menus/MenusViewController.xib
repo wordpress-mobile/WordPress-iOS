@@ -171,10 +171,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="230" placeholderIntrinsicWidth="471" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="2bo-01-wsh">
-                                                    <rect key="frame" x="0.0" y="6" width="484" height="40"/>
+                                                    <rect key="frame" x="0.0" y="6" width="554" height="40"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3sy-f5-O7T">
-                                                            <rect key="frame" x="10" y="0.0" width="464" height="40"/>
+                                                            <rect key="frame" x="10" y="0.0" width="534" height="40"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
@@ -191,24 +191,13 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS">
-                                                    <rect key="frame" x="494" y="6" width="36" height="40"/>
+                                                    <rect key="frame" x="564" y="6" width="36" height="40"/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" priority="999" constant="36" id="Nmc-m4-zvg"/>
                                                         <constraint firstAttribute="height" constant="40" id="bqh-BP-dK2"/>
                                                     </constraints>
                                                     <state key="normal">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5">
-                                                    <rect key="frame" x="540" y="6" width="60" height="40"/>
-                                                    <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="Zpd-0L-IEa"/>
-                                                    </constraints>
-                                                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
-                                                    <state key="normal" title="Save">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
@@ -230,7 +219,6 @@
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="top" secondItem="EN3-TW-klK" secondAttribute="top" id="m3c-lQ-m8h"/>
                                     </constraints>
                                     <connections>
-                                        <outlet property="saveButton" destination="yBv-SA-Km5" id="9F2-uv-ieh"/>
                                         <outlet property="stackView" destination="yZs-u8-1Mv" id="Vs2-OA-XEN"/>
                                         <outlet property="textField" destination="3sy-f5-O7T" id="ghX-fu-Prz"/>
                                         <outlet property="textFieldDesignView" destination="2bo-01-wsh" id="lm5-2m-tpv"/>
