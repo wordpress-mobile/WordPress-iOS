@@ -28,7 +28,7 @@ extern NSString* const kWPEditorConfigURLParamEnabled;
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
- */ 
+ */
 typedef void (^EditPostCompletionHandler)(WPPostViewController* viewController, BOOL saved);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
