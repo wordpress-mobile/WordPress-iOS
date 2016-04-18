@@ -194,11 +194,11 @@ import WordPressShared
     
     func noResultsTitlesWhenFiltering() -> [PostListStatusFilter:String] {
         
-        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let publishedMessage = String(format: NSLocalizedString("No posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        
+        let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        let trashedMessage = NSLocalizedString("You don't have any posts in your trash folder.", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+        let publishedMessage = NSLocalizedString("You haven't published any posts yet.", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+    
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
     
@@ -402,7 +402,7 @@ import WordPressShared
         
         var cell : PostCardTableViewCell!
         
-        if post.pathForDisplayImage.characters.count > 0 {
+        if post.pathForDisplayImage?.characters.count > 0 {
             cell = textCellForLayout
         } else {
             cell = imageCellForLayout
@@ -466,7 +466,7 @@ import WordPressShared
         
         if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
-        } else if post.pathForDisplayImage.characters.count > 0 {
+        } else if post.pathForDisplayImage?.characters.count > 0 {
             identifier = self.dynamicType.postCardTextCellIdentifier
         } else {
             identifier = self.dynamicType.postCardImageCellIdentifier
