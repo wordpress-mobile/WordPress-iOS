@@ -1,239 +1,8 @@
-/*
-
-#pragma mark - Instance Methods
-
-#pragma mark - Post Actions
-
-- (void)createPost
-{
-    if ([WPPostViewController isNewEditorEnabled]) {
-        [self createPostInNewEditor];
-    } else {
-        [self createPostInOldEditor];
-    }
-    }
-    
-    - (void)createPostInNewEditor
-        {
-            WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
-            
-            __weak __typeof(self) weakSelf = self;
-            
-            postViewController.onClose = ^void(WPPostViewController *viewController, BOOL changesSaved) {
-                
-                if (changesSaved) {
-                    [weakSelf setFilterWithPostStatus:viewController.post.status];
-                }
-                
-                [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-            };
-            
-            UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-            navController.restorationIdentifier = WPEditorNavigationRestorationID;
-            navController.restorationClass = [WPPostViewController class];
-            
-            [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-            navController.modalPresentationStyle = UIModalPresentationFullScreen;
-            
-            [self presentViewController:navController animated:YES completion:nil];
-            
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
-        }
-        
-        - (void)createPostInOldEditor
-            {
-                WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-                UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-                navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-                navController.restorationClass = [WPLegacyEditPostViewController class];
-                
-                [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-                navController.modalPresentationStyle = UIModalPresentationFullScreen;
-                
-                [self presentViewController:navController animated:YES completion:nil];
-                
-                [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
-            }
-            
-            - (void)previewEditPost:(AbstractPost *)apost
-{
-    [self editPost:apost withEditMode:kWPPostViewControllerModePreview];
-    }
-    
-    - (void)editPost:(AbstractPost *)apost
-{
-    [self editPost:apost withEditMode:kWPPostViewControllerModeEdit];
-    }
-    
-    - (void)editPost:(AbstractPost *)apost withEditMode:(WPPostViewControllerMode)mode
-{
-    [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost mode:mode];
-        
-        __weak __typeof(self) weakSelf = self;
-        
-        postViewController.onClose = ^void(WPPostViewController* viewController, BOOL changesSaved) {
-            
-            if (changesSaved) {
-                [weakSelf setFilterWithPostStatus:viewController.post.status];
-            }
-            
-            [viewController.navigationController popViewControllerAnimated:YES];
-        };
-        
-        postViewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:postViewController animated:YES];
-    } else {
-        // In legacy mode, view means edit
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-    }
-    
-    - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
-{
-    NSString *message = NSLocalizedString(@"Post Restored to Drafts", @"Prompts the user that a restored post was moved to the drafts list.");
-    switch (filter.filterType) {
-    case PostListStatusFilterPublished:
-        message = NSLocalizedString(@"Post Restored to Published", @"Prompts the user that a restored post was moved to the published list.");
-        break;
-    case PostListStatusFilterScheduled:
-        message = NSLocalizedString(@"Post Restored to Scheduled", @"Prompts the user that a restored post was moved to the scheduled list.");
-        break;
-    default:
-        break;
-    }
-    NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addCancelActionWithTitle:alertCancel handler:nil];
-    [alertController presentFromRootViewController];
-    }
-    
-    - (void)viewStatsForPost:(AbstractPost *)apost
-{
-    // Check the blog
-    Blog *blog = apost.blog;
-    if (![blog supports:BlogFeatureStats]) {
-        // Needs Jetpack.
-        return;
-    }
-    
-    [WPAnalytics track:WPAnalyticsStatPostListStatsAction withProperties:[self propertiesForAnalytics]];
-    
-    // Push the Stats Post Details ViewController
-    NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
-    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
-    NSBundle *bundle = [NSBundle bundleWithPath:path];
-    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
-    StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
-    NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
-    
-    controller.postID = apost.postID;
-    controller.postTitle = [apost titleForDisplay];
-    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
-    siteTimeZone:[service timeZoneForBlog:blog]
-    oauth2Token:blog.authToken
-    andCacheExpirationInterval:StatsCacheInterval];
-    
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-
-#pragma mark - Filter related
-
-- (PostAuthorFilter)currentPostAuthorFilter
-{
-    if (![self canFilterByAuthor]) {
-        // No REST API, so we have to use XMLRPC and can't filter results by author.
-        return PostAuthorFilterEveryone;
-    }
-    
-    NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
-    if (filter) {
-        if (PostAuthorFilterEveryone == [filter integerValue]) {
-            return PostAuthorFilterEveryone;
-        }
-    }
-    
-    return PostAuthorFilterMine;
-    }
-    
-    - (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
-{
-    if (filter == [self currentPostAuthorFilter]) {
-        return;
-    }
-    
-    [WPAnalytics track:WPAnalyticsStatPostListAuthorFilterChanged withProperties:[self propertiesForAnalytics]];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
-    [NSUserDefaults resetStandardUserDefaults];
-    
-    [self.recentlyTrashedPostObjectIDs removeAllObjects];
-    [self resetTableViewContentOffset];
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
-    [self syncItemsWithUserInteraction:NO];
-    }
-    
-    - (NSString *)keyForCurrentListStatusFilter
-        {
-            return CurrentPostListStatusFilterKey;
-}
-
-
-#pragma mark - Cell Delegate Methods
-
-- (void)cell:(PostCardTableViewCell *)cell receivedEditActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self editPost:apost];
-    }
-    
-    - (void)cell:(PostCardTableViewCell *)cell receivedViewActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self viewPost:apost];
-    }
-    
-    - (void)cell:(PostCardTableViewCell *)cell receivedStatsActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self viewStatsForPost:apost];
-    }
-    
-    - (void)cell:(PostCardTableViewCell *)cell receivedPublishActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self publishPost:apost];
-    }
-    
-    - (void)cell:(PostCardTableViewCell *)cell receivedTrashActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self deletePost:apost];
-    }
-    
-    - (void)cell:(PostCardTableViewCell *)cell receivedRestoreActionForProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self restorePost:apost];
-}
- */
-
 import Foundation
+import WordPressComAnalytics
 import WordPressShared
 
-@objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration { //, PostCardTableViewCellDelegate,  {
+@objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
     
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -603,103 +372,331 @@ import WordPressShared
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         return predicate
     }
-   
-
     
-    /*
-     #pragma mark - Table View Handling
-     
-     - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-     {
-     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-     if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-     return PostCardRestoreCellRowHeight;
-     }
-     
-     return PostCardEstimatedRowHeight;
-     }
-     
-     - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-     {
-     CGFloat width = CGRectGetWidth(self.tableView.bounds);
-     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
-     }
-     
-     - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
-     {
-     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-     if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-     return PostCardRestoreCellRowHeight;
-     }
-     
-     PostCardTableViewCell *cell;
-     if (![post.pathForDisplayImage length]) {
-     cell = self.textCellForLayout;
-     } else {
-     cell = self.imageCellForLayout;
-     }
-     [self configureCell:cell atIndexPath:indexPath];
-     CGSize size = [cell sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-     CGFloat height = ceil(size.height);
-     return height;
-     }
-     
-     - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-     {
-     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-     AbstractPost *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-     if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-     // Don't allow editing while pushing changes
-     return;
-     }
-     
-     if ([post.status isEqualToString:PostStatusTrash]) {
-     // No editing posts that are trashed.
-     return;
-     }
-     
-     [self previewEditPost:post];
-     }
-     
-     - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-     {
-     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-     
-     NSString *identifier = [self cellIdentifierForPost:post];
-     PostCardTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-     [self configureCell:cell atIndexPath:indexPath];
-     
-     return cell;
-     }
-     
-     - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-     {
-     cell.accessoryType = UITableViewCellAccessoryNone;
-     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-     
-     id<PostCardCell>postCell = (id<PostCardCell>)cell;
-     postCell.delegate = self;
-     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-     
-     BOOL layoutOnly = ([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
-     [postCell configureCell:post layoutOnly:layoutOnly];
-     }
-     
-     - (NSString *)cellIdentifierForPost:(Post *)post
-     {
-     NSString *identifier;
-     if ([self.recentlyTrashedPostObjectIDs containsObject:post.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
-     identifier = PostCardRestoreCellIdentifier;
-     } else if (![post.pathForDisplayImage length]) {
-     identifier = PostCardTextCellIdentifier;
-     } else {
-     identifier = PostCardImageCellIdentifier;
-     }
-     return identifier;
-     }
+    // MARK: - Table View Handling
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        
+        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
+            return CGFloat(self.dynamicType.postCardRestoreCellRowHeight)
+        }
+        
+        return CGFloat(self.dynamicType.postCardEstimatedRowHeight)
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let width = CGRectGetWidth(tableView.bounds)
+        return tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
+    }
+   
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
+        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath)
+        
+        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
+            return CGFloat(self.dynamicType.postCardRestoreCellRowHeight)
+        }
+        
+        var cell : PostCardTableViewCell!
+        
+        if post?.pathForDisplayImage.characters.count > 0 {
+            cell = textCellForLayout
+        } else {
+            cell = imageCellForLayout
+        }
+        
+        configureCell(cell, atIndexPath: indexPath)
+        let size = cell.sizeThatFits(CGSizeMake(width, CGFloat.max))
+        let height = ceil(size.height)
+        
+        return height
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) else {
+            return
+        }
 
- */
+        if post.remoteStatus == AbstractPostRemoteStatusPushing {
+            // Don't allow editing while pushing changes
+            return
+        }
+        
+        if post.status == PostStatusTrash {
+            // No editing posts that are trashed.
+            return
+        }
+        
+        previewEditPost(post)
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        
+        let identifier = cellIdentifierForPost(post)
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        
+        configureCell(cell, atIndexPath: indexPath)
+        
+        return cell
+    }
+    
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+        
+        if let postCell = cell as? PostCardCell {
+            postCell.delegate = self
+            
+            if let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
+                let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
+                
+                postCell.configureCell?(post, layoutOnly: layoutOnly)
+            }
+        }
+    }
+    
+    func cellIdentifierForPost(post: Post) -> String {
+        var identifier : String
+        
+        if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
+            identifier = self.dynamicType.postCardRestoreCellIdentifier
+        } else if post.pathForDisplayImage.characters.count > 0 {
+            identifier = self.dynamicType.postCardTextCellIdentifier
+        } else {
+            identifier = self.dynamicType.postCardImageCellIdentifier
+        }
+        
+        return identifier
+    }
+    
+    // MARK: - Post Actions
+    
+    func createPost() {
+        if WPPostViewController.isNewEditorEnabled() {
+            createPostInNewEditor()
+        } else {
+            createPostInOldEditor()
+        }
+    }
+    
+    func createPostInNewEditor() {
+        let postViewController = WPPostViewController(draftForBlog: blog)
+        
+        postViewController.onClose = { [weak self] (viewController, changesSaved) -> () in
+            if changesSaved {
+                self?.setFilterWithPostStatus(viewController.post.status)
+            }
+            
+            viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        let navController = UINavigationController(rootViewController: postViewController)
+        navController.restorationIdentifier = WPEditorNavigationRestorationID
+        navController.restorationClass = WPPostViewController.self
+        navController.toolbarHidden = false
+        navController.modalPresentationStyle = .FullScreen
+        
+        presentViewController(navController, animated: true, completion: nil)
+        
+        WPAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+    }
+    
+    func createPostInOldEditor() {
+        let editPostViewController = WPLegacyEditPostViewController(draftForLastUsedBlog: ())
+        
+        let navController = UINavigationController(rootViewController: editPostViewController)
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
+        navController.restorationClass = WPLegacyEditPostViewController.self
+        navController.toolbarHidden = false
+        navController.modalPresentationStyle = .FullScreen
+        
+        presentViewController(navController, animated: true, completion: nil)
+        
+        WPAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+    }
+    
+    func previewEditPost(apost: AbstractPost) {
+        editPost(apost, withEditMode: kWPPostViewControllerModePreview)
+    }
+    
+    func editPost(apost: AbstractPost) {
+        editPost(apost, withEditMode: kWPPostViewControllerModeEdit)
+    }
+    
+    func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
+        WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
+        
+        if WPPostViewController.isNewEditorEnabled() {
+            let postViewController = WPPostViewController(post: apost, mode: mode)
+            
+            postViewController.onClose = {[weak self] viewController, changesSaved in
+                
+                if changesSaved {
+                    self?.setFilterWithPostStatus(viewController.post.status)
+                }
+                
+                viewController.navigationController?.popViewControllerAnimated(true)
+            }
+            
+            postViewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(postViewController, animated: true)
+        } else {
+            // In legacy mode, view means edit
+            let editPostViewController = WPLegacyEditPostViewController(post: apost)
+            let navController = UINavigationController(rootViewController: editPostViewController)
+            navController.toolbarHidden = false // Fixes incorrect toolbar animation.
+            navController.modalPresentationStyle = .FullScreen
+            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
+            navController.restorationClass = WPLegacyEditPostViewController.self
+            
+            presentViewController(navController, animated: true, completion: nil)
+        }
+    }
+    
+    func promptThatPostRestoredToFilter(filter: PostListFilter) {
+        
+    }
+    
 }
+
+/*
+ 
+ - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
+ {
+ NSString *message = NSLocalizedString(@"Post Restored to Drafts", @"Prompts the user that a restored post was moved to the drafts list.");
+ switch (filter.filterType) {
+ case PostListStatusFilterPublished:
+ message = NSLocalizedString(@"Post Restored to Published", @"Prompts the user that a restored post was moved to the published list.");
+ break;
+ case PostListStatusFilterScheduled:
+ message = NSLocalizedString(@"Post Restored to Scheduled", @"Prompts the user that a restored post was moved to the scheduled list.");
+ break;
+ default:
+ break;
+ }
+ NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
+ 
+ UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+ [alertController addCancelActionWithTitle:alertCancel handler:nil];
+ [alertController presentFromRootViewController];
+ }
+ 
+ - (void)viewStatsForPost:(AbstractPost *)apost
+ {
+ // Check the blog
+ Blog *blog = apost.blog;
+ if (![blog supports:BlogFeatureStats]) {
+ // Needs Jetpack.
+ return;
+ }
+ 
+ [WPAnalytics track:WPAnalyticsStatPostListStatsAction withProperties:[self propertiesForAnalytics]];
+ 
+ // Push the Stats Post Details ViewController
+ NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
+ BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+ NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+ NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+ NSBundle *bundle = [NSBundle bundleWithPath:path];
+ UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
+ StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
+ NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
+ 
+ controller.postID = apost.postID;
+ controller.postTitle = [apost titleForDisplay];
+ controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
+ siteTimeZone:[service timeZoneForBlog:blog]
+ oauth2Token:blog.authToken
+ andCacheExpirationInterval:StatsCacheInterval];
+ 
+ [self.navigationController pushViewController:controller animated:YES];
+ }
+ 
+ 
+ #pragma mark - Filter related
+ 
+ - (PostAuthorFilter)currentPostAuthorFilter
+ {
+ if (![self canFilterByAuthor]) {
+ // No REST API, so we have to use XMLRPC and can't filter results by author.
+ return PostAuthorFilterEveryone;
+ }
+ 
+ NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
+ if (filter) {
+ if (PostAuthorFilterEveryone == [filter integerValue]) {
+ return PostAuthorFilterEveryone;
+ }
+ }
+ 
+ return PostAuthorFilterMine;
+ }
+ 
+ - (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
+ {
+ if (filter == [self currentPostAuthorFilter]) {
+ return;
+ }
+ 
+ [WPAnalytics track:WPAnalyticsStatPostListAuthorFilterChanged withProperties:[self propertiesForAnalytics]];
+ 
+ [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
+ [NSUserDefaults resetStandardUserDefaults];
+ 
+ [self.recentlyTrashedPostObjectIDs removeAllObjects];
+ [self resetTableViewContentOffset];
+ [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+ [self syncItemsWithUserInteraction:NO];
+ }
+ 
+ - (NSString *)keyForCurrentListStatusFilter
+ {
+ return CurrentPostListStatusFilterKey;
+ }
+ 
+ 
+ #pragma mark - Cell Delegate Methods
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedEditActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self editPost:apost];
+ }
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedViewActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self viewPost:apost];
+ }
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedStatsActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self viewStatsForPost:apost];
+ }
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedPublishActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self publishPost:apost];
+ }
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedTrashActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self deletePost:apost];
+ }
+ 
+ - (void)cell:(PostCardTableViewCell *)cell receivedRestoreActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+ {
+ AbstractPost *apost = (AbstractPost *)contentProvider;
+ [self restorePost:apost];
+ }
+ */
+
 
 
 
