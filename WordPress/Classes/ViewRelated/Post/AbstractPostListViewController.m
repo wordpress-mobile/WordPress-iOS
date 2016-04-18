@@ -9,6 +9,7 @@
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-swift.h"
 #import "WPSearchControllerConfigurator.h"
 #import <WordPressApi/WordPressApi.h>
 
