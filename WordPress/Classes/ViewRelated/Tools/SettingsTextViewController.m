@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) NSString          *hint;
 @property (nonatomic, strong) NSString          *placeholder;
 @property (nonatomic, strong) NSString          *text;
+@property (nonatomic, assign) BOOL              doneButtonEnabled;
+@property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
 
 
@@ -51,6 +53,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
+        _shouldNotifyValue = YES;
     }
     return self;
 }
@@ -61,6 +64,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -68,7 +72,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupNavigationButtonsIfNeeded];
     [self setupNoticeAnimatorIfNeeded];
 }
 
@@ -83,7 +86,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
-    if (self.displaysNavigationButtons == NO) {
+    if (self.shouldNotifyValue) {
         [self notifyValueDidChangeIfNeeded];
     }
 }
@@ -97,32 +100,14 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 #pragma mark - NavigationItem Buttons
 
-- (void)setupNavigationButtonsIfNeeded
+- (void)cancel
 {
-    if (self.displaysNavigationButtons == NO) {
-        return;
-    }
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelButtonWasPressed:)];
-    
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(doneButtonWasPressed:)];
-    
-    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
-}
-
-- (IBAction)cancelButtonWasPressed:(id)sender
-{
+    self.shouldNotifyValue = NO;
     [self dismissViewController];
 }
 
-- (IBAction)doneButtonWasPressed:(id)sender
+- (void)confirm
 {
-    [self notifyValueDidChangeIfNeeded];
     [self dismissViewController];
 }
 
@@ -139,6 +124,15 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 #pragma mark - Validation
 
+- (void)startListeningTextfieldChanges
+{
+    // Hook up to Change Events
+    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
+    
+    // Fire initial status
+    [self validateTextInput:_textField];
+}
+
 - (BOOL)textPassesValidation
 {
     BOOL isEmail = (self.mode == SettingsTextModesEmail);
@@ -147,7 +141,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)validateTextInput:(id)sender
 {
-    self.navigationItem.rightBarButtonItem.enabled = [self textPassesValidation];
+    self.doneButtonEnabled = [self textPassesValidation];
 }
 
 
@@ -302,7 +296,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     BOOL isValid = self.textPassesValidation;
     if (isValid) {
-        [self doneButtonWasPressed:self];
+        [self confirm];
     }
     
     return isValid;
