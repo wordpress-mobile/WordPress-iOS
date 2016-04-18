@@ -504,7 +504,7 @@ import WordPressShared
         
         presentViewController(navController, animated: true, completion: nil)
         
-        WPAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
     
     func createPostInOldEditor() {
@@ -518,7 +518,7 @@ import WordPressShared
         
         presentViewController(navController, animated: true, completion: nil)
         
-        WPAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
     
     func previewEditPost(apost: AbstractPost) {
