@@ -4,6 +4,7 @@
 #import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "WPUserAgent.h"
+#import "NSDictionary+SafeExpectations.h"
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -106,8 +107,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
             } else {
                 errorDictionary = (NSDictionary *)operation.responseObject;
             }
-            NSString *errorMessage = (NSString *)errorDictionary[@"message"];
-            NSString *errorType = (NSString *)errorDictionary[@"error"];
+            NSString *errorMessage = [errorDictionary stringForKey:@"message"];
+            NSString *errorType = [errorDictionary stringForKey:@"error"];
             NSUInteger errorCode = WordPressComApiErrorJSON;
             if (errorType && errorMessage) {
                 if ([errorType isEqualToString:@"invalid_token"]) {
