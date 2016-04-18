@@ -14,7 +14,6 @@
 @property (nonatomic, weak) IBOutlet UITextField *textField;
 @property (nonatomic, weak) IBOutlet UIView *textFieldDesignView;
 @property (nonatomic, weak) IBOutlet UIButton *trashButton;
-@property (nonatomic, weak) IBOutlet UIButton *saveButton;
 @property (nonatomic, strong) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
@@ -65,16 +64,6 @@
     trashButton.backgroundColor = [UIColor clearColor];
     trashButton.adjustsImageWhenHighlighted = YES;
     
-    UIButton *saveButton = self.saveButton;
-    [self updateSaveButtonTitle];
-    saveButton.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
-    [saveButton setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [saveButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
-    [saveButton setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
-    saveButton.enabled = NO;
-    saveButton.backgroundColor = [UIColor clearColor];
-    [saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
     {
         UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -104,32 +93,6 @@
         self.textField.text = menu.name;
         self.trashButton.hidden = menu.menuID.integerValue == MenuDefaultID;
         [self updateTextFieldDesignIconPositioning];
-    }
-}
-
-- (void)setSavingEnabled:(BOOL)savingEnabled
-{
-    if (_savingEnabled != savingEnabled) {
-        _savingEnabled = savingEnabled;
-        self.saveButton.enabled = savingEnabled;
-    }
-}
-
-- (void)setIsSaving:(BOOL)isSaving
-{
-    if (_isSaving != isSaving) {
-        _isSaving = isSaving;
-        self.saveButton.userInteractionEnabled = !isSaving;
-        [self updateSaveButtonTitle];
-    }
-}
-
-- (void)updateSaveButtonTitle
-{
-    if (self.isSaving) {
-        [self.saveButton setTitle:NSLocalizedString(@"Saving...", @"Menus save button title while it is saving a Menu.") forState:UIControlStateNormal];
-    } else {
-        [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
     }
 }
 
@@ -190,11 +153,6 @@
 }
 
 #pragma mark - buttons
-
-- (void)saveButtonPressed
-{
-    [self.delegate detailsViewSelectedToSaveMenu:self];
-}
 
 - (void)trashButtonPressed
 {
