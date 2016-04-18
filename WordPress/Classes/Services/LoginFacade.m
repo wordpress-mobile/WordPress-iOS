@@ -51,16 +51,25 @@
 
 - (void)signInToWordpressDotCom:(LoginFields *)loginFields
 {
-    [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    if ([self.delegate respondsToSelector:@selector(displayLoginMessage:)]) {
+        [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    }
+
     [self.wordpressComOAuthClientFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
-        [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
+        if ([self.delegate respondsToSelector:@selector(finishedLoginWithUsername:authToken:requiredMultifactorCode:)]) {
+            [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
+        }
     } needsMultiFactor:^{
-        [self.delegate needsMultifactorCode];
+        if ([self.delegate respondsToSelector:@selector(needsMultifactorCode)]) {
+            [self.delegate needsMultifactorCode];
+        }
     } failure:^(NSError *error) {
         NSDictionary *properties = @{ @"multifactor" : @(loginFields.shouldDisplayMultifactor) };
         [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
-        [self.delegate displayRemoteError:error];
+        if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
+            [self.delegate displayRemoteError:error];
+        }
     }];
 }
 
