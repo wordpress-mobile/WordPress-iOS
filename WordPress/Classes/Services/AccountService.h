@@ -42,6 +42,27 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)removeDefaultWordPressComAccount;
 
+/**
+ Query to check if an email address is paired to a wpcom account. Used in the 
+ magic links signup flow.
+
+ @param email
+ @param success
+ @param failure
+ */
+- (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Requets a one-time authentication link sent to an existing account associated with the
+ specified email address.
+
+ @param email
+ @param success
+ @param failure
+ */
+- (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------

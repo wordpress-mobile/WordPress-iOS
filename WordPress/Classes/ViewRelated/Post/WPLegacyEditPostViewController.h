@@ -1,18 +1,26 @@
 #import <UIKit/UIKit.h>
 #import <WordPressEditor/WPLegacyEditorViewController.h>
 
+typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
+    EditPostViewControllerModeNewPost,
+    EditPostViewControllerModeEditPost
+};
+
+
 @class AbstractPost;
 
 extern NSString *const WPLegacyEditorNavigationRestorationID;
 
-@interface WPLegacyEditPostViewController : WPLegacyEditorViewController <UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate>
+@interface WPLegacyEditPostViewController : WPLegacyEditorViewController
+<UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
 typedef void (^WPLegacyEditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) WPLegacyEditPostCompletionHandler onClose;
-
+@property (nonatomic, strong, readonly) AbstractPost *post;
+@property (nonatomic, assign, readonly) EditPostViewControllerMode editMode;
 /*
  Initialize the editor with the specified post.
  @param post The post to edit.

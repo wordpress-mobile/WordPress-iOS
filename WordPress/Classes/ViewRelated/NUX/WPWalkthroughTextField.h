@@ -1,11 +1,14 @@
 #import <UIKit/UIKit.h>
 
+IB_DESIGNABLE
 @interface WPWalkthroughTextField : UITextField
 
+@property (nonatomic) IBInspectable BOOL showTopLineSeparator;
+@property (nonatomic) IBInspectable BOOL showSecureTextEntryToggle;
+@property (nonatomic) IBInspectable UIImage *leftViewImage;
 @property (nonatomic) UIEdgeInsets textInsets;
 @property (nonatomic) UIOffset rightViewPadding;
-@property (nonatomic) BOOL showTopLineSeparator;
-@property (nonatomic) BOOL showSecureTextEntryToggle;
+
 
 - (instancetype)initWithLeftViewImage:(UIImage *)image;
 
