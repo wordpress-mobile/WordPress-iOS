@@ -14,6 +14,7 @@
 
 #import "BlogSelectorViewController.h"
 
+#import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"

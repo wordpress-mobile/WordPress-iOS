@@ -1,37 +1,27 @@
 import Foundation
+import UIKit
+
 
 /// ViewController container, that presents a Done / Cancel button, and forwards their events to
-/// the childrenViewController (which *must* implement PresentedViewController).
+/// the childrenViewController (which *must* implement the Confirmable protocol).
 ///
-class PromptViewController: UINavigationController {
-    override private init(rootViewController: UIViewController) {
-        super.init(rootViewController: rootViewController)
-        modalPresentationStyle = .FormSheet
-    }
-
-    @objc(initWithViewController:)
-    convenience init(unsafeViewController viewController: UIViewController) {
-        let container = PromptContainerViewController(viewController: viewController)
-        self.init(rootViewController: container)
-    }
-
-    convenience init<T: UIViewController where T: Confirmable>(viewController: T) {
-        let container = PromptContainerViewController(viewController: viewController)
-        self.init(rootViewController: container)
-    }
-
-    override private init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-private class PromptContainerViewController : UIViewController
+class PromptViewController : UIViewController
 {
+    // MARK: - Static Helpers
+    
+    /// Wraps a given UIViewController, that conforms to the Confirmable Protocol, into:
+    /// -   A PromptViewController instance, which deals with the NavigationItem buttons
+    /// -   (And verything) inside a UINavigationController instance.
+    ///
+    static func navigationControllerWithPrompt<T: UIViewController where T: Confirmable>(viewController: T) -> UINavigationController {
+        let viewController = PromptViewController(viewController: viewController)
+        return UINavigationController(rootViewController: viewController)
+    }
+    
+    
+    
+    /// MARK: - Initializers / Deinitializers
+    
     deinit {
         stopListeningToProperties(childViewController)
     }
@@ -115,12 +105,14 @@ private class PromptContainerViewController : UIViewController
                                                             action: #selector(doneButtonWasPressed))
     }
     
+    @objc
     @IBAction func cancelButtonWasPressed(sender: AnyObject) {
-        (childViewController as? PresentedViewController)?.cancel()
+        (childViewController as? Confirmable)?.cancel()
     }
     
+    @objc
     @IBAction func doneButtonWasPressed(sender: AnyObject) {
-        (childViewController as? PresentedViewController)?.confirm()
+        (childViewController as? Confirmable)?.confirm()
     }
 
     
