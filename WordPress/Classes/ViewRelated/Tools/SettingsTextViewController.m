@@ -13,7 +13,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - Private Properties
 
-@interface SettingsTextViewController() <UITextFieldDelegate, PresentedViewController>
+@interface SettingsTextViewController() <UITextFieldDelegate>
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
@@ -81,13 +81,13 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - NavigationItem Buttons
 
-- (IBAction)cancelButtonWasPressed:(id)sender
+- (void)cancel
 {
     self.shouldNotifyValue = NO;
     [self dismissViewController];
 }
 
-- (IBAction)doneButtonWasPressed:(id)sender
+- (void)confirm
 {
     [self dismissViewController];
 }
@@ -235,7 +235,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     BOOL isValid = self.textPassesValidation;
     if (isValid) {
-        [self doneButtonWasPressed:self];
+        [self confirm];
     }
     
     return isValid;
