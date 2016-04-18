@@ -1,5 +1,6 @@
 import Foundation
 import WordPressComAnalytics
+import WordPressComStatsiOS
 import WordPressShared
 
 @objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
@@ -387,11 +388,13 @@ import WordPressShared
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let width = CGRectGetWidth(tableView.bounds)
-        return tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
+        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
     }
    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath)
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            return 0
+        }
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return CGFloat(self.dynamicType.postCardRestoreCellRowHeight)
@@ -399,7 +402,7 @@ import WordPressShared
         
         var cell : PostCardTableViewCell!
         
-        if post?.pathForDisplayImage.characters.count > 0 {
+        if post.pathForDisplayImage.characters.count > 0 {
             cell = textCellForLayout
         } else {
             cell = imageCellForLayout
@@ -415,7 +418,7 @@ import WordPressShared
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) else {
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
             return
         }
 
@@ -557,145 +560,128 @@ import WordPressShared
     }
     
     func promptThatPostRestoredToFilter(filter: PostListFilter) {
+        var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
         
+        switch filter.filterType {
+        case .Published:
+            message = NSLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
+            break
+        case .Scheduled:
+            message = NSLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
+            break
+        default:
+            break
+        }
+        
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
     
-}
+    func viewStatsForPost(apost: AbstractPost) {
+        // Check the blog
+        let blog = apost.blog
+        
+        if blog.supports(.Stats) {
+            // Needs Jetpack.
+            return
+        }
+        
+        WPAnalytics.track(.PostListStatsAction, withProperties: propertiesForAnalytics())
+        
+        // Push the Stats Post Details ViewController
+        let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
+        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let statsBundle = NSBundle(forClass: WPStatsViewController.self)
+        let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle")!
+        let bundle = NSBundle(path: path)
+        let statsStoryboard = UIStoryboard(name: self.dynamicType.statsStoryboardName, bundle: bundle)
+        let controller = statsStoryboard.instantiateViewControllerWithIdentifier(identifier) as! StatsPostDetailsTableViewController
+        
+        controller.postID = apost.postID
+        controller.postTitle = apost.titleForDisplay()
+        controller.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    // MARK: - Filter Related
+    
+    override func currentPostAuthorFilter() -> PostAuthorFilter {
+        if !canFilterByAuthor() {
+            // No REST API, so we have to use XMLRPC and can't filter results by author.
+            return .Everyone
+        }
+        
+        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.dynamicType.currentPostAuthorFilterKey) {
+            if filter.unsignedIntegerValue == PostAuthorFilter.Everyone.rawValue {
+                return .Everyone
+            }
+        }
+        
+        return .Mine
+    }
 
-/*
- 
- - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
- {
- NSString *message = NSLocalizedString(@"Post Restored to Drafts", @"Prompts the user that a restored post was moved to the drafts list.");
- switch (filter.filterType) {
- case PostListStatusFilterPublished:
- message = NSLocalizedString(@"Post Restored to Published", @"Prompts the user that a restored post was moved to the published list.");
- break;
- case PostListStatusFilterScheduled:
- message = NSLocalizedString(@"Post Restored to Scheduled", @"Prompts the user that a restored post was moved to the scheduled list.");
- break;
- default:
- break;
- }
- NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
- 
- UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
- [alertController addCancelActionWithTitle:alertCancel handler:nil];
- [alertController presentFromRootViewController];
- }
- 
- - (void)viewStatsForPost:(AbstractPost *)apost
- {
- // Check the blog
- Blog *blog = apost.blog;
- if (![blog supports:BlogFeatureStats]) {
- // Needs Jetpack.
- return;
- }
- 
- [WPAnalytics track:WPAnalyticsStatPostListStatsAction withProperties:[self propertiesForAnalytics]];
- 
- // Push the Stats Post Details ViewController
- NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
- BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
- NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
- NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
- NSBundle *bundle = [NSBundle bundleWithPath:path];
- UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
- StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
- NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
- 
- controller.postID = apost.postID;
- controller.postTitle = [apost titleForDisplay];
- controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
- siteTimeZone:[service timeZoneForBlog:blog]
- oauth2Token:blog.authToken
- andCacheExpirationInterval:StatsCacheInterval];
- 
- [self.navigationController pushViewController:controller animated:YES];
- }
- 
- 
- #pragma mark - Filter related
- 
- - (PostAuthorFilter)currentPostAuthorFilter
- {
- if (![self canFilterByAuthor]) {
- // No REST API, so we have to use XMLRPC and can't filter results by author.
- return PostAuthorFilterEveryone;
- }
- 
- NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
- if (filter) {
- if (PostAuthorFilterEveryone == [filter integerValue]) {
- return PostAuthorFilterEveryone;
- }
- }
- 
- return PostAuthorFilterMine;
- }
- 
- - (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
- {
- if (filter == [self currentPostAuthorFilter]) {
- return;
- }
- 
- [WPAnalytics track:WPAnalyticsStatPostListAuthorFilterChanged withProperties:[self propertiesForAnalytics]];
- 
- [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
- [NSUserDefaults resetStandardUserDefaults];
- 
- [self.recentlyTrashedPostObjectIDs removeAllObjects];
- [self resetTableViewContentOffset];
- [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
- [self syncItemsWithUserInteraction:NO];
- }
- 
- - (NSString *)keyForCurrentListStatusFilter
- {
- return CurrentPostListStatusFilterKey;
- }
- 
- 
- #pragma mark - Cell Delegate Methods
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedEditActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self editPost:apost];
- }
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedViewActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self viewPost:apost];
- }
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedStatsActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self viewStatsForPost:apost];
- }
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedPublishActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self publishPost:apost];
- }
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedTrashActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self deletePost:apost];
- }
- 
- - (void)cell:(PostCardTableViewCell *)cell receivedRestoreActionForProvider:(id<WPPostContentViewProvider>)contentProvider
- {
- AbstractPost *apost = (AbstractPost *)contentProvider;
- [self restorePost:apost];
- }
- */
+    override func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
+        guard filter != currentPostAuthorFilter() else {
+            return
+        }
+        
+        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
+        
+        NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
+        NSUserDefaults.resetStandardUserDefaults()
+        
+        recentlyTrashedPostObjectIDs?.removeAllObjects()
+        resetTableViewContentOffset()
+        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        syncItemsWithUserInteraction(false)
+    }
+
+    func keyForCurrentListStatusFilter() -> String {
+        return self.dynamicType.currentPostListStatusFilterKey
+    }
+
+    // MARK: - Cell Delegate Methods
+    
+    func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        editPost(apost)
+    }
+
+    func cell(cell: UITableViewCell!, receivedViewActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        viewPost(apost)
+    }
+
+    func cell(cell: UITableViewCell!, receivedStatsActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        viewStatsForPost(apost)
+    }
+
+    func cell(cell: UITableViewCell!, receivedPublishActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        publishPost(apost)
+    }
+
+    func cell(cell: UITableViewCell!, receivedTrashActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        deletePost(apost)
+    }
+    
+    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
+        let apost = contentProvider as! AbstractPost
+        
+        restorePost(apost)
+    }
+}
 
 
 
