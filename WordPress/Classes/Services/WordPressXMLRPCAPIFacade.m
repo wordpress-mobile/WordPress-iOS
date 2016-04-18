@@ -24,7 +24,12 @@
 - (NSError *)errorForGuessXMLRPCApiFailure:(NSError *)error
 {
     DDLogError(@"Error on trying to guess XMLRPC site: %@", error);
-    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+    NSArray *errorCodes = @[
+                            @(NSURLErrorUserCancelledAuthentication),
+                            @(NSURLErrorNotConnectedToInternet),
+                            @(NSURLErrorNetworkConnectionLost),
+                            ];
+    if ([error.domain isEqual:NSURLErrorDomain] && [errorCodes containsObject:@(error.code)]) {
         return error;
     } else {
         NSDictionary *userInfo = @{
