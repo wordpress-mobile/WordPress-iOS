@@ -1,302 +1,5 @@
 /*
 
-#pragma mark - Lifecycle Methods
-
-
-#pragma mark - Configuration
-
-- (CGFloat)heightForFooterView
-{
-    return PostListHeightForFooterView;
-    }
-    
-    - (void)configureCellsForLayout
-        {
-            self.textCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
-            [self forceUpdateCellLayout:self.textCellForLayout];
-            
-            self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
-            [self forceUpdateCellLayout:self.imageCellForLayout];
-        }
-        
-
-    
-    - (void)configureTableView
-        {
-            self.tableView.accessibilityIdentifier = @"PostsTable";
-            self.tableView.isAccessibilityElement = YES;
-            self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            
-            // Register the cells
-            UINib *postCardTextCellNib = [UINib nibWithNibName:PostCardTextCellNibName bundle:[NSBundle mainBundle]];
-            [self.tableView registerNib:postCardTextCellNib forCellReuseIdentifier:PostCardTextCellIdentifier];
-            
-            UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellNibName bundle:[NSBundle mainBundle]];
-            [self.tableView registerNib:postCardImageCellNib forCellReuseIdentifier:PostCardImageCellIdentifier];
-            
-            UINib *postCardRestoreCellNib = [UINib nibWithNibName:PostCardRestoreCellNibName bundle:[NSBundle mainBundle]];
-            [self.tableView registerNib:postCardRestoreCellNib forCellReuseIdentifier:PostCardRestoreCellIdentifier];
-        }
-        
-        - (NSString *)noResultsTitleText
-            {
-                if (self.syncHelper.isSyncing) {
-                    return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
-                }
-                PostListFilter *filter = [self currentPostListFilter];
-                NSDictionary *titles = [self noResultsTitles];
-                NSString *title = [titles stringForKey:@(filter.filterType)];
-                return title;
-            }
-            
-            - (NSDictionary *)noResultsTitles
-                {
-                    NSDictionary *titles;
-                    if ([self isSearching]) {
-                        titles = @{
-                            @(PostListStatusFilterDraft):[NSString stringWithFormat:NSLocalizedString(@"No drafts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
-                            @(PostListStatusFilterScheduled):[NSString stringWithFormat:NSLocalizedString(@"No scheduled posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
-                            @(PostListStatusFilterTrashed):[NSString stringWithFormat:NSLocalizedString(@"No trashed posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
-                            @(PostListStatusFilterPublished):[NSString stringWithFormat:NSLocalizedString(@"No posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
-                        };
-                    } else {
-                        titles = @{
-                            @(PostListStatusFilterDraft):NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts"),
-                            @(PostListStatusFilterScheduled):NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts"),
-                            @(PostListStatusFilterTrashed):NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts"),
-                            @(PostListStatusFilterPublished):NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts"),
-                        };
-                    }
-                    return titles;
-                }
-                
-                - (NSString *)noResultsMessageText {
-                    if (self.syncHelper.isSyncing || [self isSearching]) {
-                        return [NSString string];
-                    }
-                    NSString *message;
-                    PostListFilter *filter = [self currentPostListFilter];
-                    switch (filter.filterType) {
-                    case PostListStatusFilterDraft:
-                        message = NSLocalizedString(@"Would you like to create one?", @"Displayed when the user views drafts in the posts list and there are no posts");
-                        break;
-                    case PostListStatusFilterScheduled:
-                        message = NSLocalizedString(@"Would you like to schedule a draft to publish?", @"Displayed when the user views scheduled posts in the posts list and there are no posts");
-                        break;
-                    case PostListStatusFilterTrashed:
-                        message = NSLocalizedString(@"Everything you write is solid gold.", @"Displayed when the user views trashed posts in the posts list and there are no posts");
-                        break;
-                    default:
-                        message = NSLocalizedString(@"Would you like to publish your first post?", @"Displayed when the user views published posts in the posts list and there are no posts");
-                        break;
-                    }
-                    return message;
-                    }
-                    
-                    - (NSString *)noResultsButtonText
-                        {
-                            if (self.syncHelper.isSyncing || [self isSearching]) {
-                                return nil;
-                            }
-                            NSString *title;
-                            PostListFilter *filter = [self currentPostListFilter];
-                            switch (filter.filterType) {
-                            case PostListStatusFilterScheduled:
-                                title = NSLocalizedString(@"Edit Drafts", @"Button title, encourages users to schedule a draft post to publish.");
-                                break;
-                            case PostListStatusFilterTrashed:
-                                title = [NSString string];
-                                break;
-                            default:
-                                title = NSLocalizedString(@"Start a Post", @"Button title, encourages users to create their first post on their blog.");
-                                break;
-                            }
-                            return title;
-                        }
-                        
-                        - (void)configureAuthorFilter
-                            {
-                                NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
-                                NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
-                                [WPStyleGuide applyPostAuthorFilterStyle:self.authorFilterSegmentedControl];
-                                [self.authorFilterSegmentedControl setTitle:onlyMe forSegmentAtIndex:0];
-                                [self.authorFilterSegmentedControl setTitle:everyone forSegmentAtIndex:1];
-                                self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-                                
-                                if (![self canFilterByAuthor]) {
-                                    self.authorsFilterViewHeightConstraint.constant = 0.0;
-                                    self.authorFilterSegmentedControl.hidden = YES;
-                                }
-                                
-                                if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
-                                    self.authorFilterSegmentedControl.selectedSegmentIndex = 0;
-                                } else {
-                                    self.authorFilterSegmentedControl.selectedSegmentIndex = 1;
-                                }
-}
-
-
-#pragma mark - Sync Methods
-
-- (NSString *)postTypeToSync
-{
-    return PostServiceTypePost;
-    }
-    
-    - (NSDate *)lastSyncDate
-        {
-            return self.blog.lastPostsSync;
-}
-
-
-#pragma mark - Actions
-
-- (IBAction)handleAuthorFilterChanged:(id)sender
-{
-    if (self.authorFilterSegmentedControl.selectedSegmentIndex == PostAuthorFilterMine) {
-        [self setCurrentPostAuthorFilter:PostAuthorFilterMine];
-    } else {
-        [self setCurrentPostAuthorFilter:PostAuthorFilterEveryone];
-    }
-}
-
-
-#pragma mark - TableView Handler Delegate Methods
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Post class]);
-    }
-    
-    - (NSPredicate *)predicateForFetchRequest
-        {
-            NSMutableArray *predicates = [NSMutableArray array];
-            
-            NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && revision = nil", self.blog];
-            [predicates addObject:basePredicate];
-            
-            NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"postType = %@", [self postTypeToSync]];
-            [predicates addObject:typePredicate];
-            
-            NSString *searchText = [self currentSearchTerm];
-            NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
-            
-            // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
-            // or posts that were recently deleted.
-            if ([searchText length] == 0 && [self.recentlyTrashedPostObjectIDs count] > 0) {
-                NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", self.recentlyTrashedPostObjectIDs];
-                filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
-            }
-            [predicates addObject:filterPredicate];
-            
-            if ([self shouldShowOnlyMyPosts]) {
-                // Brand new local drafts have an authorID of 0.
-                NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@ || authorID = 0", self.blog.account.userID];
-                [predicates addObject:authorPredicate];
-            }
-            
-            if ([searchText length] > 0) {
-                NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
-                [predicates addObject:searchPredicate];
-            }
-            
-            NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-            
-            return predicate;
-}
-
-#pragma mark - Table View Handling
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-        return PostCardRestoreCellRowHeight;
-    }
-    
-    return PostCardEstimatedRowHeight;
-    }
-    
-    - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat width = CGRectGetWidth(self.tableView.bounds);
-    return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
-    }
-    
-    - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
-{
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-        return PostCardRestoreCellRowHeight;
-    }
-    
-    PostCardTableViewCell *cell;
-    if (![post.pathForDisplayImage length]) {
-        cell = self.textCellForLayout;
-    } else {
-        cell = self.imageCellForLayout;
-    }
-    [self configureCell:cell atIndexPath:indexPath];
-    CGSize size = [cell sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    CGFloat height = ceil(size.height);
-    return height;
-    }
-    
-    - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    AbstractPost *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-        // Don't allow editing while pushing changes
-        return;
-    }
-    
-    if ([post.status isEqualToString:PostStatusTrash]) {
-        // No editing posts that are trashed.
-        return;
-    }
-    
-    [self previewEditPost:post];
-    }
-    
-    - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
-    NSString *identifier = [self cellIdentifierForPost:post];
-    PostCardTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-    }
-    
-    - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    id<PostCardCell>postCell = (id<PostCardCell>)cell;
-    postCell.delegate = self;
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
-    BOOL layoutOnly = ([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
-    [postCell configureCell:post layoutOnly:layoutOnly];
-    }
-    
-    - (NSString *)cellIdentifierForPost:(Post *)post
-{
-    NSString *identifier;
-    if ([self.recentlyTrashedPostObjectIDs containsObject:post.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
-        identifier = PostCardRestoreCellIdentifier;
-    } else if (![post.pathForDisplayImage length]) {
-        identifier = PostCardTextCellIdentifier;
-    } else {
-        identifier = PostCardImageCellIdentifier;
-    }
-    return identifier;
-}
-
-
 #pragma mark - Instance Methods
 
 #pragma mark - Post Actions
@@ -528,8 +231,9 @@
  */
 
 import Foundation
+import WordPressShared
 
-@objc class PostListViewController2 : AbstractPostListViewController, UIViewControllerRestoration { //, PostCardTableViewCellDelegate,  {
+@objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration { //, PostCardTableViewCellDelegate,  {
     
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -545,8 +249,8 @@ import Foundation
     // TODO: low cap on first char!
     
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
-    static private let postCardEstimatedRowHeight = CGFloat(100.0)
-    static private let postCardRestoreCellRowHeight = CGFloat(54.0)
+    static private let postCardEstimatedRowHeight = Float(100.0)
+    static private let postCardRestoreCellRowHeight = Float(54.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
     
     @IBOutlet var textCellForLayout : PostCardTableViewCell!
@@ -567,10 +271,10 @@ import Foundation
     
     // MARK: - Convenience constructors
     
-    class func controllerWithBlog(blog: Blog) -> PostListViewController2 {
+    class func controllerWithBlog(blog: Blog) -> PostListViewController {
         
         let storyBoard = UIStoryboard(name: "Posts", bundle: NSBundle.mainBundle())
-        let controller = storyBoard.instantiateViewControllerWithIdentifier("PostListViewController") as! PostListViewController2
+        let controller = storyBoard.instantiateViewControllerWithIdentifier("PostListViewController") as! PostListViewController
         
         controller.blog = blog
         controller.restorationClass = self
@@ -609,7 +313,7 @@ import Foundation
     // MARK: - UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.postListViewController = segue.destinationViewController
+        super.postListViewController = (segue.destinationViewController as! UITableViewController)
     }
     
     override func viewDidLoad() {
@@ -626,8 +330,13 @@ import Foundation
         forceUpdateCellLayout(textCellForLayout)
         forceUpdateCellLayout(imageCellForLayout)
         
-        tableViewHandler.clearCachedRowHeights()
-        tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows, withRowAnimation: .None)
+        tableViewHandler?.clearCachedRowHeights()
+        
+        if let tableView = tableView,
+            let indexPaths = tableView.indexPathsForVisibleRows {
+            
+            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+        }
     }
     
     func forceUpdateCellLayout(cell: PostCardTableViewCell) {
@@ -637,17 +346,358 @@ import Foundation
         cell.removeFromSuperview()
     }
     
+    // MARK: - Configuration
+    
+    override func heightForFooterView() -> CGFloat {
+        return self.dynamicType.postListHeightForFooterView
+    }
+    
+    func configureCellsForLayout() {
+        
+        let bundle = NSBundle.mainBundle()
+        
+        textCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardTextCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
+        forceUpdateCellLayout(textCellForLayout)
+        
+        imageCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardImageCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
+        forceUpdateCellLayout(imageCellForLayout)
+    }
+    
+    func configureTableView() {
+        
+        assert(tableView != nil, "We expect tableView to never be nil at this point.")
+        
+        guard let tableView = tableView else {
+            return
+        }
+        
+        tableView.accessibilityIdentifier = "PostsTable"
+        tableView.isAccessibilityElement = true
+        tableView.separatorStyle = .None
+        
+        let bundle = NSBundle.mainBundle()
+        
+        // Register the cells
+        let postCardTextCellNib = UINib(nibName: self.dynamicType.postCardTextCellNibName, bundle: bundle)
+        tableView.registerNib(postCardTextCellNib, forCellReuseIdentifier: self.dynamicType.postCardTextCellIdentifier)
+        
+        let postCardImageCellNib = UINib(nibName: self.dynamicType.postCardImageCellNibName, bundle: bundle)
+        tableView.registerNib(postCardImageCellNib, forCellReuseIdentifier: self.dynamicType.postCardImageCellIdentifier)
+        
+        let postCardRestoreCellNib = UINib(nibName: self.dynamicType.postCardRestoreCellNibName, bundle: bundle)
+        tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
+    }
+    
+    func noResultsTitleText() -> String {
+        if syncHelper?.isSyncing == true {
+            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
+        }
+        
+        let filter = currentPostListFilter()
+        
+        if let filter = filter {
+            let titles = noResultsTitles()
+            let title = titles[filter.filterType]
+            return title ?? ""
+        } else {
+            return ""
+        }
+    }
+    
+    func noResultsTitles() -> [PostListStatusFilter:String] {
+        if isSearching() {
+            return noResultsTitlesWhenSearching()
+        } else {
+            return noResultsTitlesWhenFiltering()
+        }
+    }
+    
+    func noResultsTitlesWhenSearching() -> [PostListStatusFilter:String] {
+        
+        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let publishedMessage = String(format: NSLocalizedString("No posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        
+        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
+    }
+    
+    func noResultsTitlesWhenFiltering() -> [PostListStatusFilter:String] {
+        
+        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let publishedMessage = String(format: NSLocalizedString("No posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        
+        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
+    }
+    
+    func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListStatusFilter:String] {
+        return [.Draft: draft,
+                .Scheduled: scheduled,
+                .Trashed: trashed,
+                .Published: published]
+    }
+    
+    func noResultsMessageText() -> String {
+        if syncHelper?.isSyncing == true || isSearching() {
+            return ""
+        }
+        
+        let filter = currentPostListFilter()
+        
+        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
+        // `nullable`).  This will probably change once we can migrate
+        // AbstractPostListViewController to Swift, but for the time being we're defining a default
+        // filter here.
+        //
+        // Diego Rey Mendez - 2016/04/18
+        //
+        let filterType = filter?.filterType ?? .Draft
+        var message : String
+        
+        switch filterType {
+        case .Draft:
+            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+            break
+        case .Scheduled:
+            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+            break
+        case .Trashed:
+            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
+            break
+        default:
+            message = NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+            break
+        }
+        
+        return message
+    }
+    
+    func noResultsButtonText() -> String? {
+        if syncHelper?.isSyncing == true || isSearching() {
+            return nil
+        }
+        
+        let filter = currentPostListFilter()
+        
+        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
+        // `nullable`).  This will probably change once we can migrate
+        // AbstractPostListViewController to Swift, but for the time being we're defining a default
+        // filter here.
+        //
+        // Diego Rey Mendez - 2016/04/18
+        //
+        let filterType = filter?.filterType ?? .Draft
+        var title : String
+        
+        switch filterType {
+        case .Scheduled:
+            title = NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
+            break
+        case .Trashed:
+            title = ""
+            break
+        default:
+            title = NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
+            break
+        }
+        
+        return title
+    }
+    
+    func configureAuthorFilter() {
+        let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
+        let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
+        
+        WPStyleGuide.applyPostAuthorFilterStyle(authorFilterSegmentedControl)
+        
+        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAtIndex: 0)
+        authorFilterSegmentedControl.setTitle(everyone, forSegmentAtIndex: 1)
+    
+        authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
+        
+        if !canFilterByAuthor() {
+            authorsFilterViewHeightConstraint?.constant = 0
+            authorFilterSegmentedControl.hidden = true
+        }
+        
+        if currentPostAuthorFilter() == .Mine {
+            authorFilterSegmentedControl.selectedSegmentIndex = 0
+        } else {
+            authorFilterSegmentedControl.selectedSegmentIndex = 1
+        }
+    }
+    
+    // MARK: - Sync Methods
+    
+    override func postTypeToSync() -> String {
+        return PostServiceTypePost
+    }
+    
+    override func lastSyncDate() -> NSDate? {
+        return blog?.lastPostsSync
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func handleAuthorFilterChanged() {
+        if authorFilterSegmentedControl.selectedSegmentIndex == (Int) (PostAuthorFilter.Mine.rawValue) {
+            setCurrentPostAuthorFilter(.Mine)
+        } else {
+            setCurrentPostAuthorFilter(.Everyone)
+        }
+    }
+    
+    // MARK: - TableViewHandler
+    
+    func entityName() -> String {
+        return NSStringFromClass(self.dynamicType)
+    }
+    
+    func predicateForFetchRequest() -> NSPredicate {
+        var predicates = [NSPredicate]()
+        
+        if let blog = blog {
+            let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+            predicates.append(basePredicate)
+        }
+        
+        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync())
+        predicates.append(typePredicate)
+        
+        let searchText = currentSearchTerm()
+        var filterPredicate = currentPostListFilter()?.predicateForFetchRequest
+        
+        // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
+        // or posts that were recently deleted.
+        if let recentlyTrashedPostObjectIDs = recentlyTrashedPostObjectIDs
+            where searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+            
+            let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
+            
+            if let originalFilterPredicate = filterPredicate {
+                filterPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [originalFilterPredicate, trashedPredicate])
+            } else {
+                filterPredicate = trashedPredicate
+            }
+        }
+        
+        if let filterPredicate = filterPredicate {
+            predicates.append(filterPredicate)
+        }
+        
+        if shouldShowOnlyMyPosts() {
+            let myAuthorID = blog?.account.userID ?? 0
+            
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
+        }
+        
+        if let searchText = searchText where searchText.characters.count > 0 {
+            let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
+            predicates.append(searchPredicate)
+        }
+        
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        return predicate
+    }
+   
+
+    
     /*
- - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
- {
- [super traitCollectionDidChange:previousTraitCollection];
- 
- [self forceUpdateCellLayout:self.textCellForLayout];
- [self forceUpdateCellLayout:self.imageCellForLayout];
- 
- [self.tableViewHandler clearCachedRowHeights];
- [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
- }
+     #pragma mark - Table View Handling
+     
+     - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+     {
+     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+     if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
+     return PostCardRestoreCellRowHeight;
+     }
+     
+     return PostCardEstimatedRowHeight;
+     }
+     
+     - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+     {
+     CGFloat width = CGRectGetWidth(self.tableView.bounds);
+     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
+     }
+     
+     - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
+     {
+     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+     if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
+     return PostCardRestoreCellRowHeight;
+     }
+     
+     PostCardTableViewCell *cell;
+     if (![post.pathForDisplayImage length]) {
+     cell = self.textCellForLayout;
+     } else {
+     cell = self.imageCellForLayout;
+     }
+     [self configureCell:cell atIndexPath:indexPath];
+     CGSize size = [cell sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+     CGFloat height = ceil(size.height);
+     return height;
+     }
+     
+     - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+     {
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+     AbstractPost *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+     if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+     // Don't allow editing while pushing changes
+     return;
+     }
+     
+     if ([post.status isEqualToString:PostStatusTrash]) {
+     // No editing posts that are trashed.
+     return;
+     }
+     
+     [self previewEditPost:post];
+     }
+     
+     - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+     {
+     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+     
+     NSString *identifier = [self cellIdentifierForPost:post];
+     PostCardTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+     [self configureCell:cell atIndexPath:indexPath];
+     
+     return cell;
+     }
+     
+     - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+     {
+     cell.accessoryType = UITableViewCellAccessoryNone;
+     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+     
+     id<PostCardCell>postCell = (id<PostCardCell>)cell;
+     postCell.delegate = self;
+     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+     
+     BOOL layoutOnly = ([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
+     [postCell configureCell:post layoutOnly:layoutOnly];
+     }
+     
+     - (NSString *)cellIdentifierForPost:(Post *)post
+     {
+     NSString *identifier;
+     if ([self.recentlyTrashedPostObjectIDs containsObject:post.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
+     identifier = PostCardRestoreCellIdentifier;
+     } else if (![post.pathForDisplayImage length]) {
+     identifier = PostCardTextCellIdentifier;
+     } else {
+     identifier = PostCardImageCellIdentifier;
+     }
+     return identifier;
+     }
+
  */
 }
 

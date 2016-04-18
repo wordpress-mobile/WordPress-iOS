@@ -45,8 +45,10 @@
 #import "Post.h"
 #import "PostCardTableViewCell.h"
 #import "PostCardTableViewCellDelegate.h"
+#import "PostListFilter.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PostService.h"
 #import "PrivateSiteURLProtocol.h"
 #import "WPPostViewController.h"
 
@@ -95,6 +97,7 @@
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
+#import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
