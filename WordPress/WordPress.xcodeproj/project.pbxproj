@@ -1845,6 +1845,7 @@
 		E1EBC36E1C118EA500F638E0 /* ImmuTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTable.swift; sourceTree = "<group>"; };
 		E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTableTest.swift; sourceTree = "<group>"; };
 		E1EBC3741C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImmuTableTestViewCellWithNib.xib; sourceTree = "<group>"; };
+		E1EEFAD91CC4CC5700126533 /* Confirmable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Confirmable.h; sourceTree = "<group>"; };
 		E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableImageSource.h; sourceTree = "<group>"; };
 		E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSource.m; sourceTree = "<group>"; };
 		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
@@ -3344,6 +3345,7 @@
 				B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */,
 				B56F4F8E1C6B9358001CEB09 /* SettingsListPickerViewController.swift */,
 				B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */,
+				E1EEFAD91CC4CC5700126533 /* Confirmable.h */,
 			);
 			path = Tools;
 			sourceTree = "<group>";

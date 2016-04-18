@@ -13,13 +13,7 @@ extension SettingsController {
         }
     }
     
-    func insidePromptController(generator: ImmuTableRowControllerGenerator) -> ImmuTableRowControllerGenerator {
-        return { row in
-            return PromptViewController(viewController: generator(row))
-        }
-    }
-
-    func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
     {
         return { row in
             let editableRow = row as! EditableTextRow
@@ -27,7 +21,7 @@ extension SettingsController {
         }
     }
 
-    func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
     {
         return { row in
             let editableRow = row as! EditableTextRow

@@ -1,21 +1,36 @@
 import Foundation
 
-
-/// Protocol that defines the methods required by PromptViewController's Children(s).
-///
-@objc
-protocol PresentedViewController
-{
-    var doneButtonEnabled : Bool { get }
-    func cancelButtonWasPressed(sender: AnyObject)
-    func doneButtonWasPressed(sender: AnyObject)
-}
-
-
 /// ViewController container, that presents a Done / Cancel button, and forwards their events to
 /// the childrenViewController (which *must* implement PresentedViewController).
 ///
-class PromptViewController : UIViewController
+class PromptViewController: UINavigationController {
+    override private init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+        modalPresentationStyle = .FormSheet
+    }
+
+    @objc(initWithViewController:)
+    convenience init(unsafeViewController viewController: UIViewController) {
+        let container = PromptContainerViewController(viewController: viewController)
+        self.init(rootViewController: container)
+    }
+
+    convenience init<T: UIViewController where T: Confirmable>(viewController: T) {
+        let container = PromptContainerViewController(viewController: viewController)
+        self.init(rootViewController: container)
+    }
+
+    override private init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private class PromptContainerViewController : UIViewController
 {
     deinit {
         stopListeningToProperties(childViewController)
@@ -26,7 +41,7 @@ class PromptViewController : UIViewController
         childViewController = viewController
         
         super.init(nibName: nil, bundle: nil)
-        assert(viewController.conformsToProtocol(PresentedViewController))
+        precondition(viewController.conformsToProtocol(Confirmable))
         
         setupNavigationButtons()
         attachChildrenViewController(viewController)
@@ -101,11 +116,11 @@ class PromptViewController : UIViewController
     }
     
     @IBAction func cancelButtonWasPressed(sender: AnyObject) {
-        (childViewController as? PresentedViewController)?.cancelButtonWasPressed(sender)
+        (childViewController as? PresentedViewController)?.cancel()
     }
     
     @IBAction func doneButtonWasPressed(sender: AnyObject) {
-        (childViewController as? PresentedViewController)?.doneButtonWasPressed(sender)
+        (childViewController as? PresentedViewController)?.confirm()
     }
 
     
