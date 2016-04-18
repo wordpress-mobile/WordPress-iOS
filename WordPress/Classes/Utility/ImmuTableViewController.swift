@@ -27,6 +27,15 @@ extension ImmuTablePresenter where Self: UIViewController {
     }
 }
 
+extension ImmuTablePresenter {
+    func prompt<T: UIViewController where T: Confirmable>(controllerGenerator: ImmuTableRow -> T) -> ImmuTableAction {
+        return present({
+            let controller = controllerGenerator($0)
+            return PromptViewController(viewController: controller)
+        })
+    }
+}
+
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
