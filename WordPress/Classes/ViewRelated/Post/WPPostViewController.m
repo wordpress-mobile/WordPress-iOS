@@ -722,7 +722,7 @@ EditImageDetailsViewControllerDelegate
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
-    vc.displaysCancelButton = [self isViewHorizontallyCompact];
+    vc.displaysCancelButton = [self hasHorizontallyCompactView];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
@@ -1331,7 +1331,7 @@ EditImageDetailsViewControllerDelegate
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        if (![self isViewHorizontallyCompact]) {
+        if (![self hasHorizontallyCompactView]) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
         }
@@ -1358,7 +1358,7 @@ EditImageDetailsViewControllerDelegate
     
     // Update the width to the appropriate size for the horizontal size class
     CGFloat titleButtonWidth = CompactTitleButtonWidth;
-    if (![self isViewHorizontallyCompact]) {
+    if (![self hasHorizontallyCompactView]) {
         titleButtonWidth = RegularTitleButtonWidth;
     }
     _blogPickerButton.frame = CGRectMake(_blogPickerButton.frame.origin.x, _blogPickerButton.frame.origin.y, titleButtonWidth, RegularTitleButtonHeight);

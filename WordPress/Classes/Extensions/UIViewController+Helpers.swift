@@ -15,7 +15,7 @@ extension UIViewController
     
     /// Determines if the current ViewController's View is horizontally Compact
     ///
-    public func isViewHorizontallyCompact() -> Bool {
+    public func hasHorizontallyCompactView() -> Bool {
         return traitCollection.horizontalSizeClass == .Compact
     }
     
