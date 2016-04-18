@@ -311,7 +311,7 @@ import WordPressShared
     
     // MARK: - Actions
     
-    @IBAction func handleAuthorFilterChanged() {
+    @IBAction func handleAuthorFilterChanged(sender: AnyObject) {
         if authorFilterSegmentedControl.selectedSegmentIndex == (Int) (PostAuthorFilter.Mine.rawValue) {
             setCurrentPostAuthorFilter(.Mine)
         } else {
@@ -322,7 +322,7 @@ import WordPressShared
     // MARK: - TableViewHandler
     
     func entityName() -> String {
-        return NSStringFromClass(self.dynamicType)
+        return String(Post.self)
     }
     
     func predicateForFetchRequest() -> NSPredicate {
@@ -513,7 +513,6 @@ import WordPressShared
         let navController = UINavigationController(rootViewController: editPostViewController)
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
         navController.restorationClass = WPLegacyEditPostViewController.self
-        navController.toolbarHidden = false
         navController.modalPresentationStyle = .FullScreen
         
         presentViewController(navController, animated: true, completion: nil)
@@ -550,7 +549,6 @@ import WordPressShared
             // In legacy mode, view means edit
             let editPostViewController = WPLegacyEditPostViewController(post: apost)
             let navController = UINavigationController(rootViewController: editPostViewController)
-            navController.toolbarHidden = false // Fixes incorrect toolbar animation.
             navController.modalPresentationStyle = .FullScreen
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
             navController.restorationClass = WPLegacyEditPostViewController.self

@@ -1,18 +1,21 @@
 #import "MeHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
+#import "WordPress-Swift.h"
 
 const CGFloat MeHeaderViewHeight = 210;
 const CGFloat MeHeaderViewGravatarSize = 120.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;
 const CGFloat MeHeaderViewVerticalMargin = 20.0;
 const CGFloat MeHeaderViewVerticalSpacing = 10.0;
+const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 @interface MeHeaderView ()
 
 @property (nonatomic, strong) UIImageView *gravatarImageView;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -28,13 +31,16 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _gravatarImageView = [self imageViewForGravatar];
+        _gravatarImageView = [self newImageViewForGravatar];
         [self addSubview:_gravatarImageView];
 
-        _displayNameLabel = [self labelForDisplayName];
+        _activityIndicator = [self newSpinner];
+        [_gravatarImageView addSubview:_activityIndicator];
+        
+        _displayNameLabel = [self newLabelForDisplayName];
         [self addSubview:_displayNameLabel];
 
-        _usernameLabel = [self labelForUsername];
+        _usernameLabel = [self newLabelForUsername];
         [self addSubview:_usernameLabel];
 
         [self configureConstraints];
@@ -54,6 +60,11 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     self.displayNameLabel.text = displayName;
 }
 
+- (NSString *)displayName
+{
+    return self.displayNameLabel.text;
+}
+
 - (void)setUsername:(NSString *)username
 {
     // If the username is an email, we don't want the preceding @ sign before it
@@ -61,11 +72,44 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];
 }
 
-- (void)setGravatarEmail:(NSString *)gravatarEmail
+- (NSString *)username
 {
-    // Since this view is only visible to the current user, we should show all ratings
-    [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail gravatarRating:GravatarRatingX];
+    return self.usernameLabel.text;
 }
+
+- (void)setGravatarEmail:(NSString *)gravatarEmail
+{    
+    // Since this view is only visible to the current user, we should show all ratings
+    [self.gravatarImageView downloadGravatarWithEmail:gravatarEmail rating:GravatarRatingsX];
+    _gravatarEmail = gravatarEmail;
+}
+
+- (BOOL)showsActivityIndicator
+{
+    // Note: ActivityIndicator will be visible only while it's beign animated
+    return [_activityIndicator isAnimating];
+}
+
+- (void)setShowsActivityIndicator:(BOOL)showsActivityIndicator
+{
+    if (showsActivityIndicator) {
+        [_activityIndicator startAnimating];
+    } else {
+        [_activityIndicator stopAnimating];
+    }
+}
+
+- (void)overrideGravatarImage:(UIImage *)gravatarImage
+{
+    self.gravatarImageView.image = gravatarImage;
+    
+    // Note:
+    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+    // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
+    //
+    [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];
+}
+
 
 #pragma mark - Private Methods
 
@@ -108,12 +152,15 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
                                                     attribute:NSLayoutAttributeCenterX
                                                    multiplier:1
                                                       constant:0]];
+    
+    [self.gravatarImageView pinSubviewAtCenter:_activityIndicator];
+    
     [super setNeedsUpdateConstraints];
 }
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForDisplayName
+- (UILabel *)newLabelForDisplayName
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,7 +175,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     return label;
 }
 
-- (UILabel *)labelForUsername
+- (UILabel *)newLabelForUsername
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,14 +190,55 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     return label;
 }
 
-- (UIImageView *)imageViewForGravatar
+- (UIImageView *)newImageViewForGravatar
 {
     CGRect gravatarFrame = CGRectMake(0.0f, 0.0f, MeHeaderViewGravatarSize, MeHeaderViewGravatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:gravatarFrame];
-    imageView.layer.cornerRadius = MeHeaderViewGravatarSize / 2.0;
+    imageView.layer.cornerRadius = MeHeaderViewGravatarSize * 0.5;
     imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.userInteractionEnabled = YES;
+    
+    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                             action:@selector(handleHeaderPress:)];
+    recognizer.minimumPressDuration = MeHeaderViewMinimumPressDuration;
+    [imageView addGestureRecognizer:recognizer];
+    
     return imageView;
+}
+
+- (UIActivityIndicatorView *)newSpinner
+{
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    indicatorView.hidesWhenStopped = YES;
+    indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    return indicatorView;
+}
+
+
+#pragma mark - UITapGestureRecognizer Handler
+
+- (IBAction)handleHeaderPress:(UIGestureRecognizer *)sender
+{
+    // Touch Down: Depress the gravatarImageView
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [_gravatarImageView depressAnimation];
+        return;
+    }
+    
+    // Touch Up: Normalize the gravatarImageView
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        [_gravatarImageView normalizeAnimation];
+        
+        // Hit the callback only if we're still within Gravatar Bounds
+        CGPoint touchInGravatar = [sender locationInView:_gravatarImageView];
+        BOOL gravatarContainsTouch = CGRectContainsPoint(_gravatarImageView.bounds, touchInGravatar);
+
+        if (self.onGravatarPress && gravatarContainsTouch) {
+            self.onGravatarPress();
+        }
+    }
 }
 
 @end
