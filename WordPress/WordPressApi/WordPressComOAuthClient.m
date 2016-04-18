@@ -43,7 +43,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
     [self POST:@"token"
 	parameters:parameters
 	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               DDLogVerbose(@"Received OAuth2 response: %@", responseObject);
+               DDLogVerbose(@"Received OAuth2 response: %@", [self cleanedUpResponseForLogging:responseObject]);
                NSString *authToken = [responseObject stringForKey:@"access_token"];
                if (success) {
                    success(authToken);
@@ -127,6 +127,18 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         }
     }
     return error;
+}
+
+- (id)cleanedUpResponseForLogging:(id)response {
+    if (![response isKindOfClass:[NSDictionary class]]) {
+        return response;
+    }
+    if ([(NSDictionary *)response objectForKey:@"access_token"] == nil) {
+        return response;
+    }
+    NSMutableDictionary *dict = [(NSDictionary *)response mutableCopy];
+    dict[@"access_token"] = @"*** REDACTED ***";
+    return dict;
 }
 
 @end
