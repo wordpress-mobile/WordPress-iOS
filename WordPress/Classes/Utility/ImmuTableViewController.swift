@@ -39,7 +39,7 @@ extension ImmuTablePresenter {
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var errorMessage: Observable<String?> { get }
+    var noticeMessage: Observable<String?> { get }
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
 }
 
@@ -55,7 +55,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var visibleSubject = PublishSubject<Bool>()
 
-    private var errorAnimator: ErrorAnimator!
+    private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
 
@@ -75,11 +75,11 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
                 self?.handler.viewModel = $0
                 })
             .addDisposableTo(bag)
-        controller.errorMessage
+        controller.noticeMessage
             .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
-                self?.errorMessage = $0
+                self?.noticeMessage = $0
                 })
             .addDisposableTo(bag)
     }
@@ -91,7 +91,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        errorAnimator = ErrorAnimator(target: view)
+        noticeAnimator = NoticeAnimator(target: view)
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -99,7 +99,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        errorAnimator.layout()
+        noticeAnimator.layout()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -120,9 +120,9 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    var errorMessage: String? = nil {
+    var noticeMessage: String? = nil {
         didSet {
-            errorAnimator.animateErrorMessage(errorMessage)
+            noticeAnimator.animateMessage(noticeMessage)
         }
     }
 

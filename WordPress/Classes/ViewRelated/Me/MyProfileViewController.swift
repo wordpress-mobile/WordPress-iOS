@@ -41,7 +41,7 @@ private struct MyProfileController: SettingsController {
         })
     }
     
-    var errorMessage: Observable<String?> {
+    var noticeMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
