@@ -35,9 +35,9 @@ class PlanListViewControllerTest: XCTestCase {
         let premiumRow = tableViewModel.planRowAtIndex(1)
         let businessRow = tableViewModel.planRowAtIndex(2)
 
-        expect(freeRow.icon).to(equal(defaultPlans[0].image))
-        expect(premiumRow.icon).to(equal(defaultPlans[1].activeImage))
-        expect(businessRow.icon).to(equal(defaultPlans[2].image))
+        expect(freeRow.iconUrl).to(equal(defaultPlans[0].iconUrl))
+        expect(premiumRow.iconUrl).to(equal(defaultPlans[1].activeIconUrl))
+        expect(businessRow.iconUrl).to(equal(defaultPlans[2].iconUrl))
     }
 
     let plansWithPrices: [PricedPlan] = [
