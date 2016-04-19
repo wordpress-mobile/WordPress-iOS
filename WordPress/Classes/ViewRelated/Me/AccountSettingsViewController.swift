@@ -40,7 +40,7 @@ private struct AccountSettingsController: SettingsController {
         })
     }
 
-    var errorMessage: Observable<String?> {
+    var refreshStatusMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
@@ -48,6 +48,19 @@ private struct AccountSettingsController: SettingsController {
             .map({ $0.errorMessage })
     }
 
+    var emailNoticeMessage: Observable<String?> {
+        return service.settings.map {
+            return self.noticeForAccountSettings($0)
+        }
+    }
+    
+    var noticeMessage: Observable<String?> {
+        return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
+            return refresh ?? email
+        }
+    }
+
+    
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
@@ -59,8 +72,8 @@ private struct AccountSettingsController: SettingsController {
         
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-            value: settings?.email ?? "",
-            action: presenter.prompt(editEmailAddress(service))
+            value: settings?.emailForDisplay ?? "",
+            action: presenter.prompt(editEmailAddress(settings, service: service))
         )
         
         let primarySite = EditableTextRow(
@@ -88,10 +101,26 @@ private struct AccountSettingsController: SettingsController {
     
     
     // MARK: - Actions
-
-    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
-        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-        return editEmailAddress(AccountSettingsChange.Email, hint: hint, service: service)
+    
+    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+            let settingsViewController =  self.controllerForEditableText(editableRow,
+                                                                         changeType: AccountSettingsChange.Email,
+                                                                         hint: hint,
+                                                                         service: service)
+            settingsViewController.mode = .Email
+            settingsViewController.notice = self.noticeForAccountSettings(settings)
+            settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
+            settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
+            settingsViewController.onActionPress = {
+                let change = AccountSettingsChange.EmailPendingChange(false)
+                service.saveChange(change)
+            }
+            
+            return settingsViewController
+        }
     }
     
     func editWebAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
@@ -119,5 +148,16 @@ private struct AccountSettingsController: SettingsController {
             return selectorViewController
         }
     }
+    
+    
+    // MARK: - Private Helpers
+    
+    private func noticeForAccountSettings(settings: AccountSettings?) -> String? {
+        guard let pendingAddress = settings?.emailPendingAddress where settings?.emailPendingChange == true else {
+            return nil
+        }
+        
+        return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
+                                 comment: "Displayed when there's a pending Email Change")
+    }
 }
-

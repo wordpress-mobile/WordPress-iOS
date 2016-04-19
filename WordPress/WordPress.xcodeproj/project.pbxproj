@@ -510,7 +510,7 @@
 		E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		E10B5ACF1C4518E100F6A390 /* AccountService+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10B5ACE1C4518E100F6A390 /* AccountService+Rx.swift */; };
 		E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = E11330501A13BAA300D36D84 /* me-sites-with-jetpack.json */; };
-		E11450DF1C4E47E600A6BD0F /* ErrorAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* ErrorAnimator.swift */; };
+		E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
 		E116D4411C50D5F400DC5593 /* Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E116D4401C50D5F400DC5593 /* Rx.swift */; };
 		E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1209FA31BB4978B00D69778 /* PeopleService.swift */; };
@@ -1656,7 +1656,7 @@
 		E10B3653158F2D4500419A93 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E10B5ACE1C4518E100F6A390 /* AccountService+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountService+Rx.swift"; sourceTree = "<group>"; };
 		E11330501A13BAA300D36D84 /* me-sites-with-jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-with-jetpack.json"; sourceTree = "<group>"; };
-		E11450DE1C4E47E600A6BD0F /* ErrorAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAnimator.swift; sourceTree = "<group>"; };
+		E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeAnimator.swift; sourceTree = "<group>"; };
 		E114D798153D85A800984182 /* WPError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPError.h; sourceTree = "<group>"; };
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 8.xcdatamodel"; sourceTree = "<group>"; };
@@ -2991,7 +2991,6 @@
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 				93A379D919FE6D3000415023 /* DDLogSwift.h */,
 				93A379DA19FE6D3000415023 /* DDLogSwift.m */,
-				E11450DE1C4E47E600A6BD0F /* ErrorAnimator.swift */,
 				E1266D2C1BBE8B9A00FCB6B6 /* Gravatar.swift */,
 				313692771A5D6F7900EBE645 /* HelpshiftUtils.h */,
 				313692781A5D6F7900EBE645 /* HelpshiftUtils.m */,
@@ -3000,6 +2999,7 @@
 				B576B4871C6A22FB0027C754 /* Languages.swift */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
+				E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */,
 				E14B13C21C4E7675009DD68F /* Reachability+Rx.swift */,
 				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
 				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
@@ -5502,7 +5502,7 @@
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
-				E11450DF1C4E47E600A6BD0F /* ErrorAnimator.swift in Sources */,
+				E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
