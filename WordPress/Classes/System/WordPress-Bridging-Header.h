@@ -5,6 +5,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
+#import "AbstractPostListViewController.h"
 #import "AccountService.h"
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
@@ -47,11 +48,15 @@
 
 #import "OnePasswordFacade.h"
 
+#import "Page.h"
+#import "PageListTableViewCell.h"
+#import "PageListTableViewCellDelegate.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "Post.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PostService.h"
 
 #import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"

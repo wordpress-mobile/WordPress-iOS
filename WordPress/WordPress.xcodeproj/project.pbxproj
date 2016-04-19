@@ -110,6 +110,7 @@
 		59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB341B4C33A500A433DC /* ThemeService.m */; };
 		59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B611B99E132008EBB84 /* JSONLoader.swift */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
+		59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DCA5201CC68AF3000F245F /* PageListViewController.swift */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
 		59E2AAE31B2096BF0051DC06 /* ServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */; };
 		59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */; };
@@ -1007,6 +1008,7 @@
 		59B48B611B99E132008EBB84 /* JSONLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONLoader.swift; path = TestUtilities/JSONLoader.swift; sourceTree = "<group>"; };
 		59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLookbackPresenter.h; sourceTree = "<group>"; };
 		59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLookbackPresenter.m; sourceTree = "<group>"; };
+		59DCA5201CC68AF3000F245F /* PageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageListViewController.swift; sourceTree = "<group>"; };
 		59DD94321AC479ED0032DD6B /* WPLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLogger.h; sourceTree = "<group>"; };
 		59DD94331AC479ED0032DD6B /* WPLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLogger.m; sourceTree = "<group>"; };
 		59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteREST.m; sourceTree = "<group>"; };
@@ -2775,6 +2777,7 @@
 			children = (
 				5DFA7EBF1AF7CB6A0072023B /* PageListViewController.h */,
 				5DFA7EC01AF7CB6A0072023B /* PageListViewController.m */,
+				59DCA5201CC68AF3000F245F /* PageListViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -5063,6 +5066,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
+				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
 				FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */,
 				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
