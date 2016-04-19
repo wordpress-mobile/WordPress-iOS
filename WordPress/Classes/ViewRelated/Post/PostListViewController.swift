@@ -23,9 +23,9 @@ import WordPressShared
     static private let postCardRestoreCellRowHeight = Float(54.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
     
-    @IBOutlet var textCellForLayout : PostCardTableViewCell!
-    @IBOutlet var imageCellForLayout : PostCardTableViewCell!
-    @IBOutlet weak var authorFilterSegmentedControl : UISegmentedControl!
+    @IBOutlet private var textCellForLayout : PostCardTableViewCell!
+    @IBOutlet private var imageCellForLayout : PostCardTableViewCell!
+    @IBOutlet private weak var authorFilterSegmentedControl : UISegmentedControl!
     
     // MARK: Initializers & deinitializers
     
@@ -122,7 +122,7 @@ import WordPressShared
         return self.dynamicType.postListHeightForFooterView
     }
     
-    func configureCellsForLayout() {
+    private func configureCellsForLayout() {
         
         let bundle = NSBundle.mainBundle()
         
@@ -133,7 +133,7 @@ import WordPressShared
         forceUpdateCellLayout(imageCellForLayout)
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         
         assert(tableView != nil, "We expect tableView to never be nil at this point.")
         
@@ -158,7 +158,7 @@ import WordPressShared
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
     
-    func noResultsTitleText() -> String {
+    private func noResultsTitleText() -> String {
         if syncHelper?.isSyncing == true {
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
         }
@@ -174,7 +174,7 @@ import WordPressShared
         }
     }
     
-    func noResultsTitles() -> [PostListStatusFilter:String] {
+    private func noResultsTitles() -> [PostListStatusFilter:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -182,7 +182,7 @@ import WordPressShared
         }
     }
     
-    func noResultsTitlesWhenSearching() -> [PostListStatusFilter:String] {
+    private func noResultsTitlesWhenSearching() -> [PostListStatusFilter:String] {
         
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -192,7 +192,7 @@ import WordPressShared
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
     
-    func noResultsTitlesWhenFiltering() -> [PostListStatusFilter:String] {
+    private func noResultsTitlesWhenFiltering() -> [PostListStatusFilter:String] {
         
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
@@ -202,14 +202,14 @@ import WordPressShared
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
     
-    func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListStatusFilter:String] {
+    private func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListStatusFilter:String] {
         return [.Draft: draft,
                 .Scheduled: scheduled,
                 .Trashed: trashed,
                 .Published: published]
     }
     
-    func noResultsMessageText() -> String {
+    private func noResultsMessageText() -> String {
         if syncHelper?.isSyncing == true || isSearching() {
             return ""
         }
@@ -244,7 +244,7 @@ import WordPressShared
         return message
     }
     
-    func noResultsButtonText() -> String? {
+    private func noResultsButtonText() -> String? {
         if syncHelper?.isSyncing == true || isSearching() {
             return nil
         }
@@ -276,7 +276,7 @@ import WordPressShared
         return title
     }
     
-    func configureAuthorFilter() {
+    private func configureAuthorFilter() {
         let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
         let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
         
@@ -301,11 +301,11 @@ import WordPressShared
     
     // MARK: - Sync Methods
     
-    override func postTypeToSync() -> String {
+    override internal func postTypeToSync() -> String {
         return PostServiceTypePost
     }
     
-    override func lastSyncDate() -> NSDate? {
+    override internal func lastSyncDate() -> NSDate? {
         return blog?.lastPostsSync
     }
     
@@ -321,11 +321,11 @@ import WordPressShared
     
     // MARK: - TableViewHandler
     
-    func entityName() -> String {
+    private func entityName() -> String {
         return String(Post.self)
     }
     
-    func predicateForFetchRequest() -> NSPredicate {
+    private func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
         
         if let blog = blog {
@@ -376,7 +376,7 @@ import WordPressShared
     
     // MARK: - Table View Handling
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    private func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
@@ -386,12 +386,12 @@ import WordPressShared
         return CGFloat(self.dynamicType.postCardEstimatedRowHeight)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let width = CGRectGetWidth(tableView.bounds)
         return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
     }
    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
+    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
             return 0
         }
@@ -415,7 +415,7 @@ import WordPressShared
         return height
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    private func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
@@ -435,7 +435,7 @@ import WordPressShared
         previewEditPost(post)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    private func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
         
         let identifier = cellIdentifierForPost(post)
@@ -446,7 +446,7 @@ import WordPressShared
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
@@ -461,7 +461,7 @@ import WordPressShared
         }
     }
     
-    func cellIdentifierForPost(post: Post) -> String {
+    private func cellIdentifierForPost(post: Post) -> String {
         var identifier : String
         
         if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
@@ -477,7 +477,7 @@ import WordPressShared
     
     // MARK: - Post Actions
     
-    func createPost() {
+    private func createPost() {
         if WPPostViewController.isNewEditorEnabled() {
             createPostInNewEditor()
         } else {
@@ -485,7 +485,7 @@ import WordPressShared
         }
     }
     
-    func createPostInNewEditor() {
+    private func createPostInNewEditor() {
         let postViewController = WPPostViewController(draftForBlog: blog)
         
         postViewController.onClose = { [weak self] (viewController, changesSaved) -> () in
@@ -507,7 +507,7 @@ import WordPressShared
         WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
     
-    func createPostInOldEditor() {
+    private func createPostInOldEditor() {
         let editPostViewController = WPLegacyEditPostViewController(draftForLastUsedBlog: ())
         
         let navController = UINavigationController(rootViewController: editPostViewController)
@@ -520,15 +520,15 @@ import WordPressShared
         WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
     
-    func previewEditPost(apost: AbstractPost) {
+    private func previewEditPost(apost: AbstractPost) {
         editPost(apost, withEditMode: kWPPostViewControllerModePreview)
     }
     
-    func editPost(apost: AbstractPost) {
+    private func editPost(apost: AbstractPost) {
         editPost(apost, withEditMode: kWPPostViewControllerModeEdit)
     }
     
-    func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
+    private func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
         
         if WPPostViewController.isNewEditorEnabled() {
@@ -557,7 +557,7 @@ import WordPressShared
         }
     }
     
-    func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    private func promptThatPostRestoredToFilter(filter: PostListFilter) {
         var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
         
         switch filter.filterType {
@@ -578,7 +578,7 @@ import WordPressShared
         alertController.presentFromRootViewController()
     }
     
-    func viewStatsForPost(apost: AbstractPost) {
+    private func viewStatsForPost(apost: AbstractPost) {
         // Check the blog
         let blog = apost.blog
         
@@ -607,7 +607,7 @@ import WordPressShared
     
     // MARK: - Filter Related
     
-    override func currentPostAuthorFilter() -> PostAuthorFilter {
+    override internal func currentPostAuthorFilter() -> PostAuthorFilter {
         if !canFilterByAuthor() {
             // No REST API, so we have to use XMLRPC and can't filter results by author.
             return .Everyone
@@ -622,7 +622,7 @@ import WordPressShared
         return .Mine
     }
 
-    override func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
+    override internal func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
         guard filter != currentPostAuthorFilter() else {
             return
         }
@@ -638,12 +638,12 @@ import WordPressShared
         syncItemsWithUserInteraction(false)
     }
 
-    func keyForCurrentListStatusFilter() -> String {
+    private func keyForCurrentListStatusFilter() -> String {
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
     // MARK: - Cell Delegate Methods
-    
+
     func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
         let apost = contentProvider as! AbstractPost
         
