@@ -11,7 +11,7 @@ class PromptViewController : UIViewController
     
     /// Wraps a given UIViewController, that conforms to the Confirmable Protocol, into:
     /// -   A PromptViewController instance, which deals with the NavigationItem buttons
-    /// -   (And verything) inside a UINavigationController instance.
+    /// -   (And everything) inside a UINavigationController instance.
     ///
     static func navigationControllerWithPrompt<T: UIViewController where T: Confirmable>(viewController: T) -> UINavigationController {
         let viewController = PromptViewController(viewController: viewController)
