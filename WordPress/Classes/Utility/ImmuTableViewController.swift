@@ -31,7 +31,7 @@ extension ImmuTablePresenter {
     func prompt<T: UIViewController where T: Confirmable>(controllerGenerator: ImmuTableRow -> T) -> ImmuTableAction {
         return present({
             let controller = controllerGenerator($0)
-            return PromptViewController.navigationControllerWithPrompt(controller)
+            return PromptViewController(controller)
         })
     }
 }
