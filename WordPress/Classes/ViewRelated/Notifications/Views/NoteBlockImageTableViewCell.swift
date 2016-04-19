@@ -17,7 +17,8 @@ import WordPressShared.WPStyleGuide
         }
 
         let success = { (image: UIImage) in
-            self.blockImageView.displayImageWithSpringAnimation(image)
+            self.blockImageView.image = image
+            self.blockImageView.displayWithSpringAnimation()
         }
         
         blockImageView.downloadImage(url, placeholderImage: nil, success: success, failure: nil)

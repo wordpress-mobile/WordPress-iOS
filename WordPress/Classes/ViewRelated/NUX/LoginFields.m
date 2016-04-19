@@ -20,4 +20,17 @@
     return loginFields;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _username = @"";
+        _password = @"";
+        _siteUrl = @"";
+        _multifactorCode = @"";
+    }
+    return self;
+}
+
+
 @end

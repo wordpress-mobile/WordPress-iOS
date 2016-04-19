@@ -353,7 +353,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         navController.restorationClass = [WPLegacyEditPageViewController class];
     }
 
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:navController animated:YES completion:nil];
@@ -372,7 +371,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         // In legacy mode, view means edit
         WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
-        [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         navController.restorationClass = [WPLegacyEditPageViewController class];

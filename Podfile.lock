@@ -156,30 +156,29 @@ PODS:
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (1.2):
+  - WordPress-iOS-Editor (1.5):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.5.4):
-    - AFNetworking (~> 2.5)
+  - WordPress-iOS-Shared (0.5.6):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.8)
   - WordPressCom-Analytics-iOS (0.1.9)
-  - WordPressCom-Stats-iOS/Services (0.6.3):
+  - WordPressCom-Stats-iOS/Services (0.7.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.3)
-    - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPressCom-Stats-iOS/UI (0.6.3):
+    - WordPressCom-Analytics-iOS (~> 0.1.4)
+  - WordPressCom-Stats-iOS/UI (0.7.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.3)
-    - WordPressCom-Analytics-iOS (~> 0.1.0)
+    - WordPressCom-Analytics-iOS (~> 0.1.4)
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.1):
     - Alamofire (~> 3.0)
@@ -199,7 +198,7 @@ DEPENDENCIES:
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
   - Gridicons (from `https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec`)
-  - Helpshift (~> 5.5.0)
+  - Helpshift (~> 5.5.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.1.4)
   - Mixpanel (= 2.9.4)
@@ -221,15 +220,15 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (= 1.2)
-  - WordPress-iOS-Shared (= 0.5.4)
+  - WordPress-iOS-Editor (= 1.5)
+  - WordPress-iOS-Shared (= 0.5.6)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.9)
-  - WordPressCom-Stats-iOS/Services (= 0.6.3)
-  - WordPressCom-Stats-iOS/UI (= 0.6.3)
+  - WordPressCom-Stats-iOS/Services (= 0.7.0)
+  - WordPressCom-Stats-iOS/UI (= 0.7.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag
     `0.0.1`)
-  - WPMediaPicker (~> 0.9.0)
+  - WPMediaPicker (~> 0.9.1)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -294,11 +293,11 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 4958ae44a2aedfa9b3a3afc9cba41e3ec989b175
-  WordPress-iOS-Shared: 244f9ba88baea771e4509636029ee48340a4f98a
+  WordPress-iOS-Editor: dcb5a4bb666c64a4f42b01915f375f5818970951
+  WordPress-iOS-Shared: ce4b6e02763532e1737bf2bc7deed78d64ba4934
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: 3fccb433506f136cc04b735e6ab2efae9edfae7e
-  WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
+  WordPressCom-Stats-iOS: d1996675fadd5a2c8548344a40663834898114f3
   WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
