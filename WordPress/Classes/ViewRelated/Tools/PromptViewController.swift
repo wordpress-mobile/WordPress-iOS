@@ -2,24 +2,21 @@ import Foundation
 import UIKit
 
 
+/// Wraps a given UIViewController, that conforms to the Confirmable Protocol, into:
+/// -   A PromptViewController instance, which deals with the NavigationItem buttons
+/// -   (And verything) inside a UINavigationController instance.
+///
+public func PromptViewController<T: UIViewController where T: Confirmable>(viewController: T) -> UINavigationController {
+    let viewController = PromptContainerViewController(viewController: viewController)
+    return UINavigationController(rootViewController: viewController)
+}
+
+
 /// ViewController container, that presents a Done / Cancel button, and forwards their events to
 /// the childrenViewController (which *must* implement the Confirmable protocol).
 ///
-class PromptViewController : UIViewController
+private class PromptContainerViewController : UIViewController
 {
-    // MARK: - Static Helpers
-    
-    /// Wraps a given UIViewController, that conforms to the Confirmable Protocol, into:
-    /// -   A PromptViewController instance, which deals with the NavigationItem buttons
-    /// -   (And everything) inside a UINavigationController instance.
-    ///
-    static func navigationControllerWithPrompt<T: UIViewController where T: Confirmable>(viewController: T) -> UINavigationController {
-        let viewController = PromptViewController(viewController: viewController)
-        return UINavigationController(rootViewController: viewController)
-    }
-    
-    
-    
     /// MARK: - Initializers / Deinitializers
     
     deinit {
