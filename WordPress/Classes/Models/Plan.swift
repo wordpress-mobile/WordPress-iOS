@@ -88,6 +88,11 @@ let defaultPlans: [Plan] = [
     ),
 ]
 
+enum KnownPlan: Int {
+    case premium = 1003
+    case business = 1008
+}
+
 protocol Identifiable {
     var id: Int { get }
 }
