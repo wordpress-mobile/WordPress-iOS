@@ -1,9 +1,15 @@
 #import <UIKit/UIKit.h>
 #import "NavbarTitleDropdownButton.h"
 #import "PostListFilter.h"
-#import "WordPress-swift.h"
 
+@class AbstractPost;
 @class Blog;
+@class PostListFooterView;
+@class WPAnimatedBox;
+@class WPContentSyncHelper;
+@class WPNoResultsView;
+@class WPSearchController;
+@class WPTableViewHandler;
 
 typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
     PostAuthorFilterMine,
