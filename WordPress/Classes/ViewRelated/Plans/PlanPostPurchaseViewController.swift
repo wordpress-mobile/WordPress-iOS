@@ -277,7 +277,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .PurchaseComplete:
             if let plan = plan {
-                imageView.image = UIImage(named: "\(plan.activeImageName)-large")
+                imageView.setImageWithURL(plan.activeIconUrl)
             }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
@@ -335,10 +335,15 @@ enum PlanPostPurchasePageType: Int {
     case Themes
     
     static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
-        switch plan.slug {
-        case "premium": return [.PurchaseComplete, .Customize, .VideoPress]
-        case "business": return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
-        default: return []
+        guard let knownPlan = KnownPlan(rawValue: plan.id) else {
+            return []
+        }
+
+        switch knownPlan {
+        // Premium
+        case .premium: return [.PurchaseComplete, .Customize, .VideoPress]
+        // Business
+        case .business: return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
         }
     }
 }
