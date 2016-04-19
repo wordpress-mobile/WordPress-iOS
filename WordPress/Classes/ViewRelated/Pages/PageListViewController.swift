@@ -303,86 +303,99 @@ import Foundation
         
         return height
     }
+    
+    private func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(self.dynamicType.pageSectionHeaderHeight)
+    }
+    
+    private func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.min
+    }
+    
+    private func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+        let sectionInfo = tableViewHandler?.resultsController.sections?[section]
+        let nibName = NSStringFromClass(PageListSectionHeaderView.self)
+        let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)[0] as! PageListSectionHeaderView
+        
+        if let sectionInfo = sectionInfo {
+            headerView.setTite(sectionInfo.name)
+        }
+        
+        return headerView
+    }
+    
+    private func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+        return UIView(frame: CGRectZero)
+    }
+    
+    private func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
+            return
+        }
+        
+        if post.remoteStatus == AbstractPostRemoteStatusPushing {
+            // Don't allow editing while pushing changes
+            return
+        }
+        
+        if post.status == PostStatusTrash {
+            // No editing posts that are trashed.
+            return
+        }
+        
+        editPage(post)
+    }
+    
+    private func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        
+        let identifier = cellIdentifierForPost(page)
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        
+        configureCell(cell, atIndexPath: indexPath)
+        
+        return cell
+    }
+    
+    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+        
+        if let pageCell = cell as? PageListTableViewCell {
+            pageCell.delegate = self
+            
+            if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
+                pageCell.configureCell(page)
+            }
+        }
+    }
+    
+    private func cellIdentifierForPage(page: Page) -> String {
+        var identifier : String
+        
+        if recentlyTrashedPostObjectIDs?.containsObject(page.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
+            identifier = self.dynamicType.restorePageCellIdentifier
+        } else {
+            identifier = self.dynamicType.pageCellIdentifier
+        }
+        
+        return identifier
+    }
+    
+    // MARK: - Post Actions
+    
+    private func createPost() {
+        if EditPageViewController.isNewEditorEnabled() {
+            createPostInNewEditor()
+        } else {
+            createPostInOldEditor()
+        }
+    }
 }
 
 /*
-    
-    - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return PageSectionHeaderHeight;
-    }
-    
-    - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
-    }
-    
-    - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
-    NSString *nibName = NSStringFromClass([PageListSectionHeaderView class]);
-    PageListSectionHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
-    [headerView setTite:sectionInfo.name];
-    
-    return headerView;
-    }
-    
-    - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
-    }
-    
-    - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    AbstractPost *apost = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-        // Don't allow editing while pushing changes
-        return;
-    }
-    
-    if ([apost.status isEqualToString:PostStatusTrash]) {
-        // No editing posts that are trashed.
-        return;
-    }
-    
-    [self editPage:apost];
-    }
-    
-    - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Page *page = (Page *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
-    NSString *identifier = [self cellIdentifierForPage:page];
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-    }
-    
-    - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    PageListTableViewCell *pageCell = (PageListTableViewCell *)cell;
-    pageCell.delegate = self;
-    Page *page = (Page *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    [pageCell configureCell:page];
-    }
-    
-    - (NSString *)cellIdentifierForPage:(Page *)page
-{
-    NSString *identifier;
-    if ([self.recentlyTrashedPostObjectIDs containsObject:page.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
-        identifier = RestorePageCellIdentifier;
-    } else {
-        identifier = PageCellIdentifier;
-    }
-    return identifier;
-}
-
-
 #pragma mark - Instance Methods
 
 #pragma mark - Post Actions
