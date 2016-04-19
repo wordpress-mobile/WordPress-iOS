@@ -163,9 +163,7 @@ import WordPressShared
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
         }
         
-        let filter = currentPostListFilter()
-        
-        if let filter = filter {
+        if let filter = currentPostListFilter() {
             let titles = noResultsTitles()
             let title = titles[filter.filterType]
             return title ?? ""
