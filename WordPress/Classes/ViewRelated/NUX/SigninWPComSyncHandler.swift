@@ -36,6 +36,7 @@ extension SigninWPComSyncHandler
 
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccountWithUsername(username, authToken: authToken)
+        accountFacade.setDefaultWordPressComAccount(account)
         accountFacade.updateUserDetailsForAccount(account, success: { [weak self] in
 
             BlogSyncFacade().syncBlogsForAccount(account, success: { [weak self] in
