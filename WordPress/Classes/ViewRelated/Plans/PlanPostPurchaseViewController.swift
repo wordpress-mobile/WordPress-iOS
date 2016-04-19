@@ -328,22 +328,22 @@ class PlanPostPurchasePageViewController: UIViewController {
     }
 }
 
-enum PlanPostPurchasePageType: Int {
-    case PurchaseComplete
-    case Customize
-    case VideoPress
-    case Themes
+enum PlanPostPurchasePageType: String {
+    case PurchaseComplete = "purchase-complete"
+    case Customize = "custom-design"
+    case VideoPress = "videopress"
+    case Themes = "premium-themes"
+    
+    // This is the order we'd like pages to appear in the post purchase flow
+    static let orderedPageTypes: [PlanPostPurchasePageType] = [ .Customize, .VideoPress, .Themes ]
     
     static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
-        guard let knownPlan = KnownPlan(rawValue: plan.id) else {
-            return []
-        }
-
-        switch knownPlan {
-        // Premium
-        case .premium: return [.PurchaseComplete, .Customize, .VideoPress]
-        // Business
-        case .business: return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
-        }
+        // Get all of the page types for the plan's features
+        let slugs = plan.featureGroups
+            .flatMap({ $0.slugs })
+            .flatMap(PlanPostPurchasePageType.init)
+        
+        // Put them in the order we'd like
+        return [.PurchaseComplete] + orderedPageTypes.filter({ slugs.contains($0) })
     }
 }
