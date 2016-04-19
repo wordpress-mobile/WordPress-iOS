@@ -24,6 +24,8 @@
 
 #import "DDLogSwift.h"
 
+#import "EditPageViewController.h"
+
 #import "HelpshiftUtils.h"
 
 #import "LoginFacade.h"
@@ -49,6 +51,7 @@
 #import "OnePasswordFacade.h"
 
 #import "Page.h"
+#import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PageListTableViewCellDelegate.h"
 #import "PhotonImageURLHelper.h"
