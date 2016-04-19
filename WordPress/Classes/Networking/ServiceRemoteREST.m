@@ -4,6 +4,7 @@
 static NSString* const ServiceRemoteRESTApiVersionStringInvalid = @"invalid_api_version";
 static NSString* const ServiceRemoteRESTApiVersionString_1_1 = @"v1.1";
 static NSString* const ServiceRemoteRESTApiVersionString_1_2 = @"v1.2";
+static NSString* const ServiceRemoteRESTApiVersionString_1_3 = @"v1.3";
 
 @interface ServiceRemoteREST ()
 @end
@@ -35,7 +36,7 @@ static NSString* const ServiceRemoteRESTApiVersionString_1_2 = @"v1.2";
         case ServiceRemoteRESTApiVersion_1_2:
             result = ServiceRemoteRESTApiVersionString_1_2;
             break;
-            
+
         default:
             NSAssert(NO, @"This should never by executed");
             result = ServiceRemoteRESTApiVersionStringInvalid;

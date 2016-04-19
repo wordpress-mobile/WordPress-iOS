@@ -80,9 +80,23 @@ extern NSString * const PostStatusDeleted;
 - (NSArray *)availableStatusesForEditing;
 
 /**
- Returns YES if the post is scheduled to be published on a specific date in the future.
+ Returns the correct "publish" status for the current value of date_created_gmt. 
+ Future dates return PostStatusScheduled. Otherwise PostStatusPublish. This is not
+ necessarily the current value of `status`
+ */
+- (NSString *)availableStatusForPublishOrScheduled;
+
+/**
+ Returns YES if the post is has a `future` post status
  */
 - (BOOL)isScheduled;
+
+/**
+ Returns YES if the post has a future date_created_gmt.
+ This is different from "isScheduled" in that  a post with a draft, pending, or 
+ trashed status can also have a date_created_gmt with a future value.
+ */
+- (BOOL)hasFuturePublishDate;
 
 /**
  *  Whether there was any attempt ever to upload this post, either successful or failed.

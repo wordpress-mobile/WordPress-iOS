@@ -3,25 +3,58 @@ import Photos
 import MobileCoreServices
 import AVFoundation
 
-extension PHAsset {
-    
-    typealias SuccessHandler = (resultingSize: CGSize) -> ()
-    typealias ErrorHandler = (error: NSError) -> ()
+typealias SuccessHandler = (resultingSize: CGSize) -> ()
+typealias ErrorHandler = (error: NSError) -> ()
 
+@objc protocol ExportableAsset {
     /**
-     Exports an asset to a file URL with the desired targetSize and removing geolocation if requested. 
+     Exports an asset to a file URL with the desired targetSize and removing geolocation if requested.
      The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset.
      
      - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original image, it will not resize.
-
+     
      - Parameters:
-        - url: file url to where the asset should be exported, this must be writable location
-        - targetUTI: the UTI format to use when exporting the asset
-        - maximumResolution:  the maximum pixel resolution that the asset can have after exporting.
-        - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
-        - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
-        - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
+     - url: file url to where the asset should be exported, this must be writable location
+     - targetUTI: the UTI format to use when exporting the asset
+     - maximumResolution:  the maximum pixel resolution that the asset can have after exporting.
+     - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
+     - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
+     - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
      */
+    func exportToURL(url: NSURL,
+                     targetUTI: String,
+                     maximumResolution: CGSize,
+                     stripGeoLocation: Bool,
+                     successHandler: SuccessHandler,
+                     errorHandler: ErrorHandler)
+    
+    /**
+     Exports an image thumbnail of the asset to a file URL that respects the targetSize.
+     The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that mantains the aspect ratio of the asset
+     
+     - Parameters:
+     - url: file url to where the asset should be exported, this must be writable location
+     - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
+     - successHandler: a handler that will be invoked on success with the resulting resolution of the image
+     - errorHandler: a handler that will be invoked when some error occurs when generating the thumbnail
+     */
+    func exportThumbnailToURL(url: NSURL,
+                              targetSize: CGSize,
+                              synchronous: Bool,
+                              successHandler: SuccessHandler,
+                              errorHandler: ErrorHandler)
+    
+    func originalUTI() -> String?
+    
+    /** the MediaType for the asset */
+    var assetMediaType: MediaType { get }
+    
+    /** the default UTI for thumbnails */
+    var defaultThumbnailUTI: String { get }
+}
+
+extension PHAsset: ExportableAsset {
+    
     func exportToURL(url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
@@ -58,17 +91,10 @@ extension PHAsset {
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
         
-        let options = PHImageRequestOptions()
-        options.version = .Current
-        options.deliveryMode = .HighQualityFormat
-        options.resizeMode = .Exact
-        options.synchronous = false
-        options.networkAccessAllowed = true
-
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
         let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
 
-            PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
+        exportImageWithSize(requestedSize) { (image, info) in
             guard let image = image else {
                 if let error = info?[PHImageErrorKey] as? NSError {
                     errorHandler(error: error)
@@ -95,6 +121,29 @@ extension PHAsset {
             }, failureBlock:{(error) -> () in
                 errorHandler(error: error)
             })
+        }
+    }
+    
+    func exportMaximumSizeImage(completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
+        let targetSize = CGSize(width: pixelWidth, height: pixelHeight)
+        exportImageWithSize(targetSize, completion: completion)
+    }
+    
+    func exportImageWithSize(targetSize: CGSize, completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
+        let options = PHImageRequestOptions()
+        options.version = .Current
+        options.deliveryMode = .HighQualityFormat
+        options.resizeMode = .Exact
+        options.synchronous = false
+        options.networkAccessAllowed = true
+        
+        let manager = PHImageManager.defaultManager()
+        manager.requestImageForAsset(self,
+                                     targetSize: targetSize,
+                                     contentMode: .AspectFit,
+                                     options: options)
+        { (image, info) in
+            completion(image, info)
         }
     }
     
@@ -171,16 +220,6 @@ extension PHAsset {
             }
     }
     
-    /**
-     Exports an image thumbnail of the asset to a file URL that respects the targetSize.
-     The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that mantains the aspect ratio of the asset
-     
-     - Parameters:
-        - url: file url to where the asset should be exported, this must be writable location
-        - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
-        - successHandler: a handler that will be invoked on success with the resulting resolution of the image
-        - errorHandler: a handler that will be invoked when some error occurs when generating the thumbnail
-     */
     func exportThumbnailToURL(url: NSURL,
         targetSize: CGSize,
         synchronous: Bool,
@@ -221,6 +260,21 @@ extension PHAsset {
     var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String
+        }
+    }
+    
+    var assetMediaType: MediaType {
+        get {
+            if self.mediaType == .Image {
+                return .Image
+            } else if (self.mediaType == .Video) {
+                /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
+                 because we have an exception on the server for mobile that allows video uploads event
+                 if videopress is not enabled.
+                 */
+                return .Video
+            }
+            return .Document
         }
     }
     
