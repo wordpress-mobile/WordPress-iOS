@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-
+#import "Confirmable.h"
 
 // Typedef's
 typedef NS_ENUM(NSInteger, SettingsTextModes) {
@@ -12,15 +12,11 @@ typedef void (^SettingsTextChanged)(NSString *);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
-@interface SettingsTextViewController : UITableViewController
+@interface SettingsTextViewController : UITableViewController<Confirmable>
 
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
 @property (nonatomic, copy) SettingsTextChanged onValueChanged;
-
-/// Specifies whether we should display navigation buttons (Cancel / Done) or not.
-///
-@property (nonatomic, assign) BOOL displaysNavigationButtons;
 
 /// Sets the Text Input Mode:
 ///

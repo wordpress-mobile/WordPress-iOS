@@ -20,6 +20,8 @@ static CGFloat const HorizontalMargin = 15.0f;
 @property (nonatomic, strong) NSString          *hint;
 @property (nonatomic, strong) NSString          *placeholder;
 @property (nonatomic, strong) NSString          *text;
+@property (nonatomic, assign) BOOL              doneButtonEnabled;
+@property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
 
 
@@ -44,6 +46,7 @@ static CGFloat const HorizontalMargin = 15.0f;
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
+        _shouldNotifyValue = YES;
     }
     return self;
 }
@@ -54,14 +57,9 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self setupNavigationButtonsIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,7 +73,7 @@ static CGFloat const HorizontalMargin = 15.0f;
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
-    if (self.displaysNavigationButtons == NO) {
+    if (self.shouldNotifyValue) {
         [self notifyValueDidChangeIfNeeded];
     }
 }
@@ -83,37 +81,28 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - NavigationItem Buttons
 
-- (void)setupNavigationButtonsIfNeeded
+- (void)cancel
 {
-    if (self.displaysNavigationButtons == NO) {
-        return;
-    }
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelButtonWasPressed:)];
-    
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(doneButtonWasPressed:)];
-    
-    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
-}
-
-- (IBAction)cancelButtonWasPressed:(id)sender
-{
+    self.shouldNotifyValue = NO;
     [self dismissViewController];
 }
 
-- (IBAction)doneButtonWasPressed:(id)sender
+- (void)confirm
 {
-    [self notifyValueDidChangeIfNeeded];
     [self dismissViewController];
 }
 
 
 #pragma mark - Validation
+
+- (void)startListeningTextfieldChanges
+{
+    // Hook up to Change Events
+    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
+    
+    // Fire initial status
+    [self validateTextInput:_textField];
+}
 
 - (BOOL)textPassesValidation
 {
@@ -123,7 +112,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (void)validateTextInput:(id)sender
 {
-    self.navigationItem.rightBarButtonItem.enabled = [self textPassesValidation];
+    self.doneButtonEnabled = [self textPassesValidation];
 }
 
 
@@ -246,7 +235,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     BOOL isValid = self.textPassesValidation;
     if (isValid) {
-        [self doneButtonWasPressed:self];
+        [self confirm];
     }
     
     return isValid;
