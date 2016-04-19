@@ -335,21 +335,15 @@ enum PlanPostPurchasePageType: String {
     case Themes = "premium-themes"
     
     // This is the order we'd like pages to appear in the post purchase flow
-    static var orderedPageTypes: [PlanPostPurchasePageType] { return [ .PurchaseComplete, .Customize, .VideoPress, .Themes ] }
+    static let orderedPageTypes: [PlanPostPurchasePageType] = [ .Customize, .VideoPress, .Themes ]
     
     static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
-        var types = [ PlanPostPurchasePageType.PurchaseComplete ]
-        
         // Get all of the page types for the plan's features
-        let slugs = plan.featureGroups.flatMap { $0.slugs }.flatMap { PlanPostPurchasePageType(rawValue: $0) }
+        let slugs = plan.featureGroups
+            .flatMap({ $0.slugs })
+            .flatMap(PlanPostPurchasePageType.init)
         
         // Put them in the order we'd like
-        for pageType in orderedPageTypes {
-            if slugs.contains(pageType) {
-                types.append(pageType)
-            }
-        }
-        
-        return types
+        return [.PurchaseComplete] + orderedPageTypes.filter({ slugs.contains($0) })
     }
 }
