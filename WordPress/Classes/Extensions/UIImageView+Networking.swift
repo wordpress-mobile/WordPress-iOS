@@ -8,10 +8,8 @@ extension UIImageView
     }
 
     public func downloadResizedImage(url: NSURL?, placeholderImage: UIImage?, pointSize size: CGSize) {
-        let scale = UIScreen.mainScreen().scale
-        let pixelSize = CGSize(width: size.width * scale, height: size.height * scale)
         let processor: UIImage -> UIImage = { image in
-            return image.resizedImageWithContentMode(.ScaleAspectFill, bounds: pixelSize, interpolationQuality: .High)
+            return image.resizedImageWithContentMode(.ScaleAspectFill, bounds: size, interpolationQuality: .High)
         }
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: processor)
     }
