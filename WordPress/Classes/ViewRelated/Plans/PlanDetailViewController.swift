@@ -193,7 +193,7 @@ class PlanDetailViewController: UIViewController {
     
     private func populateHeader() {
         let plan = viewModel.plan
-        planImageView.setImageWithURL(plan.iconUrl)
+        planImageView.downloadResizedImage(plan.iconUrl, placeholderImage: nil, pointSize: planImageView.bounds.size)
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.tagline
         planPriceLabel.text = viewModel.priceText
