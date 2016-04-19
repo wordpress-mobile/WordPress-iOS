@@ -4,18 +4,19 @@ import WordPressShared
 struct PlanListRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellSubtitle)
     static let customHeight: Float? = 92
+    private let iconSize = CGSize(width: 60, height: 60)
 
     let title: String
     let active: Bool
     let price: String
     let description: String
-    let icon: UIImage
+    let iconUrl: NSURL
 
     let action: ImmuTableAction?
 
     func configureCell(cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
-        cell.imageView?.image = icon
+        cell.imageView?.downloadResizedImage(iconUrl, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: iconSize)
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
@@ -142,7 +143,7 @@ enum PlanListViewModel {
         case .Ready(let siteID, let activePlan, let plans):
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
-                let icon = active ? plan.activeImage : plan.image
+                let iconUrl = active ? plan.activeIconUrl : plan.iconUrl
                 var action: ImmuTableAction? = nil
                 if let presenter = presenter,
                     let planService = planService {
@@ -155,7 +156,7 @@ enum PlanListViewModel {
                     active: active,
                     price: price,
                     description: plan.tagline,
-                    icon: icon,
+                    iconUrl: iconUrl,
                     action: action
                 )
             })

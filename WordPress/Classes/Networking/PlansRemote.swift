@@ -20,7 +20,9 @@ class PlansRemote: ServiceRemoteREST {
                 do {
                     try success(mapPlansResponse(response))
                 } catch {
-                    DDLogSwift.logError("Error parsing plans response (\(error)): \(response)")
+                    DDLogSwift.logError("Error parsing plans response for site \(siteID)")
+                    DDLogSwift.logError("\(error)")
+                    DDLogSwift.logDebug("Full response: \(response)")
                     failure(error)
                 }
             }, failure: {
@@ -42,6 +44,10 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
             let title = planDetails["product_name_short"] as? String,
             let fullTitle = planDetails["product_name"] as? String,
             let tagline = planDetails["tagline"] as? String,
+            let icon = planDetails["icon"] as? String,
+            let iconUrl = NSURL(string: icon),
+            let activeIcon = planDetails["icon_active"] as? String,
+            let activeIconUrl = NSURL(string: activeIcon),
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
             throw PlansRemote.Error.DecodeError
         }
@@ -49,7 +55,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })
         let featureGroups = try parseFeatureGroups(featureGroupsJson)
 
-        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, productIdentifier: productIdentifier, featureGroups: featureGroups)
+        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, iconUrl: iconUrl, activeIconUrl: activeIconUrl, productIdentifier: productIdentifier, featureGroups: featureGroups)
 
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool where
