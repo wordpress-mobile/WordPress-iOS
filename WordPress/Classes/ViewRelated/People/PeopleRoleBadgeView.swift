@@ -2,8 +2,8 @@ import UIKit
 import WordPressShared.WPStyleGuide
 
 @IBDesignable
-class PeopleRoleBadgeView: UILabel {
-
+class PeopleRoleBadgeView: UILabel
+{
     // MARK: Initialization
 
     override init(frame: CGRect) {
@@ -44,7 +44,6 @@ class PeopleRoleBadgeView: UILabel {
         get {
             return UIColor(CGColor: layer.borderColor!)
         }
-
         set {
             layer.borderColor = newValue.CGColor
         }
