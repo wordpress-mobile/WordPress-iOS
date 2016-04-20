@@ -11,11 +11,20 @@ import WordPressShared
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var selfHostedSigninButton: UIButton!
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
     var immediateSignin = false;
+
+    var restrictSigninToWPCom = false {
+        didSet {
+            if isViewLoaded() {
+                configureForWPComOnlyIfNeeded()
+            }
+        }
+    }
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -47,6 +56,7 @@ import WordPressShared
 
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
+        configureForWPComOnlyIfNeeded()
     }
 
 
@@ -82,6 +92,13 @@ import WordPressShared
 
 
     // MARK: Setup and Configuration
+
+
+    ///
+    ///
+    func configureForWPComOnlyIfNeeded() {
+        selfHostedSigninButton.hidden = restrictSigninToWPCom
+    }
 
 
     /// Sets up a 1Password button if 1Password is available.
