@@ -7,6 +7,7 @@
 #import "PostServiceOptions.h"
 #import "SettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
+#import "WordPress-Swift.h"
 #import "WordPressAppDelegate.h"
 #import "WPAppAnalytics.h"
 #import "WPSearchControllerConfigurator.h"
