@@ -61,7 +61,7 @@ import WordPressShared
         guard let blogID = coder.decodeObjectForKey(postsViewControllerRestorationKey) as? String,
             let objectURL = NSURL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(objectURL),
-            let restoredBlog = try? context.existingObjectWithID(objectID) as! Blog else {
+            let restoredBlog = (try? context.existingObjectWithID(objectID)) as? Blog else {
                 
             return nil
         }
