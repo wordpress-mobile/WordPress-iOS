@@ -1,7 +1,6 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-#import "LoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
