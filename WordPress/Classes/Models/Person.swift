@@ -14,7 +14,7 @@ struct Person {
     let siteID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
-
+    
     enum Role: Int, Comparable, CustomStringConvertible {
         case SuperAdmin
         case Admin
@@ -136,6 +136,16 @@ extension Person {
 }
 
 extension Person: Equatable {}
+
+extension Person {
+    var fullName: String {
+        let first = firstName ?? String()
+        let last = lastName ?? String()
+        let separator = (first.isEmpty == false && last.isEmpty == false) ? " " : ""
+        
+        return "\(first)\(separator)\(last)"
+    }
+}
 
 func ==(lhs: Person, rhs: Person) -> Bool {
     return lhs.ID == rhs.ID
