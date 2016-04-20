@@ -14,6 +14,7 @@ import WordPressComAnalytics
     }
 
 
+    // Helper used by the BlogListViewController
     class func showSigninForSelfHostedSite(presentingController: UIViewController) {
         if useNewSigninFlow() {
             let controller = SigninSelfHostedViewController.controller(LoginFields())
@@ -24,16 +25,46 @@ import WordPressComAnalytics
             let controller = LoginViewController()
             controller.cancellable = true
             controller.prefersSelfHosted = true
-            controller.dismissBlock = {(cancellable) in
+            controller.dismissBlock = {(canceled) in
                 presentingController.dismissViewControllerAnimated(true, completion: nil)
             }
 
             let navController = UINavigationController(rootViewController: controller)
             presentingController.presentViewController(navController, animated: true, completion: nil)
         }
-
     }
 
+
+    // Helper used by WPAuthTokenIssueSolver
+    class func signinForWPComFixingAuthToken(onDismissed: (cancelled: Bool) -> Void) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        if useNewSigninFlow() {
+            let loginFields = LoginFields()
+            if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
+                loginFields.username = account.username
+            }
+
+            let controller = SigninWPComViewController.controller(loginFields)
+            controller.dismissBlock = onDismissed
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            return navController
+
+        } else {
+            let blogService = BlogService(managedObjectContext: context)
+            let cancellable = blogService.blogCountSelfHosted() > 0
+
+            let controller = LoginViewController()
+            controller.onlyDotComAllowed = true
+            controller.shouldReauthenticateDefaultAccount = true
+            controller.cancellable = cancellable
+            controller.dismissBlock = {(cancelled) in
+                onDismissed(cancelled: cancelled)
+            }
+
+            return controller
+        }
+    }
 
 
     /// Present a signin view controller to handle an authentication link.
