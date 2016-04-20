@@ -8,9 +8,45 @@ import WordPressComAnalytics
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
-
+    // Stubbed method for implementing A/B testing between the old and new signin flows.
     class func useNewSigninFlow() -> Bool {
         return true
+    }
+
+
+    // Helper used by app delegate
+    class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        if useNewSigninFlow() {
+            let controller = SigninEmailViewController.controller();
+            controller.dismissBlock = {(cancelled) in
+                // Show the editor if requested, and we weren't cancelled.
+                if !cancelled && thenEditor {
+                    WPTabBarController.sharedInstance().showPostTab()
+                    return
+                }
+            }
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: animated, completion: nil)
+
+        } else {
+            let context = ContextManager.sharedInstance().mainContext
+            let accountService = AccountService(managedObjectContext: context)
+            let blogService = BlogService(managedObjectContext: context)
+
+            let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
+
+            let controller = LoginViewController()
+            controller.showEditorAfterAddingSites = thenEditor
+            controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
+            controller.dismissBlock = { (cancelled) in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navController = RotationAwareNavigationViewController(rootViewController: controller)
+            navController.navigationBar.translucent = false
+            presenter.presentViewController(navController, animated: animated, completion: nil)
+        }
     }
 
 
