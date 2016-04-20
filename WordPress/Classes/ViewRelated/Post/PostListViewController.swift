@@ -398,7 +398,7 @@ import WordPressShared
             return self.dynamicType.postCardRestoreCellRowHeight
         }
         
-        var cell : PostCardTableViewCell!
+        var cell : PostCardTableViewCell
         
         if post.pathForDisplayImage?.characters.count > 0 {
             cell = textCellForLayout
