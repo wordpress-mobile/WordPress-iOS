@@ -486,7 +486,7 @@ import WordPressShared
     private func createPostInNewEditor() {
         let postViewController = WPPostViewController(draftForBlog: blog)
         
-        postViewController.onClose = { [weak self] (viewController, changesSaved) -> () in
+        postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
                 self?.setFilterWithPostStatus(viewController.post.status)
             }
