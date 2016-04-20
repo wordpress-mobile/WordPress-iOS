@@ -497,7 +497,7 @@ import WordPressShared
         let navController = UINavigationController(rootViewController: postViewController)
         navController.restorationIdentifier = WPEditorNavigationRestorationID
         navController.restorationClass = WPPostViewController.self
-        navController.toolbarHidden = false
+        navController.toolbarHidden = false // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = .FullScreen
         
         presentViewController(navController, animated: true, completion: nil)
