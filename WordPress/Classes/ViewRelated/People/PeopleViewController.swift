@@ -13,6 +13,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return frc
     }()
 
+    
+    // MARK: - UITableView Methods
+    
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0;
     }
@@ -31,15 +34,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return cell
     }
 
-    // Temporarily disable row selection until detail view is ready
-    override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        return nil
-    }
-
+    
+    // MARK: - NSFetchedResultsController Methods
+    
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
     }
 
+    
+    // MARK: - View Lifecycle Methods
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         do {
@@ -56,7 +60,18 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             refresh()
         }
     }
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let personViewController = segue.destinationViewController as? PersonViewController,
+            let selectedIndexPath = tableView.indexPathForSelectedRow
+        {
+            personViewController.person = personAtIndexPath(selectedIndexPath)
+        }
+    }
 
+    
+    // MARK: - Helpers
+    
     @IBAction func refresh() {
         let service = PeopleService(blog: blog!)
         service.refreshTeam { [weak self] _ in
