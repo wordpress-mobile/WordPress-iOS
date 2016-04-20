@@ -9,6 +9,33 @@ import WordPressComAnalytics
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
 
+    class func useNewSigninFlow() -> Bool {
+        return true
+    }
+
+
+    class func showSigninForSelfHostedSite(presentingController: UIViewController) {
+        if useNewSigninFlow() {
+            let controller = SigninSelfHostedViewController.controller(LoginFields())
+            let navController = NUXNavigationController(rootViewController: controller)
+            presentingController.presentViewController(navController, animated: true, completion: nil)
+
+        } else {
+            let controller = LoginViewController()
+            controller.cancellable = true
+            controller.prefersSelfHosted = true
+            controller.dismissBlock = {(cancellable) in
+                presentingController.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navController = UINavigationController(rootViewController: controller)
+            presentingController.presentViewController(navController, animated: true, completion: nil)
+        }
+
+    }
+
+
+
     /// Present a signin view controller to handle an authentication link.
     ///
     /// - Parameters:
