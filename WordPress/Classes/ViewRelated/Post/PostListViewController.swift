@@ -122,7 +122,7 @@ import WordPressShared
         return self.dynamicType.postListHeightForFooterView
     }
     
-    private func configureCellsForLayout() {
+    func configureCellsForLayout() {
         
         let bundle = NSBundle.mainBundle()
         
@@ -133,7 +133,7 @@ import WordPressShared
         forceUpdateCellLayout(imageCellForLayout)
     }
     
-    private func configureTableView() {
+    func configureTableView() {
         
         assert(tableView != nil, "We expect tableView to never be nil at this point.")
         
@@ -158,7 +158,7 @@ import WordPressShared
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
     
-    private func noResultsTitleText() -> String {
+    func noResultsTitleText() -> String {
         if syncHelper?.isSyncing == true {
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
         }
@@ -207,7 +207,7 @@ import WordPressShared
                 .Published: published]
     }
     
-    private func noResultsMessageText() -> String {
+    func noResultsMessageText() -> String {
         if syncHelper?.isSyncing == true || isSearching() {
             return ""
         }
@@ -242,7 +242,7 @@ import WordPressShared
         return message
     }
     
-    private func noResultsButtonText() -> String? {
+    func noResultsButtonText() -> String? {
         if syncHelper?.isSyncing == true || isSearching() {
             return nil
         }
@@ -274,7 +274,7 @@ import WordPressShared
         return title
     }
     
-    private func configureAuthorFilter() {
+    func configureAuthorFilter() {
         let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
         let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
         
@@ -319,11 +319,11 @@ import WordPressShared
     
     // MARK: - TableViewHandler
     
-    private func entityName() -> String {
+    func entityName() -> String {
         return String(Post.self)
     }
     
-    private func predicateForFetchRequest() -> NSPredicate {
+    func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
         
         if let blog = blog {
@@ -374,7 +374,7 @@ import WordPressShared
     
     // MARK: - Table View Handling
     
-    private func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
@@ -384,12 +384,12 @@ import WordPressShared
         return self.dynamicType.postCardEstimatedRowHeight
     }
     
-    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let width = CGRectGetWidth(tableView.bounds)
         return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
     }
    
-    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
             return 0
         }
@@ -413,7 +413,7 @@ import WordPressShared
         return height
     }
     
-    private func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
@@ -433,7 +433,7 @@ import WordPressShared
         previewEditPost(post)
     }
     
-    private func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
         
         let identifier = cellIdentifierForPost(post)
@@ -444,7 +444,7 @@ import WordPressShared
         return cell
     }
     
-    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
