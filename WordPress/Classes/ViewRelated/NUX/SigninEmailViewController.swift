@@ -13,16 +13,22 @@ import WordPressShared
 @objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
 {
 
-    @IBOutlet var onePasswordButton: UIButton!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
-
+    var onePasswordButton: UIButton!
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
-
+    var restrictSigninToWPCom = false {
+        didSet {
+            if isViewLoaded() {
+                configureForWPComOnlyIfNeeded()
+            }
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -45,6 +51,7 @@ import WordPressShared
 
         setupOnePasswordButtonIfNeeded()
         configureSafariPasswordButton(false)
+        configureForWPComOnlyIfNeeded()
     }
 
 
@@ -86,6 +93,13 @@ import WordPressShared
 
 
     // MARK: - Setup and Configuration
+
+
+    ///
+    ///
+    func configureForWPComOnlyIfNeeded() {
+        selfHostedSigninButton.hidden = restrictSigninToWPCom
+    }
 
 
     /// Sets up a 1Password button if 1Password is available.
@@ -211,6 +225,7 @@ import WordPressShared
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
         controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -230,6 +245,7 @@ import WordPressShared
     func requestLink() {
         let controller = SigninLinkRequestViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
