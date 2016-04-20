@@ -63,6 +63,16 @@ NSString const *NotePostIdKey           = @"post_id";
 NSString const *NoteReplyIdKey          = @"reply_comment";
 
 
+
+#pragma mark ====================================================================================
+#pragma mark Notification: Private Methods
+#pragma mark ====================================================================================
+
+@interface Notification (Internals)
+- (void)didChangeOverrides;
+@end
+
+
 #pragma mark ====================================================================================
 #pragma mark NotificationRange
 #pragma mark ====================================================================================
@@ -227,6 +237,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
 @property (nonatomic, assign, readwrite) NoteBlockType          type;
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *dynamicAttributesCache;
+@property (nonatomic,   weak, readwrite) Notification           *parent;
 @end
 
 
@@ -318,6 +329,8 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     }
     
     _actionsOverride[key] = value;
+    
+    [self.parent didChangeOverrides];
 }
 
 - (void)removeActionOverrideForKey:(NSString *)key
@@ -378,6 +391,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         }
         
         NotificationBlock *block    = [[[self class] alloc] initWithDictionary:rawDict];
+        block.parent                = notification;
         
         //  Duck Typing code below:
         //  Infer block type based on... stuff. (Sorry)

@@ -1,34 +1,21 @@
 #import "ReaderSiteService.h"
-#import "ReaderSiteServiceRemote.h"
-#import "WordPressComApi.h"
-#import "WPAccount.h"
+
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "ReaderSite.h"
 #import "RemoteReaderSite.h"
-#import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
+#import "ReaderSite.h"
+#import "ReaderSiteServiceRemote.h"
+#import "ReaderTopicService.h"
+#import "WordPressComApi.h"
+#import "WPAccount.h"
+#import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
-@interface ReaderSiteService()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation ReaderSiteService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)())success failure:(void(^)(NSError *error))failure
 {
@@ -40,7 +27,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -66,7 +53,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
 
     // Make sure the URL provided leads to a visible site / does not 404.
     [service checkSiteExistsAtURL:siteURL success:^{
@@ -88,7 +75,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service checkSubscribedToSiteByID:siteID success:^(BOOL follows) {
         if (follows) {
             if (failure) {
@@ -96,7 +83,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             }
             return;
         }
-        [service followSiteWithID:siteID success:success failure:failure];
+        [service followSiteWithID:siteID success:^(){
+            if (success) {
+                success();
+            }
+            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
+
+        } failure:failure];
 
     } failure:^(NSError *error) {
         if (failure) {
@@ -115,8 +108,14 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [service unfollowSiteWithID:siteID success:success failure:failure];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [service unfollowSiteWithID:siteID success:^(){
+        if (success) {
+            success();
+        }
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
+        
+    } failure:failure];
 }
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -136,7 +135,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         sanitizedURL = [NSString stringWithFormat:@"http://%@", sanitizedURL];
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
     [service checkSubscribedToFeedByURL:[NSURL URLWithString:sanitizedURL] success:^(BOOL follows) {
         if (follows) {
             if (failure) {
@@ -144,7 +143,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             }
             return;
         }
-        [service followSiteAtURL:sanitizedURL success:success failure:failure];
+        [service followSiteAtURL:sanitizedURL success:^(){
+            if (success) {
+                success();
+            }
+            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ @"URL":sanitizedURL }];
+
+        } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -162,8 +167,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [service unfollowSiteAtURL:siteURL success:success failure:failure];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [service unfollowSiteAtURL:siteURL success:^(){
+        if (success) {
+            success();
+        }
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"URL":siteURL}];
+    } failure:failure];
 }
 
 - (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -188,7 +198,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)deletePostsFromFollowedTopicForSite:(ReaderSite *)site
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
     if (!followedSites) {
         return;
     }
@@ -204,7 +214,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)syncPostsForFollowedSites
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
     if (!followedSites) {
         return;
     }
@@ -228,8 +238,11 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     // Optimistically flag the posts from the site being blocked.
     [self flagPostsFromSite:siteID asBlocked:blocked];
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
+        NSDictionary *properties = @{@"siteID":siteID, WPAppAnalyticsKeyBlogID:siteID};
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
+        
         if (success) {
             success();
         }
@@ -265,7 +278,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)followExistingSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     WordPressComApi *api = [self apiForRequest];
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         if (siteID) {
             [self followSiteWithID:siteID success:success failure:failure];

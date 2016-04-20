@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="hcM-f1-MHC" customClass="ReaderGapMarkerCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hcM-f1-MHC" id="RWc-RJ-5IV">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEV-Mu-ne8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mwJ-ag-abH">
+                                <rect key="frame" x="0.0" y="25" width="320" height="9"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="9" id="X0y-jv-BI5"/>
+                                    <constraint firstAttribute="width" constant="600" id="d55-Dd-71E"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="d55-Dd-71E"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="d55-Dd-71E"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzd-gs-nwM">
+                                <rect key="frame" x="104" y="25" width="112" height="9"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iu5-0g-eH5">
+                                <rect key="frame" x="106" y="10" width="108" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="7AJ-lZ-zT3">
+                                <rect key="frame" x="150" y="20" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="srv-7s-DDa" customClass="PostMetaButton">
+                                <rect key="frame" x="106" y="10" width="108" height="40"/>
+                                <color key="backgroundColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ysB-UF-d3o"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                <state key="normal" title="Load More Posts"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="02F-Ob-qUU"/>
+                            <constraint firstItem="kzd-gs-nwM" firstAttribute="centerX" secondItem="Iu5-0g-eH5" secondAttribute="centerX" id="1Ti-Kd-lSE"/>
+                            <constraint firstItem="kzd-gs-nwM" firstAttribute="width" secondItem="Iu5-0g-eH5" secondAttribute="width" constant="4" id="4kB-se-exN"/>
+                            <constraint firstItem="kzd-gs-nwM" firstAttribute="centerY" secondItem="mwJ-ag-abH" secondAttribute="centerY" id="50a-Ga-DXU"/>
+                            <constraint firstItem="mwJ-ag-abH" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="9GB-lS-8tE"/>
+                            <constraint firstItem="mwJ-ag-abH" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="K6x-SS-1Sk"/>
+                            <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="Kh7-xU-0dq"/>
+                            <constraint firstItem="kzd-gs-nwM" firstAttribute="height" secondItem="mwJ-ag-abH" secondAttribute="height" id="LRu-tc-Xnt"/>
+                            <constraint firstItem="srv-7s-DDa" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="Ocp-tt-08p"/>
+                            <constraint firstItem="Iu5-0g-eH5" firstAttribute="width" secondItem="srv-7s-DDa" secondAttribute="width" id="PKK-iG-o5s"/>
+                            <constraint firstItem="srv-7s-DDa" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="YJl-oR-qhB"/>
+                            <constraint firstItem="Iu5-0g-eH5" firstAttribute="height" secondItem="srv-7s-DDa" secondAttribute="height" id="dQ0-XK-Le4"/>
+                            <constraint firstAttribute="trailing" secondItem="mwJ-ag-abH" secondAttribute="trailing" id="qqo-cg-4OR"/>
+                            <constraint firstItem="mwJ-ag-abH" firstAttribute="leading" secondItem="NEV-Mu-ne8" secondAttribute="leading" id="tYd-7j-19d"/>
+                            <constraint firstItem="Iu5-0g-eH5" firstAttribute="centerX" secondItem="srv-7s-DDa" secondAttribute="centerX" id="ubh-zN-r4p"/>
+                            <constraint firstItem="Iu5-0g-eH5" firstAttribute="centerY" secondItem="srv-7s-DDa" secondAttribute="centerY" id="wLv-K0-f1H"/>
+                        </constraints>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="qqo-cg-4OR"/>
+                                <exclude reference="tYd-7j-19d"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="NEV-Mu-ne8" firstAttribute="centerX" secondItem="RWc-RJ-5IV" secondAttribute="centerX" id="DDH-v3-nGs"/>
+                    <constraint firstItem="NEV-Mu-ne8" firstAttribute="leading" secondItem="RWc-RJ-5IV" secondAttribute="leading" id="FFx-yP-3wf"/>
+                    <constraint firstAttribute="bottom" secondItem="NEV-Mu-ne8" secondAttribute="bottom" id="azr-K6-fut"/>
+                    <constraint firstItem="NEV-Mu-ne8" firstAttribute="width" secondItem="RWc-RJ-5IV" secondAttribute="width" constant="600" id="dVF-3Q-CdG"/>
+                    <constraint firstAttribute="trailing" secondItem="NEV-Mu-ne8" secondAttribute="trailing" id="jJd-RR-6mH"/>
+                    <constraint firstItem="NEV-Mu-ne8" firstAttribute="top" secondItem="RWc-RJ-5IV" secondAttribute="top" id="w7G-La-9lf"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="DDH-v3-nGs"/>
+                        <exclude reference="dVF-3Q-CdG"/>
+                    </mask>
+                </variation>
+                <variation key="heightClass=regular-widthClass=regular">
+                    <mask key="constraints">
+                        <include reference="DDH-v3-nGs"/>
+                        <exclude reference="FFx-yP-3wf"/>
+                        <include reference="dVF-3Q-CdG"/>
+                        <exclude reference="jJd-RR-6mH"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityView" destination="7AJ-lZ-zT3" id="2Sp-Yu-l1o"/>
+                <outlet property="activityViewBackgroundView" destination="Iu5-0g-eH5" id="Krm-6L-YWx"/>
+                <outlet property="button" destination="srv-7s-DDa" id="fKE-Ox-R1A"/>
+                <outlet property="innerContentView" destination="NEV-Mu-ne8" id="Vhi-lx-h4k"/>
+                <outlet property="tearBackgroundView" destination="mwJ-ag-abH" id="Kfg-vw-q2g"/>
+                <outlet property="tearMaskView" destination="kzd-gs-nwM" id="NuQ-H2-Yac"/>
+            </connections>
+            <point key="canvasLocation" x="294" y="27"/>
+        </tableViewCell>
+    </objects>
+</document>

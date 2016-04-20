@@ -1,7 +1,7 @@
 #import "Page.h"
 #import "NSDate+StringFormatting.h"
 #import <FormatterKit/TTTTimeIntervalFormatter.h>
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 static const NSTimeInterval TwentyFourHours = 86400;
 

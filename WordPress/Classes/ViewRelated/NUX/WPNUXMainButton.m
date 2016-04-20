@@ -1,5 +1,5 @@
 #import "WPNUXMainButton.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 @implementation WPNUXMainButton {
     UIActivityIndicatorView *activityIndicator;
@@ -41,7 +41,7 @@
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateDisabled];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:18.0];
+    self.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
     [self setColor:[UIColor colorWithRed:0/255.0f green:116/255.0f blue:162/255.0f alpha:1.0f]];
 
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];

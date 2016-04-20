@@ -65,6 +65,11 @@
     self.contentProvider = contentProvider;
 }
 
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider layoutOnly:(BOOL)layoutOnly
+{
+    [self configureCell:contentProvider];
+}
+
 
 #pragma mark - Actions
 

@@ -1,6 +1,6 @@
 import Foundation
 
-class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
+public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
@@ -8,7 +8,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     var linkURL : NSURL?
     private(set) var imageView : UIImageView
 
-    override var frame: CGRect {
+    override public var frame: CGRect {
         didSet {
             // If Voice Over is enabled, the OS will query for the accessibilityPath
             // to know what region of the screen to highlight. If the path is nil
@@ -23,7 +23,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
 
     override init(frame: CGRect) {
         imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height));
-        imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         imageView.contentMode = .ScaleAspectFit
 
         super.init(frame: frame)
@@ -31,7 +31,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
         addSubview(imageView)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         imageView = aDecoder.decodeObjectForKey(UIImage.classNameWithoutNamespaces()) as! UIImageView
         contentURL = aDecoder.decodeObjectForKey("contentURL") as! NSURL?
         linkURL = aDecoder.decodeObjectForKey("linkURL") as! NSURL?
@@ -39,7 +39,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
         super.init(coder: aDecoder)
     }
 
-    override func encodeWithCoder(aCoder: NSCoder) {
+    override public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(imageView, forKey: UIImage.classNameWithoutNamespaces());
 
         if let url = contentURL {

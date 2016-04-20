@@ -1,22 +1,25 @@
 #import "WPActivityDefaults.h"
-
 #import "SafariActivity.h"
-#import "InstapaperActivity.h"
-#import "PocketActivity.h"
-#import "GooglePlusActivity.h"
 #import "WordPressActivity.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 
 @implementation WPActivityDefaults
 
 + (NSArray *)defaultActivities
 {
     SafariActivity *safariActivity = [[SafariActivity alloc] init];
-    InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
-    PocketActivity *pocketActivity = [[PocketActivity alloc] init];
-    GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
 
-    return @[safariActivity, wordPressActivity, instapaperActivity, pocketActivity, googlePlusActivity];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger visibleBlogs = [service blogCountVisibleForAllAccounts];
+
+    if (visibleBlogs > 0) {
+        return @[safariActivity, wordPressActivity];
+    } else {
+        return @[safariActivity];
+    }
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -32,18 +35,18 @@
         stat = WPAnalyticsStatSharedItemViaFacebook;
     } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
         stat = WPAnalyticsStatSharedItemViaWeibo;
-    } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
+    } else if ([activityType isEqualToString:@"com.marcoarment.instapaperpro.InstapaperSave"]) {
         stat = WPAnalyticsStatSentItemToInstapaper;
-    } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
+    } else if ([activityType isEqualToString:@"com.ideashower.ReadItLaterPro.AddToPocketExtension"]) {
         stat = WPAnalyticsStatSentItemToPocket;
-    } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
+    } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
         stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
         stat = WPAnalyticsStatSentItemToWordPress;
-    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard] || [activityType isEqualToString:UIActivityTypeAddToReadingList] || [activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
+    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
     } else {
-        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        [WPAnalytics track:WPAnalyticsStatSharedItem withProperties:@{@"activity_type":activityType}];
         return;
     }
 

@@ -18,6 +18,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
     NSDictionary *parameters = @{
                                  @"f": @"json"
                                  };
+    
     [manager GET:GetUsersBlogsApiPath
       parameters:parameters
          success:^(AFHTTPRequestOperation *operation, id responseObject) {

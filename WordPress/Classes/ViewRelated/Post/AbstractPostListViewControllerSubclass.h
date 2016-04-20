@@ -12,8 +12,9 @@
 #import "WPSearchController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPTableViewHandler.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-swift.h"
+#import "WPSearchControllerConfigurator.h"
 
 typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
     PostAuthorFilterMine,
@@ -21,22 +22,16 @@ typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
 };
 
 extern const NSTimeInterval PostsControllerRefreshInterval;
-extern const NSTimeInterval PostSearchBarAnimationDuration;
 extern const NSInteger HTTPErrorCodeForbidden;
 extern const NSInteger PostsFetchRequestBatchSize;
 extern const NSInteger PostsLoadMoreThreshold;
-extern const CGFloat PostsSearchBarWidth;
-extern const CGFloat PostsSearchBariPadWidth;
 extern const CGSize PreferredFiltersPopoverContentSize;
-extern const CGFloat SearchWrapperViewPortraitHeight;
-extern const CGFloat SearchWrapperViewLandscapeHeight;
 
-@interface AbstractPostListViewController () <UIPopoverControllerDelegate,
-                                                        WPContentSyncHelperDelegate,
-                                                        WPNoResultsViewDelegate,
-                                                        WPSearchControllerDelegate,
-                                                        WPSearchResultsUpdating,
-                                                        WPTableViewHandlerDelegate>
+@interface AbstractPostListViewController () <WPContentSyncHelperDelegate,
+                                                WPNoResultsViewDelegate,
+                                                WPSearchControllerDelegate,
+                                                WPSearchResultsUpdating,
+                                                WPTableViewHandlerDelegate>
 
 @property (nonatomic, strong) UITableViewController *postListViewController;
 @property (nonatomic, weak) UITableView *tableView;
@@ -55,11 +50,11 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *authorsFilterViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
-@property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
-@property (nonatomic, strong) NSArray *postListFilters;
-@property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSArray *> *allPostListFilters;
+@property (nonatomic, strong) NSMutableArray *recentlyTrashedPostObjectIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
 - (NSString *)postTypeToSync;
+- (NSDate *)lastSyncDate;
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
 - (BOOL)canFilterByAuthor;
 - (BOOL)shouldShowOnlyMyPosts;
@@ -72,6 +67,7 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 - (void)deletePost:(AbstractPost *)apost;
 - (void)restorePost:(AbstractPost *)apost;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
+- (void)resetTableViewContentOffset;
 - (BOOL)isSearching;
 - (NSString *)currentSearchTerm;
 - (NSDictionary *)propertiesForAnalytics;

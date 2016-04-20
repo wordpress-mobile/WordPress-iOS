@@ -1,5 +1,14 @@
 import Foundation
+import WordPressShared
 
+/**
+*  @class       NoteTableViewCell
+*  @brief       The purpose of this class is to render a Notification entity, onscreen.
+*  @details     This cell should be loaded from its nib, since the autolayout constraints and outlets are not
+*               generated via code.
+*               Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
+*               new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
+*/
 
 @objc public class NoteTableViewCell : WPTableViewCell
 {
@@ -18,12 +27,21 @@ import Foundation
             }
         }
     }
-    public var showsSeparator: Bool {
+    public var markedForDeletion: Bool = false {
+        didSet {
+            if markedForDeletion != oldValue {
+                refreshSubviewVisibility()
+                refreshBackgrounds()
+                refreshUndoOverlay()
+            }
+        }
+    }
+    public var showsBottomSeparator: Bool {
         set {
-            separatorView.hidden = !newValue
+            separatorsView.bottomVisible = newValue
         }
         get {
-            return separatorView.hidden == false
+            return separatorsView.bottomVisible == false
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -53,37 +71,64 @@ import Foundation
             return noticonLabel.text
         }
     }
+    public var onUndelete: (Void -> Void)?
+    
+    
     
     // MARK: - Public Methods
     public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
+
+    public func downloadIconWithURL(url: NSURL?) {
+        let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
+        if isGravatarURL {
+            downloadGravatarWithURL(url)
+            return
+        }
+        
+        // Handle non-gravatar images
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        iconImageView.downloadImage(url, placeholderImage: placeholderImage)
+    }
     
-    public func downloadGravatarWithURL(url: NSURL?) {
+    
+    // MARK: - Gravatar Helpers
+    private func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
 
-        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        let gravatar = url.flatMap { Gravatar($0) }
         
-        // Scale down Gravatar images: faster downloads!
-        if let unrawppedURL = url {
-            let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
-            let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
-        } else {
-            iconImageView.image     = placeholderImage
+        if gravatar == nil {
+            // Note: If we've got any issues with the Gravatar instance, fallback to the placeholder, and dont'
+            // cache the URL!
+            iconImageView.image = placeholderImage
+            return
         }
         
+        iconImageView.downloadGravatar(gravatar,
+            placeholder: placeholderImage,
+            animate: false,
+            failure: { (error: NSError!) in
+                // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                if self.gravatarURL?.isEqual(url) == true {
+                    self.gravatarURL = nil
+                }
+        })
+
         gravatarURL = url
     }
  
     
-    // MARK: - View Methods
+    
+    // MARK: - UITableViewCell Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
 
-        contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
+        contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
 
         iconImageView.image             = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
@@ -98,10 +143,10 @@ import Foundation
 
         snippetLabel.numberOfLines      = Settings.snippetNumberOfLines
         
-        // Separator: Make sure the height is 1pixel, not 1point
-        let separatorHeightInPixels     = Settings.separatorHeight / UIScreen.mainScreen().scale
-        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.noteSeparatorColor
+        // Separators: Setup bottom separators!
+        separatorsView.bottomColor      = WPStyleGuide.Notifications.noteSeparatorColor
+        separatorsView.bottomInsets     = Settings.separatorInsets
+        backgroundView                  = separatorsView
     }
     
     public override func layoutSubviews() {
@@ -121,6 +166,7 @@ import Foundation
         super.setHighlighted(highlighted, animated: animated)
         refreshBackgrounds()
     }
+    
     
     
     // MARK: - Private Methods
@@ -144,9 +190,16 @@ import Foundation
         }
 
         // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor  = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+
         if backgroundColor != newBackgroundColor {
             backgroundColor = newBackgroundColor
+        }
+    }
+    
+    private func refreshSubviewVisibility() {
+        for subview in contentView.subviews {
+            subview.hidden = markedForDeletion
         }
     }
     
@@ -155,7 +208,31 @@ import Foundation
         let showsSnippet = attributedSnippet != nil
         subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
     }
+    
+    private func refreshUndoOverlay() {
+        // Remove
+        if markedForDeletion == false {
+            undoOverlayView?.removeFromSuperview()
+            return
+        }
+        
+        // Load
+        if undoOverlayView == nil {
+            let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
+            NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil)
+            undoOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        }
 
+        // Attach
+        if undoOverlayView.superview == nil {
+            contentView.addSubview(undoOverlayView)
+            contentView.pinSubviewToAllEdges(undoOverlayView)
+        }
+    }
+
+    
+    
+    // MARK: - Public Static Helpers
     public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
         
         // Limit the width (iPad Devices)
@@ -190,18 +267,26 @@ import Foundation
     }
     
     
+    
+    // MARK: - Action Handlers
+    @IBAction public func undeleteWasPressed(sender: AnyObject) {
+        onUndelete?()
+    }
+    
+    
+    
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Settings
     private struct Settings {
-        static let minimumCellHeight:                   CGFloat         = 70
-        static let separatorHeight:                     CGFloat         = 1
-        static let textInsets:                          UIEdgeInsets    = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
-        static let subjectNumberOfLinesWithoutSnippet:  Int             = 3
-        static let subjectNumberOfLinesWithSnippet:     Int             = 2
-        static let snippetNumberOfLines:                Int             = 2
-        static let noticonRadius:                       CGFloat         = 10
+        static let minimumCellHeight                    = CGFloat(70)
+        static let textInsets                           = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
+        static let separatorInsets                      = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+        static let subjectNumberOfLinesWithoutSnippet   = 3
+        static let subjectNumberOfLinesWithSnippet      = 2
+        static let snippetNumberOfLines                 = 2
+        static let noticonRadius                        = CGFloat(10)
         
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
@@ -217,7 +302,8 @@ import Foundation
     }
 
     // MARK: - Private Properties
-    private var gravatarURL:                            NSURL?
+    private var gravatarURL : NSURL?
+    private var separatorsView = SeparatorsView()
     
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!
@@ -227,5 +313,7 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
-    @IBOutlet private weak var separatorView:           UIView!
+    
+    // MARK: - Undo Overlay Optional
+    @IBOutlet private var undoOverlayView:              NoteUndoOverlayView!
 }

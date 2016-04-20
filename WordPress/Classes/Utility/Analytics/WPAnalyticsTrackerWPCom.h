@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "WPAnalytics.h"
+#import <WordPressComAnalytics/WPAnalytics.h>
 
 @interface WPAnalyticsTrackerWPCom : NSObject<WPAnalyticsTracker>
 

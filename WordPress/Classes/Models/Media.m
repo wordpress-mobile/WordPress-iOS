@@ -9,7 +9,6 @@
 @dynamic width;
 @dynamic length;
 @dynamic title;
-@dynamic thumbnail;
 @dynamic height;
 @dynamic filename;
 @dynamic filesize;
@@ -21,25 +20,11 @@
 @dynamic caption;
 @dynamic desc;
 @dynamic mediaTypeString;
+@dynamic videopressGUID;
+@dynamic localThumbnailURL;
+@dynamic remoteThumbnailURL;
 
 @synthesize unattached;
-
-+ (Media *)newMediaForPost:(AbstractPost *)post
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
-    media.blog = post.blog;
-    media.posts = [NSMutableSet setWithObject:post];
-    media.mediaID = @0;
-    return media;
-}
-
-+ (Media *)newMediaForBlog:(Blog *)blog
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
-    media.blog = blog;
-    media.mediaID = @0;
-    return media;
-}
 
 - (void)mediaTypeFromUrl:(NSString *)ext
 {
@@ -78,7 +63,8 @@
     } else if ([self.mediaTypeString isEqualToString:@"document"]) {
         return MediaTypeDocument;
     } else if ([self.mediaTypeString isEqualToString:@"featured"]) {
-        return MediaTypeFeatured;
+        // this is for object that where still storing the old value.
+        return MediaTypeImage;
     }
     return MediaTypeDocument;
 }
@@ -88,9 +74,6 @@
     switch (mediaType) {
         case MediaTypeImage:
             self.mediaTypeString = @"image";
-            break;
-        case MediaTypeFeatured:
-            self.mediaTypeString = @"featured";
             break;
         case MediaTypeVideo:
             self.mediaTypeString = @"video";
@@ -104,31 +87,16 @@
     }
 }
 
-- (NSString *)mediaTypeName
-{
-    if (self.mediaType == MediaTypeImage) {
-        return NSLocalizedString(@"Image", @"");
-    } else if (self.mediaType == MediaTypeVideo) {
-        return NSLocalizedString(@"Video", @"");
-    }
-
-    return self.mediaTypeString;
-}
-
 - (BOOL)featured
 {
-    return self.mediaType == MediaTypeFeatured;
+    for (AbstractPost *post in self.posts) {
+        if ([post.post_thumbnail isEqualToNumber:self.mediaID]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
-- (void)setFeatured:(BOOL)featured
-{
-    self.mediaType = featured ? MediaTypeFeatured : MediaTypeImage;
-}
-
-+ (NSString *)mediaTypeForFeaturedImage
-{
-    return @"image";
-}
 
 #pragma mark -
 
@@ -161,12 +129,19 @@
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
 
+- (void)prepareForDeletion {
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error]) {
+        DDLogError(@"Error removing media files:%@", error);
+    }
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
+        DDLogError(@"Error removing media files:%@", error);
+    }
+    [super prepareForDeletion];
+}
+
 - (void)remove
 {
-    NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    [[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error];
-
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
         [self.managedObjectContext save:nil];
@@ -261,12 +236,61 @@
     return result;
 }
 
-- (NSString *)thumbnailLocalURL;
+- (NSString *)absoluteThumbnailLocalURL;
 {
-    if ( self.localURL ) {
-        return [NSString stringWithFormat:@"%@-thumbnail",self.localURL];
+    if ( self.localThumbnailURL ) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localThumbnailURL]];
+        return absolutePath;
     } else {
         return nil;
     }
 }
+
+- (void)setAbsoluteThumbnailLocalURL:(NSString *)absoluteLocalURL
+{
+    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
+    self.localThumbnailURL = localPath;
+}
+
+- (NSString *)absoluteLocalURL
+{
+    if ( self.localURL ) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localURL]];
+        return absolutePath;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setAbsoluteLocalURL:(NSString *)absoluteLocalURL
+{
+    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
+    self.localURL = localPath;
+}
+
+- (NSString *)posterImageURL
+{
+    if (!self.videopressGUID) {
+        return self.remoteThumbnailURL;
+    }
+
+    NSString *posterURL = [self absoluteThumbnailLocalURL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:posterURL isDirectory:nil]) {
+        return posterURL;
+    }
+    posterURL = self.remoteThumbnailURL;
+    return posterURL;
+}
+
 @end

@@ -103,6 +103,7 @@
  */
 @property (nonatomic, assign) BOOL shouldReauthenticateDefaultAccount;
 
+
 /**
  *  The title of the sign in button
  */
@@ -198,12 +199,14 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)setPasswordAlpha:(CGFloat)alpha;
 - (void)setPasswordEnabled:(BOOL)enabled;
 - (void)setPasswordTextValue:(NSString *)password;
+- (void)setPasswordSecureEntry:(BOOL)secureTextEntry;
+
+- (void)setMultiFactorAlpha:(CGFloat)alpha;
+- (void)setMultifactorEnabled:(BOOL)enabled;
+- (void)setMultifactorTextValue:(NSString *)multifactorText;
 
 - (void)setSiteAlpha:(CGFloat)alpha;
-- (void)setMultiFactorAlpha:(CGFloat)alpha;
-
 - (void)setSiteUrlEnabled:(BOOL)enabled;
-- (void)setMultifactorEnabled:(BOOL)enabled;
 - (void)setCancelButtonHidden:(BOOL)hidden;
 - (void)setForgotPasswordHidden:(BOOL)hidden;
 - (void)setSendVerificationCodeButtonHidden:(BOOL)hidden;
@@ -215,6 +218,9 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)setPasswordTextReturnKeyType:(UIReturnKeyType)returnKeyType;
 - (void)setFocusToSiteUrlText;
 - (void)setFocusToMultifactorText;
+
+- (void)autoFillLoginWithSharedWebCredentialsIfAvailable;
+- (void)updateAutoFillLoginCredentialsIfNeeded:(NSString *)username password:(NSString *)password;
 
 - (void)displayErrorMessageForInvalidOrMissingFields;
 - (void)displayReservedNameErrorMessage;

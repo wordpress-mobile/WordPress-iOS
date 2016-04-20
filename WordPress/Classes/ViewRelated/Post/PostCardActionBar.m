@@ -1,15 +1,14 @@
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIDevice+Helpers.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h> 
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
 static CGFloat ActionBarMinButtonWidth = 100.0;
 
-static const UIEdgeInsets BackButtonImageInsets = {1.0, 0.0, 0.0, 0.0};
-static const UIEdgeInsets MoreButtonImageInsets = {3.0, 0.0, 0.0, 4.0};
+static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 @interface PostCardActionBar()
 @property (nonatomic, strong) UIView *contentView;
@@ -177,6 +176,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {3.0, 0.0, 0.0, 4.0};
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.exclusiveTouch = YES;
     button.backgroundColor = [WPStyleGuide lightGrey];
     button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
@@ -265,6 +265,17 @@ static const UIEdgeInsets MoreButtonImageInsets = {3.0, 0.0, 0.0, 4.0};
     }];
 }
 
+#pragma mark - Instance Methods
+
+- (void)reset
+{
+    if (self.currentBatch == 0) {
+        return;
+    }
+    self.currentBatch = 0;
+    [self configureButtons];
+}
+
 
 #pragma mark - Notifications
 
@@ -306,7 +317,6 @@ static const UIEdgeInsets MoreButtonImageInsets = {3.0, 0.0, 0.0, 4.0};
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Back", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-back"]
                                    highlightedImage:nil];
-        item.imageInsets = BackButtonImageInsets;
     } else {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-more"]

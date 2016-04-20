@@ -11,5 +11,6 @@
 @property (nonatomic, strong) NSString *topicDescription;
 @property (nonatomic, strong) NSNumber *topicID;
 @property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSString *owner;
 
 @end

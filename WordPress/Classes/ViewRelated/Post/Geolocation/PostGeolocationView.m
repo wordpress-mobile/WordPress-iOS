@@ -1,5 +1,6 @@
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
+#import "WPFontManager.h"
 
 const CGFloat DefaultLabelMargin = 20.0f;
 const CGFloat GeoViewMinHeight = 130.0f;
@@ -9,6 +10,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UILabel *addressLabel;
 @property (nonatomic, strong) PostAnnotation *annotation;
+@property (nonatomic, strong) UIImageView *chevron;
 
 @end
 
@@ -36,10 +38,15 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 130.0f, w, 60.0)];
     self.addressLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.addressLabel.font = [WPStyleGuide regularTextFont];
-    self.addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    self.addressLabel.textColor = [WPStyleGuide darkGrey];
     self.addressLabel.numberOfLines = 0;
     self.addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
     [self addSubview:self.addressLabel];
+    
+    self.chevron = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"disclosure-chevron"]];
+    self.chevron.hidden = YES;
+    [self addSubview:self.chevron];
 }
 
 - (void)layoutSubviews
@@ -56,6 +63,10 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
     self.mapView.frame = CGRectMake(0.0, 0.0, width, mapHeight);
     self.addressLabel.frame = CGRectMake(labelX, mapHeight, labelWidth, addressLabelHeight);
+    CGSize chevronSize = self.chevron.frame.size;
+    CGFloat chevronX= labelWidth-chevronSize.width;
+    CGFloat chevronY= mapHeight+((addressLabelHeight - chevronSize.height) / 2.0);
+    self.chevron.frame = CGRectMake(chevronX, chevronY, chevronSize.width, chevronSize.height);
 }
 
 - (void)setAddress:(NSString *)address
@@ -66,40 +77,47 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
 - (void)setCoordinate:(Coordinate *)coordinate
 {
+    MKCoordinateRegion defaultRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200.0, 100.0);
+    [self setCoordinate:coordinate region:defaultRegion];
+}
+
+- (void)setCoordinate:(Coordinate *)coordinate region:(MKCoordinateRegion)region
+{
     if ([coordinate isEqual:_coordinate]) {
         return;
     }
-
+    
     _coordinate = coordinate;
-
+    
     [self.mapView removeAnnotation:self.annotation];
-
+    
     if (coordinate.latitude == 0 && coordinate.longitude == 0) {
         [self.mapView setRegion:MKCoordinateRegionForMapRect(MKMapRectWorld) animated:NO];
     } else {
         self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.coordinate.coordinate];
         [self.mapView addAnnotation:self.annotation];
-
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
+        
         [self.mapView setRegion:region animated:YES];
     }
-
+    
     [self updateAddressLabel];
+
 }
 
 - (void)updateAddressLabel
 {
     NSString *coordText = @"";
-    CLLocationDegrees latitude = self.coordinate.latitude;
-    CLLocationDegrees longitude = self.coordinate.longitude;
-
-    if (latitude != 0 && longitude !=0 ) {
+    if (self.coordinate != nil) {
+        CLLocationDegrees latitude = self.coordinate.latitude;
+        CLLocationDegrees longitude = self.coordinate.longitude;
         NSInteger latD = trunc(fabs(latitude));
         NSInteger latM = trunc((fabs(latitude) - latD) * 60);
         NSInteger lonD = trunc(fabs(longitude));
         NSInteger lonM = trunc((fabs(longitude) - lonD) * 60);
         NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
         NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+        latDir = [latDir uppercaseString];
+        lonDir = [lonDir uppercaseString];
         if (latitude == 0.0) latDir = @"";
         if (longitude == 0.0) lonDir = @"";
 
@@ -107,7 +125,15 @@ const CGFloat GeoViewMinHeight = 130.0f;
                      latD, latM, latDir,
                      lonD, lonM, lonDir];
     }
-    self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", self.address, coordText];
+    NSString *address = self.address ? [self.address stringByAppendingString:@"\n"] : @"";
+    
+    NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide darkGrey]};
+    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager systemSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[WPStyleGuide grey]};
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:address attributes:addressStyle];
+    NSAttributedString *coordinates = [[NSMutableAttributedString alloc] initWithString:coordText attributes:coordinateStyle];
+    [attributedString appendAttributedString:coordinates];
+    self.addressLabel.attributedText = attributedString;
 }
 
 - (BOOL)scrollEnabled
@@ -119,5 +145,16 @@ const CGFloat GeoViewMinHeight = 130.0f;
 {
     self.mapView.scrollEnabled = scrollEnabled;
 }
+
+- (BOOL)chevronHidden
+{
+    return self.chevron.hidden;
+}
+
+- (void)setChevronHidden:(BOOL)hidden
+{
+    self.chevron.hidden = hidden;
+}
+
 
 @end

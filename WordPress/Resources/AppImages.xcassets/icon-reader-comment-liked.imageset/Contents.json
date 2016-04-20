@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon-reader-comment-liked.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-reader-comment-liked@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "icon-reader-comment-liked@3x.png"
+      "filename" : "icon-reader-comment-liked.pdf"
     }
   ],
   "info" : {

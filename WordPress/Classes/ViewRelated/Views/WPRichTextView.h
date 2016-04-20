@@ -1,5 +1,8 @@
 #import <UIKit/UIKit.h>
 
+extern NSString * const WPRichTextDefaultFontFamily;
+extern NSString * const WPRichTextDefaultFontName;
+
 @class WPRichTextImage;
 @class WPRichTextView;
 
@@ -72,11 +75,19 @@
 */
 @property (nonatomic, strong) NSDictionary *textOptions;
 
+
+/**
+ Tells the rich text view to relayout its text and images. Useful if text need to be adjusted
+ due to changes in the rich text view's frame, e.g. an orientation change.
+ */
+- (void)refreshLayout;
+
+
 /**
  Tells the rich text view to relayout its media. Useful if media frames need to be adjusted
- due to changes in the rich text view's frame, e.g. an orientation change. 
+ due to changes in the rich text view's frame, e.g. an orientation change.
  */
-- (void)refreshMediaLayout;
+- (void)refreshMediaLayout __deprecated;
 
 
 - (void)preventPendingMediaLayout:(BOOL)prevent;

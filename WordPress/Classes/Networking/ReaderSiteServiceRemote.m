@@ -4,25 +4,15 @@
 
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
-@interface ReaderSiteServiceRemote ()
-@property (nonatomic, strong) WordPressComApi *api;
-@end
-
 @implementation ReaderSiteServiceRemote
-
-- (id)initWithRemoteApi:(WordPressComApi *)api {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine?meta=site,feed";
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
@@ -46,7 +36,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)followSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -60,7 +53,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -74,8 +70,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"read/following/mine/new?url=%@", siteURL];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
         if (!subscribed) {
@@ -99,8 +98,12 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
         if (subscribed) {
@@ -151,7 +154,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     };
 
     NSString *path = [NSString stringWithFormat:@"sites/%@", host];
-    [self.api GET:path parameters:nil success:successBlock failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl parameters:nil success:successBlock failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *newHost;
         if ([host hasPrefix:@"www."]) {
             // If the provided host includes a www. prefix, try again without it.
@@ -163,18 +169,22 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
         }
         NSString *newPath = [NSString stringWithFormat:@"sites/%@", newHost];
-        [self.api GET:newPath parameters:nil success:successBlock failure:failureBlock];
+        NSString *newPathRequestUrl = [self pathForEndpoint:newPath
+                                                withVersion:ServiceRemoteRESTApiVersion_1_1];
+        
+        [self.api GET:newPathRequestUrl parameters:nil success:successBlock failure:failureBlock];
     }];
 }
 
 - (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     // Just ping the URL and make sure we don't get back a 40x error.
-    [self.api HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation) {
+    AFHTTPRequestOperationManager *mgr = [[AFHTTPRequestOperationManager alloc] init];
+    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
         if (failure) {
             failure(error);
         }
@@ -184,7 +194,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)checkSubscribedToSiteByID:(NSUInteger)siteID success:(void (^)(BOOL follows))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine", siteID];
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
@@ -202,13 +215,16 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)checkSubscribedToFeedByURL:(NSURL *)siteURL success:(void (^)(BOOL follows))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine";
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
 
         BOOL follows = NO;
-        NSString *responseString = [[operation responseString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *responseString = [[operation responseString] stringByRemovingPercentEncoding];
         if ([responseString rangeOfString:[siteURL absoluteString]].location != NSNotFound) {
             follows = YES;
         }
@@ -229,8 +245,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     } else {
         path = [NSString stringWithFormat:@"me/block/sites/%d/delete", siteID];
     }
+    
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         if (![[dict numberForKey:@"success"] boolValue]) {
             if (blocked) {

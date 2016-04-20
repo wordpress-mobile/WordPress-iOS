@@ -24,9 +24,7 @@
 
 - (void)configureSections
 {
-    self.sections = [NSMutableArray array];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];    
+    self.sections = @[@(PostSettingsSectionMeta),@(PostSettingsSectionFeaturedImage)];
 }
 
 - (Page *)page

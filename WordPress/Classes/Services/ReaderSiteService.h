@@ -10,7 +10,7 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 
 @class ReaderSite;
 
-@interface ReaderSiteService : NSObject<LocalCoreDataService>
+@interface ReaderSiteService : LocalCoreDataService
 
 /**
  Get a list of the sites the user follows.

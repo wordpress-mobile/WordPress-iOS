@@ -1,5 +1,5 @@
 #import "WPNUXPrimaryButton.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 @implementation WPNUXPrimaryButton
 
@@ -44,7 +44,7 @@
 {
     UIImage *mainImage = [[UIImage imageNamed:@"btn-primary"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
     UIImage *tappedImage = [[UIImage imageNamed:@"btn-primary-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
+    self.titleLabel.font = [WPFontManager systemRegularFontOfSize:15.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 15.0, 0, 15.0)];
     [self setBackgroundImage:mainImage forState:UIControlStateNormal];

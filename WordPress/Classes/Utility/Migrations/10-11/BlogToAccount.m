@@ -1,5 +1,5 @@
 #import "BlogToAccount.h"
-#import <NSURL+IDN.h>
+#import <NSURL_IDN/NSURL+IDN.h>
 #import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
 #import "Constants.h"

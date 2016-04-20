@@ -2,5 +2,5 @@
 #import "MediaServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
-@interface MediaServiceRemoteXMLRPC : NSObject <MediaServiceRemote, ServiceRemoteXMLRPC>
+@interface MediaServiceRemoteXMLRPC : ServiceRemoteXMLRPC <MediaServiceRemote>
 @end

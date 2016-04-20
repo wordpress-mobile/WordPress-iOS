@@ -1,6 +1,7 @@
 #import "ReaderCommentsViewController.h"
 
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <DTCoreText/DTCoreText.h>
 
 #import "Comment.h"
 #import "CommentContentView.h"
@@ -11,19 +12,17 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
-#import "ReaderPostDetailViewController.h"
-#import "UIAlertView+Blocks.h"
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
 #import "WPImageViewController.h"
 #import "WPRichTextView.h"
 #import "WPTableViewHandler.h"
-#import "WPToast.h"
 #import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 
 
@@ -62,10 +61,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
-@property (nonatomic, assign) UIDeviceOrientation previousOrientation;
+@property (nonatomic, assign) CGSize previousViewGeometry;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
-@property (nonatomic) BOOL canComment;
 @property (nonatomic) BOOL isLoggedIn;
 
 @end
@@ -100,10 +98,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.previousViewGeometry = self.view.frame.size;
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
     [self checkIfLoggedIn];
-    [self checkIfCanComment];
 
     [self configureNavbar];
     [self configurePostHeader];
@@ -125,8 +123,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillAppear:animated];
 
-    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
-        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+    if (!CGSizeEqualToSize(self.previousViewGeometry, CGSizeZero)) {
+        if (! CGSizeEqualToSize(self.previousViewGeometry, self.view.frame.size)) {
+            // Refresh cached row heights based on the new width
             [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
             [self.tableView reloadData];
         }
@@ -134,6 +133,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -147,79 +150,67 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillDisappear:animated];
 
-    self.previousOrientation = self.interfaceOrientation;
+    self.previousViewGeometry = self.view.frame.size;
 
     [self.replyTextView resignFirstResponder];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-    if ([UIDevice isPad]) {
-        return;
-    }
-
-    // Refresh cached row heights based on the width for the new orientation.
-    // Must happen before the table view calculates its content size / offset
-    // for the new orientation.
-    CGRect bounds = self.tableView.window.frame;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = CGRectGetHeight(bounds);
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = MIN(width, height);
-    } else {
-        width = MAX(width, height);
-    }
-    [self updateCellForLayoutWidthConstraint:width];
-    [self updateCachedMediaCellLayoutForWidth:width];
-
-    // Resize cells in the media cell cache
-    // No need to refresh on iPad when using a fixed width.
-    for (NSString *key in [self.mediaCellCache allKeys]) {
-        ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
-        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
-
-        [cell refreshMediaLayout];
-        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
-    }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     // Remove the no results view or else the position will abruptly adjust after rotation
     // due to the table view sizing for image preloading
     [self refreshNoResultsView];
 
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    // Avoid refreshing cells when there is no need.
+    if (![UIDevice isPad] && WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
+        // Refresh cached row heights based on the new width
+        [self updateCellsAndRefreshMediaForWidth:size.width];
+    }
+
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+        // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
+        if (selectedIndexPath) {
+            [self.replyTextView becomeFirstResponder];
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        
+        [self refreshNoResultsView];
+    }];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [super traitCollectionDidChange:previousTraitCollection];
 
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (IS_IPHONE) {
-        // DTCoreText can be cranky about refreshing its rendered text when its
-        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
-        // on the cell prior to reloading seems to force the cell's
-        // DTAttributedTextContentView to behave.
-        [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
-    }
+    [self.view layoutIfNeeded];
 
-    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
-    if (selectedIndexPath) {
-        [self.replyTextView becomeFirstResponder];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
+    [self.tableView reloadData];
+}
 
-    [self refreshNoResultsView];
+
+#pragma mark - Split View Support
+
+/**
+ We need to refresh media layout when the app's size changes due the the user adjusting
+ the split view grip. Respond to the UIApplicationDidBecomeActiveNotification notification
+ dispatched when the grip is changed and refresh media layout.
+ */
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    [self.view layoutIfNeeded];
+
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
+    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 
@@ -280,7 +271,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                             views:views]];
 
     self.postHeaderView = headerView;
-    self.postHeaderWrapper = headerWrapper;;
+    self.postHeaderWrapper = headerWrapper;
     [self.view addSubview:self.postHeaderWrapper];
 }
 
@@ -383,7 +374,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                            constant:0.0]];
 
     if ([UIDevice isPad]) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[postHeader(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
@@ -426,7 +417,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
     if ([UIDevice isPad]) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[replyTextView(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
@@ -485,6 +476,25 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
+// Call when changing orientation, or when split view size changes.
+- (void)updateCellsAndRefreshMediaForWidth:(CGFloat)width
+{
+    [self updateCellForLayoutWidthConstraint:width];
+    [self updateCachedMediaCellLayoutForWidth:width];
+
+    // Resize cells in the media cell cache
+    // No need to refresh on iPad when using a fixed width.
+    for (NSString *key in [self.mediaCellCache allKeys]) {
+        ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
+        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
+
+        [cell refreshMediaLayout];
+        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    }
+
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
 - (void)updateCellForLayoutWidthConstraint:(CGFloat)width
 {
     if (self.cellForLayoutWidthConstraint) {
@@ -513,7 +523,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
     if (!hash) {
-        [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+        [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
         return;
     }
 
@@ -523,17 +533,12 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+    [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
     [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
         if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
             [cell setAvatarImage:image];
         }
     }];
-}
-
-- (void)checkIfCanComment
-{
-    self.canComment = self.post.commentsOpen && self.isLoggedIn;
 }
 
 - (void)checkIfLoggedIn
@@ -583,6 +588,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
+}
+
+- (BOOL)canComment
+{
+    return self.post.commentsOpen && self.isLoggedIn;
 }
 
 - (BOOL)shouldDisplayReplyTextView
@@ -755,23 +765,36 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     __typeof(self) __weak weakSelf = self;
+    ReaderPost *post = self.post;
     void (^successBlock)() = ^void() {
-        [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
+        NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+        properties[WPAppAnalyticsKeyPostID] = post.postID;
+        properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+        if (post.feedID && post.feedItemID) {
+            properties[WPAppAnalyticsKeyFeedID] = post.feedID;
+            properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
+        }
+        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"Error sending reply: %@", error);
-        [UIAlertView showWithTitle:nil
-                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                              if (buttonIndex != alertView.cancelButtonIndex) {
-                                  [weakSelf sendReplyWithNewContent:content];
-                              }
-                          }];
+
+        NSString *alertMessage = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
+        NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
+        NSString *alertTryAgain = NSLocalizedString(@"Try Again", @"A button label. Tapping the re-tries an action that previously failed.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:alertMessage
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController addActionWithTitle:alertTryAgain style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [weakSelf sendReplyWithNewContent:content];
+        }];
+        [alertController presentFromRootViewController];
     };
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -979,7 +1002,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = [UIDevice isPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
@@ -1084,25 +1107,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     Comment *comment = (Comment *)contentProvider;
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    if (!indexPath) {
+        return;
+    }
 
-    // HACK:
-    // For some reason, a single call to reloadRowsAtIndexPath can result in an
-    // invalid row height. Calling twice seems to prevent any layout errors at
-    // the expense of an extra layout pass.
-    // Wrapping the calls in a performWithoutAnimation block ensures the are no
-    // strange transitions from the old height to the new.
-    // BOTH calls to reloadRowsAtIndexPaths:withRowAnimation are needed to avoid
-    // visual oddity.
-    [UIView performWithoutAnimation:^{
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
+    [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    [self.tableView reloadData];
 }
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1143,7 +1158,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1156,7 +1171,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (isSupportedNatively) {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
     } else if (imageControl.linkURL) {
-        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
+        WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:imageControl.linkURL];
         controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
@@ -1180,9 +1195,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
-    [detailsViewController setShouldHideComments:YES];
-    [self.navigationController pushViewController:detailsViewController animated:YES];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
+    controller.shouldHideComments = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 

@@ -1,0 +1,70 @@
+{
+    "ID"                : 123,
+    "name"              : "My Epic Blog",
+    "description"       : "Definitely, the best blog out there",
+    "URL"               : "http:\/\/my-epic-blog.wordpress.com",
+    "lang"              : "en-US",
+    "settings": {
+        "admin_url"                             : "http:\/\/my-epic-blog.wordpress.com\/wp-admin\/",
+        "default_ping_status"                   : true,
+        "default_comment_status"                : true,
+        "blog_public"                           : 1,
+        "jetpack_sync_non_public_post_stati"    : false,
+        "jetpack_relatedposts_allowed"          : true,
+        "jetpack_relatedposts_enabled"          : false,
+        "jetpack_relatedposts_show_headline"    : true,
+        "jetpack_relatedposts_show_thumbnails"  : false,
+        "default_category"                      : 8,
+        "post_categories": [
+                                {
+                                    "value": "6",
+                                    "name": "iOS"
+                                },
+                                {
+                                    "value": "7",
+                                    "name": "News"
+                                },
+                                {
+                                    "value": "15",
+                                    "name": "Offtopic"
+                                },
+                                {
+                                    "value": "8",
+                                    "name": "OSX"
+                                }],
+        "default_post_format"                   : "standard",
+        "default_pingback_flag"                 : true,
+        "require_name_email"                    : false,
+        "comment_registration"                  : true,
+        "close_comments_for_old_posts"          : false,
+        "close_comments_days_old"               : 3000,
+        "thread_comments"                       : true,
+        "thread_comments_depth"                 : 5,
+        "page_comments"                         : true,
+        "comments_per_page"                     : 5,
+        "default_comments_page"                 : "newest",
+        "comment_order"                         : "desc",
+        "comments_notify"                       : true,
+        "moderation_notify"                     : true,
+        "social_notifications_like"             : true,
+        "social_notifications_reblog"           : false,
+        "social_notifications_subscribe"        : false,
+        "comment_moderation"                    : true,
+        "comment_whitelist"                     : true,
+        "comment_max_links"                     : 42,
+        "moderation_keys"                       : "moderation keys",
+        "blacklist_keys"                        : "some evil keywords",
+        "lang_id"                               : 31337,
+        "wga"                                   : false,
+        "disabled_likes"                        : false,
+        "disabled_reblogs"                      : false,
+        "jetpack_comment_likes_enabled"         : false,
+        "twitter_via"                           : "",
+        "jetpack-twitter-cards-site-tag"        : "",
+        "eventbrite_api_token"                  : null,
+        "jetpack_protect_whitelist"             :   {
+                                                        "local" : [],
+                                                        "global": []
+                                                    }
+    }
+}

@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 @objc public class NoteBlockTableViewCell : WPTableViewCell
 {
@@ -14,7 +14,7 @@ import Foundation
             refreshSeparators()
         }
     }
-    public var separatorsView           = NoteSeparatorsView()
+    public var separatorsView           = SeparatorsView()
     
     // MARK: - Public Methods
     public func refreshSeparators() {

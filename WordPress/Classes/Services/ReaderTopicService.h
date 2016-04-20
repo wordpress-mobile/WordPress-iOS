@@ -5,17 +5,17 @@ extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
-@class ReaderTopic;
-@class ReaderSite;
-@class ReaderPost;
+@class ReaderAbstractTopic;
+@class ReaderTagTopic;
+@class ReaderSiteTopic;
 
-@interface ReaderTopicService : NSObject <LocalCoreDataService>
+@interface ReaderTopicService : LocalCoreDataService
 
 /**
  Sets the currentTopic and dispatches the `ReaderTopicDidChangeNotification` notification.
  Passing `nil` for the topic will not dispatch the notification.
  */
-@property (nonatomic) ReaderTopic *currentTopic;
+@property (nonatomic) ReaderAbstractTopic *currentTopic;
 
 /**
  Fetches the topics for the reader's menu.
@@ -26,11 +26,17 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
- Counts the number of ReaderTopics of type `ReaderTopicTypeTag` the user has subscribed to.
+ Counts the number of `ReaderTagTopics` the user has subscribed to.
  
- @return The number of ReaderTopics whose `isSubscribed` property is set to `YES`
+ @return The number of ReaderTagTopics whose `followed` property is set to `YES`
  */
 - (NSUInteger)numberOfSubscribedTopics;
+
+/**
+ Deletes all topics that do not appear in the menu from core data and saves the context.
+ Use to clean-up previewed topics that are lingering in core data.
+ */
+- (void)deleteNonMenuTopics;
 
 /**
  Deletes all topics from core data and saves the context. Call when switching accounts.
@@ -40,55 +46,106 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 /**
  Deletes a specific topic from core data and saves the context. Use to clean up previewed topics.
  */
-- (void)deleteTopic:(ReaderTopic *)topic;
+- (void)deleteTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Marks the specified topic as being subscribed, and marks it current.
  
- @param topic The ReaderTopic to follow and make current.
+ @param topic The ReaderAbstractTopic to follow and make current.
  */
-- (void)subscribeToAndMakeTopicCurrent:(ReaderTopic *)topic;
+- (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic;
+
+/**
+ Unfollows the specified topic. If the specified topic was the current topic the 
+ current topic is updated to a default.
+
+ @param topic The ReaderAbstractTopic to unfollow.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+
+- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Unfollows the specified topic
 
- @param topic The ReaderTopic to unfollow.
+ @param topic The ReaderAbstractTopic to unfollow.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
- Follow the topic with the specified name
+ Follow the tag with the specified name
  
- @param topicName The name of a tag to follow.
+ @param tagName The name of a tag to follow.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)followTagNamed:(NSString *)tagName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Follow the tag with the specified slug
+
+ @param tagName The name of a tag to follow.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Toggle the following status of the tag for the specified tag topic
+
+ @param topic The tag topic to toggle following status
+ @param success block called on a successful change.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleFollowingForTag:(ReaderTagTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Toggle the following status of the site for the specified site topic
+
+ @param topic The site topic to toggle following status
+ @param success block called on a successful change.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
 
  Fetch the topic for 'sites I follow' if it exists.
 
- @return A `ReaderTopic` instance or nil.
+ @return A `ReaderAbstractTopic` instance or nil.
  */
-- (ReaderTopic *)topicForFollowedSites;
+- (ReaderAbstractTopic *)topicForFollowedSites;
 
 /**
- Compose the topic for a single followed site.
+ Fetch a tag topic for a tag with the specified slug.
 
- @param site The ReaderSite of the topic to return.
- @return A `ReaderTopic` instance.
+ @param slug The slug for the tag.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (ReaderTopic *)siteTopicForSite:(ReaderSite *)site;
+- (void)tagTopicForTagWithSlug:(NSString *)slug
+                       success:(void(^)(NSManagedObjectID *objectID))success
+                       failure:(void (^)(NSError *error))failure;
 
 /**
- Compose the topic for a posts site.
+ Fetch a site topic for a site with the specified ID.
 
- @param post The ReaderPost whose site we want to compose into a topic
- @return A `ReaderTopic` instance.
+ @param siteID The ID of the site .
+ @param isFeed True if the site is a feed.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (ReaderTopic *)siteTopicForPost:(ReaderPost *)post;
+- (void)siteTopicForSiteWithID:(NSNumber *)siteID
+                        isFeed:(BOOL)isFeed
+                       success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
+                       failure:(void (^)(NSError *error))failure;
 
+@end
+
+@interface ReaderTopicService (Tests)
+- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)())success;
+- (NSString *)formatTitle:(NSString *)str;
 @end

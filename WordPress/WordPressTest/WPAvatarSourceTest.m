@@ -1,6 +1,7 @@
-#import <XCTest/XCTest.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
-#import <MGImageUtilities/UIImage+ProportionalFill.h>
+@import XCTest;
+@import OHHTTPStubs;
+@import OHHTTPStubs.OHPathHelpers;
+@import MGImageUtilities;
 
 #import "WPAvatarSource.h"
 
@@ -16,11 +17,13 @@
 {
     [super setUp];
 
-    _source = [WPAvatarSource sharedSource];
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    _source = [WPAvatarSource new];
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL host] isEqualToString:@"gravatar.com"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:@"misteryman.jpg" contentType:@"image/jpeg" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(@"misteryman.jpg", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"image/jpeg"}];
     }];
 }
 
@@ -28,7 +31,7 @@
 {
     _source = nil;
     [_source performSelector:@selector(purgeCaches)];
-    [OHHTTPStubs removeAllRequestHandlers];
+    [OHHTTPStubs removeAllStubs];
 
     [super tearDown];
 }
@@ -46,7 +49,7 @@
         XCTAssertEqual(image.size.width, 48.f, @"avatar should be resized");
         [fetchExpectation fulfill];
     }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNotNil(image, @"avatar should be in cache");

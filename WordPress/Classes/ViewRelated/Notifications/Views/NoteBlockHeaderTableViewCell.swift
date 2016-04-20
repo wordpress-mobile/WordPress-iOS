@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
 
 @objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
@@ -38,13 +38,10 @@ import Foundation
             return
         }
         
-        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
-        let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithFadeInAnimation(image)
-        }
+        let placeholderImage = Style.gravatarPlaceholderImage
+        let gravatar = url.flatMap { Gravatar($0) }
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
 
-        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
-        
         gravatarURL = url
     }
     
@@ -53,14 +50,13 @@ import Foundation
         super.awakeFromNib()
         
         accessoryType                   = .DisclosureIndicator
-        contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
-        backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
-        headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleBoldFont
-        headerTitleLabel.textColor      = WPStyleGuide.Notifications.headerTitleColor
-        headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsRegularFont
-        headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
-        gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
+        backgroundColor                 = Style.blockBackgroundColor
+        headerTitleLabel.font           = Style.headerTitleBoldFont
+        headerTitleLabel.textColor      = Style.headerTitleColor
+        headerDetailsLabel.font         = Style.headerDetailsRegularFont
+        headerDetailsLabel.textColor    = Style.headerDetailsColor
+        gravatarImageView.image         = Style.gravatarPlaceholderImage
         
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
@@ -76,6 +72,9 @@ import Foundation
     }
     
 
+    // MARK: - Private Alias
+    private typealias Style = WPStyleGuide.Notifications
+    
     // MARK: - Private
     private let gravatarImageSizePad:               CGSize      = CGSize(width: 36.0, height: 36.0)
     private var gravatarURL:                        NSURL?

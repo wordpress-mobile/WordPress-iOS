@@ -1,11 +1,12 @@
 #import "RecommendedTopicsViewController.h"
-#import "WPStyleGuide.h"
-#import "ReaderTopicService.h"
-#import "ReaderTopic.h"
-#import "ContextManager.h"
-#import "WPTableViewHandler.h"
-#import "WPAccount.h"
+
 #import "AccountService.h"
+#import "ContextManager.h"
+#import "ReaderTopicService.h"
+#import "WPAccount.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewHandler.h"
+#import "WordPress-Swift.h"
 
 @interface RecommendedTopicsViewController ()<WPTableViewHandlerDelegate>
 
@@ -24,8 +25,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended tags.");
+    if ([self isWPComUser]) {
+        self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended topics when signed into wpcom.");
+    } else {
+        self.title = NSLocalizedString(@"Menu", @"Page title for the list of recommended topics when not signed into wpcom.");
+    }
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -43,6 +47,7 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -64,10 +69,10 @@
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return [defaultAccount isWpcom];
+    return defaultAccount != nil;
 }
 
-- (ReaderTopic *)currentTopic
+- (ReaderAbstractTopic *)currentTopic
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
@@ -80,7 +85,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    ReaderTopic *topic = [self currentTopic];
+    ReaderAbstractTopic *topic = [self currentTopic];
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -98,21 +103,22 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (NSString *)entityName
-{
-    return @"ReaderTopic";
-}
-
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
     if ([self isWPComUser]) {
         // Just fetch popular/recommended tags
-        request.predicate = [NSPredicate predicateWithFormat:@"(topicID > 0 AND isSubscribed = NO) AND (isMenuItem = YES)"];
+        NSString *type = [ReaderTagTopic TopicType];
+        request.predicate = [NSPredicate predicateWithFormat:@"type = %@ AND following = NO AND showInMenu = YES", type];
+
     } else {
-        // fetch popular/recommended tags + any default lists
-        request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = NO) AND (isMenuItem = YES)"];
+        // Self-hosted user. Fetch popular/recommended tags + any default lists
+        NSArray *types = @[
+                           [ReaderDefaultTopic TopicType],
+                           [ReaderListTopic TopicType],
+                           [ReaderTagTopic TopicType],
+                           ];
+        request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND showInMenu = YES", types];
     }
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
@@ -135,7 +141,7 @@
         // A work around is to only style the cells when not displaying text.
         [WPStyleGuide configureTableViewCell:cell];
     }
-    ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
@@ -148,7 +154,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if ([self isWPComUser]) {
         // Subscribe to this recommended topic.
         ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -164,12 +170,17 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if ([self.tableView numberOfSections] > 1 && section == 0) {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
-}
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
