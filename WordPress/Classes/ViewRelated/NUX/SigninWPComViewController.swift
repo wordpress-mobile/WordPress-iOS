@@ -196,6 +196,7 @@ import WordPressShared
 
     func signinToSelfHostedSite() {
         let controller = SigninSelfHostedViewController.controller(loginFields);
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -278,6 +279,7 @@ extension SigninWPComViewController: LoginFacadeDelegate {
         // Credentials were good but a 2fa code is needed.
         loginFields.shouldDisplayMultifactor = true // technically not needed
         let controller = Signin2FAViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 }
