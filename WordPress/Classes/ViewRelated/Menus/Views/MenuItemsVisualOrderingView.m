@@ -73,7 +73,7 @@
     contentLayer.shadowRadius = 10.0;
     contentLayer.shadowOffset = CGSizeMake(0, 0);
     
-    NSLayoutConstraint *heightConstraint = [orderingView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [orderingView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.active = YES;
     
     [self addSubview:orderingView];

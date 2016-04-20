@@ -18,7 +18,7 @@
 
 @end
 
-CGFloat const MenuItemsStackableViewDefaultHeight = 54.0;
+CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
 @interface MenuItemsStackableView ()
 
@@ -77,6 +77,8 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 54.0;
                                               ]];
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.top = 8.0;
+    margins.bottom = 8.0;
     margins.left = MenusDesignDefaultContentSpacing;
     margins.right = MenusDesignDefaultContentSpacing;
     stackView.layoutMargins = margins;
@@ -107,11 +109,20 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 54.0;
         label.font = [WPFontManager systemRegularFontOfSize:17.0];
         label.backgroundColor = [UIColor clearColor];
         [stackView addArrangedSubview:label];
-        [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
         [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         self.textLabel = label;
     }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    /* Set the preferredMaxLayoutWidth to give a heads up to the constraint resolver.
+       This speeds things up when hiding views such as the accessoryStackView's arranged views.
+     */
+    self.textLabel.preferredMaxLayoutWidth = self.accessoryStackView.frame.origin.x - self.textLabel.frame.origin.x;
 }
 
 #pragma mark - instance
