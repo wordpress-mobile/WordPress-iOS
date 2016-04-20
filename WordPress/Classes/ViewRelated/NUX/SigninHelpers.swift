@@ -14,7 +14,7 @@ import WordPressComAnalytics
     }
 
 
-    // Helper used by app delegate
+    // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         if useNewSigninFlow() {
             let controller = SigninEmailViewController.controller();
@@ -39,7 +39,7 @@ import WordPressComAnalytics
             let controller = LoginViewController()
             controller.showEditorAfterAddingSites = thenEditor
             controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
-            controller.dismissBlock = { (cancelled) in
+            controller.dismissBlock = { (_) in
                 presenter.dismissViewControllerAnimated(true, completion: nil)
             }
 
@@ -50,23 +50,46 @@ import WordPressComAnalytics
     }
 
 
+    // Helper used by the MeViewController
+    class func showSigninForJustWPComFromPresenter(presenter: UIViewController) {
+        if useNewSigninFlow() {
+            let controller = SigninEmailViewController.controller();
+            controller.restrictSigninToWPCom = true
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: true, completion: nil)
+        } else {
+
+            let controller = LoginViewController()
+            controller.onlyDotComAllowed = true
+            controller.cancellable = true
+            controller.dismissBlock = { (_)in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
+            presenter.presentViewController(navigation, animated: true, completion: nil)
+        }
+    }
+
+
     // Helper used by the BlogListViewController
-    class func showSigninForSelfHostedSite(presentingController: UIViewController) {
+    class func showSigninForSelfHostedSite(presenter: UIViewController) {
         if useNewSigninFlow() {
             let controller = SigninSelfHostedViewController.controller(LoginFields())
             let navController = NUXNavigationController(rootViewController: controller)
-            presentingController.presentViewController(navController, animated: true, completion: nil)
+            presenter.presentViewController(navController, animated: true, completion: nil)
 
         } else {
             let controller = LoginViewController()
             controller.cancellable = true
             controller.prefersSelfHosted = true
-            controller.dismissBlock = {(canceled) in
-                presentingController.dismissViewControllerAnimated(true, completion: nil)
+            controller.dismissBlock = {(_) in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
             }
 
-            let navController = UINavigationController(rootViewController: controller)
-            presentingController.presentViewController(navController, animated: true, completion: nil)
+            let navController = RotationAwareNavigationViewController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: true, completion: nil)
         }
     }
 
@@ -107,8 +130,10 @@ import WordPressComAnalytics
     class func showSigninForWPComFixingAuthToken() {
         let controller = signinForWPComFixingAuthToken(nil)
         if useNewSigninFlow() {
+            let presenter = UIApplication.sharedApplication().keyWindow?.rootViewController
             let navController = NUXNavigationController(rootViewController: controller)
-            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(navController, animated: true, completion: nil)
+            presenter?.presentViewController(navController, animated: true, completion: nil)
+
         } else {
             LoginViewController.presentModalReauthScreen()
         }
