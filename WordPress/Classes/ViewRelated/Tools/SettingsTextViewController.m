@@ -8,18 +8,27 @@
 
 #pragma mark - Constants
 
-static CGFloat const HorizontalMargin = 15.0f;
+static CGFloat const SettingsTextHorizontalMargin = 15.0f;
 
+typedef NS_ENUM(NSInteger, SettingsTextSections) {
+    SettingsTextSectionsTextfield = 0,
+    SettingsTextSectionsAction,
+    SettingsTextSectionsCount
+};
 
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
+@property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
+@property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
 @property (nonatomic, strong) NSString          *hint;
 @property (nonatomic, strong) NSString          *placeholder;
 @property (nonatomic, strong) NSString          *text;
+@property (nonatomic, assign) BOOL              doneButtonEnabled;
+@property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
 
 
@@ -44,6 +53,7 @@ static CGFloat const HorizontalMargin = 15.0f;
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
+        _shouldNotifyValue = YES;
     }
     return self;
 }
@@ -54,6 +64,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -61,7 +72,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupNavigationButtonsIfNeeded];
+    [self setupNoticeAnimatorIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,45 +86,52 @@ static CGFloat const HorizontalMargin = 15.0f;
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
-    if (self.displaysNavigationButtons == NO) {
+    if (self.shouldNotifyValue) {
         [self notifyValueDidChangeIfNeeded];
     }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.noticeAnimator layout];
 }
 
 
 #pragma mark - NavigationItem Buttons
 
-- (void)setupNavigationButtonsIfNeeded
+- (void)cancel
 {
-    if (self.displaysNavigationButtons == NO) {
+    self.shouldNotifyValue = NO;
+    [self dismissViewController];
+}
+
+- (void)confirm
+{
+    [self dismissViewController];
+}
+
+- (void)setupNoticeAnimatorIfNeeded
+{
+    if (self.notice == nil) {
         return;
     }
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelButtonWasPressed:)];
-    
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(doneButtonWasPressed:)];
-    
-    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
-}
-
-- (IBAction)cancelButtonWasPressed:(id)sender
-{
-    [self dismissViewController];
-}
-
-- (IBAction)doneButtonWasPressed:(id)sender
-{
-    [self notifyValueDidChangeIfNeeded];
-    [self dismissViewController];
+    self.noticeAnimator = [[NoticeAnimator alloc] initWithTarget:self.view];
+    [self.noticeAnimator animateMessage:self.notice];
 }
 
 
 #pragma mark - Validation
+
+- (void)startListeningTextfieldChanges
+{
+    // Hook up to Change Events
+    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
+    
+    // Fire initial status
+    [self validateTextInput:_textField];
+}
 
 - (BOOL)textPassesValidation
 {
@@ -123,7 +141,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (void)validateTextInput:(id)sender
 {
-    self.navigationItem.rightBarButtonItem.enabled = [self textPassesValidation];
+    self.doneButtonEnabled = [self textPassesValidation];
 }
 
 
@@ -142,9 +160,24 @@ static CGFloat const HorizontalMargin = 15.0f;
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [_textFieldCell.contentView addSubview:self.textField];
-    _textField.frame = CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0);
+    _textField.frame = CGRectInset(_textFieldCell.bounds, SettingsTextHorizontalMargin, 0);
     
     return _textFieldCell;
+}
+
+- (WPTableViewCell *)actionCell
+{
+    if (_actionCell) {
+        return _actionCell;
+    }
+    _actionCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _actionCell.frame = CGRectInset(_actionCell.bounds, SettingsTextHorizontalMargin, 0);
+    _actionCell.textLabel.text = self.actionText;
+    _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [WPStyleGuide configureTableViewActionCell:_actionCell];
+    
+    return _actionCell;
 }
 
 - (UITextField *)textField
@@ -184,7 +217,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return _displaysActionButton ? SettingsTextSectionsCount : SettingsTextSectionsCount - 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -194,12 +227,26 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.textFieldCell;
+    if (indexPath.section == SettingsTextSectionsTextfield) {
+        return self.textFieldCell;
+    }
+    
+    return self.actionCell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return (section == SettingsTextSectionsTextfield) ? self.hintView : nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectSelectedRowWithAnimation:YES];
+    
+    if (indexPath.section == SettingsTextSectionsAction && self.onActionPress != nil) {
+        self.onActionPress();
+        [self dismissViewController];
+    }
 }
 
 
@@ -228,13 +275,16 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
+    UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
+        autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     
+    self.textField.autocapitalizationType = autocapitalizationType;
     self.textField.keyboardType = keyboardType;
     self.textField.secureTextEntry = requiresSecureTextEntry;
 }
@@ -246,7 +296,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     BOOL isValid = self.textPassesValidation;
     if (isValid) {
-        [self doneButtonWasPressed:self];
+        [self confirm];
     }
     
     return isValid;

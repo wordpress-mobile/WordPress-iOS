@@ -16,6 +16,7 @@
 #import "BlogSelectorViewController.h"
 
 #import "CommentService.h"
+#import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
 #import "CreateAccountAndBlogViewController.h"
