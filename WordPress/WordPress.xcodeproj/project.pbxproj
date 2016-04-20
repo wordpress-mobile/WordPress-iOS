@@ -313,6 +313,8 @@
 		93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */; };
 		93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1147E18EC5DD500DAC95C /* AccountService.m */; };
 		93C1148518EDF6E100DAC95C /* BlogService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1148418EDF6E100DAC95C /* BlogService.m */; };
+		93C2075A1CC7FF9C00C94D04 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
+		93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C2075C1CC7FFC800C94D04 /* Tracks+TodayWidget.swift */; };
 		93C3C2571CAB031E0092F837 /* Info-Internal.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C3C2561CAB031E0092F837 /* Info-Internal.plist */; };
 		93C3C2591CAB032C0092F837 /* Info-Alpha.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C3C2581CAB032C0092F837 /* Info-Alpha.plist */; };
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
@@ -1383,6 +1385,7 @@
 		93C1147E18EC5DD500DAC95C /* AccountService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountService.m; sourceTree = "<group>"; };
 		93C1148318EDF6E100DAC95C /* BlogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogService.h; sourceTree = "<group>"; };
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
+		93C2075C1CC7FFC800C94D04 /* Tracks+TodayWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+TodayWidget.swift"; sourceTree = "<group>"; };
 		93C3C2561CAB031E0092F837 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Internal.plist"; path = "WordPressShareExtension/Info-Internal.plist"; sourceTree = SOURCE_ROOT; };
 		93C3C2581CAB032C0092F837 /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = SOURCE_ROOT; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
@@ -3173,9 +3176,18 @@
 			name = Analytics;
 			sourceTree = "<group>";
 		};
+		93C2075B1CC7FFB100C94D04 /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+				93C2075C1CC7FFC800C94D04 /* Tracks+TodayWidget.swift */,
+			);
+			name = Tracks;
+			sourceTree = "<group>";
+		};
 		93E5283D19A7741A003A1A9C /* WordPressTodayWidget */ = {
 			isa = PBXGroup;
 			children = (
+				93C2075B1CC7FFB100C94D04 /* Tracks */,
 				93E5285719A7AA5C003A1A9C /* WordPressTodayWidget.entitlements */,
 				934884AC19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements */,
 				8546B4501BEAD4D100193C07 /* WordPressTodayWidget-Alpha.entitlements */,
@@ -5599,7 +5611,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */,
+				93C2075A1CC7FF9C00C94D04 /* Tracks.swift in Sources */,
 				93E5285519A778AF003A1A9C /* WPDDLogWrapper.m in Sources */,
+				93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */,
 				93E3D3C819ACE8E300B1C509 /* SFHFKeychainUtils.m in Sources */,
 				934884AB19B73BA6004028D8 /* Constants.m in Sources */,
 			);
