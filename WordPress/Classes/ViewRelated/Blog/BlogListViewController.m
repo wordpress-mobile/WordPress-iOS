@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
-#import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
 #import "WPBlogTableViewCell.h"
