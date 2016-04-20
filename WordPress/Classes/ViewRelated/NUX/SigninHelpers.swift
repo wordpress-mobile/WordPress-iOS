@@ -36,7 +36,7 @@ import WordPressComAnalytics
 
 
     // Helper used by WPAuthTokenIssueSolver
-    class func signinForWPComFixingAuthToken(onDismissed: (cancelled: Bool) -> Void) -> UIViewController {
+    class func signinForWPComFixingAuthToken(onDismissed: ((cancelled: Bool) -> Void)?) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
         if useNewSigninFlow() {
             let loginFields = LoginFields()
@@ -59,10 +59,22 @@ import WordPressComAnalytics
             controller.shouldReauthenticateDefaultAccount = true
             controller.cancellable = cancellable
             controller.dismissBlock = {(cancelled) in
-                onDismissed(cancelled: cancelled)
+                onDismissed?(cancelled: cancelled)
             }
 
             return controller
+        }
+    }
+
+
+    // Helper used by WPError
+    class func showSigninForWPComFixingAuthToken() {
+        let controller = signinForWPComFixingAuthToken(nil)
+        if useNewSigninFlow() {
+            let navController = NUXNavigationController(rootViewController: controller)
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(navController, animated: true, completion: nil)
+        } else {
+            LoginViewController.presentModalReauthScreen()
         }
     }
 

@@ -86,7 +86,7 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            [LoginViewController presentModalReauthScreen];
+            [SigninHelpers showSigninForWPComFixingAuthToken];
             return;
         }
     }
