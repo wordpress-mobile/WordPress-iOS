@@ -94,6 +94,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
         WPAppAnalytics.track(.LoginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -109,6 +110,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     @IBAction func handleUsePasswordTapped(sender: UIButton) {
         WPAppAnalytics.track(.LoginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 

@@ -210,6 +210,7 @@ import WordPressShared
     ///
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -218,6 +219,7 @@ import WordPressShared
     ///
     func signinToSelfHostedSite() {
         let controller = SigninSelfHostedViewController.controller(loginFields);
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -227,6 +229,7 @@ import WordPressShared
     ///
     func requestLink() {
         let controller = SigninLinkRequestViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
