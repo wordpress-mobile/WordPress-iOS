@@ -10,6 +10,13 @@ extern NSString *const WPJetpackInformationURL;
 extern NSString *const WPAutomatticMainURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
+extern NSString *const WPAutomatticAppsBlogURL;
+extern NSString *const WPGithubMainURL;
+extern NSString *const WPTwitterWordPressHandle;
+extern NSString *const WPTwitterWordPressMobileURL;
+
+extern NSString *const WPBlavatarBaseURL;
+extern NSString *const WPGravatarBaseURL;
 
 extern NSString *const WPNotificationsBucketName;
 
@@ -23,11 +30,11 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 
-extern BOOL const WPJetpackRESTEnabled;
-
 extern NSString *const WPiTunesAppId;
 
 extern NSString *const WPOnePasswordWordPressTitle;
 extern NSString *const WPOnePasswordWordPressComURL;
 extern NSInteger const WPOnePasswordGeneratedMinLength;
 extern NSInteger const WPOnePasswordGeneratedMaxLength;
+
+extern NSString *const WPComScheme;

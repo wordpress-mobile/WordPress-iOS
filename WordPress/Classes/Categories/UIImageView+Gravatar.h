@@ -11,7 +11,7 @@ extern NSString *const GravatarRatingX;
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress gravatarRating:(NSString *)rating;
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage;
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage gravatarRating:(NSString *)rating;
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl;
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl placeholderImage:(UIImage *)placeholderImage;
+- (void)setImageWithSiteIcon:(NSString *)siteIcon;
+- (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage;
 
 @end

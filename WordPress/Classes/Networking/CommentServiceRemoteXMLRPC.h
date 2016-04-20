@@ -2,6 +2,6 @@
 #import "CommentServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
-@interface CommentServiceRemoteXMLRPC : NSObject<CommentServiceRemote, ServiceRemoteXMLRPC>
+@interface CommentServiceRemoteXMLRPC : ServiceRemoteXMLRPC<CommentServiceRemote>
 
 @end

@@ -45,9 +45,9 @@ NSString * const CommentStatusDraft = @"draft";
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:@"hold"]) {
+    if ([status isEqualToString:CommentStatusPending]) {
         return NSLocalizedString(@"Pending moderation", @"");
-    } else if ([status isEqualToString:@"approve"]) {
+    } else if ([status isEqualToString:CommentStatusApproved]) {
         return NSLocalizedString(@"Comments", @"");
     }
 
@@ -138,8 +138,14 @@ NSString * const CommentStatusDraft = @"draft";
     return self.author_url.hostname;
 }
 
-- (BOOL)hasAuthorUrl {
+- (BOOL)hasAuthorUrl
+{
     return self.author_url && ![self.author_url isEqualToString:@""];
+}
+
+- (BOOL)isApproved
+{
+    return [self.status isEqualToString:CommentStatusApproved];
 }
 
 - (NSString *)contentForDisplay

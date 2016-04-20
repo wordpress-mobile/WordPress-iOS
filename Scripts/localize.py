@@ -135,13 +135,13 @@ def localize(path):
 
     if os.path.isfile(original):
         os.rename(original, old)
-        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" | grep -v Vendor`' % language)
+        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor`' % language)
         os.rename(original, new)
         merge(merged, old, new)
         os.remove(new)
         os.remove(old)
     else:
-        os.system('genstrings -q -o "%s" `find . -name "*.m"` | grep -v Vendor' % language)
+        os.system('genstrings -q -o "%s" `find . -name "*.m" -o -name "*.swift"` | grep -v Vendor' % language)
 
 if __name__ == '__main__':
     localize(os.path.join(os.getcwd(), 'WordPress'))

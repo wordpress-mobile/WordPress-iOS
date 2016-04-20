@@ -3,8 +3,12 @@
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"
+#import "NSString+Helpers.h"
 
-static NSDateFormatter *dateFormatter;
+static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@&hide_close=true";
+static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
+static NSString* const ThemeUrlSupport = @"https://wordpress.com/themes/%@/support/?preview=true&iframe=true";
+static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?preview=true&iframe=true";
 
 @implementation Theme
 
@@ -16,46 +20,52 @@ static NSDateFormatter *dateFormatter;
 @dynamic screenshotUrl;
 @dynamic trendingRank;
 @dynamic version;
+@dynamic author;
+@dynamic authorUrl;
 @dynamic tags;
 @dynamic name;
 @dynamic previewUrl;
+@dynamic price;
+@dynamic purchased;
+@dynamic demoUrl;
+@dynamic stylesheet;
+@dynamic order;
 @dynamic blog;
 
-+ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo
-                                    withBlog:(Blog*)blog
-                                 withContext:(NSManagedObjectContext *)context
+#pragma mark - CoreData helpers
+
++ (NSString *)entityName
 {
-    Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
-
-    Theme *theme;
-    NSSet *result = [contextBlog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
-    if (result.count > 1) {
-        theme = result.allObjects[0];
-    } else {
-        theme = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self)
-                                              inManagedObjectContext:context];
-        theme.themeId = themeInfo[@"id"];
-        theme.blog = contextBlog;
-    }
-
-    theme.name = themeInfo[@"name"];
-    theme.details = themeInfo[@"description"];
-    theme.trendingRank = themeInfo[@"trending_rank"];
-    theme.popularityRank = themeInfo[@"popularity_rank"];
-    theme.screenshotUrl = themeInfo[@"screenshot"];
-    theme.version = themeInfo[@"version"];
-    theme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
-    theme.tags = themeInfo[@"tags"];
-    theme.previewUrl = themeInfo[@"preview_url"];
-
-    if (!dateFormatter) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"YYYY-MM-dd";
-    }
-    theme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
-
-    return theme;
+    return NSStringFromClass([self class]);
 }
+
+#pragma mark - Links
+
+- (NSString *)customizeUrl
+{
+    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, self.stylesheet];
+    
+    return [self.blog adminUrlWithPath:path];
+}
+
+- (NSString *)detailsUrl
+{
+    NSString *homeUrl = self.blog.homeURL.hostname;
+
+    return [NSString stringWithFormat:ThemeUrlDetails, homeUrl, self.themeId];
+}
+
+- (NSString *)supportUrl
+{
+    return [NSString stringWithFormat:ThemeUrlSupport, self.themeId];
+}
+
+- (NSString *)viewUrl
+{
+    return [self.demoUrl stringByAppendingString:ThemeUrlDemoParameters];
+}
+
+#pragma mark - Misc
 
 - (BOOL)isCurrentTheme
 {
@@ -64,90 +74,7 @@ static NSDateFormatter *dateFormatter;
 
 - (BOOL)isPremium
 {
-    return [self.premium isEqualToNumber:@1];
-}
-
-@end
-
-@implementation Theme (PublicAPI)
-
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [[defaultAccount restApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
-        [backgroundMOC performBlock:^{
-            NSMutableArray *themesToKeep = [NSMutableArray array];
-            for (NSDictionary *t in responseObject[@"themes"]) {
-                Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog withContext:backgroundMOC];
-                [themesToKeep addObject:theme];
-            }
-
-            NSSet *existingThemes = ((Blog *)[backgroundMOC objectWithID:blog.objectID]).themes;
-            for (Theme *t in existingThemes) {
-                if (![themesToKeep containsObject:t]) {
-                    [backgroundMOC deleteObject:t];
-                }
-            }
-
-            [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
-
-            dateFormatter = nil;
-
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [[defaultAccount restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [blog.managedObjectContext performBlock:^{
-            blog.currentThemeId = responseObject[@"id"];
-            [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [[defaultAccount restApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.blog.managedObjectContext performBlock:^{
-            self.blog.currentThemeId = self.themeId;
-            [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    return [self.premium boolValue];
 }
 
 @end

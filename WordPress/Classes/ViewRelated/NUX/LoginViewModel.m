@@ -31,6 +31,11 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)initializeFacades
 {
     LoginFacade *loginFacade = [LoginFacade new];
@@ -59,11 +64,14 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self setupObservationForSignInButtonTitle];
     [self setupObserverationForTheSignInButtonsEnabledState];
     [self setupObserverationForTheToggleSignInButtonsVisibility];
+    [self setupObservationForApplicationDidEnterBackground];
 }
 
 - (LoginFields *)loginFields
 {
-    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:self.multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+    // Do not return the Multifactor Code, unless the field is actually onscreen!
+    NSString *multifactorCode = self.isMultifactorEnabled ? self.multifactorCode : nil;
+    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
 }
 
 - (void)signInButtonAction
@@ -100,7 +108,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
  
     NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrl;
     
-    [self.onePasswordFacade findLoginForURLString:loginURL viewController:viewController sender:sender completion:^(NSString *username, NSString *password, NSError *error) {
+    [self.onePasswordFacade findLoginForURLString:loginURL viewController:viewController sender:sender completion:^(NSString *username, NSString *password, NSString *oneTimePassword, NSError *error) {
         BOOL blankUsernameOrPassword = (username.length == 0) || (password.length == 0);
         if (blankUsernameOrPassword || (error != nil)) {
             if (error != nil) {
@@ -112,8 +120,15 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         self.username = username;
         self.password = password;
+        self.multifactorCode = oneTimePassword;
+        
         [self.presenter setUsernameTextValue:username];
         [self.presenter setPasswordTextValue:password];
+        [self.presenter setMultifactorTextValue:oneTimePassword];
+        
+        if (oneTimePassword) {
+            self.isMultifactorEnabled = YES;
+        }
         
         [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signInButtonAction];
@@ -359,6 +374,16 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     }];
 }
 
+- (void)setupObservationForApplicationDidEnterBackground
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)didEnterBackground:(NSNotification *)notification
+{
+    [self.presenter setPasswordSecureEntry:YES];
+}
+
 - (BOOL)isUrlValid:(NSString *)url
 {
     if (url.length == 0) {
@@ -466,6 +491,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode
 {
     [self dismissLoginMessage];
+    [self.presenter updateAutoFillLoginCredentialsIfNeeded:username password:self.password];
     
     if (self.shouldReauthenticateDefaultAccount) {
         [self.accountServiceFacade removeLegacyAccount:username];
@@ -477,46 +503,45 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 - (void)finishedLoginWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
 {
     [self dismissLoginMessage];
-    [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
+    [self createSelfHostedBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
 }
 
 - (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode
 {
+    id failureHandler = ^(NSError *error) {
+        [self dismissLoginMessage];
+        [self displayRemoteError:error];
+    };
+    
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
     WPAccount *account = [self.accountServiceFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
     [self.blogSyncFacade syncBlogsForAccount:account success:^{
-        // Dismiss the UI
-        [self dismissLoginMessage];
-        [self finishedLogin];
-        
-        // Hit the Tracker
-        NSDictionary *properties = @{
-                                     @"multifactor" : @(requiredMultifactorCode),
-                                     @"dotcom_user" : @(YES)
-                                     };
-        
-        [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
-        [WPAnalytics refreshMetadata];
-        
         // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
-    } failure:^(NSError *error) {
-        [self dismissLoginMessage];
-        [self displayRemoteError:error];
-    }];
+        [self.accountServiceFacade updateUserDetailsForAccount:account success:^{
+            // Dismiss the UI
+            [self dismissLoginMessage];
+            [self finishedLogin];
+            
+            // Hit the Tracker
+            NSDictionary *properties = @{
+                                         @"multifactor" : @(requiredMultifactorCode),
+                                         @"dotcom_user" : @(YES)
+                                         };
+            
+            [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
+            [WPAnalytics refreshMetadata];
+        } failure:failureHandler];
+    } failure:failureHandler];
 }
 
 
-- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username
-                                          password:(NSString *)password
-                                            xmlrpc:(NSString *)xmlrpc
-                                           options:(NSDictionary *)options
+- (void)createSelfHostedBlogWithUsername:(NSString *)username
+                                password:(NSString *)password
+                                  xmlrpc:(NSString *)xmlrpc
+                                 options:(NSDictionary *)options
 {
-    WPAccount *account = [self.accountServiceFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options finishedSync:^{
-        // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
+    [self.blogSyncFacade syncBlogWithUsername:username password:password xmlrpc:xmlrpc options:options finishedSync:^{
         [self finishedLogin];
     }];
 }

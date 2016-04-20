@@ -22,18 +22,16 @@
 /**
  *  This synchronizes a self hosted blog. This method will create a `Blog` object if a match isn't found.
  *
- *  @param account      a self hosted account.
  *  @param username     username for the self hosted blog.
  *  @param password     password for the self hosted blog.
  *  @param xmlrpc       xmlrpc url for the self hosted blog.
  *  @param options      options dictionary for the self hosted blog.
  *  @param finishedSync a block that's called when this is done.
  */
-- (void)syncBlogForAccount:(WPAccount *)account
-                  username:(NSString *)username
-                  password:(NSString *)password
-                    xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
-              finishedSync:(void(^)())finishedSync;
+- (void)syncBlogWithUsername:(NSString *)username
+                    password:(NSString *)password
+                      xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+                finishedSync:(void(^)())finishedSync;
 
 @end
 

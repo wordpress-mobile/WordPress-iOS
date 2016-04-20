@@ -5,12 +5,12 @@
  */
 typedef void(^LocationServiceCompletionBlock)(CLLocation *location, NSString *address, NSError *error);
 
+typedef void(^LocationServicePlacemarksCompletionBlock)(NSArray<CLPlacemark *> *placemarks, NSError *error);
 /**
  LocationServiceSource Error Codes
  */
 typedef NS_ENUM(NSUInteger, LocationServiceError) {
-    LocationServiceErrorLocationsUnavailable,
-    LocationServiceErrorLocationServiceTimedOut
+    LocationServiceErrorPermissionDenied
 };
 
 extern NSString *const LocationServiceErrorDomain;
@@ -42,11 +42,18 @@ extern NSString *const LocationServiceErrorDomain;
 @property (nonatomic, strong, readonly) NSString *lastGeocodedAddress;
 
 /**
- Check if location services are disabled.
-
- @return YES if services are disabled or restricted, or NO if the user has give permission, or has never been prompted for permission.
+ Check if location services are disabled system wide
+ 
+ @return YES if location services are disable system wide
  */
 - (BOOL)locationServicesDisabled;
+
+/**
+ Check if location services are denied or restricted.
+
+ @return YES if services are denied or restricted, or NO if the user has give permission, or has never been prompted for permission.
+ */
+- (BOOL)locationServicesDenied;
 
 /**
  Fetch the user's current location and do a reverse geolookup of its coordinates
@@ -71,5 +78,25 @@ extern NSString *const LocationServiceErrorDomain;
  @param location The location whose address needs to be found.
  */
 - (BOOL)hasAddressForLocation:(CLLocation *)location;
+
+/**
+ *  Search for placemarks that match the query for their name
+ *
+ *  @param query           the query string to use for search
+ *  @param completionBlock a block to be invoked when results are found or an error occurs.
+ */
+- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock;
+
+/**
+ *  Shows an alert for an error resulting from a location request
+ *
+ *  @param error the error message to use for creating the alert
+ */
+- (void)showAlertForLocationError:(NSError *)error;
+
+/**
+ *  Show an alert for when location services are disabled
+ */
+- (void)showAlertForLocationServicesDisabled;
 
 @end

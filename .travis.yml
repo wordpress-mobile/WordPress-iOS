@@ -1,19 +1,15 @@
+osx_image: xcode7.2
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
-xcode_sdk: iphonesimulator8.1
+xcode_sdk: iphonesimulator
 notifications:
   email: true
 install:
-- gem install cocoapods && pod install
-- ./Scripts/install-oclint.sh
-before_script:
-- xctool --version
+- gem install xcpretty-travis-formatter
+- pod install
 script:
-- ./Scripts/build.sh
-after_success:
-- ./Scripts/run-oclint.sh
-
+- Scripts/build.sh
 env:
   global:
     secure: Sw3dwkuh9QjVYvvxcVnVN/wHGlhGjAsJjmEfGfqKMJZusdbNCU6tIZ7nmU2cVHDhozoPG4bHK62FgOmc1PhANyEQLe7eICh+G9djr0VP6Rd4/LLbv052dqpSrshwzFLDHCUvjTfEiJsTbQeuQYX2zQqFqvxV5eOnFkMoG4vK7rQ=

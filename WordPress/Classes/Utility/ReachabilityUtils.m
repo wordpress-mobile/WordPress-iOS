@@ -1,10 +1,11 @@
 #import "ReachabilityUtils.h"
 #import "WordPressAppDelegate.h"
+#import "WordPress-Swift.h"
 
-@interface ReachabilityAlert : NSObject <UIAlertViewDelegate>
-@property(nonatomic, copy) void (^retryBlock)();
+@interface ReachabilityAlert : NSObject
+@property (nonatomic, copy) void (^retryBlock)();
 
-- (id)initWithRetryBlock:(void (^)())retryBlock;
+- (instancetype)initWithRetryBlock:(void (^)())retryBlock;
 
 - (void)show;
 @end
@@ -13,7 +14,7 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 @implementation ReachabilityAlert
 
-- (id)initWithRetryBlock:(void (^)())retryBlock
+- (instancetype)initWithRetryBlock:(void (^)())retryBlock
 {
     self = [super init];
     if (self) {
@@ -27,24 +28,30 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     if (__currentReachabilityAlert) {
         return;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Connection", @"")
-                                                        message:NSLocalizedString(@"The Internet connection appears to be offline.", @"")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                              otherButtonTitles:nil];
-    if (self.retryBlock) {
-        [alertView addButtonWithTitle:NSLocalizedString(@"Retry?", @"")];
-    }
-    [alertView show];
-    __currentReachabilityAlert = self;
-}
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    __currentReachabilityAlert = nil;
-    if (buttonIndex == 1 && self.retryBlock) {
-        self.retryBlock();
+    NSString *title = NSLocalizedString(@"No Connection", @"");
+    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"");
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
+        __currentReachabilityAlert = nil;
+    }];
+    
+    
+    if (self.retryBlock) {
+        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
+            self.retryBlock();
+            __currentReachabilityAlert = nil;
+        }];
     }
+    
+    // Note: This viewController might not be visible anymore
+    [alertController presentFromRootViewController];
+
+    __currentReachabilityAlert = self;
 }
 
 @end

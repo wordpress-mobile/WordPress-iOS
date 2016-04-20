@@ -1,4 +1,5 @@
 import Foundation
+import DTCoreText
 
 class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 {
@@ -41,7 +42,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         configureWebView()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         if let decodedWebView = aDecoder.decodeObjectForKey("webView") as? UIWebView {
             webView = decodedWebView
         } else {
@@ -63,7 +64,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     // MARK: Configuration
 
     func configureWebView() {
-        webView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         webView.scrollView.scrollEnabled = false
         webView.scalesPageToFit = true
         webView.delegate = self
@@ -112,7 +113,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     func loadHTMLString(html: NSString) {
-        var htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
+        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
@@ -123,7 +124,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         // Add the webView as a subview if it hasn't been already.
         if webView.superview == nil {
             // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
-            var viewport =  "var tid = setInterval( function () {" +
+            let viewport =  "var tid = setInterval( function () {" +
                 "if ( document.readyState !== 'complete' ) return;" +
                 "   clearInterval( tid );" +
                 "   viewport = document.querySelector('meta[name=viewport]'); " +
@@ -144,9 +145,8 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         success = nil
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        // TODO : Log error
-        // DDLogError()
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+        DDLogSwift.logError(error?.localizedDescription)
     }
 
 }

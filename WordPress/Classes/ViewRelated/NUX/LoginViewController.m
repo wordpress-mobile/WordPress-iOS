@@ -1,6 +1,6 @@
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <Helpshift/Helpshift.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <Helpshift/HelpshiftSupport.h>
+#import <WordPressShared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"
@@ -67,6 +67,11 @@
 // Measurements
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
 
+// SharedCredentials
+@property (nonatomic, assign) BOOL shouldAvoidRequestingSharedCredentials;
+@property (nonatomic, assign) NSUInteger autofilledUsernameCredentialHash;
+@property (nonatomic, assign) NSUInteger autofilledPasswordCredentialHash;
+
 @end
 
 
@@ -88,8 +93,17 @@ static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
 static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
+static UIEdgeInsets const LoginBackButtonTitleInsets            = {0.0, 7.0, 0.0, 15.0};
+static UIEdgeInsets const LoginBackButtonPadding                = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const LoginBackButtonPaddingPad             = {1.0, 13.0, 0.0, 0.0};
+
+static UIEdgeInsets const LoginHelpButtonPadding                = {1.0, 0.0, 0.0, 13.0};
+static UIEdgeInsets const LoginHelpButtonPaddingPad             = {1.0, 0.0, 0.0, 20.0};
+
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
 static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
+
+static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
 
 - (void)dealloc
 {
@@ -116,10 +130,21 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
     
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self
+                      selector:@selector(applicationWillEnterForegroundNotification:)
+                          name:UIApplicationWillEnterForegroundNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(applicationDidBecomeActiveNotification:)
+                          name:UIApplicationDidBecomeActiveNotification
+                        object:nil];
+    
     // Initialize Interface
     [self addMainView];
     [self addControls];
     [self bindToViewModel];
+    [self update3DTouchForLogIn];
 }
 
 - (void)bindToViewModel
@@ -149,6 +174,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     }
 }
 
+- (void)update3DTouchForLogIn
+{
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcutsIf3DTouchAvailable:self.cancellable];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -160,7 +191,23 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self autoFillLoginWithSharedWebCredentialsIfAvailable];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    // Previously we reloaded the interface in viewWillAppear:, however there were certain situations
+    // where the view's frame would be in the wrong orientation (e.g. after viewing the support view controller
+    // in landscape and then dismissing it) resulting in an incorrect layout.
+    // Fortunately, the frame is correct in viewWillLayoutSubviews.
     [self reloadInterface];
 }
 
@@ -171,17 +218,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration
-{
-    [self layoutControls];
-}
-
 
 #pragma mark - UITextField delegate methods
 
@@ -224,6 +264,117 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     return overlayView;
 }
 
+#pragma mark - AutoFill Authentication
+
+- (void)autoFillLoginWithSharedWebCredentialsIfAvailable
+{
+    if (self.prefersSelfHosted || !self.viewModel.userIsDotCom) {
+        // Ignore self-hosted autofilling since we can only autofill for the WordPress.com domain.
+        return;
+    }
+    
+    __weak __typeof(self)weakSelf = self;
+    [self requestSharedWebCredentials:^(NSString *username, NSString *password) {
+        
+        if (!username.length || !password.length) {
+            return;
+        }
+        if (!weakSelf.viewModel.userIsDotCom) {
+            // If the user has swtiched away from dotcom sign-in, swith back before autofilling
+            [weakSelf.viewModel toggleSignInFormAction];
+        }
+        
+        // Update the model
+        weakSelf.viewModel.username = username;
+        weakSelf.viewModel.password = password;
+        // Update the fields for display
+        [weakSelf setUsernameTextValue:username];
+        [weakSelf setPasswordTextValue:password];
+        
+        weakSelf.autofilledUsernameCredentialHash = [username hash];
+        weakSelf.autofilledPasswordCredentialHash = [password hash];
+        
+        [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginFilled];
+    }];
+}
+
+- (void)updateAutoFillLoginCredentialsIfNeeded:(NSString *)username password:(NSString *)password
+{
+    // Don't try and update credentials for self-hosted.
+    if (!self.viewModel.userIsDotCom) {
+        return;
+    }
+    
+    // If the user changed screen names, don't try and update/create a new shared web credential.
+    // We'll let Safari handle creating newly saved usernames/passwords.
+    if (self.autofilledUsernameCredentialHash != [username hash]) {
+        return;
+    }
+    
+    // If the user didn't change the password from previousl filled password no update is needed.
+    if (self.autofilledPasswordCredentialHash == [password hash]) {
+        return;
+    }
+    
+    // Update the shared credential
+    CFStringRef fqdnStr = (__bridge CFStringRef)LoginSharedWebCredentialFQDN;
+    CFStringRef usernameStr = (__bridge CFStringRef)username;
+    CFStringRef passwordStr = (__bridge CFStringRef)password;
+    SecAddSharedWebCredential(fqdnStr, usernameStr, passwordStr, ^(CFErrorRef  _Nullable error) {
+        if (error) {
+            DDLogError(@"Error occurred updating shared web credential: %@", error);
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginUpdated];
+        });
+    });
+}
+
+- (void)requestSharedWebCredentials:(void(^)(NSString *username, NSString *password))completion
+{
+    if (self.shouldAvoidRequestingSharedCredentials) {
+        return;
+    }
+    
+    // Disable repeat calls for shared credentials.
+    self.shouldAvoidRequestingSharedCredentials = YES;
+    CFStringRef fqdnStr = (__bridge CFStringRef)LoginSharedWebCredentialFQDN;
+    SecRequestSharedWebCredential(fqdnStr, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
+        
+        if (error != NULL) {
+            DDLogError(@"Completed requesting shared web credentials with: %@", error);
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, nil);
+                });
+            }
+            return;
+        }
+        
+        // Check if any credential values are available
+        if (CFArrayGetCount(credentials) > 0) {
+            
+            // There will only ever be one credential dictionary since the selection is automatically handled
+            CFDictionaryRef credentialDict =CFArrayGetValueAtIndex(credentials, 0);
+            CFStringRef userNameStr = CFDictionaryGetValue(credentialDict, kSecAttrAccount);
+            CFStringRef passwordStr = CFDictionaryGetValue(credentialDict, kSecSharedPassword);
+            if (userNameStr == NULL || passwordStr == NULL) {
+                // No complete shared credentials found, or credentials were saved as NULL values
+                return;
+            }
+            
+            NSString *userName = (__bridge NSString *)userNameStr;
+            NSString *password = (__bridge NSString *)passwordStr;
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(userName, password);
+                });
+            }
+        }
+    });
+}
+
 #pragma mark - 1Password Related
 
 - (void)displayOnePasswordEmptySiteAlert
@@ -232,13 +383,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
                                           @"Error message displayed when the user is Signing into a self hosted site and "
                                           @"tapped the 1Password Button before typing his siteURL");
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
-                                              otherButtonTitles:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertView show];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Accept", @"Accept Button Title") handler:nil];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Button Handlers
@@ -259,8 +410,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    [self.view endEditing:YES];
-    [self hideMultifactorTextfieldIfNeeded];
+    // When the verification code field is displayed, the username field is disabled which
+    // means that the 1Password button cannot be tapped directly (because it's the rightView of the username field).
+    // Instead, we can trigger 1Password if the background gesture recognizer detects a tap on the 1Password button.
+    CGPoint location = [tapGestureRecognizer locationOfTouch:0 inView:self.onePasswordButton];
+    if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
+        [self findLoginFromOnePassword:self];
+    } else {
+        [self.view endEditing:YES];
+        [self hideMultifactorTextfieldIfNeeded];
+    }
 }
 
 - (IBAction)signInButtonAction:(id)sender
@@ -285,7 +444,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(YES);
     }
 }
 
@@ -352,7 +511,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     helpBadge.textAlignment = NSTextAlignmentCenter;
     helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
     helpBadge.textColor = [UIColor whiteColor];
-    helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
+    helpBadge.font = [WPFontManager systemRegularFontOfSize:8.0];
     helpBadge.hidden = YES;
 
     // Add Username
@@ -457,8 +616,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setExclusiveTouch:YES];
+    [cancelButton setTitleEdgeInsets:LoginBackButtonTitleInsets];
+    [cancelButton.titleLabel setFont:[WPFontManager systemRegularFontOfSize:15.0]];
     [cancelButton sizeToFit];
-
+    
     // Add status label
     UILabel *statusLabel = [[UILabel alloc] init];
     statusLabel.font = [WPNUXUtility confirmationLabelFont];
@@ -537,19 +698,22 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     CGFloat textLabelX = (viewWidth - GeneralWalkthroughMaxTextWidth) * 0.5f;
     CGFloat buttonX = (viewWidth - GeneralWalkthroughButtonSize.width) * 0.5f;
     
+    UIEdgeInsets helpButtonPadding = [UIDevice isPad] ? LoginHelpButtonPaddingPad : LoginHelpButtonPadding;
+    UIEdgeInsets backButtonPadding = [UIDevice isPad] ? LoginBackButtonPaddingPad : LoginBackButtonPadding;
+    
     // Layout Help Button
-    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - GeneralWalkthroughStandardOffset;
-    CGFloat helpButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - helpButtonPadding.right;
+    CGFloat helpButtonY = GeneralWalkthroughStatusBarOffset + helpButtonPadding.top;
     self.helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(self.helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
-    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - helpButtonPadding.right + 5;
+    CGFloat helpBadgeY = GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
     self.helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(self.helpBadge.frame), CGRectGetHeight(self.helpBadge.frame)));
 
     // Layout Cancel Button
-    CGFloat cancelButtonX = 0;
-    CGFloat cancelButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    CGFloat cancelButtonX = backButtonPadding.left;
+    CGFloat cancelButtonY = GeneralWalkthroughStatusBarOffset + backButtonPadding.top;
     self.cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(self.cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
@@ -623,7 +787,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     }
 
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(NO);
     }
 }
 
@@ -761,7 +925,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
-            control.alpha = GeneralWalkthroughAlphaEnabled;
+            // Fix: Revert to Enabled only those fields that were, effectively, hidden!
+            if (control.alpha == GeneralWalkthroughAlphaHidden) {
+                control.alpha = GeneralWalkthroughAlphaEnabled;
+            }
         }
         
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
@@ -815,7 +982,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     loginViewController.onlyDotComAllowed = YES;
     loginViewController.shouldReauthenticateDefaultAccount = YES;
     loginViewController.cancellable = YES;
-    loginViewController.dismissBlock = ^{
+    loginViewController.dismissBlock = ^(BOOL cancelled){
         [rootViewController dismissViewControllerAnimated:YES completion:nil];
     };
     
@@ -869,6 +1036,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     self.passwordText.text = passwordText;
 }
 
+- (void)setPasswordSecureEntry:(BOOL)secureTextEntry;
+{
+    [self.passwordText setSecureTextEntry:secureTextEntry];
+}
+
 - (void)setSiteAlpha:(CGFloat)alpha
 {
     self.siteUrlText.alpha = alpha;
@@ -887,6 +1059,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (void)setMultifactorEnabled:(BOOL)enabled
 {
     self.multifactorText.enabled = enabled;
+}
+
+- (void)setMultifactorTextValue:(NSString *)multifactorText
+{
+    self.multifactorText.text = multifactorText;
 }
 
 - (void)setCancelButtonHidden:(BOOL)hidden
@@ -1013,7 +1190,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
                                @"Username": self.viewModel.username,
                                @"SiteURL": self.viewModel.siteUrl};
 
-    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
@@ -1039,6 +1216,21 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+#pragma mark - Notifications
+
+- (void)applicationWillEnterForegroundNotification:(NSNotification *)notification
+{
+    // If the user hasn't filled in a username and password, toggle the prompt for autofill when called on didBecomeActive.
+    if (self.usernameText.text.length == 0 && self.passwordText.text.length == 0) {
+        self.shouldAvoidRequestingSharedCredentials = NO;
+    }
+}
+
+- (void)applicationDidBecomeActiveNotification:(NSNotification *)notification
+{
+    [self autoFillLoginWithSharedWebCredentialsIfAvailable];
 }
 
 @end

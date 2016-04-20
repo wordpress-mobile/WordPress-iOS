@@ -7,20 +7,7 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
-@interface JetpackService ()
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@end
-
 @implementation JetpackService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-    return self;
-}
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
@@ -74,7 +61,7 @@
                              success:^(NSString *authToken) {
                                  [self.managedObjectContext performBlock:^{
                                      AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+                                     WPAccount *account = [accountService createOrUpdateAccountWithUsername:username authToken:authToken];
                                      BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      [self associateBlogIDs:blogIDs withJetpackAccount:account];
                                      if ([[accountService defaultWordPressComAccount] isEqual:account]) {
@@ -96,7 +83,7 @@
 - (void)associateBlogIDs:(NSArray *)blogIDs withJetpackAccount:(WPAccount *)account
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@ AND jetpackAccount = NULL", @NO];
+    request.predicate = [NSPredicate predicateWithFormat:@"account = NULL AND jetpackAccount = NULL"];
     NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
     NSSet *accountBlogIDs = [NSSet setWithArray:blogIDs];
     blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {

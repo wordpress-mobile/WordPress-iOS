@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Plan Post Purchase Page View Controller-->
+        <scene sceneID="oiW-rF-LNP">
+            <objects>
+                <viewController storyboardIdentifier="WordPress.PlanPostPurchasePageViewController" id="vJO-em-60i" customClass="PlanPostPurchasePageViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k9t-rH-Jbp"/>
+                        <viewControllerLayoutGuide type="bottom" id="4c6-bS-ojB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="osn-W0-3cA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUU-2m-nwk">
+                                <rect key="frame" x="60" y="329" width="480" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plan-premium-active" translatesAutoresizingMaskIntoConstraints="NO" id="VMO-qT-QAn">
+                                <rect key="frame" x="270" y="150" width="60" height="60"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpj-Yk-lXp" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="256" y="388" width="89" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Button"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="horizontalEdgeInset">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="verticalEdgeInset">
+                                        <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="actionButtonTapped" destination="vJO-em-60i" eventType="touchUpInside" id="Ecq-jN-Ujz"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
+                                <rect key="frame" x="20" y="287" width="560" height="26"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.58997290120000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" id="1VX-MR-Ugw"/>
+                            <constraint firstItem="kpj-Yk-lXp" firstAttribute="top" secondItem="gUU-2m-nwk" secondAttribute="baseline" constant="44" id="Cla-Ed-0As"/>
+                            <constraint firstItem="VMO-qT-QAn" firstAttribute="centerX" secondItem="osn-W0-3cA" secondAttribute="centerX" id="MAU-tX-lWj"/>
+                            <constraint firstItem="VMO-qT-QAn" firstAttribute="centerY" secondItem="osn-W0-3cA" secondAttribute="bottom" multiplier="0.3" id="XlD-NV-Y5G"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="centerY" secondItem="osn-W0-3cA" secondAttribute="centerY" id="ZHq-2A-jXF"/>
+                            <constraint firstItem="kpj-Yk-lXp" firstAttribute="centerX" secondItem="osn-W0-3cA" secondAttribute="centerX" id="kgT-aS-cif"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" constant="-40" id="nik-K3-ma9"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="firstBaseline" secondItem="kgW-JO-m1p" secondAttribute="firstBaseline" constant="37" id="qT7-wt-QtS"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" constant="40" id="xXs-Cg-mi9"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" id="ytW-bO-Nm9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="kpj-Yk-lXp" id="dcL-TV-2eC"/>
+                        <outlet property="descriptionLabel" destination="gUU-2m-nwk" id="rIg-ph-7xA"/>
+                        <outlet property="headingLabel" destination="kgW-JO-m1p" id="0Wk-5O-rHb"/>
+                        <outlet property="imageView" destination="VMO-qT-QAn" id="SA3-cR-pOv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pm2-dE-4gQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="7uv-vQ-AXI">
+                    <rect key="frame" x="0.0" y="0.0" width="1406" height="573"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="853" y="1059"/>
+        </scene>
+        <!--Plan Comparison View Controller-->
+        <scene sceneID="CYw-U0-oI7">
+            <objects>
+                <viewController storyboardIdentifier="WordPress.PlanComparisonViewController" id="s5h-iz-0HE" customClass="PlanComparisonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lq2-Q7-GhV"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ygn-aZ-YVi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DDG-cG-6UG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZY0-qL-r53">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftR-lg-UD4">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ba2-eJ-6aE">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="leading" secondItem="ftR-lg-UD4" secondAttribute="leading" id="2Zx-zX-Oqk"/>
+                                            <constraint firstAttribute="bottom" secondItem="Ba2-eJ-6aE" secondAttribute="bottom" id="ciG-Fi-9vX"/>
+                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="top" secondItem="ftR-lg-UD4" secondAttribute="top" id="jxy-j0-dHk"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ba2-eJ-6aE" secondAttribute="trailing" id="mMa-Dr-hN7"/>
+                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="height" secondItem="ftR-lg-UD4" secondAttribute="height" placeholder="YES" id="mek-QN-aIi" userLabel="Placeholder content height"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="delegate" destination="s5h-iz-0HE" id="JhT-Ps-vCX"/>
+                                        </connections>
+                                    </scrollView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0d-zt-grM">
+                                        <rect key="frame" x="0.0" y="540" width="600" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Ar8-74-nXx"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8En-Ia-Wlh">
+                                        <rect key="frame" x="0.0" y="541" width="600" height="59"/>
+                                        <subviews>
+                                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="HLT-dO-RyH">
+                                                <rect key="frame" x="8" y="8" width="584" height="43"/>
+                                                <color key="pageIndicatorTintColor" red="0.72326811719999995" green="0.869224102" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <action selector="pageControlChanged" destination="s5h-iz-0HE" eventType="valueChanged" id="I3s-63-M21"/>
+                                                </connections>
+                                            </pageControl>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="HLT-dO-RyH" secondAttribute="bottom" id="81N-Sg-1d8"/>
+                                            <constraint firstAttribute="height" constant="59" id="9sq-hY-CdS"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="trailing" secondItem="8En-Ia-Wlh" secondAttribute="trailingMargin" id="OiO-eD-sc9"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="leading" secondItem="8En-Ia-Wlh" secondAttribute="leadingMargin" id="dei-oZ-v5R"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="top" secondItem="8En-Ia-Wlh" secondAttribute="topMargin" id="mHh-yT-0WZ"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZY0-qL-r53" firstAttribute="top" secondItem="DDG-cG-6UG" secondAttribute="top" id="9aF-PV-qII"/>
+                            <constraint firstItem="Ygn-aZ-YVi" firstAttribute="top" secondItem="ZY0-qL-r53" secondAttribute="bottom" id="FF2-u9-9d4"/>
+                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="width" secondItem="DDG-cG-6UG" secondAttribute="width" placeholder="YES" id="HyI-ca-bSZ" userLabel="Placeholder content width"/>
+                            <constraint firstAttribute="trailing" secondItem="ZY0-qL-r53" secondAttribute="trailing" id="eQp-nW-JVq"/>
+                            <constraint firstItem="ZY0-qL-r53" firstAttribute="leading" secondItem="DDG-cG-6UG" secondAttribute="leading" id="eUm-og-PEa"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="divider" destination="f0d-zt-grM" id="at9-Wz-9lj"/>
+                        <outlet property="pageControl" destination="HLT-dO-RyH" id="lQJ-N9-WAz"/>
+                        <outlet property="planStackView" destination="Ba2-eJ-6aE" id="LYo-0W-yKg"/>
+                        <outlet property="scrollView" destination="ftR-lg-UD4" id="wfO-df-2xS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SjQ-fQ-CVI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853" y="-327"/>
+        </scene>
+        <!--Plan Detail View Controller-->
+        <scene sceneID="9Cj-IU-3xt">
+            <objects>
+                <viewController storyboardIdentifier="WordPress.PlanDetailViewController" id="msO-08-fqQ" customClass="PlanDetailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ass-i7-57P"/>
+                        <viewControllerLayoutGuide type="bottom" id="pmz-SB-Zco"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fcR-is-wCN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
+                                <rect key="frame" x="0.0" y="220" width="600" height="380"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
+                                    <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNB-K6-2G7" userLabel="Header View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nps-70-EDE" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="269" y="25" width="62" height="62"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="HN0-n6-ORp">
+                                        <rect key="frame" x="8" y="26" width="584" height="168"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-premium" translatesAutoresizingMaskIntoConstraints="NO" id="f6b-b4-ZgP" userLabel="Plan Image View">
+                                                <rect key="frame" x="262" y="0.0" width="60" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="MsP-RS-pGE"/>
+                                                    <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
+                                                <rect key="frame" x="24" y="72" width="536" height="59"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
+                                                        <rect key="frame" x="172" y="0.0" width="192" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
+                                                        <rect key="frame" x="108" y="22" width="321" height="16"/>
+                                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
+                                                        <rect key="frame" x="213" y="42" width="111" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="242" y="143" width="100" height="25"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                                <state key="normal" title="PURCHASE">
+                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="purchaseTapped" destination="msO-08-fqQ" eventType="touchUpInside" id="Wub-Tq-SYx"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="jAy-0N-D1K" firstAttribute="leading" secondItem="HN0-n6-ORp" secondAttribute="leading" constant="24" id="4mr-rU-aLN"/>
+                                            <constraint firstAttribute="trailing" secondItem="jAy-0N-D1K" secondAttribute="trailing" constant="24" id="oZ4-Ve-ine"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="HN0-n6-ORp" secondAttribute="bottom" constant="26" id="5eP-AO-KFL"/>
+                                    <constraint firstItem="HN0-n6-ORp" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="top" constant="26" id="776-sg-xlU"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="trailing" secondItem="f6b-b4-ZgP" secondAttribute="trailing" constant="1" id="EAa-eq-6bk"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="top" secondItem="f6b-b4-ZgP" secondAttribute="top" constant="-1" id="F1s-SM-4v2"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="bottom" secondItem="f6b-b4-ZgP" secondAttribute="bottom" constant="1" id="QCU-tk-yh6"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="HN0-n6-ORp" secondAttribute="trailing" id="Z7D-8c-oE8"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="leading" secondItem="f6b-b4-ZgP" secondAttribute="leading" constant="-1" id="a3m-ZB-Ixh"/>
+                                    <constraint firstItem="HN0-n6-ORp" firstAttribute="leading" secondItem="rNB-K6-2G7" secondAttribute="leadingMargin" id="j5R-Fl-do0"/>
+                                    <constraint firstAttribute="height" constant="220" id="sLG-6E-6KH"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DH7-9o-kVF" secondAttribute="trailing" id="OaT-lM-4xZ"/>
+                            <constraint firstItem="rNB-K6-2G7" firstAttribute="top" secondItem="fcR-is-wCN" secondAttribute="top" id="Ul2-UZ-024"/>
+                            <constraint firstItem="rNB-K6-2G7" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="VlG-44-X0n"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="bottom" id="b5b-Vf-JcK"/>
+                            <constraint firstAttribute="trailing" secondItem="rNB-K6-2G7" secondAttribute="trailing" id="eMP-hP-ITW"/>
+                            <constraint firstItem="pmz-SB-Zco" firstAttribute="top" secondItem="DH7-9o-kVF" secondAttribute="bottom" id="fIy-oq-t4Y"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="fKb-1A-xjy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dropshadowImageView" destination="nps-70-EDE" id="fyT-av-Rh8"/>
+                        <outlet property="headerInfoStackView" destination="jAy-0N-D1K" id="JdG-2j-zaW"/>
+                        <outlet property="planDescriptionLabel" destination="edq-hC-GnQ" id="8Cy-Z5-E3i"/>
+                        <outlet property="planImageView" destination="f6b-b4-ZgP" id="6nb-u6-9DE"/>
+                        <outlet property="planPriceLabel" destination="Fju-eH-OS6" id="pPs-DS-Dzv"/>
+                        <outlet property="planTitleLabel" destination="isU-1g-ArF" id="7ON-Pb-HTu"/>
+                        <outlet property="purchaseButton" destination="WJf-48-mlv" id="MaJ-C0-mTb"/>
+                        <outlet property="tableView" destination="DH7-9o-kVF" id="rTb-5w-w0a"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kob-RF-LBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853" y="366"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="plan-premium" width="60" height="60"/>
+        <image name="plan-premium-active" width="60" height="60"/>
+    </resources>
+</document>

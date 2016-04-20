@@ -1,14 +1,13 @@
 #import "FollowedSitesViewController.h"
-#import "WPStyleGuide.h"
-#import "WPTableViewHandler.h"
 #import "ContextManager.h"
 #import "ReaderSite.h"
 #import "ReaderSiteService.h"
-#import "WPTableViewCell.h"
 #import "UIImageView+Gravatar.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewCell.h"
+#import "WPTableViewHandler.h"
 #import "WPNoResultsView.h"
-#import "ReaderTopic.h"
-#import "ReaderTopicService.h"
+#import "WordPress-Swift.h"
 
 static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 static CGFloat const FollowSitesRowHeight = 54.0;
@@ -43,6 +42,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -85,12 +85,12 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Site", @"");
         NSString *description = error.localizedDescription;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *alertCancel = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:description
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -143,7 +143,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    UIImage *defaultImage = [UIImage imageNamed:@"icon-feed"];
+    UIImage *defaultImage = [UIImage imageNamed:@"post-blavatar-placeholder"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.imageView.image = defaultImage;
@@ -151,10 +151,10 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [site nameForDisplay];
-    cell.detailTextLabel.text = [site pathForDisplay];;
+    cell.detailTextLabel.text = [site pathForDisplay];
     if (site.icon) {
         cell.imageView.backgroundColor = nil;
-        [cell.imageView setImageWithBlavatarUrl:site.icon placeholderImage:defaultImage];
+        [cell.imageView setImageWithSiteIcon:site.icon placeholderImage:defaultImage];
     }
 
     [WPStyleGuide configureTableViewSmallSubtitleCell:cell];

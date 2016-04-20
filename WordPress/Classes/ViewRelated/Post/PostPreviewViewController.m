@@ -22,7 +22,6 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -56,14 +55,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
     [self refreshWebView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 
@@ -213,19 +210,28 @@
         if (needsLogin) {
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
-            NSString *token;
+            NSString *username = self.apost.blog.usernameForSite;
+            NSString *token, *password;
             if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
+                password = nil;
                 token = self.apost.blog.authToken;
+            } else {
+                password = self.apost.blog.password;
+                token = nil;
             }
 
-            NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                                      redirectURL:redirectURL
-                                                                         username:self.apost.blog.username
-                                                                         password:self.apost.blog.password
-                                                                      bearerToken:token
-                                                                        userAgent:nil];
-            [self.webView loadRequest:request];
-            DDLogInfo(@"Showing real preview (login) for %@", link);
+            if (username.length > 0 && (password.length > 0 || token.length > 0)) {
+                NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                                          redirectURL:redirectURL
+                                                                             username:username
+                                                                             password:password
+                                                                          bearerToken:token
+                                                                            userAgent:nil];
+                [self.webView loadRequest:request];
+                DDLogInfo(@"Showing real preview (login) for %@", link);
+            } else {
+                [self showSimplePreview];
+            }
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
             DDLogInfo(@"Showing real preview for %@", link);

@@ -1,6 +1,4 @@
-#import <Simperium/SPManagedObject.h>
-
-
+#import <Simperium/Simperium.h>
 
 @class NotificationBlock;
 @class NotificationBlockGroup;
@@ -29,6 +27,15 @@ extern NSString * NoteRangeTypeSite;
 extern NSString * NoteRangeTypeMatch;
 
 extern NSString * NoteMediaTypeImage;
+
+extern NSString * NoteTypeUser;
+extern NSString * NoteTypeComment;
+extern NSString * NoteTypeMatcher;
+extern NSString * NoteTypePost;
+extern NSString * NoteTypeFollow;
+extern NSString * NoteTypeLike;
+extern NSString * NoteTypeCommentLike;
+
 
 typedef NS_ENUM(NSInteger, NoteBlockType)
 {
@@ -100,7 +107,6 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 - (NotificationBlock *)snippetBlock;
 
 - (BOOL)isUnapprovedComment;
-- (void)didChangeOverrides;
 
 @end
 
@@ -176,11 +182,46 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
  */
 - (BOOL)isCommentApproved;
 
-- (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
+/**
+ *	@brief      Allows us to set a local override for a remote value. This is used to fake the UI, while
+ *              there's a BG call going on.
+ *
+ *	@param		value       The local "Temporary" value.
+ *	@param		key         The key that should get a temporary 'Override' value
+ */
+- (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key;
+
+/**
+ *	@brief      Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
+ *
+ *	@param		key         The key that should get its overrides removed.
+ */
 - (void)removeActionOverrideForKey:(NSString *)key;
+
+/**
+ *	@brief      Returns the Notification Block status for a given action. If there's any local override,
+ *              the (override) value will be returned.
+ *
+ *	@param		key         The key of the action to check.
+ *  @returns                The value for any given action
+ */
 - (NSNumber *)actionForKey:(NSString *)key;
 
+/**
+ *	@brief      Returns *true* if a given action is available
+ *
+ *	@param		key         The key of the action to check.
+ *  @returns                True if the action can be performed. False otherwise.
+ */
 - (BOOL)isActionEnabled:(NSString *)key;
+
+/**
+ *	@brief      Returns *true* if a given action is toggled on. (I.e.: Approval = On, means that the comment
+ *              is currently approved).
+ *
+ *	@param		key         The key of the action to check.
+ *  @returns                True if the action is currently "toggled on".
+ */
 - (BOOL)isActionOn:(NSString *)key;
 
 @end

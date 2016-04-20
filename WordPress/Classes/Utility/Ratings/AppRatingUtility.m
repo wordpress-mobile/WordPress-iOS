@@ -1,12 +1,15 @@
 
 #import "AppRatingUtility.h"
 
+#import "Constants.h"
+
 @interface AppRatingUtility ()
 
 @property (nonatomic, assign) NSUInteger systemWideSignificantEventCountRequiredForPrompt;
 @property (nonatomic, strong) NSMutableDictionary *sections;
 @property (nonatomic, strong) NSMutableDictionary *disabledSections;
 @property (nonatomic, assign) BOOL allPromptingDisabled;
+@property (nonatomic, copy) NSString *appReviewUrl;
 
 @end
 
@@ -25,6 +28,7 @@ NSString *const AppRatingDislikedCurrentVersion = @"AppRatingDislikedCurrentVers
 NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
+NSString *const AppRatingDefaultAppReviewUrl = @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=335703880&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
 
 NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
 
@@ -74,6 +78,12 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
             BOOL disableSection = [responseDictionary[disabledKey] boolValue];
             appRatingUtility.disabledSections[key] = @(disableSection);
         }];
+        
+        NSString *appReviewUrl = [responseDictionary stringForKey:@"app-review-url"];
+        if (appReviewUrl.length > 0) {
+            AppRatingUtility *sharedInstance = [self sharedInstance];
+            sharedInstance.appReviewUrl = appReviewUrl;
+        }
         
         if (success) {
             success();
@@ -317,6 +327,16 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 + (void)assertValidSection:(NSString *)section
 {
     NSAssert([[AppRatingUtility sharedInstance].sections.allKeys containsObject:section], @"Invalid section");
+}
+
++ (NSString *)appReviewUrl
+{
+    AppRatingUtility *sharedInstance = [AppRatingUtility sharedInstance];
+    if (sharedInstance.appReviewUrl.length == 0) {
+        return AppRatingDefaultAppReviewUrl;
+    } else {
+        return sharedInstance.appReviewUrl;
+    }
 }
 
 @end

@@ -1,3 +1,0 @@
-@interface SettingsViewController : UITableViewController
-
-@end

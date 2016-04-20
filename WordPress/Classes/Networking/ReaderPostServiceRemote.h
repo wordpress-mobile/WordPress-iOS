@@ -1,38 +1,9 @@
 #import <Foundation/Foundation.h>
+#import "ServiceRemoteREST.h"
 
-@class WordPressComApi;
 @class RemoteReaderPost;
 
-@interface ReaderPostServiceRemote : NSObject
-
-- (id)initWithRemoteApi:(WordPressComApi *)api;
-
-
-/**
- Fetches the posts from the specified remote endpoint
-
- @param count number of posts to fetch.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
-                         count:(NSUInteger)count
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure;
-
-/**
- Fetches the posts from the specified remote endpoint
- 
- @param count number of posts to fetch.
- @param after the date to fetch posts after.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
-                         count:(NSUInteger)count
-                         after:(NSDate *)date
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure;
+@interface ReaderPostServiceRemote : ServiceRemoteREST
 
 /**
  Fetches the posts from the specified remote endpoint
@@ -86,23 +57,5 @@
            forSite:(NSUInteger)siteID
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
-
-/**
- Reblog a post from one site to another
- 
- @param postID The ID of the post to reblog.
- @param siteID The ID of the origin site.
- @param targetSiteID The ID of the destination site.
- @param note A short note about the reblog.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)reblogPost:(NSUInteger)postID
-          fromSite:(NSUInteger)siteID
-            toSite:(NSUInteger)targetSiteID
-              note:(NSString *)note
-           success:(void (^)(BOOL isReblogged))success
-           failure:(void (^)(NSError *error))failure;
-
 
 @end

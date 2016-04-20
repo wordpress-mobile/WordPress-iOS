@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 @objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
@@ -48,13 +48,10 @@ import Foundation
         if url == gravatarURL {
             return
         }
-    
-        let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithFadeInAnimation(image)
-        }
-        
+
         let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
-        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
+        let gravatar = url.flatMap { Gravatar($0) }
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
         
         gravatarURL = url
     }
@@ -68,7 +65,7 @@ import Foundation
 
         backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType                       = .None
-        contentView.autoresizingMask        = .FlexibleHeight | .FlexibleWidth
+        contentView.autoresizingMask        = [.FlexibleHeight, .FlexibleWidth]
         
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColor

@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPress-iOS-Editor/WPEditorViewController.h>
+#import <WordPressEditor/WPEditorViewController.h>
 
 @class AbstractPost;
 @class Blog;
@@ -17,6 +17,9 @@ extern const CGRect NavigationBarButtonRect;
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
 
+extern NSString* const WPPostViewControllerOptionOpenMediaPicker;
+extern NSString* const WPPostViewControllerOptionNotAnimated;
+
 // Secret URL config parameters
 extern NSString* const kWPEditorConfigURLParamAvailable;
 extern NSString* const kWPEditorConfigURLParamEnabled;
@@ -26,7 +29,7 @@ extern NSString* const kWPEditorConfigURLParamEnabled;
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^EditPostCompletionHandler)(void);
+typedef void (^EditPostCompletionHandler)(WPPostViewController* viewController, BOOL saved);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
 #pragma mark - Properties: Post
@@ -49,10 +52,9 @@ typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (readonly) BOOL hasChanges;
 
-@property (nonatomic, strong) UIActionSheet *currentActionSheet;
-@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
-
 #pragma mark - Initializers
+
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost;
 
 /*
  Compose a new post with the last used blog.

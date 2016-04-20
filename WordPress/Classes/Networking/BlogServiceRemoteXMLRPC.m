@@ -1,32 +1,20 @@
 #import "BlogServiceRemoteXMLRPC.h"
-#import <WordPressApi.h>
-#import "Blog.h"
+#import "NSMutableDictionary+Helpers.h"
+#import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
+#import "RemotePostType.h"
 
-@interface BlogServiceRemoteXMLRPC ()
-
-@property (nonatomic, strong) WPXMLRPCClient *api;
-
-@end
+static NSString * const RemotePostTypeNameKey = @"name";
+static NSString * const RemotePostTypeLabelKey = @"label";
+static NSString * const RemotePostTypePublicKey = @"public";
 
 @implementation BlogServiceRemoteXMLRPC
 
-- (id)initWithApi:(WPXMLRPCClient *)api
+- (void)checkMultiAuthorWithSuccess:(void(^)(BOOL isMultiAuthor))success
+                            failure:(void (^)(NSError *error))failure
 {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
-
-- (void)checkMultiAuthorForBlog:(Blog *)blog
-                        success:(void(^)(BOOL isMultiAuthor))success
-                        failure:(void (^)(NSError *error))failure
-{
-    NSParameterAssert(blog != nil);
     NSDictionary *filter = @{@"who":@"authors"};
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:filter];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -42,23 +30,84 @@
                  }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
+    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostTypesWithSuccess:(PostTypesHandler)success failure:(void (^)(NSError *error))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
+    WPXMLRPCRequestOperation *operation = [self operationForPostTypesWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog
-                                                  success:(OptionsHandler)success
-                                                  failure:(void (^)(NSError *error))failure
+- (void)syncPostFormatsWithSuccess:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
+}
+
+- (void)syncSettingsWithSuccess:(SettingsHandler)success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self.api callMethod:@"wp.getOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
+        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
+        if (success) {
+            success(remoteSettings);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing settings: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
+                   success:(SuccessHandler)success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionary];    
+    [rawParameters setValueIfNotNil:remoteBlogSettings.name forKey:@"blog_title"];
+    [rawParameters setValueIfNotNil:remoteBlogSettings.tagline forKey:@"blog_tagline"];
+    
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
+    
+    [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
+        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
+        if (success) {
+            success(remoteSettings);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing settings: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
+
+- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(OptionsHandler)success
+                                                    failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
@@ -77,12 +126,41 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog 
-                                                      success:(PostFormatsHandler)success
-                                                      failure:(void (^)(NSError *error))failure
+- (WPXMLRPCRequestOperation *)operationForPostTypesWithSuccess:(PostTypesHandler)success
+                                                         failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostTypes" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+        NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
+            return [self remotePostTypeFromXMLRPCDictionary:json];
+        }];
+        if (!postTypes.count) {
+            DDLogError(@"Response to %@ did not include post types for site.", request.method);
+            failure(nil);
+            return;
+        }
+        if (success) {
+            success(postTypes);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing post types (%@): %@", operation.request.URL, error);
+        
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+    return operation;
+}
+
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(PostFormatsHandler)success
+                                                        failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"show-supported": @"1"};
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:dict];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:dict];
 
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -123,6 +201,27 @@
     }];
 
     return operation;
+}
+
+- (RemotePostType *)remotePostTypeFromXMLRPCDictionary:(NSDictionary *)json
+{
+    RemotePostType *postType = [[RemotePostType alloc] init];
+    postType.name = [json stringForKey:RemotePostTypeNameKey];
+    postType.label = [json stringForKey:RemotePostTypeLabelKey];
+    postType.apiQueryable = [json numberForKey:RemotePostTypePublicKey];
+    return postType;
+}
+
+- (RemoteBlogSettings *)remoteBlogSettingFromXMLRPCDictionary:(NSDictionary *)json
+{
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+    
+    remoteSettings.name = [[json stringForKeyPath:@"blog_title.value"] stringByDecodingXMLCharacters];
+    remoteSettings.tagline = [[json stringForKeyPath:@"blog_tagline.value"] stringByDecodingXMLCharacters];
+    if (json[@"blog_public"]) {
+        remoteSettings.privacy = [json numberForKeyPath:@"blog_public.value"];
+    }
+    return remoteSettings;
 }
 
 @end

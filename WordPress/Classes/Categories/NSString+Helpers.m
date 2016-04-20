@@ -1,12 +1,86 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
+
+/**
+ Parses an WordPress core emoji IMG tag and returns the corresponding emoji character.
+ */
++ (NSString *)emojiFromCoreEmojiImageTag:(NSString *)tag
+{
+    if ([tag rangeOfString:@"<img"].location == NSNotFound || [tag rangeOfString:@"/images/core/emoji/"].location == NSNotFound) {
+        DDLogError(@"Tried to extract emoji from a string that was not a core emoji image tag.");
+        return nil;
+    }
+
+    static NSRegularExpression *altRegex;
+    static NSRegularExpression *filenameRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        altRegex = [NSRegularExpression regularExpressionWithPattern:@" alt=['\"]([^'\"]+)['\"]" options:NSRegularExpressionCaseInsensitive error:&error];
+        filenameRegex = [NSRegularExpression regularExpressionWithPattern:@"/images/core/emoji/[^/]+/(.+?).png" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Check for the alt tag first as it should be the unicode emoji character.
+    NSRange sourceRange = NSMakeRange(0, [tag length]);
+    NSArray *matches = [altRegex matchesInString:tag options:0 range:sourceRange];
+    if ([matches count] > 0) {
+        NSTextCheckingResult *match = [matches firstObject];
+        if (match.numberOfRanges == 2) {
+            NSRange range = [match rangeAtIndex:1];
+            return [tag substringWithRange:range];
+        }
+    }
+
+    matches = [filenameRegex matchesInString:tag options:0 range:sourceRange];
+    if ([matches count] > 0) {
+        NSTextCheckingResult *match = [matches firstObject];
+        if (match.numberOfRanges == 2) {
+            NSRange range = [match rangeAtIndex:1];
+            NSString *filename = [tag substringWithRange:range];
+            return [self emojiCharacterFromCoreEmojiFilename:filename];
+        }
+    }
+
+    return nil;
+}
+
+/**
+ Processes the filename of an core emoji image from `s.w.org/images/core/emoji`
+ and returns the unicode character for the emoji.
+ Filenames can be formatted as a single hex value, or for emoji comprised of
+ Unicode pairs, as two hex values separated by a dash.
+ */
++ (NSString *)emojiCharacterFromCoreEmojiFilename:(NSString *)filename
+{
+    NSArray *components = [filename componentsSeparatedByString:@"-"];
+    NSMutableArray *marr = [NSMutableArray array];
+    for (NSString *string in components) {
+        NSString *unicodeChar = [NSString unicodeCharacterFromHexString:string];
+        if (unicodeChar) {
+            [marr addObject:unicodeChar];
+        }
+    }
+
+    return [marr componentsJoinedByString:@""];
+}
+
++ (NSString *)unicodeCharacterFromHexString:(NSString *)hexString
+{
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    unsigned long long hex = 0;
+    BOOL success = [scanner scanHexLongLong:&hex];
+    if (!success) {
+        return nil;
+    }
+    return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
+}
 
 + (NSString *)makePlainText:(NSString *)string
 {
@@ -39,10 +113,10 @@ static NSString *const Ellipsis =  @"\u2026";
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
 {
-    static NSString * const kAFCharactersToBeEscaped = @":/?&=;+!@#$()~',*";
-    static NSString * const kAFCharactersToLeaveUnescaped = @"[].";
-
-    return (__bridge_transfer  NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)self, (__bridge CFStringRef)kAFCharactersToLeaveUnescaped, (__bridge CFStringRef)kAFCharactersToBeEscaped, kCFStringEncodingUTF8);
+    NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    NSString *charactersToLeaveUnescaped = @"[].";
+    [allowedCharacterSet addCharactersInString:charactersToLeaveUnescaped];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
 }
 
 - (NSString *)md5
@@ -73,13 +147,13 @@ static NSString *const Ellipsis =  @"\u2026";
         NSString *key, *value;
         if (separator.location != NSNotFound) {
             key = [pair substringToIndex:separator.location];
-            value = [[pair substringFromIndex:separator.location + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            value = [[pair substringFromIndex:separator.location + 1] stringByRemovingPercentEncoding];
         } else {
             key = pair;
             value = @"";
         }
 
-        key = [key stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        key = [key stringByRemovingPercentEncoding];
         [result setObject:value forKey:key];
     }
 
@@ -91,33 +165,47 @@ static NSString *const Ellipsis =  @"\u2026";
     NSMutableString *result = [NSMutableString stringWithString:self];
 
     NSDictionary *replacements = @{
-                                   @"arrow": @"➡",
-                                   @"biggrin": @"😃",
-                                   @"confused": @"😕",
-                                   @"cool": @"😎",
-                                   @"cry": @"😭",
-                                   @"eek": @"😮",
-                                   @"evil": @"😈",
-                                   @"exclaim": @"❗",
-                                   @"idea": @"💡",
-                                   @"lol": @"😄",
-                                   @"mad": @"😠",
-                                   @"mrgreen": @"🐸",
-                                   @"neutral": @"😐",
-                                   @"question": @"❓",
-                                   @"razz": @"😛",
-                                   @"redface": @"😊",
-                                   @"rolleyes": @"😒",
-                                   @"sad": @"😞",
-                                   @"smile": @"😊",
-                                   @"surprised": @"😮",
-                                   @"twisted": @"👿",
-                                   @"wink": @"😉"
+                                   @"icon_arrow": @"➡",
+                                   @"icon_biggrin": @"😃",
+                                   @"icon_confused": @"😕",
+                                   @"icon_cool": @"😎",
+                                   @"icon_cry": @"😭",
+                                   @"icon_eek": @"😮",
+                                   @"icon_evil": @"😈",
+                                   @"icon_exclaim": @"❗",
+                                   @"icon_idea": @"💡",
+                                   @"icon_lol": @"😄",
+                                   @"icon_mad": @"😠",
+                                   @"icon_mrgreen": @"🐸",
+                                   @"icon_neutral": @"😐",
+                                   @"icon_question": @"❓",
+                                   @"icon_razz": @"😛",
+                                   @"icon_redface": @"😊",
+                                   @"icon_rolleyes": @"😒",
+                                   @"icon_sad": @"😞",
+                                   @"icon_smile": @"😊",
+                                   @"icon_surprised": @"😮",
+                                   @"icon_twisted": @"👿",
+                                   @"icon_wink": @"😉",
+                                   // NOTE: There is not a perfect match for the following four with
+                                   // currently supported emoji. We'll try to get as close as we can.
+                                   @"frownie":@"😞",
+                                   @"mrgreen":@"😊",
+                                   @"rolleyes":@"😒",
+                                   @"simple-smile":@"😊"
                                    };
 
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSArray *matches = [regex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    static NSRegularExpression *smiliesRegex;
+    static NSRegularExpression *coreEmojiImgRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        coreEmojiImgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?images/core/emoji/[^/]+/.+?.png['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+
+    });
+
+    NSArray *matches = [smiliesRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSRange range = [match rangeAtIndex:1];
         NSString *icon = [result substringWithRange:range];
@@ -126,8 +214,20 @@ static NSString *const Ellipsis =  @"\u2026";
             [result replaceCharactersInRange:[match range] withString:replacement];
         }
     }
+
+    matches = [coreEmojiImgRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        NSRange range = [match rangeAtIndex:0];
+        NSString *tag = [result substringWithRange:range];
+        NSString *replacement = [NSString emojiFromCoreEmojiImageTag:tag];
+        if (replacement) {
+            [result replaceCharactersInRange:[match range] withString:replacement];
+        }
+    }
+
     return [NSString stringWithString:result];
 }
+
 
 /*
  * Uses a RegEx to strip all HTML tags from a string and unencode entites
@@ -240,6 +340,18 @@ static NSString *const Ellipsis =  @"\u2026";
     BOOL isProtocolValid            = components.scheme == nil || [validProtocols containsObject:components.scheme];
     
     return isDotcom && isProtocolValid;
+}
+
+- (NSUInteger)wordCount
+{
+    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
+    __block NSUInteger wordCount = 0;
+    [self enumerateSubstringsInRange:NSMakeRange(0, [self length])
+                                                   options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                                    wordCount++;
+                                                }];
+    return wordCount;
 }
 
 @end

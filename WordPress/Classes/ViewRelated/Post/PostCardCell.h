@@ -7,4 +7,8 @@
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider;
 
+@optional
+
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider layoutOnly:(BOOL)layoutOnly;
+
 @end

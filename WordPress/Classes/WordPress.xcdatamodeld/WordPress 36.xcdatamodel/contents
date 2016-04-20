@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
+        <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
+        <relationship name="original" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="revision" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
+        <relationship name="revision" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="original" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
+        <userInfo/>
+    </entity>
+    <entity name="Account" representedClassName="WPAccount" syncable="YES">
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="username" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="readerSites" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderSite" inverseName="account" inverseEntity="ReaderSite" syncable="YES"/>
+        <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
+    </entity>
+    <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
+        <attribute name="author" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="content" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="date_created_gmt" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="mt_excerpt" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="mt_text_more" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="password" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="pathForDisplayImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="permaLink" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="post_thumbnail" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="-1">
+            <userInfo/>
+        </attribute>
+        <attribute name="postTitle" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="status" optional="YES" attributeType="String" defaultValueString="publish">
+            <userInfo/>
+        </attribute>
+        <attribute name="wp_slug" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="post" inverseEntity="Comment" syncable="YES"/>
+        <userInfo/>
+    </entity>
+    <entity name="Blog" representedClassName="Blog">
+        <attribute name="apiKey" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="blogID" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="blogName" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasOlderPages" transient="YES" attributeType="Boolean" defaultValueString="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasOlderPosts" transient="YES" attributeType="Boolean" defaultValueString="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isAdmin" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isHostedAtWPcom" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isMultiAuthor" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="lastPagesSync" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="lastPostsSync" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="lastStatsSync" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="lastUpdateWarning" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="options" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="postFormats" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="url" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="username" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="visible" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="xmlrpc" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="blogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
+        <relationship name="accountForDefaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="defaultBlog" inverseEntity="Account" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="blog" inverseEntity="Category" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="blog" inverseEntity="Comment" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="jetpackAccount" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="jetpackBlogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
+        <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
+        <userInfo/>
+    </entity>
+    <entity name="Category" representedClassName="PostCategory">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="-1">
+            <userInfo/>
+        </attribute>
+        <attribute name="categoryName" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="parentID" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="categories" inverseEntity="Blog" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Post" inverseName="categories" inverseEntity="Post" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Comment" representedClassName="Comment">
+        <attribute name="author" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="author_email" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="author_ip" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="author_url" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="content" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="dateCreated" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="hierarchy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="parentID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="postID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="postTitle" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="status" optional="YES" attributeType="String" indexed="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
+        <userInfo/>
+    </entity>
+    <entity name="Media" representedClassName="Media">
+        <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filename" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="filesize" optional="YES" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="localThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="mediaID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="mediaTypeString" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="orientation" optional="YES" attributeType="String" defaultValueString="portrait">
+            <userInfo/>
+        </attribute>
+        <attribute name="progress" optional="YES" transient="YES" attributeType="Float" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="remoteThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="shortcode" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="videopressGUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="media" inverseEntity="Blog" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="media" inverseEntity="AbstractPost" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Meta" representedClassName="Meta" syncable="YES">
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="last_seen" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="latest_note_time" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Notification" representedClassName="Notification" syncable="YES">
+        <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="header" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
+        <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
+        <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="geolocation" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="latitudeID" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="longitudeID" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="postFormat" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="publicID" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="tags" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="posts" inverseEntity="Category" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
+        <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsOpen" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="dateCommentsSynced" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateSynced" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="featuredImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="globalID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="isBlogPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="sortDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
+        <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
+    </entity>
+    <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
+        <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSubscribed" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="path" attributeType="String" syncable="YES"/>
+        <attribute name="recordID" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerSites" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
+        <attribute name="isMenuItem" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="topicDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerTopics" inverseEntity="Account" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+    </entity>
+    <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
+        <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="permalink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="post" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="sourceAttribution" inverseEntity="ReaderPost" syncable="YES"/>
+    </entity>
+    <entity name="Theme" representedClassName="Theme" syncable="YES">
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="launchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularityRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="premium" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="themeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trendingRank" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
+    </entity>
+    <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
+    <elements>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="525"/>
+        <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
+        <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
+        <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
+        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
+        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
+        <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
+    </elements>
+</model>

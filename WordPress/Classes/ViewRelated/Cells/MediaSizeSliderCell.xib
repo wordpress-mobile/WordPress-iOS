@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="108" id="7mS-Jn-IfN" customClass="MediaSizeSliderCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7mS-Jn-IfN" id="twB-EW-2j3">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="107"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VNV-La-F2d">
+                        <rect key="frame" x="16" y="8" width="288" height="91"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZE-tn-T3b">
+                                <rect key="frame" x="0.0" y="0.0" width="288" height="0.0"/>
+                                <accessibility key="accessibilityConfiguration" identifier=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="joS-zC-6YB">
+                                <rect key="frame" x="-2" y="0.0" width="292" height="71"/>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="7mS-Jn-IfN" eventType="valueChanged" id="1ET-wg-Itm"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Original" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsz-Em-99p">
+                                <rect key="frame" x="0.0" y="70" width="288" height="21"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="VNV-La-F2d" firstAttribute="top" secondItem="twB-EW-2j3" secondAttribute="topMargin" id="5SI-ZY-ndG"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="VNV-La-F2d" secondAttribute="bottom" id="RsH-NY-bp4"/>
+                    <constraint firstItem="VNV-La-F2d" firstAttribute="leading" secondItem="twB-EW-2j3" secondAttribute="leadingMargin" id="qMp-22-LUF"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="VNV-La-F2d" secondAttribute="trailing" id="xaR-7t-dwK"/>
+                </constraints>
+                <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="slider" destination="joS-zC-6YB" id="XLt-l2-Wqh"/>
+                <outlet property="titleLabel" destination="IZE-tn-T3b" id="gkS-hK-st1"/>
+                <outlet property="valueLabel" destination="hsz-Em-99p" id="1bC-wI-rFb"/>
+            </connections>
+            <point key="canvasLocation" x="717" y="591"/>
+        </tableViewCell>
+    </objects>
+</document>

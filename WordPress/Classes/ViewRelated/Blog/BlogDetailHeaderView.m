@@ -1,7 +1,9 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
+#import "WordPress-Swift.h"
+
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHeight = 20.0;
@@ -39,10 +41,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)setBlog:(Blog *)blog
 {
-    [self.blavatarImageView setImageWithBlavatarUrl:blog.blavatarUrl];
+    [self.blavatarImageView setImageWithSiteIcon:blog.icon];
 
     // if the blog name is missing, we want to show the blog displayURL instead
-    [self.titleLabel setText:((blog.blogName && !blog.blogName.isEmpty) ? blog.blogName : blog.displayURL)];
+    NSString *blogName = blog.settings.name;
+    [self.titleLabel setText:((blogName && !blogName.isEmpty) ? blogName : blog.displayURL)];
     [self.subtitleLabel setText:blog.displayURL];
 }
 
@@ -83,7 +86,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPFontManager openSansRegularFontOfSize:16.0];
+    label.font = [WPFontManager systemRegularFontOfSize:16.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -97,7 +100,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPFontManager openSansItalicFontOfSize:12.0];
+    label.font = [WPFontManager systemItalicFontOfSize:12.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -107,6 +110,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 {
     CGRect blavatarFrame = CGRectMake(0.0f, 0.0f, BlogDetailHeaderViewBlavatarSize, BlogDetailHeaderViewBlavatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
+    imageView.backgroundColor = [UIColor whiteColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;

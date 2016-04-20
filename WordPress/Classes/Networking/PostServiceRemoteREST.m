@@ -1,35 +1,44 @@
 #import "PostServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "Blog.h"
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
-@interface PostServiceRemoteREST ()
+NSString * const PostRemoteStatusPublish = @"publish";
+NSString * const PostRemoteStatusScheduled = @"future";
 
-@property (nonatomic, strong) WordPressComApi *api;
+static NSString * const RemoteOptionKeyNumber = @"number";
+static NSString * const RemoteOptionKeyOffset = @"offset";
+static NSString * const RemoteOptionKeyOrder = @"order";
+static NSString * const RemoteOptionKeyOrderBy = @"order_by";
+static NSString * const RemoteOptionKeyStatus = @"status";
+static NSString * const RemoteOptionKeySearch = @"search";
+static NSString * const RemoteOptionKeyAuthor = @"author";
 
-@end
+static NSString * const RemoteOptionValueOrderAscending = @"ASC";
+static NSString * const RemoteOptionValueOrderDescending = @"DESC";
+static NSString * const RemoteOptionValueOrderByDate = @"date";
+static NSString * const RemoteOptionValueOrderByModified = @"modified";
+static NSString * const RemoteOptionValueOrderByTitle = @"title";
+static NSString * const RemoteOptionValueOrderByCommentCount = @"comment_count";
+static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
 @implementation PostServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
-
 - (void)getPostWithID:(NSNumber *)postID
-              forBlog:(Blog *)blog
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
+    NSParameterAssert(postID);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", self.siteID, postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{ @"context": @"edit" };
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -43,20 +52,23 @@
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               forBlog:(Blog *)blog
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure
 {
-    [self getPostsOfType:postType forBlog:blog options:nil success:success failure:failure];
+    [self getPostsOfType:postType options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               forBlog:(Blog *)blog
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
+    NSParameterAssert([postType isKindOfClass:[NSString class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts", self.siteID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
                                  @"context": @"edit",
@@ -68,7 +80,7 @@
         [mutableParameters addEntriesFromDictionary:options];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     }
-    [self.api GET:path
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -82,14 +94,18 @@
 }
 
 - (void)createPost:(RemotePost *)post
-           forBlog:(Blog *)blog
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", self.siteID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -104,14 +120,18 @@
 }
 
 - (void)updatePost:(RemotePost *)post
-           forBlog:(Blog *)blog
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", self.siteID, post.postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -126,12 +146,16 @@
 }
 
 - (void)deletePost:(RemotePost *)post
-           forBlog:(Blog *)blog
            success:(void (^)())success
            failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -145,15 +169,16 @@
 }
 
 - (void)trashPost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(post != nil);
-    NSParameterAssert(blog != nil);
-    NSParameterAssert(blog.dotComID != nil);
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -168,15 +193,16 @@
 }
 
 - (void)restorePost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+            success:(void (^)(RemotePost *))success
+            failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(post != nil);
-    NSParameterAssert(blog != nil);
-    NSParameterAssert(blog.dotComID != nil);
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", self.siteID, post.postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -190,15 +216,76 @@
            }];
 }
 
+- (NSDictionary *)dictionaryWithRemoteOptions:(id <PostServiceRemoteOptions>)options
+{
+    NSMutableDictionary *remoteParams = [NSMutableDictionary dictionary];
+    if (options.number) {
+        [remoteParams setObject:options.number forKey:RemoteOptionKeyNumber];
+    }
+    if (options.offset) {
+        [remoteParams setObject:options.offset forKey:RemoteOptionKeyOffset];
+    }
+    
+    NSString *statusesStr = nil;
+    if (options.statuses.count) {
+        statusesStr = [options.statuses componentsJoinedByString:@","];
+    }
+    if (options.order) {
+        NSString *orderStr = nil;
+        switch (options.order) {
+            case PostServiceResultsOrderDescending:
+                orderStr = RemoteOptionValueOrderDescending;
+                break;
+            case PostServiceResultsOrderAscending:
+                orderStr = RemoteOptionValueOrderAscending;
+                break;
+        }
+        [remoteParams setObject:orderStr forKey:RemoteOptionKeyOrder];
+    }
+    
+    NSString *orderByStr = nil;
+    if (options.orderBy) {
+        switch (options.orderBy) {
+            case PostServiceResultsOrderingByDate:
+                orderByStr = RemoteOptionValueOrderByDate;
+                break;
+            case PostServiceResultsOrderingByModified:
+                orderByStr = RemoteOptionValueOrderByModified;
+                break;
+            case PostServiceResultsOrderingByTitle:
+                orderByStr = RemoteOptionValueOrderByTitle;
+                break;
+            case PostServiceResultsOrderingByCommentCount:
+                orderByStr = RemoteOptionValueOrderByCommentCount;
+                break;
+            case PostServiceResultsOrderingByPostID:
+                orderByStr = RemoteOptionValueOrderByPostID;
+                break;
+        }
+    }
+    
+    if (statusesStr.length) {
+        [remoteParams setObject:statusesStr forKey:RemoteOptionKeyStatus];
+    }
+    if (orderByStr.length) {
+        [remoteParams setObject:orderByStr forKey:RemoteOptionKeyOrderBy];
+    }
+    if (options.authorID) {
+        [remoteParams setObject:options.authorID forKey:RemoteOptionKeyAuthor];
+    }
+    if (options.search.length > 0) {
+        [remoteParams setObject:options.search forKey:RemoteOptionKeySearch];
+    }
+    
+    return remoteParams.count ? [NSDictionary dictionaryWithDictionary:remoteParams] : nil;
+}
 
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
-    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:jsonPosts.count];
-    for (NSDictionary *jsonPost in jsonPosts) {
-        [posts addObject:[self remotePostFromJSONDictionary:jsonPost]];
-    }
-    return [NSArray arrayWithArray:posts];
+    return [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+        return [self remotePostFromJSONDictionary:jsonPost];
+    }];
 }
 
 - (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
@@ -278,7 +365,6 @@
     }
     
     parameters[@"content"] = post.content;
-    parameters[@"status"] = post.status;
     parameters[@"password"] = post.password ? post.password : @"";
     parameters[@"type"] = post.type;
 
@@ -309,13 +395,21 @@
     parameters[@"featured_image"] = post.postThumbnailID ? [post.postThumbnailID stringValue] : @"";
     parameters[@"metadata"] = [self metadataForPost:post];
 
+    // Scheduled posts need to sync with a status of 'publish'.
+    // Passing a status of 'future' will set the post status to 'draft'
+    // This is an apparent inconsistency in the API as 'future' should
+    // be a valid status.
+    if ([post.status isEqualToString:PostRemoteStatusScheduled]) {
+        post.status = PostRemoteStatusPublish;
+    }
+    parameters[@"status"] = post.status;
+
     // Test what happens for nil and not present values
     return [NSDictionary dictionaryWithDictionary:parameters];
 }
 
 - (NSArray *)metadataForPost:(RemotePost *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:post.metadata.count];
-    for (NSDictionary *meta in post.metadata) {
+    return [post.metadata wp_map:^id(NSDictionary *meta) {
         NSNumber *metaID = [meta objectForKey:@"id"];
         NSString *metaValue = [meta objectForKey:@"value"];
         NSString *operation = @"update";
@@ -326,17 +420,14 @@
         }
         NSMutableDictionary *modifiedMeta = [meta mutableCopy];
         modifiedMeta[@"operation"] = operation;
-        [metadata addObject:[NSDictionary dictionaryWithDictionary:modifiedMeta]];
-    }
-    return [NSArray arrayWithArray:metadata];
+        return [NSDictionary dictionaryWithDictionary:modifiedMeta];
+    }];
 }
 
 - (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:jsonCategories.count];
-    for (NSDictionary *jsonCategory in jsonCategories) {
-        [categories addObject:[self remoteCategoryFromJSONDictionary:jsonCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [jsonCategories wp_map:^id(NSDictionary *jsonCategory) {
+        return [self remoteCategoryFromJSONDictionary:jsonCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {

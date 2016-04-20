@@ -1,14 +1,13 @@
 #import "ActivityLogViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
-#import <DDFileLogger.h>
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewSectionFooterView.h"
+#import <CocoaLumberjack/DDFileLogger.h>
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
+#import "WPGUIConstants.h"
 
 static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
-static CGFloat const ActivityLogRowHeight = 44.0f;
 
 @interface ActivityLogViewController ()
 
@@ -31,7 +30,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
         self.title = NSLocalizedString(@"Activity Logs", @"");
 
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logs", @"")
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:nil
                                                                       action:nil];
         [self.navigationItem setBackBarButtonItem:backButton];
@@ -44,13 +43,9 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 {
     [super viewDidLoad];
     
-    if ([UIDevice isOS8]) { // iOS8 or higher
-        [self.tableView setEstimatedRowHeight:ActivityLogRowHeight];
-        [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    } else {
-        [self.tableView setRowHeight:ActivityLogRowHeight];
-    }
-    
+    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
 
@@ -116,15 +111,25 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForHeaderInSection:section];
+    NSString *title = [self titleForHeaderInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+    header.title = title;
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
+        return CGFLOAT_MIN;
+    }
+    
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
@@ -137,7 +142,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     header.title = [self titleForFooterInSection:section];
     return header;
 }
@@ -145,13 +150,13 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
-    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return NSLocalizedString(@"Seven days worth of log files are kept on file.", @"");
+        return NSLocalizedString(@"Up to seven days worth of logs are saved.", @"Help text shown below the list of debug logs.");
     }
     return nil;
 }

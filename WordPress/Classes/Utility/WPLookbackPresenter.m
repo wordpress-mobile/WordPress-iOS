@@ -1,6 +1,8 @@
 #import "WPLookbackPresenter.h"
 
+#ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
+#endif
 
 NSString* const WPLookbackPresenterShakeToPullUpFeedbackKey = @"InternalBetaShakeToPullUpFeedback";
 
