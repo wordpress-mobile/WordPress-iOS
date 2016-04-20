@@ -4140,21 +4140,21 @@
 			isa = PBXGroup;
 			children = (
 				EFC90C879F1BE12C6A7E5D6B /* Pods-WordPress.debug.xcconfig */,
-				16593FACF2FA8D408C4CEBFA /* Pods-WordPress.release.xcconfig */,
-				DFF25D1652D5B8569ABEBF0D /* Pods-WordPress.release-internal.xcconfig */,
 				D6B89763033902E7FA422AFF /* Pods-WordPress.release-alpha.xcconfig */,
+				DFF25D1652D5B8569ABEBF0D /* Pods-WordPress.release-internal.xcconfig */,
+				16593FACF2FA8D408C4CEBFA /* Pods-WordPress.release.xcconfig */,
 				26A77B08AC02D2097E7693D1 /* Pods-WordPressShareExtension.debug.xcconfig */,
-				BB71F0177E5E4109D25566A2 /* Pods-WordPressShareExtension.release.xcconfig */,
-				BA4211446F3B2EA7D15EEC62 /* Pods-WordPressShareExtension.release-internal.xcconfig */,
 				0FB0432256BC979BCD2B1F08 /* Pods-WordPressShareExtension.release-alpha.xcconfig */,
+				BA4211446F3B2EA7D15EEC62 /* Pods-WordPressShareExtension.release-internal.xcconfig */,
+				BB71F0177E5E4109D25566A2 /* Pods-WordPressShareExtension.release.xcconfig */,
 				9AF7A8073C9AEF84300EB477 /* Pods-WordPressTest.debug.xcconfig */,
-				8D872D47CF1564801EDDA900 /* Pods-WordPressTest.release.xcconfig */,
-				2E3A4DA7A12EB7AE68C1C096 /* Pods-WordPressTest.release-internal.xcconfig */,
 				1DC4F78C0F01EB7658E5E9C5 /* Pods-WordPressTest.release-alpha.xcconfig */,
+				2E3A4DA7A12EB7AE68C1C096 /* Pods-WordPressTest.release-internal.xcconfig */,
+				8D872D47CF1564801EDDA900 /* Pods-WordPressTest.release.xcconfig */,
 				46C9C24AD4AA876A0D93E91A /* Pods-WordPressTodayWidget.debug.xcconfig */,
-				AE95B09D91FAC2E0D780F8DB /* Pods-WordPressTodayWidget.release.xcconfig */,
-				AEBDEC75A995029AB64BA6CF /* Pods-WordPressTodayWidget.release-internal.xcconfig */,
 				99B12388A6323D5ED1998E19 /* Pods-WordPressTodayWidget.release-alpha.xcconfig */,
+				AEBDEC75A995029AB64BA6CF /* Pods-WordPressTodayWidget.release-internal.xcconfig */,
+				AE95B09D91FAC2E0D780F8DB /* Pods-WordPressTodayWidget.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
