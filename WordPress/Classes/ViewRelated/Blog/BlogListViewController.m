@@ -670,17 +670,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)showLoginControllerForAddingSelfHostedSite
 {
     [self setEditing:NO animated:NO];
-    LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    loginViewController.cancellable = YES;
-
-    if (![self defaultWordPressComAccount]) {
-        loginViewController.prefersSelfHosted = YES;
-    }
-    loginViewController.dismissBlock = ^(BOOL cancelled){
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    [self presentViewController:loginNavigationController animated:YES completion:nil];
+    [SigninHelpers showSigninForSelfHostedSite:self];
 }
 
 - (void)visibilitySwitchAction:(id)sender
