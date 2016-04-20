@@ -19,8 +19,8 @@ import WordPressShared
     // TODO: low cap on first char!
     
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
-    static private let postCardEstimatedRowHeight = Float(100.0)
-    static private let postCardRestoreCellRowHeight = Float(54.0)
+    static private let postCardEstimatedRowHeight = CGFloat(100.0)
+    static private let postCardRestoreCellRowHeight = CGFloat(54.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
     
     @IBOutlet private var textCellForLayout : PostCardTableViewCell!
@@ -378,10 +378,10 @@ import WordPressShared
         let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return CGFloat(self.dynamicType.postCardRestoreCellRowHeight)
+            return self.dynamicType.postCardRestoreCellRowHeight
         }
         
-        return CGFloat(self.dynamicType.postCardEstimatedRowHeight)
+        return self.dynamicType.postCardEstimatedRowHeight
     }
     
     private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -395,7 +395,7 @@ import WordPressShared
         }
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return CGFloat(self.dynamicType.postCardRestoreCellRowHeight)
+            return self.dynamicType.postCardRestoreCellRowHeight
         }
         
         var cell : PostCardTableViewCell!
