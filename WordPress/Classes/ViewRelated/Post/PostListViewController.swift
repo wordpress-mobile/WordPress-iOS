@@ -299,11 +299,11 @@ import WordPressShared
     
     // MARK: - Sync Methods
     
-    override internal func postTypeToSync() -> String {
+    override func postTypeToSync() -> String {
         return PostServiceTypePost
     }
     
-    override internal func lastSyncDate() -> NSDate? {
+    override func lastSyncDate() -> NSDate? {
         return blog?.lastPostsSync
     }
     
@@ -605,7 +605,7 @@ import WordPressShared
     
     // MARK: - Filter Related
     
-    override internal func currentPostAuthorFilter() -> PostAuthorFilter {
+    override func currentPostAuthorFilter() -> PostAuthorFilter {
         if !canFilterByAuthor() {
             // No REST API, so we have to use XMLRPC and can't filter results by author.
             return .Everyone
@@ -620,7 +620,7 @@ import WordPressShared
         return .Mine
     }
 
-    override internal func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
+    override func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
         guard filter != currentPostAuthorFilter() else {
             return
         }
