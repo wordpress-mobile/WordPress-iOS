@@ -124,7 +124,7 @@
     itemView.item = item;
     itemView.indentationLevel = 0;
     
-    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.active = YES;
     [self.itemViews addObject:itemView];
     [self.stackView addArrangedSubview:itemView];
