@@ -288,7 +288,18 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     if (_savingEnabled != savingEnabled) {
         _savingEnabled = savingEnabled;
+        
         self.saveButtonItem.enabled = savingEnabled;
+        
+        if (savingEnabled) {
+            NSString *title = NSLocalizedString(@"Discard", @"Menus button title for cancelling/discarding changes made.");
+            UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(discardChangesBarButtonItemPressed:)];
+            [self.navigationItem setLeftBarButtonItem:button animated:YES];
+            [self.navigationItem setHidesBackButton:YES animated:YES];
+        } else {
+            [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+            [self.navigationItem setHidesBackButton:NO animated:YES];
+        }
     }
 }
 
@@ -297,11 +308,28 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     if (_isSaving != isSaving) {
         _isSaving = isSaving;
         if (isSaving) {
-            [self.saveButtonItem setTitle:NSLocalizedString(@"Saving...", @"Menus save button title while it is saving a Menu.")];
+            UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Saving...", @"Menus save button title while it is saving a Menu.") style:UIBarButtonItemStylePlain target:nil action:nil];
+            [self.navigationItem setRightBarButtonItem:button animated:YES];
         } else {
-            [self.saveButtonItem setTitle:NSLocalizedString(@"Save", @"Menus save button title")];
+            [self.navigationItem setRightBarButtonItem:self.saveButtonItem animated:YES];
         }
     }
+}
+
+- (void)discardChanges
+{
+    self.savingEnabled = NO;
+    
+    __weak __typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.15 animations:^{
+        weakSelf.scrollView.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        CGPoint offset = weakSelf.scrollView.contentOffset;
+        offset.y = 0;
+        weakSelf.scrollView.contentOffset = offset;
+        weakSelf.animatesAppearanceAfterSync = YES;
+        [weakSelf syncWithBlogMenus];
+    }];
 }
 
 - (NSString *)generateIncrementalMenuName
@@ -327,6 +355,30 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 }
 
 #pragma mark - Bar button items
+
+- (void)discardChangesBarButtonItemPressed:(id)sender
+{
+    NSString *title = NSLocalizedString(@"Unsaved Changes", @"Menus alert title for alerting the user to unsaved changes.");
+    NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes.");
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.")
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:nil];
+        [alert addAction:action];
+    }
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.")
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                                               [self discardChanges];
+                                                           });
+                                                       }];
+        [alert addAction:action];
+    }
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 - (void)saveBarButtonItemPressed:(id)sender
 {
