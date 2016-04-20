@@ -3,8 +3,10 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
+#import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
-#import <NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 @implementation BlogSyncFacade
 
@@ -17,12 +19,11 @@
     [blogService syncBlogsForAccount:account success:success failure:failure];
 }
 
-- (void)syncBlogForAccount:(WPAccount *)account
-                  username:(NSString *)username
-                  password:(NSString *)password
-                    xmlrpc:(NSString *)xmlrpc
-                   options:(NSDictionary *)options
-              finishedSync:(void(^)())finishedSync
+- (void)syncBlogWithUsername:(NSString *)username
+                    password:(NSString *)password
+                      xmlrpc:(NSString *)xmlrpc
+                     options:(NSDictionary *)options
+                finishedSync:(void(^)())finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -32,20 +33,30 @@
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc andUsername:username];
     if (!blog) {
-        blog = [blogService createBlogWithAccount:account];
+        blog = [blogService createBlogWithAccount:nil];
         if (url) {
             blog.url = url;
         }
         if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
+            blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
+    blog.username = username;
     blog.xmlrpc = xmlrpc;
+    /*
+     Note: blog.password stores the password in the keychain using username/xmlrpc,
+     so let's set it after we set those
+     */
+    blog.password = password;
     blog.options = options;
+    //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+    // know if a user has permissions to change the options we check if the blog title property is read only or not.
+    if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
+        blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
+    }
     [[ContextManager sharedInstance] saveContext:context];
-    [blogService syncBlog:blog success:nil failure:nil];
 
     if (blog.jetpack.isInstalled) {
         if (blog.jetpack.isConnected) {
@@ -53,10 +64,10 @@
             if (dotcomUsername) {
                 // Search for a matching .com account
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                account = [accountService findWordPressComAccountWithUsername:dotcomUsername];
+                WPAccount *account = [accountService findAccountWithUsername:dotcomUsername];
                 if (account) {
                     blog.jetpackAccount = account;
-                    [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                    [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:blog];
                 }
             }
         } else {
@@ -68,6 +79,9 @@
         finishedSync();
     }
 
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcutsIf3DTouchAvailable:YES];
+    
     [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];

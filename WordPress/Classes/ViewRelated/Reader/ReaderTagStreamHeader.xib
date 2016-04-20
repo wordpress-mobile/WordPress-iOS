@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="ReaderTagStreamHeader" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yok-SJ-qnw">
+                    <rect key="frame" x="-1" y="-1" width="322" height="66"/>
+                    <color key="backgroundColor" red="0.84313725490196079" green="0.8901960784313725" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-P4-qyc">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-reader-header-tag" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-5o-P7K">
+                            <rect key="frame" x="16" y="16" width="32" height="32"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Lw5-mV-4oQ"/>
+                                <constraint firstAttribute="width" constant="32" id="g5H-RL-frL"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f85-bJ-w04">
+                            <rect key="frame" x="58" y="23" width="194" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0E-MM-cCj" customClass="PostMetaButton">
+                            <rect key="frame" x="262" y="17" width="42" height="29"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Follow">
+                                <color key="titleColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapFollowButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Yxp-WC-ada"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="S0E-MM-cCj" firstAttribute="leading" secondItem="f85-bJ-w04" secondAttribute="trailing" constant="10" id="HuJ-aH-u17"/>
+                        <constraint firstItem="S0E-MM-cCj" firstAttribute="centerY" secondItem="OeG-5o-P7K" secondAttribute="centerY" id="YW1-md-OXP"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="top" secondItem="w2t-P4-qyc" secondAttribute="top" constant="16" id="aQr-XY-0Oo"/>
+                        <constraint firstAttribute="width" constant="600" id="dGy-0v-2gt"/>
+                        <constraint firstAttribute="trailing" secondItem="S0E-MM-cCj" secondAttribute="trailing" constant="16" id="lEy-BK-56k"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="centerY" secondItem="f85-bJ-w04" secondAttribute="centerY" id="pyz-dc-YRO"/>
+                        <constraint firstItem="f85-bJ-w04" firstAttribute="leading" secondItem="OeG-5o-P7K" secondAttribute="trailing" constant="10" id="sDv-w7-oIb"/>
+                        <constraint firstAttribute="bottom" secondItem="OeG-5o-P7K" secondAttribute="bottom" constant="16" id="wrc-o3-nfw"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="leading" secondItem="w2t-P4-qyc" secondAttribute="leading" constant="16" id="zcu-ZN-MsG"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="dGy-0v-2gt"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="dGy-0v-2gt"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0AD-OG-fcy"/>
+                <constraint firstItem="yok-SJ-qnw" firstAttribute="trailing" secondItem="w2t-P4-qyc" secondAttribute="trailing" constant="1" id="99P-UK-axt"/>
+                <constraint firstAttribute="bottom" secondItem="w2t-P4-qyc" secondAttribute="bottom" priority="900" constant="8" id="A2H-sg-sOi"/>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DNk-AU-4lT"/>
+                <constraint firstAttribute="trailing" secondItem="w2t-P4-qyc" secondAttribute="trailing" id="Fc1-aY-QAR"/>
+                <constraint firstItem="yok-SJ-qnw" firstAttribute="leading" secondItem="w2t-P4-qyc" secondAttribute="leading" constant="-1" id="m1K-Yo-vPA"/>
+                <constraint firstItem="yok-SJ-qnw" firstAttribute="bottom" secondItem="w2t-P4-qyc" secondAttribute="bottom" constant="1" id="mNZ-mP-G8u"/>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="qIT-p4-I8Y"/>
+                <constraint firstAttribute="centerX" secondItem="w2t-P4-qyc" secondAttribute="centerX" id="sf6-Zg-awV"/>
+                <constraint firstItem="yok-SJ-qnw" firstAttribute="top" secondItem="w2t-P4-qyc" secondAttribute="top" constant="-1" id="voQ-Dl-m6W"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="qIT-p4-I8Y"/>
+                    <exclude reference="sf6-Zg-awV"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="0AD-OG-fcy"/>
+                    <exclude reference="DNk-AU-4lT"/>
+                    <exclude reference="Fc1-aY-QAR"/>
+                    <include reference="qIT-p4-I8Y"/>
+                    <include reference="sf6-Zg-awV"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="contentBottomConstraint" destination="A2H-sg-sOi" id="huH-SM-MhD"/>
+                <outlet property="contentIPadTopConstraint" destination="qIT-p4-I8Y" id="VSj-5L-8uM"/>
+                <outlet property="followButton" destination="S0E-MM-cCj" id="PEW-za-Q8v"/>
+                <outlet property="innerContentView" destination="w2t-P4-qyc" id="9QZ-OJ-H1S"/>
+                <outlet property="titleLabel" destination="f85-bJ-w04" id="fKz-3G-lF4"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-reader-header-tag" width="24" height="24"/>
+    </resources>
+</document>

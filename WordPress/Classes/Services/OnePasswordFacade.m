@@ -1,5 +1,5 @@
 #import "OnePasswordFacade.h"
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <OnePasswordExtension/OnePasswordExtension.h>
 
 @implementation OnePasswordFacade
 
@@ -11,11 +11,13 @@
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:loginUrl forViewController:viewController sender:sender completion:^(NSDictionary *loginDict, NSError *error) {
         if (error != nil && error.code != AppExtensionErrorCodeCancelledByUser) {
-            completion(nil, nil, error);
+            completion(nil, nil, nil, error);
         } else {
             NSString *username = loginDict[AppExtensionUsernameKey];
             NSString *password = loginDict[AppExtensionPasswordKey];
-            completion(username, password, error);
+            NSString *oneTimePassword = loginDict[AppExtensionTOTPKey];
+            
+            completion(username, password, oneTimePassword, error);
         }
     }];
 }

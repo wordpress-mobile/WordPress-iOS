@@ -1,13 +1,13 @@
 #import "EditImageDetailsViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <WordPress-iOS-Editor/WPImageMeta.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/UITableViewTextFieldCell.h>
+#import <WordPressEditor/WPImageMeta.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "AbstractPost.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
-#import "WPTableViewController.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
+#import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
 static NSString *const TextFieldCell = @"TextFieldCell";
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
     self.title = NSLocalizedString(@"Edit Image", @"Title of the edit image details screen.");
 
-    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCell];
+    [self.tableView registerClass:[WPTextFieldTableViewCell class] forCellReuseIdentifier:TextFieldCell];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ThumbCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
@@ -305,9 +305,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
-    header.backgroundColor = self.tableView.backgroundColor;
     return header;
 }
 
@@ -318,7 +317,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     }
 
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -367,11 +366,11 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 #pragma mark - Cells
 
-- (UITableViewTextFieldCell *)getTextFieldCell
+- (WPTextFieldTableViewCell *)getTextFieldCell
 {
-    UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCell];
+    WPTextFieldTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCell];
     if (!cell) {
-        cell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldCell];
+        cell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldCell];
     }
 
     cell.textField.returnKeyType = UIReturnKeyDone;
@@ -414,7 +413,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (UITableViewCell *)detailCellForIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewTextFieldCell *cell = [self getTextFieldCell];
+    WPTextFieldTableViewCell *cell = [self getTextFieldCell];
 
     if (indexPath.row == 0) {
         cell.tag = ImageDetailsRowTitle;
@@ -459,7 +458,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     } else if (indexPath.row == 1) {
         cell = [self linkCellForIndexPath:indexPath];
         cell.tag = ImageDetailsRowLink;
-        ((UITableViewTextFieldCell *)cell).textField.tag = ImageDetailsTextFieldLink;
+        ((WPTextFieldTableViewCell *)cell).textField.tag = ImageDetailsTextFieldLink;
 
     } else if (indexPath.row == 2) {
         cell.tag = ImageDetailsRowSize;
@@ -473,7 +472,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (UITableViewCell *)linkCellForIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewTextFieldCell *cell = [self getTextFieldCell];
+    WPTextFieldTableViewCell *cell = [self getTextFieldCell];
     cell.tag = ImageDetailsRowLink;
     cell.textLabel.text = NSLocalizedString(@"Link To", @"Image link option title");
     cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"http://www.example.com/", @"Placeholder text for the link field.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
@@ -523,8 +522,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                            @"CurrentValue"   : currentValue
                            };
 
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:dict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         // do interesting work here... like updating the value of image meta.
         self.imageDetails.align = status;
@@ -555,8 +554,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                            };
 
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:dict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         CGSize maxSize = CGSizeZero;
 

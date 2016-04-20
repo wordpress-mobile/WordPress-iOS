@@ -7,7 +7,7 @@
 @property (nonatomic, assign) BOOL shouldReauthenticateDefaultAccount;
 @property (nonatomic, assign) BOOL showEditorAfterAddingSites;
 @property (nonatomic, assign) BOOL cancellable;
-@property (nonatomic,   copy) void (^dismissBlock)();
+@property (nonatomic,   copy) void (^dismissBlock)(BOOL cancelled);
 
 + (void)presentModalReauthScreen;
 

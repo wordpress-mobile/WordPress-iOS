@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--Posts-->
@@ -14,7 +13,7 @@
                         <viewControllerLayoutGuide type="bottom" id="AIH-s0-RTt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Zhd-4n-wcm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kl8-s3-Dv4">
@@ -87,7 +86,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
-                        <outlet property="authorsFilter" destination="2zZ-72-iKA" id="Ycd-OB-A7L"/>
+                        <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
                         <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
                         <outlet property="authorsFilterViewHeightConstraint" destination="KUd-OB-pfW" id="qbe-pV-Ymo"/>
                         <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>

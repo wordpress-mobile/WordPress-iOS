@@ -1,11 +1,11 @@
 #import "SubscribedTopicsViewController.h"
-#import "WPStyleGuide.h"
-#import "ReaderTopicService.h"
-#import "ReaderTopic.h"
 #import "ContextManager.h"
-#import "WPTableViewHandler.h"
-#import "WPAccount.h"
 #import "AccountService.h"
+#import "ReaderTopicService.h"
+#import "WPAccount.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewHandler.h"
+#import "WordPress-Swift.h"
 
 @interface SubscribedTopicsViewController ()<WPTableViewHandlerDelegate>
 
@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Followed Tags", @"Page title for the list of subscribed tags.");
+    self.title = NSLocalizedString(@"Followed Topics", @"Page title for the list of subscribed topics.");
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -42,6 +42,7 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -77,10 +78,10 @@
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return [defaultAccount isWpcom];
+    return defaultAccount != nil;
 }
 
-- (ReaderTopic *)currentTopic
+- (ReaderAbstractTopic *)currentTopic
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
@@ -93,7 +94,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    ReaderTopic *topic = [self currentTopic];
+    ReaderAbstractTopic *topic = [self currentTopic];
     NSIndexPath *indexPath  = [self.tableViewHandler.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -110,21 +111,17 @@
 
 - (void)unfollowTopicAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderTagTopic *topic = (ReaderTagTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service unfollowTopic:topic withSuccess:^{
-        //noop
-    } failure:^(NSError *error) {
+    [service unfollowAndRefreshCurrentTopicForTag:topic withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not unfollow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Topic", @"");
         NSString *description = error.localizedDescription;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *alertCancel = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:description preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -135,15 +132,15 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (NSString *)entityName
-{
-    return @"ReaderTopic";
-}
-
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = YES) AND (isMenuItem = YES)"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    NSArray *types = @[
+                       [ReaderDefaultTopic TopicType],
+                       [ReaderListTopic TopicType],
+                       [ReaderTagTopic TopicType]
+                       ];
+    request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND following = YES", types];
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -165,7 +162,7 @@
         // A work around is to only style the cells when not displaying text.
         [WPStyleGuide configureTableViewCell:cell];
     }
-    ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
@@ -178,7 +175,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     service.currentTopic = topic;
 
@@ -187,16 +184,23 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    ReaderAbstractTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if (![ReaderHelpers isTopicTag:topic]) {
         return NO;
     }
     return self.isEditing;

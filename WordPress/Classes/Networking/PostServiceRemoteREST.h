@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "PostServiceRemote.h"
-#import "ServiceRemoteREST.h"
+#import "SiteServiceRemoteREST.h"
 
-@interface PostServiceRemoteREST : NSObject<PostServiceRemote, ServiceRemoteREST>
+@interface PostServiceRemoteREST : SiteServiceRemoteREST <PostServiceRemote>
 
 @end

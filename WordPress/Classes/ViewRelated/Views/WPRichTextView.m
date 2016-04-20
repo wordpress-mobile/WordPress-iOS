@@ -10,6 +10,8 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 static CGSize const WPRichTextMinimumSize = {1, 1};
 static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 static NSInteger const WPRichTextImageQuality = 65;
+NSString * const WPRichTextDefaultFontFamily = @"Merriweather";
+NSString * const WPRichTextDefaultFontName = @"Merriweather";
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -23,6 +25,7 @@ static NSInteger const WPRichTextImageQuality = 65;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
 @property (nonatomic) BOOL shouldPreventPendingMediaLayout;
+@property (nonatomic, strong) NSString *urlPathToCopy;
 
 @end
 
@@ -37,6 +40,16 @@ static NSInteger const WPRichTextImageQuality = 65;
     // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
     // for the detail view, and avoid a perceived lag.
     [DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+
+    // Configure overrides for italic and bold fonts.
+    // Get the font from WPFontManager to ensure it is loaded in memory.
+    // Size is arbitrary.
+    UIFont *font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:YES italic:NO];
+    font = [WPFontManager merriweatherItalicFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:NO italic:YES];
+    font = [WPFontManager merriweatherBoldItalicFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:YES italic:YES];
 }
 
 + (NSDictionary *)defaultDTCoreTextOptions
@@ -44,9 +57,10 @@ static NSInteger const WPRichTextImageQuality = 65;
     NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 5px 10px 0;}";
     DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
-             DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
-             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
+             DTDefaultFontFamily:WPRichTextDefaultFontFamily,
+             DTDefaultFontName: WPRichTextDefaultFontName,
+             DTDefaultLineHeightMultiplier:@1.5,
+             DTDefaultFontSize:([UIDevice isPad] ? @16 : @14),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
@@ -80,6 +94,22 @@ static NSInteger const WPRichTextImageQuality = 65;
     }
     return self;
 }
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _mediaArray = [NSMutableArray array];
+        _mediaIndexPathsNeedingLayout = [NSMutableArray array];
+        _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [[self class] defaultDTCoreTextOptions];
+        _textContentView = [self buildTextContentView];
+        [self addSubview:self.textContentView];
+        [self configureConstraints];
+    }
+    return self;
+}
+
 
 - (void)layoutSubviews
 {
@@ -241,12 +271,23 @@ static NSInteger const WPRichTextImageQuality = 65;
     // this point has no effect.  Dispatch async will let us refresh layout in a new loop
     // and correctly update.
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshMediaLayout];
+        [self refreshLayout];
 
         if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
             [self.delegate richTextViewDidLoadMediaBatch:self]; // So the delegate can correct its size.
         }
     });
+}
+
+- (void)refreshLayout
+{
+    // If image frames need to be updated `relayoutTextContentView` will be
+    // called automatically.
+    if ([self refreshLayoutForMediaInArray:self.mediaArray]) {
+        return;
+    }
+
+    [self relayoutTextContentView];
 }
 
 - (void)refreshMediaLayout
@@ -256,7 +297,7 @@ static NSInteger const WPRichTextImageQuality = 65;
 
 - (CGSize)maxImageDisplaySize
 {
-    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat insets = self.edgeInsets.left + self.edgeInsets.right;
     CGFloat side = MAX(CGRectGetWidth(screenRect) - insets, CGRectGetHeight(screenRect) - insets);
     return CGSizeMake(side, side);
@@ -333,7 +374,7 @@ static NSInteger const WPRichTextImageQuality = 65;
     [self refreshLayoutForMediaInArray:arr];
 }
 
-- (void)refreshLayoutForMediaInArray:(NSArray *)media
+- (BOOL)refreshLayoutForMediaInArray:(NSArray *)media
 {
     BOOL frameChanged = NO;
 
@@ -346,6 +387,8 @@ static NSInteger const WPRichTextImageQuality = 65;
     if (frameChanged) {
         [self relayoutTextContentView];
     }
+
+    return frameChanged;
 }
 
 - (BOOL)updateLayoutForMediaItem:(id<WPRichTextMediaAttachment>)media
@@ -445,6 +488,11 @@ static NSInteger const WPRichTextImageQuality = 65;
     }
     self.needsCheckPendingDownloadsAfterDelay = NO;
 
+    // Bail if there is no media needing layout.
+    if ([self.mediaIndexPathsNeedingLayout count] == 0) {
+        return;
+    }
+
     [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
     [self.mediaIndexPathsNeedingLayout removeAllObjects];
     self.dateOfLastMediaRefresh = [NSDate date];
@@ -461,6 +509,45 @@ static NSInteger const WPRichTextImageQuality = 65;
         return;
     }
     [self checkPendingMediaDownloads];
+}
+
+
+#pragma mark - Longpress Gesture and Copy Menu
+
+- (void)handleLinkLongPress:(UIGestureRecognizer *)recognizer
+{
+    if ([recognizer state] != UIGestureRecognizerStateBegan) {
+        return;
+    }
+
+    DTLinkButton *button = (DTLinkButton *)recognizer.view;
+    NSLog(@"%@", button.URL);
+    self.urlPathToCopy = button.URL.absoluteString;
+
+    [self becomeFirstResponder];
+    CGPoint location = [recognizer locationInView:self];
+    CGRect frame = CGRectMake(location.x, location.y, 0.0, 0.0);
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    [menuController setTargetRect:frame inView:self];
+    [menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)copy:(id)sender {
+    // called when copy clicked in menu
+    [UIPasteboard generalPasteboard].string = self.urlPathToCopy;
+}
+
+// Menu controller checks this to see what options to display
+- (BOOL)canPerformAction:(SEL)selector withSender:(id)sender {
+    if (selector == @selector(copy:)) {
+        return YES;
+    }
+    return NO;
+}
+
+// Must return YES in order to show the menu controller.
+- (BOOL)canBecomeFirstResponder {
+    return YES;
 }
 
 
@@ -488,6 +575,10 @@ static NSInteger const WPRichTextImageQuality = 65;
 
     // use normal push action for opening URL
     [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLinkLongPress:)];
+    lpgr.cancelsTouchesInView = YES;
+    [button addGestureRecognizer:lpgr];
 
     return button;
 }

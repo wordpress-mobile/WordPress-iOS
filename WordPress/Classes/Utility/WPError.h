@@ -72,7 +72,7 @@
  @param okPressedBlock a block to execute if the OK button is pressed
  */
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
-         withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *alertView))okBlock;
+         withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertController *alertView))okBlock;
 
 
 @end

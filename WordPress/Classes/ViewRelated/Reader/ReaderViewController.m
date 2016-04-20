@@ -1,21 +1,19 @@
 #import "ReaderViewController.h"
 
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReaderPostService.h"
-#import "ReaderPostsViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "ReaderSubscriptionViewController.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
+#import "WordPressAppDelegate.h"
 #import "WPTabBarController.h"
 #import "WordPress-Swift.h"
 
 @interface ReaderViewController () <UIViewControllerRestoration>
-@property (nonatomic, strong) ReaderPostsViewController *postsViewController;
+@property (nonatomic, strong) ReaderStreamViewController *postsViewController;
 @end
 
 @implementation ReaderViewController
@@ -36,6 +34,8 @@
 {
     self = [super init];
     if (self) {
+        [self cleanupPreviewedPostsAndTopics];
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
     }
@@ -49,21 +49,20 @@
     [self configureNavBar];
     [self configurePostsViewController];
 
-    ReaderTopic *topic = [self currentTopic];
+    ReaderAbstractTopic *topic = [self currentTopic];
     if (topic) {
         [self assignTopic:topic];
     } else {
         [self syncTopics];
     }
-
 }
 
 
 #pragma mark - Public methods
 
-- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
+- (void)openPost:(NSNumber *)postID onBlog:(NSNumber *)blogID
 {
-    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPostID:postID siteID:blogID];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -77,7 +76,7 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (ReaderTopic *)currentTopic
+- (ReaderAbstractTopic *)currentTopic
 {
     return [[[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]] currentTopic];
 }
@@ -94,23 +93,23 @@
     navigationItem.backBarButtonItem = backButton;
 
     // Topics button
-    UIImage *image = [UIImage imageNamed:@"icon-reader-topics"];
-    CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
-    topicsButton.tintColor = [WPStyleGuide navbarButtonTintColor];
-    [topicsButton setImage:image forState:UIControlStateNormal];
-    topicsButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
-    navigationItem.rightBarButtonItem = button;
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:navigationItem];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Menu", @"")
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(topicsAction:)];
+    [button setAccessibilityLabel:NSLocalizedString(@"Menu", @"Accessibility label for the menu button. The user does not see this text but it can be spoken by a screen reader.")];
+    navigationItem.leftBarButtonItem = button;
 }
 
 - (void)configurePostsViewController
 {
-    self.postsViewController = [[ReaderPostsViewController alloc] init];
+    if (self.postsViewController) {
+        [self.postsViewController.view removeFromSuperview];
+        [self.postsViewController removeFromParentViewController];
+        self.postsViewController = nil;
+    }
+
+    self.postsViewController = [ReaderStreamViewController controllerWithTopic:nil];
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
     childView.frame = self.view.bounds;
@@ -119,15 +118,21 @@
     [self.postsViewController didMoveToParentViewController:self];
 }
 
+- (void)cleanupPreviewedPostsAndTopics
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [topicService deleteNonMenuTopics];
+
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [postService deletePostsWithNoTopic];
+}
+
 - (void)syncTopics
 {
-    // TODO: Should we check for an account?
-    NSManagedObjectContext *context = [self managedObjectContext];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
-    if ([service numberOfAccounts] == 0) {
+    if ([WordPressAppDelegate sharedInstance].testSuiteIsRunning) {
+        // Skip syncing when running the test suite.
         return;
     }
-
     __weak __typeof(self) weakSelf = self;
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [topicService fetchReaderMenuWithSuccess:^{
@@ -137,19 +142,22 @@
     }];
 }
 
-- (void)assignTopic:(ReaderTopic *)topic
+- (void)assignTopic:(ReaderAbstractTopic *)topic
 {
-    self.postsViewController.readerTopic = topic;
-
     // Update our title
     if (topic) {
-        self.title = topic.title;
+        self.navigationItem.title = topic.title;
     } else {
-        self.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+        self.navigationItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
     }
 
-    // Make sure that the tab bar item does not change its title.
-    self.navigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+    // Don't recycle an existing controller.  Instead create a new one.
+    // This resolves some layout issues swapping out tableHeaderViews on iOS 9
+    if (self.postsViewController.readerTopic && ![self.postsViewController.readerTopic isEqual:topic]) {
+        [self configurePostsViewController];
+    }
+
+    self.postsViewController.readerTopic = topic;
 }
 
 
@@ -192,7 +200,7 @@
 
 - (void)scrollViewToTop
 {
-    [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [self.postsViewController scrollViewToTop];
 }
 
 @end

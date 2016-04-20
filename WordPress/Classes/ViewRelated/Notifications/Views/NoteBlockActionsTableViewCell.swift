@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
 
 @objc public class NoteBlockActionsTableViewCell : NoteBlockTableViewCell
 {
@@ -16,37 +16,36 @@ import Foundation
 
     public var isReplyEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnReply, isVisible: isReplyEnabled)
-            refreshBottomSpacing()
+            btnReply.hidden = !isReplyEnabled
         }
     }
     public var isLikeEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnLike, isVisible: isLikeEnabled)
-            refreshBottomSpacing()
+            btnLike.hidden = !isLikeEnabled
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnApprove, isVisible: isApproveEnabled)
-            refreshBottomSpacing()
+            btnApprove.hidden = !isApproveEnabled
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnTrash, isVisible: isTrashEnabled)
-            refreshBottomSpacing()
+            btnTrash.hidden = !isTrashEnabled
         }
     }
     public var isSpamEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnSpam, isVisible: isSpamEnabled)
-            refreshBottomSpacing()
+            btnSpam.hidden = !isSpamEnabled
         }
     }
     public var isLikeOn: Bool {
         set {
             btnLike.selected = newValue
+            btnLike.accessibilityLabel = likeAccesibilityLabel
+            btnLike.accessibilityHint = likeAccessibilityHint
+            // Force button trait to avoid automatic "Selected" trait
+            btnLike.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
             return btnLike.selected
@@ -55,12 +54,17 @@ import Foundation
     public var isApproveOn: Bool {
         set {
             btnApprove.selected = newValue
+            btnApprove.accessibilityLabel = approveAccesibilityLabel
+            btnApprove.accessibilityHint = approveAccesibilityHint
+            // Force button trait to avoid automatic "Selected" trait
+            btnApprove.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
             return btnApprove.selected
         }
     }
 
+    
     
     // MARK: - View Methods
     public override func awakeFromNib() {
@@ -70,12 +74,6 @@ import Foundation
         
         let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
-        
-        let likeNormalTitle         = NSLocalizedString("Like",     comment: "Like a comment")
-        let likeSelectedTitle       = NSLocalizedString("Liked",    comment: "A comment has been liked")
-
-        let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
-        let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
 
         let replyTitle              = NSLocalizedString("Reply",    comment: "Verb, reply to a comment")
         let spamTitle               = NSLocalizedString("Spam",     comment: "Verb, spam a comment")
@@ -110,75 +108,81 @@ import Foundation
         btnTrash.accessibilityLabel = trashTitle
     }
     
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        actionsView.spacing = buttonSpacingForCurrentTraits
+    }
+    
+    
+    
     // MARK: - IBActions
     @IBAction public func replyWasPressed(sender: AnyObject) {
-        hitEventHandler(onReplyClick, sender: sender)
+        onReplyClick?(sender: sender)
     }
     
     @IBAction public func likeWasPressed(sender: AnyObject) {
-        let handler = isLikeOn ? onUnlikeClick : onLikeClick
-        hitEventHandler(handler, sender: sender)
+        let onClick = isLikeOn ? onUnlikeClick : onLikeClick
+        onClick?(sender: sender)
         isLikeOn = !isLikeOn
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
-        let handler = isApproveOn ? onUnapproveClick : onApproveClick
-        hitEventHandler(handler, sender: sender)
+        let onClick = isApproveOn ? onUnapproveClick : onApproveClick
+        onClick?(sender: sender)
         isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
-        hitEventHandler(onTrashClick, sender: sender)
+        onTrashClick?(sender: sender)
     }
     
     @IBAction public func spamWasPressed(sender: AnyObject) {
-        hitEventHandler(onSpamClick, sender: sender)
-    }
-
-    // MARK: - Private Methods
-    private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
-        if let listener = handler {
-            listener(sender: sender)
-        }
+        onSpamClick?(sender: sender)
     }
     
-    private func refreshButtonSize(button: UIButton, isVisible: Bool) {
-        // When disabled, let's hide the button by shrinking it's width
-        let newWidth   = isVisible ? buttonWidth   : CGFloat.min
-        let newSpacing = isVisible ? buttonSpacing : CGFloat.min
-        
-        button.updateConstraint(.Width, constant: newWidth)
-        
-        actionsView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: newSpacing)
-        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: newSpacing)
-        
-        button.hidden   = !isVisible
-        button.enabled  = isVisible
+    
+    // MARK: - Computed Properties
+    private var buttonSpacingForCurrentTraits : CGFloat {
+        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
+        return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
+    }
+    
+    private var approveAccesibilityLabel : String {
+        return isApproveOn ? approveSelectedTitle : approveNormalTitle
     }
 
-    private func refreshBottomSpacing() {
-        //  Let's remove the bottom space when every action button is disabled
-        let hasActions   = isReplyEnabled || isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
-        let newTop       = hasActions ? actionsTop    : CGFloat.min
-        let newHeight    = hasActions ? actionsHeight : CGFloat.min
-        
-        contentView.updateConstraintWithFirstItem(actionsView, attribute: .Top, constant: newTop)
-        actionsView.updateConstraint(.Height, constant: newHeight)
-        actionsView.hidden = !hasActions
-        setNeedsLayout()
+    private var approveAccesibilityHint : String {
+        return isApproveOn ? approveSelectedHint : approveNormalHint
     }
+
+    private var likeAccesibilityLabel : String {
+        return isLikeOn ? likeSelectedTitle : likeNormalTitle
+    }
+
+    private var likeAccessibilityHint : String {
+        return isLikeOn ? likeSelectedHint : likeNormalHint
+    }
+    
     
     // MARK: - Private Constants
-    private let buttonWidth                         = CGFloat(55)
-    private let buttonSpacing                       = CGFloat(20)
-    private let actionsHeight                       = CGFloat(34)
-    private let actionsTop                          = CGFloat(11)
+    private let buttonSpacing           = CGFloat(20)
+    private let buttonSpacingCompact    = CGFloat(10)
+
+    private let likeNormalTitle         = NSLocalizedString("Like",     comment: "Like a comment")
+    private let likeSelectedTitle       = NSLocalizedString("Liked",    comment: "A comment has been liked")
+    private let likeNormalHint          = NSLocalizedString("Likes the comment",     comment: "Likes a comment. Spoken Hint.")
+    private let likeSelectedHint        = NSLocalizedString("Unlikes the comment",   comment: "Unlikes a comment. Spoken Hint.")
+    
+    private let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
+    private let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
+    private let approveNormalHint       = NSLocalizedString("Approves the comment",  comment: "Approves a comment. Spoken Hint.")
+    private let approveSelectedHint     = NSLocalizedString("Disapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var actionsView          : UIView!
-    @IBOutlet private weak var btnReply             : UIButton!
-    @IBOutlet private weak var btnLike              : UIButton!
-    @IBOutlet private weak var btnApprove           : UIButton!
-    @IBOutlet private weak var btnTrash             : UIButton!
-    @IBOutlet private weak var btnSpam              : UIButton!
+    @IBOutlet private var actionsView   : UIStackView!
+    @IBOutlet private var btnReply      : UIButton!
+    @IBOutlet private var btnLike       : UIButton!
+    @IBOutlet private var btnApprove    : UIButton!
+    @IBOutlet private var btnTrash      : UIButton!
+    @IBOutlet private var btnSpam       : UIButton!
 }

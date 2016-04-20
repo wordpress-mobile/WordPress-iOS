@@ -27,6 +27,7 @@ CGFloat const PostGeolocationCellMargin = 15.0f;
     self.geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
     self.geoView.labelMargin = 0.0f;
     self.geoView.scrollEnabled = NO;
+    self.geoView.chevronHidden = YES;
     self.geoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.contentView addSubview:self.geoView];
 }

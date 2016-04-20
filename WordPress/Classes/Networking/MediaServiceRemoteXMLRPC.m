@@ -1,30 +1,14 @@
 #import "MediaServiceRemoteXMLRPC.h"
 #import "RemoteMedia.h"
-#import "Blog.h"
 #import <WordPressApi/WPXMLRPCClient.h>
-
-@interface MediaServiceRemoteXMLRPC ()
-@property (nonatomic) WPXMLRPCClient *api;
-@end
 
 @implementation MediaServiceRemoteXMLRPC
 
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
-
 - (void)getMediaWithID:(NSNumber *)mediaID
-               forBlog:(Blog *)blog
                success:(void (^)(RemoteMedia *remoteMedia))success
                failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:mediaID];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:mediaID];
     [self.api callMethod:@"wp.getMediaItem"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -39,6 +23,45 @@
                      }
                  }];
 }
+
+- (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self.api callMethod:@"wp.getMediaLibrary"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([self remoteMediaFromXMLRPCArray:responseObject]);
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
+                                failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self.api callMethod:@"wp.getMediaLibrary"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([responseObject count]);
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 
 - (NSURLCredential *)findCredentialForHost:(NSString *)host port:(NSInteger)port
 {
@@ -82,7 +105,6 @@
 }
 
 - (void)createMedia:(RemoteMedia *)media
-            forBlog:(Blog *)blog
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
@@ -99,7 +121,7 @@
                            @"type": type,
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
                            };
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *directory = [paths objectAtIndex:0];
     NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -160,6 +182,13 @@
 
 #pragma mark - Private methods
 
+- (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
+{
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcMedia) {
+        return [self remoteMediaFromXMLRPCDictionary:xmlrpcMedia];
+    }];
+}
+
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
@@ -168,12 +197,13 @@
     remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
     remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"metadata.file"] lastPathComponent];
+    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent];
     remoteMedia.date = xmlRPC[@"date_created_gmt"];
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
-    
+    remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
     return remoteMedia;
 }
 

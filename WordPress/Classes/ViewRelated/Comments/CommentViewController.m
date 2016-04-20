@@ -2,15 +2,12 @@
 #import "WPWebViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
-#import "UIAlertView+Blocks.h"
 #import "WordPress-Swift.h"
-#import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
 #import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
 #import "BlogService.h"
@@ -71,6 +68,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -108,7 +106,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
     
-    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.dotComID];
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
@@ -284,14 +282,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             return;
         }
 
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
+        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -341,7 +339,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.headerDetails = postTitle;
     
     // Setup the Separator
-    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    SeparatorsView *separatorsView = cell.separatorsView;
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
@@ -361,7 +359,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
-    cell.isApproved = [self.comment.status isEqualToString:@"approve"];
+    cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
     
     if (cell.isLayoutCell == NO) {
         if ([self.comment avatarURLForDisplay]) {
@@ -395,7 +393,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.isTrashEnabled = YES;
     cell.isSpamEnabled = YES;
 
-    cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
+    cell.isApproveOn = [self.comment.status isEqualToString:CommentStatusApproved];
     cell.isLikeOn = self.comment.isLiked;
 
     // Setup the Callbacks
@@ -443,7 +441,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -456,7 +454,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService toggleLikeStatusForComment:self.comment
-                                        siteID:self.comment.blog.blogID
+                                        siteID:self.comment.blog.dotComID
                                        success:nil
                                        failure:^(NSError *error) {
                                            [weakSelf reloadData];
@@ -492,53 +490,77 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)trashComment
 {
     __typeof(self) __weak weakSelf = self;
-
-    // Callback Block
-    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == alertView.cancelButtonIndex) {
-            return;
-        }
-
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
-
-        // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
-    };
-
+    
     // Show the alertView
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
-
-    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                       message:message
-             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-             otherButtonTitles:@[NSLocalizedString(@"Delete", @"Delete")]
-                      tapBlock:completion];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action){}];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete")
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction *action){
+                                                             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                                             CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+                                                             
+                                                             NSError *error = nil;
+                                                             Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+                                                             
+                                                             if (error) {
+                                                                 DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+                                                                 return;
+                                                             }
+                                                             
+                                                             [commentService deleteComment:reloadedComment success:nil failure:nil];
+                                                             
+                                                             // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
+                                                         }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:deleteAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)spamComment
 {
     __typeof(self) __weak weakSelf = self;
-
-    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == alertView.cancelButtonIndex) {
-            return;
-        }
-
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService spamComment:weakSelf.comment success:nil failure:nil];
-    };
-
+    
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
                                           @"Message asking for confirmation before marking a comment as spam");
-
-    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                       message:message
-             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-             otherButtonTitles:@[NSLocalizedString(@"Spam", @"Spam")]
-                      tapBlock:completion];
+    
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action){}];
+    
+    UIAlertAction *spamAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Spam", @"Spam")
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction *action){
+                                                           NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                                           CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+                                                           
+                                                           NSError *error = nil;
+                                                           Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+                                                           
+                                                           if (error) {
+                                                               DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+                                                               return;
+                                                           }
+                                                           
+                                                           [commentService spamComment:reloadedComment success:nil failure:nil];
+                                                       }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:spamAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
@@ -583,19 +605,26 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                           } failure:^(NSError *error) {
                               NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
                                                                     @"Error displayed if a comment fails to get updated");
-                              [UIAlertView showWithTitle:nil
-                                                 message:message
-                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
-                                       otherButtonTitles:@[ NSLocalizedString(@"Try Again", @"Retry an action that failed") ]
-                                                tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                    if (buttonIndex == alertView.cancelButtonIndex) {
-                                                        [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
-                                                        [weakSelf reloadData];
-                                                    } else {
-                                                        [weakSelf updateCommentForNewContent:content];
-                                                    }
-                                                }
-                               ];
+                              
+                              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                                       message:message
+                                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                              
+                              UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                                                                     style:UIAlertActionStyleCancel
+                                                                                   handler:^(UIAlertAction *action){
+                                                                                       [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
+                                                                                       [weakSelf reloadData];
+                                                                                   }];
+                              
+                              UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Try Again", @"Retry an action that failed")
+                                                                                    style:UIAlertActionStyleDestructive
+                                                                                  handler:^(UIAlertAction *action){
+                                                                                      [weakSelf updateCommentForNewContent:content];
+                                                                                  }];
+                              [alertController addAction:cancelAction];
+                              [alertController addAction:retryAction];
+                              [weakSelf presentViewController:alertController animated:YES completion:nil];
                           }];
 }
 
@@ -606,7 +635,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
     
-    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.dotComID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -626,25 +655,35 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-
+    
     __typeof(self) __weak weakSelf = self;
-
+    
     void (^successBlock)() = ^void() {
         [SVProgressHUD showSuccessWithStatus:successMessage];
     };
-
+    
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        [UIAlertView showWithTitle:nil
-                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                              if (buttonIndex != alertView.cancelButtonIndex) {
-                                  [weakSelf sendReplyWithNewContent:content];
-                              }
-                          }];
+        
+        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action){}];
+        
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Try Again", @"Retry an action that failed")
+                                                              style:UIAlertActionStyleDestructive
+                                                            handler:^(UIAlertAction *action){
+                                                                [weakSelf sendReplyWithNewContent:content];
+                                                            }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:retryAction];
+        [weakSelf presentViewController:alertController animated:YES completion:nil];
     };
-
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     Comment *reply = [commentService createReplyForComment:self.comment];
@@ -747,14 +786,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
+    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
     return self.shouldAttachReplyTextView && shouldShowSuggestions;
 }
 
 - (void)reloadData
 {
     // If we don't have the associated post, let's hide the Header
-    BOOL shouldShowHeader       = self.comment.post != nil;;
+    BOOL shouldShowHeader       = self.comment.post != nil;
 
     // Number of Rows:
     // NOTE: If the post wasn't retrieved yet, we'll need to hide the Header.

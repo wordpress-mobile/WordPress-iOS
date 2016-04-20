@@ -17,7 +17,7 @@
 static CGFloat const WPAnimatedBoxSideLength = 86.0;
 static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
-+ (id)new
++ (instancetype)newAnimatedBox
 {
     WPAnimatedBox *animatedBox = [[WPAnimatedBox alloc] init];
     [animatedBox setupView];
@@ -90,6 +90,15 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page3.transform = CGAffineTransformIdentity;
     } completion:nil];
+}
+
+- (void)prepareAndAnimateAfterDelay:(CGFloat)delayInSeconds
+{
+    [self prepareAnimation:NO];
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self animate];
+    });
 }
 
 @end

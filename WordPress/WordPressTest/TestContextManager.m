@@ -7,6 +7,13 @@
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
 
+- (void)dealloc
+{
+    if ([ContextManager sharedInstance] == self) {
+        [ContextManager overrideSharedInstance:nil];
+    }
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -77,6 +84,17 @@
             NSLog(@"No test expectation present for context save");
         }
     }];
+}
+
+- (void)saveContextAndWait:(NSManagedObjectContext *)context
+{
+    [super saveContextAndWait:context];
+    if (self.testExpectation) {
+        [self.testExpectation fulfill];
+        self.testExpectation = nil;
+    } else {
+        NSLog(@"No test expectation present for context save");
+    }
 }
 
 - (NSURL *)storeURL

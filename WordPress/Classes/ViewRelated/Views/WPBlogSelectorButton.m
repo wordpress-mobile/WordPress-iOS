@@ -9,7 +9,7 @@
     button.frame = frame;
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
-    [button setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     
     switch (button.buttonStyle) {
@@ -18,13 +18,14 @@
             button.titleLabel.textAlignment = NSTextAlignmentLeft;
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 0)];
             break;
         case WPBlogSelectorButtonTypeStacked:
         default:
             button.titleLabel.numberOfLines = 2;
             button.titleLabel.textAlignment = NSTextAlignmentCenter;
             button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 10)];
             [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
             break;
     }
@@ -67,9 +68,16 @@
 {
     _buttonMode = value;
     if (self.buttonMode == WPBlogSelectorButtonSingleSite) {
-        [self setImage:nil forState:UIControlStateNormal];
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+        UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        [self setImage:blankFillerImage forState:UIControlStateNormal];
+        
+        self.userInteractionEnabled = NO;
     } else {
-        [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+        [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
+        
+        self.userInteractionEnabled = YES;
     }
 }
 

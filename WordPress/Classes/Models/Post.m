@@ -6,7 +6,9 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
+
+NSString * const PostTypeDefaultIdentifier = @"post";
 
 @interface Post()
 @property (nonatomic, strong) NSString *storedContentPreviewForDisplay;
@@ -18,6 +20,7 @@
 @dynamic likeCount;
 @dynamic geolocation;
 @dynamic tags;
+@dynamic postType;
 @dynamic postFormat;
 @dynamic latitudeID;
 @dynamic longitudeID;
@@ -72,15 +75,7 @@
 
 - (NSString *)postFormatText
 {
-    NSDictionary *allFormats = self.blog.postFormats;
-    NSString *formatText = self.postFormat;
-    if ([allFormats objectForKey:self.postFormat]) {
-        formatText = [allFormats objectForKey:self.postFormat];
-    }
-    if ((formatText == nil || [formatText isEqualToString:@""]) && [allFormats objectForKey:@"standard"]) {
-        formatText = [allFormats objectForKey:@"standard"];
-    }
-    return formatText;
+    return [self.blog postFormatTextFromSlug:self.postFormat];
 }
 
 - (void)setPostFormatText:(NSString *)postFormatText
@@ -97,7 +92,7 @@
 
 - (void)setCategoriesFromNames:(NSArray *)categoryNames
 {
-    [self.categories removeAllObjects];
+    [self removeCategories:self.categories];
     NSMutableSet *categories = nil;
 
     for (NSString *categoryName in categoryNames) {
@@ -112,7 +107,7 @@
     }
 
     if (categories && (categories.count > 0)) {
-        self.categories = categories;
+        [self addCategories:categories];
     }
 }
 
@@ -157,10 +152,6 @@
 
 - (BOOL)hasLocalChanges
 {
-    if (![self isRevision]) {
-        return NO;
-    }
-    
     if ([super hasLocalChanges]) {
         return YES;
     }
@@ -205,18 +196,22 @@
 
 - (NSString *)statusForDisplay
 {
-    NSString *statusString = [self statusTitle];
-    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
-        statusString = nil;
+    NSString *statusString;
+    
+    if (![self.status isEqualToString:PostStatusPublish] && ![self.status isEqualToString:PostStatusDraft]) {
+        statusString = [self statusTitle];
     }
-    if (![self hasRemote]) {
+    
+    if (self.isRevision) {
         NSString *localOnly = NSLocalizedString(@"Local", @"A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.");
+        
         if (statusString) {
             statusString = [NSString stringWithFormat:@"%@, %@", statusString, localOnly];
         } else {
             statusString = localOnly;
         }
     }
+    
     return statusString;
 }
 

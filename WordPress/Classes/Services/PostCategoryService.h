@@ -3,7 +3,7 @@
 
 @class Blog, PostCategory;
 
-@interface PostCategoryService : NSObject <LocalCoreDataService>
+@interface PostCategoryService : LocalCoreDataService
 
 - (PostCategory *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID;
 
@@ -19,6 +19,4 @@
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
                        success:(void (^)(PostCategory *category))success
                        failure:(void (^)(NSError *error))failure;
-
-
 @end

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
-#import "ServiceRemoteREST.h"
+#import "SiteServiceRemoteREST.h"
 
-@interface MediaServiceRemoteREST : NSObject <MediaServiceRemote, ServiceRemoteREST>
+@interface MediaServiceRemoteREST : SiteServiceRemoteREST <MediaServiceRemote>
 @end

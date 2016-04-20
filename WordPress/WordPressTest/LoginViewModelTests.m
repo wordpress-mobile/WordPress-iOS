@@ -633,13 +633,14 @@ describe(@"onePasswordButtonActionForViewController", ^{
     __block NSError *error;
     __block NSString *username;
     __block NSString *password;
+    __block NSString *oneTimePassword;
     
     void (^forceOnePasswordExtensionCallbackToExecute)() = ^{
         [OCMStub([mockOnePasswordFacade findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY sender:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
-            void (^ __unsafe_unretained callback)(NSString *, NSString *, NSError *);
+            void (^ __unsafe_unretained callback)(NSString *, NSString *, NSString *, NSError *);
             [invocation getArgument:&callback atIndex:5];
             
-            callback(username, password, error);
+            callback(username, password, oneTimePassword, error);
         }];
     };
     
@@ -655,11 +656,13 @@ describe(@"onePasswordButtonActionForViewController", ^{
             beforeEach(^{
                 username = nil;
                 password = nil;
+                oneTimePassword = nil;
             });
             
-            it(@"shouldn't attempt to set the username/password", ^{
+            it(@"shouldn't attempt to set the username/password/multifactor code", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
+                [[mockViewModelPresenter reject] setMultifactorTextValue:OCMOCK_ANY];
                 
                 [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
@@ -682,16 +685,17 @@ describe(@"onePasswordButtonActionForViewController", ^{
                 error = [NSError errorWithDomain:@"com.wordpress" code:-1 userInfo:@{}];
             });
             
-            it(@"shoudln't attempt to set username/password", ^{
+            it(@"shoudln't attempt to set username/password/multifactor code", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
-                
+                [[mockViewModelPresenter reject] setMultifactorTextValue:OCMOCK_ANY];
+
                 [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
                 [mockViewModelPresenter verify];
             });
             
-            it(@"shoudln't attempt to sign in", ^{
+            it(@"shouldn't attempt to sign in", ^{
                 [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
                     XCTFail(@"Shouldn't get here");
                 }];
@@ -701,19 +705,53 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
     });
     
-    NSString *sharedExamplesForValidData = @"the extension returned valid data";
+    NSString *sharedExamplesForValidData = @"the extension returned a valid username and password";
     sharedExamplesFor(sharedExamplesForValidData, ^(NSDictionary *data) {
         
         beforeEach(^{
             forceOnePasswordExtensionCallbackToExecute();
             viewModel.username = username =  @"username";
             viewModel.password = password = @"password";
+            viewModel.multifactorCode = oneTimePassword = nil;
             error = nil;
         });
         
         it(@"should set the username/password", ^{
             [[mockViewModelPresenter expect] setUsernameTextValue:viewModel.username];
             [[mockViewModelPresenter expect] setPasswordTextValue:viewModel.password];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
+            
+            [mockViewModelPresenter verify];
+        });
+        
+        it(@"should attempt to sign in", ^{
+            __block BOOL signInAttempted = NO;
+            [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
+                signInAttempted = YES;
+            }];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
+            
+            expect(signInAttempted).to.beTruthy();
+        });
+    });
+    
+    NSString *sharedExamplesForValidDataWithMultifactor = @"the extension returned a valid username, password, and multifactor code";
+    sharedExamplesFor(sharedExamplesForValidDataWithMultifactor, ^(NSDictionary *data) {
+        
+        beforeEach(^{
+            forceOnePasswordExtensionCallbackToExecute();
+            viewModel.username = username =  @"username";
+            viewModel.password = password = @"password";
+            viewModel.multifactorCode = oneTimePassword = @"123456";
+            error = nil;
+        });
+        
+        it(@"should set the username/password and multifactor code", ^{
+            [[mockViewModelPresenter expect] setUsernameTextValue:viewModel.username];
+            [[mockViewModelPresenter expect] setPasswordTextValue:viewModel.password];
+            [[mockViewModelPresenter expect] setMultifactorTextValue:viewModel.multifactorCode];
             
             [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
@@ -782,6 +820,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForValidDataWithMultifactor, nil);
         itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
     
@@ -801,6 +840,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForValidDataWithMultifactor, nil);
         itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
 });
@@ -1071,7 +1111,7 @@ describe(@"displayRemoteError", ^{
         context(@"the error code isn't 403, 405, a bad url and there is no error message", ^{
             
             beforeEach(^{
-                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];;
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];
             });
             
             it(@"should display an overlay with a message about sign in failed", ^{
@@ -1170,7 +1210,7 @@ describe(@"toggleSignInButton visibility", ^{
     it(@"should be hidden during authentication", ^{
         [[mockViewModelPresenter expect] setToggleSignInButtonHidden:YES];
         
-        viewModel.authenticating = YES;;
+        viewModel.authenticating = YES;
         
         [mockViewModelPresenter verify];
     });
@@ -1611,20 +1651,21 @@ describe(@"LoginFacadeDelegate methods", ^{
                     [mockViewModelPresenter verify];
                 });
                 
-                it(@"should indicate dismiss the login view", ^{
-                    [[mockViewModelPresenter expect] dismissLoginView];
-                    
-                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
-                    
-                    [mockViewModelPresenter verify];
-                });
-                
                 it(@"should update the user details for the newly created account", ^{
                     [[mockAccountServiceFacade expect] updateUserDetailsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockAccountServiceFacade verify];
+
+                    it(@"should indicate dismiss the login view", ^{
+                        [[mockViewModelPresenter expect] dismissLoginView];
+                        
+                        [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
+                        
+                        [mockViewModelPresenter verify];
+                    });
+                    
                 });
             });
             
@@ -1684,16 +1725,8 @@ describe(@"LoginFacadeDelegate methods", ^{
             [mockViewModelPresenter verify];
         });
         
-        it(@"should create a WPAccount for a self hosted site", ^{
-            [[mockAccountServiceFacade expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-            
-            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            
-            [mockAccountServiceFacade verify];
-        });
-        
         it(@"should sync the newly added site", ^{
-            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
+            [[mockBlogSyncFacade expect] syncBlogWithUsername:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
@@ -1704,9 +1737,9 @@ describe(@"LoginFacadeDelegate methods", ^{
             [[mockViewModelPresenter expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogWithUsername:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
-                [invocation getArgument:&finishedSyncStub atIndex:7];
+                [invocation getArgument:&finishedSyncStub atIndex:6];
                 
                 finishedSyncStub();
             }];
@@ -1824,5 +1857,15 @@ describe(@"sendVerificationCodeButton visibility", ^{
     });
     
 });
+
+it(@"should secure the password entry when entering the background", ^{
+    OCMExpect([mockViewModelPresenter setPasswordSecureEntry:YES]);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    OCMVerifyAll(mockViewModelPresenter);
+});
+
+
 
 SpecEnd

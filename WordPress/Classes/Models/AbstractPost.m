@@ -2,6 +2,7 @@
 #import "Media.h"
 #import "ContextManager.h"
 #import "NSDate+StringFormatting.h"
+#import "WordPress-Swift.h"
 
 @implementation AbstractPost
 
@@ -190,35 +191,35 @@
 - (BOOL)hasPhoto
 {
     if ([self.media count] == 0) {
-        return false;
+        return NO;
     }
 
     if (self.featuredImage != nil) {
-        return true;
+        return YES;
     }
 
     for (Media *media in self.media) {
-        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
-            return true;
+        if (media.mediaType == MediaTypeImage) {
+            return YES;
         }
     }
 
-    return false;
+    return NO;
 }
 
 - (BOOL)hasVideo
 {
     if ([self.media count] == 0) {
-        return false;
+        return NO;
     }
 
     for (Media *media in self.media) {
         if (media.mediaType ==  MediaTypeVideo) {
-            return true;
+            return YES;
         }
     }
 
-    return false;
+    return NO;
 }
 
 - (BOOL)hasCategories
@@ -241,7 +242,7 @@
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
     if ([comments count] > 0) {
-        [self.comments unionSet:comments];
+        [self addComments:comments];
     }
 }
 
@@ -258,7 +259,9 @@
     
     Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
         Media *media = (Media *)obj;
-        *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        if (media.mediaID) {
+            *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        }
         return *stop;
     }] anyObject];
 
@@ -275,12 +278,12 @@
 
 - (NSURL *)avatarURLForDisplay
 {
-    return [NSURL URLWithString:self.blog.blavatarUrl];
+    return [NSURL URLWithString:self.blog.icon];
 }
 
 - (NSString *)blogNameForDisplay
 {
-    return self.blog.blogName;
+    return self.blog.settings.name;
 }
 
 - (NSURL *)blogURL
@@ -295,7 +298,7 @@
 
 - (NSString *)blavatarForDisplay
 {
-    return self.blog.blavatarUrl;
+    return self.blog.icon;
 }
 
 - (NSString *)contentPreviewForDisplay
@@ -355,6 +358,10 @@
 
 - (BOOL)hasLocalChanges
 {
+    if([super hasLocalChanges]) {
+        return YES;
+    }
+    
     if (![self isRevision]) {
         return NO;
     }

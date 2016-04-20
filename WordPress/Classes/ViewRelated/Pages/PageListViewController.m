@@ -6,6 +6,7 @@
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "WPLegacyEditPageViewController.h"
+#import "WPAppAnalytics.h"
 
 static const CGFloat PageSectionHeaderHeight = 24.0;
 static const CGFloat PageCellEstimatedRowHeight = 44.0;
@@ -16,10 +17,9 @@ static NSString * const RestorePageCellIdentifier = @"RestorePageCellIdentifier"
 static NSString * const RestorePageCellNibName = @"RestorePageTableViewCell";
 static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatusFilterKey";
 
-@interface PageListViewController() <PageListTableViewCellDelegate, UIActionSheetDelegate, UIViewControllerRestoration>
+@interface PageListViewController() <PageListTableViewCellDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PageListTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSManagedObjectID *currentActionedPageObjectID;
 
 @end
 
@@ -184,6 +184,11 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     return PostServiceTypePage;
 }
 
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPagesSync;
+}
+
 
 #pragma mark - TableView Handler Delegate Methods
 
@@ -204,8 +209,8 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
     // or posts that were recently deleted.
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+    if ([searchText length] == 0 && [self.recentlyTrashedPostObjectIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", self.recentlyTrashedPostObjectIDs];
         filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
     }
     [predicates addObject:filterPredicate];
@@ -318,7 +323,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 - (NSString *)cellIdentifierForPage:(Page *)page
 {
     NSString *identifier;
-    if ([self.recentlyTrashedPostIDs containsObject:page.postID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
+    if ([self.recentlyTrashedPostObjectIDs containsObject:page.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
         identifier = RestorePageCellIdentifier;
     } else {
         identifier = PageCellIdentifier;
@@ -351,8 +356,8 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:navController animated:YES completion:nil];
-
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+    
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
 }
 
 - (void)editPage:(AbstractPost *)apost
@@ -403,12 +408,11 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         default:
             break;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+
+    NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addCancelActionWithTitle:alertCancel handler:nil];
+    [alertController presentFromRootViewController];
 }
 
 
@@ -425,7 +429,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 - (void)cell:(UITableViewCell *)cell receivedMenuActionFromButton:(UIButton *)button forProvider:(id<WPContentViewProvider>)contentProvider
 {
     Page *page = (Page *)contentProvider;
-    self.currentActionedPageObjectID = page.objectID;
+    NSManagedObjectID *objectID = page.objectID;
 
     NSString *viewButtonTitle = NSLocalizedString(@"View", @"Label for a button that opens the page when tapped.");
     NSString *draftButtonTitle = NSLocalizedString(@"Move to Draft", @"Label for a button that moves a page to the draft folder");
@@ -434,86 +438,82 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"Label for a cancel button");
     NSString *deleteButtonTitle = NSLocalizedString(@"Delete Permanently", @"Label for a button permanently deletes a page.");
 
-    UIActionSheet *actionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
     PostListStatusFilter filter = [self currentPostListFilter].filterType;
     if (filter == PostListStatusFilterTrashed) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                   delegate:self
-                                          cancelButtonTitle:cancelButtonTitle
-                                     destructiveButtonTitle:nil
-                                          otherButtonTitles:publishButtonTitle, draftButtonTitle, deleteButtonTitle, nil];
+        [alertController addActionWithTitle:publishButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self publishPost:page];
+        }];
+        [alertController addActionWithTitle:draftButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self draftPage:page];
+        }];
+        [alertController addActionWithTitle:deleteButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self deletePost:page];
+        }];
+
     } else if (filter == PostListStatusFilterPublished) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                  delegate:self
-                                         cancelButtonTitle:cancelButtonTitle
-                                    destructiveButtonTitle:nil
-                                         otherButtonTitles:viewButtonTitle, draftButtonTitle, trashButtonTitle, nil];
+        [alertController addActionWithTitle:viewButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self viewPost:page];
+        }];
+        [alertController addActionWithTitle:draftButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self draftPage:page];
+        }];
+        [alertController addActionWithTitle:trashButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self deletePost:page];
+        }];
+
     } else {
         // draft or scheduled
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                  delegate:self
-                                         cancelButtonTitle:cancelButtonTitle
-                                    destructiveButtonTitle:nil
-                                         otherButtonTitles:viewButtonTitle, publishButtonTitle, trashButtonTitle, nil];
+        [alertController addActionWithTitle:viewButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self viewPost:page];
+        }];
+        [alertController addActionWithTitle:publishButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self publishPost:page];
+        }];
+        [alertController addActionWithTitle:trashButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            Page *page = [self pageForObjectID:objectID];
+            [self deletePost:page];
+        }];
     }
-    CGRect frame = CGRectZero;
-    frame.size = button.bounds.size;
-    [actionSheet showFromRect:frame inView:button animated:YES];
+
     [WPAnalytics track:WPAnalyticsStatPostListOpenedCellMenu withProperties:[self propertiesForAnalytics]];
+
+    if (![UIDevice isPad]) {
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:alertController  animated:YES completion:nil];
+    UIPopoverPresentationController *presentationController = alertController.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    presentationController.sourceView = button;
+    presentationController.sourceRect = button.bounds;
+}
+
+- (Page *)pageForObjectID:(NSManagedObjectID *)objectID
+{
+    NSError *error;
+    Page *page = (Page *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
+    if (error) {
+        DDLogError(@"%@, %@, %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+    }
+    return page;
 }
 
 - (void)cell:(UITableViewCell *)cell receivedRestoreActionForProvider:(id<WPContentViewProvider>)contentProvider
 {
     AbstractPost *apost = (AbstractPost *)contentProvider;
     [self restorePost:apost];
-}
-
-
-#pragma mark - UIActionSheet Delegate Methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        return;
-    }
-
-    NSError *error;
-    Page *page = (Page *)[self.managedObjectContext existingObjectWithID:self.currentActionedPageObjectID error:&error];
-    if (error) {
-        DDLogError(@"%@, %@, %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
-    }
-
-    PostListStatusFilter filter = [self currentPostListFilter].filterType;
-
-    if (buttonIndex == 0) {
-
-        if (filter == PostListStatusFilterTrashed) {
-            // publish action
-            [self publishPost:page];
-        } else {
-            // view action
-            [self viewPost:page];
-        }
-
-    } else if (buttonIndex == 1) {
-
-        if (filter == PostListStatusFilterPublished || filter == PostListStatusFilterTrashed) {
-            // draft action
-            [self draftPage:page];
-        } else {
-            // publish action
-            [self publishPost:page];
-        }
-
-    } else if (buttonIndex == 2) {
-        [self deletePost:page];
-    }
-
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    self.currentActionedPageObjectID = nil;
 }
 
 @end

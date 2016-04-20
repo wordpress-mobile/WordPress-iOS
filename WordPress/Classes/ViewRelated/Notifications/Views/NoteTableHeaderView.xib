@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoteTableHeaderView">
+            <connections>
+                <outlet property="contentView" destination="v2Z-s3-Kgc" id="py9-K7-MbW"/>
+                <outlet property="imageView" destination="imt-VI-wdh" id="h5Q-j5-kGO"/>
+                <outlet property="layoutView" destination="AjL-Ni-9e0" id="LKe-Wb-OPn"/>
+                <outlet property="titleLabel" destination="zK2-Ta-Z1W" id="uHP-Wc-QVL"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="v2Z-s3-Kgc" userLabel="ContentView">
+            <rect key="frame" x="0.0" y="0.0" width="700" height="26"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Ni-9e0" userLabel="LayoutView" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="700" height="26"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="imt-VI-wdh" userLabel="Icon">
+                            <rect key="frame" x="10" y="5" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="4kI-NL-bJP"/>
+                                <constraint firstAttribute="height" constant="16" id="G7c-hu-Hc6"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zK2-Ta-Z1W" userLabel="Title">
+                            <rect key="frame" x="30" y="4.5" width="660" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="YxS-jB-T4A"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <size key="shadowOffset" width="0.0" height="0.0"/>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="30" y="4" width="660" height="16"/>
+                            </variation>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="7xv-xJ-X6P"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" priority="250" constant="600" id="E56-KE-cpo"/>
+                        <constraint firstAttribute="trailing" secondItem="zK2-Ta-Z1W" secondAttribute="trailing" constant="10" id="MLS-Ie-b9J"/>
+                        <constraint firstAttribute="centerY" secondItem="imt-VI-wdh" secondAttribute="centerY" id="OQj-Jn-Ne4"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="leading" secondItem="imt-VI-wdh" secondAttribute="trailing" constant="4" id="gJW-0T-qdG"/>
+                        <constraint firstAttribute="centerY" secondItem="zK2-Ta-Z1W" secondAttribute="centerY" id="mQt-8x-xsN"/>
+                        <constraint firstItem="imt-VI-wdh" firstAttribute="leading" secondItem="AjL-Ni-9e0" secondAttribute="leading" constant="10" id="zAJ-ZZ-D9E"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="7xv-xJ-X6P"/>
+                            <exclude reference="E56-KE-cpo"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="7xv-xJ-X6P"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="AjL-Ni-9e0" firstAttribute="leading" secondItem="v2Z-s3-Kgc" secondAttribute="leading" priority="750" id="KBr-LI-hk5"/>
+                <constraint firstAttribute="trailing" secondItem="AjL-Ni-9e0" secondAttribute="trailing" priority="750" id="SCN-H1-mER"/>
+                <constraint firstAttribute="bottom" secondItem="AjL-Ni-9e0" secondAttribute="bottom" id="TqB-Ef-M2T"/>
+                <constraint firstItem="AjL-Ni-9e0" firstAttribute="top" secondItem="v2Z-s3-Kgc" secondAttribute="top" id="VYd-Ct-yx9"/>
+                <constraint firstAttribute="centerX" secondItem="AjL-Ni-9e0" secondAttribute="centerX" id="yLC-fW-Dz4"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="reader-postaction-time" width="16" height="16"/>
+    </resources>
+</document>

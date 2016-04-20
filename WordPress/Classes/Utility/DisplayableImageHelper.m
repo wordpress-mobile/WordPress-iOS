@@ -80,6 +80,12 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         NSString *tag = [content substringWithRange:match.range];
         NSString *src = [self extractSrcFromImgTag:tag];
 
+        // Ignore WordPress emoji images
+        if ([src rangeOfString:@"/images/core/emoji/"].location != NSNotFound ||
+            [src rangeOfString:@"/wp-includes/images/smilies/"].location != NSNotFound) {
+            continue;
+        }
+
         // Check the tag for a good width
         NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
         if (width > currentMaxWidth) {

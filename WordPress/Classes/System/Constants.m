@@ -10,6 +10,13 @@ NSString *const WPJetpackInformationURL                             = @"https://
 NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
+NSString *const WPAutomatticAppsBlogURL                             = @"https://apps.wordpress.org/blog/";
+NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
+NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
+NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
+
+NSString *const WPBlavatarBaseURL                                   = @"http://gravatar.com/blavatar";
+NSString *const WPGravatarBaseURL                                   = @"http://gravatar.com/avatar";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
 
@@ -29,15 +36,11 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
-BOOL const WPJetpackRESTEnabled                                     = YES;
-#else
-BOOL const WPJetpackRESTEnabled                                     = NO;
-#endif
-
 NSString *const WPiTunesAppId                                       = @"335703880";
 
 NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
 NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
 NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
 NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
+
+NSString *const WPComScheme = WPCOM_SCHEME;

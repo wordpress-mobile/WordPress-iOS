@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "WPAnalytics.h"
+#import <WordPressComAnalytics/WPAnalytics.h>
 
 @class MixpanelProxy;
 @interface WPAnalyticsTrackerMixpanel : NSObject <WPAnalyticsTracker> {

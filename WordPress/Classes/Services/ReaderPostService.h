@@ -2,11 +2,11 @@
 #import "LocalCoreDataService.h"
 
 @class ReaderPost;
-@class ReaderTopic;
+@class ReaderAbstractTopic;
 
 extern NSString * const ReaderPostServiceErrorDomain;
 
-@interface ReaderPostService : NSObject<LocalCoreDataService>
+@interface ReaderPostService : LocalCoreDataService
 
 /**
  Fetches the posts for the specified topic
@@ -15,7 +15,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsForTopic:(ReaderTopic *)topic
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
@@ -27,24 +27,23 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsForTopic:(ReaderTopic *)topic
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
-
 /**
- Fetches and optionally saves the posts for the specified topic
+ Fetches and saves the posts for the specified topic
 
  @param topic The Topic for which to request posts.
  @param date The date to get posts earlier than.
- @param skippingSave BOOL whether the save operation should be skipped.
+ @param deletingEarlier Deletes any cached posts earlier than the earliers post returned.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsForTopic:(ReaderTopic *)topic
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
-              skippingSave:(BOOL)skippingSave
+           deletingEarlier:(BOOL)deleteEarlier
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
@@ -61,29 +60,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
-/**
- Backfills and saves posts for the specified topic.
-
- @param topic The Topic for which to request posts.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)backfillPostsForTopic:(ReaderTopic *)topic
-                      success:(void (^)(NSInteger count, BOOL hasMore))success
-                      failure:(void (^)(NSError *error))failure;
-
-/**
- Backfills and optionally saves posts for the specified topic.
-
- @param topic The Topic for which to request posts.
- @param skippingSave BOOL whether the save operation should be skipped.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)backfillPostsForTopic:(ReaderTopic *)topic
-                 skippingSave:(BOOL)skippingSave
-                      success:(void (^)(NSInteger count, BOOL hasMore))success
-                      failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the liked status of the specified post.
@@ -108,22 +84,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
                        failure:(void (^)(NSError *error))failure;
 
 /**
- Reblog the specified post to a target blog. Optionally including a note.
-
- @param post The ReaderPost to reblog.
- @param siteID The ID of the destination site.
- @param note (Optional.) A short note about the reblog.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)reblogPost:(ReaderPost *)post
-            toSite:(NSUInteger)siteID
-              note:(NSString *)note
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure;
-
-/**
- Deletes all posts that do not belong to a ReaderTopic
+ Deletes all posts that do not belong to a `ReaderAbstractTopic`
  Saves the NSManagedObjectContext.
  */
 - (void)deletePostsWithNoTopic;
@@ -133,11 +94,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
  
  @param siteID The id of the site or feed.
  @param siteURL The URL of the site or feed.
- @param topic The `ReaderTopic` owning the posts.
+ @param topic The `ReaderAbstractTopic` owning the posts.
  */
 - (void)deletePostsWithSiteID:(NSNumber *)siteID
                    andSiteURL:(NSString *)siteURL
-                    fromTopic:(ReaderTopic *)topic;
+                    fromTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Delete posts from the specified site (not feed)
@@ -148,5 +109,30 @@ extern NSString * const ReaderPostServiceErrorDomain;
 - (void)deletePostsFromSiteWithID:(NSNumber *)siteID;
 
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
+
+/**
+ Follows or unfollows the specified site. Posts belonging to that site and URL
+ have their following status updated in core data. 
+
+ @param following Whether the user is following the site.
+ @param siteID The ID of the site
+ @siteURL the URL of the site. 
+ @param success block called on a successful call.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)setFollowing:(BOOL)following
+  forWPComSiteWithID:(NSNumber *)siteID
+              andURL:(NSString *)siteURL
+             success:(void (^)())success
+             failure:(void (^)(NSError *error))failure;
+
+/**
+ Updates in core data the following status of posts belonging to the specified site & url
+
+ @param following Whether the user is following the site.
+ @param siteID The ID of the site
+ @siteURL the URL of the site.
+ */
+- (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL;
 
 @end

@@ -10,8 +10,8 @@
 #import "WPLegacyEditPostViewController.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
-#import "WPToast.h"
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import "WPAppAnalytics.h"
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
@@ -33,7 +33,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *authorFilterSegmentedControl;
 
 @end
 
@@ -103,6 +103,17 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self forceUpdateCellLayout:self.textCellForLayout];
+    [self forceUpdateCellLayout:self.imageCellForLayout];
+
+    [self.tableViewHandler clearCachedRowHeights];
+    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 #pragma mark - Configuration
 
@@ -125,8 +136,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     // Force a layout pass to ensure that constrants are configured for the
     // proper size class.
     [self.view addSubview:cell];
-    [cell updateConstraintsIfNeeded];
-    [cell layoutIfNeeded];
     [cell removeFromSuperview];
 }
 
@@ -227,20 +236,20 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 {
     NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
     NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
-    [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
-    [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
-    [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
+    [WPStyleGuide applyPostAuthorFilterStyle:self.authorFilterSegmentedControl];
+    [self.authorFilterSegmentedControl setTitle:onlyMe forSegmentAtIndex:0];
+    [self.authorFilterSegmentedControl setTitle:everyone forSegmentAtIndex:1];
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
 
     if (![self canFilterByAuthor]) {
         self.authorsFilterViewHeightConstraint.constant = 0.0;
-        self.authorsFilter.hidden = YES;
+        self.authorFilterSegmentedControl.hidden = YES;
     }
 
     if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
-        self.authorsFilter.selectedSegmentIndex = 0;
+        self.authorFilterSegmentedControl.selectedSegmentIndex = 0;
     } else {
-        self.authorsFilter.selectedSegmentIndex = 1;
+        self.authorFilterSegmentedControl.selectedSegmentIndex = 1;
     }
 }
 
@@ -252,12 +261,17 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     return PostServiceTypePost;
 }
 
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPostsSync;
+}
+
 
 #pragma mark - Actions
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
 {
-    if (self.authorsFilter.selectedSegmentIndex == PostAuthorFilterMine) {
+    if (self.authorFilterSegmentedControl.selectedSegmentIndex == PostAuthorFilterMine) {
         [self setCurrentPostAuthorFilter:PostAuthorFilterMine];
     } else {
         [self setCurrentPostAuthorFilter:PostAuthorFilterEveryone];
@@ -276,16 +290,19 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 {
     NSMutableArray *predicates = [NSMutableArray array];
 
-    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
+    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && revision = nil", self.blog];
     [predicates addObject:basePredicate];
+    
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"postType = %@", [self postTypeToSync]];
+    [predicates addObject:typePredicate];
 
     NSString *searchText = [self currentSearchTerm];
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
 
     // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
     // or posts that were recently deleted.
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+    if ([searchText length] == 0 && [self.recentlyTrashedPostObjectIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", self.recentlyTrashedPostObjectIDs];
         filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
     }
     [predicates addObject:filterPredicate];
@@ -320,19 +337,18 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-        return PostCardRestoreCellRowHeight;
-    }
-
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
+        return PostCardRestoreCellRowHeight;
+    }
+
+    PostCardTableViewCell *cell;
     if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
     } else {
@@ -358,7 +374,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return;
     }
 
-    [self editPost:post];
+    [self previewEditPost:post];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -381,13 +397,14 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    [postCell configureCell:post];
+    BOOL layoutOnly = ([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
+    [postCell configureCell:post layoutOnly:layoutOnly];
 }
 
 - (NSString *)cellIdentifierForPost:(Post *)post
 {
     NSString *identifier;
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
+    if ([self.recentlyTrashedPostObjectIDs containsObject:post.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
         identifier = PostCardRestoreCellIdentifier;
     } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
@@ -404,34 +421,82 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (void)createPost
 {
-    UINavigationController *navController;
-
     if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
-        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
+        [self createPostInNewEditor];
     } else {
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
+        [self createPostInOldEditor];
     }
+}
 
+- (void)createPostInNewEditor
+{
+    WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    postViewController.onClose = ^void(WPPostViewController *viewController, BOOL changesSaved) {
+        
+        if (changesSaved) {
+            [weakSelf setFilterWithPostStatus:viewController.post.status];
+        }
+        
+        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [WPPostViewController class];
+    
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
-
+    
     [self presentViewController:navController animated:YES completion:nil];
+    
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
+}
 
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+- (void)createPostInOldEditor
+{
+    WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+    navController.restorationClass = [WPLegacyEditPostViewController class];
+    
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
+}
+
+- (void)previewEditPost:(AbstractPost *)apost
+{
+    [self editPost:apost withEditMode:kWPPostViewControllerModePreview];
 }
 
 - (void)editPost:(AbstractPost *)apost
 {
+    [self editPost:apost withEditMode:kWPPostViewControllerModeEdit];
+}
+
+- (void)editPost:(AbstractPost *)apost withEditMode:(WPPostViewControllerMode)mode
+{
     [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModeEdit];
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost mode:mode];
+        
+        __weak __typeof(self) weakSelf = self;
+        
+        postViewController.onClose = ^void(WPPostViewController* viewController, BOOL changesSaved) {
+            
+            if (changesSaved) {
+                [weakSelf setFilterWithPostStatus:viewController.post.status];
+            }
+            
+            [viewController.navigationController popViewControllerAnimated:YES];
+        };
+        
         postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
@@ -460,12 +525,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         default:
             break;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addCancelActionWithTitle:alertCancel handler:nil];
+    [alertController presentFromRootViewController];
 }
 
 - (void)viewStatsForPost:(AbstractPost *)apost
@@ -482,14 +546,16 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     // Push the Stats Post Details ViewController
     NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
-    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:[NSBundle bundleWithPath:path]];
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:path];
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
     StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
     NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
 
     controller.postID = apost.postID;
     controller.postTitle = [apost titleForDisplay];
-    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.blogID
+    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
                                                         siteTimeZone:[service timeZoneForBlog:blog]
                                                          oauth2Token:blog.authToken
                                           andCacheExpirationInterval:StatsCacheInterval];
@@ -528,7 +594,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
-    [self.recentlyTrashedPostIDs removeAllObjects];
+    [self.recentlyTrashedPostObjectIDs removeAllObjects];
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     [self syncItemsWithUserInteraction:NO];
 }

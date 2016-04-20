@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
 
 @objc public protocol ReplyTextViewDelegate : UITextViewDelegate
 {
@@ -21,7 +21,7 @@ import Foundation
     }
     
     public required init(coder: NSCoder) {
-        super.init(coder: coder)
+        super.init(coder: coder)!
         setupView()
     }
     
@@ -84,9 +84,9 @@ import Foundation
     // MARK: - Public Methods
     public func replaceTextAtCaret(text: String!, withText replacement: String!) {
         let textToReplace: NSString = text ?? NSString();
-        var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
-        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        let selectedRange: UITextRange = textView.selectedTextRange!
+        let newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        let newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)!
         textView.replaceRange(newRange, withText: replacement)
     }
     
@@ -117,7 +117,7 @@ import Foundation
             let prerange = NSMakeRange(0, range.location)
             let pretext: NSString = textViewText.substringWithRange(prerange) + text
             let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            let lastWord: NSString = words.last as! NSString
+            let lastWord: NSString = words.last! as NSString
             
             delegate?.textView?(textView, didTypeWord: lastWord as String)
         }
@@ -187,7 +187,7 @@ import Foundation
         let fullWidth       = frame.width
         let textHeight      = floor(contentHeight + topPadding + bottomPadding)
 
-        var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
+        let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
         let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
 
         return intrinsicSize
@@ -203,8 +203,8 @@ import Foundation
         addSubview(containerView)
         
         // Setup Layout
-        setTranslatesAutoresizingMaskIntoConstraints(false)
-        containerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(containerView)
 
         // Setup the TextView
@@ -233,23 +233,18 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-
+        bezierView.outerColor           = WPStyleGuide.Reply.backgroundColor
+        
+        // Bezier
+        bezierView.bezierColor          = WPStyleGuide.Reply.separatorColor
+        
+        // Separators
+        separatorsView.topColor         = WPStyleGuide.Reply.separatorColor
+        separatorsView.topVisible       = true
+        
         // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
-        
-        // iPhone's Width knows No Limits
-        if UIDevice.isPad() {
-            let maxWidthConstraint = NSLayoutConstraint(item: self,
-                                        attribute:  .Width,
-                                        relatedBy:  .LessThanOrEqual,
-                                        toItem:     nil,
-                                        attribute:  .NotAnAttribute,
-                                        multiplier: 1,
-                                        constant:   WPTableViewFixedWidth)
-
-            addConstraint(maxWidthConstraint)
-        }
     }
     
     
@@ -262,7 +257,7 @@ import Foundation
     }
     
     private func refreshSizeIfNeeded() {
-        var newSize         = intrinsicContentSize()
+        let newSize         = intrinsicContentSize()
         let oldSize         = frame.size
 
         if newSize.height == oldSize.height {
@@ -297,9 +292,9 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewDefaultPadding:         CGFloat         = 12
-    private let textViewMaxHeight:              CGFloat         = 82   // Fits 3 lines onscreen
-    private let textViewMinHeight:              CGFloat         = 44
+    private let textViewDefaultPadding  = CGFloat(12)
+    private let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
+    private let textViewMinHeight       = CGFloat(44)
     
     // MARK: - Private Properties
     private var bundle:                         NSArray?
@@ -308,6 +303,8 @@ import Foundation
     @IBOutlet private var textView:             UITextView!
     @IBOutlet private var placeholderLabel:     UILabel!
     @IBOutlet private var replyButton:          UIButton!
+    @IBOutlet private var bezierView:           ReplyBezierView!
+    @IBOutlet private var separatorsView:       SeparatorsView!
     @IBOutlet private var layoutView:           UIView!
     @IBOutlet private var containerView:        UIView!
 }

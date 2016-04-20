@@ -1,5 +1,5 @@
 #import "NavBarTitleDropdownButton.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 @implementation NavBarTitleDropdownButton
 
@@ -31,7 +31,7 @@
 - (void)setAttributedTitleForTitle:(NSString *)title
 {
     NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor whiteColor],
-                                 NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:16.0] };
+                                 NSFontAttributeName : [WPFontManager systemBoldFontOfSize:16.0] };
     NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:title
                                                                                   attributes:attributes];
 

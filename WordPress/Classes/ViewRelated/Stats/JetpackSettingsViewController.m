@@ -75,7 +75,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    self = [super init];
+    self = [self init];
     if (self) {
         _blog = blog;
         _showFullScreen = YES;
@@ -95,6 +95,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     [self layoutControls];
 }
 
@@ -104,9 +106,23 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     [self.navigationController setNavigationBarHidden:self.showFullScreen animated:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
     [self reloadInterface];
     [self updateForm];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self checkForJetpack];
 }
 
@@ -128,13 +144,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self addControls];
     [self addGesturesRecognizer];
     [self addSkipButtonIfNeeded];
-}
-
-// This resolves a crash due to JetpackSettingsViewController previously using a .xib.
-// Source: http://stackoverflow.com/questions/17708292/not-key-value-coding-compliant-error-from-deleted-xib
-- (void)loadView
-{
-    [super loadView];
 }
 
 - (void)addControls
@@ -334,7 +343,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.passwordTextField.hidden           = !hasJetpack;
     self.multifactorTextField.hidden        = !hasJetpack;
     self.signInButton.hidden                = !hasJetpack;
-    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
+    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;
     self.installJetpackButton.hidden        = hasJetpack;
     self.moreInformationButton.hidden       = hasJetpack;
     
@@ -448,11 +457,15 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self setAuthenticating:YES];
 
     void (^finishedBlock)() = ^() {
-        [self setAuthenticating:NO];
-        
-        if (self.completionBlock) {
-            self.completionBlock(YES);
-        }
+        // Ensure options are up to date after connecting Jetpack as there may
+        // now be new info.
+        BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [service syncBlog:self.blog completionHandler:^() {
+            [self setAuthenticating:NO];
+            if (self.completionBlock) {
+                self.completionBlock(YES);
+            }
+        }];
     };
 
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -605,16 +618,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
-    NSMutableArray *controlsToHide = [NSMutableArray array];
-    
-    // Find  controls that fall off the screen
-    for (UIView *control in self.controlsToMoveForTextEntry) {
-        if (control.frame.origin.y - offset <= 0) {
-            [controlsToHide addObject:control];
-        }
-    }
-    
-    return controlsToHide;
+    return [self.controlsToMoveForTextEntry wp_filter:^BOOL(UIView *control) {
+        // Find  controls that fall off the screen
+        return (control.frame.origin.y - offset <= 0);
+    }];
 }
 
 
@@ -637,7 +644,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
 
     NSString *targetURL = [_blog adminUrlWithPath:JetpackInstallRelativePath];
-    [self openURL:[NSURL URLWithString:targetURL] username:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
+    [self openURL:[NSURL URLWithString:targetURL] username:_blog.usernameForSite password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
 
 - (void)openMoreInformationURL
@@ -681,13 +688,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     if (self.blog.jetpack.isConnected) {
         if (self.blog.jetpack.connectedUsername) {
             self.usernameTextField.text = self.blog.jetpack.connectedUsername;
-        } else {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            self.usernameTextField.text = defaultAccount.username;
-            self.passwordTextField.text = defaultAccount.password;
         }
         [self updateSaveButton];
     }
