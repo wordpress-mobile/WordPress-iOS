@@ -23,6 +23,7 @@ target 'WordPress', :exclusive => true do
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
   pod 'Mixpanel', '2.9.4'
+  pod 'Optimizely-iOS-SDK', '~> 1.4.2'
   pod 'Reachability',	'3.2'
   pod 'ReactiveCocoa', '~> 2.4.7'
   pod 'RxCocoa', '~> 2.3.1'
