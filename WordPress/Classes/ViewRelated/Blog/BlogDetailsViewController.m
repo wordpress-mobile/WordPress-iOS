@@ -6,7 +6,6 @@
 #import "CommentsViewController.h"
 #import "ContextManager.h"
 #import "PostListViewController.h"
-#import "PageListViewController.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
