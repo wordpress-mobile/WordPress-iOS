@@ -278,7 +278,15 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
     self.itemsLoadingLabel.hidden = YES;
     if ([menu.menuID integerValue] == MenuDefaultID) {
-        [self loadDefaultMenuItemsIfNeeded];
+        if ([self defaultMenuEnabledForSelectedLocation]) {
+            // Set up as the default menu of page items.
+            [self loadDefaultMenuItemsIfNeeded];
+        } else {
+            // Set up as "No Menu" selected.
+            menu.items = nil;
+            self.itemsView.menu = nil;
+            self.detailsView.menu = nil;
+        }
     } else {
         [self insertBlankMenuItemIfNeeded];
     }
@@ -330,6 +338,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         weakSelf.animatesAppearanceAfterSync = YES;
         [weakSelf syncWithBlogMenus];
     }];
+}
+
+- (BOOL)defaultMenuEnabledForSelectedLocation
+{
+    return self.selectedMenuLocation == [self.blog.menuLocations firstObject];
 }
 
 - (NSString *)generateIncrementalMenuName
@@ -467,6 +480,16 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
 {
     self.selectedMenuLocation = location;
+    
+    Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
+    if ([self defaultMenuEnabledForSelectedLocation]) {
+        // is primary menu location
+        defaultMenu.name = [Menu defaultMenuName];
+    } else {
+        defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
+    }
+    [self.headerView refreshMenuViewsUsingMenu:defaultMenu];
+    
     [self.headerView setSelectedMenu:location.menu];
     [self setViewsWithMenu:location.menu];
 }
@@ -474,7 +497,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu
 {
     self.savingEnabled = YES;
-    
     self.selectedMenuLocation.menu = menu;
     [self setViewsWithMenu:menu];
 }

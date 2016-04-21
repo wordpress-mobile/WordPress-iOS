@@ -64,12 +64,7 @@
     if (_item != item) {
         _item = item;
     }
-    
-    if (item) {
-        self.label.text = item.displayName;
-    } else {
-        self.label.text = NSLocalizedString(@"+ Add new menu", @"Button text for adding a new menu to a site.");
-    }
+    self.label.text = item.displayName;
 }
 
 - (void)setDrawsDesignLineSeparator:(BOOL)drawsDesignLineSeparator
