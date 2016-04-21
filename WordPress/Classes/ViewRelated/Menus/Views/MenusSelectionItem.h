@@ -20,3 +20,7 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 - (void)notifyItemObjectWasUpdated;
 
 @end
+
+@interface MenusSelectionAddMenuItem : MenusSelectionItem
+
+@end

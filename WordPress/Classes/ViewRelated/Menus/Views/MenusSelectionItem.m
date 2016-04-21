@@ -42,7 +42,6 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 - (NSString *)displayName
 {
     NSString *name = nil;
-    
     if ([self isMenu]) {
         Menu *menu = self.itemObject;
         name = menu.name;
@@ -50,13 +49,21 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
         MenuLocation *location = self.itemObject;
         name = location.details;
     }
-    
     return name;
 }
 
 - (void)notifyItemObjectWasUpdated
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemUpdatedItemObjectNotification object:self];
+}
+
+@end
+
+@implementation MenusSelectionAddMenuItem
+
+- (NSString *)displayName
+{
+    return NSLocalizedString(@"+ Add new menu", @"Menus button text for adding a new menu to a site.");
 }
 
 @end

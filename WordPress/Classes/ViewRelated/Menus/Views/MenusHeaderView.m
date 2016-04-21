@@ -28,9 +28,7 @@
     self.backgroundColor = [WPStyleGuide greyLighten30];
     
     self.locationsView.delegate = self;
-    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
     self.menusView.delegate = self;
-    self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -41,6 +39,13 @@
 - (void)setupWithMenusForBlog:(Blog *)blog
 {
     self.blog = blog;
+    
+    [self.locationsView removeAllSelectionItems];
+    [self.menusView removeAllSelectionItems];
+    
+    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
+    self.menusView.selectionType = MenusSelectionViewTypeMenus;
+    
     for (MenuLocation *location in blog.menuLocations) {
         MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
         [self.locationsView addSelectionViewItem:item];
@@ -137,7 +142,7 @@
     [self closeSelectionsIfNeeded];
 }
 
-- (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView
+- (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView
 {
     [self.delegate headerViewSelectedForCreatingNewMenu:self];
     [self closeSelectionsIfNeeded];

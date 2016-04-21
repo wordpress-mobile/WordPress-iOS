@@ -53,6 +53,20 @@
 
 #pragma mark - instance
 
+- (void)setSelectionType:(MenusSelectionViewType)selectionType
+{
+    if (_selectionType != selectionType) {
+        _selectionType = selectionType;
+        if (selectionType == MenusSelectionViewTypeMenus) {
+            if (!self.addNewItemView) {
+                MenusSelectionItemView *itemView = [self insertSelectionItemViewWithItem:[MenusSelectionAddMenuItem new]];
+                self.addNewItemView = itemView;
+                [self.stackView addArrangedSubview:itemView];
+            }
+        }
+    }
+}
+
 - (void)setSelectedItem:(MenusSelectionItem *)selectedItem
 {
     if (_selectedItem != selectedItem) {
@@ -67,12 +81,10 @@
 
 - (void)addSelectionViewItem:(MenusSelectionItem *)selectionItem
 {
-    if (self.selectionType == MenusSelectionViewTypeMenus && !self.addNewItemView) {
-        MenusSelectionItemView *addNewItemView = [self insertSelectionItemViewWithItem:nil];
-        self.addNewItemView = addNewItemView;
-    }
     [self.items addObject:selectionItem];
     [self insertSelectionItemViewWithItem:selectionItem];
+    
+    // Ensure the add new  item is at the bottom of the stack
     [self.stackView insertArrangedSubview:self.addNewItemView atIndex:self.stackView.arrangedSubviews.count - 1];
     
     [self updateDetailsView];
@@ -87,6 +99,14 @@
     [self.items removeObject:selectionItem];
     
     [self updateDetailsView];
+}
+
+- (void)removeAllSelectionItems
+{
+    NSArray *items = [NSArray arrayWithArray:self.items];
+    for (MenusSelectionItem *item in items) {
+        [self removeSelectionItem:item];
+    }
 }
 
 - (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject
@@ -212,15 +232,15 @@
 
 - (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView
 {
-    if (itemView.item) {
-    
+    if (itemView == self.addNewItemView) {
+        
+        [self.delegate selectionViewSelectedOptionForCreatingNewItem:self];
+        
+    } else {
+        
         MenusSelectionItem *selectedItem = itemView.item;
         [self setSelectedItem:selectedItem];
         [self tellDelegateSelectedItem:selectedItem];
-    
-    } else if (itemView == self.addNewItemView) {
-        
-        [self.delegate selectionViewSelectedOptionForCreatingNewMenu:self];
     }
 }
 
