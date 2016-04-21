@@ -131,11 +131,9 @@
         _showsDesignActive = showsDesignActive;
         
         if (showsDesignActive) {
-            self.accessoryView.transform = CGAffineTransformMakeScale(0.5, 0.5);
-            self.accessoryView.alpha = 0.0;
+            self.accessoryView.transform = CGAffineTransformMakeScale(1.0, -1.0);
         } else  {
             self.accessoryView.transform = CGAffineTransformIdentity;
-            self.accessoryView.alpha = 1.0;
         }
     }
 }
