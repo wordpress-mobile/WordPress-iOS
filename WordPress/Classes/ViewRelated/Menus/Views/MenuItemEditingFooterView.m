@@ -41,7 +41,7 @@
         [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
         [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
         [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
-        [button setTitle:NSLocalizedString(@"Save", @"Menus: Save button title for saving an edited menu item.") forState:UIControlStateNormal];
+        [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
         [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         button.backgroundColor = [UIColor clearColor];
     }
