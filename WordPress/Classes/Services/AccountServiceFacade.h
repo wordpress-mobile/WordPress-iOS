@@ -29,11 +29,11 @@
                             failure:(void (^)(NSError *error))failure;
 
 /**
- *  This will remove a previous legacy `WPAccount`.
+ *  This will set the default WordPress.com account to use.
  *
- *  @param newUsername username of the account to remove.
+ *  @param account the WordPress.com account.
  */
--(void)removeLegacyAccount:(NSString *)newUsername;
+-(void)setDefaultWordPressComAccount:(WPAccount *)account;
 
 @end
 
