@@ -5,7 +5,7 @@ import Nimble
 class StoreTests: XCTestCase {
     func testGetPricesForPlans() {
         let store = MockStore.succeeding(after: 0)
-        store.getPricesForPlans(defaultPlans,
+        store.getPricesForPlans(TestPlans.allPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
                 expect(pricedPlans[0].price as String).to(equal(""))
@@ -21,7 +21,7 @@ class StoreTests: XCTestCase {
         store.products[0].priceLocale = NSLocale(localeIdentifier: "es-ES")
         store.products[1].priceLocale = NSLocale(localeIdentifier: "es-ES")
         store.getPricesForPlans(
-            defaultPlans,
+            TestPlans.allPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
                 expect(pricedPlans[0].price as String).to(equal(""))
