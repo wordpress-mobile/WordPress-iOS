@@ -119,21 +119,7 @@
 
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
 {
-    if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
-        // in the horizontal axis we want to toggle expansion for both selection views
-        // otherwise the design looks odd with too much negative space
-        // see traitCollectionDidChange:
-        if (selectionView == self.locationsView) {
-            [self.menusView setSelectionItemsExpanded:expand animated:YES];
-        } else  if (selectionView == self.menusView) {
-            [self.locationsView setSelectionItemsExpanded:expand animated:YES];
-        }
-        [selectionView setSelectionItemsExpanded:expand animated:YES];
-        
-    } else  {
-        
-        [selectionView setSelectionItemsExpanded:expand animated:YES];
-    }
+    [selectionView setSelectionItemsExpanded:expand animated:YES];
 }
 
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionItem *)item

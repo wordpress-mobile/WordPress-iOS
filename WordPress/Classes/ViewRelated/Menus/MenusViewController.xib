@@ -28,7 +28,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7u-xT-eP5" customClass="MenusHeaderView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="65"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MxU-jC-Ocf">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="MxU-jC-Ocf">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="65"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="aMq-eT-Mvc" customClass="MenusSelectionView">
@@ -80,13 +80,18 @@
                                                     <rect key="frame" x="285" y="0.0" width="30" height="65"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
-                                                        <constraint firstAttribute="height" constant="65" placeholder="YES" id="IFN-SJ-Sdt" userLabel="height = 65 (Placeholder)"/>
+                                                        <constraint firstAttribute="height" constant="65" id="IFN-SJ-Sdt" userLabel="height = 65 (Placeholder)"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
                                                         <rect key="frame" x="185" y="26" width="30" height="15"/>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <exclude reference="IFN-SJ-Sdt"/>
+                                                        </mask>
                                                     </variation>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="9nH-CD-5gY" customClass="MenusSelectionView">
