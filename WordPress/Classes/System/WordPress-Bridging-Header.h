@@ -106,6 +106,7 @@
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
+#import "WPLegacyEditPageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"

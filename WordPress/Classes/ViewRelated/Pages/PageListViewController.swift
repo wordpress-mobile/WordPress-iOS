@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 
 @objc class PageListViewController : AbstractPostListViewController, PageListTableViewCellDelegate, UIViewControllerRestoration {
     
@@ -11,7 +12,7 @@ import Foundation
     private static let restorePageCellNibName = "RestorePageTableViewCell"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
     
-    private var cellForLayout : PageListTableViewCell
+    private var cellForLayout : PageListTableViewCell!
     
     
     // MARK: - Convenience constructors
@@ -284,7 +285,7 @@ import Foundation
     
     private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) {
+        if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
             if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
                 return CGFloat(self.dynamicType.pageCellEstimatedRowHeight)
             }
@@ -331,17 +332,8 @@ import Foundation
     private func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
-            return
-        }
-        
-        if post.remoteStatus == AbstractPostRemoteStatusPushing {
-            // Don't allow editing while pushing changes
-            return
-        }
-        
-        if post.status == PostStatusTrash {
-            // No editing posts that are trashed.
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost
+            where post.remoteStatus != AbstractPostRemoteStatusPushing && post.status != PostStatusTrash else {
             return
         }
         
@@ -349,16 +341,16 @@ import Foundation
     }
     
     private func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Page
         
-        let identifier = cellIdentifierForPost(page)
+        let identifier = cellIdentifierForPage(page)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
         
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
-    
+ 
     private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
@@ -387,197 +379,236 @@ import Foundation
     // MARK: - Post Actions
     
     private func createPost() {
+        let navController : UINavigationController
+        
         if EditPageViewController.isNewEditorEnabled() {
-            createPostInNewEditor()
+            let postViewController = EditPageViewController(draftForBlog: blog)
+            
+            navController = UINavigationController(rootViewController: postViewController)
+            navController.restorationIdentifier = WPEditorNavigationRestorationID
+            navController.restorationClass = EditPageViewController.self
         } else {
-            createPostInOldEditor()
+            let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
+            
+            navController = UINavigationController(rootViewController: editPostViewController)
+            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
+            navController.restorationClass = WPLegacyEditPageViewController.self
+        }
+        
+        navController.modalPresentationStyle = .FullScreen
+        
+        presentViewController(navController, animated: true, completion: nil)
+        
+        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+    }
+    
+    private func editPage(apost: AbstractPost) {
+        WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
+        
+        if EditPageViewController.isNewEditorEnabled() {
+            let pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
+            
+            navigationController?.pushViewController(pageViewController, animated: true)
+        } else {
+            // In legacy mode, view means edit
+            let editPageViewController = WPLegacyEditPageViewController(post: apost)
+            let navController = UINavigationController(rootViewController: editPageViewController)
+            
+            navController.modalPresentationStyle = .FullScreen
+            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
+            navController.restorationClass = WPLegacyEditPageViewController.self
+            
+            presentViewController(navController, animated: true, completion: nil)
+        }
+    }
+    
+    private func draftPage(apost: AbstractPost) {
+        WPAnalytics.track(.PostListDraftAction, withProperties: propertiesForAnalytics())
+        
+        let previousStatus = apost.status
+        apost.status = PostStatusDraft
+        
+        let contextManager = ContextManager.sharedInstance()
+        let postService = PostService(managedObjectContext: contextManager.mainContext)
+        
+        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+            apost.status = previousStatus
+            
+            if let strongSelf = self {
+                contextManager.saveContext(strongSelf.managedObjectContext())
+            }
+            
+            WPError.showXMLRPCErrorAlert(error)
+        }
+    }
+    
+    private func promptThatPostRestoredToFilter(filter: PostListFilter) {
+        var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
+        
+        switch filter.filterType {
+        case .Published:
+            message = NSLocalizedString("Page Restored to Published", comment: "Prompts the user that a restored page was moved to the published list.")
+        break
+        case .Scheduled:
+            message = NSLocalizedString("Page Restored to Scheduled", comment: "Prompts the user that a restored page was moved to the scheduled list.")
+            break
+        default:
+            break
+        }
+        
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
+    }
+    
+    // MARK: - Filter Related
+    
+    func keyForCurrentListStatusFilter() -> String {
+        return self.dynamicType.currentPageListStatusFilterKey
+    }
+    
+    // MARK: - Cell Delegate Methods
+    
+    func cell(cell: UITableViewCell!, receivedMenuActionFromButton button: UIButton, forProvider contentProvider: WPPostContentViewProvider!) {
+        let page = contentProvider as! Page
+        let objectID = page.objectID
+        
+        let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
+        let draftButtonTitle = NSLocalizedString("Move to Draft", comment: "Label for a button that moves a page to the draft folder")
+        let publishButtonTitle = NSLocalizedString("Publish Immediately", comment: "Label for a button that moves a page to the published folder, publishing with the current date/time.")
+        let trashButtonTitle = NSLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
+        let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
+        
+        if let filter = currentPostListFilter()?.filterType {
+            if filter == .Trashed {
+                alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                    }
+                    
+                    strongSelf.publishPost(page)
+                })
+                
+                alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.draftPage(page)
+                })
+                
+                alertController.addActionWithTitle(deleteButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.deletePost(page)
+                })
+            } else if filter == .Published {
+                alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.viewPost(page)
+                })
+                
+                alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.draftPage(page)
+                })
+                
+                alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.deletePost(page)
+                })
+            } else {
+                alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+
+                    strongSelf.viewPost(page)
+                })
+                
+                alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.publishPost(page)
+                })
+                
+                alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+                    
+                    strongSelf.deletePost(page)
+                })
+            }
+        }
+        
+        WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
+        
+        if UIDevice.isPad() {
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        alertController.modalPresentationStyle = .Popover
+        presentViewController(alertController, animated: true, completion: nil)
+        
+        if let presentationController = alertController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .Any
+            presentationController.sourceView = button
+            presentationController.sourceRect = button.bounds
+        }
+    }
+
+    func pageForObjectID(objectID: NSManagedObjectID) -> Page? {
+        
+        var pageManagedOjbect : NSManagedObject
+        
+        do {
+            pageManagedOjbect = try managedObjectContext().existingObjectWithID(objectID)
+            
+        } catch let error as NSError {
+            DDLogSwift.logError("\(NSStringFromClass(self.dynamicType)), \(#function), \(error)")
+            return nil
+        } catch _ {
+            DDLogSwift.logError("\(NSStringFromClass(self.dynamicType)), \(#function), Could not find Page with ID \(objectID)")
+            return nil
+        }
+        
+        let page = pageManagedOjbect as? Page
+        return page
+    }
+    
+    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
+        if let apost = contentProvider as? AbstractPost {
+            restorePost(apost)
         }
     }
 }
-
-/*
-#pragma mark - Instance Methods
-
-#pragma mark - Post Actions
-
-- (void)createPost
-{
-    UINavigationController *navController;
-    
-    if ([EditPageViewController isNewEditorEnabled]) {
-        EditPageViewController *postViewController = [[EditPageViewController alloc] initWithDraftForBlog:self.blog];
-        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [EditPageViewController class];
-    } else {
-        WPLegacyEditPageViewController *editPostViewController = [[WPLegacyEditPageViewController alloc] initWithDraftForLastUsedBlog];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPageViewController class];
-    }
-    
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    
-    [self presentViewController:navController animated:YES completion:nil];
-    
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
-    }
-    
-    - (void)editPage:(AbstractPost *)apost
-{
-    [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
-    if ([EditPageViewController isNewEditorEnabled]) {
-        EditPageViewController *pageViewController = [[EditPageViewController alloc] initWithPost:apost
-            mode:kWPPostViewControllerModePreview];
-        [self.navigationController pushViewController:pageViewController animated:YES];
-    } else {
-        // In legacy mode, view means edit
-        WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPageViewController class];
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-    }
-    
-    - (void)draftPage:(AbstractPost *)apost
-{
-    [WPAnalytics track:WPAnalyticsStatPostListDraftAction withProperties:[self propertiesForAnalytics]];
-    NSString *previousStatus = apost.status;
-    apost.status = PostStatusDraft;
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [postService uploadPost:apost
-        success:nil
-        failure:^(NSError *error) {
-        apost.status = previousStatus;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        [WPError showXMLRPCErrorAlert:error];
-        }];
-    }
-    
-    - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
-{
-    NSString *message = NSLocalizedString(@"Post Restored to Drafts", @"Prompts the user that a restored post was moved to the drafts list.");
-    switch (filter.filterType) {
-    case PostListStatusFilterPublished:
-        message = NSLocalizedString(@"Post Restored to Published", @"Prompts the user that a restored post was moved to the published list.");
-        break;
-    case PostListStatusFilterScheduled:
-        message = NSLocalizedString(@"Post Restored to Scheduled", @"Prompts the user that a restored post was moved to the scheduled list.");
-        break;
-    default:
-        break;
-    }
-    
-    NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addCancelActionWithTitle:alertCancel handler:nil];
-    [alertController presentFromRootViewController];
-}
-
-
-#pragma mark - Filter related
-
-- (NSString *)keyForCurrentListStatusFilter
-{
-    return CurrentPageListStatusFilterKey;
-}
-
-
-#pragma mark - Cell Delegate Methods
-
-- (void)cell:(UITableViewCell *)cell receivedMenuActionFromButton:(UIButton *)button forProvider:(id<PostContentProvider>)contentProvider
-{
-    Page *page = (Page *)contentProvider;
-    NSManagedObjectID *objectID = page.objectID;
-    
-    NSString *viewButtonTitle = NSLocalizedString(@"View", @"Label for a button that opens the page when tapped.");
-    NSString *draftButtonTitle = NSLocalizedString(@"Move to Draft", @"Label for a button that moves a page to the draft folder");
-    NSString *publishButtonTitle = NSLocalizedString(@"Publish Immediately", @"Label for a button that moves a page to the published folder, publishing with the current date/time.");
-    NSString *trashButtonTitle = NSLocalizedString(@"Move to Trash", @"Label for a button that moves a page to the trash folder");
-    NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"Label for a cancel button");
-    NSString *deleteButtonTitle = NSLocalizedString(@"Delete Permanently", @"Label for a button permanently deletes a page.");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
-    PostListStatusFilter filter = [self currentPostListFilter].filterType;
-    if (filter == PostListStatusFilterTrashed) {
-        [alertController addActionWithTitle:publishButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self publishPost:page];
-            }];
-        [alertController addActionWithTitle:draftButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self draftPage:page];
-            }];
-        [alertController addActionWithTitle:deleteButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self deletePost:page];
-            }];
-        
-    } else if (filter == PostListStatusFilterPublished) {
-        [alertController addActionWithTitle:viewButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self viewPost:page];
-            }];
-        [alertController addActionWithTitle:draftButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self draftPage:page];
-            }];
-        [alertController addActionWithTitle:trashButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self deletePost:page];
-            }];
-        
-    } else {
-        // draft or scheduled
-        [alertController addActionWithTitle:viewButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self viewPost:page];
-            }];
-        [alertController addActionWithTitle:publishButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self publishPost:page];
-            }];
-        [alertController addActionWithTitle:trashButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            Page *page = [self pageForObjectID:objectID];
-            [self deletePost:page];
-            }];
-    }
-    
-    [WPAnalytics track:WPAnalyticsStatPostListOpenedCellMenu withProperties:[self propertiesForAnalytics]];
-    
-    if (![UIDevice isPad]) {
-        [self presentViewController:alertController animated:YES completion:nil];
-        return;
-    }
-    
-    alertController.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:alertController  animated:YES completion:nil];
-    UIPopoverPresentationController *presentationController = alertController.popoverPresentationController;
-    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    presentationController.sourceView = button;
-    presentationController.sourceRect = button.bounds;
-    }
-    
-    - (Page *)pageForObjectID:(NSManagedObjectID *)objectID
-{
-    NSError *error;
-    Page *page = (Page *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
-    if (error) {
-        DDLogError(@"%@, %@, %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
-    }
-    return page;
-    }
-    
-    - (void)cell:(UITableViewCell *)cell receivedRestoreActionForProvider:(id<PostContentProvider>)contentProvider
-{
-    AbstractPost *apost = (AbstractPost *)contentProvider;
-    [self restorePost:apost];
-}
-
-@end
-
-*/
