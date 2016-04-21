@@ -26,7 +26,7 @@ struct StoreKitCoordinator {
 
 class StoreCoordinator<S: Store> {
     let store: S
-    var pendingPayment: (Plan, Int)? = nil
+    var pendingPayment: (plan: Plan, siteID: Int)? = nil
 
     init(store: S) {
         self.store = store
@@ -53,8 +53,8 @@ class StoreCoordinator<S: Store> {
             return
         }
         assert(transaction.payment.productIdentifier == pendingPayment?.0.productIdentifier)
-        guard let siteID = pendingPayment?.1,
-            let plan = pendingPayment?.0,
+        guard let siteID = pendingPayment?.siteID,
+            let plan = pendingPayment?.plan,
             let service = PlanService(siteID: siteID, store: StoreKitStore()),
             let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
             let receipt = NSData(contentsOfURL: receiptURL)
@@ -68,6 +68,21 @@ class StoreCoordinator<S: Store> {
             SKPaymentQueue.defaultQueue().finishTransaction(transaction)
         })
     }
+
+    func purchaseAvailability(forPlan plan: Plan, siteID: Int) -> PurchaseAvailability {
+        guard store.canMakePayments && plan.isPaidPlan else {
+            return .unavailable
+        }
+        if let pendingPayment = pendingPayment {
+            if pendingPayment.siteID == siteID {
+                return .pending
+            } else {
+                return .unavailable
+            }
+        } else {
+            return .available
+        }
+    }
 }
 
 protocol Store {
@@ -75,6 +90,16 @@ protocol Store {
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
     func requestPayment(product: ProductType)
     var canMakePayments: Bool { get }
+}
+
+/// Represents if purchase is available for a specific plan and site
+enum PurchaseAvailability {
+    /// Purchases are not available for this site
+    case unavailable
+    /// There is an in-progress purchase for this site
+    case pending
+    /// The specified plan is available for purchase on this site
+    case available
 }
 
 extension Store {
