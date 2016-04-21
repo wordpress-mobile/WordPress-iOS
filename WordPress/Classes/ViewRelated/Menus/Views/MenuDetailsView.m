@@ -42,7 +42,7 @@
     
     UITextField *textField = self.textField;
     textField.text = nil;
-    textField.placeholder = NSLocalizedString(@"Menu", @"Menus placeholder text for the name field of a menu with no name.");
+    textField.placeholder = NSLocalizedString(@"Menu Name", @"Menus placeholder text for the name field of a menu with no name.");
     textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
     textField.font = [WPFontManager systemLightFontOfSize:22.0];
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -90,9 +90,18 @@
 {
     if (_menu != menu) {
         _menu = menu;
-        self.textField.text = menu.name;
-        self.trashButton.hidden = menu.menuID.integerValue == MenuDefaultID;
-        [self updateTextFieldDesignIconPositioning];
+        if (menu) {
+            self.textField.enabled = YES;
+            self.textField.text = menu.name;
+            self.textFieldDesignIcon.hidden = NO;
+            [self updateTextFieldDesignIconPositioning];
+            self.trashButton.hidden = menu.menuID.integerValue == MenuDefaultID;
+        } else {
+            self.textField.text = NSLocalizedString(@"No Menu Selected", @"Menus name field text when no menu is selected.");
+            self.textField.enabled = NO;
+            self.textFieldDesignIcon.hidden = YES;
+            self.trashButton.hidden = YES;
+        }
     }
 }
 
