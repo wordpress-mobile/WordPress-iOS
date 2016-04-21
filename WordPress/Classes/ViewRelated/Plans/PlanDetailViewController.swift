@@ -67,6 +67,20 @@ class PlanDetailViewController: UIViewController {
                 return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
             }
         }
+
+        var purchaseButtonVisible: Bool {
+            return !isActivePlan
+                && (purchaseAvailability == .available
+                    || purchaseAvailability == .pending)
+        }
+
+        var purchaseButtonSelected: Bool {
+            return purchaseAvailability == .pending
+        }
+
+        private var purchaseAvailability: PurchaseAvailability {
+            return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID)
+        }
     }
 
     private let cellIdentifier = "PlanFeatureListItem"
@@ -199,12 +213,15 @@ class PlanDetailViewController: UIViewController {
         planDescriptionLabel.text = plan.tagline
         planPriceLabel.text = viewModel.priceText
 
-        if viewModel.isActivePlan {
+        if !viewModel.purchaseButtonVisible {
             purchaseButton?.removeFromSuperview()
+        } else {
+            purchaseButton?.selected = viewModel.purchaseButtonSelected
+        }
+
+        if viewModel.isActivePlan {
             purchaseWrapperView.addSubview(currentPlanLabel)
             purchaseWrapperView.pinSubviewToAllEdgeMargins(currentPlanLabel)
-        } else if plan.isFreePlan {
-            purchaseButton?.removeFromSuperview()
         }
     }
 
