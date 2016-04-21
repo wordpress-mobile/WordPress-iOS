@@ -8,6 +8,10 @@ import WordPressComAnalytics
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
+
+    //MARK: - Helpers for presenting the signin flow
+
+
     // Stubbed method for implementing A/B testing between the old and new signin flows.
     class func useNewSigninFlow() -> Bool {
         return true
@@ -104,6 +108,7 @@ import WordPressComAnalytics
             }
 
             let controller = SigninWPComViewController.controller(loginFields)
+            controller.restrictSigninToWPCom = true
             controller.dismissBlock = onDismissed
 
             let navController = NUXNavigationController(rootViewController: controller)
@@ -138,6 +143,9 @@ import WordPressComAnalytics
             LoginViewController.presentModalReauthScreen()
         }
     }
+
+
+    // MARK: - Authentication Link Helpers
 
 
     /// Present a signin view controller to handle an authentication link.
@@ -224,6 +232,9 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - Site URL helper
+
+
     /// The base site URL path derived from `loginFields.siteUrl`
     ///
     /// - Parameters:
@@ -302,6 +313,18 @@ import WordPressComAnalytics
         }
 
         return true
+    }
+
+
+    class func promptForWPComReservedUsername(username: String, callback: () -> Void) {
+        let title = NSLocalizedString("Reserved Username", comment: "The title of a prompt")
+        let format = NSLocalizedString("'%@' is a reserved username on WordPress.com.",
+                                        comment: "Error message letting the user know the username they entered is reserved. The %@ is a placeholder for the username.")
+        let message = NSString(format: format, username) as String
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
+            callback()
+        })
     }
 
 

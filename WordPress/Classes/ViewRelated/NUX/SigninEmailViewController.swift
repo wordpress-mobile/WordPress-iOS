@@ -263,10 +263,20 @@ import WordPressShared
         guard emailOrUsername.isValidEmail() else {
             // A username was entered, not an email address.
             // Proceed to the next form:
-            if SigninHelpers.isUsernameReserved(emailOrUsername) {
-                signinToSelfHostedSite()
-            } else {
+            if !SigninHelpers.isUsernameReserved(emailOrUsername) {
                 signinWithUsernamePassword()
+
+            } else if restrictSigninToWPCom {
+                // When restricted, show a prompt then let the user enter a new username.
+                SigninHelpers.promptForWPComReservedUsername(emailOrUsername, callback: {
+                    self.loginFields.username = ""
+                    self.emailTextField.text = ""
+                    self.emailTextField.becomeFirstResponder()
+                })
+
+            } else {
+                // Switch to the signin flow when not restricted.
+                signinToSelfHostedSite()
             }
             return
         }
