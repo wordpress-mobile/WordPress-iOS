@@ -1,6 +1,8 @@
 import UIKit
+import WordPressShared
 
-public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate
+{
     public var blog: Blog?
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
@@ -51,6 +53,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         } catch {
             DDLogSwift.logError("Error fetching People: \(error)")
         }
+        
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
     public override func viewDidAppear(animated: Bool) {
