@@ -7,4 +7,4 @@
 ### Steps to reproduce the behavior
 
 
-##### Tested on [device], iOS [version]
+##### Tested on [device], iOS [version], WPiOS [version]
