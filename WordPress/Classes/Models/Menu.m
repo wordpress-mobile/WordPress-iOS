@@ -3,7 +3,7 @@
 #import "MenuLocation.h"
 #import "Blog.h"
 
-NSInteger const MenuDefaultID = 0;
+NSInteger const MenuDefaultID = -1;
 
 @implementation Menu
 

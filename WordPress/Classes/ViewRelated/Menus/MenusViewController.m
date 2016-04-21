@@ -277,7 +277,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.itemsView.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
-    if (menu.menuID.integerValue == MenuDefaultID) {
+    if ([menu.menuID integerValue] == MenuDefaultID) {
         [self loadDefaultMenuItemsIfNeeded];
     } else {
         [self insertBlankMenuItemIfNeeded];
@@ -447,7 +447,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     toggleIsSaving(YES);
     
-    if (!menuToSave.menuID.integerValue) {
+    if (menuToSave.menuID.integerValue == 0) {
         // Need to create the menu first.
         [self.menusService createMenuWithName:menuToSave.name
                                          blog:self.blog
