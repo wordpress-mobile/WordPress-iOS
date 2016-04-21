@@ -636,7 +636,7 @@ import WordPressShared
         syncItemsWithUserInteraction(false)
     }
 
-    private func keyForCurrentListStatusFilter() -> String {
+    func keyForCurrentListStatusFilter() -> String {
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
