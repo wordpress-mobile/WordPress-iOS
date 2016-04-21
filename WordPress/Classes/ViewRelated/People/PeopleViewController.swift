@@ -17,7 +17,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - UITableView Methods
     
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return resultsController.sections?.count ?? 0;
+        return resultsController.sections?.count ?? 0
     }
 
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
