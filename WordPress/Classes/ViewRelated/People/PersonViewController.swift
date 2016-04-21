@@ -20,6 +20,35 @@ class PersonViewController : UITableViewController
     }
     
     
+    // MARK: - UITableView Methods
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectSelectedRowWithAnimation(true)
+        
+        let handlerMap = [
+            roleCell    : #selector(handleRoleWasPressed),
+            removeCell  : #selector(handleRemoveWasPressed)
+        ]
+
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath), let handler = handlerMap[cell] else {
+            return
+        }
+        
+        performSelector(handler)
+    }
+    
+    
+    // MARK: - Action Handlers
+    
+    func handleRoleWasPressed() {
+// TODO: Implement Me
+    }
+    
+    func handleRemoveWasPressed() {
+// TODO: Implement Me        
+    }
+    
+    
     // MARK: - Outlets
 
     @IBOutlet var gravatarImageView : UIImageView! {
@@ -45,11 +74,11 @@ class PersonViewController : UITableViewController
         }
     }
     
-    @IBOutlet var roleTableCell : UITableViewCell! {
+    @IBOutlet var roleCell : UITableViewCell! {
         didSet {
-            roleTableCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-            roleTableCell.detailTextLabel?.text = person?.role.description.capitalizedString
-            WPStyleGuide.configureTableViewCell(roleTableCell)
+            roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+            roleCell.detailTextLabel?.text = person?.role.description.capitalizedString
+            WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
     
@@ -77,10 +106,10 @@ class PersonViewController : UITableViewController
         }
     }
     
-    @IBOutlet var removalTableCell : UITableViewCell! {
+    @IBOutlet var removeCell : UITableViewCell! {
         didSet {
-            removalTableCell.textLabel?.text = NSLocalizedString("Remove", comment: "Remove User. Verb")
-            WPStyleGuide.configureTableViewDestructiveActionCell(removalTableCell)
+            removeCell.textLabel?.text = NSLocalizedString("Remove", comment: "Remove User. Verb")
+            WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
         }
     }
 }

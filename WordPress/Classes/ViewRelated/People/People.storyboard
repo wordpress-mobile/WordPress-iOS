@@ -338,8 +338,8 @@
                         <outlet property="fullNameLabel" destination="iII-kx-uUz" id="S7e-eX-7nI"/>
                         <outlet property="gravatarImageView" destination="yMs-a3-NfF" id="6bD-JM-hem"/>
                         <outlet property="lastNameCell" destination="7Gu-cx-Zbk" id="JpX-o8-34n"/>
-                        <outlet property="removalTableCell" destination="2lp-Fq-KG5" id="cJp-mR-GKy"/>
-                        <outlet property="roleTableCell" destination="o1C-ov-hGM" id="pik-sf-Ef9"/>
+                        <outlet property="removeCell" destination="2lp-Fq-KG5" id="6dz-RZ-AXz"/>
+                        <outlet property="roleCell" destination="o1C-ov-hGM" id="iHA-Aj-Cah"/>
                         <outlet property="usernameLabel" destination="PK5-u5-2r7" id="yQ6-rV-Q7p"/>
                     </connections>
                 </tableViewController>
