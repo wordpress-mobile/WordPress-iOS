@@ -5,8 +5,7 @@ class PlanDetailViewController: UIViewController {
     struct ViewModel {
         let plan: Plan
         let siteID: Int
-
-        let isActivePlan: Bool
+        let activePlan: Plan
 
         /// Plan price. Empty string for a free plan
         let price: String
@@ -23,7 +22,7 @@ class PlanDetailViewController: UIViewController {
             return ViewModel(
                 plan: plan,
                 siteID: siteID,
-                isActivePlan: isActivePlan,
+                activePlan: activePlan,
                 price: price,
                 features: features
             )
@@ -60,6 +59,10 @@ class PlanDetailViewController: UIViewController {
             }
         }
 
+        var isActivePlan: Bool {
+            return activePlan == plan
+        }
+
         var priceText: String {
             if price.isEmpty  {
                 return NSLocalizedString("Free for life", comment: "Price label for the free plan")
@@ -69,9 +72,8 @@ class PlanDetailViewController: UIViewController {
         }
 
         var purchaseButtonVisible: Bool {
-            return !isActivePlan
-                && (purchaseAvailability == .available
-                    || purchaseAvailability == .pending)
+            return purchaseAvailability == .available
+                || purchaseAvailability == .pending
         }
 
         var purchaseButtonSelected: Bool {
@@ -79,7 +81,7 @@ class PlanDetailViewController: UIViewController {
         }
 
         private var purchaseAvailability: PurchaseAvailability {
-            return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID)
+            return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
         }
     }
 
@@ -153,11 +155,11 @@ class PlanDetailViewController: UIViewController {
         return wrapper
     }()
 
-    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, siteID: Int, activePlan: Plan, price: String) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
 
-        controller.viewModel = ViewModel(plan: plan, siteID: siteID, isActivePlan: isActive, price: price, features: .Loading)
+        controller.viewModel = ViewModel(plan: plan, siteID: siteID, activePlan: activePlan, price: price, features: .Loading)
 
         return controller
     }

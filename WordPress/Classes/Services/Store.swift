@@ -69,12 +69,16 @@ class StoreCoordinator<S: Store> {
         })
     }
 
-    func purchaseAvailability(forPlan plan: Plan, siteID: Int) -> PurchaseAvailability {
-        guard store.canMakePayments && plan.isPaidPlan else {
+    func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
+        guard store.canMakePayments
+            && plan.isPaidPlan
+            && plan != activePlan
+            // Disallow upgrades/downgrades for now
+            && activePlan.isFreePlan else {
             return .unavailable
         }
         if let pendingPayment = pendingPayment {
-            if pendingPayment.siteID == siteID {
+            if pendingPayment == (plan, siteID) {
                 return .pending
             } else {
                 return .unavailable
