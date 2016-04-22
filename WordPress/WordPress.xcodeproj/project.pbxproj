@@ -1467,6 +1467,7 @@
 		B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteBlogSettings.swift; path = "Remote Objects/RemoteBlogSettings.swift"; sourceTree = "<group>"; };
 		B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPickerViewController.swift; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		B518E1631CCA9DBB00ADFE75 /* WordPress 49.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 49.xcdatamodel"; sourceTree = "<group>"; };
 		B5227E8E1C7375B400F04020 /* Notifications+Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Notifications+Definitions.h"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
@@ -7445,6 +7446,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B518E1631CCA9DBB00ADFE75 /* WordPress 49.xcdatamodel */,
 				FFA40D4D1CB3EDD5001CB1FB /* WordPress 48.xcdatamodel */,
 				08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */,
 				E63FF0581C5C297500906C07 /* WordPress 46.xcdatamodel */,
@@ -7494,7 +7496,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = FFA40D4D1CB3EDD5001CB1FB /* WordPress 48.xcdatamodel */;
+			currentVersion = B518E1631CCA9DBB00ADFE75 /* WordPress 49.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
