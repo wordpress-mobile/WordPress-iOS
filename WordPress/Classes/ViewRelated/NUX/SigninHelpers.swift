@@ -1,6 +1,8 @@
 import UIKit
 import NSURL_IDN
+import Optimizely
 import WordPressComAnalytics
+
 
 /// A collection of helper methods for NUX.
 ///
@@ -12,9 +14,15 @@ import WordPressComAnalytics
     //MARK: - Helpers for presenting the signin flow
 
 
-    // Stubbed method for implementing A/B testing between the old and new signin flows.
+    // Allows for A/B testing between the old and new signin flows.
     class func useNewSigninFlow() -> Bool {
-        return true
+        let value = OptimizelyHelper.useNewSigninFlow()
+        if (value) {
+            DDLogSwift.logInfo("Using the new sign in flow")
+        } else {
+            DDLogSwift.logInfo("Using the old sign in flow")
+        }
+        return value
     }
 
 
