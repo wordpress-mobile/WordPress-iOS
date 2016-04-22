@@ -71,31 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 }
 
-- (nullable PostCategory *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
-                            forBlogObjectID:(NSManagedObjectID *)blogObjectID
-{
-    Blog *blog = [self blogWithObjectID:blogObjectID];
-
-    if ([categoryInfo objectForKey:@"categoryId"] == nil) {
-        return nil;
-    }
-    if ([categoryInfo objectForKey:@"categoryName"] == nil) {
-        return nil;
-    }
-
-    PostCategory *category = [self findWithBlogObjectID:blog.objectID andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
-
-    if (category == nil) {
-        category = [self newCategoryForBlog:blog];
-    }
-
-    category.categoryID     = [[categoryInfo objectForKey:@"categoryId"] numericValue];
-    category.categoryName   = [categoryInfo objectForKey:@"categoryName"];
-    category.parentID       = [[categoryInfo objectForKey:@"parentId"] numericValue];
-
-    return category;
-}
-
 - (void)syncCategoriesForBlog:(Blog *)blog
                       success:(nullable void (^)())success
                       failure:(nullable void (^)(NSError *error))failure
