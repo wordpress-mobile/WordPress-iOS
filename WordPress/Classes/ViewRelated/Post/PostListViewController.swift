@@ -425,6 +425,9 @@ import WordPressShared
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
             return
         }
 
@@ -442,7 +445,9 @@ import WordPressShared
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            preconditionFailure("Expected a post object.")
+        }
         
         let identifier = cellIdentifierForPost(post)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
