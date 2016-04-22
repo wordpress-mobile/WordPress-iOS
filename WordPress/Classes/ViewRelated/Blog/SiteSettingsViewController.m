@@ -16,9 +16,9 @@
 #import "WordPress-Swift.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPWebViewController.h"
+#import "WordPressXMLRPCApi.h"
 
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WordPressApi/WordPressApi.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 
 

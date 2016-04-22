@@ -2,7 +2,6 @@
 #import "WordPressComApi.h"
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
-#import <WordPressApi/WordPressApi.h>
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
@@ -151,7 +150,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             NSError * error = nil;
             if (errorList.count > 0){
                 NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressRestApiErrorDomain code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
+                error = [NSError errorWithDomain:NSStringFromClass([self class]) code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
             }
             if (failure) {
                 failure(error);

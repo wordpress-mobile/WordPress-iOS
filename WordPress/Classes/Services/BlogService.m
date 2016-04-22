@@ -23,8 +23,7 @@
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 #import "PostType.h"
-
-#import <WordPressApi/WordPressApi.h>
+#import "WPXMLRPCClient.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";

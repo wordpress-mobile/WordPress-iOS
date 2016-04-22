@@ -1,0 +1,31 @@
+#import "WordPressRestApiJSONRequestOperation.h"
+#import "WordPressRestApi.h"
+
+@implementation WordPressRestApiJSONRequestOperation
+
++(BOOL)canProcessRequest:(NSURLRequest *)urlRequest {
+    NSURL *testURL = [NSURL URLWithString:WordPressRestApiEndpointURL];
+    if ([urlRequest.URL.host isEqualToString:testURL.host] && [urlRequest.URL.path rangeOfString:testURL.path].location == 0)
+        return YES;
+
+    return NO;
+}
+
+- (NSError *)error {
+    if (self.response.statusCode >= 400) {
+        NSString *errorMessage = [self.responseObject objectForKey:@"message"];
+        NSUInteger errorCode = WordPressRestApiErrorJSON;
+        if ([self.responseObject objectForKey:@"error"] && errorMessage) {
+            NSString *error = [self.responseObject objectForKey:@"error"];
+            if ([error isEqualToString:@"invalid_token"]) {
+                errorCode = WordPressRestApiErrorInvalidToken;
+            } else if ([error isEqualToString:@"authorization_required"]) {
+                errorCode = WordPressRestApiErrorAuthorizationRequired;
+            }
+            return [NSError errorWithDomain:WordPressRestApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressRestApiErrorCodeKey: error}];
+        }
+    }
+    return [super error];
+}
+
+@end

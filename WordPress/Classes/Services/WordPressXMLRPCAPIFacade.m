@@ -1,6 +1,6 @@
 #import "WordPressXMLRPCAPIFacade.h"
+#import "WordPressXMLRPCApi.h"
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <WordPressApi/WordPressXMLRPCApi.h>
 
 
 @interface WordPressXMLRPCAPIFacade ()

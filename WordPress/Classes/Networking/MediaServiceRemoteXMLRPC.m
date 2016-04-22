@@ -1,6 +1,6 @@
 #import "MediaServiceRemoteXMLRPC.h"
 #import "RemoteMedia.h"
-#import <WordPressApi/WPXMLRPCClient.h>
+#import "WPXMLRPCClient.h"
 
 @implementation MediaServiceRemoteXMLRPC
 
