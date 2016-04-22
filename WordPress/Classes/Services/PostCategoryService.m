@@ -8,6 +8,8 @@
 #import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemoteTaxonomyPaging.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation PostCategoryService
 
 - (PostCategory *)newCategoryForBlog:(Blog *)blog
@@ -23,7 +25,7 @@
     return [self newCategoryForBlog:blog];
 }
 
-- (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId
+- (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(nullable NSNumber *)parentId
 {
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
@@ -40,20 +42,20 @@
     return NO;
 }
 
-- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
+- (nullable PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryID];
     return [self findWithBlogObjectID:blogObjectID predicate:predicate];
 }
 
-- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name
+- (nullable PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(nullable NSNumber *)parentID andName:(NSString *)name
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
                               (parentID ? parentID : @0)];
     return [self findWithBlogObjectID:blogObjectID predicate:predicate];
 }
 
-- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID predicate:(NSPredicate *)predicate
+- (nullable PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID predicate:(NSPredicate *)predicate
 {
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
@@ -62,7 +64,7 @@
 
 }
 
-- (PostCategory *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
+- (nullable PostCategory *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
                             forBlogObjectID:(NSManagedObjectID *)blogObjectID
 {
     Blog *blog = [self blogWithObjectID:blogObjectID];
@@ -88,8 +90,8 @@
 }
 
 - (void)syncCategoriesForBlog:(Blog *)blog
-                      success:(void (^)())success
-                      failure:(void (^)(NSError *error))failure
+                      success:(nullable void (^)())success
+                      failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
@@ -117,10 +119,10 @@
 }
 
 - (void)syncCategoriesForBlog:(Blog *)blog
-                       number:(NSNumber *)number
-                       offset:(NSNumber *)offset
-                      success:(void (^)(NSArray <PostCategory *> *categories))success
-                      failure:(void (^)(NSError *error))failure
+                       number:(nullable NSNumber *)number
+                       offset:(nullable NSNumber *)offset
+                      success:(nullable void (^)(NSArray <PostCategory *> *categories))success
+                      failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
@@ -146,10 +148,10 @@
 }
 
 - (void)createCategoryWithName:(NSString *)name
-        parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
+        parentCategoryObjectID:(nullable NSManagedObjectID *)parentCategoryObjectID
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
-                       success:(void (^)(PostCategory *category))success
-                       failure:(void (^)(NSError *error))failure
+                       success:(nullable void (^)(PostCategory *category))success
+                       failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(name != nil);
     Blog *blog = [self blogWithObjectID:blogObjectID];
@@ -191,7 +193,7 @@
                    } failure:failure];
 }
 
-- (void)mergeCategories:(NSArray <RemotePostCategory *> *)remoteCategories forBlog:(Blog *)blog completionHandler:(void (^)(NSArray <PostCategory *> *categories))completion
+- (void)mergeCategories:(NSArray <RemotePostCategory *> *)remoteCategories forBlog:(Blog *)blog completionHandler:(nullable void (^)(NSArray <PostCategory *> *categories))completion
 {
     NSSet *remoteSet = [NSSet setWithArray:[remoteCategories valueForKey:@"categoryID"]];
     NSSet *localSet = [blog.categories valueForKey:@"categoryID"];
@@ -227,7 +229,7 @@
     }
 }
 
-- (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID
+- (nullable Blog *)blogWithObjectID:(nullable NSManagedObjectID *)objectID
 {
     if (objectID == nil) {
         return nil;
@@ -243,7 +245,7 @@
     return blog;
 }
 
-- (PostCategory *)categoryWithObjectID:(NSManagedObjectID *)objectID
+- (nullable PostCategory *)categoryWithObjectID:(nullable NSManagedObjectID *)objectID
 {
     if (objectID == nil) {
         return nil;
@@ -268,3 +270,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
