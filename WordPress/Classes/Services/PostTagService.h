@@ -5,19 +5,24 @@
 
 @interface PostTagService : LocalCoreDataService
 
-/* Sync an initial batch of tags for blog via default remote parameters and responses.
+/**
+ Sync an initial batch of tags for blog via default remote parameters and responses.
  */
 - (void)syncTagsForBlog:(Blog *)blog
                 success:(void (^)())success
                 failure:(void (^)(NSError *error))failure;
 
-/* Sync additional tags for blog via paging maintained within an instance of PostTagService.
+/**
+ Sync an explicit number tags paginated by an offset for blog.
  */
-- (void)loadMoreTagsForBlog:(Blog *)blog
-                    success:(void (^)(NSArray <PostTag *> *tags))success
-                    failure:(void (^)(NSError *error))failure;
+- (void)syncTagsForBlog:(Blog *)blog
+                 number:(NSNumber *)number
+                 offset:(NSNumber *)offset
+                success:(void (^)(NSArray <PostTag *> *tags))success
+                failure:(void (^)(NSError *error))failure;
 
-/* Search tags for blog matching a name or slug of the query. Case-insensitive search.
+/**
+ Search tags for blog matching a name or slug of the query. Case-insensitive search.
  */
 - (void)searchTagsWithName:(NSString *)nameQuery
                       blog:(Blog *)blog
