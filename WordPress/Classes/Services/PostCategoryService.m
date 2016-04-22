@@ -6,6 +6,7 @@
 #import "TaxonomyServiceRemote.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "TaxonomyServiceRemoteXMLRPC.h"
+#import "RemoteTaxonomyPaging.h"
 
 @implementation PostCategoryService
 
@@ -113,6 +114,35 @@
                                        }];
                                }];
                            } failure:failure];
+}
+
+- (void)syncCategoriesForBlog:(Blog *)blog
+                       number:(NSNumber *)number
+                       offset:(NSNumber *)offset
+                      success:(void (^)(NSArray <PostCategory *> *categories))success
+                      failure:(void (^)(NSError *error))failure
+{
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
+    paging.number = number ?: @(100);
+    paging.offset = offset ?: @(0);
+    NSManagedObjectID *blogID = blog.objectID;
+    [remote getCategoriesWithPaging:paging
+                            success:^(NSArray<RemotePostCategory *> *categories) {
+                                [self.managedObjectContext performBlock:^{
+                                    Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                                    if (!blog) {
+                                        return;
+                                    }
+                                    [self mergeCategories:categories
+                                                  forBlog:blog
+                                        completionHandler:^(NSArray<PostCategory *> *postCategories) {
+                                            if (success) {
+                                                success(postCategories);
+                                            }
+                                        }];
+                                }];
+                            } failure:failure];
 }
 
 - (void)createCategoryWithName:(NSString *)name

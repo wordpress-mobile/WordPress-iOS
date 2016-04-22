@@ -10,8 +10,6 @@
 
 @interface PostTagService ()
 
-@property (nonatomic, strong) RemoteTaxonomyPaging *remotePaging;
-
 @end
 
 static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
@@ -50,18 +48,15 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
     } failure:failure];
 }
 
-- (void)loadMoreTagsForBlog:(Blog *)blog
-                    success:(void (^)(NSArray <PostTag *> *tags))success
-                    failure:(void (^)(NSError *error))failure
+- (void)syncTagsForBlog:(Blog *)blog
+                 number:(NSNumber *)number
+                 offset:(NSNumber *)offset
+                success:(void (^)(NSArray <PostTag *> *tags))success
+                failure:(void (^)(NSError *error))failure
 {
-    RemoteTaxonomyPaging *paging = self.remotePaging;
-    if (!paging) {
-        paging = [[RemoteTaxonomyPaging alloc] init];
-        paging.number = @(100);
-        // start the offset at 0
-        paging.offset = @(0);
-        self.remotePaging = paging;
-    }
+    RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
+    paging.number = number ?: @(100);
+    paging.offset = offset ?: @(0);
     
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = blog.objectID;
@@ -73,9 +68,6 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
                               logErrorForRetrievingBlog(blog, error);
                               return;
                           }
-                          
-                          // increment the offset by the number of tags being requested for the next paging request
-                          self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
                           
                           NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

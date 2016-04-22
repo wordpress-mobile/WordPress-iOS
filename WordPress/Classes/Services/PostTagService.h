@@ -11,9 +11,11 @@
                 success:(void (^)())success
                 failure:(void (^)(NSError *error))failure;
 
-/* Sync additional tags for blog via paging maintained within an instance of PostTagService.
+/* Sync an explicit number tags paginated by an offset for blog.
  */
-- (void)loadMoreTagsForBlog:(Blog *)blog
+- (void)syncTagsForBlog:(Blog *)blog
+                  number:(NSNumber *)number
+                 offset:(NSNumber *)offset
                     success:(void (^)(NSArray <PostTag *> *tags))success
                     failure:(void (^)(NSError *error))failure;
 
