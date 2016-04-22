@@ -375,7 +375,6 @@ import WordPressShared
     // MARK: - Table View Handling
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
             let message = "Expected a post object."
             assertionFailure(message)
@@ -397,6 +396,9 @@ import WordPressShared
    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
             return 0
         }
         
