@@ -45,7 +45,7 @@ class PersonViewController : UITableViewController
     }
     
     func handleRemoveWasPressed() {
-// TODO: Implement Me        
+// TODO: Implement Me
     }
     
     
@@ -108,7 +108,7 @@ class PersonViewController : UITableViewController
     
     @IBOutlet var removeCell : UITableViewCell! {
         didSet {
-            removeCell.textLabel?.text = NSLocalizedString("Remove", comment: "Remove User. Verb")
+            removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
             WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
         }
     }
