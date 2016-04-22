@@ -1811,7 +1811,6 @@
 		E1A6DBE319DC7D230071AC1E /* PostService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostService.h; sourceTree = "<group>"; };
 		E1A6DBE419DC7D230071AC1E /* PostService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCoordinatorTests.swift; sourceTree = "<group>"; };
-		E1A7CA4C1CCA002600373E06 /* StoreCoordinatorTests.swift.gyb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StoreCoordinatorTests.swift.gyb; sourceTree = "<group>"; };
 		E1A8CACA1C22FF7C0038689E /* MeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
 		E1B23B071BFB3B370006559B /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		E1B289D919F7AF7000DB0707 /* RemoteBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteBlog.h; path = "Remote Objects/RemoteBlog.h"; sourceTree = "<group>"; };
@@ -3533,7 +3532,6 @@
 				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
 				E124CE711C86D27100F7BA99 /* StoreTests.swift */,
 				E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */,
-				E1A7CA4C1CCA002600373E06 /* StoreCoordinatorTests.swift.gyb */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 			);
 			name = Services;
