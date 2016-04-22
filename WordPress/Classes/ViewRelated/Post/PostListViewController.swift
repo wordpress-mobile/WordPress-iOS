@@ -578,7 +578,7 @@ import WordPressShared
         // Check the blog
         let blog = apost.blog
         
-        if blog.supports(.Stats) {
+        guard blog.supports(.Stats) else {
             // Needs Jetpack.
             return
         }
