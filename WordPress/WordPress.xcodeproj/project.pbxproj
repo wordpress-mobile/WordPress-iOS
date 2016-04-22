@@ -599,6 +599,7 @@
 		E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03EE117422DCE0085D192 /* BlogToAccount.m */; };
 		E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */; };
 		E1A0AC821C560F3A00070E2B /* RxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A0AC811C560F3A00070E2B /* RxTests.swift */; };
+		E1A0BBB21CC9267500FE7256 /* TestPlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A0BBB11CC9267500FE7256 /* TestPlans.swift */; };
 		E1A0FAE7162F11CF0063B098 /* UIDevice+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A0FAE6162F11CE0063B098 /* UIDevice+Helpers.m */; };
 		E1A2A3F41CB504D400EAF51E /* PlansFeaturesRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2A3F31CB504D400EAF51E /* PlansFeaturesRemote.swift */; };
 		E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C714DB05C300954CF8 /* AVFoundation.framework */; };
@@ -1791,6 +1792,7 @@
 		E1A03F46174283DF0085D192 /* BlogToJetpackAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToJetpackAccount.h; sourceTree = "<group>"; };
 		E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogToJetpackAccount.m; sourceTree = "<group>"; };
 		E1A0AC811C560F3A00070E2B /* RxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxTests.swift; sourceTree = "<group>"; };
+		E1A0BBB11CC9267500FE7256 /* TestPlans.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPlans.swift; sourceTree = "<group>"; };
 		E1A0FAE5162F11CE0063B098 /* UIDevice+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "UIDevice+Helpers.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		E1A0FAE6162F11CE0063B098 /* UIDevice+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIDevice+Helpers.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1A2A3F31CB504D400EAF51E /* PlansFeaturesRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansFeaturesRemote.swift; sourceTree = "<group>"; };
@@ -4122,6 +4124,7 @@
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
+				E1A0BBB11CC9267500FE7256 /* TestPlans.swift */,
 			);
 			name = "Mock Data";
 			path = "Test Data";
@@ -5621,6 +5624,7 @@
 				B576B48A1C6A2EC10027C754 /* LanguagesTests.swift in Sources */,
 				E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */,
 				E12E6E381C21E75F0033C5D0 /* FeatureFlagTest.swift in Sources */,
+				E1A0BBB21CC9267500FE7256 /* TestPlans.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
