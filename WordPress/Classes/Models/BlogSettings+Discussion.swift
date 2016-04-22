@@ -1,53 +1,43 @@
 import Foundation
 
 
-/**
- *  @extension  BlogSettings+Discussion
- *  @brief      In this extension, we implement several nested Enums (and helper setters / getters)
- *              aimed at simplifying the BlogSettings interface.
- *              This may be considered as an Adapter class, *Swift* style!
- */
-
+/// In this extension, we implement several nested Enums (and helper setters / getters)  aimed at simplifying 
+/// the BlogSettings interface. This may be considered as an Adapter class, *Swift* style!
+///
 extension BlogSettings
 {
-    /**
-     *  @enum   BlogSettings.CommentsAutoapproval
-     *  @brief  Enumerates all of the Comments AutoApproval settings
-     */
+    /// Enumerates all of the Comments AutoApproval settings
+    ///
     enum CommentsAutoapproval : Int {
         case Disabled       = 0
         case FromKnownUsers = 1
         case Everything     = 2
         
         
-        /**
-         *  @details Returns the localized description of the current enum value
-         */
+        /// Returns the localized description of the current enum value
+        ///
         var description : String {
             return CommentsAutoapproval.descriptionMap[rawValue]!
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the Localized Enum Titles.
-         *           Order is guarranteed to match exactly with *allValues*.
-         */
+        /// Returns the sorted collection of all of the Localized Enum Titles.
+        /// Order is guarranteed to match exactly with *allValues*.
+        ///
         static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
 
-        /**
-         *  @details Returns the sorted collection of Localized Hints for all of the Enum Case's.
-         *           Order is guarranteed to match exactly with *allValues*.
-         */
+        /// Returns the sorted collection of Localized Hints for all of the Enum Case's.
+        /// Order is guarranteed to match exactly with *allValues*.
+        ///
         static var allHints : [String] {
             return allValues.flatMap { hintsMap[$0] }
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the possible Enum Values.
-         */
+        /// Returns the sorted collection of all of the possible Enum Values.
+        ///
         static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
@@ -70,35 +60,30 @@ extension BlogSettings
     
     
     
-    /**
-     *  @enum   BlogSettings.CommentsSorting
-     *  @brief  Enumerates all of the valid Comment Sort Order options
-     */
+    /// Enumerates all of the valid Comment Sort Order options
+    ///
     enum CommentsSorting : Int {
         case Ascending  = 0
         case Descending = 1
         
         
-        /**
-         *  @details Returns the localized description of the current enum value
-         */
+        /// Returns the localized description of the current enum value
+        ///
         var description : String {
             return CommentsSorting.descriptionMap[rawValue]!
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the Localized Enum Titles.
-         *           Order is guarranteed to match exactly with *allValues*.
-         */
+        /// Returns the sorted collection of all of the Localized Enum Titles.
+        /// Order is guarranteed to match exactly with *allValues*.
+        ///
         static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the possible Enum Values.
-         */
+        /// Returns the sorted collection of all of the possible Enum Values.
+        ///
         static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
@@ -114,19 +99,17 @@ extension BlogSettings
 
     
     
-    /**
-     *  @enum   BlogSettings.CommentsThreading
-     *  @brief  Enumerates all of the valid Threading options
-     */
+    /// Enumerates all of the valid Threading options
+    ///
     enum CommentsThreading {
         case Disabled
         case Enabled(depth: Int)
         
         
-        /**
-         *  @details Designated Initializer
-         *  @param   rawValue       The Threading raw value (Core Data Integer)
-         */
+        /// Designated Initializer
+        /// -   Parameters:
+        ///     -   rawValue: The Threading raw value (Core Data Integer)
+        ///
         init?(rawValue : Int) {
             switch rawValue {
             case _ where rawValue == CommentsThreading.disabledValue:
@@ -139,9 +122,8 @@ extension BlogSettings
         }
         
         
-        /**
-         *  @details Returns the Raw Value (for Core Data / Transport Layer usage)
-         */
+        /// Returns the Raw Value (for Core Data / Transport Layer usage)
+        ///
         var rawValue : Int {
             switch self {
             case .Disabled:
@@ -152,34 +134,30 @@ extension BlogSettings
         }
         
         
-        /**
-         *  @details Returns the localized description of the current enum value
-         */
+        /// Returns the localized description of the current enum value
+        ///
         var description : String {
             return CommentsThreading.descriptionMap[rawValue]!
         }
         
         
-        /**
-         *  @details Convenience helper that will return *true* whenever the case is *Disabled*
-         */
+        /// Convenience helper that will return *true* whenever the case is *Disabled*
+        ///
         var isDisabled : Bool {
             return rawValue == CommentsThreading.disabledValue
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the Localized Enum Titles.
-         *           Order is guarranteed to match exactly with *allValues*.
-         */
+        /// Returns the sorted collection of all of the Localized Enum Titles.
+        /// Order is guarranteed to match exactly with *allValues*.
+        ///
         static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
         
         
-        /**
-         *  @details Returns the sorted collection of all of the possible Enum Values.
-         */
+        /// Returns the sorted collection of all of the possible Enum Values.
+        ///
         static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
@@ -211,9 +189,8 @@ extension BlogSettings
     // MARK: - Swift Adapters
     
     
-    /**
-    *  @details Wraps Core Data values into Swift's CommentsAutoapproval Enum
-    */
+    /// Wraps Core Data values into Swift's CommentsAutoapproval Enum
+    ///
     var commentsAutoapproval : CommentsAutoapproval {
         get {
             if commentsRequireManualModeration {
@@ -231,9 +208,8 @@ extension BlogSettings
     }
     
     
-    /**
-     *  @details Wraps Core Data values into Swift's CommentsSorting Enum
-     */
+    /// Wraps Core Data values into Swift's CommentsSorting Enum
+    ///
     var commentsSorting : CommentsSorting {
         get {
             return CommentsSorting(rawValue: commentsSortOrder as! Int) ?? .Ascending
@@ -244,9 +220,8 @@ extension BlogSettings
     }
     
     
-    /**
-     *  @details Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
-     */
+    /// Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
+    ///
     var commentsSortOrderAscending : Bool {
         get {
             return commentsSortOrder == CommentsSorting.Ascending.rawValue
@@ -257,9 +232,8 @@ extension BlogSettings
     }
     
     
-    /**
-     *  @details Wraps Core Data values into Swift's CommentsThreading Enum
-     */
+    /// Wraps Core Data values into Swift's CommentsThreading Enum
+    ///
     var commentsThreading : CommentsThreading {
         get {
             if commentsThreadingEnabled && commentsThreadingDepth != nil {
