@@ -83,6 +83,8 @@ import WordPressShared
     // MARK: - UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        precondition(segue.destinationViewController is UITableViewController)
         super.postListViewController = (segue.destinationViewController as! UITableViewController)
     }
     
@@ -590,7 +592,7 @@ import WordPressShared
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = NSBundle(forClass: WPStatsViewController.self)
         
-        guard let path = statsBundle.pathForResource("WordPressCom-Stats-iOS2", ofType: "bundle") else {
+        guard let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle") else {
             let message = "The stats bundle is missing"
             
             assertionFailure(message)
