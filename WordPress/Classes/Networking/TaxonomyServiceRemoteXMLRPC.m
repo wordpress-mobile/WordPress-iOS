@@ -2,8 +2,8 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
+#import "WPXMLRPCClient.h"
 #import <WordPressShared/NSString+Util.h>
-#import <WordPressApi/WordPressApi.h>
 
 static NSString * const TaxonomyXMLRPCCategoryIdentifier = @"category";
 static NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";

@@ -4,7 +4,7 @@
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
-#import "WordPressRestApi.h"
+#import "WordPressComApi.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

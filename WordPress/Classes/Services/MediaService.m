@@ -11,9 +11,9 @@
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-swift.h"
-#import <WordPressApi/WordPressApi.h>
 #import "WPXMLRPCDecoder.h"
 #import "WordPressComApi.h"
+#import "WPXMLRPCClient.h"
 
 @implementation MediaService
 

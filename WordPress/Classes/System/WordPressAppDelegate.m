@@ -10,7 +10,6 @@
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
@@ -45,6 +44,7 @@
 
 // Networking
 #import "WPUserAgent.h"
+#import "WordPressApi.h"
 #import "WordPressComApiCredentials.h"
 
 // Swift support

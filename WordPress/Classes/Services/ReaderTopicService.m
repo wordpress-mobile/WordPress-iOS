@@ -11,7 +11,7 @@
 #import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 #import "WPAccount.h"
-#import <WordPressApi/WordPressApi.h>
+#import "WordPressApi.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";

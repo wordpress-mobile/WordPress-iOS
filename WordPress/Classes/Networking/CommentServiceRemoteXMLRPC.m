@@ -1,6 +1,6 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "RemoteComment.h"
-#import <WordPressApi/WordPressApi.h>
+#import "WPXMLRPCClient.h"
 
 
 
