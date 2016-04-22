@@ -577,12 +577,12 @@ import WordPressShared
     private func viewStatsForPost(apost: AbstractPost) {
         // Check the blog
         let blog = apost.blog
-        
+
         guard blog.supports(.Stats) else {
             // Needs Jetpack.
             return
         }
-        
+
         WPAnalytics.track(.PostListStatsAction, withProperties: propertiesForAnalytics())
         
         // Push the Stats Post Details ViewController
@@ -592,13 +592,18 @@ import WordPressShared
         let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle")!
         let bundle = NSBundle(path: path)
         let statsStoryboard = UIStoryboard(name: self.dynamicType.statsStoryboardName, bundle: bundle)
-        let controller = statsStoryboard.instantiateViewControllerWithIdentifier(identifier) as! StatsPostDetailsTableViewController
+        let viewControllerObject = statsStoryboard.instantiateViewControllerWithIdentifier(identifier)
         
-        controller.postID = apost.postID
-        controller.postTitle = apost.titleForDisplay()
-        controller.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
+        assert(viewControllerObject is StatsPostDetailsTableViewController)
+        guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
+            return
+        }
         
-        navigationController?.pushViewController(controller, animated: true)
+        viewController.postID = apost.postID
+        viewController.postTitle = apost.titleForDisplay()
+        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
+        
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Filter Related
