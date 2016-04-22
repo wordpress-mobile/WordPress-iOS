@@ -25,9 +25,24 @@
 
 @protocol MenuItemSourceContainerViewDelegate <NSObject>
 
+/**
+ Changes were made to the associated MenuItem.
+ */
 - (void)sourceContainerViewDidUpdateItem:(MenuItemSourceContainerView *)sourceContainerView;
+
+/**
+ User selected the headerView to change the selected itemType.
+ */
 - (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceContainerView;
+
+/**
+ Helper method for updating any layout constraints for keyboard changes.
+ */
 - (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
+
+/**
+ Helper method for updating any layout constraints for keyboard changes.
+ */
 - (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
 
 @end

@@ -121,27 +121,27 @@
     return matchingItem;
 }
 
-- (void)setSelectionExpanded:(BOOL)selectionExpanded
+- (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded
 {
-    if (_selectionExpanded != selectionExpanded) {
-        _selectionExpanded = selectionExpanded;
+    if (_selectionItemsExpanded != selectionItemsExpanded) {
+        _selectionItemsExpanded = selectionItemsExpanded;
         for (MenusSelectionItemView *itemView in self.itemViews) {
-            itemView.hidden = !selectionExpanded;
+            itemView.hidden = !selectionItemsExpanded;
             itemView.alpha = itemView.hidden ? 0.0 : 1.0;
         }
         
-        self.detailView.showsDesignActive = selectionExpanded;
+        self.detailView.showsDesignActive = selectionItemsExpanded;
     }
 }
 
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated
 {
     if (!animated) {
-        self.selectionExpanded = selectionItemsExpanded;
+        self.selectionItemsExpanded = selectionItemsExpanded;
         return;
     }
     [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.selectionExpanded = selectionItemsExpanded;
+        self.selectionItemsExpanded = selectionItemsExpanded;
     } completion:nil];
 }
 
@@ -208,7 +208,7 @@
 
 - (void)tellDelegateUserInteractionDetectedForTogglingExpansion
 {
-    [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionExpanded];
+    [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionItemsExpanded];
 }
 
 - (void)tellDelegateSelectedItem:(MenusSelectionItem *)item
