@@ -589,7 +589,15 @@ import WordPressShared
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = NSBundle(forClass: WPStatsViewController.self)
-        let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle")!
+        
+        guard let path = statsBundle.pathForResource("WordPressCom-Stats-iOS2", ofType: "bundle") else {
+            let message = "The stats bundle is missing"
+            
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
+        
         let bundle = NSBundle(path: path)
         let statsStoryboard = UIStoryboard(name: self.dynamicType.statsStoryboardName, bundle: bundle)
         let viewControllerObject = statsStoryboard.instantiateViewControllerWithIdentifier(identifier)
