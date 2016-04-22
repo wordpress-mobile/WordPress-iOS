@@ -10,24 +10,65 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 
 @interface MenusSelectionView : UIView
 
-@property (nonatomic, assign) MenusSelectionViewType selectionType;
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
-@property (nonatomic, readonly) BOOL selectionExpanded;
+
+/**
+ The type of selection the selectionView should be configured for.
+ */
+@property (nonatomic, assign) MenusSelectionViewType selectionType;
+
+/**
+ Toggle the visual expansion of the selection items in the UI.
+ */
+@property (nonatomic, assign) BOOL selectionItemsExpanded;
+
+/**
+ The currently selected item in the UI.
+ */
 @property (nonatomic, strong) MenusSelectionItem *selectedItem;
 
+/**
+ Add a selection item to the list of available items for display.
+ */
 - (void)addSelectionViewItem:(MenusSelectionItem *)selectionItem;
+
+/**
+ Remove a selection item from the list of available items for display.
+ */
 - (void)removeSelectionItem:(MenusSelectionItem *)selectionItem;
+
+/**
+ Remove all selection items from the list of available items for display.
+ */
 - (void)removeAllSelectionItems;
+
+/**
+ Create a new selection item with an associated object the item represents.
+ */
 - (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject;
+
+/**
+ Toggle the visual expansion of the selection items in the UI, with animation.
+ */
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
 @end
 
 @protocol MenusSelectionViewDelegate <NSObject>
 
-// user interaction dictates the selection view should be expanded or not (closed)
+/**
+ The user tapped or pressed to toggle the selection expansion of the UI.
+ */
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
+
+/**
+ The user selected an item from the list of available items for display.
+ */
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionItem *)item;
+
+/**
+ The user selected a special item representing creating a new item.
+ */
 - (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView;
 
 @end
