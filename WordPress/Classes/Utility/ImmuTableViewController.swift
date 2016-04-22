@@ -69,14 +69,12 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         title = controller.title
         registerRows(controller.immuTableRows)
         controller.tableViewModelWithPresenter(self)
-            .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
                 self?.handler.viewModel = $0
                 })
             .addDisposableTo(bag)
         controller.noticeMessage
-            .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
                 self?.noticeMessage = $0
