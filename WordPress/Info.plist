@@ -33,6 +33,16 @@
 				<string>${WPCOM_SCHEME}</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.optimizely</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>optly5635163020</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>6.2</string>

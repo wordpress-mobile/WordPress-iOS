@@ -61,4 +61,8 @@
    return @"";
 }
 
++ (NSString *)optimizelyAPIKey {
+    return @"";
+}
+
 @end
