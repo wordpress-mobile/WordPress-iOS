@@ -92,16 +92,16 @@
     [super traitCollectionDidChange:previousTraitCollection];
     
     if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
-        // toggle the selection on a trait collection change to a horizonal axis for the stack view
+        // Toggle the selection on a trait collection change to a horizonal axis for the stack view
         // this ensures both selection views are expanded if one already is
         // otherwise the design looks odd with too much negative space
         // see userInteractionDetectedForTogglingSelectionView:expand:
-        if (self.locationsView.selectionExpanded || self.menusView.selectionExpanded) {
-            if (self.locationsView.selectionExpanded && !self.menusView.selectionExpanded) {
+        if (self.locationsView.selectionItemsExpanded || self.menusView.selectionItemsExpanded) {
+            if (self.locationsView.selectionItemsExpanded && !self.menusView.selectionItemsExpanded) {
                 
                 [self.menusView setSelectionItemsExpanded:YES animated:NO];
                 
-            } else  if (self.menusView.selectionExpanded && !self.locationsView.selectionExpanded) {
+            } else  if (self.menusView.selectionItemsExpanded && !self.locationsView.selectionItemsExpanded) {
              
                 [self.locationsView setSelectionItemsExpanded:YES animated:NO];
             }

@@ -154,9 +154,24 @@
 
 @protocol MenuItemSourceViewDelegate <NSObject>
 
+/**
+ Helper method for informing whether or not the name should be overriden by itemType changes.
+ */
 - (BOOL)sourceViewItemNameCanBeOverridden:(MenuItemSourceView *)sourceView;
+
+/**
+ The associated MenuItem was updated.
+ */
 - (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView;
+
+/**
+ Helper method for updating any layout constraints for keyboard changes.
+ */
 - (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView;
+
+/**
+ Helper method for updating any layout constraints for keyboard changes.
+ */
 - (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView;
 
 @end
