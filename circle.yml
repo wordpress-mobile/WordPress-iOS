@@ -1,6 +1,0 @@
-machine:
-  xcode:
-    version: 7.3
-test:
-  override:
-    - Scripts/build.sh
