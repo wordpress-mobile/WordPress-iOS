@@ -375,7 +375,13 @@ import WordPressShared
     // MARK: - Table View Handling
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Post
+        
+        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return 0
+        }
         
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return self.dynamicType.postCardRestoreCellRowHeight
