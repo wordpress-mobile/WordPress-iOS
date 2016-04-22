@@ -670,37 +670,67 @@ import WordPressShared
     // MARK: - Cell Delegate Methods
 
     func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         editPost(apost)
     }
 
     func cell(cell: UITableViewCell!, receivedViewActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         viewPost(apost)
     }
 
     func cell(cell: UITableViewCell!, receivedStatsActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         viewStatsForPost(apost)
     }
 
     func cell(cell: UITableViewCell!, receivedPublishActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         publishPost(apost)
     }
 
     func cell(cell: UITableViewCell!, receivedTrashActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         deletePost(apost)
     }
     
     func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
-        let apost = contentProvider as! AbstractPost
+        guard let apost = contentProvider as? AbstractPost else {
+            let message = "Expected a post object."
+            assertionFailure(message)
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
+            return
+        }
         
         restorePost(apost)
     }
