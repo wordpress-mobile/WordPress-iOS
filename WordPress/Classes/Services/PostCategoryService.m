@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PostCategoryService
 
+- (NSError *)serviceErrorNoBlog
+{
+    return [NSError errorWithDomain:NSStringFromClass([self class])
+                               code:PostCategoryServiceErrorsBlogNotFound
+                           userInfo:nil];
+}
+
 - (PostCategory *)newCategoryForBlog:(Blog *)blog
 {
     PostCategory *category = [NSEntityDescription insertNewObjectForEntityForName:[PostCategory entityName]
@@ -100,10 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                    if (!blog) {
                                        if (failure) {
-                                           NSError *error = [NSError errorWithDomain:NSStringFromClass([self class])
-                                                                                code:PostCategoryServiceErrorsBlogNotFound
-                                                                            userInfo:nil];
-                                           failure(error);
+                                           failure([self serviceErrorNoBlog]);
                                        }
                                        return;
                                    }
@@ -134,6 +138,9 @@ NS_ASSUME_NONNULL_BEGIN
                                 [self.managedObjectContext performBlock:^{
                                     Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                     if (!blog) {
+                                        if (failure) {
+                                            failure([self serviceErrorNoBlog]);
+                                        }
                                         return;
                                     }
                                     [self mergeCategories:categories
@@ -168,6 +175,9 @@ NS_ASSUME_NONNULL_BEGIN
                        [self.managedObjectContext performBlock:^{
                            Blog *blog = [self blogWithObjectID:blogObjectID];
                            if (!blog) {
+                               if (failure) {
+                                   failure([self serviceErrorNoBlog]);
+                               }
                                return;
                            }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
