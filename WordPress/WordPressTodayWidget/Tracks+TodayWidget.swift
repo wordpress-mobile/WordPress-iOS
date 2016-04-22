@@ -30,6 +30,6 @@ extension Tracks
     private enum ExtensionEvents : String {
         case Accessed          = "wpios_today_extension_accessed"
         case StatsLaunched     = "wpios_today_extension_stats_launched"
-        case ConfigureLaunched = "wpios_share_extension_configure_launched"
+        case ConfigureLaunched = "wpios_today_extension_configure_launched"
     }
 }
