@@ -596,13 +596,14 @@ import WordPressShared
         
         assert(viewControllerObject is StatsPostDetailsTableViewController)
         guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
+            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
             return
         }
         
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
         viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
-        
+ 
         navigationController?.pushViewController(viewController, animated: true)
     }
     
