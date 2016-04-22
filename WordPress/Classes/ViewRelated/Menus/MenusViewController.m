@@ -400,8 +400,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     // Buckle up, we gotta save this Menu!
     Menu *menuToSave = self.selectedMenuLocation.menu;
     
+    BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
+    
     // Check if user is trying to save the Default Menu.
-    if (menuToSave.menuID.integerValue == MenuDefaultID) {
+    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
@@ -460,7 +462,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     toggleIsSaving(YES);
     
-    if (menuToSave.menuID.integerValue == 0) {
+    if (menuToSave.menuID.integerValue == 0 && defaultMenuEnabled) {
         // Need to create the menu first.
         [self.menusService createMenuWithName:menuToSave.name
                                          blog:self.blog
