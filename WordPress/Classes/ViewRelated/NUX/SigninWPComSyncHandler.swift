@@ -67,6 +67,7 @@ extension SigninWPComSyncHandler
             "dotcom_user": "1"
         ]
 
+        OptimizelyHelper.trackLoggedIn()
         WPAppAnalytics.track(WPAnalyticsStat.SignedIn, withProperties: properties)
     }
 
