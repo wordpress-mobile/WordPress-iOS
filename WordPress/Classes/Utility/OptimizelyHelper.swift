@@ -39,4 +39,12 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
         return Optimizely.boolForKey(optimizelyEnableNewSigninFlowKey)
     }
 
+
+    /// Bumps the custom goal for logged in in the Sign in A/B test
+    /// This can be removed when the test is complete.
+    ///
+    class func trackLoggedIn() {
+        Optimizely.trackEvent("logged_in")
+    }
+
 }
