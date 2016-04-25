@@ -232,6 +232,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
+    blog.capabilities = [jsonBlog dictionaryForKey:@"capabilities"];
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
