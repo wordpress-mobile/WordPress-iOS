@@ -5019,7 +5019,6 @@
 			);
 			name = "Generate AppImages.swift";
 			outputPaths = (
-				"$(SRCROOT)/Resources/AppImages.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
