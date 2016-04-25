@@ -408,7 +408,7 @@ import WordPressShared
         
         var cell: PostCardTableViewCell
         
-        if post.pathForDisplayImage?.characters.count > 0 {
+        if post.pathForDisplayImage?.characters.count > 0 { 
             cell = imageCellForLayout
         } else {
             cell = textCellForLayout
