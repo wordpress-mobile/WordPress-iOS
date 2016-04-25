@@ -1,10 +1,12 @@
 #import "PageListViewController.h"
 
+#import "ContextManager.h"
 #import "EditPageViewController.h"
 #import "Page.h"
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PostService.h"
+#import "WordPress-Swift.h"
 #import "WPLegacyEditPageViewController.h"
 #import "WPAppAnalytics.h"
 
@@ -352,7 +354,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         navController.restorationClass = [WPLegacyEditPageViewController class];
     }
 
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:navController animated:YES completion:nil];
@@ -371,7 +372,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         // In legacy mode, view means edit
         WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
-        [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         navController.restorationClass = [WPLegacyEditPageViewController class];

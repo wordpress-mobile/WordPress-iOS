@@ -39,6 +39,13 @@ extension UIView
         addConstraints(newConstraints)
     }
     
+    public func pinSubviewToAllEdgeMargins(subview: UIView) {
+        subview.topAnchor.constraintEqualToAnchor(layoutMarginsGuide.topAnchor).active = true
+        subview.bottomAnchor.constraintEqualToAnchor(layoutMarginsGuide.bottomAnchor).active = true
+        subview.leadingAnchor.constraintEqualToAnchor(layoutMarginsGuide.leadingAnchor).active = true
+        subview.trailingAnchor.constraintEqualToAnchor(layoutMarginsGuide.trailingAnchor).active = true
+    }
+    
     public func constraintForAttribute(attribute: NSLayoutAttribute) -> CGFloat? {
         for constraint in constraints {
             if constraint.firstItem as! NSObject == self {

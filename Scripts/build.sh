@@ -34,16 +34,8 @@ function pretty_travis() {
   xcpretty -c
 }
 
-function pretty_circleci() {
-  xcpretty -c --report junit --output $CIRCLE_TEST_REPORTS/xcode/results.xml
-}
-
 function rawlog() {
   tee $1
-}
-
-function rawlog_circleci() {
-  rawlog $CIRCLE_ARTIFACTS/xcode_raw.log
 }
 
 function usage() {
@@ -97,11 +89,7 @@ if [ "$LOGFILE" != "" ]; then
 fi
 
 if [ $VERBOSE == 0 ]; then
-  if [ $CIRCLECI ]; then
-    CMD="$CMD | rawlog_circleci | pretty_circleci"
-  else
-    CMD="$CMD | pretty_travis"
-  fi
+  CMD="$CMD | pretty_travis"
 fi
 
 if [ $DEBUG == 1 ]; then

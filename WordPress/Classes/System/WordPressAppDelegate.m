@@ -45,7 +45,7 @@
 
 // Networking
 #import "WPUserAgent.h"
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 
 // Swift support
 #import "WordPress-Swift.h"
@@ -59,6 +59,7 @@
 #import "WPPostViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
+#import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 
 int ddLogLevel = DDLogLevelInfo;
 
@@ -141,7 +142,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        NSString *lookbackToken = [WordPressComApiCredentials lookbackToken];
+        NSString *lookbackToken = [ApiCredentials lookbackToken];
         
         if ([lookbackToken length] > 0) {
             UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
@@ -163,8 +164,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)setupAppbotX
 {
-    if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
-        [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
+    if ([ApiCredentials appbotXAPIKey].length > 0) {
+        [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
     }
 }
 
@@ -191,6 +192,9 @@ int ddLogLevel = DDLogLevelInfo;
 
         if ([URLString rangeOfString:@"newpost"].length) {
             returnValue = [self handleNewPostRequestWithURL:url];
+        } else if ([URLString rangeOfString:@"magic-login"].length) {
+            DDLogInfo(@"App launched with authentication link");
+            returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -238,11 +242,11 @@ int ddLogLevel = DDLogLevelInfo;
                 NSString *debugType = [params stringForKey:@"type"];
                 NSString *debugKey = [params stringForKey:@"key"];
 
-                if ([[WordPressComApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
+                if ([[ApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
                     return NO;
                 }
 
-                if ([debugKey isEqualToString:[WordPressComApiCredentials debuggingKey]]) {
+                if ([debugKey isEqualToString:[ApiCredentials debuggingKey]]) {
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
                     }
@@ -518,8 +522,39 @@ int ddLogLevel = DDLogLevelInfo;
     }
 }
 
+
+- (void)showSigninScreenIfNeededAnimated:(BOOL)animated
+{
+    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+        return;
+    }
+
+    UIViewController *presenter = self.window.rootViewController;
+    // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+    // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+    if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
+        [presenter dismissViewControllerAnimated:animated completion:^{
+            [self showSigninScreenAnimated:animated thenEditor:NO];
+        }];
+    } else {
+        [self showSigninScreenAnimated:animated thenEditor:NO];
+    }
+}
+
+- (void)showSigninScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
+{
+    SigninEmailViewController *controller = controller = [SigninEmailViewController controller:nil];
+    UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
+    [self.window.rootViewController presentViewController:navigationController animated:NO completion:nil];
+}
+
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
+    if ([Feature enabled:FeatureFlagSignin]) {
+        [self showSigninScreenAnimated:animated thenEditor:thenEditor];
+        return;
+    }
+
     BOOL hasWordpressAccountButNoSelfHostedBlogs = [self noSelfHostedBlogs] && ![self noWordPressDotComAccount];
     
     __weak __typeof(self) weakSelf = self;
@@ -546,8 +581,10 @@ int ddLogLevel = DDLogLevelInfo;
     if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
         return NO;
     }
-    
-    return [presentedViewController.visibleViewController isKindOfClass:[LoginViewController class]];
+
+    // TODO: Remember to change this when switching to the new signin feature.
+    UIViewController *controller = presentedViewController.visibleViewController;
+    return [controller isKindOfClass:[LoginViewController class]] || [controller isKindOfClass:[NUXAbstractViewController class]];
 }
 
 - (BOOL)noWordPressDotComAccount
@@ -580,6 +617,9 @@ int ddLogLevel = DDLogLevelInfo;
 
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setTintColor:defaultTintColor];
+
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)]];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -621,6 +661,10 @@ int ddLogLevel = DDLogLevelInfo;
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
+
+    [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
+    [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
 }
 
 - (void)create3DTouchShortcutItems
@@ -661,7 +705,7 @@ int ddLogLevel = DDLogLevelInfo;
     return;
 #endif
     
-    NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
+    NSString* apiKey = [ApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
         self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
@@ -738,14 +782,14 @@ int ddLogLevel = DDLogLevelInfo;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account              = [accountService defaultWordPressComAccount];
-    NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+    NSString *apiKey                = [ApiCredentials simperiumAPIKey];
 
     if (!account.authToken.length || !apiKey.length) {
         return;
     }
 
     NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-    NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+    NSString *simperiumAppID = [ApiCredentials simperiumAppId];
     [self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 

@@ -14,6 +14,10 @@ static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 static NSString * const UserDictionaryDateKey = @"date";
 
+@interface AccountServiceRemoteREST ()
+@property (nonatomic, strong) WordPressComApi *anonymousApi;
+@end
+
 @implementation AccountServiceRemoteREST
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success
@@ -112,6 +116,87 @@ static NSString * const UserDictionaryDateKey = @"date";
                }
            }];
 }
+
+- (WordPressComApi *)anonymousApi
+{
+    if (!_anonymousApi) {
+        _anonymousApi = [WordPressComApi anonymousApi];
+    }
+
+    return _anonymousApi;
+}
+
+- (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
+{
+    // TODO: (Aerych 2016-04) We need to make a versioned flavor of this endpoint
+    // and ensure it always returns a JSON object. See 7724 in the relevant trac.
+    // Remove the special case in `WordPressComApi.assertApiVersion` once the
+    // endpoint is versioned.
+    NSString *path = @"https://public-api.wordpress.com/is-available/email";
+    [self.api GET:path
+       parameters:@{ @"q": email }
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (!success) {
+                  return;
+              }
+
+              // If the email address is not available (has already been used)
+              // the endpoint will reply with a 200 status code and an JSON
+              // object describing an error.
+              // The error is that the queried email address is not available,
+              // which is our failure case. Test the error response for the
+              // "taken" reason to confirm the email address exists.
+              BOOL available = NO;
+              if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                  NSDictionary *dict = (NSDictionary *)responseObject;
+                  NSString *errStr = [dict stringForKey:@"error"];
+                  available = ![@"taken" isEqualToString:errStr];
+              }
+
+              success(available);
+
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              // The is-available endpoint is an oddball.
+              // Rather than returning a proper JSON object it can return a simple
+              // string, which is subsequently evaluated as an error condition.
+              // A response of "true" means that the queried email address was available,
+              // which is our success case.
+              if ([operation.responseString isEqualToString:@"true"]) {
+                  if (success) {
+                      success(YES);
+                  }
+                  return;
+              }
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
+- (void)requestWPComAuthLinkForEmail:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSAssert([email length] > 0, @"Needs an email address.");
+
+    NSString *path = [self pathForEndpoint:@"auth/send-login-email"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api POST:path
+        parameters:@{
+                     @"email": email,
+                     @"client_id": [ApiCredentials client],
+                     @"client_secret": [ApiCredentials secret],
+                     }
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 
 #pragma mark - Private Methods
 

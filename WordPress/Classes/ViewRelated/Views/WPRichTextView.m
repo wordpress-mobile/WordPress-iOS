@@ -488,6 +488,11 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     }
     self.needsCheckPendingDownloadsAfterDelay = NO;
 
+    // Bail if there is no media needing layout.
+    if ([self.mediaIndexPathsNeedingLayout count] == 0) {
+        return;
+    }
+
     [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
     [self.mediaIndexPathsNeedingLayout removeAllObjects];
     self.dateOfLastMediaRefresh = [NSDate date];
