@@ -381,7 +381,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     picker.dataSource = self.mediaLibraryDataSource;
     picker.allowCaptureOfMedia = YES;
     picker.showMostRecentFirst = YES;
-    picker.filter = WPMediaTypeImage;
+    picker.filter = WPMediaTypeVideoOrImage;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -916,7 +916,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)addDeviceMediaAsset:(PHAsset *)asset
 {
-    if (asset.mediaType == PHAssetMediaTypeImage) {
+    if (asset.mediaType == PHAssetMediaTypeImage || asset.mediaType == PHAssetMediaTypeVideo) {
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         __weak __typeof__(self) weakSelf = self;
         NSString* imageUniqueId = [self uniqueIdForMedia];
