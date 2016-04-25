@@ -276,11 +276,11 @@ import WordPressComAnalytics
         return NSStringFromSelector(#selector(Page.sectionIdentifier))
     }
     
-    private func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return CGFloat(self.dynamicType.pageCellEstimatedRowHeight)
     }
     
-    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
             if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
@@ -294,7 +294,7 @@ import WordPressComAnalytics
         }
     }
     
-    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         configureCell(cellForLayout, atIndexPath: indexPath)
         let size = cellForLayout.sizeThatFits(CGSizeMake(width, CGFloat.max))
         let height = ceil(size.height)
@@ -302,11 +302,11 @@ import WordPressComAnalytics
         return height
     }
     
-    private func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat(self.dynamicType.pageSectionHeaderHeight)
     }
     
-    private func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.min
     }
     
