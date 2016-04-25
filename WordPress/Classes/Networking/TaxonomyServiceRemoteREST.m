@@ -6,19 +6,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const TaxonomyRESTCategoryIdentifier = @"categories";
-static NSString * const TaxonomyRESTTagIdentifier = @"tags";
+NSString * const TaxonomyRESTCategoryIdentifier = @"categories";
+NSString * const TaxonomyRESTTagIdentifier = @"tags";
 
-static NSString * const TaxonomyRESTIDParameter = @"ID";
-static NSString * const TaxonomyRESTNameParameter = @"name";
-static NSString * const TaxonomyRESTSlugParameter = @"slug";
-static NSString * const TaxonomyRESTParentParameter = @"parent";
-static NSString * const TaxonomyRESTSearchParameter = @"search";
-static NSString * const TaxonomyRESTOrderParameter = @"order";
-static NSString * const TaxonomyRESTOrderByParameter = @"order_by";
-static NSString * const TaxonomyRESTNumberParameter = @"number";
-static NSString * const TaxonomyRESTOffsetParameter = @"offset";
-static NSString * const TaxonomyRESTPageParameter = @"page";
+NSString * const TaxonomyRESTIDParameter = @"ID";
+NSString * const TaxonomyRESTNameParameter = @"name";
+NSString * const TaxonomyRESTSlugParameter = @"slug";
+NSString * const TaxonomyRESTParentParameter = @"parent";
+NSString * const TaxonomyRESTSearchParameter = @"search";
+NSString * const TaxonomyRESTOrderParameter = @"order";
+NSString * const TaxonomyRESTOrderByParameter = @"order_by";
+NSString * const TaxonomyRESTNumberParameter = @"number";
+NSString * const TaxonomyRESTOffsetParameter = @"offset";
+NSString * const TaxonomyRESTPageParameter = @"page";
 
 @implementation TaxonomyServiceRemoteREST
 
