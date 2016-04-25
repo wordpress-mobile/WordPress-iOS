@@ -82,6 +82,25 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 #pragma mark - tags
 
+- (void)createTag:(RemotePostTag *)tag
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+    [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+    
+    [self createTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                      parameters:extraParameters
+                         success:^(NSString *responseString) {
+                             RemotePostTag *newTag = [RemotePostTag new];
+                             NSString *tagID = responseString;
+                             newTag.tagID = [tagID numericValue];
+                             if (success) {
+                                 success(newTag);
+                             }
+                         } failure:failure];
+}
+
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
                    failure:(nullable void (^)(NSError *))failure
 {

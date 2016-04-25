@@ -81,6 +81,25 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 
 #pragma mark - tags
 
+- (void)createTag:(RemotePostTag *)tag
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSParameterAssert(tag.name.length > 0);
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[TaxonomyRESTNameParameter] = tag.name;
+    
+    [self createTaxonomyWithType:TaxonomyRESTTagIdentifier
+                      parameters:parameters
+                         success:^(NSDictionary *taxonomyDictionary) {
+                             RemotePostTag *receivedTag = [self remoteTagWithJSONDictionary:taxonomyDictionary];
+                             if (success) {
+                                 success(receivedTag);
+                             }
+                         } failure:failure];
+}
+
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
                    failure:(nullable void (^)(NSError *error))failure
 {
