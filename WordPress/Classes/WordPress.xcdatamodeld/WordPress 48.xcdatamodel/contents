@@ -27,6 +27,8 @@
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="email" attributeType="String" syncable="YES"/>
+        <attribute name="emailPendingAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="emailPendingChange" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="firstName" attributeType="String" syncable="YES"/>
         <attribute name="language" attributeType="String" syncable="YES"/>
         <attribute name="lastName" attributeType="String" syncable="YES"/>
@@ -323,16 +325,16 @@
     </entity>
     <entity name="Menu" representedClassName="Menu" syncable="YES">
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="menuId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="menuID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menus" inverseEntity="Blog" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MenuItem" inverseName="menu" inverseEntity="MenuItem" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MenuLocation" inverseName="menu" inverseEntity="MenuLocation" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
-        <attribute name="contentId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="itemId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="linkTarget" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="linkTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -608,7 +610,7 @@
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
+        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="600"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>

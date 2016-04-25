@@ -1,7 +1,7 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "MixpanelProxy.h"
 #import "WPAnalyticsTrackerMixpanelInstructionsForStat.h"
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
@@ -50,7 +50,7 @@ NSString *const SessionCount = @"session_count";
 
 - (void)beginSession
 {
-    [self.mixpanelProxy registerInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    [self.mixpanelProxy registerInstanceWithToken:[ApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
     [self flagIfUserHasSeenLegacyEditor];
 }
@@ -872,6 +872,9 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedAccountSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened Account Settings"];
+            break;
+        case WPAnalyticsStatOpenedAppSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened App Settings"];
             break;
         case WPAnalyticsStatOpenedMyProfile:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];

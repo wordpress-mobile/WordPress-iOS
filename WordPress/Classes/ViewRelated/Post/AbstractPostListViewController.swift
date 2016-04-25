@@ -12,13 +12,13 @@ import WordPressShared
         case Everyone = 1
     }
     
-    private static let PostsControllerRefreshInterval = NSTimeInterval(300)
+    private static let postsControllerRefreshInterval = NSTimeInterval(300)
     private static let HTTPErrorCodeForbidden = Int(403)
-    private static let PostsFetchRequestBatchSize = Int(10)
-    private static let PostsLoadMoreThreshold = Int(4)
-    private static let PreferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
+    private static let postsFetchRequestBatchSize = Int(10)
+    private static let postsLoadMoreThreshold = Int(4)
+    private static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
     
-    static let DefaultHeightForFooterView = Float(44.0);
+    static let defaultHeightForFooterView = CGFloat(44.0);
     
     var blog : Blog!
     var postListViewController : UITableViewController!
@@ -62,7 +62,7 @@ import WordPressShared
     
     var searchController : WPSearchController! // Stand-in for UISearchController
     private var allPostListFilters = [NSString: [PostListFilter]]()
-    private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
+    var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     
@@ -159,9 +159,9 @@ import WordPressShared
     // MARK: - Configuration
     
     
-    func heightForFooterView() -> Float
+    func heightForFooterView() -> CGFloat
     {
-        return self.dynamicType.DefaultHeightForFooterView;
+        return self.dynamicType.defaultHeightForFooterView;
     }
 
     
@@ -265,7 +265,7 @@ import WordPressShared
         return UIImageView(image: UIImage(named: "illustration-posts"))
     }
     
-    func noResultsButtonText() -> String {
+    func noResultsButtonText() -> String? {
         assert(false, "You should implement this method in the subclass")
     }
     
@@ -328,7 +328,7 @@ import WordPressShared
         
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
-        fetchRequest.fetchBatchSize = self.dynamicType.PostsFetchRequestBatchSize
+        fetchRequest.fetchBatchSize = self.dynamicType.postsFetchRequestBatchSize
         fetchRequest.fetchLimit = Int(numberOfPostsPerSync())
         
         return fetchRequest
@@ -424,7 +424,7 @@ import WordPressShared
         
         // Are we approaching the end of the table?
         if indexPath.section + 1 == tableView.numberOfSections
-            && indexPath.row + self.dynamicType.PostsLoadMoreThreshold >= tableView.numberOfRowsInSection(indexPath.section) {
+            && indexPath.row + self.dynamicType.postsLoadMoreThreshold >= tableView.numberOfRowsInSection(indexPath.section) {
             
             // Only 3 rows till the end of table
             if currentPostListFilter().hasMore {
@@ -486,7 +486,7 @@ import WordPressShared
             return
         }
 
-        if let lastSynced = lastSyncDate() where abs(lastSynced.timeIntervalSinceNow) > self.dynamicType.PostsControllerRefreshInterval {
+        if let lastSynced = lastSyncDate() where abs(lastSynced.timeIntervalSinceNow) > self.dynamicType.postsControllerRefreshInterval {
             // Update in the background
             syncItemsWithUserInteraction(false)
         } else {
@@ -972,7 +972,7 @@ import WordPressShared
     }
     
     func displayFilterPopover(controller: UIViewController) {
-        controller.preferredContentSize = self.dynamicType.PreferredFiltersPopoverContentSize
+        controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
         
         guard let navigationController = navigationController,
             let titleView = navigationItem.titleView else {

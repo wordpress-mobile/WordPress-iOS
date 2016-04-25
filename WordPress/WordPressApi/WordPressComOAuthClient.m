@@ -1,5 +1,5 @@
 #import "WordPressComOAuthClient.h"
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 
 NSString * const WordPressComOAuthErrorDomain = @"WordPressComOAuthError";
 NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
@@ -31,8 +31,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"username": username,
         @"password": password,
         @"grant_type": @"password",
-        @"client_id": [WordPressComApiCredentials client],
-        @"client_secret": [WordPressComApiCredentials secret],
+        @"client_id": [ApiCredentials client],
+        @"client_secret": [ApiCredentials secret],
         @"wpcom_supports_2fa": @(YES)
     } mutableCopy];
     
@@ -43,7 +43,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
     [self POST:@"token"
 	parameters:parameters
 	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               DDLogVerbose(@"Received OAuth2 response: %@", responseObject);
+               DDLogVerbose(@"Received OAuth2 response: %@", [self cleanedUpResponseForLogging:responseObject]);
                NSString *authToken = [responseObject stringForKey:@"access_token"];
                if (success) {
                    success(authToken);
@@ -66,8 +66,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"username": username,
         @"password": password,
         @"grant_type": @"password",
-        @"client_id": [WordPressComApiCredentials client],
-        @"client_secret": [WordPressComApiCredentials secret],
+        @"client_id": [ApiCredentials client],
+        @"client_secret": [ApiCredentials secret],
         @"wpcom_supports_2fa": @(YES),
         @"wpcom_resend_otp": @(YES)
     };
@@ -127,6 +127,18 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         }
     }
     return error;
+}
+
+- (id)cleanedUpResponseForLogging:(id)response {
+    if (![response isKindOfClass:[NSDictionary class]]) {
+        return response;
+    }
+    if ([(NSDictionary *)response objectForKey:@"access_token"] == nil) {
+        return response;
+    }
+    NSMutableDictionary *dict = [(NSDictionary *)response mutableCopy];
+    dict[@"access_token"] = @"*** REDACTED ***";
+    return dict;
 }
 
 @end

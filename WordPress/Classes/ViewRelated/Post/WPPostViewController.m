@@ -722,7 +722,7 @@ EditImageDetailsViewControllerDelegate
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
-    vc.displaysCancelButton = [self isViewHorizontallyCompact];
+    vc.displaysCancelButton = [self hasHorizontallyCompactView];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
@@ -1331,7 +1331,7 @@ EditImageDetailsViewControllerDelegate
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        if (![self isViewHorizontallyCompact]) {
+        if (![self hasHorizontallyCompactView]) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
         }
@@ -1358,7 +1358,7 @@ EditImageDetailsViewControllerDelegate
     
     // Update the width to the appropriate size for the horizontal size class
     CGFloat titleButtonWidth = CompactTitleButtonWidth;
-    if (![self isViewHorizontallyCompact]) {
+    if (![self hasHorizontallyCompactView]) {
         titleButtonWidth = RegularTitleButtonWidth;
     }
     _blogPickerButton.frame = CGRectMake(_blogPickerButton.frame.origin.x, _blogPickerButton.frame.origin.y, titleButtonWidth, RegularTitleButtonHeight);
@@ -1494,6 +1494,13 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditView:YES];
 }
 
+- (BOOL)shouldPublishImmediately
+{
+    return !self.post.hasFuturePublishDate &&
+        [self.post.original.status isEqualToString:PostStatusDraft] &&
+        [self.post.status isEqualToString:PostStatusPublish];
+}
+
 /**
  *  @brief      Saves the post being edited and uploads it.
  *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
@@ -1506,7 +1513,7 @@ EditImageDetailsViewControllerDelegate
 
     [self.view endEditing:YES];
     
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
+    if ([self shouldPublishImmediately]) {
         self.post.dateCreated = [NSDate date];
     }
     
@@ -1693,6 +1700,7 @@ EditImageDetailsViewControllerDelegate
     }
     [self.mediaInProgress removeObjectForKey:uniqueMediaId];
     [self dismissAssociatedAlertControllerIfVisible:uniqueMediaId];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)setError:(NSError *)error inProgressOfMediaWithId:(NSString *)uniqueMediaId
@@ -1854,12 +1862,15 @@ EditImageDetailsViewControllerDelegate
                            }];
                        }
                               completion:^(Media *media, NSError *error){
+                                  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                   __typeof__(self) strongSelf = weakSelf;
                                   if (!strongSelf) {
                                       return;
                                   }
                                   createMediaProgress.completedUnitCount++;
                                   if (error || !media || !media.absoluteLocalURL) {
+                                      [strongSelf.editorView removeImage:mediaUniqueID];
+                                      [strongSelf.editorView removeVideo:mediaUniqueID];
                                       [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
                                       [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
                                                                                     @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
@@ -1867,6 +1878,7 @@ EditImageDetailsViewControllerDelegate
                                       return;
                                   }
                                   [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                  }];
                               }];
 }
 
@@ -1924,7 +1936,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+    if (![self.post hasRemote] && (self.post.isScheduled || [self.post.status isEqualToString:PostStatusPublish])) {
         self.post.status = PostStatusDraft;
     }
     
@@ -2006,6 +2018,47 @@ EditImageDetailsViewControllerDelegate
 {
     [self stopTrackingProgressOfMediaWithId:videoId];
     [self refreshNavigationBarButtons:NO];
+}
+
+- (void)editorViewController:(WPEditorViewController *)editorViewController imagePasted:(UIImage *)image
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+    createMediaProgress.totalUnitCount = 2;
+    
+    [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
+    [mediaService createMediaWithImage:image
+                           withMediaID:mediaUniqueID
+                       forPostObjectID:self.post.objectID
+                     thumbnailCallback:^(NSURL *thumbnailURL) {
+                         __typeof__(self) strongSelf = weakSelf;
+                         if (!strongSelf) {
+                             return;
+                         }
+                         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                             [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
+                         }];
+                     }
+                            completion:^(Media *media, NSError *error) {
+                                __typeof__(self) strongSelf = weakSelf;
+                                if (!strongSelf) {
+                                    return;
+                                }
+                                createMediaProgress.completedUnitCount++;
+                                if (error || !media || !media.absoluteLocalURL) {
+                                    [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to paste image",
+                                                                                  @"The title for an alert that says to the user the image they pasted couldn't be used on the post.")
+                                                        message:error.localizedDescription];
+                                    return;
+                                }
+                                [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                            }];
+    
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+
 }
 
 

@@ -732,6 +732,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedAccountSettings:
             eventName = @"account_settings_opened";
             break;
+        case WPAnalyticsStatOpenedAppSettings:
+            eventName = @"app_settings_opened";
+            break;
         case WPAnalyticsStatOpenedMyProfile:
             eventName = @"my_profile_opened";
             break;

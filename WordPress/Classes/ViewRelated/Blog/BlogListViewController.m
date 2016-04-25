@@ -229,10 +229,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     if ([self numSites] > 0) {
         return;
     }
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (!defaultAccount) {
+    if (![self defaultWordPressComAccount]) {
         [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
@@ -474,10 +471,14 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
     cell.imageView.layer.borderWidth = 1.5;
     [cell.imageView setImageWithSiteIcon:blog.icon];
-    cell.visibilitySwitch.on = blog.visible;
-    cell.visibilitySwitch.tag = indexPath.row;
-    [cell.visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
+    
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
+    cell.visibilitySwitch.on = blog.visible;
+    
+    __weak __typeof(self) weakSelf = self;
+    cell.visibilitySwitchToggled = ^(WPBlogTableViewCell *cell) {
+        [weakSelf setVisible:cell.visibilitySwitch.on forBlogAtIndexPath:indexPath];
+    };
 
     // Make textLabel light gray if blog is not-visible
     if (!blog.visible) {
@@ -516,7 +517,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
         if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
             visibleSwitch.on = !visibleSwitch.on;
-            [self visibilitySwitchAction:visibleSwitch];
+            [self setVisible:visibleSwitch.on forBlogAtIndexPath:indexPath];
         }
         return;
     } else {
@@ -630,11 +631,15 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [self showAddNewWordPressController];
-                                                                  }];
+    if ([self defaultWordPressComAccount]) {
+        UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction *action) {
+                                                                          [self showAddNewWordPressController];
+                                                                      }];
+        [addSiteAlertController addAction:addNewWordPressAction];
+    }
+
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {
@@ -643,7 +648,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
-    [addSiteAlertController addAction:addNewWordPressAction];
+
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
     addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
@@ -652,10 +657,16 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.addSiteAlertController = addSiteAlertController;
 }
 
+- (WPAccount *)defaultWordPressComAccount
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    return [accountService defaultWordPressComAccount];
+}
+
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-    
     CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
     [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
 }
@@ -665,12 +676,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self setEditing:NO animated:NO];
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.cancellable = YES;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    if (!defaultAccount) {
+
+    if (![self defaultWordPressComAccount]) {
         loginViewController.prefersSelfHosted = YES;
     }
     loginViewController.dismissBlock = ^(BOOL cancelled){
@@ -680,11 +687,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self presentViewController:loginNavigationController animated:YES completion:nil];
 }
 
-- (void)visibilitySwitchAction:(id)sender
+- (void)setVisible:(BOOL)visible forBlogAtIndexPath:(NSIndexPath *)indexPath
 {
-    UISwitch *switcher = (UISwitch *)sender;
-    Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
-    if(!switcher.on && [self.tableView numberOfRowsInSection:0] > HideAllMinSites) {
+    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+    if(!visible && [self.tableView numberOfRowsInSection:indexPath.section] > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -716,7 +722,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                          }
                                                                          
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         [accountService setVisibility:switcher.on forBlogs:blogs];
+                                                                         [accountService setVisibility:visible forBlogs:blogs];
                                                                          [[ContextManager sharedInstance] saveDerivedContext:context];
                                                                      }];
                                                                  }];
@@ -726,7 +732,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         }
     }
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [accountService setVisibility:switcher.on forBlogs:@[blog]];
+    [accountService setVisibility:visible forBlogs:@[blog]];
 }
 
 

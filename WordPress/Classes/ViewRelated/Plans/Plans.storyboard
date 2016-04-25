@@ -26,9 +26,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plan-premium-active" translatesAutoresizingMaskIntoConstraints="NO" id="VMO-qT-QAn">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plan-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="VMO-qT-QAn">
                                 <rect key="frame" x="270" y="150" width="60" height="60"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
+                                <rect key="frame" x="20" y="287" width="560" height="26"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpj-Yk-lXp" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="256" y="388" width="89" height="32"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -49,12 +55,6 @@
                                     <action selector="actionButtonTapped" destination="vJO-em-60i" eventType="touchUpInside" id="Ecq-jN-Ujz"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
-                                <rect key="frame" x="20" y="287" width="560" height="26"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.58997290120000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -98,183 +98,203 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hbr-M8-kwi">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNB-K6-2G7" userLabel="Header View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nps-70-EDE" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="269" y="25" width="62" height="62"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="HN0-n6-ORp">
-                                                <rect key="frame" x="8" y="26" width="584" height="168"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-premium" translatesAutoresizingMaskIntoConstraints="NO" id="f6b-b4-ZgP" userLabel="Plan Image View">
-                                                        <rect key="frame" x="262" y="0.0" width="60" height="60"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="60" id="MsP-RS-pGE"/>
-                                                            <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
-                                                        <rect key="frame" x="24" y="72" width="536" height="59"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
-                                                                <rect key="frame" x="172" y="0.0" width="192" height="17"/>
-                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
-                                                                <rect key="frame" x="108" y="22" width="321" height="16"/>
-                                                                <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
-                                                                <rect key="frame" x="213" y="42" width="111" height="17"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="242" y="143" width="100" height="25"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
-                                                        <state key="normal" title="PURCHASE">
-                                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="purchaseTapped" destination="msO-08-fqQ" eventType="touchUpInside" id="Wub-Tq-SYx"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="jAy-0N-D1K" firstAttribute="leading" secondItem="HN0-n6-ORp" secondAttribute="leading" constant="24" id="4mr-rU-aLN"/>
-                                                    <constraint firstAttribute="trailing" secondItem="jAy-0N-D1K" secondAttribute="trailing" constant="24" id="oZ4-Ve-ine"/>
-                                                </constraints>
-                                            </stackView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="HN0-n6-ORp" secondAttribute="bottom" constant="26" id="5eP-AO-KFL"/>
-                                            <constraint firstItem="HN0-n6-ORp" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="top" constant="26" id="776-sg-xlU"/>
-                                            <constraint firstItem="nps-70-EDE" firstAttribute="trailing" secondItem="f6b-b4-ZgP" secondAttribute="trailing" constant="1" id="EAa-eq-6bk"/>
-                                            <constraint firstItem="nps-70-EDE" firstAttribute="top" secondItem="f6b-b4-ZgP" secondAttribute="top" constant="-1" id="F1s-SM-4v2"/>
-                                            <constraint firstItem="nps-70-EDE" firstAttribute="bottom" secondItem="f6b-b4-ZgP" secondAttribute="bottom" constant="1" id="QCU-tk-yh6"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="HN0-n6-ORp" secondAttribute="trailing" id="Z7D-8c-oE8"/>
-                                            <constraint firstItem="nps-70-EDE" firstAttribute="leading" secondItem="f6b-b4-ZgP" secondAttribute="leading" constant="-1" id="a3m-ZB-Ixh"/>
-                                            <constraint firstItem="HN0-n6-ORp" firstAttribute="leading" secondItem="rNB-K6-2G7" secondAttribute="leadingMargin" id="j5R-Fl-do0"/>
-                                            <constraint firstAttribute="height" constant="220" id="sLG-6E-6KH"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCp-BY-dNt" userLabel="Separator">
-                                        <rect key="frame" x="0.0" y="220" width="600" height="1"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="hg2-4K-vsh"/>
-                                        </constraints>
-                                    </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="64" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
-                                        <rect key="frame" x="0.0" y="221" width="600" height="379"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WordPress.FeatureItemCell" rowHeight="80" id="zaq-fe-bpz" customClass="FeatureItemCell" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zaq-fe-bpz" id="dGV-Jz-XSf">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="751" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="64" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="rNB-K6-2G7" userLabel="Header View">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCp-BY-dNt" userLabel="Separator">
+                                            <rect key="frame" x="0.0" y="259" width="600" height="1"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="hg2-4K-vsh"/>
+                                            </constraints>
+                                        </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nps-70-EDE" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="58" y="36" width="9" height="60"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWC-Ef-Tro">
+                                            <rect key="frame" x="32" y="26" width="536" height="207"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="f6b-b4-ZgP" userLabel="Plan Image View">
+                                                    <rect key="frame" x="238" y="0.0" width="60" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="MsP-RS-pGE"/>
+                                                        <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWf-eO-DKz">
+                                                    <rect key="frame" x="218" y="170" width="100" height="37"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nuR-h6-384">
-                                                            <rect key="frame" x="72" y="16" width="505" height="48"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kr8-eT-Qom">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="505" height="18"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WW-WL-C4o">
-                                                                    <rect key="frame" x="0.0" y="22" width="505" height="26"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cDa-ym-Q7f">
-                                                            <rect key="frame" x="28" y="16" width="20" height="20"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="12" width="100" height="25"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="bGy-K6-cEV"/>
-                                                                <constraint firstAttribute="width" constant="20" id="xEa-iR-c5a"/>
+                                                                <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
                                                             </constraints>
-                                                        </imageView>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OK-zA-asu" userLabel="Separator">
-                                                            <rect key="frame" x="15" y="79" width="570" height="1"/>
-                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="1" id="Zq4-kP-be6"/>
-                                                            </constraints>
-                                                        </view>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                                            <state key="normal" title="PURCHASE">
+                                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="purchaseTapped" destination="msO-08-fqQ" eventType="touchUpInside" id="Wub-Tq-SYx"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="cDa-ym-Q7f" firstAttribute="leading" secondItem="dGV-Jz-XSf" secondAttribute="leading" constant="28" id="1JE-LD-8ha"/>
-                                                        <constraint firstItem="nuR-h6-384" firstAttribute="top" secondItem="cDa-ym-Q7f" secondAttribute="top" id="3s0-eL-XYh"/>
-                                                        <constraint firstAttribute="bottom" secondItem="nuR-h6-384" secondAttribute="bottom" constant="16" id="K4S-rE-kOI"/>
-                                                        <constraint firstItem="cDa-ym-Q7f" firstAttribute="top" secondItem="dGV-Jz-XSf" secondAttribute="top" constant="16" id="dJd-FF-J8C"/>
-                                                        <constraint firstItem="4OK-zA-asu" firstAttribute="leading" secondItem="dGV-Jz-XSf" secondAttribute="leading" constant="15" id="efH-h4-JLu"/>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="nuR-h6-384" secondAttribute="trailing" constant="15" id="f0D-XH-r63"/>
-                                                        <constraint firstAttribute="bottom" secondItem="4OK-zA-asu" secondAttribute="bottom" id="g2k-dK-Z9N"/>
-                                                        <constraint firstItem="nuR-h6-384" firstAttribute="leading" secondItem="cDa-ym-Q7f" secondAttribute="trailing" constant="24" id="pII-ha-EvF"/>
-                                                        <constraint firstAttribute="trailing" secondItem="4OK-zA-asu" secondAttribute="trailing" constant="15" id="zbb-Qq-q9y"/>
+                                                        <constraint firstAttribute="trailing" secondItem="WJf-48-mlv" secondAttribute="trailing" id="OQd-w2-8Ah"/>
+                                                        <constraint firstItem="WJf-48-mlv" firstAttribute="leading" secondItem="UWf-eO-DKz" secondAttribute="leading" id="Xvp-me-HsF"/>
+                                                        <constraint firstItem="WJf-48-mlv" firstAttribute="top" secondItem="UWf-eO-DKz" secondAttribute="topMargin" id="cJY-HJ-WD7"/>
+                                                        <constraint firstAttribute="bottom" secondItem="WJf-48-mlv" secondAttribute="bottom" id="jqm-v7-DRR"/>
                                                     </constraints>
-                                                </tableViewCellContentView>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
-                                                <connections>
-                                                    <outlet property="featureDescriptionLabel" destination="3WW-WL-C4o" id="z1e-A9-RE0"/>
-                                                    <outlet property="featureIconImageView" destination="cDa-ym-Q7f" id="dny-Xs-BQc"/>
-                                                    <outlet property="featureTitleLabel" destination="Kr8-eT-Qom" id="Pn5-r6-qF8"/>
-                                                    <outlet property="separator" destination="4OK-zA-asu" id="LVd-hM-Fsp"/>
-                                                    <outletCollection property="separatorEdgeConstraints" destination="zbb-Qq-q9y" collectionClass="NSMutableArray" id="JO1-xW-pcc"/>
-                                                    <outletCollection property="separatorEdgeConstraints" destination="efH-h4-JLu" collectionClass="NSMutableArray" id="H4W-Td-CWu"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
+                                                    <edgeInsets key="layoutMargins" top="12" left="0.0" bottom="0.0" right="0.0"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
+                                                    <rect key="frame" x="0.0" y="72" width="536" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
+                                                    <rect key="frame" x="0.0" y="152" width="536" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
+                                                    <rect key="frame" x="0.0" y="95" width="536" height="51"/>
+                                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Fju-eH-OS6" secondAttribute="trailing" id="0sp-hI-cZF"/>
+                                                <constraint firstAttribute="trailing" secondItem="edq-hC-GnQ" secondAttribute="trailing" id="7vD-SG-h1i"/>
+                                                <constraint firstItem="UWf-eO-DKz" firstAttribute="top" secondItem="Fju-eH-OS6" secondAttribute="bottom" id="JhX-rU-5Hs"/>
+                                                <constraint firstItem="isU-1g-ArF" firstAttribute="top" secondItem="f6b-b4-ZgP" secondAttribute="bottom" constant="12" id="OTa-uB-1yH"/>
+                                                <constraint firstItem="f6b-b4-ZgP" firstAttribute="centerX" secondItem="sWC-Ef-Tro" secondAttribute="centerX" id="Rjy-0E-w7v"/>
+                                                <constraint firstAttribute="trailing" secondItem="isU-1g-ArF" secondAttribute="trailing" id="WAM-zu-L2r"/>
+                                                <constraint firstItem="UWf-eO-DKz" firstAttribute="centerX" secondItem="sWC-Ef-Tro" secondAttribute="centerX" id="Wah-eM-pVY"/>
+                                                <constraint firstItem="isU-1g-ArF" firstAttribute="leading" secondItem="sWC-Ef-Tro" secondAttribute="leading" id="Ygm-aB-pot"/>
+                                                <constraint firstItem="Fju-eH-OS6" firstAttribute="firstBaseline" secondItem="edq-hC-GnQ" secondAttribute="bottom" constant="20" id="d4f-g1-ifm"/>
+                                                <constraint firstAttribute="bottom" secondItem="UWf-eO-DKz" secondAttribute="bottom" id="mZw-Q4-P9V"/>
+                                                <constraint firstItem="f6b-b4-ZgP" firstAttribute="top" secondItem="sWC-Ef-Tro" secondAttribute="top" id="oQX-9b-V4A"/>
+                                                <constraint firstItem="edq-hC-GnQ" firstAttribute="firstBaseline" secondItem="isU-1g-ArF" secondAttribute="firstBaseline" constant="20" id="r34-GW-NxA"/>
+                                                <constraint firstItem="edq-hC-GnQ" firstAttribute="leading" secondItem="sWC-Ef-Tro" secondAttribute="leading" id="sAa-9T-IyL"/>
+                                                <constraint firstItem="Fju-eH-OS6" firstAttribute="leading" secondItem="sWC-Ef-Tro" secondAttribute="leading" id="vS1-vV-Cpt"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="LCp-BY-dNt" firstAttribute="leading" secondItem="rNB-K6-2G7" secondAttribute="leading" id="7Cr-4D-XKo"/>
+                                        <constraint firstItem="LCp-BY-dNt" firstAttribute="top" secondItem="sWC-Ef-Tro" secondAttribute="bottom" constant="26" id="Evt-Kf-ahB"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="sWC-Ef-Tro" secondAttribute="trailing" constant="24" id="FFf-xx-80H"/>
+                                        <constraint firstItem="sWC-Ef-Tro" firstAttribute="leading" secondItem="rNB-K6-2G7" secondAttribute="leadingMargin" constant="24" id="HlN-DF-m0E"/>
+                                        <constraint firstAttribute="bottom" secondItem="LCp-BY-dNt" secondAttribute="bottom" id="OEQ-sb-7c2"/>
+                                        <constraint firstItem="sWC-Ef-Tro" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="top" constant="26" id="khv-LW-EYl"/>
+                                        <constraint firstAttribute="trailing" secondItem="LCp-BY-dNt" secondAttribute="trailing" id="yVc-gF-FXi"/>
+                                    </constraints>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WordPress.FeatureItemCell" rowHeight="80" id="zaq-fe-bpz" customClass="FeatureItemCell" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="310" width="600" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zaq-fe-bpz" id="dGV-Jz-XSf">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nuR-h6-384">
+                                                    <rect key="frame" x="72" y="16" width="505" height="48"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kr8-eT-Qom">
+                                                            <rect key="frame" x="0.0" y="0.0" width="505" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" placeholder="YES" id="RYI-iO-uJJ"/>
+                                                                <constraint firstAttribute="width" constant="505" placeholder="YES" id="TXd-ry-W0z"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="999" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WW-WL-C4o">
+                                                            <rect key="frame" x="0.0" y="22" width="505" height="26"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cDa-ym-Q7f">
+                                                    <rect key="frame" x="28" y="16" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="bGy-K6-cEV"/>
+                                                        <constraint firstAttribute="width" constant="20" id="xEa-iR-c5a"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OK-zA-asu" userLabel="Separator">
+                                                    <rect key="frame" x="15" y="79" width="570" height="1"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="Zq4-kP-be6"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="cDa-ym-Q7f" firstAttribute="leading" secondItem="dGV-Jz-XSf" secondAttribute="leading" constant="28" id="1JE-LD-8ha"/>
+                                                <constraint firstItem="nuR-h6-384" firstAttribute="top" secondItem="cDa-ym-Q7f" secondAttribute="top" id="3s0-eL-XYh"/>
+                                                <constraint firstAttribute="bottom" secondItem="nuR-h6-384" secondAttribute="bottom" constant="16" id="K4S-rE-kOI"/>
+                                                <constraint firstItem="cDa-ym-Q7f" firstAttribute="top" secondItem="dGV-Jz-XSf" secondAttribute="top" constant="16" id="dJd-FF-J8C"/>
+                                                <constraint firstItem="4OK-zA-asu" firstAttribute="leading" secondItem="dGV-Jz-XSf" secondAttribute="leading" constant="15" id="efH-h4-JLu"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="nuR-h6-384" secondAttribute="trailing" constant="15" id="f0D-XH-r63"/>
+                                                <constraint firstAttribute="bottom" secondItem="4OK-zA-asu" secondAttribute="bottom" id="g2k-dK-Z9N"/>
+                                                <constraint firstItem="nuR-h6-384" firstAttribute="leading" secondItem="cDa-ym-Q7f" secondAttribute="trailing" constant="24" id="pII-ha-EvF"/>
+                                                <constraint firstAttribute="trailing" secondItem="4OK-zA-asu" secondAttribute="trailing" constant="15" id="zbb-Qq-q9y"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
-                                            <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
+                                            <outlet property="featureDescriptionLabel" destination="3WW-WL-C4o" id="z1e-A9-RE0"/>
+                                            <outlet property="featureIconImageView" destination="cDa-ym-Q7f" id="dny-Xs-BQc"/>
+                                            <outlet property="featureTitleLabel" destination="Kr8-eT-Qom" id="Pn5-r6-qF8"/>
+                                            <outlet property="separator" destination="4OK-zA-asu" id="LVd-hM-Fsp"/>
+                                            <outletCollection property="separatorEdgeConstraints" destination="zbb-Qq-q9y" collectionClass="NSMutableArray" id="JO1-xW-pcc"/>
+                                            <outletCollection property="separatorEdgeConstraints" destination="efH-h4-JLu" collectionClass="NSMutableArray" id="H4W-Td-CWu"/>
                                         </connections>
-                                    </tableView>
-                                </subviews>
-                            </stackView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
+                                    <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hbr-M8-kwi" secondAttribute="trailing" id="6ip-Dn-ZPq"/>
-                            <constraint firstItem="hbr-M8-kwi" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="E83-q6-H8b"/>
-                            <constraint firstItem="pmz-SB-Zco" firstAttribute="top" secondItem="hbr-M8-kwi" secondAttribute="bottom" id="KVY-8b-0ot"/>
-                            <constraint firstItem="hbr-M8-kwi" firstAttribute="top" secondItem="fcR-is-wCN" secondAttribute="top" id="yZR-eR-iAo"/>
+                            <constraint firstItem="pmz-SB-Zco" firstAttribute="top" secondItem="DH7-9o-kVF" secondAttribute="bottom" id="5HF-la-REz"/>
+                            <constraint firstAttribute="trailing" secondItem="DH7-9o-kVF" secondAttribute="trailing" id="EN9-IN-baF"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="Ivh-az-eBH"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="top" secondItem="ass-i7-57P" secondAttribute="bottom" id="uca-g6-JxL"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dropshadowImageView" destination="nps-70-EDE" id="fyT-av-Rh8"/>
-                        <outlet property="headerInfoStackView" destination="jAy-0N-D1K" id="JdG-2j-zaW"/>
+                        <outlet property="headerView" destination="rNB-K6-2G7" id="Y7e-0Y-RBY"/>
                         <outlet property="planDescriptionLabel" destination="edq-hC-GnQ" id="8Cy-Z5-E3i"/>
                         <outlet property="planImageView" destination="f6b-b4-ZgP" id="6nb-u6-9DE"/>
                         <outlet property="planPriceLabel" destination="Fju-eH-OS6" id="pPs-DS-Dzv"/>
                         <outlet property="planTitleLabel" destination="isU-1g-ArF" id="7ON-Pb-HTu"/>
                         <outlet property="purchaseButton" destination="WJf-48-mlv" id="MaJ-C0-mTb"/>
+                        <outlet property="purchaseWrapperView" destination="UWf-eO-DKz" id="BUe-5j-sVg"/>
                         <outlet property="separator" destination="LCp-BY-dNt" id="hIU-n2-EfO"/>
                         <outlet property="tableView" destination="DH7-9o-kVF" id="rTb-5w-w0a"/>
                     </connections>
@@ -285,7 +305,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="plan-premium" width="60" height="60"/>
-        <image name="plan-premium-active" width="60" height="60"/>
+        <image name="plan-placeholder" width="60" height="60"/>
     </resources>
 </document>
