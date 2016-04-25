@@ -478,9 +478,9 @@ import WordPressShared
         if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
-            identifier = self.dynamicType.postCardTextCellIdentifier
-        } else {
             identifier = self.dynamicType.postCardImageCellIdentifier
+        } else {
+            identifier = self.dynamicType.postCardTextCellIdentifier
         }
         
         return identifier
