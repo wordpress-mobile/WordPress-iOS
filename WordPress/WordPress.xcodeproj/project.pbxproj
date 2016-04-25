@@ -44,6 +44,7 @@
 		0859DCF81CB847F700EB4069 /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCF51CB847F700EB4069 /* RemoteMenuLocation.m */; };
 		0859DCFB1CB8482200EB4069 /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */; };
 		0859DCFD1CB8488400EB4069 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */; };
+		08A2AD751CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */; };
 		08A6FD9C1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */; };
 		08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
 		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
@@ -885,6 +886,7 @@
 		0859DCF91CB8482200EB4069 /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
 		0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
 		0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
+		08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		08A6FD9A1C5960AB00AC33E4 /* RemoteTaxonomyPaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteTaxonomyPaging.h; path = "Remote Objects/RemoteTaxonomyPaging.h"; sourceTree = "<group>"; };
 		08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteTaxonomyPaging.m; path = "Remote Objects/RemoteTaxonomyPaging.m"; sourceTree = "<group>"; };
 		08AAD69D1CBEA47D002B2418 /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
@@ -2517,6 +2519,7 @@
 				0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
+				08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 			);
 			name = "Remote Services";
@@ -5663,6 +5666,7 @@
 				E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* PhotonImageURLHelperTest.m in Sources */,
+				08A2AD751CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
