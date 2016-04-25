@@ -311,6 +311,27 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
+- (void)customizeAppearance
+{
+    [super customizeAppearance];
+    [WPFontManager merriweatherBoldFontOfSize:16.0];
+    [WPFontManager merriweatherBoldItalicFontOfSize:16.0];
+    [WPFontManager merriweatherItalicFontOfSize:16.0];
+    [WPFontManager merriweatherLightFontOfSize:16.0];
+    [WPFontManager merriweatherRegularFontOfSize:16.0];
+
+    self.placeholderColor = [WPStyleGuide grey];
+    self.editorView.sourceViewTitleField.font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    self.editorView.sourceContentDividerView.backgroundColor = [WPStyleGuide greyLighten30];
+    [self.toolbarView setBorderColor:[WPStyleGuide greyLighten10]];
+    [self.toolbarView setItemTintColor: [WPStyleGuide greyLighten10]];
+    [self.toolbarView setSelectedItemTintColor: [WPStyleGuide baseDarkerBlue]];
+    [self.toolbarView setDisabledItemTintColor:[UIColor colorWithRed:0.78 green:0.84 blue:0.88 alpha:0.5]];
+    // Explicit design decision to use non-standard colors. See:
+    // https://github.com/wordpress-mobile/WordPress-Editor-iOS/issues/657#issuecomment-113651034
+    [self.toolbarView setBackgroundColor: [UIColor colorWithRed:0xF9/255.0 green:0xFB/255.0 blue:0xFC/255.0 alpha:1]];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

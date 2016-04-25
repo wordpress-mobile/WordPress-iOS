@@ -159,7 +159,6 @@ PODS:
   - WordPress-iOS-Editor (1.5):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
   - WordPress-iOS-Shared (0.5.6):
     - CocoaLumberjack (~> 2.2.0)
@@ -220,7 +219,8 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (= 1.5)
+  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
+    commit `c2d1abfc7f288953c5aadeb47a7a8523be8e4345`)
   - WordPress-iOS-Shared (= 0.5.6)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.9)
@@ -242,6 +242,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: c2d1abfc7f288953c5aadeb47a7a8523be8e4345
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -253,6 +256,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: c2d1abfc7f288953c5aadeb47a7a8523be8e4345
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -293,7 +299,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: dcb5a4bb666c64a4f42b01915f375f5818970951
+  WordPress-iOS-Editor: a59ccf473040bbad9f74db3cd22fa8e19f6d052b
   WordPress-iOS-Shared: ce4b6e02763532e1737bf2bc7deed78d64ba4934
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: 3fccb433506f136cc04b735e6ab2efae9edfae7e
