@@ -1,9 +1,9 @@
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 
 #define WPCOM_API_CLIENT_ID @""
 #define WPCOM_API_CLIENT_SECRET @""
 
-@implementation WordPressComApiCredentials
+@implementation ApiCredentials
 
 + (NSString *)client {
     return WPCOM_API_CLIENT_ID;
