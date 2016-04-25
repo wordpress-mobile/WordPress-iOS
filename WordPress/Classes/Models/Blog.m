@@ -419,6 +419,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
              */
             return [self accountIsDefaultAccount];
         case BlogFeaturePeople:
+            return [self restApi] != nil && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
