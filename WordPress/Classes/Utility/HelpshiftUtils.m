@@ -1,6 +1,6 @@
 #import "HelpShiftUtils.h"
 #import <Mixpanel/MPTweakInline.h>
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
 
@@ -34,7 +34,7 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 {
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [[HelpshiftSupport sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
-    [HelpshiftCore installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [HelpshiftCore installForApiKey:[ApiCredentials helpshiftAPIKey] domainName:[ApiCredentials helpshiftDomainName] appID:[ApiCredentials helpshiftAppId]];
 
     // We want to make sure Mixpanel updates the remote variable before we check for the flag
     [[HelpshiftUtils sharedInstance] performSelector:@selector(checkIfHelpshiftShouldBeEnabled)
