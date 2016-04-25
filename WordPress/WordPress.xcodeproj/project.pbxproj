@@ -4435,7 +4435,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				855804B81A5C5EED008D5A77 /* Generate Build Icon */,
-				E1756E61169493AD00D9EC00 /* Generate WP.com credentials */,
+				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */,
@@ -5006,7 +5006,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E1756E61169493AD00D9EC00 /* Generate WP.com credentials */ = {
+		E1756E61169493AD00D9EC00 /* Generate API credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5014,7 +5014,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Credentials/gencredentials.rb",
 			);
-			name = "Generate WP.com credentials";
+			name = "Generate API credentials";
 			outputPaths = (
 				/tmp/WordPress.build/ApiCredentials.m,
 			);
