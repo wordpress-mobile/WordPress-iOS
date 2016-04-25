@@ -23,9 +23,9 @@ import WordPressShared
     static private let postCardRestoreCellRowHeight = CGFloat(54.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
     
-    @IBOutlet private var textCellForLayout : PostCardTableViewCell!
-    @IBOutlet private var imageCellForLayout : PostCardTableViewCell!
-    @IBOutlet private weak var authorFilterSegmentedControl : UISegmentedControl!
+    @IBOutlet private var textCellForLayout: PostCardTableViewCell!
+    @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
+    @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
     
     // MARK: Initializers & deinitializers
     
@@ -222,7 +222,7 @@ import WordPressShared
         // Diego Rey Mendez - 2016/04/18
         //
         let filterType = filter?.filterType ?? .Draft
-        var message : String
+        var message: String
         
         switch filterType {
         case .Draft:
@@ -257,7 +257,7 @@ import WordPressShared
         // Diego Rey Mendez - 2016/04/18
         //
         let filterType = filter?.filterType ?? .Draft
-        var title : String
+        var title: String
         
         switch filterType {
         case .Scheduled:
@@ -406,7 +406,7 @@ import WordPressShared
             return self.dynamicType.postCardRestoreCellRowHeight
         }
         
-        var cell : PostCardTableViewCell
+        var cell: PostCardTableViewCell
         
         if post.pathForDisplayImage?.characters.count > 0 {
             cell = textCellForLayout
@@ -473,7 +473,7 @@ import WordPressShared
     }
     
     private func cellIdentifierForPost(post: Post) -> String {
-        var identifier : String
+        var identifier: String
         
         if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
