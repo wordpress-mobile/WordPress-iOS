@@ -4,6 +4,8 @@
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString * const TaxonomyRESTCategoryIdentifier = @"categories";
 static NSString * const TaxonomyRESTTagIdentifier = @"tags";
 
@@ -23,8 +25,8 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 #pragma mark - categories
 
 - (void)createCategory:(RemotePostCategory *)category
-               success:(void (^)(RemotePostCategory *))success
-               failure:(void (^)(NSError *))failure
+               success:(nullable void (^)(RemotePostCategory *))success
+               failure:(nullable void (^)(NSError *))failure
 {
     NSParameterAssert(category.name.length > 0);
     
@@ -45,83 +47,79 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 }
 
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
-                         failure:(void (^)(NSError *))failure
+                         failure:(nullable void (^)(NSError *))failure
 {
-    [self getCategoriesWithPaging:nil
-                          success:success
-                          failure:failure];
+    [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
+                   parameters:nil
+                      success:^(NSDictionary *responseObject) {
+                          success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
+                      } failure:failure];
 }
 
 - (void)getCategoriesWithPaging:(RemoteTaxonomyPaging *)paging
                         success:(void (^)(NSArray <RemotePostCategory *> *categories))success
-                        failure:(void (^)(NSError *error))failure
+                        failure:(nullable void (^)(NSError *error))failure
 {
     [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
                    parameters:[self parametersForPaging:paging]
                       success:^(NSDictionary *responseObject) {
-                          if (success) {
-                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
-                          }
+                          success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
                       } failure:failure];
 }
 
 - (void)searchCategoriesWithName:(NSString *)nameQuery
                    success:(void (^)(NSArray <RemotePostCategory *> *tags))success
-                   failure:(void (^)(NSError *error))failure
+                   failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
     [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
                    parameters:@{TaxonomyRESTSearchParameter: nameQuery}
                       success:^(NSDictionary *responseObject) {
-                          if (success) {
-                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
-                          }
+                          success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
                       } failure:failure];
 }
 
 #pragma mark - tags
 
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
-                   failure:(void (^)(NSError *error))failure
+                   failure:(nullable void (^)(NSError *error))failure
 {
-    [self getTagsWithPaging:nil
-                    success:success
-                    failure:failure];
+    [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
+                   parameters:nil
+                      success:^(NSDictionary *responseObject) {
+                          success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
+                      } failure:failure];
 }
 
 - (void)getTagsWithPaging:(RemoteTaxonomyPaging *)paging
                   success:(void (^)(NSArray <RemotePostTag *> *tags))success
-                  failure:(void (^)(NSError *error))failure
+                  failure:(nullable void (^)(NSError *error))failure
 {
     [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
                    parameters:[self parametersForPaging:paging]
                       success:^(NSDictionary *responseObject) {
-                          if (success) {
-                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
-                          }
+                          success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
                       } failure:failure];
 }
 
 - (void)searchTagsWithName:(NSString *)nameQuery
                    success:(void (^)(NSArray <RemotePostTag *> *tags))success
-                   failure:(void (^)(NSError *error))failure
+                   failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
     [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
                    parameters:@{TaxonomyRESTSearchParameter: nameQuery}
                       success:^(NSDictionary *responseObject) {
-                          if (success) {
-                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
-                          }
+                          success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
                       } failure:failure];
 }
 
 #pragma mark - default methods
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier
-                    parameters:(NSDictionary *)parameters
+                    parameters:(nullable NSDictionary *)parameters
                        success:(void (^)(NSDictionary *taxonomyDictionary))success
-                       failure:(void (^)(NSError *error))failure
+                       failure:(nullable void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
@@ -129,13 +127,12 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
     [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
                if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                   responseObject = nil;
+                   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                   return;
                }
-               if (success) {
-                   success(responseObject);
-               }
+               success(responseObject);
            } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
                if (failure) {
                    failure(error);
@@ -144,9 +141,9 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 }
 
 - (void)getTaxonomyWithType:(NSString *)typeIdentifier
-                 parameters:(id)parameters
+                 parameters:(nullable NSDictionary *)parameters
                     success:(void (^)(NSDictionary *responseObject))success
-                    failure:(void (^)(NSError *error))failure
+                    failure:(nullable void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@?context=edit", self.siteID, typeIdentifier];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -155,13 +152,12 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
     [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-              NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
               if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                  responseObject = nil;
+                  NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
+                  [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                  return;
               }
-              if (success) {
-                  success(responseObject);
-              }
+              success(responseObject);
           } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
               if (failure) {
                   failure(error);
@@ -180,10 +176,6 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
 {
-    if (!jsonCategory) {
-        return nil;
-    }
-    
     RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [jsonCategory numberForKey:TaxonomyRESTIDParameter];
     category.name = [jsonCategory stringForKey:TaxonomyRESTNameParameter];
@@ -200,10 +192,6 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 
 - (RemotePostTag *)remoteTagWithJSONDictionary:(NSDictionary *)jsonTag
 {
-    if (!jsonTag) {
-        return nil;
-    }
-    
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [jsonTag numberForKey:TaxonomyRESTIDParameter];
     tag.name = [jsonTag stringForKey:TaxonomyRESTNameParameter];
@@ -213,37 +201,40 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 
 - (NSDictionary *)parametersForPaging:(RemoteTaxonomyPaging *)paging
 {
-    if (!paging) {
-        return nil;
-    }
-    
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
     if (paging.number) {
         [dictionary setObject:paging.number forKey:TaxonomyRESTNumberParameter];
     }
-    
     if (paging.offset) {
         [dictionary setObject:paging.offset forKey:TaxonomyRESTOffsetParameter];
     }
-    
     if (paging.page) {
         [dictionary setObject:paging.page forKey:TaxonomyRESTPageParameter];
     }
-    
     if (paging.order == RemoteTaxonomyPagingOrderAscending) {
         [dictionary setObject:@"ASC" forKey:TaxonomyRESTOrderParameter];
     } else if (paging.order == RemoteTaxonomyPagingOrderDescending) {
         [dictionary setObject:@"DESC" forKey:TaxonomyRESTOrderParameter];
     }
-    
     if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByName) {
         [dictionary setObject:@"name" forKey:TaxonomyRESTOrderByParameter];
     } else if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByCount) {
         [dictionary setObject:@"count" forKey:TaxonomyRESTOrderByParameter];
     }
-    
     return dictionary.count ? dictionary : nil;
 }
 
+- (void)handleResponseErrorWithMessage:(NSString *)message url:(NSString *)urlStr failure:(nullable void(^)(NSError *error))failure
+{
+    DDLogError(@"%@ - URL: %@", message, urlStr);
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                         code:NSURLErrorBadServerResponse
+                                     userInfo:@{NSLocalizedDescriptionKey: message}];
+    if (failure) {
+        failure(error);
+    }
+}
+
 @end
+
+NS_ASSUME_NONNULL_END
