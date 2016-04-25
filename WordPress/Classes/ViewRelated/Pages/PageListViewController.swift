@@ -239,10 +239,7 @@ import WordPressComAnalytics
             let basePredicate = NSPredicate(format: "blog = %@ && original = nil", blog)
             predicates.append(basePredicate)
         }
-        
-        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync())
-        predicates.append(typePredicate)
-        
+
         let searchText = currentSearchTerm()
         var filterPredicate = currentPostListFilter()?.predicateForFetchRequest
         
