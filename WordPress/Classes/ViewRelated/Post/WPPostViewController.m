@@ -8,7 +8,6 @@
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WPMediaPicker/WPMediaPicker.h>
@@ -39,7 +38,6 @@
 #import "WPTooltip.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
-#import "WPDeviceIdentification.h"
 #import "WPAppAnalytics.h"
 
 @import Gridicons;
