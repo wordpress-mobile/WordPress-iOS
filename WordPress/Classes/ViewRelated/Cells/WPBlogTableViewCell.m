@@ -16,9 +16,19 @@
 {
     if (!self.visibilitySwitch) {
         UISwitch *visibilitySwitch = [UISwitch new];
-
+        [visibilitySwitch addTarget:self
+                             action:@selector(visibilitySwitchTapped)
+                   forControlEvents:UIControlEventValueChanged];
+        
         self.editingAccessoryView = visibilitySwitch;
         self.visibilitySwitch = visibilitySwitch;
+    }
+}
+
+- (void)visibilitySwitchTapped
+{
+    if (self.visibilitySwitchToggled) {
+        self.visibilitySwitchToggled(self);
     }
 }
 
