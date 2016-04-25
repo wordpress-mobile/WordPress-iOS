@@ -12,6 +12,8 @@ struct Plan {
     let title: String
     let fullTitle: String
     let tagline: String
+    let iconUrl: NSURL
+    let activeIconUrl: NSURL
     let productIdentifier: String?
     let featureGroups: [PlanFeatureGroupPlaceholder]
 }
@@ -45,40 +47,12 @@ func < (lhs: Plan, rhs: Plan) -> Bool {
 // Obj-C bridge functions
 final class PlansBridge: NSObject {
     static func titleForPlan(withID planID: PlanID) -> String? {
-        return defaultPlans
-            .withID(planID)?
-            .title
+        // @koke 2016-04-21
+        // No quick way to do this without hardcoded plans
+        // We should get and cache the active plan title 
+        return nil
     }
 }
-
-
-// FIXME: not too happy with the global constant, but hardcoded plans are going away soon
-let defaultPlans: [Plan] = [
-    Plan(
-        id: 1,
-        title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
-        fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
-        tagline: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
-        productIdentifier: nil,
-        featureGroups: []
-    ),
-    Plan(
-        id: 1003,
-        title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
-        fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
-        tagline: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
-        productIdentifier: "com.wordpress.test.premium.subscription.1year",
-        featureGroups: []
-    ),
-    Plan(
-        id: 1008,
-        title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
-        fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
-        tagline: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
-        productIdentifier: "com.wordpress.test.business.subscription.1year",
-        featureGroups: []
-    ),
-]
 
 protocol Identifiable {
     var id: Int { get }
@@ -88,44 +62,6 @@ extension Plan: Identifiable {}
 extension Array where Element: Identifiable {
     func withID(searchID: Int) -> Element? {
         return filter({ $0.id == searchID }).first
-    }
-}
-
-// Icons
-extension Plan {
-    // Temporary hardcoded map
-    // We need to store plan image URLs and use those
-    // https://github.com/wordpress-mobile/WordPress-iOS/issues/5099
-    var slug: String {
-        switch id {
-        case 1:
-            return "free"
-        case 1003:
-            return "premium"
-        case 1008:
-            return "business"
-        default:
-            return ""
-        }
-    }
-    /// The name of the image that represents the plan when it's not the current plan
-    var imageName: String {
-        return "plan-\(slug)"
-    }
-
-    /// The name of the image that represents the plan when it's the current plan
-    var activeImageName: String {
-        return "plan-\(slug)-active"
-    }
-
-    /// An image that represents the plan when it's not the current plan
-    var image: UIImage {
-        return UIImage(named: imageName)!
-    }
-
-    /// An image that represents the plan when it's the current plan
-    var activeImage: UIImage {
-        return UIImage(named: activeImageName)!
     }
 }
 

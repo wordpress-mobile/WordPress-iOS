@@ -71,7 +71,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     // Do not return the Multifactor Code, unless the field is actually onscreen!
     NSString *multifactorCode = self.isMultifactorEnabled ? self.multifactorCode : nil;
-    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.baseSiteUrl multifactorCode:multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
 }
 
 - (void)signInButtonAction
@@ -497,10 +497,6 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self dismissLoginMessage];
     [self.presenter updateAutoFillLoginCredentialsIfNeeded:username password:self.password];
     
-    if (self.shouldReauthenticateDefaultAccount) {
-        [self.accountServiceFacade removeLegacyAccount:username];
-    }
-    
     [self createWordPressComAccountForUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
 }
 
@@ -520,6 +516,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
     WPAccount *account = [self.accountServiceFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+    [self.accountServiceFacade setDefaultWordPressComAccount:account];
+    
     [self.blogSyncFacade syncBlogsForAccount:account success:^{
         // once blogs for the accounts are synced, we want to update account details for it
         [self.accountServiceFacade updateUserDetailsForAccount:account success:^{
@@ -609,7 +607,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
+        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/#faq-ios-3"] username:nil password:nil];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];

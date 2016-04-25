@@ -21,17 +21,25 @@ extension ImmuTablePresenter where Self: UIViewController {
     func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
-            let navigationController = UINavigationController(rootViewController: controllerGenerator($0))
-            navigationController.modalPresentationStyle = .FormSheet
-            self.presentViewController(navigationController, animated: true, completion: nil)
+            let controller = controllerGenerator($0)
+            self.presentViewController(controller, animated: true, completion: nil)
         }
+    }
+}
+
+extension ImmuTablePresenter {
+    func prompt<T: UIViewController where T: Confirmable>(controllerGenerator: ImmuTableRow -> T) -> ImmuTableAction {
+        return present({
+            let controller = controllerGenerator($0)
+            return PromptViewController(controller)
+        })
     }
 }
 
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var errorMessage: Observable<String?> { get }
+    var noticeMessage: Observable<String?> { get }
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
 }
 
@@ -47,7 +55,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var visibleSubject = PublishSubject<Bool>()
 
-    private var errorAnimator: ErrorAnimator!
+    private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
 
@@ -61,17 +69,15 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         title = controller.title
         registerRows(controller.immuTableRows)
         controller.tableViewModelWithPresenter(self)
-            .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
                 self?.handler.viewModel = $0
                 })
             .addDisposableTo(bag)
-        controller.errorMessage
-            .pausable(visible)
+        controller.noticeMessage
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
-                self?.errorMessage = $0
+                self?.noticeMessage = $0
                 })
             .addDisposableTo(bag)
     }
@@ -83,7 +89,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        errorAnimator = ErrorAnimator(target: view)
+        noticeAnimator = NoticeAnimator(target: view)
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -91,7 +97,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        errorAnimator.layout()
+        noticeAnimator.layout()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -112,9 +118,9 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    var errorMessage: String? = nil {
+    var noticeMessage: String? = nil {
         didSet {
-            errorAnimator.animateErrorMessage(errorMessage)
+            noticeAnimator.animateMessage(noticeMessage)
         }
     }
 

@@ -902,7 +902,7 @@ describe(@"displayRemoteError", ^{
     NSString *sharedExamplesForAButtonThatOpensUpTheFAQ = @"a button that opens up the FAQ";
     sharedExamplesFor(sharedExamplesForAButtonThatOpensUpTheFAQ, ^(NSDictionary *data) {
         it(@"should open the FAQ on the website", ^{
-            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
+            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/#faq-ios-3"] username:nil password:nil];
             
             [viewModel displayRemoteError:error];
             
@@ -1598,28 +1598,6 @@ describe(@"LoginFacadeDelegate methods", ^{
             [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
             
             [mockViewModelPresenter verify];
-        });
-        
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/3401
-        context(@"the removal of the old legacy account", ^{
-            
-            it(@"should occur if shouldReauthenticateDefaultAccount is true", ^{
-                viewModel.shouldReauthenticateDefaultAccount = YES;
-                [[mockAccountServiceFacade expect] removeLegacyAccount:username];
-                
-                [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
-                
-                [mockAccountServiceFacade verify];
-            });
-            
-            it(@"should not occur if shouldReauthenticateDefaultAccount is false", ^{
-                viewModel.shouldReauthenticateDefaultAccount = NO;
-                [[mockAccountServiceFacade reject] removeLegacyAccount:username];
-                
-                [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
-                
-                [mockAccountServiceFacade verify];
-            });
         });
         
         context(@"the syncing of the newly added blogs", ^{

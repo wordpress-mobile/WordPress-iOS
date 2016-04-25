@@ -3,14 +3,12 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount?) -> ImmuTableViewController {
-    let service = account.map({ account in
-        return AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
-    })
+func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController {    
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
     return AccountSettingsViewController(service: service)
 }
 
-func AccountSettingsViewController(service service: AccountSettingsService?) -> ImmuTableViewController {
+func AccountSettingsViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
@@ -22,141 +20,112 @@ private struct AccountSettingsController: SettingsController {
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self,
-            MediaSizeRow.self,
-            SwitchRow.self]
+            EditableTextRow.self
+        ]
     }
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService?
+    let service: AccountSettingsService
 
-    init(service: AccountSettingsService?) {
+    init(service: AccountSettingsService) {
         self.service = service
     }
     
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        if let service = self.service {
-            return service.settings.map({ settings in
-                self.mapViewModel(settings, service: service, presenter: presenter)
-            })
-        } else {
-            return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
+        return service.settings.map({ settings in
+            self.mapViewModel(settings, service: self.service, presenter: presenter)
+        })
+    }
+
+    var refreshStatusMessage: Observable<String?> {
+        return service.refresh
+            // replace errors with .Failed status
+            .catchErrorJustReturn(.Failed)
+            // convert status to string
+            .map({ $0.errorMessage })
+    }
+
+    var emailNoticeMessage: Observable<String?> {
+        return service.settings.map {
+            return self.noticeForAccountSettings($0)
+        }
+    }
+    
+    var noticeMessage: Observable<String?> {
+        return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
+            return refresh ?? email
         }
     }
 
-    var errorMessage: Observable<String?> {
-        if let service = self.service {
-            return service.refresh
-                // replace errors with .Failed status
-                .catchErrorJustReturn(.Failed)
-                // convert status to string
-                .map({ $0.errorMessage })
-        } else {
-            return Observable.just(nil)
-        }
-    }
-
+    
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService?, presenter: ImmuTablePresenter) -> ImmuTable {
-        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let uploadSize = MediaSizeRow(
-            title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
-            value: Int(MediaSettings().maxImageSizeSetting),
-            onChange: mediaSizeChanged())
-
-        let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
-            value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
+    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
+        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
+        
+        let username = TextRow(
+            title: NSLocalizedString("Username", comment: "Account Settings Username label"),
+            value: settings?.username ?? "")
+        
+        let email = EditableTextRow(
+            title: NSLocalizedString("Email", comment: "Account Settings Email label"),
+            value: settings?.emailForDisplay ?? "",
+            action: presenter.prompt(editEmailAddress(settings, service: service))
         )
-
-        let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
-        let visualEditor = SwitchRow(
-            title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
-            value: WPPostViewController.isNewEditorEnabled(),
-            onChange: visualEditorChanged()
+        
+        let primarySite = EditableTextRow(
+            title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
+            value: primarySiteName ?? "",
+            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
         )
-
-        if Feature.enabled(.AccountSettings), let service = service {
-            let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
-            
-            let username = TextRow(
-                title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-                value: settings?.username ?? "")
-            
-            let email = EditableTextRow(
-                title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "",
-                action: presenter.present(editEmailAddress(service))
-            )
-            
-            let primarySite = EditableTextRow(
-                title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-                value: primarySiteName ?? "",
-                action: presenter.present(editPrimarySite(settings, service: service))
-            )
-            
-            let webAddress = EditableTextRow(
-                title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
-                value: settings?.webAddress ?? "",
-                action: presenter.present(editWebAddress(service))
-            )
-            
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: [
-                        username,
-                        email,
-                        primarySite,
-                        webAddress
-                    ]),
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize,
-                        mediaRemoveLocation
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
+        
+        let webAddress = EditableTextRow(
+            title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
+            value: settings?.webAddress ?? "",
+            action: presenter.prompt(editWebAddress(service))
+        )
+        
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: [
+                    username,
+                    email,
+                    primarySite,
+                    webAddress
                 ])
-        } else {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
-                ])
-        }
+            ])
     }
     
     
     // MARK: - Actions
-
-    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-        return editEmailAddress(AccountSettingsChange.Email, hint: hint, displaysNavigationButtons: true, service: service)
+    
+    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+            let settingsViewController =  self.controllerForEditableText(editableRow,
+                                                                         changeType: AccountSettingsChange.Email,
+                                                                         hint: hint,
+                                                                         service: service)
+            settingsViewController.mode = .Email
+            settingsViewController.notice = self.noticeForAccountSettings(settings)
+            settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
+            settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
+            settingsViewController.onActionPress = {
+                let change = AccountSettingsChange.EmailPendingChange(false)
+                service.saveChange(change)
+            }
+            
+            return settingsViewController
+        }
     }
     
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+    func editWebAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
         let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
-        return editText(AccountSettingsChange.WebAddress, hint: hint, displaysNavigationButtons: true, service: service)
+        return editText(AccountSettingsChange.WebAddress, hint: hint, service: service)
     }
     
     func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
@@ -179,31 +148,16 @@ private struct AccountSettingsController: SettingsController {
             return selectorViewController
         }
     }
-
-    func mediaSizeChanged() -> Int -> Void {
-        return {
-            value in
-            MediaSettings().maxImageSizeSetting = value
+    
+    
+    // MARK: - Private Helpers
+    
+    private func noticeForAccountSettings(settings: AccountSettings?) -> String? {
+        guard let pendingAddress = settings?.emailPendingAddress where settings?.emailPendingChange == true else {
+            return nil
         }
-    }
-
-    func mediaRemoveLocationChanged() -> Bool -> Void {
-        return {
-            value in
-            MediaSettings().removeLocationSetting = value
-        }
-    }
-
-    func visualEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
-            if enabled {
-                WPAnalytics.track(.EditorToggledOn)
-            } else {
-                WPAnalytics.track(.EditorToggledOff)
-            }
-            WPPostViewController.setNewEditorEnabled(enabled)
-        }
+        
+        return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
+                                 comment: "Displayed when there's a pending Email Change")
     }
 }
-

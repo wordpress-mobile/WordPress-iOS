@@ -29,21 +29,21 @@ class PlanListViewControllerTest: XCTestCase {
     // MARK: - PlanListViewModel tests
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel.Ready((siteID: 123, activePlan: defaultPlans[1], availablePlans: plansWithPrices))
+        let model = PlanListViewModel.Ready((siteID: 123, activePlan: TestPlans.premium.plan, availablePlans: plansWithPrices))
         let tableViewModel = model.tableViewModelWithPresenter(nil, planService: nil)
         let freeRow = tableViewModel.planRowAtIndex(0)
         let premiumRow = tableViewModel.planRowAtIndex(1)
         let businessRow = tableViewModel.planRowAtIndex(2)
 
-        expect(freeRow.icon).to(equal(defaultPlans[0].image))
-        expect(premiumRow.icon).to(equal(defaultPlans[1].activeImage))
-        expect(businessRow.icon).to(equal(defaultPlans[2].image))
+        expect(freeRow.iconUrl).to(equal(TestPlans.free.plan.iconUrl))
+        expect(premiumRow.iconUrl).to(equal(TestPlans.premium.plan.activeIconUrl))
+        expect(businessRow.iconUrl).to(equal(TestPlans.business.plan.iconUrl))
     }
 
     let plansWithPrices: [PricedPlan] = [
-        (defaultPlans[0], ""),
-        (defaultPlans[1], "$99.99"),
-        (defaultPlans[2], "$299.99")
+        (TestPlans.free.plan, ""),
+        (TestPlans.premium.plan, "$99.99"),
+        (TestPlans.business.plan, "$299.99")
     ]
 }
 
