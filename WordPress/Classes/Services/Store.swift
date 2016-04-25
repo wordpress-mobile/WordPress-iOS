@@ -24,9 +24,37 @@ struct StoreKitCoordinator {
     static let instance = StoreCoordinator(store: StoreKitStore())
 }
 
+typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
+
 class StoreCoordinator<S: Store> {
     let store: S
-    var pendingPayment: (plan: Plan, siteID: Int)? = nil
+    
+    var pendingPayment: PendingPayment? {
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            
+            if let pending = newValue {
+                defaults.setInteger(pending.planID, forKey: UserDefaultsKeys.pendingPaymentPlanID)
+                defaults.setObject(pending.productID, forKey: UserDefaultsKeys.pendingPaymentProductID)
+                defaults.setInteger(pending.siteID, forKey:UserDefaultsKeys.pendingPaymentSiteID)
+            } else {
+                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentPlanID)
+                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentProductID)
+                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentSiteID)
+            }
+        }
+        
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let planID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentPlanID)
+            let productID = defaults.stringForKey(UserDefaultsKeys.pendingPaymentProductID)
+            let siteID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentSiteID)
+            
+            guard let product = productID where planID != 0 && siteID != 0 else { return nil }
+            
+            return (planID, product, siteID)
+        }
+    }
 
     init(store: S) {
         self.store = store
@@ -36,7 +64,7 @@ class StoreCoordinator<S: Store> {
         precondition(plan.productIdentifier == product.productIdentifier)
         // TODO: fail better if there's a pending payment
         precondition(pendingPayment == nil)
-        pendingPayment = (plan, siteID)
+        pendingPayment = (plan.id, product.productIdentifier, siteID)
         store.requestPayment(product)
     }
 
@@ -46,15 +74,16 @@ class StoreCoordinator<S: Store> {
             // Ignore other states for now
             if transaction.transactionState == .Failed {
                 DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                finishTransaction(transaction)
             } else {
                 DDLogSwift.logInfo("[Store] Ignoring transaction \(transaction)")
             }
             return
         }
-        assert(transaction.payment.productIdentifier == pendingPayment?.0.productIdentifier)
+        
+        assert(transaction.payment.productIdentifier == pendingPayment?.productID)
         guard let siteID = pendingPayment?.siteID,
-            let plan = pendingPayment?.plan,
+            let planID = pendingPayment?.planID,
             let service = PlanService(siteID: siteID, store: StoreKitStore()),
             let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
             let receipt = NSData(contentsOfURL: receiptURL)
@@ -63,12 +92,20 @@ class StoreCoordinator<S: Store> {
                 return
         }
         DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
-        service.verifyPurchase(siteID, plan: plan, receipt: receipt, completion: { _ in
+        service.verifyPurchase(siteID, planID: planID, receipt: receipt, completion: { [weak self] t_ in
             DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
-            SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            self?.finishTransaction(transaction)
         })
     }
 
+    private func finishTransaction(transaction: SKPaymentTransaction) {
+        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        
+        if transaction.payment.productIdentifier == pendingPayment?.productID {
+            pendingPayment = nil
+        }
+    }
+    
     func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
         guard store.canMakePayments
             && plan.isPaidPlan
@@ -78,7 +115,7 @@ class StoreCoordinator<S: Store> {
             return .unavailable
         }
         if let pendingPayment = pendingPayment {
-            if pendingPayment == (plan, siteID) {
+            if pendingPayment.planID == plan.id && pendingPayment.siteID == siteID {
                 return .pending
             } else {
                 return .unavailable
@@ -87,6 +124,12 @@ class StoreCoordinator<S: Store> {
             return .available
         }
     }
+}
+
+private struct UserDefaultsKeys {
+    static let pendingPaymentPlanID    = "PendingPaymentPlanIDUserDefaultsKey"
+    static let pendingPaymentProductID = "PendingPaymentProductIDUserDefaultsKey"
+    static let pendingPaymentSiteID    = "PendingPaymentSiteIDUserDefaultsKey"
 }
 
 protocol Store {
