@@ -488,7 +488,7 @@ import WordPressShared
     
     // MARK: - Post Actions
     
-    private func createPost() {
+    func createPost() {
         if WPPostViewController.isNewEditorEnabled() {
             createPostInNewEditor()
         } else {
@@ -568,7 +568,7 @@ import WordPressShared
         }
     }
     
-    private func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    func promptThatPostRestoredToFilter(filter: PostListFilter) {
         var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
         
         switch filter.filterType {
