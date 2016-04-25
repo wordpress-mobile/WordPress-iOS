@@ -70,14 +70,14 @@ import WordPressComAnalytics
     
     // MARK: - Configuration
     
-    private func configureCellsForLayout() {
+    func configureCellsForLayout() {
         
         let bundle = NSBundle.mainBundle()
         
         cellForLayout = bundle.loadNibNamed(self.dynamicType.pageCellNibName, owner: nil, options: nil)[0] as! PageListTableViewCell
     }
     
-    private func configureTableView() {
+    func configureTableView() {
         
         guard let tableView = tableView else {
             return
@@ -97,7 +97,7 @@ import WordPressComAnalytics
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
     }
     
-    private func noResultsTitleText() -> String {
+    func noResultsTitleText() -> String {
         if syncHelper?.isSyncing == true {
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
@@ -146,7 +146,7 @@ import WordPressComAnalytics
                 .Published: published]
     }
     
-    private func noResultsMessageText() -> String {
+    func noResultsMessageText() -> String {
         if syncHelper?.isSyncing == true || isSearching() {
             return ""
         }
@@ -182,7 +182,7 @@ import WordPressComAnalytics
     }
     
     
-    private func noResultsButtonText() -> String? {
+    func noResultsButtonText() -> String? {
         if syncHelper?.isSyncing == true || isSearching() {
             return nil
         }
@@ -211,7 +211,7 @@ import WordPressComAnalytics
         return title
     }
     
-    private func configureAuthorFilter() {
+    func configureAuthorFilter() {
         // Noop
     }
     
@@ -227,12 +227,12 @@ import WordPressComAnalytics
     
     // MARK: - TableView Handler Delegate Methods
     
-    private func entityName() -> String {
+    func entityName() -> String {
         return String(Page.self)
     }
     
     
-    private func predicateForFetchRequest() -> NSPredicate {
+    func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
         
         if let blog = blog {
@@ -313,7 +313,7 @@ import WordPressComAnalytics
         return CGFloat.min
     }
     
-    private func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         let sectionInfo = tableViewHandler?.resultsController.sections?[section]
         let nibName = NSStringFromClass(PageListSectionHeaderView.self)
         let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)[0] as! PageListSectionHeaderView
@@ -325,11 +325,11 @@ import WordPressComAnalytics
         return headerView
     }
     
-    private func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
         return UIView(frame: CGRectZero)
     }
     
-    private func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost
@@ -340,7 +340,7 @@ import WordPressComAnalytics
         editPage(post)
     }
     
-    private func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Page
         
         let identifier = cellIdentifierForPage(page)
@@ -351,7 +351,7 @@ import WordPressComAnalytics
         return cell
     }
  
-    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
@@ -378,7 +378,7 @@ import WordPressComAnalytics
     
     // MARK: - Post Actions
     
-    private func createPost() {
+    func createPost() {
         let navController : UINavigationController
         
         if EditPageViewController.isNewEditorEnabled() {
@@ -442,7 +442,7 @@ import WordPressComAnalytics
         }
     }
     
-    private func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    func promptThatPostRestoredToFilter(filter: PostListFilter) {
         var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
         
         switch filter.filterType {
