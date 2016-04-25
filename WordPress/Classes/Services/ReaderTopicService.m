@@ -470,9 +470,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.title = siteInfo.siteName;
         topic.type = ReaderSiteTopic.TopicType;
         if (isFeed) {
-            topic.path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, siteInfo.feedID];
+            topic.path = [NSString stringWithFormat:@"%@v1.2/read/feed/%@/posts/", WordPressComApiClientEndpointURL, siteInfo.feedID];
         } else {
-            topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+            topic.path = [NSString stringWithFormat:@"%@v1.2/read/sites/%@/posts/", WordPressComApiClientEndpointURL, siteInfo.siteID];
         }
 
         NSError *error;
