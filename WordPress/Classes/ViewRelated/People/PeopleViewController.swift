@@ -70,6 +70,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             let selectedIndexPath = tableView.indexPathForSelectedRow
         {
             personViewController.person = personAtIndexPath(selectedIndexPath)
+            personViewController.blog = blog
         }
     }
 

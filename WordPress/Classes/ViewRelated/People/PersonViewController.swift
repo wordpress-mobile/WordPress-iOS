@@ -7,21 +7,23 @@ import WordPressShared
 class PersonViewController : UITableViewController
 {
     // MARK: - Public Properties
-    
-    var person : Person!
+    var person  : Person!
+    var blog    : Blog!
     
     
     // MARK: - View Lifecyle Methods
-    
     override func viewDidLoad() {
+        assert(person != nil)
+        assert(blog != nil)
+
         super.viewDidLoad()
-        title = person?.fullName
+        
+        title = person?.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
     
     // MARK: - UITableView Methods
-    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
@@ -39,7 +41,6 @@ class PersonViewController : UITableViewController
     
     
     // MARK: - Action Handlers
-    
     func handleRoleWasPressed() {
 // TODO: Implement Me
     }
@@ -50,7 +51,6 @@ class PersonViewController : UITableViewController
     
     
     // MARK: - Outlets
-
     @IBOutlet var gravatarImageView : UIImageView! {
         didSet {
             let placeholder = UIImage(named: "gravatar.png")
@@ -78,6 +78,7 @@ class PersonViewController : UITableViewController
         didSet {
             roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
             roleCell.detailTextLabel?.text = person?.role.description.capitalizedString
+            roleCell.accessoryType = canPromote ? .DisclosureIndicator : .None
             WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
@@ -111,5 +112,14 @@ class PersonViewController : UITableViewController
             removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
             WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
         }
+    }
+    
+    
+    // MARK: - Private Properties
+    private var canPromote : Bool {
+        let hasPermissions  = blog.isUserCapableOf(.PromoteUsers)
+        let isSomeoneElse   = blog.account.userID != person.ID
+        
+        return hasPermissions && isSomeoneElse
     }
 }
