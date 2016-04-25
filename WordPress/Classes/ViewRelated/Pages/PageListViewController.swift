@@ -341,24 +341,27 @@ import WordPressComAnalytics
         let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Page
         
         let identifier = cellIdentifierForPage(page)
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        let cellObject = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        
+        precondition(cellObject is PageListTableViewCell)
+        let cell = cellObject as! PageListTableViewCell
         
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
  
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: PageListTableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
+        cell.delegate = self
         
-        if let pageCell = cell as? PageListTableViewCell {
-            pageCell.delegate = self
-            
-            if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
-                pageCell.configureCell(page)
-            }
-        }
+        let pageObject = tableViewHandler?.resultsController.objectAtIndexPath(indexPath)
+        
+        precondition(pageObject is Page)
+        let page = pageObject as! Page
+        
+        cell.configureCell(page)
     }
     
     private func cellIdentifierForPage(page: Page) -> String {
