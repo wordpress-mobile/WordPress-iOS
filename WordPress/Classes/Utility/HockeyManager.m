@@ -2,7 +2,7 @@
 
 #ifdef INTERNAL_BUILD
 #import "WordPressAppDelegate.h"
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 #import "WPLogger.h"
 #import <HockeySDK/HockeySDK.h>
 
@@ -13,7 +13,7 @@
 @implementation HockeyManager
 
 - (void)configure {
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[ApiCredentials hockeyappAppId]
                                                            delegate:self];
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
