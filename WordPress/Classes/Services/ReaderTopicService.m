@@ -469,11 +469,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.subscriberCount = siteInfo.subscriberCount;
         topic.title = siteInfo.siteName;
         topic.type = ReaderSiteTopic.TopicType;
-        if (isFeed) {
-            topic.path = [NSString stringWithFormat:@"%@v1.2/read/feed/%@/posts/", WordPressComApiClientEndpointURL, siteInfo.feedID];
-        } else {
-            topic.path = [NSString stringWithFormat:@"%@v1.2/read/sites/%@/posts/", WordPressComApiClientEndpointURL, siteInfo.siteID];
-        }
+        topic.path = siteInfo.path;
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
