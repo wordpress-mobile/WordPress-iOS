@@ -51,10 +51,10 @@
     OCMStub([category name]).andReturn(@"name");
     OCMStub([category parentID]).andReturn(nil);
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, TaxonomyRESTCategoryIdentifier];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, @"categories"];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
-        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:TaxonomyRESTNameParameter] isEqualToString:category.name]);
+        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:category.name]);
     };
     
     WordPressComApi *api = self.service.api;
@@ -70,7 +70,7 @@
 
 - (void)testThatGetCategoriesWorks
 {
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTCategoryIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"categories"];
     
     WordPressComApi *api = self.service.api;
     OCMStub([api GET:[OCMArg isEqual:url]
@@ -91,25 +91,25 @@
     OCMStub([paging order]).andReturn(RemoteTaxonomyPagingOrderAscending);
     OCMStub([paging orderBy]).andReturn(RemoteTaxonomyPagingResultsOrderingByName);
 
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTCategoryIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"categories"];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         if (![parameters isKindOfClass:[NSDictionary class]]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTNumberParameter] isEqual:paging.number]) {
+        if (![[parameters objectForKey:@"number"] isEqual:paging.number]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOffsetParameter] isEqual:paging.offset]) {
+        if (![[parameters objectForKey:@"offset"] isEqual:paging.offset]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTPageParameter] isEqual:paging.page]) {
+        if (![[parameters objectForKey:@"page"] isEqual:paging.page]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOrderParameter] isEqualToString:@"ASC"]) {
+        if (![[parameters objectForKey:@"order"] isEqualToString:@"ASC"]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOrderByParameter] isEqualToString:@"name"]) {
+        if (![[parameters objectForKey:@"order_by"] isEqualToString:@"name"]) {
             return NO;
         }
         return YES;
@@ -128,14 +128,14 @@
 
 - (void)testThatSearchCategoriesWithNameWorks
 {
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTCategoryIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"categories"];
     NSString *searchName = @"category name";
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         if (![parameters isKindOfClass:[NSDictionary class]]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTSearchParameter] isEqualToString:searchName]) {
+        if (![[parameters objectForKey:@"search"] isEqualToString:searchName]) {
             return NO;
         }
         return YES;
@@ -159,10 +159,10 @@
     RemotePostTag *tag = OCMStrictClassMock([RemotePostTag class]);
     OCMStub([tag name]).andReturn(@"name");
     
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, TaxonomyRESTTagIdentifier];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
-        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:TaxonomyRESTNameParameter] isEqualToString:tag.name]);
+        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:tag.name]);
     };
     
     WordPressComApi *api = self.service.api;
@@ -178,7 +178,7 @@
 
 - (void)testThatGetTagsWorks
 {
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTTagIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"tags"];
     
     WordPressComApi *api = self.service.api;
     OCMStub([api GET:[OCMArg isEqual:url]
@@ -199,25 +199,25 @@
     OCMStub([paging order]).andReturn(RemoteTaxonomyPagingOrderAscending);
     OCMStub([paging orderBy]).andReturn(RemoteTaxonomyPagingResultsOrderingByName);
     
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTTagIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"tags"];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         if (![parameters isKindOfClass:[NSDictionary class]]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTNumberParameter] isEqual:paging.number]) {
+        if (![[parameters objectForKey:@"number"] isEqual:paging.number]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOffsetParameter] isEqual:paging.offset]) {
+        if (![[parameters objectForKey:@"offset"] isEqual:paging.offset]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTPageParameter] isEqual:paging.page]) {
+        if (![[parameters objectForKey:@"page"] isEqual:paging.page]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOrderParameter] isEqualToString:@"ASC"]) {
+        if (![[parameters objectForKey:@"order"] isEqualToString:@"ASC"]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTOrderByParameter] isEqualToString:@"name"]) {
+        if (![[parameters objectForKey:@"order_by"] isEqualToString:@"name"]) {
             return NO;
         }
         return YES;
@@ -236,14 +236,14 @@
 
 - (void)testThatSearchTagsWithNameWorks
 {
-    NSString *url = [self GETtaxonomyURLWithType:TaxonomyRESTTagIdentifier];
+    NSString *url = [self GETtaxonomyURLWithType:@"tags"];
     NSString *searchName = @"tag name";
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         if (![parameters isKindOfClass:[NSDictionary class]]) {
             return NO;
         }
-        if (![[parameters objectForKey:TaxonomyRESTSearchParameter] isEqualToString:searchName]) {
+        if (![[parameters objectForKey:@"search"] isEqualToString:searchName]) {
             return NO;
         }
         return YES;
