@@ -312,7 +312,7 @@ import WordPressComAnalytics
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         let sectionInfo = tableViewHandler?.resultsController.sections?[section]
-        let nibName = NSStringFromClass(PageListSectionHeaderView.self)
+        let nibName = String(PageListSectionHeaderView)
         let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)[0] as! PageListSectionHeaderView
         
         if let sectionInfo = sectionInfo {
