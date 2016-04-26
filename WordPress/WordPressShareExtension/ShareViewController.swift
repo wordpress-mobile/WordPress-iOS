@@ -31,6 +31,15 @@ class ShareViewController: SLComposeServiceViewController {
         tracks.wpcomUsername = username
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        loadWebsiteUrl { (url: NSURL?) in
+            let current = self.contentText ?? String()
+            let source = url?.absoluteString ?? String()
+            
+            self.textView.text = "\(current)\n\n\(source)"
+        }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -61,19 +70,19 @@ class ShareViewController: SLComposeServiceViewController {
     override func didSelectPost() {
         RequestRouter.bearerToken = oauth2Token! as String
 
-        loadWebsiteUrl { (url: NSURL?) in
-            let identifier = WPAppGroupName + "." + NSUUID().UUIDString
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-            configuration.sharedContainerIdentifier = WPAppGroupName
-            
-            let service = PostService(configuration: configuration)
-            let (subject, body) = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
-            service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subject, body: body) { (post, error) in
-                print("Post \(post) Error \(error)")
-            }
-            
-            self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
+        let identifier = WPAppGroupName + "." + NSUUID().UUIDString
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+        configuration.sharedContainerIdentifier = WPAppGroupName
+        
+        let service = PostService(configuration: configuration)
+        let (subject, body) = splitContentTextIntoSubjectAndBody(contentText)
+        
+        service.createPost(siteID: selectedSiteID!, status: postStatus, title: subject, body: body) {
+            (post, error) in
+            print("Post \(post) Error \(error)")
         }
+        
+        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
         
         tracks.trackExtensionPosted(postStatus)
     }
@@ -152,15 +161,6 @@ class ShareViewController: SLComposeServiceViewController {
         let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
 
         return (firstLineOfText, restOfText)
-    }
-    
-    private func contentWithSourceURL(url: NSURL?) -> String {
-        guard let url = url else {
-            return contentText
-        }
-        
-        // Append the URL to the content itself
-        return contentText + "\n\n<a href=\"\(url.absoluteString)\">\(url.absoluteString)</a>"
     }
     
     private func loadWebsiteUrl(completion: (NSURL? -> Void)) {
