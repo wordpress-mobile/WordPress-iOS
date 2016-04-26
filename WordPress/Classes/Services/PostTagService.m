@@ -8,24 +8,17 @@
 #import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemoteTaxonomyPaging.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface PostTagService ()
 
 @end
 
-static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
-{
-    NSString *message = @"Could not retrieve blog from context";
-    if (error) {
-        message = [NSString stringWithFormat:@"%@ with error: %@", message, error];
-    }
-    DDLogError(message);
-};
-
 @implementation PostTagService
 
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(void (^)())success
-                failure:(void (^)(NSError *error))failure
+                success:(nullable void (^)())success
+                failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = blog.objectID;
@@ -34,7 +27,7 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
             NSError *error;
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
             if (!blog || error) {
-                logErrorForRetrievingBlog(blog, error);
+                [self handleError:error forBlog:blog withFailure:failure];
                 return;
             }
             
@@ -49,10 +42,10 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
 }
 
 - (void)syncTagsForBlog:(Blog *)blog
-                 number:(NSNumber *)number
-                 offset:(NSNumber *)offset
-                success:(void (^)(NSArray <PostTag *> *tags))success
-                failure:(void (^)(NSError *error))failure
+                 number:(nullable NSNumber *)number
+                 offset:(nullable NSNumber *)offset
+                success:(nullable void (^)(NSArray <PostTag *> *tags))success
+                failure:(nullable void (^)(NSError *error))failure
 {
     RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
     paging.number = number ?: @(100);
@@ -65,7 +58,7 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
                           NSError *error;
                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
                           if (!blog || error) {
-                              logErrorForRetrievingBlog(blog, error);
+                              [self handleError:error forBlog:blog withFailure:failure];
                               return;
                           }
                           
@@ -80,19 +73,18 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
 
 - (void)searchTagsWithName:(NSString *)nameQuery
                       blog:(Blog *)blog
-                   success:(void (^)(NSArray <PostTag *> *tags))success
-                   failure:(void (^)(NSError *error))failure
+                   success:(nullable void (^)(NSArray <PostTag *> *tags))success
+                   failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = blog.objectID;
     [remote searchTagsWithName:nameQuery
                        success:^(NSArray<RemotePostTag *> *remoteTags) {
-                           
                            NSError *error;
                            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
                            if (!blog || error) {
-                               logErrorForRetrievingBlog(blog, error);
+                               [self handleError:error forBlog:blog withFailure:failure];
                                return;
                            }
                            
@@ -116,7 +108,8 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
     }
 }
 
-- (NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags blog:(Blog *)blog
+- (nullable NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags
+                                                     blog:(Blog *)blog
 {
     if (!remoteTags.count) {
         return nil;
@@ -130,7 +123,8 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
     return [NSArray arrayWithArray:tags];
 }
 
-- (PostTag *)tagFromRemoteTag:(RemotePostTag *)remoteTag blog:(Blog *)blog
+- (PostTag *)tagFromRemoteTag:(RemotePostTag *)remoteTag
+                         blog:(Blog *)blog
 {
     PostTag *tag = [self existingTagForRemoteTag:remoteTag blog:blog];
     if (!tag) {
@@ -147,7 +141,8 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
     return tag;
 }
 
-- (PostTag *)existingTagForRemoteTag:(RemotePostTag *)remoteTag blog:(Blog *)blog
+- (nullable PostTag *)existingTagForRemoteTag:(RemotePostTag *)remoteTag
+                                         blog:(Blog *)blog
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[PostTag entityName]];
     request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND tagID = %@", blog, remoteTag.tagID];
@@ -161,4 +156,14 @@ static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
     return [tags firstObject];
 }
 
+- (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
+{
+    DDLogError(@"Error occurred with %@ - error: %@", [self class], error);
+    if (failure) {
+        failure(error);
+    }
+}
+
 @end
+
+NS_ASSUME_NONNULL_END
