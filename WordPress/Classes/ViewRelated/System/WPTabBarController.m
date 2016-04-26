@@ -11,7 +11,6 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "NotificationsViewController.h"
-#import "PostListViewController.h"
 #import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "WPPostViewController.h"

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface WordPressComApiCredentials : NSObject
+@interface ApiCredentials : NSObject
 + (NSString *)client;
 + (NSString *)secret;
 + (NSString *)pocketConsumerKey;
