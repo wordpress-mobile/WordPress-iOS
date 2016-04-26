@@ -111,6 +111,7 @@ class PersonViewController : UITableViewController
         didSet {
             removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
             WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
+            removeCell.hidden = !canRemove
         }
     }
     
@@ -121,5 +122,10 @@ class PersonViewController : UITableViewController
         let isSomeoneElse   = blog.account.userID != person.ID
         
         return hasPermissions && isSomeoneElse
+    }
+    
+    private var canRemove : Bool {
+// TODO: Verify
+        return canPromote
     }
 }
