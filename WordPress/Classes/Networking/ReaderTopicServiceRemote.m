@@ -139,7 +139,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     NSString *path = [NSString stringWithFormat:@"read/tags/%@", slug];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
 
     [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
