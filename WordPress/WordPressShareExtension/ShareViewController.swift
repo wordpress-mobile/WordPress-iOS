@@ -29,16 +29,15 @@ class ShareViewController: SLComposeServiceViewController {
         // Tracker
         tracks = Tracks(appGroupName: WPAppGroupName)
         tracks.wpcomUsername = username
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
+
+        // TextView
         loadWebsiteUrl { (url: NSURL?) in
-            let current = self.contentText ?? String()
-            let source = url?.absoluteString ?? String()
-            
-            self.textView.text = "\(current)\n\n\(source)"
+            dispatch_async(dispatch_get_main_queue()) {
+                let current = self.contentText ?? String()
+                let source = url?.absoluteString ?? String()
+                
+                self.textView.text = "\(current)\n\n\(source)"
+            }
         }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
