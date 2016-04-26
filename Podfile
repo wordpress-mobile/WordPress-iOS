@@ -17,7 +17,7 @@ target 'WordPress', :exclusive => true do
   pod 'AMPopTip', '~> 0.7'
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'DTCoreText',   '1.6.16'
-  pod 'FormatterKit', '~> 1.8.0'
+  pod 'FormatterKit', '~> 1.8.1'
   pod 'Helpshift', '~> 5.5.1'
   pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
