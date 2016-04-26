@@ -44,6 +44,9 @@
 		0859DCF81CB847F700EB4069 /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCF51CB847F700EB4069 /* RemoteMenuLocation.m */; };
 		0859DCFB1CB8482200EB4069 /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */; };
 		0859DCFD1CB8488400EB4069 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */; };
+		08A2AD751CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */; };
+		08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */; };
+		08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */; };
 		08A6FD9C1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */; };
 		08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
 		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
@@ -885,6 +888,9 @@
 		0859DCF91CB8482200EB4069 /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
 		0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
 		0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
+		08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
+		08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceTests.m; sourceTree = "<group>"; };
 		08A6FD9A1C5960AB00AC33E4 /* RemoteTaxonomyPaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteTaxonomyPaging.h; path = "Remote Objects/RemoteTaxonomyPaging.h"; sourceTree = "<group>"; };
 		08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteTaxonomyPaging.m; path = "Remote Objects/RemoteTaxonomyPaging.m"; sourceTree = "<group>"; };
 		08AAD69D1CBEA47D002B2418 /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
@@ -2517,6 +2523,7 @@
 				0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
+				08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 			);
 			name = "Remote Services";
@@ -3239,8 +3246,8 @@
 				08AAD69E1CBEA47D002B2418 /* MenusService.m */,
 				B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */,
 				E1209FA31BB4978B00D69778 /* PeopleService.swift */,
-				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				E1D7FF371C74EB0E00E7E5E5 /* PlanService.swift */,
+				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
@@ -3538,6 +3545,8 @@
 				E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */,
 				08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */,
 				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
+				08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */,
+				08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */,
 				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */,
 				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
@@ -5639,6 +5648,7 @@
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
+				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
 				E61084C41B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m in Sources */,
 				BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */,
@@ -5669,6 +5679,7 @@
 				E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* PhotonImageURLHelperTest.m in Sources */,
+				08A2AD751CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
@@ -5682,6 +5693,7 @@
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				591CFB061B28A960009E61B3 /* AccountServiceRemoteRESTTests.m in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
+				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				B5D689FD1A5EBC900063D9E5 /* PushNotificationsManagerTestHelper.m in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
