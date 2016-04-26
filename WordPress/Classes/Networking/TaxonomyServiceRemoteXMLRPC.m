@@ -123,8 +123,8 @@ NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)searchTagsWithName:(NSString *)nameQuery
-                         success:(void (^)(NSArray<RemotePostTag *> *))success
-                         failure:(nullable void (^)(NSError *))failure
+                   success:(void (^)(NSArray<RemotePostTag *> *))success
+                   failure:(nullable void (^)(NSError *))failure
 {
     NSDictionary *searchParameters = @{TaxonomyXMLRPCSearchParameter: nameQuery};
     [self getTaxonomiesWithType:TaxonomyXMLRPCTagIdentifier
@@ -248,7 +248,9 @@ NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     return dictionary.count ? dictionary : nil;
 }
 
-- (void)handleResponseErrorWithMessage:(NSString *)message method:(NSString *)methodStr failure:(nullable void(^)(NSError *error))failure
+- (void)handleResponseErrorWithMessage:(NSString *)message
+                                method:(NSString *)methodStr
+                               failure:(nullable void(^)(NSError *error))failure
 {
     DDLogError(@"%@ - method: %@", message, methodStr);
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
