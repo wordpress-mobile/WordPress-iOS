@@ -7,18 +7,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const TaxonomyXMLRPCCategoryIdentifier = @"category";
-NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";
+static NSString * const TaxonomyXMLRPCCategoryIdentifier = @"category";
+static NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";
 
-NSString * const TaxonomyXMLRPCIDParameter = @"term_id";
-NSString * const TaxonomyXMLRPCSlugParameter = @"slug";
-NSString * const TaxonomyXMLRPCNameParameter = @"name";
-NSString * const TaxonomyXMLRPCParentParameter = @"parent";
-NSString * const TaxonomyXMLRPCSearchParameter = @"search";
-NSString * const TaxonomyXMLRPCOrderParameter = @"order";
-NSString * const TaxonomyXMLRPCOrderByParameter = @"order_by";
-NSString * const TaxonomyXMLRPCNumberParameter = @"number";
-NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
+static NSString * const TaxonomyXMLRPCIDParameter = @"term_id";
+static NSString * const TaxonomyXMLRPCSlugParameter = @"slug";
+static NSString * const TaxonomyXMLRPCNameParameter = @"name";
+static NSString * const TaxonomyXMLRPCParentParameter = @"parent";
+static NSString * const TaxonomyXMLRPCSearchParameter = @"search";
+static NSString * const TaxonomyXMLRPCOrderParameter = @"order";
+static NSString * const TaxonomyXMLRPCOrderByParameter = @"order_by";
+static NSString * const TaxonomyXMLRPCNumberParameter = @"number";
+static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 
 @implementation TaxonomyServiceRemoteXMLRPC
