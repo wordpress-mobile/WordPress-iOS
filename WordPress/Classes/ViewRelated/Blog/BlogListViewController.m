@@ -470,10 +470,14 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
     cell.imageView.layer.borderWidth = 1.5;
     [cell.imageView setImageWithSiteIcon:blog.icon];
-    cell.visibilitySwitch.on = blog.visible;
-    cell.visibilitySwitch.tag = indexPath.row;
-    [cell.visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
+    
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
+    cell.visibilitySwitch.on = blog.visible;
+    
+    __weak __typeof(self) weakSelf = self;
+    cell.visibilitySwitchToggled = ^(WPBlogTableViewCell *cell) {
+        [weakSelf setVisible:cell.visibilitySwitch.on forBlogAtIndexPath:indexPath];
+    };
 
     // Make textLabel light gray if blog is not-visible
     if (!blog.visible) {
@@ -512,7 +516,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
         if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
             visibleSwitch.on = !visibleSwitch.on;
-            [self visibilitySwitchAction:visibleSwitch];
+            [self setVisible:visibleSwitch.on forBlogAtIndexPath:indexPath];
         }
         return;
     } else {
@@ -672,11 +676,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [SigninHelpers showSigninForSelfHostedSite:self];
 }
 
-- (void)visibilitySwitchAction:(id)sender
+- (void)setVisible:(BOOL)visible forBlogAtIndexPath:(NSIndexPath *)indexPath
 {
-    UISwitch *switcher = (UISwitch *)sender;
-    Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
-    if(!switcher.on && [self.tableView numberOfRowsInSection:0] > HideAllMinSites) {
+    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+    if(!visible && [self.tableView numberOfRowsInSection:indexPath.section] > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -708,7 +711,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                          }
                                                                          
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         [accountService setVisibility:switcher.on forBlogs:blogs];
+                                                                         [accountService setVisibility:visible forBlogs:blogs];
                                                                          [[ContextManager sharedInstance] saveDerivedContext:context];
                                                                      }];
                                                                  }];
@@ -718,7 +721,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         }
     }
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [accountService setVisibility:switcher.on forBlogs:@[blog]];
+    [accountService setVisibility:visible forBlogs:@[blog]];
 }
 
 

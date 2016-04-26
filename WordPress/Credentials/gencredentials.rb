@@ -162,8 +162,8 @@ end
 
 def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key, optimizely_api_key)
   print <<-EOF
-#import "WordPressComApiCredentials.h"
-@implementation WordPressComApiCredentials
+#import "ApiCredentials.h"
+@implementation ApiCredentials
 EOF
   print_client(client)
   print_secret(secret)
