@@ -51,25 +51,36 @@ PODS:
   - EmailChecker (0.1)
   - Expecta (0.3.2)
   - Fabric (1.6.7)
-  - FormatterKit (1.8.0):
-    - FormatterKit/AddressFormatter (= 1.8.0)
-    - FormatterKit/ArrayFormatter (= 1.8.0)
-    - FormatterKit/ColorFormatter (= 1.8.0)
-    - FormatterKit/LocationFormatter (= 1.8.0)
-    - FormatterKit/NameFormatter (= 1.8.0)
-    - FormatterKit/OrdinalNumberFormatter (= 1.8.0)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.0)
-    - FormatterKit/UnitOfInformationFormatter (= 1.8.0)
-    - FormatterKit/URLRequestFormatter (= 1.8.0)
-  - FormatterKit/AddressFormatter (1.8.0)
-  - FormatterKit/ArrayFormatter (1.8.0)
-  - FormatterKit/ColorFormatter (1.8.0)
-  - FormatterKit/LocationFormatter (1.8.0)
-  - FormatterKit/NameFormatter (1.8.0)
-  - FormatterKit/OrdinalNumberFormatter (1.8.0)
-  - FormatterKit/TimeIntervalFormatter (1.8.0)
-  - FormatterKit/UnitOfInformationFormatter (1.8.0)
-  - FormatterKit/URLRequestFormatter (1.8.0)
+  - FormatterKit (1.8.1):
+    - FormatterKit/AddressFormatter (= 1.8.1)
+    - FormatterKit/ArrayFormatter (= 1.8.1)
+    - FormatterKit/ColorFormatter (= 1.8.1)
+    - FormatterKit/LocationFormatter (= 1.8.1)
+    - FormatterKit/NameFormatter (= 1.8.1)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.1)
+    - FormatterKit/Resources (= 1.8.1)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.1)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.1)
+    - FormatterKit/URLRequestFormatter (= 1.8.1)
+  - FormatterKit/AddressFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/ArrayFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/ColorFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/LocationFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/NameFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/OrdinalNumberFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/Resources (1.8.1)
+  - FormatterKit/TimeIntervalFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/UnitOfInformationFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/URLRequestFormatter (1.8.1):
+    - FormatterKit/Resources
   - Gridicons (0.1)
   - Helpshift (5.5.1)
   - HockeySDK (3.8.6):
@@ -196,7 +207,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
-  - FormatterKit (~> 1.8.0)
+  - FormatterKit (~> 1.8.1)
   - Gridicons (from `https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec`)
   - Helpshift (~> 5.5.1)
   - HockeySDK (~> 3.8.0)
@@ -270,7 +281,7 @@ SPEC CHECKSUMS:
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
+  FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 6dfc3f24cc81ee8aae3492c2ba814bd45fcdf0c7
   Helpshift: 1b89b3632bf46af10d2c9d9f448e64a0ccf667ec
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
