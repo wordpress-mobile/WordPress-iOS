@@ -237,10 +237,8 @@
         [self.delegate selectionViewSelectedOptionForCreatingNewItem:self];
         
     } else {
-        
-        MenusSelectionItem *selectedItem = itemView.item;
-        [self setSelectedItem:selectedItem];
-        [self tellDelegateSelectedItem:selectedItem];
+
+        [self tellDelegateSelectedItem:itemView.item];
     }
 }
 
