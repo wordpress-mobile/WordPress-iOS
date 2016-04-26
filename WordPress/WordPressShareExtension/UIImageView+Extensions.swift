@@ -54,16 +54,16 @@ extension UIImageView
     ///
     public func downloadBlavatar(url: NSURL) {
         let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
-        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize())
+        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize)
         
         if let updatedURL = components?.URL {
             downloadImage(updatedURL)
         }
     }
-    
+
     
     /// Returns the desired Blavatar Side-Size
-    private func blavatarSize() -> Int {
+    private var blavatarSize : Int {
         var size = Downloader.defaultImageSize
         
         if !CGSizeEqualToSize(bounds.size, CGSizeZero) {
