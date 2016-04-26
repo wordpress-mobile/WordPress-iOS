@@ -51,7 +51,7 @@ NSString * const PostRESTKeySlug = @"slug";
 NSString * const PostRESTKeyStatus = @"status";
 NSString * const PostRESTKeyTitle = @"title";
 NSString * const PostRESTKeyTags = @"tags";
-NSString * const POSTRESTKeyTagDisplayname = @"display_name";
+NSString * const POSTRESTKeyTagDisplayName = @"display_name";
 NSString * const PostRESTKeyURL = @"URL";
 NSString * const PostRESTKeyWordCount = @"word_count";
 
@@ -332,13 +332,13 @@ static const NSInteger MinutesToReadThreshold = 2;
                 secondaryTagSlug = primaryTagSlug;
                 secondHighestCount = highestCount;
 
-                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayname] ?: [tag stringForKey:PostRESTKeyName];
+                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayName] ?: [tag stringForKey:PostRESTKeyName];
                 primaryTag = tagTitle ?: @"";
                 primaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
                 highestCount = count;
 
             } else if (count > secondHighestCount) {
-                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayname] ?: [tag stringForKey:PostRESTKeyName];
+                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayName] ?: [tag stringForKey:PostRESTKeyName];
                 secondaryTag = tagTitle ?: @"";
                 secondaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
                 secondHighestCount = count;
