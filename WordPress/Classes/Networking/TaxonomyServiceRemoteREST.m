@@ -68,8 +68,8 @@ NSString * const TaxonomyRESTPageParameter = @"page";
 }
 
 - (void)searchCategoriesWithName:(NSString *)nameQuery
-                   success:(void (^)(NSArray <RemotePostCategory *> *tags))success
-                   failure:(nullable void (^)(NSError *error))failure
+                         success:(void (^)(NSArray <RemotePostCategory *> *tags))success
+                         failure:(nullable void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
     [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
@@ -243,7 +243,9 @@ NSString * const TaxonomyRESTPageParameter = @"page";
     return dictionary.count ? dictionary : nil;
 }
 
-- (void)handleResponseErrorWithMessage:(NSString *)message url:(NSString *)urlStr failure:(nullable void(^)(NSError *error))failure
+- (void)handleResponseErrorWithMessage:(NSString *)message
+                                   url:(NSString *)urlStr
+                               failure:(nullable void(^)(NSError *error))failure
 {
     DDLogError(@"%@ - URL: %@", message, urlStr);
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
