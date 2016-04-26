@@ -15,7 +15,6 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorUploadFailedNotEnoughDiskQuota
 };
 
-extern NSString *const WordPressComApiClientEndpointURL;
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
