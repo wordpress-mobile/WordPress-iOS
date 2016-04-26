@@ -43,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
  Create a new tag with the site.
  */
 - (void)createTag:(RemotePostTag *)tag
-               success:(nullable void (^)(RemotePostTag *tag))success
-               failure:(nullable void (^)(NSError *error))failure;
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Fetch a list of tags associated with the site.
@@ -64,8 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
  Fetch a list of tags whose names or slugs match the provided search query. Case-insensitive.
  */
 - (void)searchTagsWithName:(NSString *)nameQuery
-                 success:(void (^)(NSArray <RemotePostTag *> *tags))success
-                 failure:(nullable void (^)(NSError *error))failure;
+                   success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                   failure:(nullable void (^)(NSError *error))failure;
 
 @end
 
