@@ -138,11 +138,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(name != nil);
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
-    PostCategory *parent = [self categoryWithObjectID:parentCategoryObjectID];
-
     RemotePostCategory *remoteCategory = [RemotePostCategory new];
-    remoteCategory.parentID = parent.categoryID;
     remoteCategory.name = name;
+    if (parentCategoryObjectID) {
+        PostCategory *parent = [self categoryWithObjectID:parentCategoryObjectID];
+        remoteCategory.parentID = parent.categoryID;
+    }
 
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
