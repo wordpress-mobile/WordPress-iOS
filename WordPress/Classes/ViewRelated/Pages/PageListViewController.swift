@@ -575,7 +575,7 @@ import WordPressComAnalytics
         
         WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
         
-        if UIDevice.isPad() {
+        if !UIDevice.isPad() {
             presentViewController(alertController, animated: true, completion: nil)
             return
         }
