@@ -360,10 +360,9 @@ import WordPressComAnalytics
     func configureCell(cell: PageListCell, atIndexPath indexPath: NSIndexPath) {
         cell.delegate = self
         
-        let pageObject = tableViewHandler?.resultsController.objectAtIndexPath(indexPath)
-        
-        precondition(pageObject is Page)
-        let page = pageObject as! Page
+        guard let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page else {
+            preconditionFailure("Object must be a \(String(Page))")
+        }
         
         cell.configureCell(page)
     }
