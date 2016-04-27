@@ -73,7 +73,8 @@ class ShareViewController: SLComposeServiceViewController
         configuration.sharedContainerIdentifier = WPAppGroupName
         
         let service = PostService(configuration: configuration)
-        let (subject, body) = splitContentTextIntoSubjectAndBody(contentText)
+        let linkified = contentText.stringWithAnchoredLinks()
+        let (subject, body) = splitContentTextIntoSubjectAndBody(linkified)
         
         service.createPost(siteID: selectedSiteID!, status: postStatus, title: subject, body: body) {
             (post, error) in
