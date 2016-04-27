@@ -70,7 +70,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Gridicons (0.1)
+  - Gridicons (0.2)
   - Helpshift (5.5.1)
   - HockeySDK (3.8.6):
     - HockeySDK/AllFeaturesLib (= 3.8.6)
@@ -156,10 +156,9 @@ PODS:
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (1.5):
+  - WordPress-iOS-Editor (1.6):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
   - WordPress-iOS-Shared (0.5.6):
     - CocoaLumberjack (~> 2.2.0)
@@ -197,7 +196,7 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
-  - Gridicons (from `https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec`)
+  - Gridicons (= 0.2)
   - Helpshift (~> 5.5.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.1.4)
@@ -220,7 +219,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (= 1.5)
+  - WordPress-iOS-Editor (= 1.6)
   - WordPress-iOS-Shared (= 0.5.6)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.9)
@@ -237,8 +236,6 @@ EXTERNAL SOURCES:
     :tag: 0.0.13
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
-  Gridicons:
-    :podspec: https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -271,7 +268,7 @@ SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Gridicons: 6dfc3f24cc81ee8aae3492c2ba814bd45fcdf0c7
+  Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
   Helpshift: 1b89b3632bf46af10d2c9d9f448e64a0ccf667ec
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
@@ -293,7 +290,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: dcb5a4bb666c64a4f42b01915f375f5818970951
+  WordPress-iOS-Editor: 78fde4503494a664be5e4df72e3dc04617b6f66c
   WordPress-iOS-Shared: ce4b6e02763532e1737bf2bc7deed78d64ba4934
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: 3fccb433506f136cc04b735e6ab2efae9edfae7e
