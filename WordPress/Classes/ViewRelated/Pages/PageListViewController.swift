@@ -3,8 +3,8 @@ import WordPressComAnalytics
 
 @objc class PageListViewController : AbstractPostListViewController, PageListTableViewCellDelegate, UIViewControllerRestoration {
     
-    private static let pageSectionHeaderHeight = Float(24.0)
-    private static let pageCellEstimatedRowHeight = Float(44.0)
+    private static let pageSectionHeaderHeight = CGFloat(24.0)
+    private static let pageCellEstimatedRowHeight = CGFloat(44.0)
     private static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
     private static let pageCellIdentifier = "PageCellIdentifier"
     private static let pageCellNibName = "PageListTableViewCell"
@@ -268,14 +268,14 @@ import WordPressComAnalytics
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGFloat(self.dynamicType.pageCellEstimatedRowHeight)
+        return self.dynamicType.pageCellEstimatedRowHeight
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
             if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
-                return CGFloat(self.dynamicType.pageCellEstimatedRowHeight)
+                return self.dynamicType.pageCellEstimatedRowHeight
             }
             
             let width = CGRectGetWidth(tableView.bounds)
@@ -294,7 +294,7 @@ import WordPressComAnalytics
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(self.dynamicType.pageSectionHeaderHeight)
+        return self.dynamicType.pageSectionHeaderHeight
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
