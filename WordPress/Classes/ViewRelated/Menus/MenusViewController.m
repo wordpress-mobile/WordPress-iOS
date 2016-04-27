@@ -416,8 +416,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
     
-    // Check if user is trying to save the Default Menu.
-    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled) {
+    // Check if user is trying to save the Default Menu and made changes to it.
+    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
@@ -539,7 +539,18 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     
     void(^selectMenu)() = ^() {
-        [self setNeedsSave:YES forMenu:menu significantChanges:NO];
+        
+        Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
+        if (menu == defaultMenu) {
+            /*
+             * Special case for the user selecting "Default Menu" or "No Menu" in which we need
+             * to save the previously selected menu to save it without a location.
+             */
+            [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:NO];
+        } else {
+            [self setNeedsSave:YES forMenu:menu significantChanges:NO];
+        }
+        
         self.selectedMenuLocation.menu = menu;
         [self.headerView setSelectedMenu:menu];
         [self setViewsWithMenu:menu];
