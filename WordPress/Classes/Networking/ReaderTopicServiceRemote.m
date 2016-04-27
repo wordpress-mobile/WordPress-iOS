@@ -14,6 +14,7 @@ static NSString * const TopicDictionaryOwnerKey = @"owner";
 static NSString * const TopicDictionarySlugKey = @"slug";
 static NSString * const TopicDictionaryTagKey = @"tag";
 static NSString * const TopicDictionaryTitleKey = @"title";
+static NSString * const TopicDictionaryDisplayNameKey = @"display_name";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
 
@@ -138,7 +139,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     NSString *path = [NSString stringWithFormat:@"read/tags/%@", slug];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
 
     [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
@@ -347,7 +348,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     topic.owner = [topicDict stringForKey:TopicDictionaryOwnerKey];
     topic.path = [[topicDict stringForKey:TopicDictionaryURLKey] lowercaseString];
     topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
-    topic.title = [topicDict stringForKey:TopicDictionaryTitleKey];
+    topic.title = [topicDict stringForKey:TopicDictionaryDisplayNameKey] ?: [topicDict stringForKey:TopicDictionaryTitleKey];
 
     return topic;
 }
