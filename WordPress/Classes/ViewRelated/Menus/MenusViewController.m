@@ -220,6 +220,14 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
+- (void)reloadMenusViews
+{
+    [self.headerView setupWithMenusForBlog:self.blog];
+    [self.headerView setSelectedMenu:self.selectedMenuLocation.menu];
+    [self setViewsWithMenu:nil];
+    [self setViewsWithMenu:self.selectedMenuLocation.menu];
+}
+
 - (void)loadDefaultMenuItemsIfNeeded
 {
     Menu *menu = self.selectedMenuLocation.menu;
@@ -298,14 +306,25 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     if (_savingEnabled != savingEnabled) {
         _savingEnabled = savingEnabled;
         
+        if (!self.blog.managedObjectContext.undoManager) {
+            self.blog.managedObjectContext.undoManager = [[NSUndoManager alloc] init];
+        }
+        
         self.saveButtonItem.enabled = savingEnabled;
         
         if (savingEnabled) {
+            
+            [self.blog.managedObjectContext.undoManager beginUndoGrouping];
+            
             NSString *title = NSLocalizedString(@"Discard", @"Menus button title for cancelling/discarding changes made.");
             UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(discardChangesBarButtonItemPressed:)];
             [self.navigationItem setLeftBarButtonItem:button animated:YES];
             [self.navigationItem setHidesBackButton:YES animated:YES];
+            
         } else {
+            
+            [self.blog.managedObjectContext.undoManager endUndoGrouping];
+            
             [self.navigationItem setLeftBarButtonItem:nil animated:YES];
             [self.navigationItem setHidesBackButton:NO animated:YES];
         }
@@ -329,16 +348,16 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     self.savingEnabled = NO;
     
-    __weak __typeof(self) weakSelf = self;
-    [UIView animateWithDuration:0.15 animations:^{
-        weakSelf.scrollView.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        CGPoint offset = weakSelf.scrollView.contentOffset;
-        offset.y = 0;
-        weakSelf.scrollView.contentOffset = offset;
-        weakSelf.animatesAppearanceAfterSync = YES;
-        [weakSelf syncWithBlogMenus];
-    }];
+    [self.blog.managedObjectContext.undoManager undo];
+    [self reloadMenusViews];
+    
+    CGPoint offset = self.scrollView.contentOffset;
+    offset.y = 0;
+    
+    // Scroll to the top on the next run-loop so the layout finishes updating before scrolling.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.scrollView setContentOffset:offset animated:YES];
+    });
 }
 
 - (BOOL)defaultMenuEnabledForSelectedLocation
@@ -372,7 +391,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)discardChangesBarButtonItemPressed:(id)sender
 {
-    [self promptForDiscardingChangesViaLeftBarButtonItemDiscard];
+    [self promptForDiscardingChangesViaLeftBarButtonItem];
 }
 
 - (void)saveBarButtonItemPressed:(id)sender
@@ -681,7 +700,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     return NSLocalizedString(@"Unsaved Changes", @"Menus alert title for alerting the user to unsaved changes.");
 }
 
-- (void)promptForDiscardingChangesViaLeftBarButtonItemDiscard
+- (void)promptForDiscardingChangesViaLeftBarButtonItem
 {
     NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");
     NSString *title = [self discardChangesAlertTitle];
