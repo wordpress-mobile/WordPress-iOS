@@ -31,10 +31,10 @@ class ShareViewController: SLComposeServiceViewController {
         tracks.wpcomUsername = username
 
         // TextView
-        loadWebsiteUrl { (url: NSURL?) in
+        loadWebsiteUrl { (url) in
             dispatch_async(dispatch_get_main_queue()) {
                 let current = self.contentText ?? String()
-                let source = url?.absoluteString ?? String()
+                let source  = url?.absoluteString ?? String()
                 
                 self.textView.text = "\(current)\n\n\(source)"
             }
@@ -96,7 +96,7 @@ class ShareViewController: SLComposeServiceViewController {
         
         let statusPickerItem = SLComposeSheetConfigurationItem()
         statusPickerItem.title = NSLocalizedString("Post Status:", comment: "Post status picker title in Share Extension")
-        statusPickerItem.value = self.postStatuses[postStatus]!
+        statusPickerItem.value = postStatuses[postStatus]!
         statusPickerItem.tapHandler = { [weak self] in
             self?.displayStatusPicker()
         }
@@ -117,7 +117,7 @@ class ShareViewController: SLComposeServiceViewController {
         let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
+        let alertAction = UIAlertAction(title: accept, style: .Default) { (action) in
             self.cancel()
         }
         
