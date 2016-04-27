@@ -11,6 +11,15 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
 @objc class OptimizelyHelper: NSObject
 {
 
+    /// Shared instance used for notification observer
+    static let sharedInstance = OptimizelyHelper()
+    static let OptimizelyLoggedInEventName = "logged_in"
+    let ExperimentDescriptionKey = "experiment_description"
+    let VariationDescriptioinKey = "variation_description"
+    let AnalyticsProperyABTestNameKey = "abtest_name"
+    let AnalyticsPropertyABTestVariationKey = "abtest_variation"
+
+
     /// Activate Optimizely. Call this once when the application finishes launching.
     ///
     /// - Parameters:
@@ -18,9 +27,12 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
     ///
     class func setupOptimizelyWithLaunchOptions(launchOptions: [NSObject: AnyObject]) {
         Optimizely.sharedInstance().verboseLogging = true
+        Optimizely.disableSwizzle() // Disable's the Optimizely visual editor.
         preregisterOptimizelyKeys()
-        Optimizely.startOptimizelyWithAPIToken(WordPressComApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions)
+        Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions)
         Optimizely.refreshExperiments()
+
+        NSNotificationCenter.defaultCenter().addObserver(self.sharedInstance, selector: #selector(self.optimizelyExperimentVisitedHandler), name: OptimizelyExperimentVisitedNotification, object: nil)
     }
 
 
@@ -44,7 +56,30 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
     /// This can be removed when the test is complete.
     ///
     class func trackLoggedIn() {
-        Optimizely.trackEvent("logged_in")
+        Optimizely.trackEvent(OptimizelyLoggedInEventName)
+    }
+
+
+    /// Handles the experiment visited notification. The userInfo dictionary
+    /// should contain the following keys and values:
+    ///
+    /// "experiment_description" = "New Signin Flow";
+    /// "experiment_id" = 5694410124;
+    /// "variation_description" = Original;
+    /// "variation_id" = 5690940129;
+    ///
+    func optimizelyExperimentVisitedHandler(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+            experimentDescription = userInfo[ExperimentDescriptionKey],
+            variationDescription = userInfo[VariationDescriptioinKey] else {
+                return
+        }
+
+        let properties = [
+            AnalyticsProperyABTestNameKey: experimentDescription,
+            AnalyticsPropertyABTestVariationKey: variationDescription
+        ]
+        WPAppAnalytics.track(.ABTestStart, withProperties: properties)
     }
 
 }
