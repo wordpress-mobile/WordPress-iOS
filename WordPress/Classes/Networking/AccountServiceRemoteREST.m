@@ -183,8 +183,8 @@ static NSString * const UserDictionaryDateKey = @"date";
     [self.api POST:path
         parameters:@{
                      @"email": email,
-                     @"client_id": [WordPressComApiCredentials client],
-                     @"client_secret": [WordPressComApiCredentials secret],
+                     @"client_id": [ApiCredentials client],
+                     @"client_secret": [ApiCredentials secret],
                      }
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {

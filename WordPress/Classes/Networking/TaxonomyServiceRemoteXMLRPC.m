@@ -5,6 +5,8 @@
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressApi/WordPressApi.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString * const TaxonomyXMLRPCCategoryIdentifier = @"category";
 static NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";
 
@@ -24,8 +26,8 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 #pragma mark - categories
 
 - (void)createCategory:(RemotePostCategory *)category
-               success:(void (^)(RemotePostCategory *))success
-               failure:(void (^)(NSError *))failure
+               success:(nullable void (^)(RemotePostCategory *))success
+               failure:(nullable void (^)(NSError *))failure
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
     [extraParameters setObject:category.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
@@ -36,95 +38,108 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     [self createTaxonomyWithType:TaxonomyXMLRPCCategoryIdentifier
                       parameters:extraParameters
                          success:^(NSString *responseString) {
-                             
                              RemotePostCategory *newCategory = [RemotePostCategory new];
                              NSString *categoryID = responseString;
                              newCategory.categoryID = [categoryID numericValue];
                              if (success) {
                                  success(newCategory);
                              }
-                             
                          } failure:failure];
 }
 
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
-                         failure:(void (^)(NSError *))failure
+                         failure:(nullable void (^)(NSError *))failure
 {
-    [self getCategoriesWithPaging:nil
-                          success:success
-                          failure:failure];
+    [self getTaxonomiesWithType:TaxonomyXMLRPCCategoryIdentifier
+                     parameters:nil
+                        success:^(NSArray *responseArray) {
+                            success([self remoteCategoriesFromXMLRPCArray:responseArray]);
+                        } failure:failure];
 }
 
 - (void)getCategoriesWithPaging:(RemoteTaxonomyPaging *)paging
                         success:(void (^)(NSArray <RemotePostCategory *> *categories))success
-                        failure:(void (^)(NSError *error))failure
+                        failure:(nullable void (^)(NSError *error))failure
 {
     [self getTaxonomiesWithType:TaxonomyXMLRPCCategoryIdentifier
                      parameters:[self parametersForPaging:paging]
                         success:^(NSArray *responseArray) {
-                            if (success) {
-                                success([self remoteCategoriesFromXMLRPCArray:responseArray]);
-                            }
+                            success([self remoteCategoriesFromXMLRPCArray:responseArray]);
                         } failure:failure];
 }
 
 - (void)searchCategoriesWithName:(NSString *)nameQuery
                          success:(void (^)(NSArray<RemotePostCategory *> *))success
-                         failure:(void (^)(NSError *))failure
+                         failure:(nullable void (^)(NSError *))failure
 {
     NSDictionary *searchParameters = @{TaxonomyXMLRPCSearchParameter: nameQuery};
     [self getTaxonomiesWithType:TaxonomyXMLRPCCategoryIdentifier
                      parameters:searchParameters
                         success:^(NSArray *responseArray) {
-                            if (success) {
-                                success([self remoteCategoriesFromXMLRPCArray:responseArray]);
-                            }
+                            success([self remoteCategoriesFromXMLRPCArray:responseArray]);
                         } failure:failure];
 }
 
 #pragma mark - tags
 
-- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
-                   failure:(void (^)(NSError *))failure
+- (void)createTag:(RemotePostTag *)tag
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
 {
-    [self getTagsWithPaging:nil
-                    success:success
-                    failure:failure];
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+    [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+    
+    [self createTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                      parameters:extraParameters
+                         success:^(NSString *responseString) {
+                             RemotePostTag *newTag = [RemotePostTag new];
+                             NSString *tagID = responseString;
+                             newTag.tagID = [tagID numericValue];
+                             if (success) {
+                                 success(newTag);
+                             }
+                         } failure:failure];
+}
+
+- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
+                   failure:(nullable void (^)(NSError *))failure
+{
+    [self getTaxonomiesWithType:TaxonomyXMLRPCTagIdentifier
+                     parameters:nil
+                        success:^(NSArray *responseArray) {
+                            success([self remoteTagsFromXMLRPCArray:responseArray]);
+                        } failure:failure];
 }
 
 - (void)getTagsWithPaging:(RemoteTaxonomyPaging *)paging
                   success:(void (^)(NSArray <RemotePostTag *> *tags))success
-                  failure:(void (^)(NSError *error))failure
+                  failure:(nullable void (^)(NSError *error))failure
 {
     [self getTaxonomiesWithType:TaxonomyXMLRPCTagIdentifier
                      parameters:[self parametersForPaging:paging]
                         success:^(NSArray *responseArray) {
-                            if (success) {
-                                success([self remoteTagsFromXMLRPCArray:responseArray]);
-                            }
+                            success([self remoteTagsFromXMLRPCArray:responseArray]);
                         } failure:failure];
 }
 
 - (void)searchTagsWithName:(NSString *)nameQuery
-                         success:(void (^)(NSArray<RemotePostTag *> *))success
-                         failure:(void (^)(NSError *))failure
+                   success:(void (^)(NSArray<RemotePostTag *> *))success
+                   failure:(nullable void (^)(NSError *))failure
 {
     NSDictionary *searchParameters = @{TaxonomyXMLRPCSearchParameter: nameQuery};
     [self getTaxonomiesWithType:TaxonomyXMLRPCTagIdentifier
                      parameters:searchParameters
                         success:^(NSArray *responseArray) {
-                            if (success) {
-                                success([self remoteTagsFromXMLRPCArray:responseArray]);
-                            }
+                            success([self remoteTagsFromXMLRPCArray:responseArray]);
                         } failure:failure];
 }
 
 #pragma mark - default methods
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier
-                    parameters:(NSDictionary *)parameters
+                    parameters:(nullable NSDictionary *)parameters
                        success:(void (^)(NSString *responseString))success
-                       failure:(void (^)(NSError *error))failure
+                       failure:(nullable void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
     NSArray *xmlrpcParameters = nil;
@@ -137,22 +152,12 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     [self.api callMethod:@"wp.newTerm"
               parameters:xmlrpcParameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     
-                     NSAssert([responseObject isKindOfClass:[NSString class]], @"wp.newTerm response should be a string");
                      if (![responseObject respondsToSelector:@selector(numericValue)]) {
-                         NSString *errorMessage = @"Invalid response to wp.newTerm";
-                         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: errorMessage };
-                         NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:0 userInfo:userInfo];
-                         DDLogError(@"%@: %@", errorMessage, responseObject);
-                         if (failure) {
-                             failure(error);
-                         }
+                         NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.newTerm" failure:failure];
                          return;
                      }
-                     if (success) {
-                         success(responseObject);
-                     }
-                     
+                     success(responseObject);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      if (failure) {
                          failure(error);
@@ -161,9 +166,9 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)getTaxonomiesWithType:(NSString *)typeIdentifier
-                 parameters:(NSDictionary *)parameters
-                    success:(void (^)(NSArray *responseArray))success
-                      failure:(void (^)(NSError *error))failure
+                   parameters:(nullable NSDictionary *)parameters
+                      success:(void (^)(NSArray *responseArray))success
+                      failure:(nullable void (^)(NSError *error))failure
 {
     NSArray *xmlrpcParameters = nil;
     if (parameters.count) {
@@ -174,13 +179,12 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     [self.api callMethod:@"wp.getTerms"
               parameters:xmlrpcParameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (![responseObject isKindOfClass:[NSArray class]]) {
-                         responseObject = nil;
+                         NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.getTerms" failure:failure];
+                         return;
                      }
-                     if (success) {
-                         success(responseObject);
-                     }
+                     success(responseObject);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      if (failure) {
                          failure(error);
@@ -199,10 +203,6 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
 {
-    if (!xmlrpcDictionary) {
-        return nil;
-    }
-    
     RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [xmlrpcDictionary numberForKey:TaxonomyXMLRPCIDParameter];
     category.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNameParameter];
@@ -219,10 +219,6 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (RemotePostTag *)remoteTagFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
 {
-    if (!xmlrpcDictionary) {
-        return nil;
-    }
-    
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [xmlrpcDictionary numberForKey:TaxonomyXMLRPCIDParameter];
     tag.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNumberParameter];
@@ -232,33 +228,39 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (NSDictionary *)parametersForPaging:(RemoteTaxonomyPaging *)paging
 {
-    if (!paging) {
-        return nil;
-    }
-    
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
     if (paging.number) {
         [dictionary setObject:paging.number forKey:TaxonomyXMLRPCNumberParameter];
     }
-    
     if (paging.offset) {
         [dictionary setObject:paging.offset forKey:TaxonomyXMLRPCOffsetParameter];
     }
-    
     if (paging.order == RemoteTaxonomyPagingOrderAscending) {
         [dictionary setObject:@"ASC" forKey:TaxonomyXMLRPCOrderParameter];
     } else if (paging.order == RemoteTaxonomyPagingOrderDescending) {
         [dictionary setObject:@"DESC" forKey:TaxonomyXMLRPCOrderParameter];
     }
-    
     if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByName) {
         [dictionary setObject:@"name" forKey:TaxonomyXMLRPCOrderByParameter];
     } else if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByCount) {
         [dictionary setObject:@"count" forKey:TaxonomyXMLRPCOrderByParameter];
     }
-    
     return dictionary.count ? dictionary : nil;
 }
 
+- (void)handleResponseErrorWithMessage:(NSString *)message
+                                method:(NSString *)methodStr
+                               failure:(nullable void(^)(NSError *error))failure
+{
+    DDLogError(@"%@ - method: %@", message, methodStr);
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                         code:NSURLErrorBadServerResponse
+                                     userInfo:@{NSLocalizedDescriptionKey: message}];
+    if (failure) {
+        failure(error);
+    }
+}
+
 @end
+
+NS_ASSUME_NONNULL_END

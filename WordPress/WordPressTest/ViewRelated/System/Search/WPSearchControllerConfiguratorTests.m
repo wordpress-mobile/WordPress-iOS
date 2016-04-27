@@ -3,7 +3,6 @@
 #import <OCMock/OCMock.h>
 #import "WPSearchControllerConfigurator.h"
 #import "WPSearchController.h"
-#import "PostListViewController.h"
 
 @interface WPSearchControllerConfiguratorTests : XCTestCase
 
