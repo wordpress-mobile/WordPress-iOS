@@ -22,6 +22,11 @@ class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
 // stored property since it's a generic class.
 struct StoreKitCoordinator {
     static let instance = StoreCoordinator(store: StoreKitStore())
+    
+    static let TransactionDidFinishNotification = "StoreCoordinatorTransactionDidFinishNotification"
+    static let TransactionDidFailNotification   = "StoreCoordinatorTransactionDidFailNotification"
+    static let NotificationProductIdentifierKey = "StoreCoordinatorNotificationProductIdentifierKey"
+    static let NotificationErrorDescriptionKey  = "StoreCoordinatorNotificationErrorDescriptionKey"
 }
 
 typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
@@ -60,50 +65,102 @@ class StoreCoordinator<S: Store> {
         self.store = store
     }
 
+    /// The store coordinator will post a notification on a successful or failed purchase:
+    /// - `StoreKitCoordinator.TransactionDidFinishNotification` on success. 
+    ///   The notification's `userInfo` will contain the productID of the purchased 
+    ///   product under `StoreKitCoordinator.NotificationProductIdentifierKey`.
+    /// - `StoreKitCoordinator.TransactionDidFailNotification` on failure.
+    ///   The notification's `userInfo` will also contain the productID of the attempted
+    ///   purchased product, as well as a localized error message under `StoreKitCoordinator.NotificationErrorDescriptionKey`.
     func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) {
         precondition(plan.productIdentifier == product.productIdentifier)
-        // TODO: fail better if there's a pending payment
-        precondition(pendingPayment == nil)
+        
+        // We _should_ never have a pending payment at this point...
+        guard pendingPayment == nil else {
+            postTransactionFailedNotification([StoreKitCoordinator.NotificationProductIdentifierKey: product.productIdentifier])
+            return
+        }
+        
         pendingPayment = (plan.id, product.productIdentifier, siteID)
         store.requestPayment(product)
     }
 
     func processTransaction(transaction: SKPaymentTransaction) {
         DDLogSwift.logInfo("[Store] Processing transaction \(transaction)")
-        guard transaction.transactionState == .Purchased else {
-            // Ignore other states for now
-            if transaction.transactionState == .Failed {
-                DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
-                finishTransaction(transaction)
-            } else {
-                DDLogSwift.logInfo("[Store] Ignoring transaction \(transaction)")
-            }
+        switch transaction.transactionState {
+        case .Purchasing: break
+        case .Restored: break
+        case .Failed:
+            DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
+            finishTransaction(transaction)
+        case .Deferred:
+            DDLogSwift.logInfo("[Store] Transaction is deferred \(transaction)")
+        case .Purchased:
+            verifyTransaction(transaction)
+        }
+    }
+    
+    private func verifyTransaction(transaction: SKPaymentTransaction) {
+        guard let pendingPayment = pendingPayment else {
+            DDLogSwift.logInfo("[Store] Transaction with no pending payment information \(transaction)")
+            
+            // TODO: (@frosty 2016-04-27) Still attempt to verify purchase, sending only user info /
+            // receipt data – we should at least be able to tell if this is a renewal.
+            
+            finishTransaction(transaction)
             return
         }
         
-        assert(transaction.payment.productIdentifier == pendingPayment?.productID)
-        guard let siteID = pendingPayment?.siteID,
-            let planID = pendingPayment?.planID,
-            let service = PlanService(siteID: siteID, store: StoreKitStore()),
+        assert(transaction.payment.productIdentifier == pendingPayment.productID)
+        
+        guard let service = PlanService(siteID: pendingPayment.siteID, store: StoreKitStore()),
             let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
             let receipt = NSData(contentsOfURL: receiptURL)
             else {
                 assertionFailure()
                 return
         }
+        
         DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
-        service.verifyPurchase(siteID, planID: planID, receipt: receipt, completion: { [weak self] t_ in
-            DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
+        service.verifyPurchase(pendingPayment.siteID, planID: pendingPayment.planID, receipt: receipt, completion: { [weak self] _ in
             self?.finishTransaction(transaction)
         })
     }
 
     private func finishTransaction(transaction: SKPaymentTransaction) {
+        DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
+
         SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+    
+        guard let productID = pendingPayment?.productID else { return }
         
-        if transaction.payment.productIdentifier == pendingPayment?.productID {
+        if transaction.payment.productIdentifier == productID {
             pendingPayment = nil
         }
+        
+        var userInfo = [StoreKitCoordinator.NotificationProductIdentifierKey: productID]
+        
+        if let error = transaction.error {
+            if error.code != SKErrorCode.PaymentCancelled.rawValue {
+                userInfo[StoreKitCoordinator.NotificationErrorDescriptionKey] = error.localizedDescription
+            }
+            
+            postTransactionFailedNotification(userInfo)
+        } else {
+            postTransactionFinishedNotification(userInfo)
+        }
+    }
+    
+    private func postTransactionFailedNotification(userInfo: [NSObject: AnyObject]? = nil) {
+        NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFailNotification,
+                                                                  object: nil,
+                                                                  userInfo: userInfo)
+    }
+    
+    private func postTransactionFinishedNotification(userInfo: [NSObject: AnyObject]? = nil) {
+        NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFinishNotification,
+                                                                  object: nil,
+                                                                  userInfo: userInfo)
     }
     
     func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
