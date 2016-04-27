@@ -643,7 +643,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
     topic.type = [ReaderTagTopic TopicType];
     topic.tagID = remoteTopic.topicID;
-    topic.title = [self formatTitle:remoteTopic.title];
+    topic.title = remoteTopic.title;
     topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
     topic.showInMenu = remoteTopic.isMenuItem;
