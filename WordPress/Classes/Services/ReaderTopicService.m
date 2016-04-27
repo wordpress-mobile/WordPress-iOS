@@ -469,7 +469,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.subscriberCount = siteInfo.subscriberCount;
         topic.title = siteInfo.siteName;
         topic.type = ReaderSiteTopic.TopicType;
-        topic.path = siteInfo.path;
+        topic.path = siteInfo.postsEndpoint;
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];

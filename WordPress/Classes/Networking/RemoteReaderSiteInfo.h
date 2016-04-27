@@ -14,6 +14,6 @@
 @property (nonatomic, strong) NSString *siteName;
 @property (nonatomic, strong) NSString *siteURL;
 @property (nonatomic, strong) NSNumber *subscriberCount;
-@property (nonatomic, strong) NSString *path;
+@property (nonatomic, strong) NSString *postsEndpoint;
 
 @end

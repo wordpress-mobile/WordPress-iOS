@@ -214,7 +214,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
         siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
     }
     NSString *endpointPath = [NSString stringWithFormat:@"read/sites/%@/posts/", siteInfo.siteID];
-    siteInfo.path = [self endointForPath:endpointPath];
+    siteInfo.postsEndpoint = [self endpointUrlForPath:endpointPath];
     return siteInfo;
 }
 
@@ -237,14 +237,14 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
         siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
     }
     NSString *endpointPath = [NSString stringWithFormat:@"read/feed/%@/posts/", siteInfo.feedID];
-    siteInfo.path = [self endointForPath:endpointPath];
+    siteInfo.postsEndpoint = [self endpointUrlForPath:endpointPath];
     return siteInfo;
 }
 
-- (NSString *)endointForPath:(NSString *)endpoint
+- (NSString *)endpointUrlForPath:(NSString *)endpoint
 {
-    NSString *path = [self pathForEndpoint:endpoint withVersion:ServiceRemoteRESTApiVersion_1_2];
-    NSURL *url = [NSURL URLWithString:path relativeToURL:self.api.baseURL];
+    NSString *absolutePath = [self pathForEndpoint:endpoint withVersion:ServiceRemoteRESTApiVersion_1_2];
+    NSURL *url = [NSURL URLWithString:absolutePath relativeToURL:self.api.baseURL];
     return [url absoluteString];
 }
 
