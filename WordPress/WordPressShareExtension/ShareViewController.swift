@@ -31,14 +31,9 @@ class ShareViewController: SLComposeServiceViewController {
         tracks.wpcomUsername = username
 
         // TextView
-        loadWebsiteUrl { (url) in
-            dispatch_async(dispatch_get_main_queue()) {
-                let current = self.contentText ?? String()
-                let source  = url?.absoluteString ?? String()
-                
-                self.textView.text = "\(current)\n\n\(source)"
-            }
-        }
+        loadTextViewContent()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -147,6 +142,17 @@ class ShareViewController: SLComposeServiceViewController {
         pushConfigurationViewController(pickerViewController)
     }
     
+    private func loadTextViewContent() {
+        extensionContext?.loadWebsiteUrl { url in
+            dispatch_async(dispatch_get_main_queue()) {
+                let current = self.contentText ?? String()
+                let source  = url?.absoluteString ?? String()
+                
+                self.textView.text = "\(current)\n\n\(source)"
+            }
+        }
+    }
+
     
     // TODO: This should eventually be moved into WordPressComKit
     private let postStatuses = [
@@ -160,32 +166,5 @@ class ShareViewController: SLComposeServiceViewController {
         let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
 
         return (firstLineOfText, restOfText)
-    }
-    
-    private func loadWebsiteUrl(completion: (NSURL? -> Void)) {
-        guard let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProviders = item.attachments as? [NSItemProvider] else
-        {
-            completion(nil)
-            return
-        }
-        
-        let urlItemProviders = itemProviders.filter({ (itemProvider) -> Bool in
-            return itemProvider.hasItemConformingToTypeIdentifier("public.url")
-        })
-        
-        guard urlItemProviders.count > 0 else {
-            completion(nil)
-            return
-        }
-        
-        itemProviders.first!.loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
-            guard let theURL = url as? NSURL else {
-                completion(nil)
-                return
-            }
-            
-            completion(theURL)
-        }
     }
 }
