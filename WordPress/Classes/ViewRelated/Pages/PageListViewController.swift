@@ -166,16 +166,12 @@ import WordPressComAnalytics
         switch filterType {
         case .Draft:
             message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-            break
         case .Scheduled:
             message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled pages in the oages list and there are no pages")
-            break
         case .Trashed:
             message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
-            break
         default:
             message = NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-            break
         }
         
         return message
