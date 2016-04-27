@@ -193,18 +193,13 @@ import WordPressComAnalytics
         // Diego Rey Mendez - 2016/04/18
         //
         let filterType = filter?.filterType ?? .Draft
-        var title : String
         
         switch filterType {
         case .Trashed:
-            title = ""
-            break
+            return ""
         default:
-            title = NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
-            break
+            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
         }
-        
-        return title
     }
     
     func configureAuthorFilter() {
