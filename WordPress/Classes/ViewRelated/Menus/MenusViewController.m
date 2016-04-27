@@ -46,10 +46,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
+@property (nonatomic, strong) Menu *updatedMenuForSaving;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
-@property (nonatomic, assign) BOOL savingEnabled;
+@property (nonatomic, assign) BOOL hasMadeSignificantMenuChanges;
+@property (nonatomic, assign) BOOL needsSave;
 @property (nonatomic, assign) BOOL isSaving;
 
 @end
@@ -75,6 +77,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         
         // set local blog from local context
         self.blog = [context objectWithID:blog.objectID];
+        
+        // set up the undomanager
+        context.undoManager = [[NSUndoManager alloc] init];
 
         MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
         self.menusService = service;
@@ -301,18 +306,22 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
-- (void)setSavingEnabled:(BOOL)savingEnabled
+- (void)setNeedsSave:(BOOL)needsSave forMenu:(Menu *)menu significantChanges:(BOOL)significant
 {
-    if (_savingEnabled != savingEnabled) {
-        _savingEnabled = savingEnabled;
+    // Update the saving/changes states.
+    self.needsSave = needsSave;
+    self.hasMadeSignificantMenuChanges = significant;
+    self.updatedMenuForSaving = menu;
+}
+
+- (void)setNeedsSave:(BOOL)needsSave
+{
+    if (_needsSave != needsSave) {
+        _needsSave = needsSave;
         
-        if (!self.blog.managedObjectContext.undoManager) {
-            self.blog.managedObjectContext.undoManager = [[NSUndoManager alloc] init];
-        }
+        self.saveButtonItem.enabled = needsSave;
         
-        self.saveButtonItem.enabled = savingEnabled;
-        
-        if (savingEnabled) {
+        if (needsSave) {
             
             [self.blog.managedObjectContext.undoManager beginUndoGrouping];
             
@@ -344,16 +353,18 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
-- (void)discardChanges
+- (void)discardAllChanges
 {
-    self.savingEnabled = NO;
+    // Clear saving/changes states.
+    [self setNeedsSave:NO forMenu:nil significantChanges:NO];
     
+    // Trigger the undo.
     [self.blog.managedObjectContext.undoManager undo];
     [self reloadMenusViews];
     
+    // Restore the top offset.
     CGPoint offset = self.scrollView.contentOffset;
     offset.y = 0;
-    
     // Scroll to the top on the next run-loop so the layout finishes updating before scrolling.
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.scrollView setContentOffset:offset animated:YES];
@@ -391,7 +402,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)discardChangesBarButtonItemPressed:(id)sender
 {
-    [self promptForDiscardingChangesViaLeftBarButtonItem];
+    [self promptForDiscardingChangesByTheLeftBarButtonItem:^{
+        [self discardAllChanges];
+    } cancellation:nil];
 }
 
 - (void)saveBarButtonItemPressed:(id)sender
@@ -399,7 +412,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self.detailsView resignFirstResponder];
     
     // Buckle up, we gotta save this Menu!
-    Menu *menuToSave = self.selectedMenuLocation.menu;
+    Menu *menuToSave = self.updatedMenuForSaving ?: self.selectedMenuLocation.menu;
     
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
     
@@ -456,7 +469,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
                                       // Refresh the items stack since the items may have changed.
                                       [weakSelf.itemsView reloadItems];
                                       toggleIsSaving(NO);
-                                      weakSelf.savingEnabled = NO;
+                                      [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
                                   failure:failureToSave];
     };
@@ -488,22 +501,34 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         return;
     }
     
-    self.selectedMenuLocation = location;
+    void(^selectLocation)() = ^() {
+        
+        self.selectedMenuLocation = location;
+        
+        // Update the default menu option.
+        Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
+        if ([self defaultMenuEnabledForSelectedLocation]) {
+            // Is primary menu location, allow the option of the default generated Menu.
+            defaultMenu.name = [Menu defaultMenuName];
+        } else {
+            // Default menu is a "No Menu" nullable option when not using the primary location.
+            defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
+        }
+        [self.headerView refreshMenuViewsUsingMenu:defaultMenu];
+        
+        [self.headerView setSelectedLocation:location];
+        [self.headerView setSelectedMenu:location.menu];
+        [self setViewsWithMenu:location.menu];
+    };
     
-    // Update the default menu option.
-    Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
-    if ([self defaultMenuEnabledForSelectedLocation]) {
-        // Is primary menu location, allow the option of the default generated Menu.
-        defaultMenu.name = [Menu defaultMenuName];
+    if (self.needsSave) {
+        [self promptForDiscardingChangesBeforeSelectingADifferentLocation:^{
+            [self discardAllChanges];
+            selectLocation();
+        } cancellation:nil];
     } else {
-        // Default menu is a "No Menu" nullable option when not using the primary location.
-        defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
+        selectLocation();
     }
-    [self.headerView refreshMenuViewsUsingMenu:defaultMenu];
-    
-    [self.headerView setSelectedLocation:location];
-    [self.headerView setSelectedMenu:location.menu];
-    [self setViewsWithMenu:location.menu];
 }
 
 - (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu
@@ -513,24 +538,51 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         return;
     }
     
-    self.savingEnabled = YES;
-    self.selectedMenuLocation.menu = menu;
-    [self.headerView setSelectedMenu:menu];
-    [self setViewsWithMenu:menu];
+    void(^selectMenu)() = ^() {
+        [self setNeedsSave:YES forMenu:menu significantChanges:NO];
+        self.selectedMenuLocation.menu = menu;
+        [self.headerView setSelectedMenu:menu];
+        [self setViewsWithMenu:menu];
+    };
+    
+    if (self.needsSave && self.hasMadeSignificantMenuChanges) {
+        
+        [self promptForDiscardingChangesBeforeSelectingADifferentMenu:^{
+            [self discardAllChanges];
+            selectMenu();
+        } cancellation:nil];
+        
+    } else {
+        selectMenu();
+    }
 }
 
 - (void)headerViewSelectedForCreatingNewMenu:(MenusHeaderView *)headerView
 {
-    Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
-    newMenu.blog = self.blog;
-    newMenu.name = [self generateIncrementalMenuName];
-    self.selectedMenuLocation.menu = newMenu;
+    void(^createMenu)() = ^() {
+        
+        Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
+        newMenu.blog = self.blog;
+        newMenu.name = [self generateIncrementalMenuName];
+        self.selectedMenuLocation.menu = newMenu;
+        
+        [self.headerView addMenu:newMenu];
+        [self.headerView setSelectedMenu:newMenu];
+        [self setViewsWithMenu:newMenu];
+        
+        [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
+    };
     
-    [self.headerView addMenu:newMenu];
-    [self.headerView setSelectedMenu:newMenu];
-    [self setViewsWithMenu:newMenu];
-    
-    self.savingEnabled = YES;
+    if (self.needsSave && self.hasMadeSignificantMenuChanges) {
+        
+        [self promptForDiscardingChangesBeforeCreatingNewMenu:^{
+            [self discardAllChanges];
+            createMenu();
+        } cancellation:nil];
+        
+    } else {
+        createMenu();
+    }
 }
 
 #pragma mark - MenuDetailsViewDelegate
@@ -538,7 +590,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
 {
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
-    self.savingEnabled = YES;
+    [self setNeedsSave:YES forMenu:menuDetailView.menu significantChanges:YES];
 }
 
 - (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView
@@ -565,7 +617,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         [weakSelf.menusService deleteMenu:menuToDelete
                                   forBlog:weakSelf.blog
                                   success:^{
-                                      weakSelf.savingEnabled = NO;
+                                      [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
                                   failure:^(NSError *error) {
                                       // Add the menu back to the list.
@@ -606,7 +658,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     controller.onSelectedToSave = ^() {
-        self.savingEnabled = YES;
+        [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
         [self.itemsView refreshViewWithItem:item focus:YES];
         dismiss();
     };
@@ -614,7 +666,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         if (item.itemID.integerValue) {
             // If the item had an ID, saving is enabled.
             // Otherwise the item was local only.
-            self.savingEnabled = YES;
+            [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
         }
         [self.itemsView removeItem:item];
         [self insertBlankMenuItemIfNeeded];
@@ -639,7 +691,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)itemsView:(MenuItemsStackView *)itemsView didUpdateMenuItemsOrdering:(Menu *)menu
 {
-    self.savingEnabled = YES;
+    [self setNeedsSave:YES forMenu:menu significantChanges:YES];
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
@@ -700,22 +752,116 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     return NSLocalizedString(@"Unsaved Changes", @"Menus alert title for alerting the user to unsaved changes.");
 }
 
-- (void)promptForDiscardingChangesViaLeftBarButtonItem
+- (void)promptForDiscardingChangesBeforeSelectingADifferentLocation:(void(^)())confirmationBlock
+                                                       cancellation:(void(^)())cancellationBlock
 {
-    NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");
     NSString *title = [self discardChangesAlertTitle];
+    NSString *message = NSLocalizedString(@"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu location.");
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu location")
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (cancellationBlock) {
+                                                               cancellationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (confirmationBlock) {
+                                                               confirmationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)promptForDiscardingChangesBeforeSelectingADifferentMenu:(void(^)())confirmationBlock
+                                                   cancellation:(void(^)())cancellationBlock
+{
+    NSString *title = [self discardChangesAlertTitle];
+    NSString *message = NSLocalizedString(@"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu.");
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu")
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (cancellationBlock) {
+                                                               cancellationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (confirmationBlock) {
+                                                               confirmationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)promptForDiscardingChangesBeforeCreatingNewMenu:(void(^)())confirmationBlock
+                                           cancellation:(void(^)())cancellationBlock
+{
+    NSString *title = [self discardChangesAlertTitle];
+    NSString *message = NSLocalizedString(@"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to create a new menu.");
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not createa a new menu.")
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (cancellationBlock) {
+                                                               cancellationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (confirmationBlock) {
+                                                               confirmationBlock();
+                                                           }
+                                                       }];
+        [alert addAction:action];
+    }
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)promptForDiscardingChangesByTheLeftBarButtonItem:(void(^)())confirmationBlock
+                                            cancellation:(void(^)())cancellationBlock
+{
+    NSString *title = [self discardChangesAlertTitle];
+    NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     {
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.")
                                                          style:UIAlertActionStyleCancel
-                                                       handler:nil];
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           if (cancellationBlock) {
+                                                               cancellationBlock();
+                                                           }
+                                                       }];
         [alert addAction:action];
     }
     {
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.")
                                                          style:UIAlertActionStyleDestructive
                                                        handler:^(UIAlertAction * _Nonnull action) {
-                                                           [self discardChanges];
+                                                           if (confirmationBlock) {
+                                                               confirmationBlock();
+                                                           }
                                                        }];
         [alert addAction:action];
     }
