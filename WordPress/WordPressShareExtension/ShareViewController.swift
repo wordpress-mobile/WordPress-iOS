@@ -3,32 +3,36 @@ import Social
 import WordPressComKit
 
 
-class ShareViewController: SLComposeServiceViewController {
+class ShareViewController: SLComposeServiceViewController
+{
     // MARK: - Private Properties
-    private var wpcomUsername: String?
-    private var oauth2Token: NSString?
-    private var selectedSiteID: Int?
-    private var selectedSiteName: String?
-    private var postStatus = "publish"
-    private var tracks: Tracks!
+    private lazy var wpcomUsername: String? = {
+        ShareExtensionService.retrieveShareExtensionUsername()
+    }()
+    
+    private lazy var oauth2Token: String? = {
+        ShareExtensionService.retrieveShareExtensionToken()
+    }()
+    
+    private lazy var selectedSiteID: Int? = {
+        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
+    }()
+    
+    private lazy var selectedSiteName: String? = {
+        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
+    }()
+    
+    private lazy var tracks: Tracks = {
+        Tracks(appGroupName: WPAppGroupName)
+    }()
+    
+    private lazy var postStatus = "publish"
     
     
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
-        // Retrieve all of the settings
-        let username = ShareExtensionService.retrieveShareExtensionUsername()
-        let token = ShareExtensionService.retrieveShareExtensionToken()
-        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
-        
-        // Properties
-        wpcomUsername = username
-        oauth2Token = token
-        selectedSiteID = defaultSite?.siteID
-        selectedSiteName = defaultSite?.siteName
-
         // Tracker
-        tracks = Tracks(appGroupName: WPAppGroupName)
-        tracks.wpcomUsername = username
+        tracks.wpcomUsername = wpcomUsername
 
         // TextView
         loadTextViewContent()
@@ -62,7 +66,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     override func didSelectPost() {
-        RequestRouter.bearerToken = oauth2Token! as String
+        RequestRouter.bearerToken = oauth2Token!
 
         let identifier = WPAppGroupName + "." + NSUUID().UUIDString
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
