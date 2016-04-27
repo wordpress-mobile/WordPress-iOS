@@ -3,8 +3,8 @@ import Social
 import WordPressComKit
 
 
-class ShareViewController: SLComposeServiceViewController
-{
+class ShareViewController: SLComposeServiceViewController {
+    
     // MARK: - Private Properties
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()

@@ -2,8 +2,8 @@ import Foundation
 
 /// Encapsulates NSExtensionContext Helper Methods.
 ///
-extension NSExtensionContext
-{
+extension NSExtensionContext {
+    
     func loadWebsiteUrl(completion: (NSURL? -> Void)) {
         let publicUrlIdentifier = "public.url"
         
