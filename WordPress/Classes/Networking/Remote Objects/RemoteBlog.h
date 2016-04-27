@@ -63,4 +63,9 @@
  */
 @property (nonatomic, strong) NSDictionary *options;
 
+/**
+ * @details Blog's capabilities: Indicate which actions are allowed / not allowed, for the current user.
+ */
+@property (nonatomic, strong) NSDictionary *capabilities;
+
 @end
