@@ -278,7 +278,7 @@ import WordPressComAnalytics
                 return self.dynamicType.pageCellEstimatedRowHeight
             }
             
-            let width = CGRectGetWidth(tableView.bounds)
+            let width = tableView.bounds.width
             return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
         } else {
             return 0
