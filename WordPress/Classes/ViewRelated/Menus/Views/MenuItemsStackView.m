@@ -49,7 +49,7 @@
 
 - (void)setupStyling
 {
-    self.backgroundColor = [WPStyleGuide greyLighten30];
+    self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
 }
