@@ -13,11 +13,6 @@
 @property (nonatomic, copy) NSString *title;
 
 /**
- A secondary title for displaying alongside the primary title.
- */
-@property (nonatomic, copy) NSString *badgeTitle;
-
-/**
  Visual representation of indentation for parent/child relationships.
  */
 @property (nonatomic, assign) NSUInteger sourceHierarchyIndentation;
