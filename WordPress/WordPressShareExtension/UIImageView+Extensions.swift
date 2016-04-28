@@ -21,12 +21,15 @@ extension UIImageView
             downloadTask = nil
         }
         
+        // Helpers
+        let scale = mainScreenScale
+        let size = CGSize(width: blavatarSizeInPoints, height: blavatarSizeInPoints)
+        
         // Hit the Backend
         let request = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         
-        let scale = mainScreenScale
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { [weak self] data, response, error in
             guard let data = data, let image = UIImage(data: data, scale: scale) else {
@@ -34,11 +37,18 @@ extension UIImageView
             }
             
             dispatch_async(dispatch_get_main_queue()) {
-                // Update the Cache
-                Downloader.cache.setObject(image, forKey: url)
+                // Resize if needed!
+                var resizedImage = image
                 
-                // Refresh!
-                self?.image = image
+                if image.size.height > size.height || image.size.width > size.width {
+                    resizedImage = image.resizedImageWithContentMode(.ScaleAspectFit,
+                                                                     bounds: size,
+                                                                     interpolationQuality: .High)
+                }
+                
+                // Update the Cache
+                Downloader.cache.setObject(resizedImage, forKey: url)
+                self?.image = resizedImage
             }
         }
         
@@ -54,24 +64,27 @@ extension UIImageView
     ///
     public func downloadBlavatar(url: NSURL) {
         let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
-        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize())
+        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize)
         
         if let updatedURL = components?.URL {
             downloadImage(updatedURL)
         }
     }
+
     
-    
-    /// Returns the desired Blavatar Side-Size
-    private func blavatarSize() -> Int {
+    /// Returns the desired Blavatar Side-Size, in pixels
+    private var blavatarSize : Int {
+        return blavatarSizeInPoints * Int(mainScreenScale)
+    }
+
+    /// Returns the desired Blavatar Side-Size, in points
+    private var blavatarSizeInPoints : Int {
         var size = Downloader.defaultImageSize
         
         if !CGSizeEqualToSize(bounds.size, CGSizeZero) {
             size = max(bounds.width, bounds.height);
         }
-
-        size *= mainScreenScale
-    
+        
         return Int(size)
     }
     
