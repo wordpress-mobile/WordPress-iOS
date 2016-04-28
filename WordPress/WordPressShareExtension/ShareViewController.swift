@@ -156,8 +156,9 @@ class ShareViewController: SLComposeServiceViewController {
             dispatch_async(dispatch_get_main_queue()) {
                 let current = self.contentText ?? String()
                 let source  = url?.absoluteString ?? String()
+                let spacing = current.isEmpty ? String() : "\n\n"
                 
-                self.textView.text = "\(current)\n\n\(source)"
+                self.textView.text = "\(current)\(spacing)\(source)"
             }
         }
     }
