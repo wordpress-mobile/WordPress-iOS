@@ -316,10 +316,10 @@ class PlanDetailViewController: UIViewController {
         
         if let userInfo = notification.userInfo,
             let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String,
-            let error = userInfo[StoreKitCoordinator.NotificationErrorDescriptionKey] as? String
+            let error = userInfo[NSUnderlyingErrorKey] as? NSError
             where productID == viewModel.plan.productIdentifier {
             let alert = UIAlertController(title: NSLocalizedString("Purchase Failed", comment: "Title of alert displayed when an in-app purchase couldn't be completed."),
-                                          message: error,
+                                          message: error.localizedDescription,
                                           preferredStyle: .Alert)
             alert.addActionWithTitle(NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb."), style: .Cancel, handler: nil)
             alert.presentFromRootViewController()
