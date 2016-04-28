@@ -24,6 +24,8 @@
 
 #import "DDLogSwift.h"
 
+#import "EditPageViewController.h"
+
 #import "HelpshiftUtils.h"
 
 #import "LoginFacade.h"
@@ -49,6 +51,10 @@
 
 #import "OnePasswordFacade.h"
 
+#import "Page.h"
+#import "PageListSectionHeaderView.h"
+#import "PageListTableViewCell.h"
+#import "PageListTableViewCellDelegate.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "Post.h"
@@ -110,6 +116,7 @@
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
+#import "WPLegacyEditPageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"
