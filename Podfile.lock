@@ -119,7 +119,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (4.0.0)
+  - Nimble (4.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
@@ -285,7 +285,7 @@ SPEC CHECKSUMS:
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 72bcc3e2f02242e6bfaaf8d9412ca7bfe3d8b417
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
