@@ -70,6 +70,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic settings;
 @dynamic planID;
 @dynamic sharingButtons;
+@dynamic capabilities;
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
