@@ -3,7 +3,7 @@ import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 
-@objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
+class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
     
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
