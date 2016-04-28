@@ -1,22 +1,39 @@
 #import "WordPressComOAuthClient.h"
 #import "ApiCredentials.h"
+#import <AFNetworking/AFNetworking.h>
 
 NSString * const WordPressComOAuthErrorDomain = @"WordPressComOAuthError";
 NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
 static NSString * const WordPressComOAuthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/";
 
+@interface  WordPressComOAuthClient()
+
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+
+@end
+
 @implementation WordPressComOAuthClient
 
-#pragma mark - Conveniece constructors
+#pragma mark - Convinience constructors
 
-+ (WordPressComOAuthClient *)client {
-    WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressComOAuthBaseUrl]];
-
-	client.responseSerializer = [[AFJSONResponseSerializer alloc] init];
-	[client.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-	
++ (WordPressComOAuthClient *)client
+{
+    WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] init];
     return client;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSURL *baseURL = [NSURL URLWithString:WordPressComOAuthBaseUrl];
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL sessionConfiguration:sessionConfiguration];
+        _sessionManager.responseSerializer = [[AFJSONResponseSerializer alloc] init];
+        [_sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    }
+    return self;
 }
 
 #pragma mark - Misc
@@ -40,21 +57,24 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         [parameters setObject:multifactorCode forKey:@"wpcom_otp"];
     }
     
-    [self POST:@"token"
-	parameters:parameters
-	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               DDLogVerbose(@"Received OAuth2 response: %@", [self cleanedUpResponseForLogging:responseObject]);
-               NSString *authToken = [responseObject stringForKey:@"access_token"];
-               if (success) {
-                   success(authToken);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               error = [self processError:error forOperation:operation];
-               DDLogError(@"Error receiving OAuth2 token: %@", error);
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.sessionManager POST:@"token"
+                   parameters:parameters
+                      success:^(NSURLSessionDataTask *task, id responseObject) {
+                          DDLogVerbose(@"Received OAuth2 response: %@", [self cleanedUpResponseForLogging:responseObject]);
+                          NSString *authToken = [responseObject stringForKey:@"access_token"];
+                          if (success) {
+                              success(authToken);
+                          }
+                      } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                          if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+                              NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)task.response;
+                              error = [self processError:error forResponse:httpURLResponse];
+                          }
+                          DDLogError(@"Error receiving OAuth2 token: %@", error);
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
 }
 
 - (void)requestOneTimeCodeWithUsername:(NSString *)username
@@ -72,36 +92,45 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"wpcom_resend_otp": @(YES)
     };
     
-    [self POST:@"token"
-    parameters:parameters
-       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-           if (success) {
-               success();
-           }
-       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-           error = [self processError:error forOperation:operation];
-           
-           // SORRY:
-           // SMS Requests will still return WordPressComOAuthErrorNeedsMultifactorCode. In which case,
-           // we should hit the success callback.
-           if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
-               if (success) {
-                   success();
-               }
-           } else if (failure) {
-               failure(error);
-           }
-       }];
+    [self.sessionManager POST:@"token"
+                   parameters:parameters
+                      success:^(NSURLSessionDataTask *task, id responseObject) {
+                          if (success) {
+                              success();
+                          }
+                      } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                          if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+                              NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)task.response;
+                              error = [self processError:error forResponse:httpURLResponse];
+                          }
+
+                          // SORRY:
+                          // SMS Requests will still return WordPressComOAuthErrorNeedsMultifactorCode. In which case,
+                          // we should hit the success callback.
+                          if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+                              if (success) {
+                                  success();
+                              }
+                          } else if (failure) {
+                              failure(error);
+                          }
+                      }];
 }
 
-- (NSError *)processError:(NSError *)error forOperation:(AFHTTPRequestOperation *)operation {
-    if (operation.response.statusCode >= 400 && operation.response.statusCode < 500) {
+- (NSError *)processError:(NSError *)error forResponse:(NSHTTPURLResponse *)response {
+    if (response.statusCode >= 400 && response.statusCode < 500) {
         // Bad request, look for errors in the JSON response
-		NSDictionary* response = operation.responseObject;
 
-        if (response) {
-            NSString *errorCode = [response stringForKey:@"error"];
-            NSString *errorDescription = [response stringForKey:@"error_description"];
+        NSData* responseData = nil;
+        NSDictionary *responseDictionary = nil;
+        if (error.domain == AFURLResponseSerializationErrorDomain) {
+            responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+            responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:nil error:nil];
+
+        }
+        if (responseDictionary) {
+            NSString *errorCode = [responseDictionary stringForKey:@"error"];
+            NSString *errorDescription = [responseDictionary stringForKey:@"error_description"];
 
             /*
              Possible errors:
