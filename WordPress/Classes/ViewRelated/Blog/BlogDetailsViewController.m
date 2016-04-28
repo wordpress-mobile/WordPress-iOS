@@ -5,7 +5,6 @@
 #import "BlogDetailHeaderView.h"
 #import "CommentsViewController.h"
 #import "ContextManager.h"
-#import "PageListViewController.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
