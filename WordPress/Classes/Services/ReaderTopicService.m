@@ -469,11 +469,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.subscriberCount = siteInfo.subscriberCount;
         topic.title = siteInfo.siteName;
         topic.type = ReaderSiteTopic.TopicType;
-        if (isFeed) {
-            topic.path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, siteInfo.feedID];
-        } else {
-            topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
-        }
+        topic.path = siteInfo.postsEndpoint;
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
@@ -647,7 +643,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
     topic.type = [ReaderTagTopic TopicType];
     topic.tagID = remoteTopic.topicID;
-    topic.title = [self formatTitle:remoteTopic.title];
+    topic.title = remoteTopic.title;
     topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
     topic.showInMenu = remoteTopic.isMenuItem;
