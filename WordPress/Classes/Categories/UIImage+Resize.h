@@ -3,6 +3,9 @@
 // Free for personal or commercial use, with or without modification.
 // No warranty is expressed or implied.
 
+#import <UIKit/UIKit.h>
+
+
 // Extends the UIImage class to support resizing/cropping
 @interface UIImage (Resize)
 - (UIImage *)croppedImage:(CGRect)bounds;
