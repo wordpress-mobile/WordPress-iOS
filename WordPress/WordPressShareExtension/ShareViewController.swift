@@ -66,7 +66,11 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     override func didSelectPost() {
-        RequestRouter.bearerToken = oauth2Token!
+        guard let oauth2Token = oauth2Token, selectedSiteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
+        }
+        
+        RequestRouter.bearerToken = oauth2Token
 
         let identifier = WPAppGroupName + "." + NSUUID().UUIDString
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
@@ -76,7 +80,7 @@ class ShareViewController: SLComposeServiceViewController {
         let linkified = contentText.stringWithAnchoredLinks()
         let (subject, body) = splitContentTextIntoSubjectAndBody(linkified)
         
-        service.createPost(siteID: selectedSiteID!, status: postStatus, title: subject, body: body) {
+        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
             (post, error) in
             print("Post \(post) Error \(error)")
         }
