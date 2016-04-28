@@ -68,12 +68,26 @@ class Languages : NSObject
     /// If the language is not supported, it returns 1 (English).
     ///
     func deviceLanguageId() -> NSNumber {
-        // Use lazy evaluation so we stop filtering as soon as we got the first match
-        return all.lazy.filter({ $0.slug == self.deviceLanguageCode }).first?.languageId ?? 1
+        if let exactMatch = languageWithSlug(deviceLanguageCode) {
+            return exactMatch.languageId
+        }
+        let languageTag = deviceLanguageCode.componentsSeparatedByString("-")[0]
+        if languageTag != deviceLanguageCode,
+            let partialMatch = languageWithSlug(languageTag) {
+            return partialMatch.languageId
+        }
+        return 1
     }
 
-    private var deviceLanguageCode: String {
-        return NSLocale.preferredLanguages().first ?? "en"
+    private func languageWithSlug(slug: String) -> Language? {
+        // Use lazy evaluation so we stop filtering as soon as we got the first match
+        return all.lazy.filter({ $0.slug == slug }).first
+    }
+
+    /// Overrides the device language. For testing purposes only.
+    ///
+    func _overrideDeviceLanguageCode(code: String) {
+        deviceLanguageCode = code
     }
 
     // MARK: - Public Nested Classes
@@ -131,7 +145,12 @@ class Languages : NSObject
     }
     
     
-    
+    // MARK: - Private Variables
+    private lazy var deviceLanguageCode: String = {
+        return NSLocale.preferredLanguages().first?.lowercaseString ?? "en"
+    }()
+
+
     // MARK: - Private Constants
     private let filename = "Languages"
     
