@@ -45,7 +45,7 @@ typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
 class StoreCoordinator<S: Store> {
     private let store: S
     
-    private var pendingPayment: PendingPayment? {
+    var pendingPayment: PendingPayment? {
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             
