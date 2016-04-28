@@ -18,12 +18,12 @@ extension NSExtensionContext {
             return itemProvider.hasItemConformingToTypeIdentifier(publicUrlIdentifier)
         }
         
-        guard urlItemProviders.count > 0 else {
+        guard let urlItemProvider = urlItemProviders.first else {
             completion(nil)
             return
         }
         
-        itemProviders.first!.loadItemForTypeIdentifier(publicUrlIdentifier, options: nil) { (url, error) in
+        urlItemProvider.loadItemForTypeIdentifier(publicUrlIdentifier, options: nil) { (url, error) in
             guard let theURL = url as? NSURL else {
                 completion(nil)
                 return
