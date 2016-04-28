@@ -82,7 +82,13 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
         // Ignore WordPress emoji images
         if ([src rangeOfString:@"/images/core/emoji/"].location != NSNotFound ||
-            [src rangeOfString:@"/wp-includes/images/smilies/"].location != NSNotFound) {
+            [src rangeOfString:@"/wp-includes/images/smilies/"].location != NSNotFound ||
+            [src rangeOfString:@"/wp-content/mu-plugins/wpcom-smileys/"].location != NSNotFound) {
+            continue;
+        }
+
+        // Ignore .svg images since we can't display them in a UIImageView
+        if ([src rangeOfString:@".svg"].location != NSNotFound) {
             continue;
         }
 
