@@ -10,7 +10,6 @@
 #import "WPAsyncBlockOperation.h"
 #import "WPComLanguages.h"
 #import "WPWalkthroughOverlayView.h"
-#import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
