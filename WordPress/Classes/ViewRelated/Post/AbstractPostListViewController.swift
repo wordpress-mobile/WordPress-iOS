@@ -195,7 +195,11 @@ import WordPressShared
         
         let mainBundle = NSBundle.mainBundle()
         
-        postListFooterView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as! PostListFooterView
+        guard let footerView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as? PostListFooterView else {
+            preconditionFailure("Could not load the footer view from the nib file.")
+        }
+        
+        postListFooterView = footerView
         postListFooterView.showSpinner(false)
         
         var frame = postListFooterView.frame
