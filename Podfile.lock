@@ -197,7 +197,7 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
-  - Gridicons (from `https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec`)
+  - Gridicons (= 0.2)
   - Helpshift (~> 5.5.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.1.4)
@@ -237,8 +237,6 @@ EXTERNAL SOURCES:
     :tag: 0.0.13
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
-  Gridicons:
-    :podspec: https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
