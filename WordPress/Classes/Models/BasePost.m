@@ -2,7 +2,6 @@
 #import "Media.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
-#import "WPComLanguages.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "NSString+Helpers.h"
