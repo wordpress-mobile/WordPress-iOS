@@ -31,8 +31,8 @@ private class PromptContainerViewController : UIViewController
         precondition(viewController.conformsToProtocol(Confirmable))
         
         setupNavigationButtons()
-        attachChildrenViewController(viewController)
-        setupChildrenViewConstraints(viewController.view)
+        attachChildViewController(viewController)
+        setupChildViewConstraints(viewController.view)
         startListeningToProperties(viewController)
     }
     
@@ -44,7 +44,7 @@ private class PromptContainerViewController : UIViewController
     
     // MARK: - Private Helpers
     
-    private func attachChildrenViewController(viewController: UIViewController) {
+    private func attachChildViewController(viewController: UIViewController) {
         // Attach!
         viewController.willMoveToParentViewController(self)
         view.addSubview(viewController.view)
@@ -52,7 +52,7 @@ private class PromptContainerViewController : UIViewController
         viewController.didMoveToParentViewController(self)
     }
     
-    private func setupChildrenViewConstraints(childrenView : UIView) {
+    private func setupChildViewConstraints(childrenView : UIView) {
         // We grow, you grow. We shrink, you shrink. Capicci?
         childrenView.translatesAutoresizingMaskIntoConstraints = false
         childrenView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true

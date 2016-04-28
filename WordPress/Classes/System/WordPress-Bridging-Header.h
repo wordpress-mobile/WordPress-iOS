@@ -5,6 +5,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
+#import "AbstractPostListViewController.h"
 #import "AccountService.h"
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
@@ -23,6 +24,8 @@
 #import "CustomHighlightButton.h"
 
 #import "DDLogSwift.h"
+
+#import "EditPageViewController.h"
 
 #import "HelpshiftUtils.h"
 
@@ -48,11 +51,20 @@
 
 #import "OnePasswordFacade.h"
 
+#import "Page.h"
+#import "PageListSectionHeaderView.h"
+#import "PageListTableViewCell.h"
+#import "PageListTableViewCellDelegate.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "Post.h"
+#import "PostCardTableViewCell.h"
+#import "PostCardTableViewCellDelegate.h"
+#import "PostListFilter.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PostService.h"
+#import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"
@@ -96,15 +108,18 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
+#import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
+#import "WPLegacyEditPageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPPostViewController.h"
 #import "WPRichTextView.h"
+#import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
