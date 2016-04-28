@@ -27,39 +27,45 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.sourceViewCache = [[NSCache alloc] init];
     
-    {
-        UIStackView *stackView = [[UIStackView alloc] init];
-        stackView.translatesAutoresizingMaskIntoConstraints = NO;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.alignment = UIStackViewAlignmentFill;
-        stackView.axis = UILayoutConstraintAxisVertical;
-        stackView.spacing = 0;
-        [self addSubview:stackView];
-        
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                  [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                  [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                  [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-                                                  [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor]
-                                                  ]];
-        
-        self.stackView = stackView;
-    }
-    {
-        MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
-        headerView.delegate = self;
-        [self.stackView addArrangedSubview:headerView];
-        
-        NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
-        height.priority = 999;
-        height.active = YES;
-        
-        [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        [headerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        
-        self.headerView = headerView;
-    }
+    [self initStackView];
+    [self initHeaderView];
+}
+
+- (void)initStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.spacing = 0;
+    [self addSubview:stackView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+                                              [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor]
+                                              ]];
+    
+    self.stackView = stackView;
+}
+
+- (void)initHeaderView
+{
+    MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
+    headerView.delegate = self;
+    [self.stackView addArrangedSubview:headerView];
+    
+    NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
+    height.priority = 999;
+    height.active = YES;
+    
+    [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    [headerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    
+    self.headerView = headerView;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

@@ -31,77 +31,10 @@
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        {
-            UIStackView *stackView = [[UIStackView alloc] init];
-            stackView.translatesAutoresizingMaskIntoConstraints = NO;
-            stackView.alignment = UIStackViewAlignmentFill;
-            stackView.distribution = UIStackViewDistributionFill;
-            stackView.axis = UILayoutConstraintAxisHorizontal;
-            stackView.spacing = MenusDesignDefaultContentSpacing;
-            
-            [self addSubview:stackView];
-            
-            NSLayoutConstraint *leading = [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
-            leading.priority = UILayoutPriorityDefaultHigh;
-            
-            NSLayoutConstraint *trailing = [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing];
-            trailing.priority = UILayoutPriorityDefaultHigh;
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      leading,
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MenusDesignDefaultContentSpacing],
-                                                      trailing,
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing]
-                                                      ]];
-            self.stackView = stackView;
-        }
-        {
-            UIImageView *iconView = [[UIImageView alloc] init];
-            iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.backgroundColor = [UIColor whiteColor];
-            iconView.tintColor = [WPStyleGuide grey];
-            
-            [self.stackView addArrangedSubview:iconView];
-            
-            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
-            widthConstraint.priority = 999;
-            widthConstraint.active = YES;
-            
-            self.iconView = iconView;
-        }
-        {
-            UILabel *label = [[UILabel alloc] init];
-            label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.numberOfLines = 5;
-            label.lineBreakMode = NSLineBreakByTruncatingTail;
-            label.font = [WPStyleGuide tableviewTextFont];
-            label.backgroundColor = [UIColor whiteColor];
-            
-            [self.stackView addArrangedSubview:label];
-            
-            [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            
-            self.label = label;
-        }
-        {
-            UIImageView *iconView = [[UIImageView alloc] init];
-            iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.backgroundColor = [UIColor whiteColor];
-            iconView.tintColor = [WPStyleGuide grey];
-            iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
-            
-            [self.stackView addArrangedSubview:iconView];
-            
-            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
-            widthConstraint.priority = 999;
-            widthConstraint.active = YES;
-            
-            self.arrowView = iconView;
-            [self hideArrowView];
-        }
+        [self initStackView];
+        [self initIconView];
+        [self initLabel];
+        [self initArrowIconView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
         
@@ -110,6 +43,85 @@
     }
     
     return self;
+}
+
+- (void)initStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.spacing = MenusDesignDefaultContentSpacing;
+    
+    [self addSubview:stackView];
+    
+    NSLayoutConstraint *leading = [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
+    leading.priority = UILayoutPriorityDefaultHigh;
+    
+    NSLayoutConstraint *trailing = [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing];
+    trailing.priority = UILayoutPriorityDefaultHigh;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              leading,
+                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MenusDesignDefaultContentSpacing],
+                                              trailing,
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing]
+                                              ]];
+    self.stackView = stackView;
+}
+
+- (void)initIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor whiteColor];
+    iconView.tintColor = [WPStyleGuide grey];
+    
+    [self.stackView addArrangedSubview:iconView];
+    
+    NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
+    widthConstraint.priority = 999;
+    widthConstraint.active = YES;
+    
+    self.iconView = iconView;
+}
+
+- (void)initLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 5;
+    label.lineBreakMode = NSLineBreakByTruncatingTail;
+    label.font = [WPStyleGuide tableviewTextFont];
+    label.backgroundColor = [UIColor whiteColor];
+    
+    [self.stackView addArrangedSubview:label];
+    
+    [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    
+    self.label = label;
+}
+
+- (void)initArrowIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor whiteColor];
+    iconView.tintColor = [WPStyleGuide grey];
+    iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
+    
+    [self.stackView addArrangedSubview:iconView];
+    
+    NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
+    widthConstraint.priority = 999;
+    widthConstraint.active = YES;
+    
+    self.arrowView = iconView;
+    [self hideArrowView];
 }
 
 - (void)setSelected:(BOOL)selected

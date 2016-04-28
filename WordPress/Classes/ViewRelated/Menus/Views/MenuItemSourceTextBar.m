@@ -32,111 +32,12 @@
         
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
-        {
-            UIStackView *stackView = [[UIStackView alloc] init];
-            stackView.translatesAutoresizingMaskIntoConstraints = NO;
-            stackView.distribution = UIStackViewDistributionFill;
-            stackView.alignment = UIStackViewAlignmentFill;
-            stackView.axis = UILayoutConstraintAxisHorizontal;
-            stackView.spacing = spacing;
-            
-            [self addSubview:stackView];
-            
-            const CGFloat padding = 3.0;
-            NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:padding];
-            top.priority = 999;
-            NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-padding];
-            bottom.priority = 999;
-            [NSLayoutConstraint activateConstraints:@[
-                                                      top,
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      bottom
-                                                      ]];
-            self.stackView = stackView;
-        }
-        {
-            UIView *contentView = [[UIView alloc] init];
-            contentView.translatesAutoresizingMaskIntoConstraints = NO;
-            contentView.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-            contentView.layer.borderWidth = MenusDesignStrokeWidth;
-            contentView.backgroundColor = [UIColor whiteColor];
-            
-            [self.stackView addArrangedSubview:contentView];
-            self.contentView = contentView;
-            
-            UIStackView *contentStackView = [[UIStackView alloc] init];
-            contentStackView.translatesAutoresizingMaskIntoConstraints = NO;
-            contentStackView.distribution = UIStackViewDistributionFill;
-            contentStackView.alignment = UIStackViewAlignmentFill;
-            contentStackView.axis = UILayoutConstraintAxisHorizontal;
-            contentStackView.spacing = spacing;
-            
-            [contentView addSubview:contentStackView];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [contentStackView.topAnchor constraintEqualToAnchor:contentView.topAnchor constant:spacing],
-                                                      [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:spacing],
-                                                      [contentStackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor constant:-spacing],
-                                                      [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-spacing]
-                                                      ]];
-            
-            self.contentStackView = contentStackView;
-        }
-        {
-            UIImageView *iconView = [[UIImageView alloc] init];
-            iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.tintColor = [WPStyleGuide greyDarken10];
-            iconView.contentMode = UIViewContentModeScaleAspectFit;
-            
-            [self.contentStackView addArrangedSubview:iconView];
-            
-            NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:20.0];
-            width.priority = 999;
-            width.active = YES;
-            
-            iconView.hidden = YES;
-            _iconView = iconView;
-        }
-        {
-            UITextField *textField = [[UITextField alloc] init];
-            textField.delegate = self;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-            textField.returnKeyType = UIReturnKeyDone;
-            textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-            textField.autocorrectionType = UITextAutocorrectionTypeNo;
-            textField.opaque = YES;
-            
-            [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
-            [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
-            
-            UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
-            textField.font = font;
-            
-            [self.contentStackView addArrangedSubview:textField];
-            
-            [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            
-            _textField = textField;
-        }
-        {
-            UILabel *label = [[UILabel alloc] init];
-            label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
-            label.textColor = [WPStyleGuide greyDarken20];
-            label.font = [WPFontManager systemRegularFontOfSize:14.0];
-            label.userInteractionEnabled = YES;
-            [self.stackView addArrangedSubview:label];
-            
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
-            [label addGestureRecognizer:tap];
-            
-            [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            
-            self.cancelLabel = label;
-            [self setCancelLabelHidden:YES animated:NO];
-        }
+
+        [self initStackView];
+        [self initContentStackView];
+        [self initIconView];
+        [self initTextField];
+        [self initCancelLabel];
     }
     
     return self;
@@ -157,6 +58,122 @@
     }
     
     return self;
+}
+
+- (void)initStackView
+{
+    const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.spacing = spacing;
+    
+    [self addSubview:stackView];
+    
+    const CGFloat padding = 3.0;
+    NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:padding];
+    top.priority = 999;
+    NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-padding];
+    bottom.priority = 999;
+    [NSLayoutConstraint activateConstraints:@[
+                                              top,
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              bottom
+                                              ]];
+    self.stackView = stackView;
+}
+
+- (void)initContentStackView
+{
+    UIView *contentView = [[UIView alloc] init];
+    contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    contentView.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    contentView.layer.borderWidth = MenusDesignStrokeWidth;
+    contentView.backgroundColor = [UIColor whiteColor];
+    
+    [self.stackView addArrangedSubview:contentView];
+    self.contentView = contentView;
+    
+    UIStackView *contentStackView = [[UIStackView alloc] init];
+    contentStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    contentStackView.distribution = UIStackViewDistributionFill;
+    contentStackView.alignment = UIStackViewAlignmentFill;
+    contentStackView.axis = UILayoutConstraintAxisHorizontal;
+    
+    const CGFloat spacing = self.stackView.spacing;
+    contentStackView.spacing = spacing;
+    
+    [contentView addSubview:contentStackView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [contentStackView.topAnchor constraintEqualToAnchor:contentView.topAnchor constant:spacing],
+                                              [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:spacing],
+                                              [contentStackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor constant:-spacing],
+                                              [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-spacing]
+                                              ]];
+    
+    self.contentStackView = contentStackView;
+}
+
+- (void)initIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.tintColor = [WPStyleGuide greyDarken10];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    [self.contentStackView addArrangedSubview:iconView];
+    
+    NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:20.0];
+    width.priority = 999;
+    width.active = YES;
+    
+    iconView.hidden = YES;
+    _iconView = iconView;
+}
+
+- (void)initTextField
+{
+    UITextField *textField = [[UITextField alloc] init];
+    textField.delegate = self;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.opaque = YES;
+    
+    [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
+    textField.font = font;
+    
+    [self.contentStackView addArrangedSubview:textField];
+    
+    [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    
+    _textField = textField;
+}
+
+- (void)initCancelLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
+    label.textColor = [WPStyleGuide greyDarken20];
+    label.font = [WPFontManager systemRegularFontOfSize:14.0];
+    label.userInteractionEnabled = YES;
+    [self.stackView addArrangedSubview:label];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
+    [label addGestureRecognizer:tap];
+    
+    [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    
+    self.cancelLabel = label;
+    [self setCancelLabelHidden:YES animated:NO];
 }
 
 - (void)addTextObserver:(MenuItemSourceTextBarFieldObserver *)textObserver
