@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
  
  @see https://developer.wordpress.com/docs/oauth2/
  */
-@interface WordPressComOAuthClient : AFHTTPRequestOperationManager
+@interface WordPressComOAuthClient : NSObject
 
 + (WordPressComOAuthClient *)client;
 
