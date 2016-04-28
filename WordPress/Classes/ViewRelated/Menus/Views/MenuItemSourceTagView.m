@@ -26,7 +26,6 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 {
     self = [super init];
     if (self) {
-        
         [self insertSearchBarIfNeeded];
     }
     

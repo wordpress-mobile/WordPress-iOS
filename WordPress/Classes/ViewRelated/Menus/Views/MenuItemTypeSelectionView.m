@@ -24,38 +24,44 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentMode = UIViewContentModeRedraw;
 
-    {
-        UIScrollView *scrollView = [[UIScrollView alloc] init];
-        scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-        scrollView.backgroundColor = [UIColor clearColor];
-        scrollView.clipsToBounds = NO;
-        scrollView.scrollsToTop = NO;
-        [self addSubview:scrollView];
-        
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                  [scrollView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                  [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                  [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                  ]];
-        self.scrollView = scrollView;
-    }
-    {
-        UIStackView *stackView = [[UIStackView alloc] init];
-        stackView.translatesAutoresizingMaskIntoConstraints = NO;
-        stackView.alignment = UIStackViewAlignmentTop;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.axis = UILayoutConstraintAxisVertical;
-        [self.scrollView addSubview:stackView];
-        
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [stackView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
-                                                  [stackView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
-                                                  [stackView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
-                                                  [stackView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor]
-                                                  ]];
-        self.stackView = stackView;
-    }
+    [self initScrollView];
+    [self initStackView];
+}
+
+- (void)initScrollView
+{
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    scrollView.backgroundColor = [UIColor clearColor];
+    scrollView.clipsToBounds = NO;
+    scrollView.scrollsToTop = NO;
+    [self addSubview:scrollView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [scrollView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              ]];
+    self.scrollView = scrollView;
+}
+
+- (void)initStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.alignment = UIStackViewAlignmentTop;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    [self.scrollView addSubview:stackView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor]
+                                              ]];
+    self.stackView = stackView;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

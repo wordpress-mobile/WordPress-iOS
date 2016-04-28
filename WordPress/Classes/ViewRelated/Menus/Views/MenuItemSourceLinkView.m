@@ -18,49 +18,58 @@
     self = [super init];
     if (self) {
         
-        {
-            UILabel *label = [[UILabel alloc] init];
-            label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.text = [NSLocalizedString(@"Link Address (URL)", @"Menus title label when editing a menu item as a link.") uppercaseString];
-            label.textColor = [WPStyleGuide greyDarken10];
-            label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
-            
-            [self.stackView addArrangedSubview:label];
-            self.label = label;
-        }
-        {
-            MenuItemSourceTextBar *textBar = [[MenuItemSourceTextBar alloc] init];
-            textBar.translatesAutoresizingMaskIntoConstraints = NO;
-            textBar.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-            textBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-            textBar.textField.keyboardType = UIKeyboardTypeURL;
-            textBar.delegate = self;
-            [self.stackView addArrangedSubview:textBar];
-            
-            NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:48.0];
-            heightConstraint.priority = UILayoutPriorityDefaultHigh;
-            heightConstraint.active = YES;
-            
-            [textBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-            self.textBar = textBar;
-        }
-        {
-            MenuItemCheckButtonView *checkButtonView = [[MenuItemCheckButtonView alloc] init];
-            checkButtonView.label.text = NSLocalizedString(@"Open link in new window/tab", @"Menus label for checkbox when editig item as a link.");
-            __weak __typeof__(self) weakSelf = self;
-            checkButtonView.onChecked = ^() {
-                [weakSelf updateItemLinkTargetOption];
-            };
-            [self.stackView addArrangedSubview:checkButtonView];
-            
-            NSLayoutConstraint *heightConstraint = [checkButtonView.heightAnchor constraintEqualToConstant:[checkButtonView preferredHeightForLayout]];
-            heightConstraint.active = YES;
-            
-            self.checkButtonView = checkButtonView;
-        }
+        [self initLabel];
+        [self initTextBar];
+        [self initCheckButtonView];
     }
     
     return self;
+}
+
+- (void)initLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.text = [NSLocalizedString(@"Link Address (URL)", @"Menus title label when editing a menu item as a link.") uppercaseString];
+    label.textColor = [WPStyleGuide greyDarken10];
+    label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
+    
+    [self.stackView addArrangedSubview:label];
+    self.label = label;
+}
+
+- (void)initTextBar
+{
+    MenuItemSourceTextBar *textBar = [[MenuItemSourceTextBar alloc] init];
+    textBar.translatesAutoresizingMaskIntoConstraints = NO;
+    textBar.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textBar.textField.keyboardType = UIKeyboardTypeURL;
+    textBar.delegate = self;
+    [self.stackView addArrangedSubview:textBar];
+    
+    NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:48.0];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    heightConstraint.active = YES;
+    
+    [textBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    self.textBar = textBar;
+}
+
+- (void)initCheckButtonView
+{
+    MenuItemCheckButtonView *checkButtonView = [[MenuItemCheckButtonView alloc] init];
+    checkButtonView.label.text = NSLocalizedString(@"Open link in new window/tab", @"Menus label for checkbox when editig item as a link.");
+    __weak __typeof__(self) weakSelf = self;
+    checkButtonView.onChecked = ^() {
+        [weakSelf updateItemLinkTargetOption];
+    };
+    [self.stackView addArrangedSubview:checkButtonView];
+    
+    NSLayoutConstraint *heightConstraint = [checkButtonView.heightAnchor constraintEqualToConstant:[checkButtonView preferredHeightForLayout]];
+    heightConstraint.active = YES;
+    
+    self.checkButtonView = checkButtonView;
 }
 
 - (NSString *)sourceItemType

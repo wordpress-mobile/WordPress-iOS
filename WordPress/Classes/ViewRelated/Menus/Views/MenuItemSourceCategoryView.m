@@ -17,16 +17,6 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 
 @implementation MenuItemSourceCategoryView
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        
-    }
-    
-    return self;
-}
-
 - (void)setBlog:(Blog *)blog
 {
     [super setBlog:blog];

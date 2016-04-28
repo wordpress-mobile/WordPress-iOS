@@ -45,68 +45,78 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        {
-            self.backgroundColor = [UIColor whiteColor];
-            
-            UIStackView *stackView = [[UIStackView alloc] init];
-            stackView.translatesAutoresizingMaskIntoConstraints = NO;
-            stackView.distribution = UIStackViewDistributionFill;
-            stackView.alignment = UIStackViewAlignmentLeading;
-            stackView.axis = UILayoutConstraintAxisHorizontal;
-            
-            UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = 10.0;
-            margins.left = MenusDesignDefaultContentSpacing;
-            margins.right = MenusDesignDefaultContentSpacing;
-            margins.bottom = 10.0;
-            
-            stackView.layoutMargins = margins;
-            stackView.layoutMarginsRelativeArrangement = YES;
-            stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
-            [self.contentView addSubview:stackView];
-            
-            self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
-            self.topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
-            self.topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      self.topLayoutDefaultConstraint,
-                                                      self.leadingLayoutConstraintForContentViewIndentation,
-                                                      [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
-                                                      ]];
-            
-            self.stackView = stackView;
-        }
-        {
-            UIStackView *labelsStackView = [[UIStackView alloc] init];
-            labelsStackView.translatesAutoresizingMaskIntoConstraints = NO;
-            labelsStackView.distribution = UIStackViewDistributionFill;
-            labelsStackView.alignment = UIStackViewAlignmentTop;
-            labelsStackView.axis = UILayoutConstraintAxisHorizontal;
-            labelsStackView.spacing = self.stackView.spacing;
-            
-            [self.stackView addArrangedSubview:labelsStackView];
-            self.labelsStackView = labelsStackView;
-        }
-        {
-            UILabel *label = [[UILabel alloc] init];
-            label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.font = [WPStyleGuide tableviewTextFont];
-            label.textColor = [WPStyleGuide greyDarken30];
-            label.backgroundColor = [UIColor whiteColor];
-            label.numberOfLines = 0;
-            label.lineBreakMode = NSLineBreakByTruncatingTail;
-            
-            [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-            [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-            
-            [self.labelsStackView addArrangedSubview:label];
-            self.label = label;
-        }
+        
+        self.backgroundColor = [UIColor whiteColor];
+        
+        [self initStackView];
+        [self initLabelsStackView];
+        [self initLabel];
     }
     
     return self;
+}
+
+- (void)initStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.alignment = UIStackViewAlignmentLeading;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.top = 10.0;
+    margins.left = MenusDesignDefaultContentSpacing;
+    margins.right = MenusDesignDefaultContentSpacing;
+    margins.bottom = 10.0;
+    
+    stackView.layoutMargins = margins;
+    stackView.layoutMarginsRelativeArrangement = YES;
+    stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
+    [self.contentView addSubview:stackView];
+    
+    self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
+    self.topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
+    self.topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              self.topLayoutDefaultConstraint,
+                                              self.leadingLayoutConstraintForContentViewIndentation,
+                                              [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                              ]];
+    
+    self.stackView = stackView;
+}
+
+- (void)initLabelsStackView
+{
+    UIStackView *labelsStackView = [[UIStackView alloc] init];
+    labelsStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    labelsStackView.distribution = UIStackViewDistributionFill;
+    labelsStackView.alignment = UIStackViewAlignmentTop;
+    labelsStackView.axis = UILayoutConstraintAxisHorizontal;
+    labelsStackView.spacing = self.stackView.spacing;
+    
+    [self.stackView addArrangedSubview:labelsStackView];
+    self.labelsStackView = labelsStackView;
+}
+
+- (void)initLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.font = [WPStyleGuide tableviewTextFont];
+    label.textColor = [WPStyleGuide greyDarken30];
+    label.backgroundColor = [UIColor whiteColor];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [self.labelsStackView addArrangedSubview:label];
+    self.label = label;
 }
 
 - (void)layoutSubviews

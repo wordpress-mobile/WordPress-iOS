@@ -26,46 +26,52 @@ static CGFloat const iconPadding = 3.0;
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        {
-            UIImageView *iconView = [[UIImageView alloc] init];
-            iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
-            iconView.tintColor = [WPStyleGuide mediumBlue];
-            iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.alpha = 0.0;
-            [self addSubview:iconView];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [iconView.topAnchor constraintEqualToAnchor:self.topAnchor constant:iconPadding],
-                                                      [iconView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:iconPadding],
-                                                      [iconView.widthAnchor constraintEqualToAnchor:iconView.heightAnchor],
-                                                      [iconView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-iconPadding]
-                                                      ]];
-            self.iconView = iconView;
-        }
-        {
-            UILabel *label = [[UILabel alloc] init];
-            label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.backgroundColor = [UIColor whiteColor];
-            
-            NSDictionary *attributes = [self attributesForText];
-            label.font = [attributes objectForKey:NSFontAttributeName];
-            label.textColor = [attributes objectForKey:NSForegroundColorAttributeName];
-            
-            [self addSubview:label];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [label.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing / 2.0],
-                                                      [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                      ]];
-            
-            _label = label;
-        }
+        [self initIconView];
+        [self initLabel];
     }
     
     return self;
+}
+
+- (void)initIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
+    iconView.tintColor = [WPStyleGuide mediumBlue];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.alpha = 0.0;
+    [self addSubview:iconView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [iconView.topAnchor constraintEqualToAnchor:self.topAnchor constant:iconPadding],
+                                              [iconView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:iconPadding],
+                                              [iconView.widthAnchor constraintEqualToAnchor:iconView.heightAnchor],
+                                              [iconView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-iconPadding]
+                                              ]];
+    self.iconView = iconView;
+}
+
+- (void)initLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.backgroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attributes = [self attributesForText];
+    label.font = [attributes objectForKey:NSFontAttributeName];
+    label.textColor = [attributes objectForKey:NSForegroundColorAttributeName];
+    
+    [self addSubview:label];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [label.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing / 2.0],
+                                              [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              ]];
+    
+    _label = label;
 }
 
 - (CGFloat)preferredHeightForLayout

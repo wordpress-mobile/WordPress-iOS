@@ -28,92 +28,101 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [UIColor clearColor];
 
-    {
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
-        margins.left = MenusDesignDefaultContentSpacing;
-        margins.right = margin;
-        margins.top = margin;
-        margins.bottom = margin;
-        
-        UIStackView *stackView = [[UIStackView alloc] init];
-        stackView.translatesAutoresizingMaskIntoConstraints = NO;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.alignment = UIStackViewAlignmentFill;
-        stackView.spacing = MenusDesignDefaultContentSpacing;
-        
-        [self addSubview:stackView];
-        
-        NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
-        topConstraint.priority = UILayoutPriorityDefaultHigh;
-        self.stackViewTopConstraint  = topConstraint;
-        
-        NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
-        bottomConstraint.priority = UILayoutPriorityDefaultHigh;
-        
-        [NSLayoutConstraint activateConstraints:@[
-                                                  topConstraint,
-                                                  bottomConstraint,
-                                                  [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
-                                                  [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
-                                                  ]];
-        
-        self.stackView = stackView;
-    }
-    {
-        UIImageView *iconView = [[UIImageView alloc] init];
-        iconView.translatesAutoresizingMaskIntoConstraints = NO;
-        iconView.contentMode = UIViewContentModeScaleAspectFit;
-        iconView.backgroundColor = [UIColor clearColor];
-        iconView.tintColor = [UIColor whiteColor];
+    [self initStackView];
+    [self initIconView];
+    [self initTextField];
+}
 
-        NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
-        widthConstraint.active = YES;
-        
-        [self.stackView addArrangedSubview:iconView];
-        self.iconView = iconView;
-    }
-    {
-        UIView *textFieldContainerView = [[UIView alloc] init];
-        textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        textFieldContainerView.backgroundColor = [UIColor whiteColor];
-        [self.stackView addArrangedSubview:textFieldContainerView];
+- (void)initStackView
+{
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
+    margins.left = MenusDesignDefaultContentSpacing;
+    margins.right = margin;
+    margins.top = margin;
+    margins.bottom = margin;
+    
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.spacing = MenusDesignDefaultContentSpacing;
+    
+    [self addSubview:stackView];
+    
+    NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
+    topConstraint.priority = UILayoutPriorityDefaultHigh;
+    self.stackViewTopConstraint  = topConstraint;
+    
+    NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
+    bottomConstraint.priority = UILayoutPriorityDefaultHigh;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              topConstraint,
+                                              bottomConstraint,
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
+                                              ]];
+    
+    self.stackView = stackView;
+}
 
-        self.textFieldContainerView = textFieldContainerView;
+- (void)initIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor clearColor];
+    iconView.tintColor = [UIColor whiteColor];
+    
+    NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
+    widthConstraint.active = YES;
+    
+    [self.stackView addArrangedSubview:iconView];
+    self.iconView = iconView;
+}
 
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        margins.top = [self defaultStackDesignMargin];
-        margins.left = MenusDesignDefaultContentSpacing / 2.0;
-        margins.right = MenusDesignDefaultContentSpacing / 4.0;
-        margins.bottom = margins.top;
-        textFieldContainerView.layoutMargins = margins;
-        
-        UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
-        
-        UITextField *textField = [[UITextField alloc] init];
-        textField.translatesAutoresizingMaskIntoConstraints = NO;
-        textField.delegate = self;
-        textField.placeholder = [MenuItem defaultItemNameLocalized];
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-        textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        textField.returnKeyType = UIReturnKeyDone;
-        textField.textColor = [WPStyleGuide darkGrey];
-        textField.font = [WPStyleGuide regularTextFont];
-        textField.backgroundColor = [UIColor clearColor];
-        [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-        [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
-
-        [textFieldContainerView addSubview:textField];
-        self.textField = textField;
-        
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [textField.topAnchor constraintEqualToAnchor:marginGuide.topAnchor],
-                                                  [textField.leadingAnchor constraintEqualToAnchor:marginGuide.leadingAnchor],
-                                                  [textField.trailingAnchor constraintEqualToAnchor:marginGuide.trailingAnchor],
-                                                  [textField.bottomAnchor constraintEqualToAnchor:marginGuide.bottomAnchor],
-                                                 ]];
-    }
+- (void)initTextField
+{
+    UIView *textFieldContainerView = [[UIView alloc] init];
+    textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    textFieldContainerView.backgroundColor = [UIColor whiteColor];
+    [self.stackView addArrangedSubview:textFieldContainerView];
+    
+    self.textFieldContainerView = textFieldContainerView;
+    
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.top = [self defaultStackDesignMargin];
+    margins.left = MenusDesignDefaultContentSpacing / 2.0;
+    margins.right = MenusDesignDefaultContentSpacing / 4.0;
+    margins.bottom = margins.top;
+    textFieldContainerView.layoutMargins = margins;
+    
+    UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
+    
+    UITextField *textField = [[UITextField alloc] init];
+    textField.translatesAutoresizingMaskIntoConstraints = NO;
+    textField.delegate = self;
+    textField.placeholder = [MenuItem defaultItemNameLocalized];
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.textColor = [WPStyleGuide darkGrey];
+    textField.font = [WPStyleGuide regularTextFont];
+    textField.backgroundColor = [UIColor clearColor];
+    [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    [textFieldContainerView addSubview:textField];
+    self.textField = textField;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [textField.topAnchor constraintEqualToAnchor:marginGuide.topAnchor],
+                                              [textField.leadingAnchor constraintEqualToAnchor:marginGuide.leadingAnchor],
+                                              [textField.trailingAnchor constraintEqualToAnchor:marginGuide.trailingAnchor],
+                                              [textField.bottomAnchor constraintEqualToAnchor:marginGuide.bottomAnchor],
+                                              ]];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

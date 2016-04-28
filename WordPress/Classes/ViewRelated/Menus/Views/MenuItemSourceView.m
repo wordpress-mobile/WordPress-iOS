@@ -31,65 +31,77 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
         
-        {
-            UITableView *tableView = [[UITableView alloc] init];
-            tableView.translatesAutoresizingMaskIntoConstraints = NO;
-            tableView.dataSource = self;
-            tableView.delegate = self;
-            tableView.separatorColor = [WPStyleGuide greyLighten20];
-            UIEdgeInsets inset = tableView.contentInset;
-            inset.top = MenusDesignDefaultContentSpacing / 2.0;
-            tableView.contentInset = inset;
-            [self addSubview:tableView];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [tableView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                      ]];
-            _tableView = tableView;
-        }
-        {
-            // setup the tableHeaderView and keep translatesAutoresizingMaskIntoConstraints to default YES
-            // this allows the tableView to handle sizing the view as any other tableHeaderView
-            UIView *stackedTableHeaderView = [[UIView alloc] init];
-            self.stackedTableHeaderView = stackedTableHeaderView;
-        }
-        {
-            UIStackView *stackView = [[UIStackView alloc] init];
-            stackView.translatesAutoresizingMaskIntoConstraints = NO;
-            stackView.distribution = UIStackViewDistributionFill;
-            stackView.alignment = UIStackViewAlignmentFill;
-            stackView.axis = UILayoutConstraintAxisVertical;
-            stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
-            
-            UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.bottom = stackView.spacing;
-            margins.left = MenusDesignDefaultContentSpacing;
-            margins.right = MenusDesignDefaultContentSpacing;
-            stackView.layoutMargins = margins;
-            stackView.layoutMarginsRelativeArrangement = YES;
-            
-            [self.stackedTableHeaderView addSubview:stackView];
-            // setup the constraints for the stackView
-            // constrain the horiztonal edges to sync the width to the stackedTableHeaderView
-            // do not include a bottom constraint so the stackView can layout its intrinsic height
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.stackedTableHeaderView.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.leadingAnchor],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.trailingAnchor]
-                                                      ]];
-            _stackView = stackView;
-        }
-        {
-            MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
-            self.tableView.tableFooterView = footerView;
-            self.footerView = footerView;
-        }
+        [self initTableView];
+        [self initStackedTableHeaderView];
+        [self initStackView];
+        [self initFooterView];
     }
     
     return self;
+}
+
+- (void)initTableView
+{
+    UITableView *tableView = [[UITableView alloc] init];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.separatorColor = [WPStyleGuide greyLighten20];
+    UIEdgeInsets inset = tableView.contentInset;
+    inset.top = MenusDesignDefaultContentSpacing / 2.0;
+    tableView.contentInset = inset;
+    [self addSubview:tableView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [tableView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              ]];
+    _tableView = tableView;
+}
+
+- (void)initStackedTableHeaderView
+{
+    // setup the tableHeaderView and keep translatesAutoresizingMaskIntoConstraints to default YES
+    // this allows the tableView to handle sizing the view as any other tableHeaderView
+    UIView *stackedTableHeaderView = [[UIView alloc] init];
+    self.stackedTableHeaderView = stackedTableHeaderView;
+}
+
+- (void)initStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
+    
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.bottom = stackView.spacing;
+    margins.left = MenusDesignDefaultContentSpacing;
+    margins.right = MenusDesignDefaultContentSpacing;
+    stackView.layoutMargins = margins;
+    stackView.layoutMarginsRelativeArrangement = YES;
+    
+    [self.stackedTableHeaderView addSubview:stackView];
+    // setup the constraints for the stackView
+    // constrain the horiztonal edges to sync the width to the stackedTableHeaderView
+    // do not include a bottom constraint so the stackView can layout its intrinsic height
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.topAnchor constraintEqualToAnchor:self.stackedTableHeaderView.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.trailingAnchor]
+                                              ]];
+    _stackView = stackView;
+}
+
+- (void)initFooterView
+{
+    MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
+    self.tableView.tableFooterView = footerView;
+    self.footerView = footerView;
 }
 
 - (BOOL)resignFirstResponder
