@@ -24,7 +24,8 @@
 #import "NSString+Helpers.h"	
 #import "WPAppAnalytics.h"
 @import Gridicons;
-#import "WPLegacyEditPostViewController.h"
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
@@ -165,6 +166,20 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaInProgress = [NSMutableDictionary dictionary];
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     self.delegate = self;
+}
+
+- (void)customizeAppearance
+{
+    [super customizeAppearance];
+    [self setTitleFont:[WPFontManager merriweatherBoldFontOfSize:24.0]];
+    [self setTitleColor:[WPStyleGuide darkGrey]];
+    [self setBodyFont:[UIFont fontWithName: @"Menlo-Regular" size:14.0f]];
+    [self setBodyColor:[WPStyleGuide darkGrey]];
+    [self setPlaceholderColor:[WPStyleGuide textFieldPlaceholderGrey]];
+    [self setSeparatorColor:[WPStyleGuide greyLighten20]];
+
+    [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
+    [[WPLegacyEditorFormatToolbar appearance] setBackgroundColor:[UIColor colorWithRed:0xF9/255.0 green:0xFB/255.0 blue:0xFC/255.0 alpha:1]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -366,7 +381,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     picker.dataSource = self.mediaLibraryDataSource;
     picker.allowCaptureOfMedia = YES;
     picker.showMostRecentFirst = YES;
-    picker.filter = WPMediaTypeImage;
+    picker.filter = WPMediaTypeVideoOrImage;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -901,7 +916,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)addDeviceMediaAsset:(PHAsset *)asset
 {
-    if (asset.mediaType == PHAssetMediaTypeImage) {
+    if (asset.mediaType == PHAssetMediaTypeImage || asset.mediaType == PHAssetMediaTypeVideo) {
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         __weak __typeof__(self) weakSelf = self;
         NSString* imageUniqueId = [self uniqueIdForMedia];
