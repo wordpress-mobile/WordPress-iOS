@@ -18,7 +18,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let postsLoadMoreThreshold = Int(4)
     private static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
     
-    static let defaultHeightForFooterView = CGFloat(44.0);
+    private static let defaultHeightForFooterView = CGFloat(44.0);
     
     var blog : Blog!
     var postListViewController : UITableViewController!
