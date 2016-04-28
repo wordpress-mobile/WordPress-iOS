@@ -3,7 +3,7 @@ import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
 
-@objc class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
+class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
     
