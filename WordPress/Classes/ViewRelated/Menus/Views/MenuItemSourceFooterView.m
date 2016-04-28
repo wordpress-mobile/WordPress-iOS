@@ -43,24 +43,33 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         
         self.backgroundColor = [UIColor whiteColor];
         
-        MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        cell.frame = self.bounds;
-        cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        cell.alpha = 0.0;
-        [cell setTitle:@"Dummy Text For Sizing the Label"];
-        [self addSubview:cell];
-        self.sourceCell = cell;
-        
-        MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
-        drawView.backgroundColor = [UIColor whiteColor];
-        drawView.autoresizingMask = cell.autoresizingMask;
-        drawView.drawDelegate = self;
-        drawView.contentMode = UIViewContentModeRedraw;
-        [self.sourceCell addSubview:drawView];
-        self.drawView = drawView;
+        [self initSourceCell];
+        [self initDrawView];
     }
     
     return self;
+}
+
+- (void)initSourceCell
+{
+    MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.frame = self.bounds;
+    cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    cell.alpha = 0.0;
+    [cell setTitle:@"Dummy Text For Sizing the Label"];
+    [self addSubview:cell];
+    self.sourceCell = cell;
+}
+
+- (void)initDrawView
+{
+    MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
+    drawView.backgroundColor = [UIColor whiteColor];
+    drawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    drawView.drawDelegate = self;
+    drawView.contentMode = UIViewContentModeRedraw;
+    [self.sourceCell addSubview:drawView];
+    self.drawView = drawView;
 }
 
 - (void)toggleMessageWithText:(NSString *)text

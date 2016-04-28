@@ -23,11 +23,99 @@
 {
     [super awakeFromNib];
     
-    [self setupArrangedViews];
-    [self setupStyling];
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    CGFloat spacing = MenusDesignDefaultContentSpacing;
+    // Spacing + tweak for design stroke offset.
+    margins.left = spacing;
+    margins.right = spacing;
+    self.stackView.layoutMargins = margins;
+    self.stackView.layoutMarginsRelativeArrangement = YES;
+    self.stackView.distribution = UIStackViewDistributionFill;
+    self.stackView.alignment = UIStackViewAlignmentCenter;
+    self.stackView.spacing = spacing;
+    
+    [self initIconView];
+    [self initLabelsStackView];
+    [self initSubtTitleLabel];
+    [self initTitleLabel];
+    [self initAccessoryView];
+    
+    self.backgroundColor = [UIColor clearColor];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTapGestureRecognized:)];
     [self addGestureRecognizer:tap];
+}
+
+- (void)initIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.tintColor = [WPStyleGuide grey];
+    [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
+    [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
+    [self.stackView addArrangedSubview:iconView];
+    self.iconView = iconView;
+}
+
+- (void)initLabelsStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [self.stackView addArrangedSubview:stackView];
+    self.labelsStackView = stackView;
+}
+
+- (void)initSubtTitleLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.numberOfLines = 0;
+    label.font = [WPFontManager systemRegularFontOfSize:13.0];
+    label.textColor = [WPStyleGuide grey];
+    self.subTitleLabel = label;
+    [self.labelsStackView addArrangedSubview:label];
+}
+
+- (void)initTitleLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.numberOfLines = 1;
+    label.font = [WPFontManager systemRegularFontOfSize:17.0];
+    label.textColor = [WPStyleGuide darkGrey];
+    label.adjustsFontSizeToFitWidth = YES;
+    label.minimumScaleFactor = 0.50;
+    label.allowsDefaultTighteningForTruncation = YES;
+    self.titleLabel = label;
+    [self.labelsStackView addArrangedSubview:label];
+}
+
+- (void)initAccessoryView
+{
+    UIImageView *accessoryView = [[UIImageView alloc] init];
+    accessoryView.contentMode = UIViewContentModeScaleAspectFit;
+    accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
+    accessoryView.tintColor = [WPStyleGuide greyLighten20];
+    [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
+    [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
+    [self.stackView addArrangedSubview:accessoryView];
+    self.accessoryView = accessoryView;
+}
+
+- (void)setShowsDesignActive:(BOOL)showsDesignActive
+{
+    if (_showsDesignActive != showsDesignActive) {
+        _showsDesignActive = showsDesignActive;
+        
+        if (showsDesignActive) {
+            self.accessoryView.transform = CGAffineTransformMakeScale(1.0, -1.0);
+        } else  {
+            self.accessoryView.transform = CGAffineTransformIdentity;
+        }
+    }
 }
 
 - (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionItem *)selectedItem
@@ -53,89 +141,6 @@
     }
     
     [self setTitleText:selectedItem.displayName subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
-}
-
-- (void)setupStyling
-{
-    self.backgroundColor = [UIColor clearColor];
-}
-
-- (void)setupArrangedViews
-{
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    {
-        UIStackView *stackView = self.stackView;
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        CGFloat spacing = MenusDesignDefaultContentSpacing;
-        // Spacing + tweak for design stroke offset. 
-        margins.left = spacing;
-        margins.right = spacing;
-        stackView.layoutMargins = margins;
-        stackView.layoutMarginsRelativeArrangement = YES;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.alignment = UIStackViewAlignmentCenter;
-        stackView.spacing = spacing;
-    }
-    {
-        UIImageView *iconView = [[UIImageView alloc] init];
-        iconView.contentMode = UIViewContentModeScaleAspectFit;
-        iconView.tintColor = [WPStyleGuide grey];
-        [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
-        [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
-        [self.stackView addArrangedSubview:iconView];
-        self.iconView = iconView;
-    }
-    {
-        UIStackView *stackView = [[UIStackView alloc] init];
-        stackView.alignment = UIStackViewAlignmentFill;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.axis = UILayoutConstraintAxisVertical;
-        [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [self.stackView addArrangedSubview:stackView];
-        self.labelsStackView = stackView;
-    }
-    {
-        UILabel *label = [[UILabel alloc] init];
-        label.numberOfLines = 0;
-        label.font = [WPFontManager systemRegularFontOfSize:13.0];
-        label.textColor = [WPStyleGuide grey];
-        self.subTitleLabel = label;
-        [self.labelsStackView addArrangedSubview:label];
-    }
-    {
-        UILabel *label = [[UILabel alloc] init];
-        label.numberOfLines = 1;
-        label.font = [WPFontManager systemRegularFontOfSize:17.0];
-        label.textColor = [WPStyleGuide darkGrey];
-        label.adjustsFontSizeToFitWidth = YES;
-        label.minimumScaleFactor = 0.50;
-        label.allowsDefaultTighteningForTruncation = YES;
-        self.titleLabel = label;
-        [self.labelsStackView addArrangedSubview:label];
-    }
-    {
-        UIImageView *accessoryView = [[UIImageView alloc] init];
-        accessoryView.contentMode = UIViewContentModeScaleAspectFit;
-        accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
-        accessoryView.tintColor = [WPStyleGuide greyLighten20];
-        [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
-        [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
-        [self.stackView addArrangedSubview:accessoryView];
-        self.accessoryView = accessoryView;
-    }
-}
-
-- (void)setShowsDesignActive:(BOOL)showsDesignActive
-{
-    if (_showsDesignActive != showsDesignActive) {
-        _showsDesignActive = showsDesignActive;
-        
-        if (showsDesignActive) {
-            self.accessoryView.transform = CGAffineTransformMakeScale(1.0, -1.0);
-        } else  {
-            self.accessoryView.transform = CGAffineTransformIdentity;
-        }
-    }
 }
 
 - (void)setTitleText:(NSString *)title subTitleText:(NSString *)subtitle

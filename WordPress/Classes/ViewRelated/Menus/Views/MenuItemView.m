@@ -23,44 +23,54 @@
 {
     self = [super init];
     if (self) {
-        {
-            UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
-            [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            self.addButton = button;
-        }
-        {
-            UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
-            button.userInteractionEnabled = NO;
-            self.orderingButton = button;
-        }
-        {
-            UIButton *button = [[UIButton alloc] init];
-            [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
-            [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-            
-            UIEdgeInsets inset = button.contentEdgeInsets;
-            inset.left = 6.0;
-            inset.right = inset.left;
-            button.contentEdgeInsets = inset;
-            button.hidden = YES;
-            
-            [self.accessoryStackView addArrangedSubview:button];
-            [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            
-            NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToAnchor:self.accessoryStackView.heightAnchor];
-            heightConstraint.priority = 999;
-            heightConstraint.active = YES;
-            
-            self.cancelButton = button;
-        }
+
+        [self initAddButton];
+        [self initOrderingButton];
+        [self initCancelButton];
         
         self.highlighted = NO;
     }
     
     return self;
+}
+
+- (void)initAddButton
+{
+    UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
+    [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.addButton = button;
+}
+
+- (void)initOrderingButton
+{
+    UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
+    button.userInteractionEnabled = NO;
+    self.orderingButton = button;
+}
+
+- (void)initCancelButton
+{
+    UIButton *button = [[UIButton alloc] init];
+    [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
+    [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+    
+    UIEdgeInsets inset = button.contentEdgeInsets;
+    inset.left = 6.0;
+    inset.right = inset.left;
+    button.contentEdgeInsets = inset;
+    button.hidden = YES;
+    
+    [self.accessoryStackView addArrangedSubview:button];
+    [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    
+    NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToAnchor:self.accessoryStackView.heightAnchor];
+    heightConstraint.priority = 999;
+    heightConstraint.active = YES;
+    
+    self.cancelButton = button;
 }
 
 - (void)setItem:(MenuItem *)item

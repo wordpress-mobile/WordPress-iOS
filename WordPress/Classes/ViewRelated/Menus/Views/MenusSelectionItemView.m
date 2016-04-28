@@ -23,40 +23,35 @@
     self = [super init];
     if (self) {
         
-        [self setup];
+        self.backgroundColor = [UIColor clearColor];
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        UILabel *label = [[UILabel alloc] init];
+        label.translatesAutoresizingMaskIntoConstraints = NO;
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
+        label.textColor = [WPStyleGuide darkGrey];
+        [self addSubview:label];
+        self.label = label;
+        
+        UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
+        insets.left = MenusDesignDefaultContentSpacing;
+        insets.right = MenusDesignDefaultContentSpacing;
+        
+        [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left].active = YES;
+        [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:insets.right].active = YES;
+        [label.topAnchor constraintEqualToAnchor:self.topAnchor constant:0].active = YES;
+        [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0].active = YES;
+        
+        _drawsDesignLineSeparator = YES; // defaults to YES
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(itemSelectionChanged:) name:MenusSelectionViewItemChangedSelectedNotification object:nil];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateViewWasSelected)];
+        [self addGestureRecognizer:tap];
     }
     
     return self;
-}
-
-- (void)setup
-{
-    self.backgroundColor = [UIColor clearColor];
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    UILabel *label = [[UILabel alloc] init];
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.backgroundColor = [UIColor clearColor];
-    label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
-    label.textColor = [WPStyleGuide darkGrey];
-    [self addSubview:label];
-    self.label = label;
-    
-    UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
-    insets.left = MenusDesignDefaultContentSpacing;
-    insets.right = MenusDesignDefaultContentSpacing;
-    
-    [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left].active = YES;
-    [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:insets.right].active = YES;
-    [label.topAnchor constraintEqualToAnchor:self.topAnchor constant:0].active = YES;
-    [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0].active = YES;
-    
-    _drawsDesignLineSeparator = YES; // defaults to YES
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(itemSelectionChanged:) name:MenusSelectionViewItemChangedSelectedNotification object:nil];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateViewWasSelected)];
-    [self addGestureRecognizer:tap];
 }
 
 - (void)setItem:(MenusSelectionItem *)item

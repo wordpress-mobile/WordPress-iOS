@@ -26,11 +26,6 @@
 {
     [super awakeFromNib];
     
-    [self setupStyling];
-}
-
-- (void)setupStyling
-{
     self.backgroundColor = [UIColor clearColor];
     
     self.stackView.layoutMarginsRelativeArrangement = YES;
@@ -40,6 +35,13 @@
     self.stackView.layoutMargins = margin;
     self.stackView.spacing = 4.0;
     
+    [self initTextField];
+    [self initTextFieldDesignViews];
+    [self initTrashButton];
+}
+
+- (void)initTextField
+{
     UITextField *textField = self.textField;
     textField.text = nil;
     textField.placeholder = NSLocalizedString(@"Menu Name", @"Menus placeholder text for the name field of a menu with no name.");
@@ -51,11 +53,10 @@
     textField.adjustsFontSizeToFitWidth = NO;
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
-    
-    UIView *textFieldDesignView = self.textFieldDesignView;
-    textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
-    textFieldDesignView.backgroundColor = [UIColor clearColor];
-    
+}
+
+- (void)initTrashButton
+{
     UIButton *trashButton = self.trashButton;
     [trashButton setTitle:nil forState:UIControlStateNormal];
     trashButton.tintColor = [WPStyleGuide grey];
@@ -63,27 +64,32 @@
     [trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     trashButton.backgroundColor = [UIColor clearColor];
     trashButton.adjustsImageWhenHighlighted = YES;
+}
+
+- (void)initTextFieldDesignViews
+{
+    UIView *textFieldDesignView = self.textFieldDesignView;
+    textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
+    textFieldDesignView.backgroundColor = [UIColor clearColor];
     
-    {
-        UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        imageView.translatesAutoresizingMaskIntoConstraints = NO;
-        imageView.tintColor = [WPStyleGuide grey];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.textFieldDesignIcon = imageView;
-        
-        [textFieldDesignView addSubview:imageView];
-        
-        NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
-        self.textFieldDesignIconLeadingConstraint = leadingConstraint;
-        [self updateTextFieldDesignIconPositioning];
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [imageView.widthAnchor constraintEqualToConstant:14],
-                                                  [imageView.heightAnchor constraintEqualToConstant:14],
-                                                  [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
-                                                  leadingConstraint
-                                                  ]];
-    }
+    UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.tintColor = [WPStyleGuide grey];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.textFieldDesignIcon = imageView;
+    
+    [self.textFieldDesignView addSubview:imageView];
+    
+    NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
+    self.textFieldDesignIconLeadingConstraint = leadingConstraint;
+    [self updateTextFieldDesignIconPositioning];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [imageView.widthAnchor constraintEqualToConstant:14],
+                                              [imageView.heightAnchor constraintEqualToConstant:14],
+                                              [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
+                                              leadingConstraint
+                                              ]];
 }
 
 - (void)setMenu:(Menu *)menu

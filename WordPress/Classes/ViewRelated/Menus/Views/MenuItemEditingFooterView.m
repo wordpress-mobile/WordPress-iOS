@@ -17,38 +17,48 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    {
-        UIButton *button = self.cancelButton;
-        button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
-        [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
-        [button setTitleColor:[WPStyleGuide greyDarken20] forState:UIControlStateHighlighted];
-        [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        button.backgroundColor = [UIColor clearColor];
-    }
-    {
-        UIButton *button = self.trashButton;
-        button.adjustsImageWhenHighlighted = YES;
-        [button setTitle:nil forState:UIControlStateNormal];
-        button.tintColor = [WPStyleGuide grey];
-        [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        button.backgroundColor = [UIColor clearColor];
-    }
-    {
-        UIButton *button = self.saveButton;
-        button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
-        [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-        [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
-        [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
-        [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        button.backgroundColor = [UIColor clearColor];
-    }
+
+    [self initCancelButton];
+    [self initTrashButton];
+    [self initSaveButton];
+}
+
+- (void)initCancelButton
+{
+    UIButton *button = self.cancelButton;
+    button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
+    [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide greyDarken20] forState:UIControlStateHighlighted];
+    [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor = [UIColor clearColor];
+}
+
+- (void)initTrashButton
+{
+    UIButton *button = self.trashButton;
+    button.adjustsImageWhenHighlighted = YES;
+    [button setTitle:nil forState:UIControlStateNormal];
+    button.tintColor = [WPStyleGuide grey];
+    [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor = [UIColor clearColor];
+}
+
+- (void)initSaveButton
+{
+    UIButton *button = self.saveButton;
+    button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
+    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
+    [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor = [UIColor clearColor];
 }
 
 - (void)drawRect:(CGRect)rect
-{    
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
