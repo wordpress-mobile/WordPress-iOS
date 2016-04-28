@@ -26,7 +26,6 @@ struct StoreKitCoordinator {
     static let TransactionDidFinishNotification = "StoreCoordinatorTransactionDidFinishNotification"
     static let TransactionDidFailNotification   = "StoreCoordinatorTransactionDidFailNotification"
     static let NotificationProductIdentifierKey = "StoreCoordinatorNotificationProductIdentifierKey"
-    static let NotificationErrorDescriptionKey  = "StoreCoordinatorNotificationErrorDescriptionKey"
 }
 
 typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
@@ -138,11 +137,11 @@ class StoreCoordinator<S: Store> {
             pendingPayment = nil
         }
         
-        var userInfo = [StoreKitCoordinator.NotificationProductIdentifierKey: productID]
+        var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID]
         
         if let error = transaction.error {
             if error.code != SKErrorCode.PaymentCancelled.rawValue {
-                userInfo[StoreKitCoordinator.NotificationErrorDescriptionKey] = error.localizedDescription
+                userInfo[NSUnderlyingErrorKey] = error
             }
             
             postTransactionFailedNotification(userInfo)
