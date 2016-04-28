@@ -12,12 +12,6 @@
 
 @end
 
-#pragma mark - MenuItemSourceOptionBadgeLabel
-
-@interface MenuItemSourceOptionBadgeLabel : UILabel
-
-@end
-
 #pragma mark - MenuItemSourceOptionView
 
 static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
@@ -27,7 +21,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
 @property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
 @property (nonatomic, strong) NSLayoutConstraint *topLayoutConstraintForContentViewIndentation;
 @property (nonatomic, strong) NSLayoutConstraint *topLayoutDefaultConstraint;
@@ -142,18 +135,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     }
 }
 
-- (void)setBadgeTitle:(NSString *)badgeTitle
-{
-    if (_badgeTitle != badgeTitle) {
-        _badgeTitle = [badgeTitle copy];
-        
-        [self insertBadgeLabelIfNeeded];
-        self.badgeLabel.text = [badgeTitle uppercaseString];
-    }
-    
-    self.badgeLabel.hidden = _badgeTitle.length ? NO : YES;
-}
-
 - (void)setSourceHierarchyIndentation:(NSUInteger)sourceHierarchyIndentation
 {
     if (_sourceHierarchyIndentation != sourceHierarchyIndentation) {
@@ -177,42 +158,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     rect.size.width -= rect.origin.x;
     
     return rect;
-}
-
-- (void)insertBadgeLabelIfNeeded
-{
-    if (!self.badgeLabel) {
-        
-        MenuItemSourceOptionBadgeLabel *label = [[MenuItemSourceOptionBadgeLabel alloc] init];
-        label.translatesAutoresizingMaskIntoConstraints = NO;
-        label.font = [WPFontManager systemLightFontOfSize:13.0];
-        label.textColor = [UIColor whiteColor];
-        label.backgroundColor = [WPStyleGuide greyLighten10];
-        label.layer.cornerRadius = 3.0;
-        label.layer.masksToBounds = YES;
-        label.textAlignment = NSTextAlignmentCenter;
-        label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-        
-        [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        
-        [self.labelsStackView addArrangedSubview:label];
-        self.badgeLabel = label;
-    }
-}
-
-@end
-
-#pragma mark - MenuItemSourceOptionBadgeLabel
-
-@implementation MenuItemSourceOptionBadgeLabel
-
-- (CGSize)intrinsicContentSize
-{
-    CGSize size = [super intrinsicContentSize];
-    size.width += 8.0;
-    size.height += 4.0;
-    return size;
 }
 
 @end
