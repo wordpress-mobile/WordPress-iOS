@@ -437,7 +437,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath!) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         assert(false, "You should implement this method in the subclass")
     }
     
