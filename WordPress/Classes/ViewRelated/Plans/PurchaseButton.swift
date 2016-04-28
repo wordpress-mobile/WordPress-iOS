@@ -77,6 +77,7 @@ class PurchaseButton: RoundedButton {
         activityView.translatesAutoresizingMaskIntoConstraints = false
         
         self.pinSubviewAtCenter(activityView)
+        activityView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
         activityView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
         activityView.widthAnchor.constraintEqualToAnchor(activityView.heightAnchor).active = true
 
@@ -103,7 +104,7 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self.bounds.height / 2
                     self.titleLabel?.alpha = 0
                     
-                    self.superview?.layoutIfNeeded()
+                    self.layoutIfNeeded()
                     }, completion:  { finished in
                         self.activityIndicatorView.startAnimating()
                         self.borderWidth = 0
@@ -117,7 +118,7 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self._cornerRadius
                     self.borderWidth = 1
                     
-                    self.superview?.layoutIfNeeded()
+                    self.layoutIfNeeded()
                     }, completion:  { finished in
                         self.titleLabel?.alpha = 1
                 })
