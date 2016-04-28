@@ -30,10 +30,22 @@ struct StoreKitCoordinator {
 
 typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
 
+/// StoreCoordinator coordinates purchasing of products, processing of transactions, and
+/// verification of purchases between the App Store (StoreKit) and WordPress.com.
+///
+/// Users of this class can simply attempt a purchase using `purchasePlan(_:product:forSite)`,
+/// and the coordinator will post a notification on a successful or failed purchase:
+///
+/// - `StoreKitCoordinator.TransactionDidFinishNotification` on success.
+///   The notification's `userInfo` will contain the productID of the purchased
+///   product under `StoreKitCoordinator.NotificationProductIdentifierKey`.
+/// - `StoreKitCoordinator.TransactionDidFailNotification` on failure.
+///   The notification's `userInfo` will also contain the productID of the attempted
+///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
 class StoreCoordinator<S: Store> {
-    let store: S
+    private let store: S
     
-    var pendingPayment: PendingPayment? {
+    private var pendingPayment: PendingPayment? {
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             
@@ -64,17 +76,11 @@ class StoreCoordinator<S: Store> {
         self.store = store
     }
 
-    /// The store coordinator will post a notification on a successful or failed purchase:
-    /// - `StoreKitCoordinator.TransactionDidFinishNotification` on success. 
-    ///   The notification's `userInfo` will contain the productID of the purchased 
-    ///   product under `StoreKitCoordinator.NotificationProductIdentifierKey`.
-    /// - `StoreKitCoordinator.TransactionDidFailNotification` on failure.
-    ///   The notification's `userInfo` will also contain the productID of the attempted
-    ///   purchased product, as well as a localized error message under `StoreKitCoordinator.NotificationErrorDescriptionKey`.
+    /// Initiates a purchase for the specified plan if a purchase isn't already in progress.
     func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) {
         precondition(plan.productIdentifier == product.productIdentifier)
         
-        // We _should_ never have a pending payment at this point...
+        // We _should_ never have a pending payment at this point, so we'll fail in that case.
         guard pendingPayment == nil else {
             postTransactionFailedNotification([StoreKitCoordinator.NotificationProductIdentifierKey: product.productIdentifier])
             return
@@ -84,7 +90,7 @@ class StoreCoordinator<S: Store> {
         store.requestPayment(product)
     }
 
-    func processTransaction(transaction: SKPaymentTransaction) {
+    private func processTransaction(transaction: SKPaymentTransaction) {
         DDLogSwift.logInfo("[Store] Processing transaction \(transaction)")
         switch transaction.transactionState {
         case .Purchasing: break
@@ -122,6 +128,7 @@ class StoreCoordinator<S: Store> {
         
         DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
         service.verifyPurchase(pendingPayment.siteID, planID: pendingPayment.planID, receipt: receipt, completion: { [weak self] _ in
+            // TODO: Handle success / failure of verification attempt
             self?.finishTransaction(transaction)
         })
     }
@@ -162,6 +169,8 @@ class StoreCoordinator<S: Store> {
                                                                   userInfo: userInfo)
     }
     
+    /// - Returns: A PurchaseAvailability indicating whether the specified plan is currently
+    ///            available for purchase for the specified site, given the current active plan.
     func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
         guard store.canMakePayments
             && plan.isPaidPlan
