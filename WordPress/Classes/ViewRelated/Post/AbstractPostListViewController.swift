@@ -18,13 +18,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let postsLoadMoreThreshold = Int(4)
     private static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
     
-    private static let defaultHeightForFooterView = CGFloat(44.0);
+    private static let defaultHeightForFooterView = CGFloat(44.0)
     
     var blog : Blog!
     var postListViewController : UITableViewController!
     
     lazy var tableView : UITableView = {
-        return self.postListViewController.tableView;
+        return self.postListViewController.tableView
     }()
     
     var refreshControl : UIRefreshControl!
@@ -61,7 +61,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
     
     var searchController : WPSearchController! // Stand-in for UISearchController
-    private var allPostListFilters = [NSString: [PostListFilter]]()
+    private var allPostListFilters = [String:[PostListFilter]]()
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
@@ -71,7 +71,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView = postListViewController.tableView;
+        tableView = postListViewController.tableView
         refreshControl = postListViewController.refreshControl
         
         refreshControl?.addTarget(self, action: #selector(AbstractPostListViewController.refresh(_:)), forControlEvents: .ValueChanged)
@@ -161,7 +161,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     func heightForFooterView() -> CGFloat
     {
-        return self.dynamicType.defaultHeightForFooterView;
+        return self.dynamicType.defaultHeightForFooterView
     }
 
     
@@ -383,7 +383,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch {
-            DDLogSwift.logError("Error fetching posts after updating the fetch request predicate: \(error)");
+            DDLogSwift.logError("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
     
@@ -525,7 +525,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func lastSyncDate() -> NSDate? {
-        return blog.lastPostsSync;
+        return blog.lastPostsSync
     }
     
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> ())?, failure: ((error: NSError) -> ())?) {
@@ -701,7 +701,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let post = apost.hasRevision() ? apost.revision : apost
         
         let controller = PostPreviewViewController(post: post, shouldHideStatusBar: false)
-        controller.hidesBottomBarWhenPushed = true;
+        controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
     
