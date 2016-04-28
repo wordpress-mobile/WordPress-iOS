@@ -63,8 +63,19 @@ class Languages : NSObject
         
         return String()
     }
-    
-    
+
+    /// Returns the current device language as the corresponding WordPress.com language ID.
+    /// If the language is not supported, it returns 1 (English).
+    ///
+    func deviceLanguageId() -> NSNumber {
+        // Use lazy evaluation so we stop filtering as soon as we got the first match
+        return all.lazy.filter({ $0.slug == self.deviceLanguageCode }).first?.languageId ?? 1
+    }
+
+    private var deviceLanguageCode: String {
+        return NSLocale.preferredLanguages().first ?? "en"
+    }
+
     // MARK: - Public Nested Classes
     
     /// Represents a Language, which allows us to deal with WordPress.com settings

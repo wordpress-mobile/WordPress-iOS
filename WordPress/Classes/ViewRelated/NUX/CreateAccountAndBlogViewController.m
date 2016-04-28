@@ -8,7 +8,6 @@
 #import "WPPostViewController.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
-#import "WPComLanguages.h"
 #import "WPWalkthroughOverlayView.h"
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
@@ -53,7 +52,7 @@
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
 
-    NSDictionary *_currentLanguage;
+    NSNumber *_currentLanguageId;
 
     WPAccount *_account;
 }
@@ -84,7 +83,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     if (self) {
         _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguage = [WPComLanguages currentLanguage];
+        _currentLanguageId = [[Languages sharedInstance] deviceLanguageId];
     }
     return self;
 }
@@ -783,7 +782,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
+        NSString *languageId = [_currentLanguageId stringValue];
         
         WordPressComApi *api = [WordPressComApi anonymousApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
@@ -888,7 +887,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
+        NSString *languageId = [_currentLanguageId stringValue];
         
         WordPressComApi *api = [_account restApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
