@@ -10,7 +10,7 @@
 /**
  Title label used for displaying header text for a MenuItem.
  */
-@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
 
 @end
 
