@@ -164,8 +164,10 @@
                     </view>
                     <connections>
                         <outlet property="bottomContentConstraint" destination="69z-Ci-34m" id="P7I-rP-Yd4"/>
+                        <outlet property="createSiteButton" destination="PCj-nt-T9Y" id="YmC-Pm-ReZ"/>
                         <outlet property="emailTextField" destination="XXO-aV-keK" id="GZQ-cn-hKd"/>
                         <outlet property="safariPasswordButton" destination="DvS-7c-C5u" id="QWl-vu-AuY"/>
+                        <outlet property="selfHostedSigninButton" destination="5Hn-ZK-h9k" id="hZn-AT-eQt"/>
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
                         <outlet property="verticalCenterConstraint" destination="iah-J8-nUj" id="yM3-vH-3tw"/>
                     </connections>
