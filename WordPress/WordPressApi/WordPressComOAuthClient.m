@@ -10,6 +10,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 @interface  WordPressComOAuthClient()
 
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, copy) NSString *clientID;
+@property (nonatomic, copy) NSString *secret;
 
 @end
 
@@ -19,11 +21,17 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 + (WordPressComOAuthClient *)client
 {
-    WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] init];
+    WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] initWithCliendID:[ApiCredentials client]
+                                                                                 secret:[ApiCredentials secret]];
     return client;
 }
 
 - (instancetype)init
+{
+    return [self initWithCliendID:@"" secret:@""];
+}
+
+- (instancetype)initWithCliendID:(NSString *)clientID secret:(NSString *)secret
 {
     self = [super init];
     if (self) {
@@ -32,6 +40,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL sessionConfiguration:sessionConfiguration];
         _sessionManager.responseSerializer = [[AFJSONResponseSerializer alloc] init];
         [_sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        _clientID = clientID;
+        _secret = secret;
     }
     return self;
 }
@@ -48,8 +58,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"username": username,
         @"password": password,
         @"grant_type": @"password",
-        @"client_id": [ApiCredentials client],
-        @"client_secret": [ApiCredentials secret],
+        @"client_id": self.clientID,
+        @"client_secret": self.secret,
         @"wpcom_supports_2fa": @(YES)
     } mutableCopy];
     
@@ -86,8 +96,8 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"username": username,
         @"password": password,
         @"grant_type": @"password",
-        @"client_id": [ApiCredentials client],
-        @"client_secret": [ApiCredentials secret],
+        @"client_id": self.clientID,
+        @"client_secret": self.secret,
         @"wpcom_supports_2fa": @(YES),
         @"wpcom_resend_otp": @(YES)
     };

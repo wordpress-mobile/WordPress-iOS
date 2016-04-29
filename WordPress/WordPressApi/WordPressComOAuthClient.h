@@ -18,7 +18,18 @@ typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
  */
 @interface WordPressComOAuthClient : NSObject
 
+/// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the ApiCredentials singleton
 + (WordPressComOAuthClient *)client;
+
+
+/**
+ Creates a WordPressComOAuthClient using the defined clientID and secret
+
+ @param clientID the app oauth clientID
+ @param secret the app secret
+
+ */
+- (instancetype)initWithCliendID:(NSString *)clientID secret:(NSString *)secret NS_DESIGNATED_INITIALIZER;
 
 /**
  Authenticates on WordPress.com with Multifactor code
