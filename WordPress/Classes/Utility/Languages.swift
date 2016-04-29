@@ -4,25 +4,21 @@ import Foundation
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-class Languages : NSObject
+class WordPressComLanguageDatabase : NSObject
 {
     // MARK: - Public Properties
     
-    /// Shared Languages Instance
-    ///
-    static let sharedInstance = Languages()
-    
     /// Languages considered 'popular'
     ///
-    let popular : [Language]
+    let popular : [WordPressComLanguage]
     
     /// Every supported language
     ///
-    let all : [Language]
+    let all : [WordPressComLanguage]
     
     /// Returns both, Popular and All languages, grouped
     ///
-    let grouped : [[Language]]
+    let grouped : [[WordPressComLanguage]]
     
     
     // MARK: - Public Methods
@@ -36,8 +32,8 @@ class Languages : NSObject
         let parsed = try! NSJSONSerialization.JSONObjectWithData(raw, options: [.MutableContainers, .MutableLeaves]) as? NSDictionary
         
         // Parse All + Popular: All doesn't contain Popular. Otherwise the json would have dupe data. Right?
-        let parsedAll = Language.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
-        let parsedPopular = Language.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
+        let parsedAll = WordPressComLanguage.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
+        let parsedPopular = WordPressComLanguage.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
         let merged = parsedAll + parsedPopular
         
         // Done!
@@ -80,7 +76,7 @@ class Languages : NSObject
 
     /// Searches for a WordPress.com language that matches a language tag.
     ///
-    private func languageWithSlug(slug: String) -> Language? {
+    private func languageWithSlug(slug: String) -> WordPressComLanguage? {
         let search = languageCodeReplacements[slug] ?? slug
 
         // Use lazy evaluation so we stop filtering as soon as we got the first match
@@ -95,9 +91,9 @@ class Languages : NSObject
 
     // MARK: - Public Nested Classes
     
-    /// Represents a Language, which allows us to deal with WordPress.com settings
+    /// Represents a Language supported by WordPress.com
     ///
-    class Language
+    class WordPressComLanguage
     {
         /// Language Unique Identifier
         ///
@@ -140,9 +136,9 @@ class Languages : NSObject
         
         /// Given an array of raw languages, will return a parsed array.
         ///
-        static func fromArray(array : [NSDictionary]) -> [Language] {
+        static func fromArray(array : [NSDictionary]) -> [WordPressComLanguage] {
             return array.flatMap {
-                return Language(dict: $0)
+                return WordPressComLanguage(dict: $0)
             }
         }
     }
