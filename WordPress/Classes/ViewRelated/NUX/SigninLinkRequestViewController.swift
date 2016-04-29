@@ -49,6 +49,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
 
     // MARK: - Configuration
 
+
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
