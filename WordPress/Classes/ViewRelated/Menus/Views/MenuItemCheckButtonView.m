@@ -9,7 +9,7 @@ static CGFloat const iconPadding = 3.0;
 
 @interface MenuItemCheckButtonView ()
 
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 

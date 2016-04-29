@@ -7,8 +7,8 @@
 
 @interface MenuItemSourceHeaderView ()
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
 
