@@ -83,7 +83,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     if (self) {
         _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguageId = [[Languages sharedInstance] deviceLanguageId];
+        _currentLanguageId = [[WordPressComLanguageDatabase new] deviceLanguageId];
     }
     return self;
 }
