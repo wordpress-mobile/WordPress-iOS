@@ -202,8 +202,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
         
-        let filter = currentPostListFilter()
-        let filterType = filter.filterType
+        let filterType = currentPostListFilter().filterType
         var message: String
         
         switch filterType {
@@ -229,8 +228,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return nil
         }
         
-        let filter = currentPostListFilter()
-        let filterType = filter.filterType
+        let filterType = currentPostListFilter().filterType
         var title: String
         
         switch filterType {
