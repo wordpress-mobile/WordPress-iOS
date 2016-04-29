@@ -110,6 +110,7 @@
 		598F86A71B67B7A000550C9C /* RemoteTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86A61B67B7A000550C9C /* RemoteTheme.m */; };
 		598F86AB1B67BD7600550C9C /* ThemeServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */; };
 		599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */; };
+		59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A3CADC1CD2FF0C009BFA1B /* BasePageListCell.m */; };
 		59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB341B4C33A500A433DC /* ThemeService.m */; };
 		59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B611B99E132008EBB84 /* JSONLoader.swift */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
@@ -1008,7 +1009,8 @@
 		598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeServiceRemoteTests.m; sourceTree = "<group>"; };
 		5997383E1B87AD2600EC1C30 /* WordPressComServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComServiceRemote.h; sourceTree = "<group>"; };
 		5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComServiceRemote.m; sourceTree = "<group>"; };
-		59A3CAD61CD2F952009BFA1B /* PageListTableViewCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageListTableViewCellDelegate.h; sourceTree = "<group>"; };
+		59A3CADB1CD2FF0C009BFA1B /* BasePageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePageListCell.h; sourceTree = "<group>"; };
+		59A3CADC1CD2FF0C009BFA1B /* BasePageListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePageListCell.m; sourceTree = "<group>"; };
 		59A9AB331B4C33A500A433DC /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		59A9AB341B4C33A500A433DC /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataServiceTests.m; sourceTree = "<group>"; };
@@ -2781,7 +2783,8 @@
 		5DFA7EBE1AF7CB3A0072023B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				59A3CAD61CD2F952009BFA1B /* PageListTableViewCellDelegate.h */,
+				59A3CADB1CD2FF0C009BFA1B /* BasePageListCell.h */,
+				59A3CADC1CD2FF0C009BFA1B /* BasePageListCell.m */,
 				5DFA7EC41AF814E40072023B /* PageListTableViewCell.h */,
 				5DFA7EC51AF814E40072023B /* PageListTableViewCell.m */,
 				5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */,
@@ -5305,6 +5308,7 @@
 				5D7B414819E482C9007D9EC7 /* WPRichTextMediaAttachment.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
+				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
 				E691D62E1CA4B0C9005C91ED /* SigninErrorViewController.swift in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				B5772ACB1C9DAE7C0031F97E /* NSMutableData+Helpers.swift in Sources */,
