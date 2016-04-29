@@ -142,30 +142,6 @@ class WordPressComLanguageDatabase : NSObject
             }
         }
     }
-
-    // MARK: - Private nested types
-
-    /// Provides a sequence of language tags from the specified string, from more to less specific
-    /// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
-    ///
-    private struct LanguageTagVariants: SequenceType {
-        let string: String
-
-        func generate() -> AnyGenerator<String> {
-            var components = string.componentsSeparatedByString("-")
-            return AnyGenerator {
-                guard !components.isEmpty else {
-                    return nil
-                }
-
-                let current = components.joinWithSeparator("-")
-                components.removeLast()
-
-                return current
-            }
-        }
-    }
-
     
     // MARK: - Private Variables
 
@@ -198,5 +174,26 @@ class WordPressComLanguageDatabase : NSObject
         static let identifier   = "i"
         static let slug         = "s"
         static let name         = "n"
+    }
+}
+
+/// Provides a sequence of language tags from the specified string, from more to less specific
+/// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
+///
+private struct LanguageTagVariants: SequenceType {
+    let string: String
+
+    func generate() -> AnyGenerator<String> {
+        var components = string.componentsSeparatedByString("-")
+        return AnyGenerator {
+            guard !components.isEmpty else {
+                return nil
+            }
+
+            let current = components.joinWithSeparator("-")
+            components.removeLast()
+
+            return current
+        }
     }
 }
