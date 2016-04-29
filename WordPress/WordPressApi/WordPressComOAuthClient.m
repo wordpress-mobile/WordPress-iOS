@@ -64,7 +64,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
     } mutableCopy];
     
     if (multifactorCode.length > 0) {
-        [parameters setObject:multifactorCode forKey:@"wpcom_otp"];
+        parameters[@"wpcom_otp"] = multifactorCode;
     }
     
     [self.sessionManager POST:@"token"
@@ -128,44 +128,46 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 }
 
 - (NSError *)processError:(NSError *)error forResponse:(NSHTTPURLResponse *)response {
-    if (response.statusCode >= 400 && response.statusCode < 500) {
-        // Bad request, look for errors in the JSON response
-
-        NSData* responseData = nil;
-        NSDictionary *responseDictionary = nil;
-        if (error.domain == AFURLResponseSerializationErrorDomain) {
-            responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-            responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:nil error:nil];
-
-        }
-        if (responseDictionary) {
-            NSString *errorCode = [responseDictionary stringForKey:@"error"];
-            NSString *errorDescription = [responseDictionary stringForKey:@"error_description"];
-
-            /*
-             Possible errors:
-             - invalid_client: client_id is missing or wrong, it shouldn't happen
-             - unsupported_grant_type: client_id doesn't support password grants
-             - invalid_request: A required field is missing/malformed
-             - invalid_request: Authentication failed
-             - needs_2fa: Multifactor Authentication code is required
-             */
-            
-            NSDictionary *errorsMap = @{
-                @"invalid_client"           : @(WordPressComOAuthErrorInvalidClient),
-                @"unsupported_grant_type"   : @(WordPressComOAuthErrorUnsupportedGrantType),
-                @"invalid_request"          : @(WordPressComOAuthErrorInvalidRequest),
-                @"needs_2fa"                : @(WordPressComOAuthErrorNeedsMultifactorCode)
-            };
-
-            NSNumber *mappedCode = errorsMap[errorCode] ?: @(WordPressComOAuthErrorUnknown);
-            
-            return [NSError errorWithDomain:WordPressComOAuthErrorDomain
-                                       code:mappedCode.intValue
-                                   userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
-        }
+    if (response.statusCode < 400 || response.statusCode >= 500) {
+        return error;
     }
-    return error;
+    // Bad request, look for errors in the JSON response
+
+    NSData* responseData = nil;
+    NSDictionary *responseDictionary = nil;
+    if (error.domain == AFURLResponseSerializationErrorDomain) {
+        responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:nil error:nil];
+
+    }
+    if (!responseDictionary) {
+        return error;
+    }
+
+    NSString *errorCode = [responseDictionary stringForKey:@"error"];
+    NSString *errorDescription = [responseDictionary stringForKey:@"error_description"];
+
+    /*
+     Possible errors:
+     - invalid_client: client_id is missing or wrong, it shouldn't happen
+     - unsupported_grant_type: client_id doesn't support password grants
+     - invalid_request: A required field is missing/malformed
+     - invalid_request: Authentication failed
+     - needs_2fa: Multifactor Authentication code is required
+     */
+    
+    NSDictionary *errorsMap = @{
+        @"invalid_client"           : @(WordPressComOAuthErrorInvalidClient),
+        @"unsupported_grant_type"   : @(WordPressComOAuthErrorUnsupportedGrantType),
+        @"invalid_request"          : @(WordPressComOAuthErrorInvalidRequest),
+        @"needs_2fa"                : @(WordPressComOAuthErrorNeedsMultifactorCode)
+    };
+
+    NSNumber *mappedCode = errorsMap[errorCode] ?: @(WordPressComOAuthErrorUnknown);
+    
+    return [NSError errorWithDomain:WordPressComOAuthErrorDomain
+                               code:mappedCode.intValue
+                           userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
 }
 
 - (id)cleanedUpResponseForLogging:(id)response {
