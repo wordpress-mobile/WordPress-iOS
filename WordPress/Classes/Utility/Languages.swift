@@ -68,26 +68,29 @@ class Languages : NSObject
     /// If the language is not supported, it returns 1 (English).
     ///
     func deviceLanguageId() -> NSNumber {
-        if let exactMatch = languageWithSlug(deviceLanguageCode) {
-            return exactMatch.languageId
+        let variants = LanguageTagVariants(string: deviceLanguageCode)
+        for variant in variants {
+            if let match = self.languageWithSlug(variant) {
+                return match.languageId
+            }
         }
-        let languageTag = deviceLanguageCode.componentsSeparatedByString("-")[0]
-        if languageTag != deviceLanguageCode,
-            let partialMatch = languageWithSlug(languageTag) {
-            return partialMatch.languageId
-        }
+
         return 1
     }
 
+    /// Searches for a WordPress.com language that matches a language tag.
+    ///
     private func languageWithSlug(slug: String) -> Language? {
+        let search = languageCodeReplacements[slug] ?? slug
+
         // Use lazy evaluation so we stop filtering as soon as we got the first match
-        return all.lazy.filter({ $0.slug == slug }).first
+        return all.lazy.filter({ $0.slug == search }).first
     }
 
     /// Overrides the device language. For testing purposes only.
     ///
     func _overrideDeviceLanguageCode(code: String) {
-        deviceLanguageCode = code
+        deviceLanguageCode = code.lowercaseString
     }
 
     // MARK: - Public Nested Classes
@@ -143,9 +146,35 @@ class Languages : NSObject
             }
         }
     }
-    
+
+    // MARK: - Private nested types
+
+    /// Provides a sequence of language tags from the specified string, from more to less specific
+    /// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
+    ///
+    private struct LanguageTagVariants: SequenceType {
+        let string: String
+
+        func generate() -> AnyGenerator<String> {
+            var components = string.componentsSeparatedByString("-")
+            return AnyGenerator {
+                guard !components.isEmpty else {
+                    return nil
+                }
+
+                let current = components.joinWithSeparator("-")
+                components.removeLast()
+
+                return current
+            }
+        }
+    }
+
     
     // MARK: - Private Variables
+
+    /// The device's current preferred language, or English if there's no preferred language.
+    ///
     private lazy var deviceLanguageCode: String = {
         return NSLocale.preferredLanguages().first?.lowercaseString ?? "en"
     }()
@@ -153,7 +182,13 @@ class Languages : NSObject
 
     // MARK: - Private Constants
     private let filename = "Languages"
-    
+
+    // (@koke 2016-04-29) I'm not sure how correct this mapping is, but it matches
+    // what we do for the app translations, so they will at least be consistent
+    private let languageCodeReplacements: [String: String] = [
+        "zh-hans": "zh-cn",
+        "zh-hant": "zh-tw"
+    ]
     
     
     // MARK: - Private Nested Structures
