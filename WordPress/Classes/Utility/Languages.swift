@@ -68,14 +68,13 @@ class Languages : NSObject
     /// If the language is not supported, it returns 1 (English).
     ///
     func deviceLanguageId() -> NSNumber {
-        if let exactMatch = languageWithSlug(deviceLanguageCode) {
-            return exactMatch.languageId
+        let variants = LanguageTagVariants(string: deviceLanguageCode)
+        for variant in variants {
+            if let match = self.languageWithSlug(variant) {
+                return match.languageId
+            }
         }
-        let languageTag = deviceLanguageCode.componentsSeparatedByString("-")[0]
-        if languageTag != deviceLanguageCode,
-            let partialMatch = languageWithSlug(languageTag) {
-            return partialMatch.languageId
-        }
+
         return 1
     }
 
@@ -143,7 +142,30 @@ class Languages : NSObject
             }
         }
     }
-    
+
+    // MARK: - Private nested types
+
+    /// Provides a sequence of language tags from the specified string, from more to less specific
+    /// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
+    ///
+    private struct LanguageTagVariants: SequenceType {
+        let string: String
+
+        func generate() -> AnyGenerator<String> {
+            var components = string.componentsSeparatedByString("-")
+            return AnyGenerator {
+                guard !components.isEmpty else {
+                    return nil
+                }
+
+                let current = components.joinWithSeparator("-")
+                components.removeLast()
+
+                return current
+            }
+        }
+    }
+
     
     // MARK: - Private Variables
     private lazy var deviceLanguageCode: String = {
