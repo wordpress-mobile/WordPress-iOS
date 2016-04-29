@@ -78,6 +78,8 @@ class Languages : NSObject
         return 1
     }
 
+    /// Searches for a WordPress.com language that matches a language tag.
+    ///
     private func languageWithSlug(slug: String) -> Language? {
         let search = languageCodeReplacements[slug] ?? slug
 
@@ -170,6 +172,9 @@ class Languages : NSObject
 
     
     // MARK: - Private Variables
+
+    /// The device's current preferred language, or English if there's no preferred language.
+    ///
     private lazy var deviceLanguageCode: String = {
         return NSLocale.preferredLanguages().first?.lowercaseString ?? "en"
     }()
