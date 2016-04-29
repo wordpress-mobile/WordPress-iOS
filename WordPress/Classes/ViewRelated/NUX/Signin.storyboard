@@ -910,6 +910,7 @@
                     <connections>
                         <outlet property="label" destination="CmN-ir-1YK" id="Xhc-3L-kvy"/>
                         <outlet property="sendLinkButton" destination="iIy-Sm-1r0" id="9My-fJ-l9S"/>
+                        <outlet property="usePasswordButton" destination="B6x-b7-hU9" id="mB8-03-VBa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cja-vu-y88" userLabel="First Responder" sceneMemberID="firstResponder"/>
