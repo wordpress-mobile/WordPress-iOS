@@ -993,6 +993,8 @@
                     </view>
                     <connections>
                         <outlet property="label" destination="pkM-xx-821" id="nOS-5r-86h"/>
+                        <outlet property="openMailButton" destination="0Iy-9H-ykD" id="Xwh-40-c65"/>
+                        <outlet property="usePasswordButton" destination="b0O-LO-6ax" id="mqE-R7-rGj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ypF-IN-pDx" userLabel="First Responder" sceneMemberID="firstResponder"/>
