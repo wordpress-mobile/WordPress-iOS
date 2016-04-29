@@ -178,6 +178,8 @@ class Languages : NSObject
     // MARK: - Private Constants
     private let filename = "Languages"
 
+    // (@koke 2016-04-29) I'm not sure how correct this mapping is, but it matches
+    // what we do for the app translations, so they will at least be consistent
     private let languageCodeReplacements: [String: String] = [
         "zh-hans": "zh-cn",
         "zh-hant": "zh-tw"
