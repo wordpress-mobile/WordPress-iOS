@@ -95,17 +95,21 @@ import WordPressShared
     func localizeControls() {
         emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
 
-        let submitButtonTitle = NSLocalizedString("NEXT", comment: "Title of a button. The text should be uppercase.")
-        submitButton.setTitle(submitButtonTitle.localizedUppercaseString, forState: .Normal)
+        let submitButtonTitle = NSLocalizedString("NEXT", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
 
         let safariButtonTitle = NSLocalizedString("Sign in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
         safariPasswordButton.setTitle(safariButtonTitle, forState: .Normal)
+        safariPasswordButton.setTitle(safariButtonTitle, forState: .Highlighted)
 
         let createSiteTitle = NSLocalizedString("Create a site", comment: "A button title")
         createSiteButton.setTitle(createSiteTitle, forState: .Normal)
+        createSiteButton.setTitle(createSiteTitle, forState: .Highlighted)
 
         let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Normal)
+        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Highlighted)
     }
 
 
