@@ -15,10 +15,10 @@
 
 @interface MenuItemSourceTextBar () <UITextFieldDelegate>
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) UIStackView *contentStackView;
-@property (nonatomic, strong) UILabel *cancelLabel;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIView *contentView;
+@property (nonatomic, strong, readonly) UIStackView *contentStackView;
+@property (nonatomic, strong, readonly) UILabel *cancelLabel;
 @property (nonatomic, strong) NSMutableArray <MenuItemSourceTextBarFieldObserver *> *textObservers;
 
 @end
