@@ -79,14 +79,16 @@ class Languages : NSObject
     }
 
     private func languageWithSlug(slug: String) -> Language? {
+        let search = languageCodeReplacements[slug] ?? slug
+
         // Use lazy evaluation so we stop filtering as soon as we got the first match
-        return all.lazy.filter({ $0.slug == slug }).first
+        return all.lazy.filter({ $0.slug == search }).first
     }
 
     /// Overrides the device language. For testing purposes only.
     ///
     func _overrideDeviceLanguageCode(code: String) {
-        deviceLanguageCode = code
+        deviceLanguageCode = code.lowercaseString
     }
 
     // MARK: - Public Nested Classes
@@ -175,7 +177,11 @@ class Languages : NSObject
 
     // MARK: - Private Constants
     private let filename = "Languages"
-    
+
+    private let languageCodeReplacements: [String: String] = [
+        "zh-hans": "zh-cn",
+        "zh-hant": "zh-tw"
+    ]
     
     
     // MARK: - Private Nested Structures
