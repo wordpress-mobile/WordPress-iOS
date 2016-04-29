@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "PageListCell.h"
+#import "PageListTableViewCellDelegate.h"
 
-@interface RestorePageTableViewCell : UITableViewCell <PageListCell>
+@interface RestorePageTableViewCell : UITableViewCell
+
+@property (nonatomic, assign, readwrite, nullable) id<PageListTableViewCellDelegate> delegate;
+
+- (void)configureCell:(nonnull id<WPPostContentViewProvider>)contentProvider;
 
 @end
