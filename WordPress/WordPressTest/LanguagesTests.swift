@@ -69,4 +69,18 @@ class LanguagesTests: XCTestCase
         XCTAssertEqual(languages.deviceLanguageId(), 1)
     }
 
+    func testDeviceLanguageIdReturnsValueForSpanishSpainExtra() {
+        let languages = Languages()
+        languages._overrideDeviceLanguageCode("es-ES-extra")
+
+        XCTAssertEqual(languages.deviceLanguageId(), 19)
+    }
+
+    func testDeviceLanguageIdReturnsValueForSpanishNO() {
+        let languages = Languages()
+        languages._overrideDeviceLanguageCode("es-NO")
+
+        XCTAssertEqual(languages.deviceLanguageId(), 19)
+    }
+
 }
