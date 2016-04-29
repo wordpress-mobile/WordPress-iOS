@@ -504,6 +504,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
+        
+        guard posts.count > 0 else {
+            assertionFailure("This method should not be called with no posts.")
+            return
+        }
+        
         let oldestPost = posts[posts.count - 1]
 
         // Reset the filter to only show the latest sync point.
@@ -556,7 +562,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     return
                 }
                 
-                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                if posts.count > 0 {
+                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                }
                 
                 if let success = success {
                     success(hasMore: filter.hasMore)
@@ -604,7 +612,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                         return
                 }
                 
-                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                if posts.count > 0 {
+                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                }
                 
                 if let success = success {
                     success(hasMore: filter.hasMore)
