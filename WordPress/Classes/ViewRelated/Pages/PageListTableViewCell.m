@@ -16,8 +16,6 @@
 
 @implementation PageListTableViewCell
 
-@synthesize delegate;
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
