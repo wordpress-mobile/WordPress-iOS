@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "PageListCell.h"
+#import "BasePageListCell.h"
 
-@interface RestorePageTableViewCell : UITableViewCell <PageListCell>
+@interface RestorePageTableViewCell : BasePageListCell
 
 @end
