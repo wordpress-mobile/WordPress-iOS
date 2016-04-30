@@ -1,18 +1,16 @@
 #import <UIKit/UIKit.h>
 #import "WPPostContentViewProvider.h"
 
+@class BasePageListCell;
 
-@protocol BasePageListCellDelegate <NSObject>
-@optional
-- (void)cell:(nonnull UITableViewCell *)cell receivedMenuActionFromButton:(nonnull UIButton *)button forProvider:(nonnull id<WPPostContentViewProvider>)contentProvider;
-- (void)cell:(nonnull UITableViewCell *)cell receivedRestoreActionForProvider:(nonnull id<WPPostContentViewProvider>)contentProvider;
-@end
-
+typedef void(^BasePageListCellActionBlock)(BasePageListCell* _Nonnull  cell,
+                                           UIButton* _Nonnull button,
+                                           id<WPPostContentViewProvider> _Nonnull provider);
 
 @interface BasePageListCell : UITableViewCell
 
 @property (nonatomic, strong, readwrite, nullable) id<WPPostContentViewProvider>contentProvider;
-@property (nonatomic, assign, readwrite, nullable) id<BasePageListCellDelegate> delegate;
+@property (nonatomic, copy, readwrite, nullable) BasePageListCellActionBlock onAction;
 
 - (void)configureCell:(nonnull id<WPPostContentViewProvider>)contentProvider;
 
