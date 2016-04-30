@@ -91,14 +91,4 @@
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
-
-#pragma mark - Actions
-
-- (IBAction)didTapMenuButton:(id)sender
-{
-    if (self.delegate) {
-        [self.delegate cell:self receivedMenuActionFromButton:self.menuButton forProvider:self.contentProvider];
-    }
-}
-
 @end
