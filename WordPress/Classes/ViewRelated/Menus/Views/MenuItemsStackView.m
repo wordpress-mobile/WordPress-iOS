@@ -768,7 +768,7 @@
     // Toggle drawing the line separator on the previous view in the stackView.
     // Otherwise the drawn line stacks oddling against the highlighted drawing.
     NSUInteger indexOfView = [self.stackView.arrangedSubviews indexOfObject:stackableView];
-    if (indexOfView > 0) {
+    if (indexOfView != NSNotFound && indexOfView > 0) {
         MenuItemsStackableView *view = [self.stackView.arrangedSubviews objectAtIndex:indexOfView - 1];
         if ([view isKindOfClass:[MenuItemsStackableView class]]) {
             view.drawsLineSeparator = !highlighted;
@@ -795,66 +795,72 @@
 
 - (void)itemInsertionViewSelected:(MenuItemInsertionView *)insertionView
 {
-    MenuItem *toggledItem = self.itemViewForInsertionToggling.item;
-    
-    // Create a new item.
-    MenuItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.menu.managedObjectContext];
-    newItem.name = [MenuItem defaultItemNameLocalized];
-    newItem.type = MenuItemTypePage;
-    
-    // Insert the new item into the menu's ordered items.
-    BOOL requiresOffsetInsertionOrder = NO;
-    NSMutableOrderedSet *orderedItems = [NSMutableOrderedSet orderedSetWithOrderedSet:self.menu.items];
-    switch (insertionView.insertionOrder) {
+    dispatch_async(dispatch_get_main_queue(), ^{
         
-        case MenuItemInsertionOrderAbove:
-            [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem]];
-            newItem.parent = toggledItem.parent;
-            break;
-            
-        case MenuItemInsertionOrderBelow:
-        {
-            if (toggledItem.children.count) {
-                // Find the last child and insert below it.
-                MenuItem *lastChild = [toggledItem lastDescendantInOrderedItems:orderedItems];
-                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:lastChild] + 1];
-                requiresOffsetInsertionOrder = YES;
-            } else {
-                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
+        // Dispatch a bit later since we are about to swap out views.
+        // Any layout or drawing related to the seleciton made need to complete before removing the insertionView.
+        
+        MenuItem *toggledItem = self.itemViewForInsertionToggling.item;
+        
+        // Create a new item.
+        MenuItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.menu.managedObjectContext];
+        newItem.name = [MenuItem defaultItemNameLocalized];
+        newItem.type = MenuItemTypePage;
+        
+        // Insert the new item into the menu's ordered items.
+        BOOL requiresOffsetInsertionOrder = NO;
+        NSMutableOrderedSet *orderedItems = [NSMutableOrderedSet orderedSetWithOrderedSet:self.menu.items];
+        switch (insertionView.insertionOrder) {
+                
+            case MenuItemInsertionOrderAbove:
+                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem]];
+                newItem.parent = toggledItem.parent;
+                break;
+                
+            case MenuItemInsertionOrderBelow:
+            {
+                if (toggledItem.children.count) {
+                    // Find the last child and insert below it.
+                    MenuItem *lastChild = [toggledItem lastDescendantInOrderedItems:orderedItems];
+                    [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:lastChild] + 1];
+                    requiresOffsetInsertionOrder = YES;
+                } else {
+                    [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
+                }
+                newItem.parent = toggledItem.parent;
+                break;
             }
-            newItem.parent = toggledItem.parent;
-            break;
+                
+            case MenuItemInsertionOrderChild:
+                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
+                newItem.parent = toggledItem;
+                break;
         }
-            
-        case MenuItemInsertionOrderChild:
-            [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
-            newItem.parent = toggledItem;
-            break;
-    }
-    
-    // Update the menu items.
-    self.menu.items = orderedItems;
-    
-    // Go ahead and save the context with the new item, we can delete later if needed.
-    [[ContextManager sharedInstance] saveContextAndWait:self.menu.managedObjectContext];
-    
-    // Add and replace the insertionView with a new itemView.
-    MenuItemView *newItemView = [self addNewItemViewWithItem:newItem];
-    if (requiresOffsetInsertionOrder) {
-        // Need to find the correct index for the new itemView.
-        MenuItem *previousItem = [orderedItems objectAtIndex:[orderedItems indexOfObject:newItem] - 1];
-        MenuItemView *previousItemView = [self itemViewForItem:previousItem];
-        [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:previousItemView] + 1];
-    } else {
-        // Easily swap out the insertionView with the new itemView.
-        [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:insertionView]];
-        [self.stackView removeArrangedSubview:insertionView];
-        [insertionView removeFromSuperview];
-    }
-    [self removeItemInsertionViews:YES];
-    
-    // Inform the delegate to begin editing the new item.
-    [self.delegate itemsView:self createdNewItemForEditing:newItem];
+        
+        // Update the menu items.
+        self.menu.items = orderedItems;
+        
+        // Go ahead and save the context with the new item, we can delete later if needed.
+        [[ContextManager sharedInstance] saveContextAndWait:self.menu.managedObjectContext];
+        
+        // Add and replace the insertionView with a new itemView.
+        MenuItemView *newItemView = [self addNewItemViewWithItem:newItem];
+        if (requiresOffsetInsertionOrder) {
+            // Need to find the correct index for the new itemView.
+            MenuItem *previousItem = [orderedItems objectAtIndex:[orderedItems indexOfObject:newItem] - 1];
+            MenuItemView *previousItemView = [self itemViewForItem:previousItem];
+            [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:previousItemView] + 1];
+        } else {
+            // Easily swap out the insertionView with the new itemView.
+            [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:insertionView]];
+            [self.stackView removeArrangedSubview:insertionView];
+            [insertionView removeFromSuperview];
+        }
+        [self removeItemInsertionViews:YES];
+        
+        // Inform the delegate to begin editing the new item.
+        [self.delegate itemsView:self createdNewItemForEditing:newItem];
+    });
 }
 
 @end
