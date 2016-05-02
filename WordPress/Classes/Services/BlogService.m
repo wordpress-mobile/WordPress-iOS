@@ -584,6 +584,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.dotComID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
+        blog.capabilities = remoteBlog.capabilities;
         blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
         blog.options = remoteBlog.options;

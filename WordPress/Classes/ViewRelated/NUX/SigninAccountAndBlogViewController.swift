@@ -343,8 +343,8 @@ import WordPressShared
                 }
             }
 
-            let currentLanguage = WPComLanguages.currentLanguage()
-            let languageId = currentLanguage[self.LanguageIDKey] as? String ?? ""
+            let currentLanguage = Languages.sharedInstance.deviceLanguageId()
+            let languageId = currentLanguage.stringValue
 
             let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
             remote.validateWPComBlogWithUrl(self.loginFields.siteUrl,
@@ -461,8 +461,8 @@ import WordPressShared
                 }
             }
 
-            let currentLanguage = WPComLanguages.currentLanguage()
-            let languageId = currentLanguage[self.LanguageIDKey] as? String ?? ""
+            let currentLanguage = Languages.sharedInstance.deviceLanguageId()
+            let languageId = currentLanguage.stringValue
             guard let api = self.account?.restApi else {
                 DDLogSwift.logError("Failed to get the REST API from the account.")
                 assertionFailure()

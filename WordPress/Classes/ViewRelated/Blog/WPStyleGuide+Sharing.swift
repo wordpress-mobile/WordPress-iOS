@@ -41,7 +41,7 @@ extension WPStyleGuide
             return Gridicon.iconOfType(.Print)
         case "email" :
             return Gridicon.iconOfType(.Mail)
-        case "google-plus-one" :
+        case "google-plus-1" :
             iconName = "social-google-plus"
         case "press-this" :
             iconName = "social-wordpress"
