@@ -311,7 +311,7 @@
                                             <constraint firstItem="Unf-Tr-tHZ" firstAttribute="top" secondItem="b3A-gQ-xPp" secondAttribute="bottom" constant="16" id="Tqd-Hm-5NC"/>
                                             <constraint firstItem="tdS-XJ-7yJ" firstAttribute="centerX" secondItem="93K-a0-Rgt" secondAttribute="centerX" id="ZmR-Ak-CIs"/>
                                             <constraint firstAttribute="trailing" secondItem="yx4-Vw-DFk" secondAttribute="trailing" id="azV-G7-mF1"/>
-                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" priority="750" constant="8" id="f4f-9M-wDB"/>
+                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" constant="8" id="f4f-9M-wDB"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="leading" secondItem="93K-a0-Rgt" secondAttribute="leading" id="f7s-yd-MIk"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="93K-a0-Rgt" secondAttribute="top" id="gdJ-IJ-euW"/>
                                             <constraint firstItem="BHQ-iH-Ffv" firstAttribute="centerY" secondItem="HNy-PM-AgS" secondAttribute="centerY" id="p39-vz-OOj"/>
@@ -375,12 +375,15 @@
                     <connections>
                         <outlet property="bottomContentConstraint" destination="WNf-nN-0iK" id="4e0-mU-oxM"/>
                         <outlet property="emailField" destination="It3-g0-cxp" id="w1k-ZE-lBF"/>
+                        <outlet property="formTopMarginConstraint" destination="f4f-9M-wDB" id="J5I-Ki-Nbf"/>
+                        <outlet property="logoImageView" destination="tdS-XJ-7yJ" id="KYA-ij-Udf"/>
                         <outlet property="passwordField" destination="uNv-KX-D1D" id="Qsl-h4-sci"/>
                         <outlet property="siteURLField" destination="HNy-PM-AgS" id="d94-ca-B83"/>
                         <outlet property="statusLabel" destination="Unf-Tr-tHZ" id="kJB-ac-0z6"/>
                         <outlet property="submitButton" destination="b3A-gQ-xPp" id="rcf-nd-Ofe"/>
                         <outlet property="termsButton" destination="h3S-D6-ec5" id="mBG-tk-Pqf"/>
                         <outlet property="titleLabel" destination="onu-DI-gxe" id="dwm-OD-95C"/>
+                        <outlet property="topLayoutGuideAdjustmentConstraint" destination="g5e-48-rwT" id="wK6-By-loG"/>
                         <outlet property="usernameField" destination="MMG-3p-JWU" id="nMk-0h-ogG"/>
                         <outlet property="verticalCenterConstraint" destination="XFf-th-GSA" id="ybo-1G-a14"/>
                     </connections>
