@@ -7,6 +7,7 @@ import WordPressShared
 ///
 @objc class SigninAccountAndBlogViewController : NUXAbstractViewController, SigninKeyboardResponder
 {
+    @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var emailField: WPWalkthroughTextField!
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -17,6 +18,8 @@ import WordPressShared
     @IBOutlet weak var termsButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet var topLayoutGuideAdjustmentConstraint: NSLayoutConstraint!
+    @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
     var didCorrectEmailOnce: Bool = false
     let operationQueue = NSOperationQueue()
@@ -59,6 +62,7 @@ import WordPressShared
         // Update special case login fields.
         loginFields.userIsDotCom = true
 
+        configureLayoutForSmallScreensIfNeeded()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
     }
@@ -79,6 +83,28 @@ import WordPressShared
 
 
     // MARK: Setup and Configuration
+
+
+    /// Adjust the layout for smaller screens, specifically the iPhone 4s
+    ///
+    func configureLayoutForSmallScreensIfNeeded() {
+        guard let window = UIApplication.sharedApplication().keyWindow else {
+            return
+        }
+
+        if window.frame.height > 480 {
+            return
+        }
+
+        // Remove the negative layout adjustment
+        topLayoutGuideAdjustmentConstraint.constant = 0
+        // Hide the logo
+        logoImageView.hidden = true
+        // Remove the title label to also remove unwanted constraints.
+        if titleLabel.superview != nil {
+            titleLabel.removeFromSuperview()
+        }
+    }
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
