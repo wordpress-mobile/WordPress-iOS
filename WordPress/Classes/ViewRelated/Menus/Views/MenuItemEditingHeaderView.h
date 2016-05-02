@@ -18,7 +18,7 @@
 /**
  Texfield for editing the name of the item.
  */
-@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong, readonly) UITextField *textField;
 
 /**
  Helper method for updating the layout based on statusBar changes.

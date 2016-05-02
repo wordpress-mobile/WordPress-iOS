@@ -39,12 +39,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
 @property (weak, nonatomic) IBOutlet MenuItemsStackView *itemsView;
 
-@property (nonatomic, strong) WPNoResultsView *loadingView;
-@property (nonatomic, strong) UILabel *itemsLoadingLabel;
-@property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
+@property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
+@property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
+@property (nonatomic, strong, readonly) UIBarButtonItem *saveButtonItem;
 
-@property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) MenusService *menusService;
+@property (nonatomic, strong, readonly) Blog *blog;
+@property (nonatomic, strong, readonly) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) Menu *updatedMenuForSaving;
 
@@ -110,12 +110,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonSystemItemSave target:self action:@selector(saveBarButtonItemPressed:)];
         self.navigationItem.rightBarButtonItem = button;
         button.enabled = NO;
-        self.saveButtonItem = button;
+        _saveButtonItem = button;
     }
     {
         WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
         loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
-        self.loadingView = loadingView;
+        _loadingView = loadingView;
     }
     {
         UILabel *label = [[UILabel alloc] init];
@@ -126,7 +126,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         [label.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:MenusDesignDefaultContentSpacing].active = YES;
         [label.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-MenusDesignDefaultContentSpacing].active = YES;
         label.hidden = YES;
-        self.itemsLoadingLabel = label;
+        _itemsLoadingLabel = label;
     }
 }
 

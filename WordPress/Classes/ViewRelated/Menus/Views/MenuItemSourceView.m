@@ -14,9 +14,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 /**
  View used as the tableView.tableHeaderView container view for self.stackView.
  */
-@property (nonatomic, strong) UIView *stackedTableHeaderView;
+@property (nonatomic, strong, readonly) UIView *stackedTableHeaderView;
 
-@property (nonatomic, strong) MenuItemSourceFooterView *footerView;
+@property (nonatomic, strong, readonly) MenuItemSourceFooterView *footerView;
 @property (nonatomic, assign) BOOL observeUserScrollingForEndOfTableView;
 
 @end

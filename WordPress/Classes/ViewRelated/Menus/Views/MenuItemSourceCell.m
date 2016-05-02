@@ -18,12 +18,12 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 
 @interface MenuItemSourceCell ()
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIStackView *labelsStackView;
-@property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
-@property (nonatomic, strong) NSLayoutConstraint *topLayoutConstraintForContentViewIndentation;
-@property (nonatomic, strong) NSLayoutConstraint *topLayoutDefaultConstraint;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIStackView *labelsStackView;
+@property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *topLayoutConstraintForContentViewIndentation;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *topLayoutDefaultConstraint;
 
 @end
 
@@ -68,18 +68,18 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     [self.contentView addSubview:stackView];
     
-    self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
-    self.topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
-    self.topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
+    _leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
+    _topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
+    _topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              self.topLayoutDefaultConstraint,
-                                              self.leadingLayoutConstraintForContentViewIndentation,
+                                              _topLayoutDefaultConstraint,
+                                              _leadingLayoutConstraintForContentViewIndentation,
                                               [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
                                               ]];
     
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initLabelsStackView
@@ -90,9 +90,10 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     labelsStackView.alignment = UIStackViewAlignmentTop;
     labelsStackView.axis = UILayoutConstraintAxisHorizontal;
     labelsStackView.spacing = self.stackView.spacing;
-    
-    [self.stackView addArrangedSubview:labelsStackView];
-    self.labelsStackView = labelsStackView;
+    _labelsStackView = labelsStackView;
+
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:labelsStackView];
 }
 
 - (void)initLabel
@@ -107,9 +108,10 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     
     [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    
+    _label = label;
+
+    NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
     [self.labelsStackView addArrangedSubview:label];
-    self.label = label;
 }
 
 - (void)layoutSubviews
