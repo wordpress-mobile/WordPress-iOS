@@ -110,7 +110,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
-        coordinator.animateAlongsideTransition({[weak self] (context: UIViewControllerTransitionCoordinatorContext) -> () in
+        coordinator.animateAlongsideTransition({[weak self] context in
             guard let strongSelf = self else {
                 return
             }
@@ -124,7 +124,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         
-        let width = CGRectGetWidth(view.frame)
+        let width = view.frame.width
         tableViewHandler.refreshCachedRowHeightsForWidth(width)
     }
     
@@ -140,7 +140,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         if needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
             
-            let width = CGRectGetWidth(view.frame)
+            let width = view.frame.width
             
             tableViewHandler.refreshCachedRowHeightsForWidth(width)
             
@@ -203,7 +203,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         postListFooterView.showSpinner(false)
         
         var frame = postListFooterView.frame
-        frame.size.height = CGFloat(heightForFooterView())
+        frame.size.height = heightForFooterView()
         
         postListFooterView.frame = frame
         tableView.tableFooterView = postListFooterView
@@ -317,7 +317,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return properties
     }
     
-    // MARK: TableViewHandler Delegte Methods
+    // MARK: TableViewHandler Delegate Methods
     
     func entityName() -> String {
         assert(false, "You should implement this method in the subclass")
@@ -556,7 +556,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postTypeToSync(),
             withOptions: options,
             forBlog: blog,
-            success: {[weak self] (posts: [AbstractPost]?) -> () in
+            success: {[weak self] posts in
                 guard let strongSelf = self,
                     let posts = posts else {
                     return
