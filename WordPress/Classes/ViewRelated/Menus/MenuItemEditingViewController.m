@@ -64,11 +64,11 @@ typedef NS_ENUM(NSUInteger) {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self) {
         
-        self.blog = blog;
+        _blog = blog;
         
         NSManagedObjectID *itemObjectID = item.objectID;
         NSManagedObjectContext *scratchContext = [[ContextManager sharedInstance] newMainContextChildContext];
-        self.scratchObjectContext = scratchContext;
+        _scratchObjectContext = scratchContext;
         
         [scratchContext performBlockAndWait:^{
             NSError *error;
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSUInteger) {
             if (error) {
                 DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
             }
-            self.item = itemInContext;
+            _item = itemInContext;
         }];
     }
     

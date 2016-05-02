@@ -35,7 +35,7 @@
     label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
     
     [self.stackView addArrangedSubview:label];
-    self.label = label;
+    _label = label;
 }
 
 - (void)initTextBar
@@ -53,7 +53,7 @@
     heightConstraint.active = YES;
     
     [textBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    self.textBar = textBar;
+    _textBar = textBar;
 }
 
 - (void)initCheckButtonView
@@ -69,7 +69,7 @@
     NSLayoutConstraint *heightConstraint = [checkButtonView.heightAnchor constraintEqualToConstant:[checkButtonView preferredHeightForLayout]];
     heightConstraint.active = YES;
     
-    self.checkButtonView = checkButtonView;
+    _checkButtonView = checkButtonView;
 }
 
 - (NSString *)sourceItemType

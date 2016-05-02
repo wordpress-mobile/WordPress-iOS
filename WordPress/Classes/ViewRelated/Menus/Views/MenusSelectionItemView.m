@@ -32,7 +32,7 @@
         label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
         label.textColor = [WPStyleGuide darkGrey];
         [self addSubview:label];
-        self.label = label;
+        _label = label;
         
         UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
         insets.left = MenusDesignDefaultContentSpacing;

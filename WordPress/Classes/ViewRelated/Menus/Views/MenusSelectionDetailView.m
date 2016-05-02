@@ -56,7 +56,7 @@
     [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
     [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
     [self.stackView addArrangedSubview:iconView];
-    self.iconView = iconView;
+    _iconView = iconView;
 }
 
 - (void)initLabelsStackView
@@ -66,8 +66,9 @@
     stackView.distribution = UIStackViewDistributionFill;
     stackView.axis = UILayoutConstraintAxisVertical;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    _labelsStackView = stackView;
+    
     [self.stackView addArrangedSubview:stackView];
-    self.labelsStackView = stackView;
 }
 
 - (void)initSubtTitleLabel
@@ -76,8 +77,11 @@
     label.numberOfLines = 0;
     label.font = [WPFontManager systemRegularFontOfSize:13.0];
     label.textColor = [WPStyleGuide grey];
-    self.subTitleLabel = label;
-    [self.labelsStackView addArrangedSubview:label];
+    _subTitleLabel = label;
+    
+    NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
+    
+    [_labelsStackView addArrangedSubview:label];
 }
 
 - (void)initTitleLabel
@@ -89,8 +93,11 @@
     label.adjustsFontSizeToFitWidth = YES;
     label.minimumScaleFactor = 0.50;
     label.allowsDefaultTighteningForTruncation = YES;
-    self.titleLabel = label;
-    [self.labelsStackView addArrangedSubview:label];
+    _titleLabel = label;
+    
+    NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
+    
+    [_labelsStackView addArrangedSubview:label];
 }
 
 - (void)initAccessoryView
@@ -101,8 +108,9 @@
     accessoryView.tintColor = [WPStyleGuide greyLighten20];
     [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
     [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
+    _accessoryView = accessoryView;
+    
     [self.stackView addArrangedSubview:accessoryView];
-    self.accessoryView = accessoryView;
 }
 
 - (void)setShowsDesignActive:(BOOL)showsDesignActive

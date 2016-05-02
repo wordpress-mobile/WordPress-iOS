@@ -68,7 +68,7 @@
                                               trailing,
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing]
                                               ]];
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initIconView
@@ -79,13 +79,14 @@
     iconView.backgroundColor = [UIColor whiteColor];
     iconView.tintColor = [WPStyleGuide grey];
     
-    [self.stackView addArrangedSubview:iconView];
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
     widthConstraint.priority = 999;
     widthConstraint.active = YES;
     
-    self.iconView = iconView;
+    _iconView = iconView;
 }
 
 - (void)initLabel
@@ -97,12 +98,13 @@
     label.font = [WPStyleGuide tableviewTextFont];
     label.backgroundColor = [UIColor whiteColor];
     
-    [self.stackView addArrangedSubview:label];
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:label];
     
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
-    self.label = label;
+    _label = label;
 }
 
 - (void)initArrowIconView
@@ -114,14 +116,17 @@
     iconView.tintColor = [WPStyleGuide grey];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
     
-    [self.stackView addArrangedSubview:iconView];
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
     widthConstraint.priority = 999;
     widthConstraint.active = YES;
     
-    self.arrowView = iconView;
-    [self hideArrowView];
+    iconView.alpha = 0.0;
+    iconView.hidden = YES;
+    _arrowView = iconView;
+
 }
 
 - (void)setSelected:(BOOL)selected

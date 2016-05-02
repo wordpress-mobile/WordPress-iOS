@@ -36,22 +36,17 @@
 {
     [super awakeFromNib];
     
+    self.backgroundColor = [UIColor whiteColor];
+    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.layer.borderWidth = MenusDesignStrokeWidth;
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     self.stackView.spacing = 0.0;
     
     self.touchesBeganLocation = CGPointZero;
     self.touchesMovedLocation = CGPointZero;
-    
-    [self setupStyling];
-}
-
-- (void)setupStyling
-{
-    self.backgroundColor = [UIColor whiteColor];
-    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-    self.layer.borderWidth = MenusDesignStrokeWidth;
 }
 
 - (void)setMenu:(Menu *)menu
