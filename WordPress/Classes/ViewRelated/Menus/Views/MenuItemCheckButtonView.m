@@ -9,7 +9,7 @@ static CGFloat const iconPadding = 3.0;
 
 @interface MenuItemCheckButtonView ()
 
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 
@@ -49,7 +49,7 @@ static CGFloat const iconPadding = 3.0;
                                               [iconView.widthAnchor constraintEqualToAnchor:iconView.heightAnchor],
                                               [iconView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-iconPadding]
                                               ]];
-    self.iconView = iconView;
+    _iconView = iconView;
 }
 
 - (void)initLabel
@@ -64,9 +64,11 @@ static CGFloat const iconPadding = 3.0;
     
     [self addSubview:label];
     
+    NSAssert(_iconView != nil, @"iconView is nil");
+    
     [NSLayoutConstraint activateConstraints:@[
                                               [label.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                              [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing / 2.0],
+                                              [label.leadingAnchor constraintEqualToAnchor:_iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing / 2.0],
                                               [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                               [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
                                               ]];

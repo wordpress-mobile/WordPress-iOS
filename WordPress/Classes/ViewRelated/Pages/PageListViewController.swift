@@ -1,7 +1,7 @@
 import Foundation
 import WordPressComAnalytics
 
-@objc class PageListViewController : AbstractPostListViewController, PageListTableViewCellDelegate, UIViewControllerRestoration {
+@objc class PageListViewController : AbstractPostListViewController, BasePageListCellDelegate, UIViewControllerRestoration {
     
     private static let pageSectionHeaderHeight = CGFloat(24.0)
     private static let pageCellEstimatedRowHeight = CGFloat(44.0)
@@ -332,23 +332,19 @@ import WordPressComAnalytics
         let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Page
         
         let identifier = cellIdentifierForPage(page)
-        let tableViewCell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
         
-        precondition(tableViewCell is PageListCell)
-        let cell = tableViewCell as! PageListCell
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BasePageListCell else {
+            preconditionFailure("The cell should be of class \(String(BasePageListCell))")
+        }
         
-        configureCellAspect(tableViewCell)
         configureCell(cell, atIndexPath: indexPath)
         
-        return tableViewCell
-    }
-    
-    private func configureCellAspect(cell: UITableViewCell) {
-        cell.accessoryType = .None
-        cell.selectionStyle = .None
+        return cell
     }
  
-    func configureCell(cell: PageListCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: BasePageListCell, atIndexPath indexPath: NSIndexPath) {
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
         cell.delegate = self
         
         guard let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page else {
@@ -463,9 +459,9 @@ import WordPressComAnalytics
         return self.dynamicType.currentPageListStatusFilterKey
     }
     
-    // MARK: - Cell Delegate Methods
+    // MARK: - BasePageListCellDelegate
     
-    func cell(cell: UITableViewCell!, receivedMenuActionFromButton button: UIButton, forProvider contentProvider: WPPostContentViewProvider!) {
+    func cell(cell: UITableViewCell, receivedMenuActionFromButton button: UIButton, forProvider contentProvider: WPPostContentViewProvider) {
         let page = contentProvider as! Page
         let objectID = page.objectID
         
@@ -600,7 +596,7 @@ import WordPressComAnalytics
         return page
     }
     
-    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
+    func cell(cell: UITableViewCell, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider) {
         if let apost = contentProvider as? AbstractPost {
             restorePost(apost)
         }
