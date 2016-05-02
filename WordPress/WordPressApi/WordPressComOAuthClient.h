@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
 @interface WordPressComOAuthClient : AFHTTPRequestOperationManager
 
 + (WordPressComOAuthClient *)client;
++ (WordPressComOAuthClient *)clientForSwift;
 
 /**
  Authenticates on WordPress.com with Multifactor code
