@@ -7,7 +7,6 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (nonatomic, strong) id<WPPostContentViewProvider> contentProvider;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelTopMarginConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomMarginConstraint;
@@ -15,8 +14,6 @@
 @end
 
 @implementation PageListTableViewCell
-
-@synthesize delegate;
 
 - (void)awakeFromNib
 {
@@ -73,8 +70,7 @@
 
 - (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
 {
-    _contentProvider = contentProvider;
-
+    [super setContentProvider:contentProvider];
     [self configureTitle];
 }
 
@@ -85,11 +81,6 @@
 {
     [WPStyleGuide applyPostCardStyle:self];
     [WPStyleGuide applyPageTitleStyle:self.titleLabel];
-}
-
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
-{
-    self.contentProvider = contentProvider;
 }
 
 - (void)configureTitle
