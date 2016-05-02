@@ -2,8 +2,7 @@ import UIKit
 import WordPressShared.WPStyleGuide
 
 @IBDesignable
-class PeopleRoleBadgeView: UILabel
-{
+class PeopleRoleBadgeView: UILabel {
     // MARK: Initialization
 
     override init(frame: CGRect) {

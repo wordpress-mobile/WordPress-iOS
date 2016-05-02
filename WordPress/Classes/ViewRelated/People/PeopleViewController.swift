@@ -1,8 +1,8 @@
 import UIKit
 import WordPressShared
 
-public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate
-{
+public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+
     public var blog: Blog?
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
