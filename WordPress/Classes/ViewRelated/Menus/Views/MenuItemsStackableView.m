@@ -198,7 +198,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         [stackView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [self.stackView addArrangedSubview:stackView];
-        self.accessoryStackView = stackView;
+        _accessoryStackView = stackView;
     }
     
     [self.accessoryStackView addArrangedSubview:button];

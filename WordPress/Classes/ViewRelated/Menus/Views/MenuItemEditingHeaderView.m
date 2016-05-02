@@ -5,10 +5,10 @@
 
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) NSLayoutConstraint *stackViewTopConstraint;
-@property (nonatomic, strong) UIView *textFieldContainerView;
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *stackViewTopConstraint;
+@property (nonatomic, strong, readonly) UIView *textFieldContainerView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
 

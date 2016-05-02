@@ -6,9 +6,9 @@
 
 @interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) NSMutableArray *typeViews;
+@property (nonatomic, strong, readonly) UIScrollView *scrollView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) NSMutableArray *typeViews;
 
 @end
 
@@ -18,7 +18,7 @@
 {
     [super awakeFromNib];
     
-    self.typeViews = [NSMutableArray arrayWithCapacity:5];
+    _typeViews = [NSMutableArray arrayWithCapacity:5];
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;

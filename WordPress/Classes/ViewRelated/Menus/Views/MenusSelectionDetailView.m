@@ -9,11 +9,11 @@
 @interface MenusSelectionDetailView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) UIStackView *labelsStackView;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *subTitleLabel;
-@property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, strong) UIImageView *accessoryView;
+@property (nonatomic, strong, readonly) UIStackView *labelsStackView;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong, readonly) UILabel *subTitleLabel;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *accessoryView;
 
 @end
 

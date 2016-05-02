@@ -8,9 +8,9 @@
 
 @interface MenuItemView ()
 
-@property (nonatomic, strong) UIButton *addButton;
-@property (nonatomic, strong) UIButton *orderingButton;
-@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong, readonly) UIButton *addButton;
+@property (nonatomic, strong, readonly) UIButton *orderingButton;
+@property (nonatomic, strong, readonly) UIButton *cancelButton;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 
 @end

@@ -8,10 +8,10 @@
 
 @interface MenuItemTypeView ()
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, strong) UIImageView *arrowView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *arrowView;
 
 @end
 

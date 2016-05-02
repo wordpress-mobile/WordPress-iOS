@@ -9,10 +9,10 @@
 
 @interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) MenuItemSourceView *sourceView;
-@property (nonatomic, strong) NSCache *sourceViewCache;
+@property (nonatomic, strong, readonly) NSCache *sourceViewCache;
 @property (nonatomic, assign) BOOL itemNameWasUpdatedExternally;
 
 @end
@@ -25,7 +25,7 @@
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.sourceViewCache = [[NSCache alloc] init];
+    _sourceViewCache = [[NSCache alloc] init];
     
     [self initStackView];
     [self initHeaderView];

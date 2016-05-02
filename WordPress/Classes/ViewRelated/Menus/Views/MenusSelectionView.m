@@ -5,15 +5,12 @@
 
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray <MenusSelectionItem *> *items;
+@property (nonatomic, strong, readonly) NSMutableArray <MenusSelectionItem *> *items;
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
-@property (nonatomic, strong) NSMutableArray *itemViews;
+@property (nonatomic, strong, readonly) NSMutableArray *itemViews;
 @property (nonatomic, strong) MenusSelectionItemView *addNewItemView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
-
-@property (nonatomic, strong) CALayer *leftBorder;
-@property (nonatomic, strong) CALayer *rightBorder;
 
 @end
 
@@ -32,8 +29,8 @@
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
     
-    self.items = [NSMutableArray arrayWithCapacity:5];
-    self.itemViews = [NSMutableArray array];
+    _items = [NSMutableArray arrayWithCapacity:5];
+    _itemViews = [NSMutableArray array];
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
     
