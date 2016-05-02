@@ -38,7 +38,7 @@
 {
     UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
     [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.addButton = button;
+    _addButton = button;
 }
 
 - (void)initOrderingButton
@@ -46,7 +46,7 @@
     UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
     button.userInteractionEnabled = NO;
-    self.orderingButton = button;
+    _orderingButton = button;
 }
 
 - (void)initCancelButton
@@ -70,7 +70,7 @@
     heightConstraint.priority = 999;
     heightConstraint.active = YES;
     
-    self.cancelButton = button;
+    _cancelButton = button;
 }
 
 - (void)setItem:(MenuItem *)item

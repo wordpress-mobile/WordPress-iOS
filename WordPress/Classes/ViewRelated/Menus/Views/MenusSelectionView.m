@@ -28,6 +28,10 @@
 {
     [super awakeFromNib];
     
+    self.backgroundColor = [UIColor whiteColor];
+    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.layer.borderWidth = MenusDesignStrokeWidth;
+    
     self.items = [NSMutableArray arrayWithCapacity:5];
     self.itemViews = [NSMutableArray array];
 
@@ -36,20 +40,12 @@
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     self.stackView.spacing = 0.0;
-    
-    [self setupStyling];
-    
+        
     self.detailView.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionItemObjectWasUpdatedNotification:) name:MenusSelectionViewItemUpdatedItemObjectNotification object:nil];
 }
 
-- (void)setupStyling
-{
-    self.backgroundColor = [UIColor whiteColor];
-    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-    self.layer.borderWidth = MenusDesignStrokeWidth;
-}
 
 #pragma mark - instance
 

@@ -52,7 +52,7 @@
     
     NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
     topConstraint.priority = UILayoutPriorityDefaultHigh;
-    self.stackViewTopConstraint  = topConstraint;
+    _stackViewTopConstraint  = topConstraint;
     
     NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
     bottomConstraint.priority = UILayoutPriorityDefaultHigh;
@@ -64,7 +64,7 @@
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
                                               ]];
     
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initIconView
@@ -77,9 +77,10 @@
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
     widthConstraint.active = YES;
-    
-    [self.stackView addArrangedSubview:iconView];
-    self.iconView = iconView;
+    _iconView = iconView;
+
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
 }
 
 - (void)initTextField
@@ -87,9 +88,11 @@
     UIView *textFieldContainerView = [[UIView alloc] init];
     textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     textFieldContainerView.backgroundColor = [UIColor whiteColor];
-    [self.stackView addArrangedSubview:textFieldContainerView];
     
-    self.textFieldContainerView = textFieldContainerView;
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:textFieldContainerView];
+    
+    _textFieldContainerView = textFieldContainerView;
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
@@ -115,7 +118,7 @@
     [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     [textFieldContainerView addSubview:textField];
-    self.textField = textField;
+    _textField = textField;
     
     [NSLayoutConstraint activateConstraints:@[
                                               [textField.topAnchor constraintEqualToAnchor:marginGuide.topAnchor],

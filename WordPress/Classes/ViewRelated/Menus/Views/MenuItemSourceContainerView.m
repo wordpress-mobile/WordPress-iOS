@@ -49,14 +49,16 @@
                                               [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor]
                                               ]];
     
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initHeaderView
 {
     MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
     headerView.delegate = self;
-    [self.stackView addArrangedSubview:headerView];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:headerView];
     
     NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
     height.priority = 999;
@@ -65,7 +67,7 @@
     [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     [headerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     
-    self.headerView = headerView;
+    _headerView = headerView;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

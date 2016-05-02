@@ -71,7 +71,6 @@
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
     
     NSAssert(_stackView != nil, @"stackView is nil");
-    
     [_stackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
@@ -90,7 +89,6 @@
     label.backgroundColor = [UIColor whiteColor];
     
     NSAssert(_stackView != nil, @"stackView is nil");
-    
     [_stackView addArrangedSubview:label];
     
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
