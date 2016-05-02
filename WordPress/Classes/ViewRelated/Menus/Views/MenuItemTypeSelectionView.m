@@ -43,7 +43,7 @@
                                               [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                               [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
                                               ]];
-    self.scrollView = scrollView;
+    _scrollView = scrollView;
 }
 
 - (void)initStackView
@@ -53,15 +53,17 @@
     stackView.alignment = UIStackViewAlignmentTop;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.axis = UILayoutConstraintAxisVertical;
-    [self.scrollView addSubview:stackView];
+    
+    NSAssert(_scrollView != nil, @"scrollView is nil");
+    [_scrollView addSubview:stackView];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor]
+                                              [stackView.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:_scrollView.topAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:_scrollView.bottomAnchor]
                                               ]];
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

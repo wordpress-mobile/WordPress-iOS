@@ -57,10 +57,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     contentView.backgroundColor = [UIColor whiteColor];
     
     [self addSubview:contentView];
-    self.contentView = contentView;
+    _contentView = contentView;
     
     NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor];
-    self.constraintForLeadingIndentation = leadingConstraint;
+    _constraintForLeadingIndentation = leadingConstraint;
     leadingConstraint.active = YES;
     
     [NSLayoutConstraint activateConstraints:@[
@@ -74,13 +74,15 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:stackView];
+    
+    NSAssert(_contentView != nil, @"contentView is nil");
+    [_contentView addSubview:stackView];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                              [stackView.topAnchor constraintEqualToAnchor:_contentView.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor]
                                               ]];
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
@@ -94,7 +96,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     stackView.alignment = UIStackViewAlignmentCenter;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initIconView
@@ -107,8 +109,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
     [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
     iconView.tintColor = [WPStyleGuide grey];
-    [self.stackView addArrangedSubview:iconView];
-    self.iconView = iconView;
+    _iconView = iconView;
+
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
 }
 
 - (void)initTextLabel
@@ -119,10 +123,14 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     label.textColor = [self textLabelColor];
     label.font = [WPFontManager systemRegularFontOfSize:17.0];
     label.backgroundColor = [UIColor clearColor];
-    [self.stackView addArrangedSubview:label];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:label];
+    
     [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    self.textLabel = label;
+    
+    _textLabel = label;
 }
 
 - (void)layoutSubviews

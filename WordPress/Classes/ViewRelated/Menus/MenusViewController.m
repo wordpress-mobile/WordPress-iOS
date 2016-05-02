@@ -76,13 +76,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         
         // set local blog from local context
-        self.blog = [context objectWithID:blog.objectID];
+        _blog = [context objectWithID:blog.objectID];
         
         // set up the undomanager
         context.undoManager = [[NSUndoManager alloc] init];
 
         MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
-        self.menusService = service;
+        _menusService = service;
     }
     
     return self;

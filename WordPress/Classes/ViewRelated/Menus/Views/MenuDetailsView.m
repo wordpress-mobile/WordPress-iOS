@@ -38,6 +38,8 @@
     [self initTextField];
     [self initTextFieldDesignViews];
     [self initTrashButton];
+    
+    [self updateTextFieldDesignIconPositioning];
 }
 
 - (void)initTextField
@@ -67,7 +69,7 @@
 }
 
 - (void)initTextFieldDesignViews
-{
+{    
     UIView *textFieldDesignView = self.textFieldDesignView;
     textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
     textFieldDesignView.backgroundColor = [UIColor clearColor];
@@ -77,17 +79,17 @@
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.tintColor = [WPStyleGuide grey];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.textFieldDesignIcon = imageView;
+    _textFieldDesignIcon = imageView;
     
-    [self.textFieldDesignView addSubview:imageView];
+    [textFieldDesignView addSubview:imageView];
     
-    NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
-    self.textFieldDesignIconLeadingConstraint = leadingConstraint;
-    [self updateTextFieldDesignIconPositioning];
+    NSAssert(_textField != nil, @"textField is nil");
+    NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:_textField.leadingAnchor];
+    _textFieldDesignIconLeadingConstraint = leadingConstraint;
     [NSLayoutConstraint activateConstraints:@[
                                               [imageView.widthAnchor constraintEqualToConstant:14],
                                               [imageView.heightAnchor constraintEqualToConstant:14],
-                                              [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
+                                              [imageView.centerYAnchor constraintEqualToAnchor:_textField.centerYAnchor],
                                               leadingConstraint
                                               ]];
 }

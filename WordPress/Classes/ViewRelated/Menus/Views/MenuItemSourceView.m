@@ -66,7 +66,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     // setup the tableHeaderView and keep translatesAutoresizingMaskIntoConstraints to default YES
     // this allows the tableView to handle sizing the view as any other tableHeaderView
     UIView *stackedTableHeaderView = [[UIView alloc] init];
-    self.stackedTableHeaderView = stackedTableHeaderView;
+    _stackedTableHeaderView = stackedTableHeaderView;
 }
 
 - (void)initStackView
@@ -85,14 +85,15 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     stackView.layoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
     
-    [self.stackedTableHeaderView addSubview:stackView];
+    NSAssert(_stackedTableHeaderView != nil, @"stackedTableHeaderView is nil");
+    [_stackedTableHeaderView addSubview:stackView];
     // setup the constraints for the stackView
     // constrain the horiztonal edges to sync the width to the stackedTableHeaderView
     // do not include a bottom constraint so the stackView can layout its intrinsic height
     [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.topAnchor constraintEqualToAnchor:self.stackedTableHeaderView.topAnchor],
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.leadingAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.trailingAnchor]
+                                              [stackView.topAnchor constraintEqualToAnchor:_stackedTableHeaderView.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:_stackedTableHeaderView.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:_stackedTableHeaderView.trailingAnchor]
                                               ]];
     _stackView = stackView;
 }
@@ -100,8 +101,11 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)initFooterView
 {
     MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
-    self.tableView.tableFooterView = footerView;
-    self.footerView = footerView;
+    
+    NSAssert(_tableView != nil, @"tableView is nil");
+    _tableView.tableFooterView = footerView;
+    
+    _footerView = footerView;
 }
 
 - (BOOL)resignFirstResponder
@@ -156,7 +160,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     MenuItemSourceTextBar *searchBar = [[MenuItemSourceTextBar alloc] initAsSearchBar];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.delegate = self;
-    [self.stackView addArrangedSubview:searchBar];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:searchBar];
     
     NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:44.0];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
