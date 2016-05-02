@@ -1,4 +1,3 @@
-#import <EmailChecker/EmailChecker.h>
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
 #import <Mixpanel/Mixpanel.h>
@@ -26,6 +25,8 @@
 #import "CustomHighlightButton.h"
 
 #import "DDLogSwift.h"
+
+#import "EmailCheckerHelper.h"
 
 #import "HelpshiftUtils.h"
 

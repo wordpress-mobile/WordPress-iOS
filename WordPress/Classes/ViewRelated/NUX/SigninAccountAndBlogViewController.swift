@@ -609,12 +609,13 @@ extension SigninAccountAndBlogViewController: UITextFieldDelegate {
         if textField != emailField || didCorrectEmailOnce {
             return true
         }
-//        let suggestedEmail = EmailChecker.suggestDomainCorrection(textField.text)
-//        if suggestedEmail != textField.text {
-//            textField.text = suggestedEmail
-//            didCorrectEmailOnce = true
-//            loginFields.emailAddress = textField.nonNilTrimmedText()
-//        }
+
+        let suggestedEmail = EmailCheckerHelper.suggestDomainCorrection(textField.text)
+        if suggestedEmail != textField.text {
+            textField.text = suggestedEmail
+            didCorrectEmailOnce = true
+            loginFields.emailAddress = textField.nonNilTrimmedText()
+        }
         return true
     }
 
