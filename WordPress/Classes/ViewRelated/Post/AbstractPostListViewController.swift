@@ -153,7 +153,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     // MARK: - Multitasking Support
     
     func handleApplicationDidBecomeActive(notification: NSNotification) {
-        needsRefreshCachedCellHeightsBeforeLayout = false
+        needsRefreshCachedCellHeightsBeforeLayout = true
     }
     
     // MARK: - Configuration
