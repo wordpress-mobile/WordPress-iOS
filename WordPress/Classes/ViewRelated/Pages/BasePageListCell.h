@@ -1,17 +1,18 @@
 #import <UIKit/UIKit.h>
 #import "WPPostContentViewProvider.h"
 
+@class AbstractPost;
 @class BasePageListCell;
 
 typedef void(^BasePageListCellActionBlock)(BasePageListCell* _Nonnull  cell,
                                            UIButton* _Nonnull button,
-                                           id<WPPostContentViewProvider> _Nonnull provider);
+                                           AbstractPost* _Nonnull post);
 
 @interface BasePageListCell : UITableViewCell
 
-@property (nonatomic, strong, readwrite, nullable) id<WPPostContentViewProvider>contentProvider;
+@property (nonatomic, strong, readwrite, nullable) AbstractPost *post;
 @property (nonatomic, copy, readwrite, nullable) BasePageListCellActionBlock onAction;
 
-- (void)configureCell:(nonnull id<WPPostContentViewProvider>)contentProvider;
+- (void)configureCell:(nonnull AbstractPost *)post;
 
 @end

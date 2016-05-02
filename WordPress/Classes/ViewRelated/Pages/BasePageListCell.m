@@ -1,10 +1,11 @@
 #import "BasePageListCell.h"
+#import "AbstractPost.h"
 
 @implementation BasePageListCell
 
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
+- (void)configureCell:(AbstractPost *)post
 {
-    self.contentProvider = contentProvider;
+    self.post = post;
 }
 
 #pragma mark - Action
@@ -12,8 +13,8 @@
 - (IBAction)onAction:(UIButton *)sender
 {
     if (self.onAction) {
-        NSAssert(self.contentProvider != nil, @"Expected the content provider to be set here.");
-        self.onAction(self, sender, self.contentProvider);
+        NSAssert(self.post != nil, @"Expected the post to be set here.");
+        self.onAction(self, sender, self.post);
     }
 }
 
