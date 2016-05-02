@@ -15,10 +15,10 @@
 
 @interface MenuItemSourceTextBar () <UITextFieldDelegate>
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) UIStackView *contentStackView;
-@property (nonatomic, strong) UILabel *cancelLabel;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIView *contentView;
+@property (nonatomic, strong, readonly) UIStackView *contentStackView;
+@property (nonatomic, strong, readonly) UILabel *cancelLabel;
 @property (nonatomic, strong) NSMutableArray <MenuItemSourceTextBarFieldObserver *> *textObservers;
 
 @end
@@ -48,13 +48,17 @@
     self = [self init];
     if (self) {
         
-        self.iconView.image = [Gridicon iconOfType:GridiconTypeSearch];
-        self.iconView.hidden = NO;
+        NSAssert(_iconView != nil, @"iconView is nil");
+        
+        _iconView.image = [Gridicon iconOfType:GridiconTypeSearch];
+        _iconView.hidden = NO;
+        
+        NSAssert(_textField != nil, @"textField is nil");
         
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
         NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyDarken10]};
-        self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
+        _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
     
     return self;
@@ -83,7 +87,7 @@
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                               bottom
                                               ]];
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initContentStackView
@@ -94,8 +98,10 @@
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
     contentView.backgroundColor = [UIColor whiteColor];
     
-    [self.stackView addArrangedSubview:contentView];
-    self.contentView = contentView;
+    NSAssert(_stackView != nil, @"stackView is nil");
+    
+    [_stackView addArrangedSubview:contentView];
+    _contentView = contentView;
     
     UIStackView *contentStackView = [[UIStackView alloc] init];
     contentStackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -103,7 +109,7 @@
     contentStackView.alignment = UIStackViewAlignmentFill;
     contentStackView.axis = UILayoutConstraintAxisHorizontal;
     
-    const CGFloat spacing = self.stackView.spacing;
+    const CGFloat spacing = _stackView.spacing;
     contentStackView.spacing = spacing;
     
     [contentView addSubview:contentStackView];
@@ -115,7 +121,7 @@
                                               [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-spacing]
                                               ]];
     
-    self.contentStackView = contentStackView;
+    _contentStackView = contentStackView;
 }
 
 - (void)initIconView
@@ -125,7 +131,9 @@
     iconView.tintColor = [WPStyleGuide greyDarken10];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     
-    [self.contentStackView addArrangedSubview:iconView];
+    NSAssert(_contentStackView != nil, @"contentStackView is nil");
+    
+    [_contentStackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:20.0];
     width.priority = 999;
@@ -151,7 +159,9 @@
     UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
     textField.font = font;
     
-    [self.contentStackView addArrangedSubview:textField];
+    NSAssert(_contentStackView != nil, @"contentStackView is nil");
+    
+    [_contentStackView addArrangedSubview:textField];
     
     [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
@@ -165,15 +175,20 @@
     label.textColor = [WPStyleGuide greyDarken20];
     label.font = [WPFontManager systemRegularFontOfSize:14.0];
     label.userInteractionEnabled = YES;
-    [self.stackView addArrangedSubview:label];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+
+    [_stackView addArrangedSubview:label];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
     [label addGestureRecognizer:tap];
     
     [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     
-    self.cancelLabel = label;
-    [self setCancelLabelHidden:YES animated:NO];
+    label.hidden = YES;
+    label.alpha = 0.0;
+    
+    _cancelLabel = label;
 }
 
 - (void)addTextObserver:(MenuItemSourceTextBarFieldObserver *)textObserver
