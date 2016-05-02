@@ -22,8 +22,8 @@ typedef NS_ENUM(NSUInteger) {
 
 @interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
-@property (nonatomic, strong) MenuItem *item;
-@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong, readonly) MenuItem *item;
+@property (nonatomic, strong, readonly) Blog *blog;
 
 /**
  The "scratch pad" child context for changes on the item to save, or discard.

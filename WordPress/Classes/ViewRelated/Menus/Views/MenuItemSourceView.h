@@ -40,7 +40,7 @@
 /**
  Searchbar created and implemented via insertSearchBarIfNeeded
  */
-@property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
+@property (nonatomic, strong, readonly) MenuItemSourceTextBar *searchBar;
 
 /**
  Helpers flag for preventing text updates within the footerView.

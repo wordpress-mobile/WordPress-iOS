@@ -19,7 +19,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 /**
  Content view in which most of the drawing and MenuItem content is setup in.
  */
-@property (nonatomic, strong) MenuItemDrawingView *contentView;
+@property (nonatomic, strong, readonly) MenuItemDrawingView *contentView;
 
 /**
  The highlighted state.
@@ -44,22 +44,22 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 /**
  The primary stackView.
  */
-@property (nonatomic, strong) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
 
 /**
  The primary textLabel.
  */
-@property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong, readonly) UILabel *textLabel;
 
 /**
  The primary icon imageView.
  */
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 
 /**
  Accessory stackView used for secondary views on the right side.
  */
-@property (nonatomic, strong) UIStackView *accessoryStackView;
+@property (nonatomic, strong, readonly) UIStackView *accessoryStackView;
 
 /**
  Tracker for a stackableView appearing before this view in a stack.

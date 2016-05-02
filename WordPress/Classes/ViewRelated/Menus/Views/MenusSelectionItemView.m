@@ -5,7 +5,7 @@
 
 @interface MenusSelectionItemView ()
 
-@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong, readonly) UILabel *label;
 @property (nonatomic, assign) BOOL drawsDesignLineSeparator;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 

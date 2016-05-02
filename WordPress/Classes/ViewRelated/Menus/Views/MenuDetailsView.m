@@ -14,8 +14,8 @@
 @property (nonatomic, weak) IBOutlet UITextField *textField;
 @property (nonatomic, weak) IBOutlet UIView *textFieldDesignView;
 @property (nonatomic, weak) IBOutlet UIButton *trashButton;
-@property (nonatomic, strong) UIImageView *textFieldDesignIcon;
-@property (nonatomic, strong) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
+@property (nonatomic, strong, readonly) UIImageView *textFieldDesignIcon;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
 
 @end

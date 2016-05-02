@@ -5,9 +5,9 @@
 
 @interface MenuItemSourceLinkView () <MenuItemSourceTextBarDelegate>
 
-@property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) MenuItemSourceTextBar *textBar;
-@property (nonatomic, strong) MenuItemCheckButtonView *checkButtonView;
+@property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) MenuItemSourceTextBar *textBar;
+@property (nonatomic, strong, readonly) MenuItemCheckButtonView *checkButtonView;
 
 @end
 

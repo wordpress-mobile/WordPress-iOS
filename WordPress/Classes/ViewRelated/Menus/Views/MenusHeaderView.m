@@ -10,7 +10,7 @@
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *menusView;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
@@ -38,7 +38,7 @@
 
 - (void)setupWithMenusForBlog:(Blog *)blog
 {
-    self.blog = blog;
+    _blog = blog;
     
     [self.locationsView removeAllSelectionItems];
     [self.menusView removeAllSelectionItems];
