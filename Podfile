@@ -17,7 +17,7 @@ target 'WordPress', :exclusive => true do
   pod 'AMPopTip', '~> 0.7'
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'DTCoreText',   '1.6.16'
-  pod 'FormatterKit', '~> 1.8.0'
+  pod 'FormatterKit', '~> 1.8.1'
   pod 'Helpshift', '~> 5.5.1'
   pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -78,14 +78,7 @@ target :WordPressTest, :exclusive => true do
 end
 
 post_install do |installer_representation|
-  # We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
   installer_representation.pods_project.targets.each do |target|
-    if ["Pods-WordPressTodayWidget-WordPressCom-Stats-iOS", "Pods-WordPressTodayWidget-AFNetworking"].include?(target.name)
-      target.build_configurations.each do |config|
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AF_APP_EXTENSIONS=1']
-      end
-    end
-
     # See https://github.com/CocoaPods/CocoaPods/issues/3838
     if target.name.end_with?('WordPressCom-Stats-iOS')
       target.build_configurations.each do |config|
@@ -99,4 +92,10 @@ post_install do |installer_representation|
   installer_representation.pods_project.build_configurations.each do |config|
       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   end
+  
+  # Does a quick hack to turn off Swift embedding of libraries for extensions
+  # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressShareExtension/*.xcconfig"
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressTodayWidget/*.xcconfig"
+  
 end
