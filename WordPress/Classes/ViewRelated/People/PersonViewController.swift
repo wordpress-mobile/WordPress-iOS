@@ -4,8 +4,8 @@ import WordPressShared
 
 /// Displays a Blog's User Details
 ///
-class PersonViewController : UITableViewController
-{
+class PersonViewController : UITableViewController {
+    
     // MARK: - Public Properties
     var person  : Person!
     var blog    : Blog!
