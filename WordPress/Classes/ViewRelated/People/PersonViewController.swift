@@ -18,7 +18,7 @@ class PersonViewController : UITableViewController {
 
         super.viewDidLoad()
         
-        title = person?.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+        title = person.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
@@ -79,6 +79,7 @@ class PersonViewController : UITableViewController {
             roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
             roleCell.detailTextLabel?.text = person?.role.description.capitalizedString
             roleCell.accessoryType = canPromote ? .DisclosureIndicator : .None
+            roleCell.selectionStyle = canPromote ? .Gray : .None
             WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
