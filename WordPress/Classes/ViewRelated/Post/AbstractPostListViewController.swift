@@ -508,12 +508,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
         
-        guard posts.count > 0 else {
+        guard let oldestPost = posts.last else {
             assertionFailure("This method should not be called with no posts.")
             return
         }
-        
-        let oldestPost = posts[posts.count - 1]
 
         // Reset the filter to only show the latest sync point.
         filter.oldestPostDate = oldestPost.dateCreated()
