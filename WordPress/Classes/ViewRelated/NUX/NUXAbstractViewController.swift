@@ -161,8 +161,6 @@ class NUXAbstractViewController : UIViewController
 
 
     /// It is assumed that NUX view controllers are always presented modally.
-    /// This method dismisses the view controller by calling dismiss(cancelled:)
-    /// and passing false.
     ///
     func dismiss() {
         dismiss(cancelled: false)
