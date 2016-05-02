@@ -288,12 +288,15 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func configureSearchBarPlaceholder() {
+        
         // Adjust color depending on where the search bar is being presented.
         let placeholderColor = WPStyleGuide.wordPressBlue()
         let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar on the post screen.")
-        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: WPStyleGuide.defaultSearchBarTextAttributes(placeholderColor) as? [String:AnyObject])
         
-        let defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor()) as! [String:AnyObject]
+        let defaultSearchBarTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(placeholderColor)
+        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: defaultSearchBarTextAttributes)
+        
+        let defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor())
         
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).attributedPlaceholder = attrPlacholderText
         

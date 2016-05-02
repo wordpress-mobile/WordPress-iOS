@@ -36,10 +36,10 @@ extension WPStyleGuide
         ] as NSDictionary
     }
 
-    public class func defaultSearchBarTextAttributes(color: UIColor) -> NSDictionary {
+    public class func defaultSearchBarTextAttributes(color: UIColor) -> [String:AnyObject] {
         return [
             NSForegroundColorAttributeName      : color,
             NSFontAttributeName                 : WPFontManager.systemRegularFontOfSize(14)
-        ] as NSDictionary
+        ]
     }
 }
