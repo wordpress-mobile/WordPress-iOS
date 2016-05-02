@@ -569,9 +569,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                 }
                 
-                if let success = success {
-                    success(hasMore: filter.hasMore)
-                }
+                success?(hasMore: filter.hasMore)
             }, failure: {[weak self] (error: NSError?) -> () in
                 
                 guard let strongSelf = self,
@@ -579,9 +577,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     return
                 }
                 
-                if let failure = failure {
-                    failure(error: error)
-                }
+                failure?(error: error)
                 
                 if userInteraction == true {
                     strongSelf.handleSyncFailure(error)
@@ -609,7 +605,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postTypeToSync(),
             withOptions: options,
             forBlog: blog,
-            success: {[weak self] (posts: [AbstractPost]?) -> () in
+            success: {[weak self] posts in
                 guard let strongSelf = self,
                     let posts = posts else {
                         return
@@ -619,9 +615,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                 }
                 
-                if let success = success {
-                    success(hasMore: filter.hasMore)
-                }
+                success?(hasMore: filter.hasMore)
             }, failure: {[weak self] (error: NSError?) -> () in
                 
                 guard let strongSelf = self,
@@ -629,9 +623,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                         return
                 }
                 
-                if let failure = failure {
-                    failure(error: error)
-                }
+                failure?(error: error)
                 
                 strongSelf.handleSyncFailure(error)
             })
