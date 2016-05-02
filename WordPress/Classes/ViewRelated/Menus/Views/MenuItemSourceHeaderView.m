@@ -7,8 +7,8 @@
 
 @interface MenuItemSourceHeaderView ()
 
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
 
@@ -58,7 +58,7 @@
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing]
                                               ]];
     [stackView setContentCompressionResistancePriority:999 forAxis:UILayoutConstraintAxisVertical];
-    self.stackView = stackView;
+    _stackView = stackView;
 }
 
 - (void)initIconView
@@ -70,12 +70,14 @@
     iconView.tintColor = [WPStyleGuide grey];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
     
-    [self.stackView addArrangedSubview:iconView];
+    NSAssert(_stackView != nil, @"stackView is nil");
+    
+    [_stackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
     widthConstraint.active = YES;
     
-    self.iconView = iconView;
+    _iconView = iconView;
 }
 
 - (void)initTitleLabel
@@ -87,12 +89,14 @@
     label.font = [WPFontManager systemRegularFontOfSize:16.0];
     label.backgroundColor = [UIColor whiteColor];
     
-    [self.stackView addArrangedSubview:label];
+    NSAssert(_stackView != nil, @"stackView is nil");
+    
+    [_stackView addArrangedSubview:label];
     
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
-    self.titleLabel = label;
+    _titleLabel = label;
 }
 
 - (void)tapGesture:(UITapGestureRecognizer *)tapGesture

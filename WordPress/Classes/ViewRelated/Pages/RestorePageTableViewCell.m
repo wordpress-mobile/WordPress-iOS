@@ -6,13 +6,10 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
-@property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
 
 @end
 
 @implementation RestorePageTableViewCell
-
-@synthesize delegate;
 
 #pragma mark - Life Cycle
 
@@ -48,12 +45,6 @@
     NSString *buttonTitle = NSLocalizedString(@"Undo", @"The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.");
     [self.restoreButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
-
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
-{
-    self.contentProvider = contentProvider;
-}
-
 
 #pragma mark - Actions
 
