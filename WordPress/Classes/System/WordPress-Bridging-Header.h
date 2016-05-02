@@ -26,6 +26,7 @@
 
 #import "DDLogSwift.h"
 
+#import "EditPageViewController.h"
 #import "EmailCheckerHelper.h"
 
 #import "HelpshiftUtils.h"
@@ -52,6 +53,9 @@
 
 #import "OnePasswordFacade.h"
 
+#import "Page.h"
+#import "PageListSectionHeaderView.h"
+#import "PageListTableViewCell.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "Post.h"
@@ -106,11 +110,11 @@
 #import "WPAppAnalytics.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
-#import "WPComLanguages.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
+#import "WPLegacyEditPageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"
