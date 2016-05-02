@@ -118,15 +118,17 @@ class PersonViewController : UITableViewController {
     
     
     // MARK: - Private Properties
+    private var isSomeoneElse : Bool {
+        return blog.account.userID != person.ID
+    }
+    
     private var canPromote : Bool {
-        let hasPermissions  = blog.isUserCapableOf(.PromoteUsers)
-        let isSomeoneElse   = blog.account.userID != person.ID
-        
-        return hasPermissions && isSomeoneElse
+        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
     }
     
     private var canRemove : Bool {
-// TODO: Verify
-        return canPromote
+        // Note: YES, ListUsers. Brought from Calypso's code
+        //
+        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
     }
 }
