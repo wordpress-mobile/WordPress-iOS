@@ -19,6 +19,10 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
     return client;
 }
 
++ (WordPressComOAuthClient *)clientForSwift {
+    return [self client];
+}
+
 #pragma mark - Misc
 
 - (void)authenticateWithUsername:(NSString *)username
