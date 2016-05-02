@@ -10,7 +10,7 @@
 /// @param      button      The button that was tapped.
 /// @param      post        The post represented by the cell that was tapped.
 ///
-typedef void(^BasePageListCellActionBlock)(BasePageListCell* _Nonnull  cell,
+typedef void(^BasePageListCellActionBlock)(BasePageListCell* _Nonnull cell,
                                            UIButton* _Nonnull button,
                                            AbstractPost* _Nonnull post);
 
