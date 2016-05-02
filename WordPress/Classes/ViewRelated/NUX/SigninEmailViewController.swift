@@ -303,7 +303,7 @@ import WordPressShared
 
 
     @IBAction func handleCreateSiteButtonTapped(sender: UIButton) {
-        let controller = CreateAccountAndBlogViewController()
+        let controller = SigninAccountAndBlogViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
     }
 
