@@ -1,6 +1,14 @@
 #import "OnePasswordFacade.h"
 #import <OnePasswordExtension/OnePasswordExtension.h>
 
+// Proxy these contants. OnePassword defines them with a #define macro which hides them from Swift.
+NSString * const WPOnePasswordTitleKey = AppExtensionTitleKey;
+NSString * const WPOnePasswordUsernameKey = AppExtensionUsernameKey;
+NSString * const WPOnePasswordPasswordKey = AppExtensionPasswordKey;
+NSString * const WPOnePasswordGeneratedPasswordMinLengthKey = AppExtensionGeneratedPasswordMinLengthKey;
+NSString * const WPOnePasswordGeneratedPasswordMaxLengthKey = AppExtensionGeneratedPasswordMaxLengthKey;
+NSInteger WPOnePasswordErrorCodeCancelledByUser = AppExtensionErrorCodeCancelledByUser;
+
 @implementation OnePasswordFacade
 
 - (void)findLoginForURLString:(NSString *)loginUrl viewController:(UIViewController *)viewController sender:(id)sender completion:(OnePasswordFacadeCallback)completion
@@ -25,6 +33,28 @@
 - (BOOL)isOnePasswordEnabled
 {
     return [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+}
+
+
+- (void)storeLoginForURLString:(NSString *)URLString
+                  loginDetails:(NSDictionary *)loginDetailsDictionary
+     passwordGenerationOptions:(NSDictionary *)passwordGenerationOptions
+             forViewController:(UIViewController *)viewController
+                        sender:(id)sender
+                    completion:(void (^)(NSDictionary * _Nullable loginDictionary, NSError * _Nullable error))completion
+{
+    NSParameterAssert(URLString != nil);
+    NSParameterAssert(loginDetailsDictionary != nil);
+    NSParameterAssert(passwordGenerationOptions != nil);
+    NSParameterAssert(viewController != nil);
+    NSParameterAssert(completion != nil);
+
+    [[OnePasswordExtension sharedExtension] storeLoginForURLString:URLString
+                                                      loginDetails:loginDetailsDictionary
+                                         passwordGenerationOptions:passwordGenerationOptions
+                                                 forViewController:viewController
+                                                            sender:sender
+                                                        completion:completion];
 }
 
 @end
