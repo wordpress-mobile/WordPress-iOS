@@ -74,7 +74,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView = postListViewController.tableView
         refreshControl = postListViewController.refreshControl
         
-        refreshControl?.addTarget(self, action: #selector(AbstractPostListViewController.refresh(_:)), forControlEvents: .ValueChanged)
+        refreshControl?.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
         
         configureCellsForLayout()
         configureTableView()
