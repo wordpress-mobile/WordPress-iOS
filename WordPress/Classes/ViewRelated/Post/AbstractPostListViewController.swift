@@ -824,7 +824,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
         
         let navBar = navigationController.navigationBar
-        let height = CGRectGetHeight(navBar.frame) + UIApplication.sharedApplication().statusBarFrame.size.height
+        let height = navBar.frame.height + self.topLayoutGuide.length
         
         return max(Float(height), Float(SearchWrapperViewMinHeight))
     }
