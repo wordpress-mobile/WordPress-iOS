@@ -15,7 +15,7 @@ struct Person {
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
     
-    enum Role: Int, Comparable, CustomStringConvertible {
+    enum Role: Int, Comparable, Equatable, CustomStringConvertible {
         case SuperAdmin
         case Admin
         case Editor
@@ -88,7 +88,13 @@ struct Person {
                 return "unsupported"
             }
         }
+        
+        static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
     }
+}
+
+func ==(lhs: Person.Role, rhs: Person.Role) -> Bool {
+    return lhs.rawValue == rhs.rawValue
 }
 
 func <(lhs: Person.Role, rhs: Person.Role) -> Bool {
