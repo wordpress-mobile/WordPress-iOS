@@ -9,11 +9,7 @@
 @interface MenusHeaderView : UIView
 
 @property (nonatomic, weak) id <MenusHeaderViewDelegate> delegate;
-
-/**
- Set up the header with the Menus and MenuLocations for blog.
- */
-- (void)setupWithMenusForBlog:(Blog *)blog;
+@property (nonatomic, strong) Blog *blog;
 
 /**
  Add a Menu to the header's selection options.
