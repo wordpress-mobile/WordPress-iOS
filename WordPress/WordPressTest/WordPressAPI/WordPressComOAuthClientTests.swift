@@ -15,16 +15,18 @@ class WordPressOAuthClientTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    func testAuthenticateUsernameNo2FASuccessCase() {
-        OHHTTPStubs.stubRequestsPassingTest({(request) -> Bool in
+    private func isOauthTokenRequest() -> OHHTTPStubsTestBlock {
+        return { request in
             return request.URL?.absoluteString == self.WordPressComOAuthTokenUrl
-            }, withStubResponse:{ (request:NSURLRequest) -> OHHTTPStubsResponse in
-                let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("WordPressOAuthClientSuccess", withExtension:"json")!
-                let mockData = NSData(contentsOfURL: mockDataURL)!
-                let stubResponse = OHHTTPStubsResponse(data: mockData, statusCode:200, headers:["Content-Type":"application/json"])
-                stubResponse.responseTime = OHHTTPStubsDownloadSpeedWifi;
-                return stubResponse
-        })
+        }
+    }
+
+
+    func testAuthenticateUsernameNo2FASuccessCase() {
+        stub(isOauthTokenRequest()) { request in
+            let stubPath = OHPathForFile("WordPressOAuthClientSuccess.json", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+        }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
         let client = WordPressComOAuthClient()
@@ -40,15 +42,10 @@ class WordPressOAuthClientTests: XCTestCase {
     }
 
     func testAuthenticateUsernameNo2FAFailureWrongPasswordCase() {
-        OHHTTPStubs.stubRequestsPassingTest({(request) -> Bool in
-            return request.URL?.absoluteString == self.WordPressComOAuthTokenUrl
-            }, withStubResponse:{ (request:NSURLRequest) -> OHHTTPStubsResponse in
-                let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("WordPressOAuthClientWrongPasswordFail", withExtension:"json")!
-                let mockData = NSData(contentsOfURL: mockDataURL)!
-                let stubResponse = OHHTTPStubsResponse(data: mockData, statusCode:400, headers:["Content-Type":"application/json"])
-                stubResponse.responseTime = OHHTTPStubsDownloadSpeedWifi;
-                return stubResponse
-        })
+        stub(isOauthTokenRequest()) { request in
+            let stubPath = OHPathForFile("WordPressOAuthClientWrongPasswordFail.json", self.dynamicType)
+            return fixture(stubPath!, status:400 headers: ["Content-Type":"application/json"])
+        }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
         let client = WordPressComOAuthClient()
@@ -64,15 +61,10 @@ class WordPressOAuthClientTests: XCTestCase {
     }
 
     func testAuthenticateUsername2FAWrong2FACase() {
-        OHHTTPStubs.stubRequestsPassingTest({(request) -> Bool in
-            return request.URL?.absoluteString == self.WordPressComOAuthTokenUrl
-            }, withStubResponse:{ (request:NSURLRequest) -> OHHTTPStubsResponse in
-                let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("WordPressOAuthClientNeed2FAFail", withExtension:"json")!
-                let mockData = NSData(contentsOfURL: mockDataURL)!
-                let stubResponse = OHHTTPStubsResponse(data: mockData, statusCode:400, headers:["Content-Type":"application/json"])
-                stubResponse.responseTime = OHHTTPStubsDownloadSpeedWifi;
-                return stubResponse
-        })
+        stub(isOauthTokenRequest()) { request in
+            let stubPath = OHPathForFile("WordPressOAuthClientNeed2FAFail.json", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+        }
 
         let expectation = self.expectationWithDescription("Call should complete")
         let client = WordPressComOAuthClient()
@@ -99,15 +91,10 @@ class WordPressOAuthClientTests: XCTestCase {
     }
 
     func testrequestOneTimeCodeWithUsername() {
-        OHHTTPStubs.stubRequestsPassingTest({(request) -> Bool in
-            return request.URL?.absoluteString == self.WordPressComOAuthTokenUrl
-            }, withStubResponse:{ (request:NSURLRequest) -> OHHTTPStubsResponse in
-                let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("WordPressOAuthClientNeed2FAFail", withExtension:"json")!
-                let mockData = NSData(contentsOfURL: mockDataURL)!
-                let stubResponse = OHHTTPStubsResponse(data: mockData, statusCode:400, headers:["Content-Type":"application/json"])
-                stubResponse.responseTime = OHHTTPStubsDownloadSpeedWifi;
-                return stubResponse
-        })
+        stub(isOauthTokenRequest()) { request in
+            let stubPath = OHPathForFile("WordPressOAuthClientNeed2FAFail.json", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+        }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
         let client = WordPressComOAuthClient()
