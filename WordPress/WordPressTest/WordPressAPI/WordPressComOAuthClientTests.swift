@@ -32,7 +32,7 @@ class WordPressOAuthClientTests: XCTestCase {
         let client = WordPressComOAuthClient(clientID:"Fake", secret:"Fake")
         client.authenticateWithUsername("fakeUser", password: "fakePass", multifactorCode: nil, success: { (token) in
             expectation.fulfill()
-            XCTAssert(!token.isEmpty, "There should be a token available")
+            XCTAssert(!token!.isEmpty, "There should be a token available")
             XCTAssert(token == "fakeToken", "There should be a token available")
             }, failure: { (error) in
                 expectation.fulfill()
