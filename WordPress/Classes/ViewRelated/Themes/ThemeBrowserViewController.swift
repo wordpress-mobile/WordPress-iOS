@@ -231,11 +231,11 @@ public protocol ThemePresenter: class
     
     private func configureSearchBarPlaceholder() {
         let placeholderText = NSLocalizedString("Search",  comment:"Placeholder text for the themes browser search bar")
-        let placeholderAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.wordPressBlue()) as! [String : AnyObject]
+        let placeholderAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.wordPressBlue())
         let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).attributedPlaceholder = attrPlacholderText
 
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor()) as! [String : AnyObject]
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor())
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).defaultTextAttributes = textAttributes
     }
 
