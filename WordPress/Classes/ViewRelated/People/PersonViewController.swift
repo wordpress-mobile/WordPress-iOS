@@ -89,11 +89,12 @@ class PersonViewController : UITableViewController {
     
     @IBOutlet var roleCell : UITableViewCell! {
         didSet {
+            let enabled = isPromoteEnabled
             roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-            roleCell.detailTextLabel?.text = person?.role.localizedName()
-            roleCell.accessoryType = isPromoteEnabled ? .DisclosureIndicator : .None
-            roleCell.selectionStyle = isPromoteEnabled ? .Gray : .None
-            roleCell.userInteractionEnabled = isPromoteEnabled
+            roleCell.detailTextLabel?.text = person.role.localizedName()
+            roleCell.accessoryType = enabled ? .DisclosureIndicator : .None
+            roleCell.selectionStyle = enabled ? .Gray : .None
+            roleCell.userInteractionEnabled = enabled
             WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
@@ -124,9 +125,10 @@ class PersonViewController : UITableViewController {
     
     @IBOutlet var removeCell : UITableViewCell! {
         didSet {
+            let enabled = isRemoveEnabled
             removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
+            removeCell.hidden = !enabled
             WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
-            removeCell.hidden = !isRemoveEnabled
         }
     }
     
