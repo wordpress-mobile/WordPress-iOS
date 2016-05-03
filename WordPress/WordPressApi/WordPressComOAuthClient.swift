@@ -23,7 +23,15 @@ public class WordPressComOAuthClient: NSObject {
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
 
-    private let sessionManager: AFHTTPSessionManager
+    private let sessionManager: AFHTTPSessionManager = {
+        let baseURL = NSURL(string:WordPressComOAuthClient.WordPressComOAuthBaseUrl)
+        let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
+        let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
+        sessionManager.responseSerializer = AFJSONResponseSerializer()
+        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
+        return sessionManager
+    }()
+
     private let clientID: String
     private let secret: String
 
@@ -43,11 +51,7 @@ public class WordPressComOAuthClient: NSObject {
     public init(clientID: String, secret: String) {
         self.clientID = clientID
         self.secret = secret
-        let baseURL = NSURL(string:self.dynamicType.WordPressComOAuthBaseUrl)
-        let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-        sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
-        sessionManager.responseSerializer = AFJSONResponseSerializer()
-        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
+
     }
 
     /**
