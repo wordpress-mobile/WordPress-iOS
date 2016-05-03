@@ -55,6 +55,11 @@
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
+		08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */; };
+		08D345511CD7F50900358E8C /* MenusSelectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */; };
+		08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */; };
+		08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454F1CD7F50900358E8C /* MenusSelectionView.m */; };
+		08D345561CD7FBA900358E8C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenusHeaderView.m */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
 		08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */; };
 		08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */; };
@@ -917,6 +922,16 @@
 		08CC677B1C49B65A00153AD7 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		08CC677C1C49B65A00153AD7 /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		08CC677D1C49B65A00153AD7 /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
+		08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionDetailView.h; sourceTree = "<group>"; };
+		08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionDetailView.m; sourceTree = "<group>"; };
+		08D3454A1CD7F50900358E8C /* MenusSelectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionItem.h; sourceTree = "<group>"; };
+		08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionItem.m; sourceTree = "<group>"; };
+		08D3454C1CD7F50900358E8C /* MenusSelectionItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionItemView.h; sourceTree = "<group>"; };
+		08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionItemView.m; sourceTree = "<group>"; };
+		08D3454E1CD7F50900358E8C /* MenusSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionView.h; sourceTree = "<group>"; };
+		08D3454F1CD7F50900358E8C /* MenusSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionView.m; sourceTree = "<group>"; };
+		08D345541CD7FBA900358E8C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
+		08D345551CD7FBA900358E8C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
 		08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Menu+ViewDesign.h"; sourceTree = "<group>"; };
 		08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Menu+ViewDesign.m"; sourceTree = "<group>"; };
@@ -2239,6 +2254,34 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		08D345461CD7F4E300358E8C /* Menu and Location Selection */ = {
+			isa = PBXGroup;
+			children = (
+				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
+				08D3454F1CD7F50900358E8C /* MenusSelectionView.m */,
+				08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */,
+				08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */,
+				08D3454C1CD7F50900358E8C /* MenusSelectionItemView.h */,
+				08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */,
+				08D3454A1CD7F50900358E8C /* MenusSelectionItem.h */,
+				08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */,
+			);
+			name = "Menu and Location Selection";
+			sourceTree = "<group>";
+		};
+		08D345471CD7F4EF00358E8C /* MenuItem Editing */ = {
+			isa = PBXGroup;
+			children = (
+				08D9784F1CD2AF7D0054F19A /* MenuItemCheckButtonView.h */,
+				08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */,
+				08D978511CD2AF7D0054F19A /* MenuItemSourceHeaderView.h */,
+				08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */,
+				08D978531CD2AF7D0054F19A /* MenuItemSourceTextBar.h */,
+				08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */,
+			);
+			name = "MenuItem Editing";
+			sourceTree = "<group>";
+		};
 		08D978491CD2AF7D0054F19A /* Menus */ = {
 			isa = PBXGroup;
 			children = (
@@ -2254,12 +2297,10 @@
 				08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */,
 				08D9784D1CD2AF7D0054F19A /* MenuItem+ViewDesign.h */,
 				08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */,
-				08D9784F1CD2AF7D0054F19A /* MenuItemCheckButtonView.h */,
-				08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */,
-				08D978511CD2AF7D0054F19A /* MenuItemSourceHeaderView.h */,
-				08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */,
-				08D978531CD2AF7D0054F19A /* MenuItemSourceTextBar.h */,
-				08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */,
+				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
+				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
+				08D345461CD7F4E300358E8C /* Menu and Location Selection */,
+				08D345471CD7F4EF00358E8C /* MenuItem Editing */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5252,6 +5293,7 @@
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
+				08D345561CD7FBA900358E8C /* MenusHeaderView.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
@@ -5293,6 +5335,7 @@
 				B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
+				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */,
 				B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
@@ -5413,6 +5456,7 @@
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
 				E10B5ACF1C4518E100F6A390 /* AccountService+Rx.swift in Sources */,
 				93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */,
+				08D345511CD7F50900358E8C /* MenusSelectionItem.m in Sources */,
 				E1BEEC631C4E35A8000B4FA0 /* Animator.swift in Sources */,
 				E1C5457E1C6B962D001CEB0E /* MediaSettings.swift in Sources */,
 				5DCC4CD819A50CC0003E548C /* ReaderSite.m in Sources */,
@@ -5603,6 +5647,7 @@
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
 				B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */,
+				08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */,
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */,
 				FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */,
@@ -5621,6 +5666,7 @@
 				E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
+				08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */,
 				E6D35FFC1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m in Sources */,
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				5DDC44671A72BB07007F538E /* ReaderViewController.m in Sources */,
