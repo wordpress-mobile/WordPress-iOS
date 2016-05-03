@@ -10,15 +10,15 @@ class WordPressComLanguageDatabase : NSObject
     
     /// Languages considered 'popular'
     ///
-    let popular : [WordPressComLanguage]
+    let popular : [Language]
     
     /// Every supported language
     ///
-    let all : [WordPressComLanguage]
-    
+    let all : [Language]
+
     /// Returns both, Popular and All languages, grouped
     ///
-    let grouped : [[WordPressComLanguage]]
+    let grouped : [[Language]]
     
     
     // MARK: - Public Methods
@@ -32,8 +32,8 @@ class WordPressComLanguageDatabase : NSObject
         let parsed = try! NSJSONSerialization.JSONObjectWithData(raw, options: [.MutableContainers, .MutableLeaves]) as? NSDictionary
         
         // Parse All + Popular: All doesn't contain Popular. Otherwise the json would have dupe data. Right?
-        let parsedAll = WordPressComLanguage.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
-        let parsedPopular = WordPressComLanguage.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
+        let parsedAll = Language.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
+        let parsedPopular = Language.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
         let merged = parsedAll + parsedPopular
         
         // Done!
@@ -76,7 +76,7 @@ class WordPressComLanguageDatabase : NSObject
 
     /// Searches for a WordPress.com language that matches a language tag.
     ///
-    private func languageWithSlug(slug: String) -> WordPressComLanguage? {
+    private func languageWithSlug(slug: String) -> Language? {
         let search = languageCodeReplacements[slug] ?? slug
 
         // Use lazy evaluation so we stop filtering as soon as we got the first match
@@ -93,7 +93,7 @@ class WordPressComLanguageDatabase : NSObject
     
     /// Represents a Language supported by WordPress.com
     ///
-    class WordPressComLanguage
+    class Language
     {
         /// Language Unique Identifier
         ///
@@ -136,9 +136,9 @@ class WordPressComLanguageDatabase : NSObject
         
         /// Given an array of raw languages, will return a parsed array.
         ///
-        static func fromArray(array : [NSDictionary]) -> [WordPressComLanguage] {
+        static func fromArray(array : [NSDictionary]) -> [Language] {
             return array.flatMap {
-                return WordPressComLanguage(dict: $0)
+                return Language(dict: $0)
             }
         }
     }
