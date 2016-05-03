@@ -2,6 +2,8 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPress-Swift.h"
 
+static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
+
 @interface WPAccount ()
 
 @property (nonatomic, strong, readwrite) WordPressComApi *restApi;
@@ -72,7 +74,7 @@
 - (NSString *)authToken
 {
     NSError *error = nil;
-    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthClient.WordPressComOAuthKeychainServiceName error:&error];
+    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
     
     if (error) {
         DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
@@ -87,7 +89,7 @@
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:authToken
-                          forServiceName:WordPressComOAuthClient.WordPressComOAuthKeychainServiceName
+                          forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
                                    error:&error];
         
@@ -98,7 +100,7 @@
     } else {
         NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:WordPressComOAuthClient.WordPressComOAuthKeychainServiceName
+                                  andServiceName:WordPressComOAuthKeychainServiceName
                                            error:&error];
         if (error) {
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);

@@ -18,8 +18,7 @@ import AFNetworking
 
 public class WordPressComOAuthClient: NSObject {
 
-    public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
-    public static let WordPressComOAuthKeychainServiceName = "public-api.wordpress.com"
+    public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"    
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
 
