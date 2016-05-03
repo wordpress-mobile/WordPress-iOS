@@ -347,11 +347,11 @@ import WordPressComAnalytics
         cell.selectionStyle = .None
         
         if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
-            cell.onAction = { [weak self] (cell: BasePageListCell, button: UIButton, provider: WPPostContentViewProvider) in
+            cell.onAction = { [weak self] cell, button, provider in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forProvider: provider)
             }
         } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
-            cell.onAction = { [weak self] (cell: BasePageListCell, button: UIButton, provider: WPPostContentViewProvider) in
+            cell.onAction = { [weak self] cell, _, provider in
                 self?.handleRestoreAction(fromCell: cell, forProvider: provider)
             }
         }
