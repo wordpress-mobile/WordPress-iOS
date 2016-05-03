@@ -14,11 +14,7 @@ class PersonViewController : UITableViewController {
     
     /// Person to be displayed
     ///
-    var person : Person! {
-        didSet {
-            refreshInterface()
-        }
-    }
+    var person : Person!
     
     
     
@@ -78,14 +74,12 @@ class PersonViewController : UITableViewController {
     
     // MARK: - Private Helpers
     private func updatePersonRole(newRole: Person.Role) {
-        let service     = PeopleService(blog: blog)
-        let newPerson   = service.updatePerson(person, role: newRole)
+        // Update the Role
+        let service = PeopleService(blog: blog)
+        person = service.updatePerson(person, role: newRole)
         
-        person = newPerson
-    }
-    
-    private func refreshInterface() {
-        roleCell?.detailTextLabel?.text = person.role.localizedName()
+        // Refresh UI
+        roleCell.detailTextLabel?.text = newRole.localizedName()
     }
     
     
