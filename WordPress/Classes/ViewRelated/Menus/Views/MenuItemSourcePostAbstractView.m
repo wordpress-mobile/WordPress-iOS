@@ -99,7 +99,7 @@
 
 - (Class)entityClass
 {
-    // Subclasses return the proper entity class
+    AssertSubclassMethod();
     return nil;
 }
 

@@ -197,12 +197,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
 }
 
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
 }
 
 - (void)showLoadingSourcesIndicatorIfEmpty
@@ -251,7 +251,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (NSString *)sourceItemType
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
     return nil;
 }
 
@@ -290,7 +290,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (NSFetchRequest *)fetchRequest
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
     return nil;
 }
 
@@ -303,7 +303,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (NSString *)fetechedResultsControllerSectionNameKeyPath
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
     return nil;
 }
 
@@ -341,12 +341,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
 }
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    // overrided in subclasses
+    AssertSubclassMethod();
 }
 
 #pragma mark - UIScrollView
@@ -461,7 +461,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
-    // overrided in sublcasses
+    AssertSubclassMethod();
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
