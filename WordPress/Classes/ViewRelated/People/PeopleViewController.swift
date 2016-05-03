@@ -59,6 +59,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+// TODO: Spinner??
         if resultsController.fetchedObjects?.count == 0 {
             refreshControl?.beginRefreshing()
             refresh()

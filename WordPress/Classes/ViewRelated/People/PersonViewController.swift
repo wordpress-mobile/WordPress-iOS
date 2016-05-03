@@ -15,7 +15,7 @@ class PersonViewController : UITableViewController {
     override func viewDidLoad() {
         assert(person != nil)
         assert(blog != nil)
-
+        
         super.viewDidLoad()
         
         title = person.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
@@ -47,7 +47,9 @@ class PersonViewController : UITableViewController {
         
         roleViewController.role = person.role
         roleViewController.onChange = { newRole in
-// TODO: Save
+// TODO: Wire the Save OP
+            let service = PeopleService(blog: self.blog)
+            service.updatePerson(self.person, role: newRole)
         }
     }
     
@@ -136,12 +138,17 @@ class PersonViewController : UITableViewController {
     }
     
     private var canPromote : Bool {
-        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
+// TODO: Implement!
+        return false
+//        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
     }
     
     private var canRemove : Bool {
-        // Note: YES, ListUsers. Brought from Calypso's code
-        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
+// TODO: Implement!
+        return false
+        
+//        // Note: YES, ListUsers. Brought from Calypso's code
+//        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
     }
     
     // MARK: - Private Constants
