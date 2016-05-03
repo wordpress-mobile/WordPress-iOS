@@ -7,8 +7,19 @@ import WordPressShared
 class PersonViewController : UITableViewController {
     
     // MARK: - Public Properties
-    var person  : Person!
-    var blog    : Blog!
+    
+    /// Blog to which the Person belongs
+    ///
+    var blog : Blog!
+    
+    /// Person to be displayed
+    ///
+    var person : Person! {
+        didSet {
+            refreshInterface()
+        }
+    }
+    
     
     
     // MARK: - View Lifecyle Methods
@@ -41,6 +52,7 @@ class PersonViewController : UITableViewController {
         }
     }
     
+    
     // MARK: - Storyboard Methods
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         guard let roleViewController = segue.destinationViewController as? RoleViewController else {
@@ -49,7 +61,7 @@ class PersonViewController : UITableViewController {
         
         roleViewController.role = person.role
         roleViewController.onChange = { newRole in
-// TODO: JLP May.3.2016. To be implemented as part of #5175
+            self.updatePersonRole(newRole)
         }
     }
     
@@ -62,6 +74,20 @@ class PersonViewController : UITableViewController {
     @IBAction func handleRemoveWasPressed() {
 // TODO: JLP May.3.2016. To be implemented as part of #5175
     }
+    
+    
+    // MARK: - Private Helpers
+    private func updatePersonRole(newRole: Person.Role) {
+        let service     = PeopleService(blog: blog)
+        let newPerson   = service.updatePerson(person, role: newRole)
+        
+        person = newPerson
+    }
+    
+    private func refreshInterface() {
+        roleCell?.detailTextLabel?.text = person.role.localizedName()
+    }
+    
     
     
     // MARK: - Outlets
@@ -140,6 +166,7 @@ class PersonViewController : UITableViewController {
     }
     
     private var isPromoteEnabled : Bool {
+// TODO: Self Hosted Superadmin?
         return blog.isUserCapableOf(.PromoteUsers) && isMyself == false
     }
     
