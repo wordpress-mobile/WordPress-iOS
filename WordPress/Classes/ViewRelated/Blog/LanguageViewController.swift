@@ -38,12 +38,8 @@ public class LanguageViewController : UITableViewController
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Reload + Clear selection. Let's avoid flickers by dispatching the deselect call asynchronously
         tableView.reloadDataPreservingSelection()
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tableView.deselectSelectedRowWithAnimation(true)
-        }
+        tableView.deselectSelectedRowWithAnimationAfterDelay(true)
     }
     
     
