@@ -27,6 +27,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     self = [super init];
     if (self) {
         [self insertSearchBarIfNeeded];
+        self.searchBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     
     return self;
