@@ -35,8 +35,4 @@ struct PeopleCellViewModel {
     var roleText: String {
         return role.localizedName()
     }
-
-    var superAdminHidden: Bool {
-        return !superAdmin
-    }
 }
