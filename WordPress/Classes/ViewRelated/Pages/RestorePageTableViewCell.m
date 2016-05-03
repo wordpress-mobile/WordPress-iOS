@@ -46,13 +46,4 @@
     [self.restoreButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
-#pragma mark - Actions
-
-- (IBAction)restoreAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(cell:receivedRestoreActionForProvider:)]) {
-        [self.delegate cell:self receivedRestoreActionForProvider:self.contentProvider];
-    }
-}
-
 @end
