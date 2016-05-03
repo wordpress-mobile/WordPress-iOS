@@ -3,6 +3,8 @@
 #import "WPFontManager.h"
 #import "MenuItemCheckButtonView.h"
 
+static CGFloat const LinkTextBarHeight = 48.0;
+
 @interface MenuItemSourceLinkView () <MenuItemSourceTextBarDelegate>
 
 @property (nonatomic, strong, readonly) UILabel *label;
@@ -48,7 +50,7 @@
     textBar.delegate = self;
     [self.stackView addArrangedSubview:textBar];
     
-    NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:48.0];
+    NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:LinkTextBarHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     

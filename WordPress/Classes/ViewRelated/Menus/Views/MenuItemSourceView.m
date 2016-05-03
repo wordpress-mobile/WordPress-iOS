@@ -9,6 +9,8 @@
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
+static CGFloat const SearchBarHeight = 44.0;
+
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
 /**
@@ -164,7 +166,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:searchBar];
     
-    NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:44.0];
+    NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:SearchBarHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     
