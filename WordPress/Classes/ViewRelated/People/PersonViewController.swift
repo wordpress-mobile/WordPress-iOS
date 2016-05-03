@@ -39,13 +39,25 @@ class PersonViewController : UITableViewController {
         performSelector(handler)
     }
     
-    
-    // MARK: - Action Handlers
-    func handleRoleWasPressed() {
-// TODO: Implement Me
+    // MARK: - Storyboard Methods
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let roleViewController = segue.destinationViewController as? RoleViewController else {
+            return
+        }
+        
+        roleViewController.role = person.role
+        roleViewController.onChange = { newRole in
+// TODO: Save
+        }
     }
     
-    func handleRemoveWasPressed() {
+    
+    // MARK: - Action Handlers
+    @IBAction func handleRoleWasPressed() {
+        performSegueWithIdentifier(roleSegueIdentifier, sender: nil)
+    }
+    
+    @IBAction func handleRemoveWasPressed() {
 // TODO: Implement Me
     }
     
@@ -80,6 +92,7 @@ class PersonViewController : UITableViewController {
             roleCell.detailTextLabel?.text = person?.role.description.capitalizedString
             roleCell.accessoryType = canPromote ? .DisclosureIndicator : .None
             roleCell.selectionStyle = canPromote ? .Gray : .None
+            roleCell.userInteractionEnabled = canPromote
             WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
@@ -128,7 +141,9 @@ class PersonViewController : UITableViewController {
     
     private var canRemove : Bool {
         // Note: YES, ListUsers. Brought from Calypso's code
-        //
         return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
     }
+    
+    // MARK: - Private Constants
+    private let roleSegueIdentifier = "editRole"
 }
