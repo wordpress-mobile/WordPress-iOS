@@ -6,6 +6,9 @@
 extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
 extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 
+/**
+ An abstract object class for representing a Menu or MenuLocation.
+ */
 @interface MenusSelectionItem : NSObject
 
 /**
