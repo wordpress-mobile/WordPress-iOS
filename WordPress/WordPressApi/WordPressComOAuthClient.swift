@@ -67,7 +67,7 @@ public class WordPressComOAuthClient: NSObject {
     public func authenticateWithUsername(username: String,
                                   password: String,
                                   multifactorCode: String?,
-                                  success:(authToken: String) -> (),
+                                  success:(authToken: String?) -> (),
                                   failure:(error: NSError) -> () )
     {
         var parameters: [String:AnyObject] = [
@@ -87,7 +87,7 @@ public class WordPressComOAuthClient: NSObject {
             DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject))")
             guard let responseDictionary = responseObject as? [String:AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
-                    success(authToken: "")
+                    success(authToken: nil)
                     return
             }
             success(authToken: authToken)
