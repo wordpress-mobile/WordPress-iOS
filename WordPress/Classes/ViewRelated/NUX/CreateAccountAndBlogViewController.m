@@ -16,7 +16,6 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WordPressComOAuthClient.h"
 #import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"

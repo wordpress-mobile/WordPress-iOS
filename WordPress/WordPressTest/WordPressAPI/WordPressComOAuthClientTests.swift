@@ -29,7 +29,7 @@ class WordPressOAuthClientTests: XCTestCase {
         }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
-        let client = WordPressComOAuthClient()
+        let client = WordPressComOAuthClient(clientID:"Fake", secret:"Fake")
         client.authenticateWithUsername("fakeUser", password: "fakePass", multifactorCode: nil, success: { (token) in
             expectation.fulfill()
             XCTAssert(!token.isEmpty, "There should be a token available")
@@ -48,13 +48,13 @@ class WordPressOAuthClientTests: XCTestCase {
         }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
-        let client = WordPressComOAuthClient()
+        let client = WordPressComOAuthClient(clientID:"Fake", secret:"Fake")
         client.authenticateWithUsername("fakeUser", password: "wrongPassword", multifactorCode: nil, success: { (token) in
             expectation.fulfill()
             XCTFail("This call should fail")
             }, failure: { (error) in
                 expectation.fulfill()
-                XCTAssert(error.domain == WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
+                XCTAssert(error.domain == WordPressComOAuthClient.WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
                 XCTAssert(error.code == Int(WordPressComOAuthError.InvalidRequest.rawValue), "The code should be invalid request")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -67,13 +67,13 @@ class WordPressOAuthClientTests: XCTestCase {
         }
 
         let expectation = self.expectationWithDescription("Call should complete")
-        let client = WordPressComOAuthClient()
+        let client = WordPressComOAuthClient(clientID:"Fake", secret:"Fake")
         client.authenticateWithUsername("fakeUser", password: "wrongPassword", multifactorCode: nil, success: { (token) in
             expectation.fulfill()
             XCTFail("This call should fail")
             }, failure: { (error) in
                 expectation.fulfill()
-                XCTAssert(error.domain == WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
+                XCTAssert(error.domain == WordPressComOAuthClient.WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
                 XCTAssert(error.code == Int(WordPressComOAuthError.NeedsMultifactorCode.rawValue), "The code should be needs multifactor")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -84,7 +84,7 @@ class WordPressOAuthClientTests: XCTestCase {
             XCTFail("This call should fail")
             }, failure: { (error) in
                 expectation2.fulfill()
-                XCTAssert(error.domain == WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
+                XCTAssert(error.domain == WordPressComOAuthClient.WordPressComOAuthErrorDomain, "The error should an WordPressComOAuthError")
                 XCTAssert(error.code == Int(WordPressComOAuthError.NeedsMultifactorCode.rawValue), "The code should be needs multifactor")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -97,7 +97,7 @@ class WordPressOAuthClientTests: XCTestCase {
         }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
-        let client = WordPressComOAuthClient()
+        let client = WordPressComOAuthClient(clientID:"Fake", secret:"Fake")
         client.requestOneTimeCodeWithUsername("fakeUser", password: "fakePassword",
                                               success: { () in
                                                 expectation.fulfill()
