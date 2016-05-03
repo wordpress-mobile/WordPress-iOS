@@ -546,14 +546,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         
         WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
         
-        if !UIDevice.isPad() {
-            presentViewController(alertController, animated: true, completion: nil)
-            return
-        }
-        
+
         alertController.modalPresentationStyle = .Popover
         presentViewController(alertController, animated: true, completion: nil)
-        
         if let presentationController = alertController.popoverPresentationController {
             presentationController.permittedArrowDirections = .Any
             presentationController.sourceView = button
