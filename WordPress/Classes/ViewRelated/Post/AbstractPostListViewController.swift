@@ -2,6 +2,7 @@ import Foundation
 import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
+import wpxmlrpc
 
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
@@ -642,7 +643,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func handleSyncFailure(error: NSError) {
-        if error.domain == WPXMLRPCClientErrorDomain
+        if error.domain == WPXMLRPCFaultErrorDomain
             && error.code == self.dynamicType.HTTPErrorCodeForbidden {
             promptForPassword()
             return
