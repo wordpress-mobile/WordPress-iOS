@@ -1,7 +1,7 @@
 import Foundation
 import WordPressComAnalytics
 
-@objc class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
+class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
     
     private static let pageSectionHeaderHeight = CGFloat(24.0)
     private static let pageCellEstimatedRowHeight = CGFloat(44.0)
@@ -70,19 +70,14 @@ import WordPressComAnalytics
     
     // MARK: - Configuration
     
-    func configureCellsForLayout() {
+    override func configureCellsForLayout() {
         
         let bundle = NSBundle.mainBundle()
         
         cellForLayout = bundle.loadNibNamed(self.dynamicType.pageCellNibName, owner: nil, options: nil)[0] as! PageListTableViewCell
     }
     
-    func configureTableView() {
-        
-        guard let tableView = tableView else {
-            return
-        }
-        
+    override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .None
@@ -97,18 +92,15 @@ import WordPressComAnalytics
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
     }
     
-    func noResultsTitleText() -> String {
-        if syncHelper?.isSyncing == true {
+    override func noResultsTitleText() -> String {
+        if syncHelper.isSyncing == true {
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
         
-        if let filter = currentPostListFilter() {
-            let titles = noResultsTitles()
-            let title = titles[filter.filterType]
-            return title ?? ""
-        } else {
-            return ""
-        }
+        let filter = currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+        return title ?? ""
     }
     
     private func noResultsTitles() -> [PostListStatusFilter:String] {
@@ -146,21 +138,12 @@ import WordPressComAnalytics
                 .Published: published]
     }
     
-    func noResultsMessageText() -> String {
-        if syncHelper?.isSyncing == true || isSearching() {
+    override func noResultsMessageText() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
             return ""
         }
         
-        let filter = currentPostListFilter()
-        
-        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
-        // `nullable`).  This will probably change once we can migrate
-        // AbstractPostListViewController to Swift, but for the time being we're defining a default
-        // filter here.
-        //
-        // Diego Rey Mendez - 2016/04/18
-        //
-        let filterType = filter?.filterType ?? .Draft
+        let filterType = currentPostListFilter().filterType
         var message : String
         
         switch filterType {
@@ -178,21 +161,12 @@ import WordPressComAnalytics
     }
     
     
-    func noResultsButtonText() -> String? {
-        if syncHelper?.isSyncing == true || isSearching() {
+    override func noResultsButtonText() -> String? {
+        if syncHelper.isSyncing == true || isSearching() {
             return nil
         }
         
-        let filter = currentPostListFilter()
-        
-        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
-        // `nullable`).  This will probably change once we can migrate
-        // AbstractPostListViewController to Swift, but for the time being we're defining a default
-        // filter here.
-        //
-        // Diego Rey Mendez - 2016/04/18
-        //
-        let filterType = filter?.filterType ?? .Draft
+        let filterType = currentPostListFilter().filterType
         
         switch filterType {
         case .Trashed:
@@ -202,7 +176,7 @@ import WordPressComAnalytics
         }
     }
     
-    func configureAuthorFilter() {
+    override func configureAuthorFilter() {
         // Noop
     }
     
@@ -218,12 +192,12 @@ import WordPressComAnalytics
     
     // MARK: - TableView Handler Delegate Methods
     
-    func entityName() -> String {
+    override func entityName() -> String {
         return String(Page.self)
     }
     
     
-    func predicateForFetchRequest() -> NSPredicate {
+    override func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
         
         if let blog = blog {
@@ -232,12 +206,11 @@ import WordPressComAnalytics
         }
 
         let searchText = currentSearchTerm()
-        var filterPredicate = currentPostListFilter()?.predicateForFetchRequest
+        var filterPredicate = currentPostListFilter().predicateForFetchRequest
         
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if let recentlyTrashedPostObjectIDs = recentlyTrashedPostObjectIDs
-            where searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
             
@@ -273,7 +246,7 @@ import WordPressComAnalytics
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page {
+        if let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page {
             if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
                 return self.dynamicType.pageCellEstimatedRowHeight
             }
@@ -302,7 +275,7 @@ import WordPressComAnalytics
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        let sectionInfo = tableViewHandler?.resultsController.sections?[section]
+        let sectionInfo = tableViewHandler.resultsController.sections?[section]
         let nibName = String(PageListSectionHeaderView)
         let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)[0] as! PageListSectionHeaderView
         
@@ -317,10 +290,10 @@ import WordPressComAnalytics
         return UIView(frame: CGRectZero)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? AbstractPost
             where post.remoteStatus != AbstractPostRemoteStatusPushing && post.status != PostStatusTrash else {
             return
         }
@@ -329,20 +302,22 @@ import WordPressComAnalytics
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as! Page
+        let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as! Page
         
         let identifier = cellIdentifierForPage(page)
-        
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BasePageListCell else {
-            preconditionFailure("The cell should be of class \(String(BasePageListCell))")
-        }
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
         
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
  
-    func configureCell(cell: BasePageListCell, atIndexPath indexPath: NSIndexPath) {
+    override func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        
+        guard let cell = cell as? BasePageListCell else {
+            preconditionFailure("The cell should be of class \(String(BasePageListCell))")
+        }
+        
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
@@ -356,7 +331,7 @@ import WordPressComAnalytics
             }
         }
         
-        guard let page = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Page else {
+        guard let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page else {
             preconditionFailure("Object must be a \(String(Page))")
         }
         
@@ -366,7 +341,7 @@ import WordPressComAnalytics
     private func cellIdentifierForPage(page: Page) -> String {
         var identifier : String
         
-        if recentlyTrashedPostObjectIDs?.containsObject(page.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.restorePageCellIdentifier
         } else {
             identifier = self.dynamicType.pageCellIdentifier
@@ -377,7 +352,7 @@ import WordPressComAnalytics
     
     // MARK: - Post Actions
     
-    func createPost() {
+    override func createPost() {
         let navController : UINavigationController
         
         if EditPageViewController.isNewEditorEnabled() {
@@ -441,7 +416,7 @@ import WordPressComAnalytics
         }
     }
     
-    func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    override func promptThatPostRestoredToFilter(filter: PostListFilter) {
         var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
         
         switch filter.filterType {
@@ -464,7 +439,7 @@ import WordPressComAnalytics
     
     // MARK: - Filter Related
     
-    func keyForCurrentListStatusFilter() -> String {
+    override func keyForCurrentListStatusFilter() -> String {
         return self.dynamicType.currentPageListStatusFilterKey
     }
     
@@ -484,89 +459,89 @@ import WordPressComAnalytics
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
         
-        if let filter = currentPostListFilter()?.filterType {
-            if filter == .Trashed {
-                alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
+        let filter = currentPostListFilter().filterType
+        
+        if filter == .Trashed {
+            alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                    return
+                }
+                
+                strongSelf.publishPost(page)
+            })
+            
+            alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
                         return
-                    }
-                    
-                    strongSelf.publishPost(page)
-                })
+                }
                 
-                alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.draftPage(page)
-                })
+                strongSelf.draftPage(page)
+            })
+            
+            alertController.addActionWithTitle(deleteButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
                 
-                alertController.addActionWithTitle(deleteButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.deletePost(page)
-                })
-            } else if filter == .Published {
-                alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.viewPost(page)
-                })
+                strongSelf.deletePost(page)
+            })
+        } else if filter == .Published {
+            alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
                 
-                alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.draftPage(page)
-                })
+                strongSelf.viewPost(page)
+            })
+            
+            alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
                 
-                alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.deletePost(page)
-                })
-            } else {
-                alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
+                strongSelf.draftPage(page)
+            })
+            
+            alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
+                
+                strongSelf.deletePost(page)
+            })
+        } else {
+            alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
 
-                    strongSelf.viewPost(page)
-                })
+                strongSelf.viewPost(page)
+            })
+            
+            alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
                 
-                alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.publishPost(page)
-                })
+                strongSelf.publishPost(page)
+            })
+            
+            alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+                guard let strongSelf = self,
+                    let page = strongSelf.pageForObjectID(objectID) else {
+                        return
+                }
                 
-                alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-                    
-                    strongSelf.deletePost(page)
-                })
-            }
+                strongSelf.deletePost(page)
+            })
         }
         
         WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
