@@ -138,7 +138,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 - (CGRect)drawingRectForLabel
 {
     CGRect rect = [self convertRect:self.label.frame fromView:self.label.superview];
-    rect.size.width = self.contentView.frame.size.width - (self.stackView.layoutMargins.right);
+    rect.size.width = self.contentView.frame.size.width - self.stackView.layoutMargins.right;
     rect.size.width -= rect.origin.x;
     
     return rect;
