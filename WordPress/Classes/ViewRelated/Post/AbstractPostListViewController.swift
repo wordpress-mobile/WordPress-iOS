@@ -488,12 +488,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             configureNoResultsView()
             return
         }
-
-        if let lastSynced = lastSyncDate() where abs(lastSynced.timeIntervalSinceNow) > self.dynamicType.postsControllerRefreshInterval {
+        
+        if let lastSynced = lastSyncDate()
+            where abs(lastSynced.timeIntervalSinceNow) <= self.dynamicType.postsControllerRefreshInterval {
+            
+            configureNoResultsView()
+        } else {
             // Update in the background
             syncItemsWithUserInteraction(false)
-        } else {
-            configureNoResultsView()
         }
     }
 
