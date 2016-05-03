@@ -1,6 +1,8 @@
 import Foundation
 
 struct PeopleService {
+    typealias Role = Person.Role
+    
     let remote: PeopleRemote
     let siteID: Int
 
@@ -24,6 +26,19 @@ struct PeopleService {
         })
     }
 
+    func updatePerson(person: Person, role: Role) -> Person {
+        guard let managedPerson = managedPersonWithID(person.ID) else {
+            return person
+        }
+        
+// TODO: Hit the backend
+        managedPerson.role = role.description
+        ContextManager.sharedInstance().saveContext(context)
+        
+        return Person(managedPerson: managedPerson)
+    }
+    
+    
     private func mergeTeam(people: People) {
         let remotePeople = people
         let localPeople = allPeople()
