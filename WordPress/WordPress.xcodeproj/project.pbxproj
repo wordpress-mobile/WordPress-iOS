@@ -408,6 +408,7 @@
 		B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */; };
 		B56F0F541C3337670076C48D /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F0F531C3337670076C48D /* AccountSettings.swift */; };
 		B56F4F8F1C6B9358001CEB09 /* SettingsListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F4F8E1C6B9358001CEB09 /* SettingsListPickerViewController.swift */; };
+		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */; };
 		B57273611B66CCEF000D1C4F /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735E1B66CCEF000D1C4F /* AlertView.swift */; };
 		B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B572735F1B66CCEF000D1C4F /* AlertView.xib */; };
@@ -1527,6 +1528,7 @@
 		B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		B56F0F531C3337670076C48D /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		B56F4F8E1C6B9358001CEB09 /* SettingsListPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListPickerViewController.swift; sourceTree = "<group>"; };
+		B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
 		B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertInternalView.swift; sourceTree = "<group>"; };
 		B572735E1B66CCEF000D1C4F /* AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		B572735F1B66CCEF000D1C4F /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
@@ -3555,6 +3557,7 @@
 			children = (
 				E1B912881BB01288003C25B9 /* PeopleViewController.swift */,
 				B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */,
+				B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -5574,6 +5577,7 @@
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				B587798219B799D800E57C5A /* UIView+Helpers.swift in Sources */,
+				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,
 				E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				E6417BA81CA07F050084050A /* SigninLinkMailViewController.swift in Sources */,
