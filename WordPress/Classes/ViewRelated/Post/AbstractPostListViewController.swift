@@ -122,7 +122,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
             
-            if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
+            if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
                 strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
             }
         }, completion: nil)
@@ -662,10 +662,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let navController = UINavigationController(rootViewController: editSiteViewController)
         navController.navigationBar.translucent = false
         
-        if UIDevice.isPad() {
+        //if UIDevice.isPad() {
             navController.modalTransitionStyle = .CrossDissolve
             navController.modalPresentationStyle = .FormSheet
-        }
+        //}
         
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -969,7 +969,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         let navController = UINavigationController(rootViewController: controller)
 
-        displayFilterPopover(navController)        
+        displayFilterPopover(navController)
     }
     
     func displayFilterPopover(controller: UIViewController) {
@@ -988,12 +988,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         presentationController?.permittedArrowDirections = .Any
         presentationController?.sourceView = titleView
         presentationController?.sourceRect = titleView.bounds
-    }
-    
-    func displayFilterModal(controller: UIViewController) {
-        controller.modalPresentationStyle = .PageSheet
-        controller.modalTransitionStyle = .CoverVertical
-        presentViewController(controller, animated: true, completion: nil)
     }
     
     func setFilterWithPostStatus(status: String) {
