@@ -36,9 +36,9 @@ public class WordPressComOAuthClient: NSObject {
     /**
      Creates a WordPressComOAuthClient using the defined clientID and secret
 
-     @param clientID the app oauth clientID
-     @param secret the app secret
-     
+     - Parameters:
+       - clientID the app oauth clientID
+       - secret the app secret
      */
     public init(clientID: String, secret: String) {
         self.clientID = clientID
@@ -51,13 +51,14 @@ public class WordPressComOAuthClient: NSObject {
     }
 
     /**
-     Authenticates on WordPress.com with Multifactor code
+     Authenticates on WordPress.com with Multifactor code.
 
-     @param username the account's username.
-     @param password the account's password.
-     @param multifactorCode Multifactor Authentication One-Time-Password. If not needed, can be nil
-     @param success block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
-     @param failure block to be called if authentication failed. The error object is passed as a parameter.
+     - Parameters:
+       - username the account's username.
+       - password the account's password.
+       - multifactorCode Multifactor Authentication One-Time-Password. If not needed, can be nil
+       - success block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
+       - failure block to be called if authentication failed. The error object is passed as a parameter.
      */
     public func authenticateWithUsername(username: String,
                                   password: String,
@@ -100,14 +101,14 @@ public class WordPressComOAuthClient: NSObject {
         )
     }
 
-    /**
-     Requests a One Time Code, to be sent via SMS.
-
-     @param username the account's username.
-     @param password the account's password.
-     @param success block to be called if authentication was successful.
-     @param failure block to be called if authentication failed. The error object is passed as a parameter.
-     */
+    /** Requests a One Time Code, to be sent via SMS.
+     
+     - Parameters:
+        - username the account's username.
+        - password the account's password.
+        - success block to be called if authentication was successful.
+        - failure block to be called if authentication failed. The error object is passed as a parameter.
+    */
     public func requestOneTimeCodeWithUsername(username: String, password:String,
                                         success: () -> (), failure: (error: NSError) -> ())
     {
