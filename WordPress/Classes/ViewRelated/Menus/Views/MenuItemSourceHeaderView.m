@@ -23,9 +23,9 @@
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        [self initStackView];
-        [self initIconView];
-        [self initTitleLabel];
+        [self setupStackView];
+        [self setupIconView];
+        [self setupTitleLabel];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
         [self addGestureRecognizer:tap];
@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,7 +61,7 @@
     _stackView = stackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -80,7 +80,7 @@
     _iconView = iconView;
 }
 
-- (void)initTitleLabel
+- (void)setupTitleLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;

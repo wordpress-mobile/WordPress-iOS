@@ -33,11 +33,11 @@
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
-        [self initStackView];
-        [self initContentStackView];
-        [self initIconView];
-        [self initTextField];
-        [self initCancelLabel];
+        [self setupStackView];
+        [self setupContentStackView];
+        [self setupIconView];
+        [self setupTextField];
+        [self setupCancelLabel];
     }
     
     return self;
@@ -64,7 +64,7 @@
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
     UIStackView *stackView = [[UIStackView alloc] init];
@@ -90,7 +90,7 @@
     _stackView = stackView;
 }
 
-- (void)initContentStackView
+- (void)setupContentStackView
 {
     UIView *contentView = [[UIView alloc] init];
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -124,7 +124,7 @@
     _contentStackView = contentStackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,7 +143,7 @@
     _iconView = iconView;
 }
 
-- (void)initTextField
+- (void)setupTextField
 {
     UITextField *textField = [[UITextField alloc] init];
     textField.delegate = self;
@@ -168,7 +168,7 @@
     _textField = textField;
 }
 
-- (void)initCancelLabel
+- (void)setupCancelLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
