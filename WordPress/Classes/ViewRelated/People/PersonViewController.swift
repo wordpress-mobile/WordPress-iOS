@@ -67,8 +67,7 @@ class PersonViewController : UITableViewController {
     // MARK: - Outlets
     @IBOutlet var gravatarImageView : UIImageView! {
         didSet {
-            let placeholder = UIImage(named: "gravatar.png")
-            gravatarImageView.downloadImage(person.avatarURL, placeholderImage: placeholder)
+            gravatarImageView.downloadImage(person.avatarURL, placeholderImage: gravatarPlaceholderImage)
         }
     }
     
@@ -152,4 +151,5 @@ class PersonViewController : UITableViewController {
     
     // MARK: - Private Constants
     private let roleSegueIdentifier = "editRole"
+    private let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
 }
