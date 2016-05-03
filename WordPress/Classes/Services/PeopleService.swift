@@ -13,15 +13,12 @@ struct PeopleService {
 
     func refreshTeam(completion: (Bool) -> Void) {
         remote.getTeamFor(siteID,
-            success: {
-                (people) -> () in
+            success: { people in
 
                 self.mergeTeam(people)
                 completion(true)
             },
-            failure: {
-                (error) -> () in
-
+            failure: { error in
                 DDLogSwift.logError(String(error))
                 completion(false)
         })
