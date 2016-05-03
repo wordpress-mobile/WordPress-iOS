@@ -980,18 +980,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 
             return
         }
-        
-        let titleRect = navigationController.view.convertRect(
-            titleView.frame,
-            fromView: titleView.superview)
-        
+
         controller.modalPresentationStyle = .Popover
         presentViewController(controller, animated: true, completion: nil)
         
         let presentationController = controller.popoverPresentationController
         presentationController?.permittedArrowDirections = .Any
-        presentationController?.sourceView = navigationController.view
-        presentationController?.sourceRect = titleRect
+        presentationController?.sourceView = titleView
+        presentationController?.sourceRect = titleView.bounds
     }
     
     func displayFilterModal(controller: UIViewController) {
