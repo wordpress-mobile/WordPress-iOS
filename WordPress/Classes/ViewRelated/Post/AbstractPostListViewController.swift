@@ -47,7 +47,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return syncHelper
     }()
     
-    var noResultsView : WPNoResultsView?
+    lazy var noResultsView : WPNoResultsView = {
+        let noResultsView = WPNoResultsView()
+        noResultsView.delegate = self
+        
+        return noResultsView
+    }()
+    
+    
     var postListFooterView : PostListFooterView!
     var animatedBox : WPAnimatedBox?
     
@@ -209,21 +216,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView.tableFooterView = postListFooterView
     }
     
-    func getNoResultsView() -> WPNoResultsView {
-        if noResultsView == nil {
-            noResultsView = WPNoResultsView()
-            noResultsView!.delegate = self
-        }
-        
-        return noResultsView!
-    }
-    
     func configureNoResultsView() {
         guard isViewLoaded() == true else {
             return
         }
-        
-        let noResultsView = getNoResultsView()
         
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             noResultsView.removeFromSuperview()
@@ -631,7 +627,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
         
-        noResultsView?.removeFromSuperview()
+        noResultsView.removeFromSuperview()
         
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             // This is a special case.  Core data can be a bit slow about notifying
