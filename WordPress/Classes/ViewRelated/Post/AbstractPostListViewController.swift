@@ -968,12 +968,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
         
         let navController = UINavigationController(rootViewController: controller)
-        
-        if UIDevice.isPad() {
-            displayFilterPopover(navController)
-        } else {
-            displayFilterModal(navController)
-        }
+
+        displayFilterPopover(navController)        
     }
     
     func displayFilterPopover(controller: UIViewController) {
