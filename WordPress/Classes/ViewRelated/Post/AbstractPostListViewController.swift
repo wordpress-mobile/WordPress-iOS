@@ -358,7 +358,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         // Set the predicate based on filtering by the oldestPostDate and not searching.
         let filter = currentPostListFilter()
         
-        if let oldestPostDate = filter.oldestPostDate where isSearching() == false {
+        if let oldestPostDate = filter.oldestPostDate where !isSearching() {
             
             // Filter posts by any posts newer than the filter's oldestPostDate.
             // Also include any posts that don't have a date set, such as local posts created without a connection.
@@ -476,7 +476,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen
-        if isViewLoaded() == false || view.window == nil {
+        if !isViewLoaded() || view.window == nil {
             DDLogSwift.logVerbose("View is not visible and will not check for auto refresh.")
             return
         }
@@ -888,7 +888,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             }
         }
         
-        if found == false {
+        if !found {
             // The draft filter is the catch all by convention.
             index = indexForFilterWithType(.Draft)
         }
