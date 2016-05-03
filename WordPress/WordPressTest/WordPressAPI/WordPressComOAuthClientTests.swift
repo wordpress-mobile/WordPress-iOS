@@ -44,7 +44,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testAuthenticateUsernameNo2FAFailureWrongPasswordCase() {
         stub(isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientWrongPasswordFail.json", self.dynamicType)
-            return fixture(stubPath!, status:400 headers: ["Content-Type":"application/json"])
+            return fixture(stubPath!, status:400, headers: ["Content-Type":"application/json"])
         }
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
@@ -63,7 +63,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testAuthenticateUsername2FAWrong2FACase() {
         stub(isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientNeed2FAFail.json", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+            return fixture(stubPath!, status:400, headers: ["Content-Type":"application/json"])
         }
 
         let expectation = self.expectationWithDescription("Call should complete")
