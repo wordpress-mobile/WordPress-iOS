@@ -5,7 +5,6 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var avatarImageView: CircularImageView!
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeView!
     @IBOutlet var roleBadge: PeopleRoleBadgeView!
 
     override func awakeFromNib() {
@@ -20,7 +19,6 @@ class PeopleCell: WPTableViewCell {
         roleBadge.backgroundColor = viewModel.roleBackgroundColor
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
-        superAdminRoleBadge.hidden = viewModel.superAdminHidden
     }
 
     func setAvatarURL(avatarURL: NSURL?) {
