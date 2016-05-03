@@ -66,7 +66,7 @@ class RoleViewController : UITableViewController {
     }
     
     
-    
+    // MARK: - Private Constants
     private let numberOfSections = 1
     private let reusableIdentifier = "roleCell"
 }
