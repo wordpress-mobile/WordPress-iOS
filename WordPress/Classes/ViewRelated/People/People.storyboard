@@ -141,6 +141,35 @@
             </objects>
             <point key="canvasLocation" x="1280" y="738"/>
         </scene>
+        <!--Roles View Controller-->
+        <scene sceneID="yMT-e5-sxj">
+            <objects>
+                <tableViewController id="TOR-rB-bMi" userLabel="Roles View Controller" customClass="RoleViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="j3m-Xo-X8T">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="roleCell" id="uAe-CK-SUe">
+                                <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uAe-CK-SUe" id="vI7-cS-zeY">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="TOR-rB-bMi" id="sUB-Hh-1WF"/>
+                            <outlet property="delegate" destination="TOR-rB-bMi" id="KKV-OZ-YuV"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tmn-bm-4UY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2706" y="738"/>
+        </scene>
         <!--Person View Controller-->
         <scene sceneID="BP3-gy-RUF">
             <objects>
@@ -341,6 +370,7 @@
                         <outlet property="removeCell" destination="2lp-Fq-KG5" id="6dz-RZ-AXz"/>
                         <outlet property="roleCell" destination="o1C-ov-hGM" id="iHA-Aj-Cah"/>
                         <outlet property="usernameLabel" destination="PK5-u5-2r7" id="yQ6-rV-Q7p"/>
+                        <segue destination="TOR-rB-bMi" kind="show" identifier="editRole" id="JZ8-P0-3VF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvY-fA-9zN" userLabel="First Responder" sceneMemberID="firstResponder"/>
