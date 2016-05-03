@@ -975,9 +975,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func displayFilterPopover(controller: UIViewController) {
         controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
         
-        guard let navigationController = navigationController,
-            let titleView = navigationItem.titleView else {
-                
+        guard let titleView = navigationItem.titleView else {                
             return
         }
 
