@@ -42,7 +42,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
         self.backgroundColor = [UIColor whiteColor];
         
         [self initStackView];
-        [self initLabelsStackView];
         [self initLabel];
     }
     
@@ -75,25 +74,11 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     [NSLayoutConstraint activateConstraints:@[
                                               _topLayoutDefaultConstraint,
                                               _leadingLayoutConstraintForContentViewIndentation,
-                                              [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
                                               ]];
     
     _stackView = stackView;
-}
-
-- (void)initLabelsStackView
-{
-    UIStackView *labelsStackView = [[UIStackView alloc] init];
-    labelsStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    labelsStackView.distribution = UIStackViewDistributionFill;
-    labelsStackView.alignment = UIStackViewAlignmentTop;
-    labelsStackView.axis = UILayoutConstraintAxisHorizontal;
-    labelsStackView.spacing = self.stackView.spacing;
-    _labelsStackView = labelsStackView;
-
-    NSAssert(_stackView != nil, @"stackView is nil");
-    [_stackView addArrangedSubview:labelsStackView];
 }
 
 - (void)initLabel
@@ -105,13 +90,10 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     label.backgroundColor = [UIColor whiteColor];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
-    
-    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     _label = label;
-
-    NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
-    [self.labelsStackView addArrangedSubview:label];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:label];
 }
 
 - (void)layoutSubviews
