@@ -25,9 +25,6 @@ typedef NS_ENUM(NSUInteger) {
 @property (nonatomic, strong, readonly) MenuItem *item;
 @property (nonatomic, strong, readonly) Blog *blog;
 
-/**
- The "scratch pad" child context for changes on the item to save, or discard.
- */
 @property (nonatomic, strong) NSManagedObjectContext *scratchObjectContext;
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
@@ -66,6 +63,7 @@ typedef NS_ENUM(NSUInteger) {
         
         _blog = blog;
         
+        // Keep track of changes to the item on a scratch contect and scratch item.
         NSManagedObjectID *itemObjectID = item.objectID;
         NSManagedObjectContext *scratchContext = [[ContextManager sharedInstance] newMainContextChildContext];
         _scratchObjectContext = scratchContext;
@@ -390,17 +388,16 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)editingFooterViewDidSelectSave:(MenuItemEditingFooterView *)footerView
 {
-    // Save the scratch context to propogate the changes to the mainContext.
-    [[ContextManager sharedInstance] saveContext:self.scratchObjectContext withCompletionBlock:^{
-        
-        // Refresh the item in the mainContext as that was the item originally referenced on init.
+    // Update the original item in the correct context with any changes made in the scratch context/item.
+    NSDictionary *changesValues = [self.item changedValues];
+    if (changesValues.count > 0) {
         MenuItem *itemInMainContext = [self.blog.managedObjectContext objectRegisteredForID:self.item.objectID];
         [itemInMainContext.managedObjectContext refreshObject:itemInMainContext mergeChanges:NO];
-        
-        if (self.onSelectedToSave) {
-            self.onSelectedToSave();
-        }
-    }];
+        [itemInMainContext setValuesForKeysWithDictionary:changesValues];
+    }
+    if (self.onSelectedToSave) {
+        self.onSelectedToSave();
+    }
 }
 
 - (void)editingFooterViewDidSelectTrash:(MenuItemEditingFooterView *)footerView
