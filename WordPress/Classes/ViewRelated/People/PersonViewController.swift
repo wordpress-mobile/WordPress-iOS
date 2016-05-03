@@ -48,8 +48,6 @@ class PersonViewController : UITableViewController {
         roleViewController.role = person.role
         roleViewController.onChange = { newRole in
 // TODO: Wire the Save OP
-            let service = PeopleService(blog: self.blog)
-            service.updatePerson(self.person, role: newRole)
         }
     }
     
