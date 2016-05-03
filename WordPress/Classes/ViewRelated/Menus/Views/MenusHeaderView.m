@@ -93,7 +93,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 
 #pragma mark - private
 
-- (void)closeSelectionsIfNeeded
+- (void)contractSelectionsIfNeeded
 {
     // add a UX delay to selection close animation
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ViewExpansionAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -121,13 +121,13 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
         Menu *menu = item.itemObject;
         [self.delegate headerView:self selectedMenu:menu];
     }
-    [self closeSelectionsIfNeeded];
+    [self contractSelectionsIfNeeded];
 }
 
 - (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView
 {
     [self.delegate headerViewSelectedForCreatingNewMenu:self];
-    [self closeSelectionsIfNeeded];
+    [self contractSelectionsIfNeeded];
 }
 
 @end
