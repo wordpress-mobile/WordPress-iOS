@@ -74,8 +74,8 @@ public class WordPressComOAuthClient: NSObject {
             "username": username,
             "password": password,
             "grant_type": "password",
-            "client_id": ApiCredentials.client(),
-            "client_secret": ApiCredentials.secret(),
+            "client_id": clientID,
+            "client_secret": secret,
             "wpcom_supports_2fa": true
         ]
 
@@ -120,8 +120,8 @@ public class WordPressComOAuthClient: NSObject {
             "username": username,
             "password": password,
             "grant_type": "password",
-            "client_id": ApiCredentials.client(),
-            "client_secret": ApiCredentials.secret(),
+            "client_id": clientID,
+            "client_secret": secret,
             "wpcom_supports_2fa": true,
             "wpcom_resend_otp": true
         ]
