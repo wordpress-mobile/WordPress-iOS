@@ -437,7 +437,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsGeneralLanguage:
         {
             NSInteger languageId = self.blog.settings.languageID.integerValue;
-            NSString *name = [[Languages sharedInstance] nameForLanguageWithId:languageId];
+            NSString *name = [[WordPressComLanguageDatabase new] nameForLanguageWithId:languageId];
             
             [self.languageTextCell setTextValue:name];
             return self.languageTextCell;
