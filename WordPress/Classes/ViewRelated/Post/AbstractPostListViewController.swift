@@ -661,11 +661,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         let navController = UINavigationController(rootViewController: editSiteViewController)
         navController.navigationBar.translucent = false
-        
-        //if UIDevice.isPad() {
-            navController.modalTransitionStyle = .CrossDissolve
-            navController.modalPresentationStyle = .FormSheet
-        //}
+
+        navController.modalTransitionStyle = .CrossDissolve
+        navController.modalPresentationStyle = .FormSheet        
         
         presentViewController(navController, animated: true, completion: nil)
     }
