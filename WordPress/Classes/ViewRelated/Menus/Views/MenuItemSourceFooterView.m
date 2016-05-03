@@ -43,14 +43,14 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         
         self.backgroundColor = [UIColor whiteColor];
         
-        [self initSourceCell];
-        [self initDrawView];
+        [self setupSourceCell];
+        [self setupDrawView];
     }
     
     return self;
 }
 
-- (void)initSourceCell
+- (void)setupSourceCell
 {
     MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.frame = self.bounds;
@@ -61,7 +61,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     self.sourceCell = cell;
 }
 
-- (void)initDrawView
+- (void)setupDrawView
 {
     MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
     drawView.backgroundColor = [UIColor whiteColor];

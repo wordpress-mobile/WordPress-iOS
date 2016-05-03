@@ -18,15 +18,15 @@
     self = [super init];
     if (self) {
         
-        [self initLabel];
-        [self initTextBar];
-        [self initCheckButtonView];
+        [self setupLabel];
+        [self setupTextBar];
+        [self setupCheckButtonView];
     }
     
     return self;
 }
 
-- (void)initLabel
+- (void)setupLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -38,7 +38,7 @@
     _label = label;
 }
 
-- (void)initTextBar
+- (void)setupTextBar
 {
     MenuItemSourceTextBar *textBar = [[MenuItemSourceTextBar alloc] init];
     textBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -56,7 +56,7 @@
     _textBar = textBar;
 }
 
-- (void)initCheckButtonView
+- (void)setupCheckButtonView
 {
     MenuItemCheckButtonView *checkButtonView = [[MenuItemCheckButtonView alloc] init];
     checkButtonView.label.text = NSLocalizedString(@"Open link in new window/tab", @"Menus label for checkbox when editig item as a link.");

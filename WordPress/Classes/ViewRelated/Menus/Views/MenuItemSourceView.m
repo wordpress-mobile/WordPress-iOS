@@ -31,16 +31,16 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
         
-        [self initTableView];
-        [self initStackedTableHeaderView];
-        [self initStackView];
-        [self initFooterView];
+        [self setupTableView];
+        [self setupStackedTableHeaderView];
+        [self setupStackView];
+        [self setupFooterView];
     }
     
     return self;
 }
 
-- (void)initTableView
+- (void)setupTableView
 {
     UITableView *tableView = [[UITableView alloc] init];
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,7 +61,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     _tableView = tableView;
 }
 
-- (void)initStackedTableHeaderView
+- (void)setupStackedTableHeaderView
 {
     // setup the tableHeaderView and keep translatesAutoresizingMaskIntoConstraints to default YES
     // this allows the tableView to handle sizing the view as any other tableHeaderView
@@ -69,7 +69,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     _stackedTableHeaderView = stackedTableHeaderView;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -98,7 +98,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     _stackView = stackView;
 }
 
-- (void)initFooterView
+- (void)setupFooterView
 {
     MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
     
