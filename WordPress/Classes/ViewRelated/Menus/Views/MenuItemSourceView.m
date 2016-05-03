@@ -393,22 +393,37 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(nonnull UITableViewCell *)cell forRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    NSInteger numSections = self.resultsController.sections.count;
-    if (indexPath.section == numSections - 1 && self.observeUserScrollingForEndOfTableView) {
-        NSInteger numRowsInSection = [tableView numberOfRowsInSection:indexPath.section];
-        if (indexPath.row == numRowsInSection - 1) {
-            if (cell.frame.origin.y > tableView.bounds.size.height) {
-                self.observeUserScrollingForEndOfTableView = NO;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    /*  Since we're firing a method as a cell is about to be displayed,
-                     we should dispatch this method async, as any implementation of
-                     the method may trigger additional table updates and on the same cell.
-                     */
-                    [self scrollingWillDisplayEndOfTableView:tableView];
-                });
-            }
-        }
+    if (!self.observeUserScrollingForEndOfTableView ) {
+        // Not observing scrolling for reaching the end of the tableView.
+        return;
     }
+    
+    if (cell.frame.origin.y < tableView.bounds.size.height) {
+        // Cell is already within the frame bounds, no need to observe scrolling.
+        return;
+    }
+    
+    NSInteger numSections = self.resultsController.sections.count;
+    if (indexPath.section < numSections - 1) {
+        // Not observing or not the last section of the tableView.
+        return;
+    }
+    
+    NSInteger numRowsInSection = [tableView numberOfRowsInSection:indexPath.section];
+    if (indexPath.row < numRowsInSection - 1) {
+        // Not the last row in the section.
+        return;
+    }
+    
+    // Reached the end of the tableView and will display the last cell from off-screen.
+    self.observeUserScrollingForEndOfTableView = NO;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        /*  Since we're firing a method as a cell is about to be displayed,
+         we should dispatch this method async, as any implementation of
+         the method may trigger additional table updates and on the same cell.
+         */
+        [self scrollingWillDisplayEndOfTableView:tableView];
+    });
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
