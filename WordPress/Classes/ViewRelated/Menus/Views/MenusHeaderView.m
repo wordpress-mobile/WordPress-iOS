@@ -7,6 +7,8 @@
 #import "MenuLocation.h"
 #import "WPFontManager.h"
 
+static CGFloat ViewExpansionAnimationDelay = 0.15;
+
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
@@ -65,7 +67,7 @@
 
 - (void)removeMenu:(Menu *)menu
 {
-    MenusSelectionItem *selectionItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *selectionItem = [self.menusView selectionItemForObject:menu];
     if (selectionItem) {
         [self.menusView removeSelectionItem:selectionItem];
     }
@@ -73,19 +75,19 @@
 
 - (void)setSelectedLocation:(MenuLocation *)location
 {
-    MenusSelectionItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
+    MenusSelectionItem *locationItem = [self.locationsView selectionItemForObject:location];
     [self.locationsView setSelectedItem:locationItem];
 }
 
 - (void)setSelectedMenu:(Menu *)menu
 {
-    MenusSelectionItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *menuItem = [self.menusView selectionItemForObject:menu];
     [self.menusView setSelectedItem:menuItem];
 }
 
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu
 {
-    MenusSelectionItem *item = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *item = [self.menusView selectionItemForObject:menu];
     [item notifyItemObjectWasUpdated];
 }
 
@@ -94,7 +96,7 @@
 - (void)closeSelectionsIfNeeded
 {
     // add a UX delay to selection close animation
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ViewExpansionAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.locationsView setSelectionItemsExpanded:NO animated:YES];
         [self.menusView setSelectionItemsExpanded:NO animated:YES];
     });
@@ -102,7 +104,7 @@
 
 #pragma mark - MenusSelectionViewDelegate
 
-- (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
+- (void)selectionView:(MenusSelectionView *)selectionView userTappedExpand:(BOOL)expand
 {
     [selectionView setSelectionItemsExpanded:expand animated:YES];
 }
