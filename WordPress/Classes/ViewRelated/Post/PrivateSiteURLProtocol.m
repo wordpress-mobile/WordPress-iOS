@@ -105,8 +105,8 @@ static NSString *cachedToken;
 {
     [self.sessionTask cancel];
     [self.session invalidateAndCancel];
-    self.sessionTask = nil
-    self.session = nil
+    self.sessionTask = nil;
+    self.session = nil;
 }
 
 - (void)URLSession:(NSURLSession *)session
@@ -124,12 +124,14 @@ static NSString *cachedToken;
         [self.client URLProtocolDidFinishLoading:self];
     }
     self.sessionTask = nil;
+    [self.session invalidateAndCancel];
 }
 
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
 {
     [self.client URLProtocol:self didFailWithError:error];
     self.sessionTask = nil;
+    [self.session invalidateAndCancel];
 }
 
 - (void)URLSession:(NSURLSession *)session
