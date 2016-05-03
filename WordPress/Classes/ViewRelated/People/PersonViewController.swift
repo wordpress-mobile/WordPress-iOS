@@ -91,10 +91,10 @@ class PersonViewController : UITableViewController {
     @IBOutlet var roleCell : UITableViewCell! {
         didSet {
             roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-            roleCell.detailTextLabel?.text = person?.role.description.capitalizedString
-            roleCell.accessoryType = canPromote ? .DisclosureIndicator : .None
-            roleCell.selectionStyle = canPromote ? .Gray : .None
-            roleCell.userInteractionEnabled = canPromote
+            roleCell.detailTextLabel?.text = person?.role.localizedName()
+            roleCell.accessoryType = isPromoteEnabled ? .DisclosureIndicator : .None
+            roleCell.selectionStyle = isPromoteEnabled ? .Gray : .None
+            roleCell.userInteractionEnabled = isPromoteEnabled
             WPStyleGuide.configureTableViewCell(roleCell)
         }
     }
@@ -127,21 +127,22 @@ class PersonViewController : UITableViewController {
         didSet {
             removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
             WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
-            removeCell.hidden = !canRemove
+            removeCell.hidden = !isRemoveEnabled
         }
     }
     
     
+    
     // MARK: - Private Properties
-    private var isSomeoneElse : Bool {
-        return blog.account.userID != person.ID
+    private var isMyself : Bool {
+        return blog.account.userID == person.ID
     }
     
-    private var canPromote : Bool {
-        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
+    private var isPromoteEnabled : Bool {
+        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false
     }
     
-    private var canRemove : Bool {
+    private var isRemoveEnabled : Bool {
 // TODO: JLP May.3.2016. To be uncommented as part of #5175
         return false
         
