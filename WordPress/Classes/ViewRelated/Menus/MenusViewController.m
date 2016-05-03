@@ -398,6 +398,31 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
 }
 
+- (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item
+{
+    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
+    void(^dismiss)() = ^() {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    controller.onSelectedToSave = ^() {
+        [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
+        [self.itemsView refreshViewWithItem:item focus:YES];
+        dismiss();
+    };
+    controller.onSelectedToTrash = ^() {
+        if (item.itemID.integerValue) {
+            // If the item had an ID, saving is enabled.
+            // Otherwise the item was local only.
+            [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
+        }
+        [self.itemsView removeItem:item];
+        [self insertBlankMenuItemIfNeeded];
+        dismiss();
+    };
+    controller.onSelectedToCancel = dismiss;
+    return controller;
+}
+
 #pragma mark - Bar button items
 
 - (void)discardChangesBarButtonItemPressed:(id)sender
@@ -661,31 +686,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 }
 
 #pragma mark - MenuItemsStackViewDelegate
-
-- (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item
-{
-    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
-    void(^dismiss)() = ^() {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    controller.onSelectedToSave = ^() {
-        [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
-        [self.itemsView refreshViewWithItem:item focus:YES];
-        dismiss();
-    };
-    controller.onSelectedToTrash = ^() {
-        if (item.itemID.integerValue) {
-            // If the item had an ID, saving is enabled.
-            // Otherwise the item was local only.
-            [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
-        }
-        [self.itemsView removeItem:item];
-        [self insertBlankMenuItemIfNeeded];
-        dismiss();
-    };
-    controller.onSelectedToCancel = dismiss;
-    return controller;
-}
 
 - (void)itemsView:(MenuItemsStackView *)itemsView createdNewItemForEditing:(MenuItem *)item
 {
