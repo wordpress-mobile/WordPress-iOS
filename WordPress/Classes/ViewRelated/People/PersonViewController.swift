@@ -138,9 +138,7 @@ class PersonViewController : UITableViewController {
     }
     
     private var canPromote : Bool {
-// TODO: JLP May.3.2016. To be uncommented as part of #5175
-        return false
-//        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
+        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
     }
     
     private var canRemove : Bool {
