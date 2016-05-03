@@ -8,6 +8,9 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 
 @protocol MenusSelectionViewDelegate;
 
+/**
+ A view encapsulating the use of MenusSelectionItems as a list of options for either Menus or MenuLocations.
+ */
 @interface MenusSelectionView : UIView
 
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
@@ -43,9 +46,9 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 - (void)removeAllSelectionItems;
 
 /**
- Create a new selection item with an associated object the item represents.
+ Get the corresponding MenusSelectionItem with an item.itemObject equal to the passed itemObject.
  */
-- (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject;
+- (MenusSelectionItem *)selectionItemForObject:(id)itemObject;
 
 /**
  Toggle the visual expansion of the selection items in the UI, with animation.
@@ -57,9 +60,9 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 @protocol MenusSelectionViewDelegate <NSObject>
 
 /**
- The user tapped or pressed to toggle the selection expansion of the UI.
+ The user tapped to toggle the selection expansion of the UI.
  */
-- (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
+- (void)selectionView:(MenusSelectionView *)selectionView userTappedExpand:(BOOL)expand;
 
 /**
  The user selected an item from the list of available items for display.

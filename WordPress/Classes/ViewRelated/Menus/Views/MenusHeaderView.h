@@ -6,6 +6,10 @@
 
 @protocol MenusHeaderViewDelegate;
 
+/**
+ A top-most view encapsulating the use of
+ two MenusSelectionViews to represent selection options for Menus and MenuLocations.
+ */
 @interface MenusHeaderView : UIView
 
 @property (nonatomic, weak) id <MenusHeaderViewDelegate> delegate;
