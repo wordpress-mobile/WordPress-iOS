@@ -33,6 +33,8 @@ struct Person {
                 self = .Author
             case "contributor":
                 self = .Contributor
+            case "super-admin":
+                self = .SuperAdmin
             default:
                 self = .Unsupported
             }
@@ -89,7 +91,7 @@ struct Person {
             }
         }
         
-        static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
+        static let roles = [Role.Admin, .Editor, .Author, .Contributor]
     }
 }
 
