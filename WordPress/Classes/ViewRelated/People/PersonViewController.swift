@@ -47,7 +47,7 @@ class PersonViewController : UITableViewController {
         
         roleViewController.role = person.role
         roleViewController.onChange = { newRole in
-// TODO: JLP May.3.2016. Wire the Save OP
+// TODO: JLP May.3.2016. To be implemented as part of #5175
         }
     }
     
@@ -58,7 +58,7 @@ class PersonViewController : UITableViewController {
     }
     
     @IBAction func handleRemoveWasPressed() {
-// TODO: JLP May.3.2016. Implement Me
+// TODO: JLP May.3.2016. To be implemented as part of #5175
     }
     
     
@@ -136,13 +136,13 @@ class PersonViewController : UITableViewController {
     }
     
     private var canPromote : Bool {
-// TODO: JLP May.3.2016. Implement!
+// TODO: JLP May.3.2016. To be uncommented as part of #5175
         return false
 //        return blog.isUserCapableOf(.PromoteUsers) && isSomeoneElse
     }
     
     private var canRemove : Bool {
-// TODO: JLP May.3.2016. Implement!
+// TODO: JLP May.3.2016. To be uncommented as part of #5175
         return false
         
 //        // Note: YES, ListUsers. Brought from Calypso's code
