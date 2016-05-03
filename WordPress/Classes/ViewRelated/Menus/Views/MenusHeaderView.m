@@ -10,7 +10,6 @@
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *menusView;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
@@ -29,6 +28,8 @@
     
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
+    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
+    self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -36,23 +37,24 @@
     self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
 }
 
-- (void)setupWithMenusForBlog:(Blog *)blog
+- (void)setBlog:(Blog *)blog
 {
-    _blog = blog;
-    
-    [self.locationsView removeAllSelectionItems];
-    [self.menusView removeAllSelectionItems];
-    
-    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
-    self.menusView.selectionType = MenusSelectionViewTypeMenus;
-    
-    for (MenuLocation *location in blog.menuLocations) {
-        MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
-        [self.locationsView addSelectionViewItem:item];
-    }
-    for (Menu *menu in blog.menus) {
-        MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
-        [self.menusView addSelectionViewItem:item];
+    if (_blog != blog) {
+        _blog = blog;
+        
+        [self.locationsView removeAllSelectionItems];
+        [self.menusView removeAllSelectionItems];
+        
+        if (blog) {
+            for (MenuLocation *location in blog.menuLocations) {
+                MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
+                [self.locationsView addSelectionViewItem:item];
+            }
+            for (Menu *menu in blog.menus) {
+                MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
+                [self.menusView addSelectionViewItem:item];
+            }
+        }
     }
 }
 
