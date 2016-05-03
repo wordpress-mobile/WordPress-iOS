@@ -27,16 +27,18 @@ class PersonViewController : UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
-        let handlerMap = [
-            roleCell    : #selector(handleRoleWasPressed),
-            removeCell  : #selector(handleRemoveWasPressed)
-        ]
-
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath), let handler = handlerMap[cell] else {
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
             return
         }
-        
-        performSelector(handler)
+
+        switch cell {
+        case roleCell:
+            handleRoleWasPressed()
+        case removeCell:
+            handleRemoveWasPressed()
+        default:
+            break
+        }
     }
     
     // MARK: - Storyboard Methods
