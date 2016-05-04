@@ -542,7 +542,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
         
         let filter = currentPostListFilter()
-        let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
+        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
         
         let postService = PostService(managedObjectContext: managedObjectContext())
         
@@ -588,7 +588,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         postListFooterView.showSpinner(true)
         
         let filter = currentPostListFilter()
-        let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
+        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
         
         let postService = PostService(managedObjectContext: managedObjectContext())
         
@@ -836,10 +836,21 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return searchController.searchBar.text
     }
     
+    // MARK: - Data Sources
+    
+    /// Retrieves the userID for the user of the current blog.
+    ///
+    /// - Returns: the userID for the user of the current WPCom blog.  If the blog is not hosted at
+    ///     WordPress.com, `nil` is returned instead.
+    ///
+    func blogUserID() -> NSNumber? {
+        return blog.account?.userID
+    }
+    
     // MARK: - Filter Related
     
     func canFilterByAuthor() -> Bool {
-        return blog.isMultiAuthor && blog.account.userID != nil && blog.isHostedAtWPcom
+        return blog.isHostedAtWPcom && blog.isMultiAuthor && blogUserID() != nil
     }
     
     func shouldShowOnlyMyPosts() -> Bool {
