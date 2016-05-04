@@ -73,8 +73,6 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
                              view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - YOrigin);
                          }
                      }];
-
-    _isPreparedToAnimate = YES;
 }
 
 - (void)animate
