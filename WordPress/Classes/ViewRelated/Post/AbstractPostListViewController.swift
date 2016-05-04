@@ -776,15 +776,17 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
             
-            // If the post was restored, see if it appears in the current filter.
-            // If not, prompt the user to let it know under which filter it appears.
-            let filter = strongSelf.filterThatDisplaysPostsWithStatus(apost.status)
-            
-            if filter == strongSelf.currentPostListFilter() {
-                return
+            if let postStatus = apost.status {
+                // If the post was restored, see if it appears in the current filter.
+                // If not, prompt the user to let it know under which filter it appears.
+                let filter = strongSelf.filterThatDisplaysPostsWithStatus(postStatus)
+                
+                if filter == strongSelf.currentPostListFilter() {
+                    return
+                }
+                
+                strongSelf.promptThatPostRestoredToFilter(filter)
             }
-            
-            strongSelf.promptThatPostRestoredToFilter(filter)
         }) { [weak self] (error: NSError!) in
             
             guard let strongSelf = self else {
