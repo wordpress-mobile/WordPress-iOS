@@ -131,7 +131,7 @@ import WordPressShared
     }
 
 
-    /// Configures the appearance of the button to request a 2fa code be sent via SMS.
+    /// Configures the appearance of the Terms button.
     ///
     func configureTermsButtonText() {
         let string = NSLocalizedString("By creating an account you agree to the facinating <u>Terms of Service</u>.",
@@ -639,7 +639,7 @@ extension SigninAccountAndBlogViewController: UITextFieldDelegate {
 
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         // Disallow spaces except for the password field
-        if textField != passwordField && string == " " {
+        if string == " " && (textField == emailField || textField == usernameField || textField == siteURLField) {
             return false
         }
         return true
