@@ -471,7 +471,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
-                self?.setFilterWithPostStatus(viewController.post.status)
+                if let postStatus = viewController.post.status {
+                    self?.setFilterWithPostStatus(postStatus)
+                }
             }
             
             viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
@@ -518,7 +520,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             postViewController.onClose = {[weak self] viewController, changesSaved in
                 
                 if changesSaved {
-                    self?.setFilterWithPostStatus(viewController.post.status)
+                    if let postStatus = viewController.post.status {
+                        self?.setFilterWithPostStatus(postStatus)
+                    }
                 }
                 
                 viewController.navigationController?.popViewControllerAnimated(true)
