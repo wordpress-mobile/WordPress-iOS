@@ -14,8 +14,8 @@ struct Person {
     let siteID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
-
-    enum Role: Int, Comparable, CustomStringConvertible {
+    
+    enum Role: Int, Comparable, Equatable, CustomStringConvertible {
         case SuperAdmin
         case Admin
         case Editor
@@ -88,7 +88,13 @@ struct Person {
                 return "unsupported"
             }
         }
+        
+        static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
     }
+}
+
+func ==(lhs: Person.Role, rhs: Person.Role) -> Bool {
+    return lhs.rawValue == rhs.rawValue
 }
 
 func <(lhs: Person.Role, rhs: Person.Role) -> Bool {
@@ -137,6 +143,16 @@ extension Person {
 
 extension Person: Equatable {}
 
+extension Person {
+    var fullName: String {
+        let first = firstName ?? String()
+        let last = lastName ?? String()
+        let separator = (first.isEmpty == false && last.isEmpty == false) ? " " : ""
+        
+        return "\(first)\(separator)\(last)"
+    }
+}
+
 func ==(lhs: Person, rhs: Person) -> Bool {
     return lhs.ID == rhs.ID
         && lhs.username == rhs.username
@@ -148,4 +164,3 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
 }
-

@@ -705,8 +705,3 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         restorePost(apost)
     }
 }
-
-
-
-
-
