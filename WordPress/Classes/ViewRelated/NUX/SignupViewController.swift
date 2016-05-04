@@ -134,7 +134,7 @@ import WordPressShared
     /// Configures the appearance of the Terms button.
     ///
     func configureTermsButtonText() {
-        let string = NSLocalizedString("By creating an account you agree to the facinating <u>Terms of Service</u>.",
+        let string = NSLocalizedString("By creating an account you agree to the fascinating <u>Terms of Service</u>.",
                                        comment: "Message displayed when a verification code is needed")
         let options = [
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
