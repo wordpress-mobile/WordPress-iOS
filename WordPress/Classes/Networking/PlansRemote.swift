@@ -79,4 +79,3 @@ private func parseFeatureGroups(json: [[String: AnyObject]]) throws -> [PlanFeat
         return PlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }
 }
-
