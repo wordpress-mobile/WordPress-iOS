@@ -1,4 +1,10 @@
-whitelist_rules:
-  - trailing_newline
+# Project configuration
 included:
   - WordPress
+
+# Rules
+whitelist_rules:
+  - trailing_newline
+
+# Rules configuration
+trailing_newline: error
