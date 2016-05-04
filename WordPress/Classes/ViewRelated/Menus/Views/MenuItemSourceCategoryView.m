@@ -111,19 +111,13 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     self.displayCategories = [tree getAllObjects];
     
     // Get the indentation level of each category.
-    NSUInteger count = [self.displayCategories count];
-    
     NSMutableDictionary *categoryDict = [NSMutableDictionary dictionary];
-    for (NSInteger i = 0; i < count; i++) {
-        PostCategory *category = [self.displayCategories objectAtIndex:i];
+    for (PostCategory *category in self.displayCategories) {
         [categoryDict setObject:category forKey:category.categoryID];
     }
-    
-    for (NSInteger i = 0; i < count; i++) {
-        PostCategory *category = [self.displayCategories objectAtIndex:i];
-        
-        NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
-        
+    for (PostCategory *category in self.displayCategories) {
+        NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID
+                                                    categoryCollection:categoryDict];
         [self.categoryIndentationDict setValue:[NSNumber numberWithInteger:indentationLevel]
                                         forKey:[category.categoryID stringValue]];
     }
@@ -136,7 +130,6 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     if ([parentID intValue] == 0) {
         return 0;
     }
-    
     PostCategory *category = [categoryDict objectForKey:parentID];
     return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
 }
@@ -154,16 +147,6 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    // do nothing
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    // do nothing
-}
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {

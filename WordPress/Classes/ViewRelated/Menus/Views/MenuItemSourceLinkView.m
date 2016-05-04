@@ -3,6 +3,8 @@
 #import "WPFontManager.h"
 #import "MenuItemCheckButtonView.h"
 
+static CGFloat const LinkTextBarHeight = 48.0;
+
 @interface MenuItemSourceLinkView () <MenuItemSourceTextBarDelegate>
 
 @property (nonatomic, strong, readonly) UILabel *label;
@@ -18,15 +20,15 @@
     self = [super init];
     if (self) {
         
-        [self initLabel];
-        [self initTextBar];
-        [self initCheckButtonView];
+        [self setupLabel];
+        [self setupTextBar];
+        [self setupCheckButtonView];
     }
     
     return self;
 }
 
-- (void)initLabel
+- (void)setupLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -38,7 +40,7 @@
     _label = label;
 }
 
-- (void)initTextBar
+- (void)setupTextBar
 {
     MenuItemSourceTextBar *textBar = [[MenuItemSourceTextBar alloc] init];
     textBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -48,7 +50,7 @@
     textBar.delegate = self;
     [self.stackView addArrangedSubview:textBar];
     
-    NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:48.0];
+    NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:LinkTextBarHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     
@@ -56,7 +58,7 @@
     _textBar = textBar;
 }
 
-- (void)initCheckButtonView
+- (void)setupCheckButtonView
 {
     MenuItemCheckButtonView *checkButtonView = [[MenuItemCheckButtonView alloc] init];
     checkButtonView.label.text = NSLocalizedString(@"Open link in new window/tab", @"Menus label for checkbox when editig item as a link.");
