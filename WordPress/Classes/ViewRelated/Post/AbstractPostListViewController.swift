@@ -22,13 +22,19 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let defaultHeightForFooterView = CGFloat(44.0)
     
     var blog : Blog!
-    var postListViewController : UITableViewController!
+    var tableViewController : UITableViewController!
     
-    lazy var tableView : UITableView = {
-        return self.postListViewController.tableView
-    }()
+    var tableView : UITableView {
+        get {
+            return self.tableViewController.tableView
+        }
+    }
     
-    var refreshControl : UIRefreshControl!
+    var refreshControl : UIRefreshControl? {
+        get {
+            return self.tableViewController.refreshControl
+        }
+    }
     
     lazy var tableViewHandler : WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
@@ -78,9 +84,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView = postListViewController.tableView
-        refreshControl = postListViewController.refreshControl
         
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
         
