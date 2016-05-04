@@ -1,6 +1,8 @@
 import UIKit
+import WordPressShared
 
 public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+
     public var blog: Blog?
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
@@ -13,8 +15,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return frc
     }()
 
+    
+    // MARK: - UITableView Methods
+    
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return resultsController.sections?.count ?? 0;
+        return resultsController.sections?.count ?? 0
     }
 
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -30,16 +35,21 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         return cell
     }
-
-    // Temporarily disable row selection until detail view is ready
-    override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        return nil
+    
+    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.min
     }
 
+    
+    // MARK: - NSFetchedResultsController Methods
+    
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
     }
 
+    
+    // MARK: - View Lifecycle Methods
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         do {
@@ -47,6 +57,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         } catch {
             DDLogSwift.logError("Error fetching People: \(error)")
         }
+        
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
     public override func viewDidAppear(animated: Bool) {
@@ -56,7 +68,19 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             refresh()
         }
     }
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let personViewController = segue.destinationViewController as? PersonViewController,
+            let selectedIndexPath = tableView.indexPathForSelectedRow
+        {
+            personViewController.person = personAtIndexPath(selectedIndexPath)
+            personViewController.blog = blog
+        }
+    }
 
+    
+    // MARK: - Helpers
+    
     @IBAction func refresh() {
         let service = PeopleService(blog: blog!)
         service.refreshTeam { [weak self] _ in
