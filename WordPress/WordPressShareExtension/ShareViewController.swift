@@ -33,6 +33,7 @@ class ShareViewController: SLComposeServiceViewController {
     override func viewDidLoad() {
         // Tracker
         tracks.wpcomUsername = wpcomUsername
+        title = NSLocalizedString("WordPress", comment: "Application title")
 
         // TextView
         loadTextViewContent()
