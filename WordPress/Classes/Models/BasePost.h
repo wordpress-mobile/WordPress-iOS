@@ -12,13 +12,13 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
-extern NSString * _Nonnull const PostStatusDraft;
-extern NSString * _Nonnull const PostStatusPending;
-extern NSString * _Nonnull const PostStatusPrivate;
-extern NSString * _Nonnull const PostStatusPublish;
-extern NSString * _Nonnull const PostStatusScheduled;
-extern NSString * _Nonnull const PostStatusTrash;
-extern NSString * _Nonnull const PostStatusDeleted;
+extern NSString * const PostStatusDraft;
+extern NSString * const PostStatusPending;
+extern NSString * const PostStatusPrivate;
+extern NSString * const PostStatusPublish;
+extern NSString * const PostStatusScheduled;
+extern NSString * const PostStatusTrash;
+extern NSString * const PostStatusDeleted;
 
 @interface BasePost : NSManagedObject<PostContentProvider>
 
