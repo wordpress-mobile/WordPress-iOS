@@ -14,7 +14,7 @@ protocol SigninKeyboardResponder: class
     var verticalCenterConstraint: NSLayoutConstraint! {get}
 
     func signinFormVerticalOffset() -> CGFloat
-    func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
+    func registerForKeyboardEvents(keyboardWillShowAction keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
     func unregisterForKeyboardEvents()
     func adjustViewForKeyboard(visibleKeyboard: Bool)
 
@@ -33,7 +33,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///     - keyboardWillShowAction: A Selector to use for the UIKeyboardWillShowNotification observer.
     ///     - keyboardWillHideAction: A Selector to use for the UIKeyboardWillHideNotification observer.
     ///
-    func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector) {
+    func registerForKeyboardEvents(keyboardWillShowAction keyboardWillShowAction: Selector, keyboardWillHideAction: Selector) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: keyboardWillShowAction, name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: keyboardWillHideAction, name: UIKeyboardWillHideNotification, object: nil)
     }
