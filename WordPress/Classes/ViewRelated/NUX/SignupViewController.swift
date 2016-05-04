@@ -5,7 +5,7 @@ import WordPressShared
 
 /// Create a new WordPress.com account and blog.
 ///
-@objc class SigninAccountAndBlogViewController : NUXAbstractViewController, SigninKeyboardResponder
+@objc class SignupViewController : NUXAbstractViewController, SigninKeyboardResponder
 {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -36,9 +36,9 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    class func controller() -> SigninAccountAndBlogViewController {
+    class func controller() -> SignupViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninAccountAndBlogViewController") as! SigninAccountAndBlogViewController
+        let controller = storyboard.instantiateViewControllerWithIdentifier("SignupViewController") as! SignupViewController
         return controller
     }
 
@@ -71,8 +71,8 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninAccountAndBlogViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SigninAccountAndBlogViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(#selector(SignupViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SignupViewController.handleKeyboardWillHide(_:)))
 
     }
 
@@ -127,7 +127,7 @@ import WordPressShared
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
-                                                            selector: #selector(SigninAccountAndBlogViewController.handleOnePasswordButtonTapped(_:)))
+                                                            selector: #selector(SignupViewController.handleOnePasswordButtonTapped(_:)))
     }
 
 
@@ -612,7 +612,7 @@ import WordPressShared
 }
 
 
-extension SigninAccountAndBlogViewController: UITextFieldDelegate {
+extension SignupViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == emailField {
             usernameField.becomeFirstResponder()
