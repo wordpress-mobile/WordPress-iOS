@@ -26,7 +26,7 @@ public final class WordPressComOAuthClient: NSObject {
         let baseURL = NSURL(string:WordPressComOAuthClient.WordPressComOAuthBaseUrl)
         let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
-        sessionManager.responseSerializer = WordPressComOAuthResponseSerialization()
+        sessionManager.responseSerializer = WordPressComOAuthResponseSerializer()
         sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
         return sessionManager
     }()
@@ -141,7 +141,7 @@ public final class WordPressComOAuthClient: NSObject {
 }
 
 /// A custom serializer to handle standard 400 error responses coming from the OAUTH server
-final class WordPressComOAuthResponseSerialization: AFJSONResponseSerializer
+final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer
 {
     override init() {
         super.init()
