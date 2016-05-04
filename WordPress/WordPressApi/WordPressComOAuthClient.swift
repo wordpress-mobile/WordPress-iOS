@@ -146,7 +146,7 @@ public final class WordPressComOAuthClient: NSObject {
     }
 
     private func processError(error: NSError, response:NSHTTPURLResponse) -> NSError {
-        guard response.statusCode >= 400 && response.statusCode < 500 && error.domain == AFURLResponseSerializationErrorDomain,
+        guard response.statusCode == 400 && error.domain == AFURLResponseSerializationErrorDomain,
         let responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] as? NSData,
         let responseDictionary = (try? NSJSONSerialization.JSONObjectWithData(responseData, options:NSJSONReadingOptions())) as? [String:AnyObject],
         let errorCode = responseDictionary["error"] as? String,
