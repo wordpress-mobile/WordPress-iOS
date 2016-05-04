@@ -4,6 +4,10 @@
 
 @protocol MenusSelectionDetailViewDelegate;
 
+/**
+ A detail view encapsulating labels displaying a currently 
+ selected MenusSelectionItem and a count of available MenusSelectionItems.
+ */
 @interface MenusSelectionDetailView : UIView
 
 @property (nonatomic, weak) id <MenusSelectionDetailViewDelegate> delegate;
