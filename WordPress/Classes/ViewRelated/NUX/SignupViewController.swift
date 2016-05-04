@@ -88,11 +88,7 @@ import WordPressShared
     /// Adjust the layout for smaller screens, specifically the iPhone 4s
     ///
     func configureLayoutForSmallScreensIfNeeded() {
-        guard let window = UIApplication.sharedApplication().keyWindow else {
-            return
-        }
-
-        if window.frame.height > 480 {
+        if !shouldAdjustLayoutForSmallScreen() {
             return
         }
 
@@ -208,6 +204,20 @@ import WordPressShared
     // MARK: - Instance Methods
 
 
+    /// Whether the view layout should be adjusted for smaller screens
+    ///
+    /// - Returns true if the window height matches the height of the iPhone 4s (480px).
+    /// NOTE: NUX layout assumes a portrait orientation only.
+    ///
+    func shouldAdjustLayoutForSmallScreen() -> Bool {
+        guard let window = UIApplication.sharedApplication().keyWindow else {
+            return false
+        }
+
+        return window.frame.height <= 480
+    }
+
+
     /// Displays an alert prompting that a site address is needed before 1Password can be used.
     ///
     func displayOnePasswordEmptySiteAlert() {
@@ -319,6 +329,21 @@ import WordPressShared
         operationQueue.addOperation(userCreationOp)
         operationQueue.addOperation(userSigninOp)
         operationQueue.addOperation(blogCreationOp)
+    }
+
+
+    /// Because the signup form is larger than the average sign in form and has
+    /// a header, we want to tweak the vertical offset a bit rather than use 
+    /// the default.
+    /// However, on a small screen we remove some UI elements so return the default size.
+    ///
+    /// - Returns: The offset to apply to the form
+    ///
+    func signinFormVerticalOffset() -> CGFloat {
+        if shouldAdjustLayoutForSmallScreen() {
+            return DefaultSigninFormVerticalOffset
+        }
+        return -24.0
     }
 
 
