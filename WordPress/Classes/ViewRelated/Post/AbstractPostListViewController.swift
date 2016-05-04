@@ -2,6 +2,7 @@ import Foundation
 import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
+import wpxmlrpc
 
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
@@ -122,17 +123,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
             
-            if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
+            if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
                 strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
             }
         }, completion: nil)
-    }
-    
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
-        
-        let width = view.frame.width
-        tableViewHandler.refreshCachedRowHeightsForWidth(width)
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -642,7 +636,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func handleSyncFailure(error: NSError) {
-        if error.domain == WPXMLRPCClientErrorDomain
+        if error.domain == WPXMLRPCFaultErrorDomain
             && error.code == self.dynamicType.HTTPErrorCodeForbidden {
             promptForPassword()
             return
@@ -661,11 +655,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         let navController = UINavigationController(rootViewController: editSiteViewController)
         navController.navigationBar.translucent = false
-        
-        if UIDevice.isPad() {
-            navController.modalTransitionStyle = .CrossDissolve
-            navController.modalPresentationStyle = .FormSheet
-        }
+
+        navController.modalTransitionStyle = .CrossDissolve
+        navController.modalPresentationStyle = .FormSheet        
         
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -979,40 +971,24 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
         
         let navController = UINavigationController(rootViewController: controller)
-        
-        if UIDevice.isPad() {
-            displayFilterPopover(navController)
-        } else {
-            displayFilterModal(navController)
-        }
+
+        displayFilterPopover(navController)
     }
     
     func displayFilterPopover(controller: UIViewController) {
         controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
         
-        guard let navigationController = navigationController,
-            let titleView = navigationItem.titleView else {
-                
+        guard let titleView = navigationItem.titleView else {                
             return
         }
-        
-        let titleRect = navigationController.view.convertRect(
-            titleView.frame,
-            fromView: titleView.superview)
-        
+
         controller.modalPresentationStyle = .Popover
         presentViewController(controller, animated: true, completion: nil)
         
         let presentationController = controller.popoverPresentationController
         presentationController?.permittedArrowDirections = .Any
-        presentationController?.sourceView = navigationController.view
-        presentationController?.sourceRect = titleRect
-    }
-    
-    func displayFilterModal(controller: UIViewController) {
-        controller.modalPresentationStyle = .PageSheet
-        controller.modalTransitionStyle = .CoverVertical
-        presentViewController(controller, animated: true, completion: nil)
+        presentationController?.sourceView = titleView
+        presentationController?.sourceRect = titleView.bounds
     }
     
     func setFilterWithPostStatus(status: String) {
