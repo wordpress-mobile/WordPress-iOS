@@ -31,7 +31,20 @@ struct PeopleService {
             return person
         }
         
-// TODO: Hit the backend
+        // OP Reversal
+        let reversalRole = managedPerson.role
+        
+        // Hit the Backend
+        remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+            
+            NSLog("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
+            
+            let managedPerson = self.managedPersonWithID(person.ID)
+            managedPerson?.role = reversalRole
+            ContextManager.sharedInstance().saveContext(self.context)
+        })
+        
+        // Pre-emptively update the role
         managedPerson.role = role.description
         ContextManager.sharedInstance().saveContext(context)
         
