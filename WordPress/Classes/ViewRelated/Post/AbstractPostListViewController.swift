@@ -257,6 +257,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     func noResultsAccessoryView() -> UIView {
         if syncHelper.isSyncing {
+            animatedBox.prepareAndAnimateAfterDelay(0.1)
             return animatedBox
         }
         
