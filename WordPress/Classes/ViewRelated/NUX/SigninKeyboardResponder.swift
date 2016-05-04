@@ -3,7 +3,7 @@ import UIKit
 // The signin forms are centered, and then adjusted for the combined height of 
 // the status bar and navigation bar. -(20 + 44). 
 // If this value is changed be sure to update the storyboard for consistency.
-let SigninFormVerticalOffset: CGFloat = -64.0
+let DefaultSigninFormVerticalOffset: CGFloat = -64.0
 
 /// A protocol and extension encapsulating common keyboard releated logic for 
 /// Signin controllers.
@@ -13,6 +13,7 @@ protocol SigninKeyboardResponder: class
     var bottomContentConstraint: NSLayoutConstraint! {get}
     var verticalCenterConstraint: NSLayoutConstraint! {get}
 
+    func signinFormVerticalOffset() -> CGFloat
     func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
     func unregisterForKeyboardEvents()
     func adjustViewForKeyboard(visibleKeyboard: Bool)
@@ -46,6 +47,15 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
+    /// Returns the vertical offset to apply to the sign in form. 
+    /// 
+    /// - Returns: DefaultSigninFormVerticalOffset unless a conforming controller provides its own implementation.
+    ///
+    func signinFormVerticalOffset() -> CGFloat {
+        return DefaultSigninFormVerticalOffset
+    }
+
+
     /// Adjusts constraint constants to adapt the view for a visible keyboard.
     ///
     /// - Parameters:
@@ -57,7 +67,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
             verticalCenterConstraint.constant = 0
         } else {
             bottomContentConstraint.constant = 0
-            verticalCenterConstraint.constant = SigninFormVerticalOffset
+            verticalCenterConstraint.constant = signinFormVerticalOffset()
         }
     }
 

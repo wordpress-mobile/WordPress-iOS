@@ -190,23 +190,23 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93K-a0-Rgt">
-                                        <rect key="frame" x="0.0" y="52" width="600" height="354"/>
+                                        <rect key="frame" x="0.0" y="55" width="600" height="351"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-XJ-7yJ">
-                                                <rect key="frame" x="268" y="0.0" width="64" height="64"/>
+                                                <rect key="frame" x="268" y="0.0" width="64" height="59"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="64" id="K9p-Sp-19U"/>
-                                                    <constraint firstAttribute="height" constant="64" id="SXQ-ea-8ss"/>
+                                                    <constraint firstAttribute="height" constant="59" id="SXQ-ea-8ss"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Create an account on WordPress.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onu-DI-gxe">
-                                                <rect key="frame" x="16" y="64" width="568" height="24"/>
+                                                <rect key="frame" x="16" y="59" width="568" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-Vw-DFk">
-                                                <rect key="frame" x="0.0" y="96" width="600" height="176"/>
+                                                <rect key="frame" x="0.0" y="93" width="600" height="176"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="It3-g0-cxp" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -273,13 +273,13 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=".wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHQ-iH-Ffv">
-                                                <rect key="frame" x="490" y="241" width="102" height="17"/>
+                                                <rect key="frame" x="490" y="238" width="102" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="237" y="288" width="125" height="34"/>
+                                                <rect key="frame" x="237" y="285" width="125" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="K2q-BG-LM9"/>
                                                 </constraints>
@@ -290,7 +290,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unf-Tr-tHZ">
-                                                <rect key="frame" x="283" y="338" width="33" height="16"/>
+                                                <rect key="frame" x="283" y="335" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -311,7 +311,7 @@
                                             <constraint firstItem="Unf-Tr-tHZ" firstAttribute="top" secondItem="b3A-gQ-xPp" secondAttribute="bottom" constant="16" id="Tqd-Hm-5NC"/>
                                             <constraint firstItem="tdS-XJ-7yJ" firstAttribute="centerX" secondItem="93K-a0-Rgt" secondAttribute="centerX" id="ZmR-Ak-CIs"/>
                                             <constraint firstAttribute="trailing" secondItem="yx4-Vw-DFk" secondAttribute="trailing" id="azV-G7-mF1"/>
-                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" constant="8" id="f4f-9M-wDB"/>
+                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" constant="10" id="f4f-9M-wDB"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="leading" secondItem="93K-a0-Rgt" secondAttribute="leading" id="f7s-yd-MIk"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="93K-a0-Rgt" secondAttribute="top" id="gdJ-IJ-euW"/>
                                             <constraint firstItem="BHQ-iH-Ffv" firstAttribute="centerY" secondItem="HNy-PM-AgS" secondAttribute="centerY" id="p39-vz-OOj"/>
@@ -346,7 +346,7 @@
                                     <constraint firstItem="h3S-D6-ec5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Unf-Tr-tHZ" secondAttribute="bottom" constant="16" id="SLU-pw-ZAm"/>
                                     <constraint firstItem="yx4-Vw-DFk" firstAttribute="centerY" secondItem="hVk-3I-w7N" secondAttribute="centerY" priority="900" constant="-64" id="XFf-th-GSA"/>
                                     <constraint firstItem="93K-a0-Rgt" firstAttribute="centerX" secondItem="hVk-3I-w7N" secondAttribute="centerX" id="fId-K5-MEa"/>
-                                    <constraint firstItem="93K-a0-Rgt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hVk-3I-w7N" secondAttribute="top" id="jZP-WZ-0lP"/>
+                                    <constraint firstItem="93K-a0-Rgt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hVk-3I-w7N" secondAttribute="top" constant="14" id="jZP-WZ-0lP"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h3S-D6-ec5" secondAttribute="trailing" constant="16" id="rT9-44-do7"/>
                                     <constraint firstItem="h3S-D6-ec5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hVk-3I-w7N" secondAttribute="leading" constant="16" id="uaC-t1-Bmq"/>
                                 </constraints>
