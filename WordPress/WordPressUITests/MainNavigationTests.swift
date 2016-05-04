@@ -47,5 +47,3 @@ class MainNavigationTests: XCTestCase {
     }
 
 }
-
-
