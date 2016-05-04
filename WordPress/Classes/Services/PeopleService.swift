@@ -1,5 +1,8 @@
 import Foundation
 
+
+/// Service providing access to the People Management WordPress.com API.
+///
 struct PeopleService {
     typealias Role = Person.Role
     
@@ -8,11 +11,23 @@ struct PeopleService {
 
     private let context = ContextManager.sharedInstance().mainContext
 
+    
+    /// Designated Initializer.
+    ///
+    /// -   Parameters:
+    ///     - blog: Target Blog Instance
+    ///
     init(blog: Blog) {
         remote = PeopleRemote(api: blog.restApi())
         siteID = blog.dotComID as Int
     }
 
+    
+    /// Refreshes the team of Users associated to a blog.
+    ///
+    /// -   Parameters:
+    ///     - completion: Closure to be executed on completion.
+    ///
     func refreshTeam(completion: (Bool) -> Void) {
         remote.getTeamFor(siteID,
             success: { people in
@@ -26,6 +41,14 @@ struct PeopleService {
         })
     }
 
+    /// Updates a given person with the specified role.
+    ///
+    /// -   Parameters:
+    ///     - person: Instance of the person to be updated.
+    ///     - role: New role that should be assigned
+    ///
+    /// -   Returns: A new Person instance, with the new Role already assigned.
+    ///
     func updatePerson(person: Person, role: Role) -> Person {
         guard let managedPerson = managedPersonWithID(person.ID) else {
             return person
@@ -33,15 +56,17 @@ struct PeopleService {
         
         // OP Reversal
         let reversalRole = managedPerson.role
+        let revert = {
+            let managedPerson = self.managedPersonWithID(person.ID)
+            managedPerson?.role = reversalRole
+            ContextManager.sharedInstance().saveContext(self.context)
+        }
         
         // Hit the Backend
         remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
             
             NSLog("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
-            
-            let managedPerson = self.managedPersonWithID(person.ID)
-            managedPerson?.role = reversalRole
-            ContextManager.sharedInstance().saveContext(self.context)
+            revert()
         })
         
         // Pre-emptively update the role
@@ -50,9 +75,13 @@ struct PeopleService {
         
         return Person(managedPerson: managedPerson)
     }
-    
-    
-    private func mergeTeam(people: People) {
+}
+
+
+/// Encapsulates all of the PeopleService Private Methods.
+///
+private extension PeopleService {
+    func mergeTeam(people: People) {
         let remotePeople = people
         let localPeople = allPeople()
 
@@ -78,7 +107,7 @@ struct PeopleService {
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func allPeople() -> People {
+    func allPeople() -> People {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", NSNumber(integer: siteID))
         let results: [ManagedPerson]
@@ -92,7 +121,7 @@ struct PeopleService {
         return results.map { return Person(managedPerson: $0) }
     }
 
-    private func managedPersonWithID(id: Int) -> ManagedPerson? {
+    func managedPersonWithID(id: Int) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@", NSNumber(integer: siteID), NSNumber(integer: id))
         request.fetchLimit = 1
@@ -100,7 +129,7 @@ struct PeopleService {
         return results.first
     }
 
-    private func removeManagedPeopleWithIDs(ids: Set<Int>) {
+    func removeManagedPeopleWithIDs(ids: Set<Int>) {
         if ids.isEmpty {
             return
         }
@@ -115,7 +144,7 @@ struct PeopleService {
         }
     }
 
-    private func createManagedPerson(person: Person) {
+    func createManagedPerson(person: Person) {
         let managedPerson = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: context) as! ManagedPerson
         managedPerson.updateWith(person)
         DDLogSwift.logDebug("Created person \(managedPerson)")
