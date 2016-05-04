@@ -69,7 +69,7 @@ import WordPressShared
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
 

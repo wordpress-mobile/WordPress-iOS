@@ -71,9 +71,8 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SignupViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SignupViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SignupViewController.handleKeyboardWillHide(_:)))
-
     }
 
     override func viewWillDisappear(animated: Bool) {
