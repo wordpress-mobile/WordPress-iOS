@@ -166,4 +166,3 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
 }
-

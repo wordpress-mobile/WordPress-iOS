@@ -326,7 +326,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
         
         if shouldShowOnlyMyPosts() {
-            let myAuthorID = blog?.account.userID ?? 0
+            let myAuthorID = blogUserID() ?? 0
             
             // Brand new local drafts have an authorID of 0.
             let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
@@ -705,8 +705,3 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         restorePost(apost)
     }
 }
-
-
-
-
-
