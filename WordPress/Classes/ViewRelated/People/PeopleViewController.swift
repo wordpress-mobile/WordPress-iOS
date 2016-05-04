@@ -35,6 +35,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         return cell
     }
+    
+    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.min
+    }
 
     
     // MARK: - NSFetchedResultsController Methods
