@@ -172,7 +172,7 @@ public final class WordPressComOAuthClient: NSObject {
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.Unknown.rawValue;
 
-        return NSError(domain:self.dynamicType.WordPressComOAuthErrorDomain,
+        return NSError(domain:WordPressComOAuthClient.WordPressComOAuthErrorDomain,
                        code:mappedCode,
                        userInfo:[NSLocalizedDescriptionKey: errorDescription])
 
