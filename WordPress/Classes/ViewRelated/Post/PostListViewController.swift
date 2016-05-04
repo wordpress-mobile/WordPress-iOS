@@ -85,7 +85,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         precondition(segue.destinationViewController is UITableViewController)
-        super.postListViewController = (segue.destinationViewController as! UITableViewController)
+        super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
     
     override func viewDidLoad() {
