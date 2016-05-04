@@ -6,14 +6,14 @@ import XCTest
 class LanguagesTests: XCTestCase
 {
     func testLanguagesEffectivelyLoadJsonFile() {
-        let languages = Languages.sharedInstance
+        let languages = WordPressComLanguageDatabase()
         
         XCTAssert(languages.all.count != 0)
         XCTAssert(languages.popular.count != 0)
     }
     
     func testAllLanguagesHaveValidFields() {
-        let languages = Languages.sharedInstance
+        let languages = WordPressComLanguageDatabase()
         let sum = languages.all + languages.popular
         
         for language in sum {
@@ -23,7 +23,7 @@ class LanguagesTests: XCTestCase
     }
     
     func testAllLanguagesContainPopularLanguages() {
-        let languages = Languages.sharedInstance
+        let languages = WordPressComLanguageDatabase()
         
         for language in languages.popular {
             let filtered = languages.all.filter { $0.languageId == language.languageId }
@@ -32,7 +32,7 @@ class LanguagesTests: XCTestCase
     }
     
     func testNameForLanguageWithIdentifierReturnsTheRightName() {
-        let languages = Languages.sharedInstance
+        let languages = WordPressComLanguageDatabase()
         
         let english = languages.nameForLanguageWithId(en)
         let spanish = languages.nameForLanguageWithId(es)
@@ -42,70 +42,70 @@ class LanguagesTests: XCTestCase
     }
 
     func testDeviceLanguageIdReturnsValueForSpanish() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es")
 
         XCTAssertEqual(languages.deviceLanguageId(), es)
     }
 
     func testDeviceLanguageIdReturnsValueForSpanishSpainLowercase() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-es")
 
         XCTAssertEqual(languages.deviceLanguageId(), es)
     }
 
     func testDeviceLanguageIdReturnsValueForSpanishSpain() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-ES")
 
         XCTAssertEqual(languages.deviceLanguageId(), es)
     }
 
     func testDeviceLanguageIdReturnsEnglishForUnknownLanguage() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("not-a-language")
 
         XCTAssertEqual(languages.deviceLanguageId(), en)
     }
 
     func testDeviceLanguageIdReturnsValueForSpanishSpainExtra() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-ES-extra")
 
         XCTAssertEqual(languages.deviceLanguageId(), es)
     }
 
     func testDeviceLanguageIdReturnsValueForSpanishNO() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-NO")
 
         XCTAssertEqual(languages.deviceLanguageId(), es)
     }
 
     func testDeviceLanguageIdReturnsZhCNForZhHans() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hans")
 
         XCTAssertEqual(languages.deviceLanguageId(), zhCN)
     }
 
     func testDeviceLanguageIdReturnsZhTWForZhHant() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hant")
 
         XCTAssertEqual(languages.deviceLanguageId(), zhTW)
     }
 
     func testDeviceLanguageIdReturnsZhCNForZhHansES() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hans-ES")
 
         XCTAssertEqual(languages.deviceLanguageId(), zhCN)
     }
 
     func testDeviceLanguageIdReturnsZhTWForZhHantES() {
-        let languages = Languages()
+        let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hant-ES")
 
         XCTAssertEqual(languages.deviceLanguageId(), zhTW)

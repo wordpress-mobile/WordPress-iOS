@@ -9,7 +9,7 @@
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
 #import "NSAttributedString+Util.h"
-#import "WordPressComOAuthClient.h"
+#import "WordPress-Swift.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "JetpackService.h"

@@ -343,7 +343,7 @@ import WordPressShared
                 }
             }
 
-            let currentLanguage = Languages.sharedInstance.deviceLanguageId()
+            let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
             let languageId = currentLanguage.stringValue
 
             let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
@@ -394,7 +394,12 @@ import WordPressShared
     func userSigninOperation() -> WPAsyncBlockOperation {
         let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
         asyncOp.addBlock({ (operation: WPAsyncBlockOperation?) in
-            let successBlock = { (authToken: String!) in
+            let successBlock = { (authToken: String?) in
+                guard let authToken = authToken else {
+                    DDLogSwift.logError("Faied signing in the user. Success block was called but the auth token was nil.")
+                    assertionFailure()
+                    return
+                }
                 let context = ContextManager.sharedInstance().mainContext
                 let service = AccountService(managedObjectContext: context)
 
@@ -418,7 +423,7 @@ import WordPressShared
                 }
             }
 
-            let client = WordPressComOAuthClient.clientForSwift()
+            let client = WordPressComOAuthClient.client()
             client.authenticateWithUsername(self.loginFields.username,
                 password: self.loginFields.password,
                 multifactorCode: nil,
@@ -461,7 +466,7 @@ import WordPressShared
                 }
             }
 
-            let currentLanguage = Languages.sharedInstance.deviceLanguageId()
+            let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
             let languageId = currentLanguage.stringValue
             guard let api = self.account?.restApi else {
                 DDLogSwift.logError("Failed to get the REST API from the account.")
