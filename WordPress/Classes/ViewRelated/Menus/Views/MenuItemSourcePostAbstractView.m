@@ -74,7 +74,12 @@
     } else {
         cell.sourceSelected = NO;
     }
-    [cell setTitle:post.titleForDisplay];
+    
+    NSString *postTitle = post.titleForDisplay;
+    if (!postTitle.length) {
+        postTitle = NSLocalizedString(@"(Untitled Post)", @"Menus title label text for a post that has no set title.");
+    }
+    [cell setTitle:postTitle];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,7 +99,7 @@
 
 - (Class)entityClass
 {
-    // Subclasses return the proper entity class
+    AssertSubclassMethod();
     return nil;
 }
 

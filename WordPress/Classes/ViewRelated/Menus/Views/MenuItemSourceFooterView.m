@@ -43,14 +43,14 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         
         self.backgroundColor = [UIColor whiteColor];
         
-        [self initSourceCell];
-        [self initDrawView];
+        [self setupSourceCell];
+        [self setupDrawView];
     }
     
     return self;
 }
 
-- (void)initSourceCell
+- (void)setupSourceCell
 {
     MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.frame = self.bounds;
@@ -61,7 +61,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     self.sourceCell = cell;
 }
 
-- (void)initDrawView
+- (void)setupDrawView
 {
     MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
     drawView.backgroundColor = [UIColor whiteColor];
@@ -118,7 +118,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     // Let the animation play for just a bit before ending it. This avoids flickering.
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(endCellAnimations) userInfo:nil repeats:NO];
     self.endLoadingAnimationsTimer = timer;
-    // Add the timer to the runloop scheduling under common modes, to not pause for UIScrollView scrolling.
+    // Add the timer to the runloop scheduling under common modes so it does not pause while a UIScrollView scrolls.
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -161,7 +161,8 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 - (void)drawRect:(CGRect)rect
 {
     if (self.labelText && self.drawsLabelTextIfNeeded) {
-        CGRect textRect = CGRectInset(rect, MenusDesignDefaultContentSpacing + 4.0, 0);
+        const CGFloat textVerticalInsetPadding = 4.0;
+        CGRect textRect = CGRectInset(rect, MenusDesignDefaultContentSpacing + textVerticalInsetPadding, 0);
         textRect.origin.y = MenusDesignDefaultContentSpacing / 2.0;;
         textRect.size.height -= textRect.origin.y;
         NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
