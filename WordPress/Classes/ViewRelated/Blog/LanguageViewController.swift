@@ -106,7 +106,7 @@ public class LanguageViewController : UITableViewController
         let languages   = languageDatabase.grouped
         let titles      = languages.map { $0.map { $0.name } }
         let subtitles   = languages.map { $0.map { $0.description } }
-        let values      = languages.map { $0.map { $0.languageId } } as [[NSObject]]
+        let values      = languages.map { $0.map { $0.id } } as [[NSObject]]
         
         // Setup ListPickerViewController
         let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
