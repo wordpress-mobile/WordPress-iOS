@@ -64,14 +64,20 @@ class WordPressComLanguageDatabase : NSObject
     /// If the language is not supported, it returns 1 (English).
     ///
     func deviceLanguageId() -> NSNumber {
+        return deviceLanguage.languageId
+    }
+
+    /// Returns the current device language as the corresponding WordPress.com language.
+    /// If the language is not supported, it returns English.
+    ///
+    var deviceLanguage: Language {
         let variants = LanguageTagVariants(string: deviceLanguageCode)
         for variant in variants {
             if let match = self.languageWithSlug(variant) {
-                return match.languageId
+                return match
             }
         }
-
-        return 1
+        return languageWithSlug("en")!
     }
 
     /// Searches for a WordPress.com language that matches a language tag.
