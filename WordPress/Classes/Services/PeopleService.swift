@@ -81,6 +81,8 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
+    /// Updates the Core Data collection of users, to match with the array of People received.
+    ///
     func mergeTeam(people: People) {
         let remotePeople = people
         let localPeople = allPeople()
@@ -107,6 +109,8 @@ private extension PeopleService {
         ContextManager.sharedInstance().saveContext(context)
     }
 
+    /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
+    ///
     func allPeople() -> People {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", NSNumber(integer: siteID))
@@ -121,6 +125,8 @@ private extension PeopleService {
         return results.map { return Person(managedPerson: $0) }
     }
 
+    /// Retrieves a Person from Core Data, with the specifiedID.
+    ///
     func managedPersonWithID(id: Int) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@", NSNumber(integer: siteID), NSNumber(integer: id))
@@ -129,6 +135,8 @@ private extension PeopleService {
         return results.first
     }
 
+    /// Nukes the set of users, from Core Data, with the specified ID's.
+    ///
     func removeManagedPeopleWithIDs(ids: Set<Int>) {
         if ids.isEmpty {
             return
@@ -144,6 +152,8 @@ private extension PeopleService {
         }
     }
 
+    /// Inserts a new Person instance into Core Data, with the specified payload.
+    ///
     func createManagedPerson(person: Person) {
         let managedPerson = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: context) as! ManagedPerson
         managedPerson.updateWith(person)
