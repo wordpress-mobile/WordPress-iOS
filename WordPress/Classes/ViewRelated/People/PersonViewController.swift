@@ -77,7 +77,7 @@ class PersonViewController : UITableViewController {
         // Update the Role
         let service = PeopleService(blog: blog)
         person = service.updatePerson(person, role: newRole)
-        
+// TODO: Handle Error
         // Refresh UI
         roleCell.detailTextLabel?.text = newRole.localizedName()
     }
@@ -156,11 +156,12 @@ class PersonViewController : UITableViewController {
     
     // MARK: - Private Properties
     private var isMyself : Bool {
+// TODO: Self Hosted fails
+// TODO: Self Hosted Role fails
         return blog.account.userID == person.ID
     }
     
     private var isPromoteEnabled : Bool {
-// TODO: Self Hosted Superadmin?
         return blog.isUserCapableOf(.PromoteUsers) && isMyself == false
     }
     
