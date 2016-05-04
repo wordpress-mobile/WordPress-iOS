@@ -1,12 +1,7 @@
 #import "OnePasswordFacade.h"
 #import <OnePasswordExtension/OnePasswordExtension.h>
+#import "Constants.h"
 
-// Proxy these contants. OnePassword defines them with a #define macro which hides them from Swift.
-NSString * const WPOnePasswordTitleKey = AppExtensionTitleKey;
-NSString * const WPOnePasswordUsernameKey = AppExtensionUsernameKey;
-NSString * const WPOnePasswordPasswordKey = AppExtensionPasswordKey;
-NSString * const WPOnePasswordGeneratedPasswordMinLengthKey = AppExtensionGeneratedPasswordMinLengthKey;
-NSString * const WPOnePasswordGeneratedPasswordMaxLengthKey = AppExtensionGeneratedPasswordMaxLengthKey;
 NSInteger WPOnePasswordErrorCodeCancelledByUser = AppExtensionErrorCodeCancelledByUser;
 
 @implementation OnePasswordFacade
@@ -35,26 +30,47 @@ NSInteger WPOnePasswordErrorCodeCancelledByUser = AppExtensionErrorCodeCancelled
     return [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
 }
 
-
-- (void)storeLoginForURLString:(NSString *)URLString
-                  loginDetails:(NSDictionary *)loginDetailsDictionary
-     passwordGenerationOptions:(NSDictionary *)passwordGenerationOptions
-             forViewController:(UIViewController *)viewController
-                        sender:(id)sender
-                    completion:(void (^)(NSDictionary * _Nullable loginDictionary, NSError * _Nullable error))completion
+- (void)createLoginForURLString:(NSString *)URLString
+                       username:(NSString *)username
+                       password:(NSString *)password
+              forViewController:(UIViewController *)viewController
+                         sender:(id)sender
+                     completion:(void (^)(NSString * _Nullable username, NSString * _Nullable password, NSError * _Nullable error))completion
 {
     NSParameterAssert(URLString != nil);
-    NSParameterAssert(loginDetailsDictionary != nil);
-    NSParameterAssert(passwordGenerationOptions != nil);
+    NSParameterAssert(username != nil);
+    NSParameterAssert(password != nil);
     NSParameterAssert(viewController != nil);
+    NSParameterAssert(sender != nil);
     NSParameterAssert(completion != nil);
+
+    NSDictionary *loginDetailsDictionary = @{
+                                             AppExtensionTitleKey: WPOnePasswordWordPressTitle,
+                                             AppExtensionUsernameKey: username,
+                                             AppExtensionPasswordKey: password,
+                                             };
+
+    NSDictionary *passwordGenerationOptions = @{
+                                                AppExtensionGeneratedPasswordMaxLengthKey: @(WPOnePasswordGeneratedMinLength),
+                                                AppExtensionGeneratedPasswordMaxLengthKey: @(WPOnePasswordGeneratedMaxLength),
+                                                };
 
     [[OnePasswordExtension sharedExtension] storeLoginForURLString:URLString
                                                       loginDetails:loginDetailsDictionary
                                          passwordGenerationOptions:passwordGenerationOptions
                                                  forViewController:viewController
                                                             sender:sender
-                                                        completion:completion];
+                                                        completion:^(NSDictionary *loginDict, NSError *error) {
+                                                            if (error != nil && error.code != AppExtensionErrorCodeCancelledByUser) {
+                                                                completion(nil, nil, error);
+                                                                return;
+                                                            }
+                                                            NSString *username = loginDict[AppExtensionUsernameKey];
+                                                            NSString *password = loginDict[AppExtensionPasswordKey];
+                                                            completion(username, password, error);
+                                                        }];
+
+
 }
 
 @end

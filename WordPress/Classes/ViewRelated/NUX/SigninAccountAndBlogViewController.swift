@@ -552,45 +552,36 @@ import WordPressShared
     func handleOnePasswordButtonTapped(sender: UIButton) {
         view.endEditing(true)
 
-        let newLoginDetails = [
-            WPOnePasswordTitleKey: WPOnePasswordWordPressTitle,
-            WPOnePasswordUsernameKey: loginFields.username,
-            WPOnePasswordPasswordKey: loginFields.password,
-        ]
 
-        let passwordGenerationOptions = [
-            WPOnePasswordGeneratedPasswordMinLengthKey: WPOnePasswordGeneratedMinLength,
-            WPOnePasswordGeneratedPasswordMaxLengthKey: WPOnePasswordGeneratedMaxLength
-        ]
-
-        OnePasswordFacade().storeLoginForURLString(WPOnePasswordWordPressComURL,
-                                                   loginDetails: newLoginDetails,
-                                                   passwordGenerationOptions: passwordGenerationOptions,
-                                                   forViewController: self,
-                                                   sender: sender) { (loginDict: [NSObject : AnyObject], error: NSError?) in
-                                                    if let error = error {
-                                                        if error.code != WPOnePasswordErrorCodeCancelledByUser {
-                                                            DDLogSwift.logError("Failed to use 1Password App Extension to save a new Login: \(error)")
-                                                            WPAnalytics.track(.OnePasswordFailed)
+        OnePasswordFacade().createLoginForURLString(WPOnePasswordWordPressComURL,
+                                                    username: loginFields.username,
+                                                    password: loginFields.password,
+                                                    forViewController: self,
+                                                    sender: sender,
+                                                    completion: { (username, password, error: NSError?) in
+                                                        if let error = error {
+                                                            if error.code != WPOnePasswordErrorCodeCancelledByUser {
+                                                                DDLogSwift.logError("Failed to use 1Password App Extension to save a new Login: \(error)")
+                                                                WPAnalytics.track(.OnePasswordFailed)
+                                                            }
+                                                            return
                                                         }
-                                                        return
-                                                    }
-                                                    if let username = loginDict[WPOnePasswordUsernameKey] as? String {
-                                                        self.loginFields.username = username
-                                                        self.usernameField.text = username
-                                                    }
-                                                    if let password = loginDict[WPOnePasswordPasswordKey]  as? String {
-                                                        self.loginFields.password = password
-                                                        self.usernameField.text = password
-                                                    }
+                                                        if let username = username {
+                                                            self.loginFields.username = username
+                                                            self.usernameField.text = username
+                                                        }
+                                                        if let password = password {
+                                                            self.loginFields.password = password
+                                                            self.usernameField.text = password
+                                                        }
 
-                                                    WPAnalytics.track(.OnePasswordSignup)
+                                                        WPAnalytics.track(.OnePasswordSignup)
 
-                                                    // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
-                                                    // and make the SiteAddress Field the first responder.
-                                                    self.siteURLField.becomeFirstResponder()
-        }
+                                                        // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
+                                                        // and make the SiteAddress Field the first responder.
+                                                        self.siteURLField.becomeFirstResponder()
 
+        })
     }
 
 
