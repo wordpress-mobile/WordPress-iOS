@@ -3,11 +3,6 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef void (^OnePasswordFacadeCallback)(NSString * _Nullable username, NSString * _Nullable password,  NSString * _Nullable oneTimePassword, NSError * _Nullable);
 
-extern NSString * const WPOnePasswordTitleKey;
-extern NSString * const WPOnePasswordUsernameKey;
-extern NSString * const WPOnePasswordPasswordKey;
-extern NSString * const WPOnePasswordGeneratedPasswordMinLengthKey;
-extern NSString * const WPOnePasswordGeneratedPasswordMaxLengthKey;
 extern NSInteger WPOnePasswordErrorCodeCancelledByUser;
 
 /**
@@ -35,19 +30,19 @@ extern NSInteger WPOnePasswordErrorCodeCancelledByUser;
 /**
  *  Stores a new entry in the 1Password extension.
  *
- *  @param URLString                    the URL of the site in question.
- *  @param loginDetailsDictionary       a dictionary containing login credentials to store.
- *  @param passwordGenerationOptions    a dictionary specifying password generation options.
+ *  @param URLString      the URL of the site in question.
+ *  @param username       the username to store
+ *  @param password       the password to store
  *  @param viewController the view controller of the class that needs the 1Password extension to appear. Note this can't be nil.
  *  @param sender         the control that triggered the action
  *  @param completion     block that is called when 1Password is done setting the credentials.
  */
-- (void)storeLoginForURLString:(NSString *)URLString
-                  loginDetails:(NSDictionary *)loginDetailsDictionary
-     passwordGenerationOptions:(NSDictionary *)passwordGenerationOptions
-             forViewController:(UIViewController *)viewController
-                        sender:(id)sender
-                    completion:(void (^)(NSDictionary *loginDictionary, NSError * _Nullable error))completion;
+- (void)createLoginForURLString:(NSString *)URLString
+                       username:(NSString *)username
+                       password:(NSString *)password
+              forViewController:(UIViewController *)viewController
+                         sender:(id)sender
+                     completion:(void (^)(NSString * _Nullable username, NSString * _Nullable password, NSError * _Nullable error))completion;
 
 @end
 NS_ASSUME_NONNULL_END
