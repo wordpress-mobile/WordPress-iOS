@@ -9,5 +9,5 @@ project_dir=$( cd ${scripts_dir}/../; pwd )
 source_dir="${project_dir}/WordPress"
 
 cd "$project_dir"
-swiftlint
-cd -
+
+swiftlint lint $*
