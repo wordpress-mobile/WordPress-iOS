@@ -107,13 +107,7 @@ import WordPressShared
     /// Configures the appearance and state of the forgot password button.
     ///
     func configureForgotPasswordButton() {
-        var status = ""
-
-        if let text = statusLabel.text {
-            status = text
-        }
-
-        forgotPasswordButton.hidden = loginFields.siteUrl.isEmpty || !status.isEmpty
+        forgotPasswordButton.hidden = loginFields.siteUrl.isEmpty || submitButton.isAnimating
     }
 
 
@@ -142,6 +136,7 @@ import WordPressShared
         siteURLField.enabled = !loading
 
         configureSubmitButton(animating: loading)
+        configureForgotPasswordButton()
         navigationItem.hidesBackButton = loading
     }
 
