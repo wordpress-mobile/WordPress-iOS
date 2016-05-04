@@ -57,7 +57,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     self = [super init];
     if (self) {
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguageId = [[Languages sharedInstance] deviceLanguageId];
+        _currentLanguageId = [[WordPressComLanguageDatabase new] deviceLanguageId];
     }
     return self;
 }
