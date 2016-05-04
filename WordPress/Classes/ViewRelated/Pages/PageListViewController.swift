@@ -545,10 +545,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
         
         WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
-        
 
         alertController.modalPresentationStyle = .Popover
         presentViewController(alertController, animated: true, completion: nil)
+        
         if let presentationController = alertController.popoverPresentationController {
             presentationController.permittedArrowDirections = .Any
             presentationController.sourceView = button
