@@ -8,6 +8,13 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 ///
 @objc class NUXSubmitButton : UIButton
 {
+    var isAnimating: Bool {
+        get {
+            return activityIndicator.isAnimating()
+        }
+    }
+
+
     let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
         indicator.hidesWhenStopped = true
