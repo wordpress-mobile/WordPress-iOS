@@ -209,7 +209,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     Menu *selectedMenu = selectedLocation.menu;
     self.selectedMenuLocation = selectedLocation;
     
-    [self.headerView setupWithMenusForBlog:self.blog];
+    self.headerView.blog = self.blog;
     [self.headerView setSelectedLocation:selectedLocation];
     [self.headerView setSelectedMenu:selectedMenu];
     
@@ -227,7 +227,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)reloadMenusViews
 {
-    [self.headerView setupWithMenusForBlog:self.blog];
+    self.headerView.blog = nil;
+    self.headerView.blog = self.blog;
     [self.headerView setSelectedMenu:self.selectedMenuLocation.menu];
     [self setViewsWithMenu:nil];
     [self setViewsWithMenu:self.selectedMenuLocation.menu];
