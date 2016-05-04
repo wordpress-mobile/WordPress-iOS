@@ -292,7 +292,6 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (NSFetchRequest *)fetchRequest
 {
-    AssertSubclassMethod();
     return nil;
 }
 
@@ -305,7 +304,6 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (NSString *)fetechedResultsControllerSectionNameKeyPath
 {
-    AssertSubclassMethod();
     return nil;
 }
 
@@ -348,7 +346,7 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    AssertSubclassMethod();
+    // Available to subclasses if needed.
 }
 
 #pragma mark - UIScrollView
@@ -478,7 +476,7 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
-    AssertSubclassMethod();
+    // Available to subclasses if needed.
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
