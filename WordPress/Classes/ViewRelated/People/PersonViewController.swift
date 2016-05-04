@@ -156,9 +156,8 @@ class PersonViewController : UITableViewController {
     
     // MARK: - Private Properties
     private var isMyself : Bool {
-// TODO: Self Hosted fails
 // TODO: Self Hosted Role fails
-        return blog.account.userID == person.ID
+        return blog.account.userID == person.ID || blog.account.userID == person.linkedUserID
     }
     
     private var isPromoteEnabled : Bool {
