@@ -136,8 +136,8 @@ private extension PeopleRemote {
         
         let firstName = user["first_name"] as? String
         let lastName = user["last_name"] as? String
-        let avatarURL = (user["avatar_URL"] as? String)
-            .flatMap { NSURL(string: $0)}
+        let avatarURL = (user["avatar_URL"] as? NSString)
+            .flatMap { NSURL(string: $0.stringByUrlEncoding())}
             .flatMap { Gravatar($0)?.canonicalURL }
         
         let linkedUserID = user["linked_user_ID"] as? Int ?? ID
