@@ -26,7 +26,7 @@ public final class WordPressComOAuthClient: NSObject {
         let baseURL = NSURL(string:WordPressComOAuthClient.WordPressComOAuthBaseUrl)
         let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
-        sessionManager.responseSerializer = AFJSONResponseSerializer()
+        sessionManager.responseSerializer = WordPressComOAuthResponseSerialization()
         sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
         return sessionManager
     }()
@@ -92,14 +92,8 @@ public final class WordPressComOAuthClient: NSObject {
             success(authToken: authToken)
 
             }, failure: { (task, error) in
-                if let httpURLResponse = task?.response as? NSHTTPURLResponse {
-                    let processedError = self.processError(error, response:httpURLResponse)
-                    failure(error: processedError)
-                    DDLogSwift.logError("Error receiving OAuth2 token: \(processedError)");
-                } else {
-                    failure(error: error)
-                    DDLogSwift.logError("Error receiving OAuth2 token: \(error)");
-                }
+                failure(error: error)
+                DDLogSwift.logError("Error receiving OAuth2 token: \(error)");
             }
         )
     }
@@ -128,31 +122,47 @@ public final class WordPressComOAuthClient: NSObject {
         sessionManager.POST("token", parameters:parameters, success:{ (task, responseObject) in
             success()
             }, failure: { (task, error) in
-                guard let httpURLResponse = task?.response as? NSHTTPURLResponse
-                else {
-                    failure(error: error)
-                    return
-                }
-                let processedError = self.processError(error, response:httpURLResponse)
-                // SORRY:
-                // SMS Requests will still return WordPressComOAuthErrorNeedsMultifactorCode. In which case,
-                // we should hit the success callback.
-                if processedError.code == WordPressComOAuthError.NeedsMultifactorCode.rawValue {
-                    success()
-                } else {
-                    failure(error: error)
-                }
-        })
+                failure(error: error)
+            }
+        )
     }
 
-    private func processError(error: NSError, response:NSHTTPURLResponse) -> NSError {
-        guard response.statusCode == 400 && error.domain == AFURLResponseSerializationErrorDomain,
-        let responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] as? NSData,
-        let responseDictionary = (try? NSJSONSerialization.JSONObjectWithData(responseData, options:NSJSONReadingOptions())) as? [String:AnyObject],
-        let errorCode = responseDictionary["error"] as? String,
-        let errorDescription = responseDictionary["error_description"] as? String
-        else {
-            return error
+    private func cleanedUpResponseForLogging(response: AnyObject) -> AnyObject {
+        guard var responseDictionary = response as? [String:AnyObject],
+            let _ = responseDictionary["access_token"]
+            else {
+                return response;
+        }
+        
+        responseDictionary["access_token"] = "*** REDACTED ***"
+        return responseDictionary;
+    }
+    
+}
+
+/// A custom serializer to handle standard 400 error responses coming from the OAUTH server
+final class WordPressComOAuthResponseSerialization: AFJSONResponseSerializer
+{
+    override init() {
+        super.init()
+        let extraStatusCodes = NSMutableIndexSet(indexSet: self.acceptableStatusCodes!)
+        extraStatusCodes.addIndex(400);
+        self.acceptableStatusCodes = extraStatusCodes
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func responseObjectForResponse(response: NSURLResponse?, data: NSData?, error: NSErrorPointer) -> AnyObject? {
+        let responseObject = super.responseObjectForResponse(response, data: data, error: error)
+
+        guard let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 400,
+            let responseDictionary = responseObject as? [String:AnyObject],
+            let errorCode = responseDictionary["error"] as? String,
+            let errorDescription = responseDictionary["error_description"] as? String
+            else {
+                return responseObject
         }
         /*
          Possible errors:
@@ -172,21 +182,9 @@ public final class WordPressComOAuthClient: NSObject {
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.Unknown.rawValue;
 
-        return NSError(domain:WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+        error.memory = NSError(domain:WordPressComOAuthClient.WordPressComOAuthErrorDomain,
                        code:mappedCode,
                        userInfo:[NSLocalizedDescriptionKey: errorDescription])
-
+        return responseObject
     }
-
-    private func cleanedUpResponseForLogging(response: AnyObject) -> AnyObject {
-        guard var responseDictionary = response as? [String:AnyObject],
-            let _ = responseDictionary["access_token"]
-            else {
-                return response;
-        }
-        
-        responseDictionary["access_token"] = "*** REDACTED ***"
-        return responseDictionary;
-    }
-    
 }
