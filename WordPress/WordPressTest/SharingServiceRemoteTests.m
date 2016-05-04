@@ -4,7 +4,6 @@
 #import "Blog.h"
 #import "ServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "WordPressTests-Swift.h"
 #import "WordPress-Swift.h"
 
 @interface SharingServiceRemoteTests : XCTestCase
