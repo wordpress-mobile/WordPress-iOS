@@ -129,13 +129,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }, completion: nil)
     }
     
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
-        
-        let width = view.frame.width
-        tableViewHandler.refreshCachedRowHeightsForWidth(width)
-    }
-    
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
