@@ -4,13 +4,9 @@ import Foundation
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-class Languages : NSObject
+class WordPressComLanguageDatabase : NSObject
 {
     // MARK: - Public Properties
-    
-    /// Shared Languages Instance
-    ///
-    static let sharedInstance = Languages()
     
     /// Languages considered 'popular'
     ///
@@ -19,7 +15,7 @@ class Languages : NSObject
     /// Every supported language
     ///
     let all : [Language]
-    
+
     /// Returns both, Popular and All languages, grouped
     ///
     let grouped : [[Language]]
@@ -95,7 +91,7 @@ class Languages : NSObject
 
     // MARK: - Public Nested Classes
     
-    /// Represents a Language, which allows us to deal with WordPress.com settings
+    /// Represents a Language supported by WordPress.com
     ///
     class Language
     {
@@ -146,30 +142,6 @@ class Languages : NSObject
             }
         }
     }
-
-    // MARK: - Private nested types
-
-    /// Provides a sequence of language tags from the specified string, from more to less specific
-    /// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
-    ///
-    private struct LanguageTagVariants: SequenceType {
-        let string: String
-
-        func generate() -> AnyGenerator<String> {
-            var components = string.componentsSeparatedByString("-")
-            return AnyGenerator {
-                guard !components.isEmpty else {
-                    return nil
-                }
-
-                let current = components.joinWithSeparator("-")
-                components.removeLast()
-
-                return current
-            }
-        }
-    }
-
     
     // MARK: - Private Variables
 
@@ -202,5 +174,26 @@ class Languages : NSObject
         static let identifier   = "i"
         static let slug         = "s"
         static let name         = "n"
+    }
+}
+
+/// Provides a sequence of language tags from the specified string, from more to less specific
+/// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
+///
+private struct LanguageTagVariants: SequenceType {
+    let string: String
+
+    func generate() -> AnyGenerator<String> {
+        var components = string.componentsSeparatedByString("-")
+        return AnyGenerator {
+            guard !components.isEmpty else {
+                return nil
+            }
+
+            let current = components.joinWithSeparator("-")
+            components.removeLast()
+
+            return current
+        }
     }
 }

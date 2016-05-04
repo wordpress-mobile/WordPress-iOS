@@ -28,7 +28,13 @@ extension Blog
     
     /// Returns true if a given capability is enabled. False otherwise
     ///
-    public func supportsCapability(capability: Capability) -> Bool {
-        return options?[capability.rawValue] as? Bool ?? false
+    public func isUserCapableOf(capability: Capability) -> Bool {
+        return capabilities?[capability.rawValue] as? Bool ?? false
+    }
+    
+    /// Returns true if the current user is allowed to list a Blog's Users
+    ///
+    public func isListingUsersAllowed() -> Bool {
+        return isUserCapableOf(.ListUsers)
     }
 }
