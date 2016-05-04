@@ -69,6 +69,22 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
+                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ecj-mn-SNZ" customClass="PeopleRoleBadgeView" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="133" y="47" width="71" height="18"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Superadmin"/>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                    <color key="value" red="0.97647064920000004" green="0.97647064920000004" blue="0.97647064920000004" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.0" green="0.31372549020000001" blue="0.50980392159999999" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                    <color key="value" red="0.0" green="0.31372549020000001" blue="0.50980392159999999" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="FCF-E3-KhT" secondAttribute="bottom" constant="20.5" id="Gg6-lw-KHy"/>
@@ -80,10 +96,13 @@
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="Wm0-WC-uBC"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="width" secondItem="Ake-ZW-wkV" secondAttribute="width" id="Wwx-oT-Bdx"/>
                                         <constraint firstItem="fUp-Sh-uv5" firstAttribute="leading" secondItem="HXS-gQ-WaR" secondAttribute="leading" constant="15" id="aLY-Pv-M2Y"/>
+                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="leading" secondItem="FCF-E3-KhT" secondAttribute="trailing" constant="8" id="d57-7i-RaC"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="top" secondItem="HXS-gQ-WaR" secondAttribute="topMargin" constant="7" id="dCD-Nj-Mju"/>
+                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="centerY" secondItem="FCF-E3-KhT" secondAttribute="centerY" id="dEi-xM-Dr5"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="jCI-Ib-bvd"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="SRh-jK-Qmd" secondAttribute="trailing" constant="7" id="p9j-4O-zkj"/>
                                         <constraint firstItem="FCF-E3-KhT" firstAttribute="top" secondItem="Ake-ZW-wkV" secondAttribute="bottom" constant="3" id="qmv-5j-PTa"/>
+                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="height" secondItem="FCF-E3-KhT" secondAttribute="height" id="zm6-Il-wpY"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -96,6 +115,7 @@
                                     <outlet property="avatarImageView" destination="fUp-Sh-uv5" id="KNy-Ip-YOk"/>
                                     <outlet property="displayNameLabel" destination="SRh-jK-Qmd" id="DlS-J6-zBc"/>
                                     <outlet property="roleBadge" destination="FCF-E3-KhT" id="HyX-QU-LDg"/>
+                                    <outlet property="superAdminRoleBadge" destination="ecj-mn-SNZ" id="r54-06-TJX"/>
                                     <outlet property="usernameLabel" destination="Ake-ZW-wkV" id="RwJ-ag-HVR"/>
                                     <segue destination="IBP-CG-w3b" kind="show" identifier="person" id="mTH-Uk-wY0"/>
                                 </connections>
