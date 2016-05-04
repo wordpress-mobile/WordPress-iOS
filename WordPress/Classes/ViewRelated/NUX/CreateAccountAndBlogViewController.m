@@ -16,7 +16,6 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WordPressComOAuthClient.h"
 #import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
@@ -83,7 +82,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     if (self) {
         _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguageId = [[Languages sharedInstance] deviceLanguageId];
+        _currentLanguageId = [[WordPressComLanguageDatabase new] deviceLanguageId];
     }
     return self;
 }

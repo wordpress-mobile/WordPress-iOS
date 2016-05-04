@@ -7,10 +7,11 @@
 #import "MenuLocation.h"
 #import "WPFontManager.h"
 
+static CGFloat ViewExpansionAnimationDelay = 0.15;
+
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *menusView;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
@@ -29,6 +30,8 @@
     
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
+    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
+    self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -36,23 +39,24 @@
     self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
 }
 
-- (void)setupWithMenusForBlog:(Blog *)blog
+- (void)setBlog:(Blog *)blog
 {
-    _blog = blog;
-    
-    [self.locationsView removeAllSelectionItems];
-    [self.menusView removeAllSelectionItems];
-    
-    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
-    self.menusView.selectionType = MenusSelectionViewTypeMenus;
-    
-    for (MenuLocation *location in blog.menuLocations) {
-        MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
-        [self.locationsView addSelectionViewItem:item];
-    }
-    for (Menu *menu in blog.menus) {
-        MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
-        [self.menusView addSelectionViewItem:item];
+    if (_blog != blog) {
+        _blog = blog;
+        
+        [self.locationsView removeAllSelectionItems];
+        [self.menusView removeAllSelectionItems];
+        
+        if (blog) {
+            for (MenuLocation *location in blog.menuLocations) {
+                MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
+                [self.locationsView addSelectionViewItem:item];
+            }
+            for (Menu *menu in blog.menus) {
+                MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
+                [self.menusView addSelectionViewItem:item];
+            }
+        }
     }
 }
 
@@ -63,7 +67,7 @@
 
 - (void)removeMenu:(Menu *)menu
 {
-    MenusSelectionItem *selectionItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *selectionItem = [self.menusView selectionItemForObject:menu];
     if (selectionItem) {
         [self.menusView removeSelectionItem:selectionItem];
     }
@@ -71,50 +75,28 @@
 
 - (void)setSelectedLocation:(MenuLocation *)location
 {
-    MenusSelectionItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
+    MenusSelectionItem *locationItem = [self.locationsView selectionItemForObject:location];
     [self.locationsView setSelectedItem:locationItem];
 }
 
 - (void)setSelectedMenu:(Menu *)menu
 {
-    MenusSelectionItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *menuItem = [self.menusView selectionItemForObject:menu];
     [self.menusView setSelectedItem:menuItem];
 }
 
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu
 {
-    MenusSelectionItem *item = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *item = [self.menusView selectionItemForObject:menu];
     [item notifyItemObjectWasUpdated];
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    
-    if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
-        // Toggle the selection on a trait collection change to a horizonal axis for the stack view
-        // this ensures both selection views are expanded if one already is
-        // otherwise the design looks odd with too much negative space
-        // see userInteractionDetectedForTogglingSelectionView:expand:
-        if (self.locationsView.selectionItemsExpanded || self.menusView.selectionItemsExpanded) {
-            if (self.locationsView.selectionItemsExpanded && !self.menusView.selectionItemsExpanded) {
-                
-                [self.menusView setSelectionItemsExpanded:YES animated:NO];
-                
-            } else  if (self.menusView.selectionItemsExpanded && !self.locationsView.selectionItemsExpanded) {
-             
-                [self.locationsView setSelectionItemsExpanded:YES animated:NO];
-            }
-        }
-    }
 }
 
 #pragma mark - private
 
-- (void)closeSelectionsIfNeeded
+- (void)contractSelectionsIfNeeded
 {
     // add a UX delay to selection close animation
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ViewExpansionAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.locationsView setSelectionItemsExpanded:NO animated:YES];
         [self.menusView setSelectionItemsExpanded:NO animated:YES];
     });
@@ -122,7 +104,7 @@
 
 #pragma mark - MenusSelectionViewDelegate
 
-- (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
+- (void)selectionView:(MenusSelectionView *)selectionView userTappedExpand:(BOOL)expand
 {
     [selectionView setSelectionItemsExpanded:expand animated:YES];
 }
@@ -139,13 +121,13 @@
         Menu *menu = item.itemObject;
         [self.delegate headerView:self selectedMenu:menu];
     }
-    [self closeSelectionsIfNeeded];
+    [self contractSelectionsIfNeeded];
 }
 
 - (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView
 {
     [self.delegate headerViewSelectedForCreatingNewMenu:self];
-    [self closeSelectionsIfNeeded];
+    [self contractSelectionsIfNeeded];
 }
 
 @end

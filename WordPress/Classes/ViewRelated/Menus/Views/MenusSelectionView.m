@@ -102,7 +102,7 @@
     }
 }
 
-- (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject
+- (MenusSelectionItem *)selectionItemForObject:(id)itemObject
 {
     MenusSelectionItem *matchingItem = nil;
     for (MenusSelectionItem *item in self.items) {
@@ -199,9 +199,9 @@
 
 #pragma mark - delegate helpers
 
-- (void)tellDelegateUserInteractionDetectedForTogglingExpansion
+- (void)tellDelegateUserTappedForExpansion
 {
-    [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionItemsExpanded];
+    [self.delegate selectionView:self userTappedExpand:!self.selectionItemsExpanded];
 }
 
 - (void)tellDelegateSelectedItem:(MenusSelectionItem *)item
@@ -213,7 +213,7 @@
 
 - (void)selectionDetailView:(MenusSelectionDetailView *)detailView tapGestureRecognized:(UITapGestureRecognizer *)tap
 {
-    [self tellDelegateUserInteractionDetectedForTogglingExpansion];
+    [self tellDelegateUserTappedForExpansion];
 }
 
 - (void)selectionDetailView:(MenusSelectionDetailView *)detailView touchesHighlightedStateChanged:(BOOL)highlighted

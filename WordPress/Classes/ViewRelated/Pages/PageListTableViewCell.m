@@ -68,9 +68,9 @@
     return width;
 }
 
-- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
+- (void)setPost:(AbstractPost *)post
 {
-    [super setContentProvider:contentProvider];
+    [super setPost:post];
     [self configureTitle];
 }
 
@@ -85,20 +85,10 @@
 
 - (void)configureTitle
 {
-    id<WPPostContentViewProvider>provider = [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
-    NSString *str = [provider titleForDisplay] ?: [NSString string];
+    AbstractPost *post = [self.post hasRevision] ? [self.post revision] : self.post;
+    NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide pageCellTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-}
-
-
-#pragma mark - Actions
-
-- (IBAction)didTapMenuButton:(id)sender
-{
-    if (self.delegate) {
-        [self.delegate cell:self receivedMenuActionFromButton:self.menuButton forProvider:self.contentProvider];
-    }
 }
 
 @end
