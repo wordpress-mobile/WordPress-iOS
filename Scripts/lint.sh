@@ -5,8 +5,7 @@ if ! which swiftlint >/dev/null; then
 fi
 
 scripts_dir=$( dirname $0 )
-project_dir=$( cd ${scripts_dir}/../; pwd )
-source_dir="${project_dir}/WordPress"
+project_dir="${scripts_dir}/../"
 
 cd "$project_dir"
 
