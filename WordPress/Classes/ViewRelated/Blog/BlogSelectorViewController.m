@@ -254,7 +254,7 @@ static CGFloat BlogCellRowHeight = 54.0;
             }
         }
 
-        if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
+        if (previousIndexPath && [previousIndexPath compare:indexPath] == NSOrderedSame) {
             // User tapped the already selected item. Treat this as a cancel event
             // so the picker can be dismissed without changes.
             [self cancelButtonTapped:nil];
