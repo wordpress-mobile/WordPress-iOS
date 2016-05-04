@@ -1,0 +1,4 @@
+whitelist_rules:
+  - trailing_newline
+included:
+  - WordPress
