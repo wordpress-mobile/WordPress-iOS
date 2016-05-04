@@ -52,7 +52,7 @@ class WordPressComLanguageDatabase : NSObject
     ///
     func nameForLanguageWithId(languageId: Int) -> String {
         for language in all {
-            if language.languageId == languageId {
+            if language.id == languageId {
                 return language.name
             }
         }
@@ -63,8 +63,11 @@ class WordPressComLanguageDatabase : NSObject
     /// Returns the current device language as the corresponding WordPress.com language ID.
     /// If the language is not supported, it returns 1 (English).
     ///
-    func deviceLanguageId() -> NSNumber {
-        return deviceLanguage.languageId
+    /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
+    ///
+    @objc(deviceLanguageId)
+    func deviceLanguageIdNumber() -> NSNumber {
+        return deviceLanguage.id
     }
 
     /// Returns the current device language as the corresponding WordPress.com language.
@@ -103,8 +106,8 @@ class WordPressComLanguageDatabase : NSObject
     {
         /// Language Unique Identifier
         ///
-        let languageId : NSNumber
-        
+        let id : Int
+
         /// Human readable Language name
         ///
         let name : String
@@ -124,17 +127,17 @@ class WordPressComLanguageDatabase : NSObject
         /// Designated initializer. Will fail if any of the required properties is missing
         ///
         init?(dict : NSDictionary) {
-            guard let unwrappedLanguageId = dict.numberForKey(Keys.identifier)?.integerValue,
+            guard let unwrappedId = dict.numberForKey(Keys.identifier)?.integerValue,
                         unwrappedSlug = dict.stringForKey(Keys.slug),
                         unwrappedName = dict.stringForKey(Keys.name) else
             {
-                languageId = Int.min
+                id = Int.min
                 name = String()
                 slug = String()
                 return nil
             }
             
-            languageId = unwrappedLanguageId
+            id = unwrappedId
             name = unwrappedName
             slug = unwrappedSlug
         }
