@@ -6,7 +6,8 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var roleBadge: PeopleRoleBadgeView!
-
+    @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeView!
+    
     override func awakeFromNib() {
         displayNameLabel.font = WPFontManager.merriweatherBoldFontOfSize(14)
     }
@@ -19,6 +20,10 @@ class PeopleCell: WPTableViewCell {
         roleBadge.backgroundColor = viewModel.roleBackgroundColor
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
+        superAdminRoleBadge.text = viewModel.superAdminText
+        superAdminRoleBadge.hidden = viewModel.superAdminHidden
+        superAdminRoleBadge.borderColor = viewModel.superAdminBorderColor
+        superAdminRoleBadge.backgroundColor = viewModel.superAdminBackgroundColor
     }
 
     func setAvatarURL(avatarURL: NSURL?) {
@@ -35,17 +40,25 @@ class PeopleCell: WPTableViewCell {
     */
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         let roleBackgroundColor = roleBadge.backgroundColor
+        let superAdminBackgroundColor = superAdminRoleBadge.backgroundColor
+        
         super.setHighlighted(highlighted, animated: animated)
+        
         if highlighted {
             roleBadge.backgroundColor = roleBackgroundColor
+            superAdminRoleBadge.backgroundColor = superAdminBackgroundColor
         }
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         let roleBackgroundColor = roleBadge.backgroundColor
+        let superAdminBackgroundColor = superAdminRoleBadge.backgroundColor
+        
         super.setSelected(selected, animated: animated)
+        
         if selected {
             roleBadge.backgroundColor = roleBackgroundColor
+            superAdminRoleBadge.backgroundColor = superAdminBackgroundColor
         }
     }
 }
