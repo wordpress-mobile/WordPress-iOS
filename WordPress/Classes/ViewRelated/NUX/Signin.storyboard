@@ -174,10 +174,10 @@
             </objects>
             <point key="canvasLocation" x="1100" y="262"/>
         </scene>
-        <!--Signin Account And Blog View Controller-->
+        <!--Signup View Controller-->
         <scene sceneID="w7c-Xj-AH8">
             <objects>
-                <viewController storyboardIdentifier="SigninAccountAndBlogViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QDy-AC-sAr" customClass="SigninAccountAndBlogViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignupViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QDy-AC-sAr" customClass="SignupViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xVe-C0-YwI"/>
                         <viewControllerLayoutGuide type="bottom" id="1LT-yq-zZx"/>
