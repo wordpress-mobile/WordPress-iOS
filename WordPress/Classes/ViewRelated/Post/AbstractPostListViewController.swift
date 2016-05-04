@@ -56,7 +56,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     
     var postListFooterView : PostListFooterView!
-    var animatedBox : WPAnimatedBox?
+    private var animatedBox : WPAnimatedBox = {
+        return WPAnimatedBox.newAnimatedBox()
+    }()
     
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView : UIView!
@@ -255,11 +257,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     func noResultsAccessoryView() -> UIView {
         if syncHelper.isSyncing {
-            if animatedBox == nil {
-                animatedBox = WPAnimatedBox.newAnimatedBox()
-            }
-            
-            return animatedBox!
+            return animatedBox
         }
         
         return UIImageView(image: UIImage(named: "illustration-posts"))
