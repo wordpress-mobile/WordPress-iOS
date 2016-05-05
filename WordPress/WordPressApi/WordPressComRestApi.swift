@@ -5,23 +5,16 @@ import AFNetworking
  Error constants for the WordPress.com REST API
 
  - InvalidInput:                   The parameters sent to the server where invalid
- - NoAccessToken:                  There wasn't an access token on the request
- - LoginFailed:                    The login failed for the provided user
  - InvalidToken:                   The token provided was invalid
  - AuthorizationRequired:          Permission required to access resource
  - UploadFailed:                   The upload failed
- - UploadFailedInvalidFileType:    The upload failed because it was from a invalid type
- - UploadFailedNotEnoughDiskQuota: The upload failed because there wasn enought disk quota
+ - Unknown:                        Unknow error happen
  */
 public enum WordPressComRestApiError: Int, ErrorType {
     case InvalidInput
-    case NoAccessToken
-    case LoginFailed
     case InvalidToken
     case AuthorizationRequired
     case UploadFailed
-    case UploadFailedInvalidFileType
-    case UploadFailedNotEnoughDiskQuota
     case Unknown
 }
 
@@ -102,12 +95,6 @@ public final class WordPressComRestApi: NSObject
             task?.cancel()
         }
         return progress
-    }
-
-    //MARK: - Account management
-
-    public func hasCredentials() -> Bool {
-        return false
     }
     
 }
