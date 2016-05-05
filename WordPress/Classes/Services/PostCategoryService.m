@@ -255,6 +255,7 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
+    return nil;
 }
 
 @end
