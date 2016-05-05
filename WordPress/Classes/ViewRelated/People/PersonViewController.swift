@@ -137,7 +137,7 @@ final class PersonViewController : UITableViewController {
         
         roleViewController.role = person.role
         roleViewController.onChange = { newRole in
-            self.updatePersonRole(newRole)
+            self.updateRole(newRole)
         }
     }
     
@@ -159,13 +159,17 @@ private extension PersonViewController {
     }
     
     func removeWasPressed() {
-        // TODO: JLP May.3.2016. To be implemented as part of #5175
+// TODO: JLP May.3.2016. To be implemented as part of #5175
     }
 
-    func updatePersonRole(newRole: Person.Role) {
+    func updateRole(newRole: Person.Role) {
         let service = PeopleService(blog: blog)
-        person = service.updatePerson(person, role: newRole)
-// TODO: Handle Error
+        let updated = service.updatePerson(person, role: newRole) { (error, person) in
+
+        }
+        
+        // Optimistically refresh the UI
+        self.person = updated
     }
 }
 
