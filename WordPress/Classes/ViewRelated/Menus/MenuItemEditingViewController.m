@@ -66,7 +66,9 @@ typedef NS_ENUM(NSUInteger) {
         
         // Keep track of changes to the item on a scratch contect and scratch item.
         NSManagedObjectID *itemObjectID = item.objectID;
-        NSManagedObjectContext *scratchContext = [[ContextManager sharedInstance] newMainContextChildContext];
+        NSManagedObjectContext *scratchContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        scratchContext.parentContext = blog.managedObjectContext;
+        scratchContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         _scratchObjectContext = scratchContext;
         
         [scratchContext performBlockAndWait:^{
@@ -397,7 +399,6 @@ typedef NS_ENUM(NSUInteger) {
     NSDictionary *changesValues = [self.item changedValues];
     if (changesValues.count > 0) {
         MenuItem *itemInMainContext = [self.blog.managedObjectContext objectRegisteredForID:self.item.objectID];
-        [itemInMainContext.managedObjectContext refreshObject:itemInMainContext mergeChanges:NO];
         [itemInMainContext setValuesForKeysWithDictionary:changesValues];
     }
     if (self.onSelectedToSave) {
