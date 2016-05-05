@@ -46,27 +46,33 @@ struct PeopleService {
     /// -   Parameters:
     ///     - person: Instance of the person to be updated.
     ///     - role: New role that should be assigned
+    ///     - failure: Optional closure, to be executed in case of error
     ///
     /// -   Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updatePerson(person: Person, role: Role) -> Person {
+    func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> ())?) -> Person {
         guard let managedPerson = managedPersonWithID(person.ID) else {
             return person
         }
         
         // OP Reversal
-        let reversalRole = managedPerson.role
-        let revert = {
-            let managedPerson = self.managedPersonWithID(person.ID)
-            managedPerson?.role = reversalRole
-            ContextManager.sharedInstance().saveContext(self.context)
-        }
+        let pristineRole = managedPerson.role
         
         // Hit the Backend
         remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
             
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
-            revert()
+            
+            guard let managedPerson = self.managedPersonWithID(person.ID) else {
+                DDLogSwift.logError("### Person with ID \(person.ID) deleted before update")
+                return
+            }
+            
+            managedPerson.role = pristineRole
+            ContextManager.sharedInstance().saveContext(self.context)
+            
+            let reloadedPerson = Person(managedPerson: managedPerson)
+            failure?(error, reloadedPerson)
         })
         
         // Pre-emptively update the role
