@@ -14,7 +14,7 @@
     noResultsView.titleText         = title;
     noResultsView.messageText       = message;
     
-    WPAnimatedBox *animatedBox      = [WPAnimatedBox newAnimatedBox];
+    WPAnimatedBox *animatedBox      = [[WPAnimatedBox alloc] init];
     noResultsView.accessoryView     = animatedBox;
 
     [view addSubview:noResultsView];

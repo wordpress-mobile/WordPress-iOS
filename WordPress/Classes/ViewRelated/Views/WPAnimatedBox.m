@@ -18,18 +18,13 @@
 static CGFloat const WPAnimatedBoxSideLength = 86.0;
 static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
-+ (instancetype)newAnimatedBox
-{
-    WPAnimatedBox *animatedBox = [[WPAnimatedBox alloc] init];
-    [animatedBox setupView];
-    return animatedBox;
-}
-
 - (instancetype)init
 {
     self = [super init];
     
     if (self) {
+        [self setupView];
+        
         self.isPreparedToAnimate = YES;
     }
     
