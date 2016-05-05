@@ -2,7 +2,6 @@
 
 @interface WPAnimatedBox : UIView
 
-+ (instancetype)newAnimatedBox;
 - (void)prepareAnimation:(BOOL)animated;
 - (void)animate;
 
