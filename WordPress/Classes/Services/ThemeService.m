@@ -194,6 +194,11 @@ const NSInteger ThemeOrderTrailing = 9999;
                     failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    NSParameterAssert(account.restApi != nil);
+
+    if (account.restApi == nil) {
+        return nil;
+    }
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
@@ -218,6 +223,10 @@ const NSInteger ThemeOrderTrailing = 9999;
                              failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
+
+    if (account.restApi == nil) {
+        return nil;
+    }
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
