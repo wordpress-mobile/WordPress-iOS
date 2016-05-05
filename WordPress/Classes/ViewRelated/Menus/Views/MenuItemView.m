@@ -24,9 +24,9 @@
     self = [super init];
     if (self) {
 
-        [self initAddButton];
-        [self initOrderingButton];
-        [self initCancelButton];
+        [self setupAddButton];
+        [self setupOrderingButton];
+        [self setupCancelButton];
         
         self.highlighted = NO;
     }
@@ -34,14 +34,14 @@
     return self;
 }
 
-- (void)initAddButton
+- (void)setupAddButton
 {
     UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
     [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     _addButton = button;
 }
 
-- (void)initOrderingButton
+- (void)setupOrderingButton
 {
     UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
@@ -49,7 +49,7 @@
     _orderingButton = button;
 }
 
-- (void)initCancelButton
+- (void)setupCancelButton
 {
     UIButton *button = [[UIButton alloc] init];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];

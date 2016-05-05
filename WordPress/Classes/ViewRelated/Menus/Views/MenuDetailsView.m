@@ -35,14 +35,14 @@
     self.stackView.layoutMargins = margin;
     self.stackView.spacing = 4.0;
     
-    [self initTextField];
-    [self initTextFieldDesignViews];
-    [self initTrashButton];
+    [self setupTextField];
+    [self setupTextFieldDesignViews];
+    [self setupTrashButton];
     
     [self updateTextFieldDesignIconPositioning];
 }
 
-- (void)initTextField
+- (void)setupTextField
 {
     UITextField *textField = self.textField;
     textField.text = nil;
@@ -57,7 +57,7 @@
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
 }
 
-- (void)initTrashButton
+- (void)setupTrashButton
 {
     UIButton *trashButton = self.trashButton;
     [trashButton setTitle:nil forState:UIControlStateNormal];
@@ -68,7 +68,7 @@
     trashButton.adjustsImageWhenHighlighted = YES;
 }
 
-- (void)initTextFieldDesignViews
+- (void)setupTextFieldDesignViews
 {    
     UIView *textFieldDesignView = self.textFieldDesignView;
     textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
