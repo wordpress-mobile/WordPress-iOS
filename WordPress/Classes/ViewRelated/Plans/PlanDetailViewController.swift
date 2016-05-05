@@ -269,7 +269,11 @@ class PlanDetailViewController: UIViewController {
         store.getProductsWithIdentifiers(
             Set([identifier]),
             success: { [viewModel] products in
-                StoreKitCoordinator.instance.purchasePlan(viewModel.plan, product: products[0], forSite: viewModel.siteID)
+                do {
+                    try StoreKitCoordinator.instance.purchasePlan(viewModel.plan, product: products[0], forSite: viewModel.siteID)
+                } catch StoreCoordinatorError.PaymentAlreadyInProgress {
+                    self.purchaseButton?.selected = false
+                } catch {}
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")

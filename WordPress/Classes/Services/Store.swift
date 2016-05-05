@@ -30,6 +30,10 @@ struct StoreKitCoordinator {
 
 typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
 
+enum StoreCoordinatorError: ErrorType {
+    case PaymentAlreadyInProgress
+}
+
 /// StoreCoordinator coordinates purchasing of products, processing of transactions, and
 /// verification of purchases between the App Store (StoreKit) and WordPress.com.
 ///
@@ -45,7 +49,7 @@ typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
 class StoreCoordinator<S: Store> {
     private let store: S
     
-    var pendingPayment: PendingPayment? {
+    private var pendingPayment: PendingPayment? {
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             
@@ -77,13 +81,16 @@ class StoreCoordinator<S: Store> {
     }
 
     /// Initiates a purchase for the specified plan if a purchase isn't already in progress.
-    func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) {
+    ///
+    /// - Throws: A `StoreCoordinatorError.PaymentAlreadyInProgress` error if the purchase 
+    ///           fails immediately due to an already in progress purchase.
+    ///
+    func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) throws {
         precondition(plan.productIdentifier == product.productIdentifier)
         
         // We _should_ never have a pending payment at this point, so we'll fail in that case.
         guard pendingPayment == nil else {
-            postTransactionFailedNotification([StoreKitCoordinator.NotificationProductIdentifierKey: product.productIdentifier])
-            return
+            throw StoreCoordinatorError.PaymentAlreadyInProgress
         }
         
         pendingPayment = (plan.id, product.productIdentifier, siteID)
