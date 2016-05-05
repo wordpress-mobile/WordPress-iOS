@@ -1,24 +1,21 @@
-#import "MenuItemSourcePostAbstractView.h"
+#import "MenuItemSourceAbstractPostsViewController.h"
 #import "PostService.h"
 #import "AbstractPost.h"
 
-@interface MenuItemSourcePostAbstractView () <MenuItemSourcePostAbstractViewSubclass>
+@interface MenuItemSourceAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 
 @property (nonatomic, assign) NSUInteger numberOfSyncedPosts;
 @property (nonatomic, assign) BOOL additionalPostsAvailableForSync;
 
 @end
 
-@implementation MenuItemSourcePostAbstractView
+@implementation MenuItemSourceAbstractPostsViewController
 
-- (id)init
+- (void)viewDidLoad
 {
-    self = [super init];
-    if (self) {
-        [self insertSearchBarIfNeeded];
-    }
+    [super viewDidLoad];
     
-    return self;
+    [self insertSearchBarIfNeeded];
 }
 
 - (void)setBlog:(Blog *)blog

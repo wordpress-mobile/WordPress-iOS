@@ -1,18 +1,18 @@
 #import "MenuItemSourceViewController.h"
 #import "MenuItemSourceHeaderView.h"
-#import "MenuItemSourcePageView.h"
-#import "MenuItemSourceLinkView.h"
-#import "MenuItemSourceCategoryView.h"
-#import "MenuItemSourceTagView.h"
-#import "MenuItemSourcePostView.h"
+#import "MenuItemSourcePagesViewController.h"
+#import "MenuItemSourceLinkViewController.h"
+#import "MenuItemSourceCategoriesViewController.h"
+#import "MenuItemSourceTagsViewController.h"
+#import "MenuItemSourcePostsViewController.h"
 #import "Menu.h"
 
-@interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
+@interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceResultsViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) MenuItemSourceHeaderView *headerView;
-@property (nonatomic, strong) MenuItemSourceView *sourceView;
-@property (nonatomic, strong, readonly) NSCache *sourceViewCache;
+@property (nonatomic, strong) MenuItemSourceResultsViewController *sourceViewController;
+@property (nonatomic, strong, readonly) NSCache *sourceViewControllerCache;
 @property (nonatomic, assign) BOOL itemNameWasUpdatedExternally;
 
 @end
@@ -25,7 +25,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    _sourceViewCache = [[NSCache alloc] init];
+    _sourceViewControllerCache = [[NSCache alloc] init];
     
     [self setupStackView];
     [self setupHeaderView];
@@ -110,48 +110,53 @@
 
 - (void)showSourceViewForItemType:(NSString *)itemType
 {
-    MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
-    if (self.sourceView) {
-        if (self.sourceView == sourceView) {
+    MenuItemSourceResultsViewController *sourceViewController = [self.sourceViewControllerCache objectForKey:itemType];
+    if (self.sourceViewController) {
+        if (self.sourceViewController == sourceViewController) {
             // No update needed.
             return;
         }
-        [self.stackView removeArrangedSubview:self.sourceView];
-        [self.sourceView removeFromSuperview];
-        self.sourceView = nil;
+        
+        [self.sourceViewController willMoveToParentViewController:nil];
+        [self.stackView removeArrangedSubview:self.sourceViewController.view];
+        [self.sourceViewController.view removeFromSuperview];
+        [self.sourceViewController removeFromParentViewController];
+        self.sourceViewController = nil;
     }
     
     BOOL sourceViewSetupRequired = NO;
-    if (!sourceView) {
+    if (!sourceViewController) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
-            sourceView = [[MenuItemSourcePageView alloc] init];
+            sourceViewController = [[MenuItemSourcePagesViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
-            sourceView = [[MenuItemSourceLinkView alloc] init];
+            sourceViewController = [[MenuItemSourceLinkViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
-            sourceView = [[MenuItemSourceCategoryView alloc] init];
+            sourceViewController = [[MenuItemSourceCategoriesViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeTag]) {
-            sourceView = [[MenuItemSourceTagView alloc] init];
+            sourceViewController = [[MenuItemSourceTagsViewController alloc] init];
         } else {
             // Default to a post view that will load posts of postType == itemType.
-            MenuItemSourcePostView *postView = [[MenuItemSourcePostView alloc] init];
+            MenuItemSourcePostsViewController *postView = [[MenuItemSourcePostsViewController alloc] init];
             postView.postType = itemType;
-            sourceView = postView;
+            sourceViewController = postView;
         }
-        sourceView.delegate = self;
-        [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [self.sourceViewCache setObject:sourceView forKey:itemType];
+        sourceViewController.delegate = self;
+        [sourceViewController.view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [self.sourceViewControllerCache setObject:sourceViewController forKey:itemType];
         sourceViewSetupRequired = YES;
     }
     
-    [self.stackView addArrangedSubview:sourceView];
-    self.sourceView = sourceView;
+    [self addChildViewController:sourceViewController];
+    [self.stackView addArrangedSubview:sourceViewController.view];
+    [sourceViewController didMoveToParentViewController:self];
+    self.sourceViewController = sourceViewController;
     
     if (sourceViewSetupRequired) {
         // Set the blog and item after it's been added as an arrangedSubview.
-        sourceView.blog = self.blog;
-        sourceView.item = self.item;
+        sourceViewController.blog = self.blog;
+        sourceViewController.item = self.item;
     } else {
-        [sourceView refresh];
+        [sourceViewController refresh];
     }
 }
 
@@ -159,13 +164,13 @@
 
 - (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
 {
-    [self.sourceView resignFirstResponder];
-    [self.delegate sourceViewControllerPressedTypeHeaderView:self];
+    [self.sourceViewController resignFirstResponder];
+    [self.delegate sourceViewControllerTypeHeaderViewWasPressed:self];
 }
 
-#pragma mark - MenuItemSourceViewDelegate
+#pragma mark - MenuItemSourceResultsViewControllerDelegate
 
-- (BOOL)sourceViewItemNameCanBeOverridden:(MenuItemSourceView *)sourceView
+- (BOOL)sourceResultsViewControllerCanOverrideItemName:(MenuItemSourceResultsViewController *)sourceResultsViewController
 {
     // If the name is already empty or is using the default text, it can be overridden.
     if ([self.item nameIsEmptyOrDefault]) {
@@ -185,17 +190,17 @@
     return NO;
 }
 
-- (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView
+- (void)sourceResultsViewControllerDidUpdateItem:(MenuItemSourceResultsViewController *)sourceResultsViewController
 {
-    [self.delegate sourceViewControllerDidUpdateItem:self];
+    [self.delegate sourceResultsViewControllerDidUpdateItem:self];
 }
 
-- (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView
+- (void)sourceResultsViewControllerDidBeginEditingWithKeyBoard:(MenuItemSourceResultsViewController *)sourceResultsViewController
 {
     [self.delegate sourceViewControllerDidBeginEditingWithKeyboard:self];
 }
 
-- (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView
+- (void)sourceResultsViewControllerDidEndEditingWithKeyboard:(MenuItemSourceResultsViewController *)sourceResultsViewController
 {
     [self.delegate sourceViewControllerDidEndEditingWithKeyboard:self];
 }

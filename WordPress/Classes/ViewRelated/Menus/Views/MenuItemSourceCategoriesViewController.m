@@ -1,4 +1,4 @@
-#import "MenuItemSourceCategoryView.h"
+#import "MenuItemSourceCategoriesViewController.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "Menu.h"
@@ -8,14 +8,14 @@
 
 static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 
-@interface MenuItemSourceCategoryView ()
+@interface MenuItemSourceCategoriesViewController ()
 
 @property (nonatomic, strong) NSArray *displayCategories;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
 
 @end
 
-@implementation MenuItemSourceCategoryView
+@implementation MenuItemSourceCategoriesViewController
 
 - (void)setBlog:(Blog *)blog
 {

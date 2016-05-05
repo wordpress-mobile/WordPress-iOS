@@ -6,11 +6,11 @@
 @class Blog;
 @class MenuItem;
 
-@protocol MenuItemSourceViewDelegate;
+@protocol MenuItemSourceResultsViewControllerDelegate;
 
-@interface MenuItemSourceView : UIView <MenuItemSourceTextBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+@interface MenuItemSourceResultsViewController : UIViewController <MenuItemSourceTextBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemSourceResultsViewControllerDelegate> delegate;
 
 /**
  The blog the view is sourcing data from.
@@ -152,26 +152,26 @@
 
 @end
 
-@protocol MenuItemSourceViewDelegate <NSObject>
+@protocol MenuItemSourceResultsViewControllerDelegate <NSObject>
 
 /**
  Helper method for informing whether or not the name should be overriden by itemType changes.
  */
-- (BOOL)sourceViewItemNameCanBeOverridden:(MenuItemSourceView *)sourceView;
+- (BOOL)sourceResultsViewControllerCanOverrideItemName:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 
 /**
  The associated MenuItem was updated.
  */
-- (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView;
+- (void)sourceResultsViewControllerDidUpdateItem:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 
 /**
  Helper method for updating any layout constraints for keyboard changes.
  */
-- (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView;
+- (void)sourceResultsViewControllerDidBeginEditingWithKeyBoard:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 
 /**
  Helper method for updating any layout constraints for keyboard changes.
  */
-- (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView;
+- (void)sourceResultsViewControllerDidEndEditingWithKeyboard:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 
 @end

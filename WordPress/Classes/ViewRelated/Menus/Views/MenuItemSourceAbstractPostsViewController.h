@@ -1,6 +1,6 @@
-#import "MenuItemSourceView.h"
+#import "MenuItemSourceResultsViewController.h"
 
-@interface MenuItemSourcePostAbstractView : MenuItemSourceView
+@interface MenuItemSourceAbstractPostsViewController : MenuItemSourceResultsViewController
 
 @end
 
