@@ -286,7 +286,7 @@ import WordPressShared
             return
         }
 
-        if !SigninHelpers.validateUsernameIsMaxFiftyCharacters(loginFields.username) {
+        if !SigninHelpers.validateUsernameMaxLength(loginFields.username) {
             displayErrorMessage(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."))
             usernameField.becomeFirstResponder()
             return
