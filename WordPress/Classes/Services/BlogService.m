@@ -651,6 +651,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
+    if (account.restApi == nil) {
+        return nil;
+    }
+
     return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 
