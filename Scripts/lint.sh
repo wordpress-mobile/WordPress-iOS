@@ -10,4 +10,4 @@ project_dir="${scripts_dir}/../"
 
 cd "$project_dir"
 
-swiftlint lint $*
+swiftlint lint --quiet
