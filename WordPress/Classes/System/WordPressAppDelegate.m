@@ -360,7 +360,10 @@ int ddLogLevel = DDLogLevelInfo;
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-    
+#if DEBUG
+    [KeychainTools processKeychainDebugArguments];
+#endif
+
     // Stats and feedback
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
