@@ -3,8 +3,11 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController {    
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController? {
+    guard let api = account.restApi else {
+        return nil
+    }
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
     return AccountSettingsViewController(service: service)
 }
 
