@@ -5,7 +5,7 @@
 
 @protocol MenuItemSourceContainerViewDelegate;
 
-@interface MenuItemSourceContainerView : UIView
+@interface MenuItemSourceViewController : UIViewController
 
 @property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
 @property (nonatomic, strong) Blog *blog;
@@ -28,21 +28,21 @@
 /**
  Changes were made to the associated MenuItem.
  */
-- (void)sourceContainerViewDidUpdateItem:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController;
 
 /**
- User selected the headerView to change the selected itemType.
+ User pressed the headerView to change the toggle itemType.
  */
-- (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceContainerView;
-
-/**
- Helper method for updating any layout constraints for keyboard changes.
- */
-- (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceViewControllerPressedTypeHeaderView:(MenuItemSourceViewController *)sourceViewController;
 
 /**
  Helper method for updating any layout constraints for keyboard changes.
  */
-- (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceViewControllerDidBeginEditingWithKeyboard:(MenuItemSourceViewController *)sourceViewController;
+
+/**
+ Helper method for updating any layout constraints for keyboard changes.
+ */
+- (void)sourceViewControllerDidEndEditingWithKeyboard:(MenuItemSourceViewController *)sourceViewController;
 
 @end

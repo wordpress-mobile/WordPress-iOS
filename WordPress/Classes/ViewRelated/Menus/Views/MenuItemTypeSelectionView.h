@@ -1,46 +1,49 @@
 #import <UIKit/UIKit.h>
 #import "MenuItem.h"
 
-@class Blog;
-
-@protocol MenuItemTypeSelectionViewDelegate;
+@protocol MenuItemTypeViewDelegate;
 
 @interface MenuItemTypeSelectionView : UIView
 
-@property (nonatomic, weak) id <MenuItemTypeSelectionViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemTypeViewDelegate> delegate;
 
 /**
- The itemType to display as selected in the UI, such as MenuItemTypePage.
+ Design flag for ignoring drawing a top border because it doesn't look great.
  */
-@property (nonatomic, strong) NSString *selectedItemType;
+@property (nonatomic, assign) BOOL designIgnoresDrawingTopBorder;
 
 /**
- Fetch the postTypes available for the blog, including custom post types.
+ The selected state for the type and for drawing the state.
  */
-- (void)loadPostTypesForBlog:(Blog *)blog;
+@property (nonatomic, assign) BOOL selected;
+
+/**
+ The itemType the view represents, such as MenuItemTypePage.
+ */
+@property (nonatomic, strong) NSString *itemType;
+
+/**
+ The label displayed in the UI representing the itemType.
+ */
+@property (nonatomic, strong) NSString *itemTypeLabel;
 
 /**
  Helper method for updating the layout if the parentView's layout changed.
  */
 - (void)updateDesignForLayoutChangeIfNeeded;
 
-/**
- Ensure the selected itemType is viisble on screen.
- */
-- (void)focusSelectedTypeViewIfNeeded:(BOOL)animated;
-
 @end
 
-@protocol MenuItemTypeSelectionViewDelegate <NSObject>
+@protocol MenuItemTypeViewDelegate <NSObject>
 
 /**
- User selected an itemType.
+ User interaction detected for selecting a new itemType.
  */
-- (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType;
+- (void)typeViewPressedForSelection:(MenuItemTypeSelectionView *)typeView;
 
 /**
  Helper method for the parentView informing the ideal layout for the view.
  */
-- (BOOL)itemTypeSelectionViewRequiresFullSizedLayout:(MenuItemTypeSelectionView *)typeSelectionView;
+- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeView;
 
 @end
