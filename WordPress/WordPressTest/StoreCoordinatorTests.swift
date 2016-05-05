@@ -4,6 +4,12 @@ import Nimble
 
 
 class StoreCoordinatorTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        
+        clearUserDefaults()
+    }
+    
     func testPurchaseUnavailableWithPaymentDisabled() {
         let availability = availabilityWith(plan: business, active: free, paymentsEnabled: false, pendingState: .none)
         XCTAssertEqual(availability, PurchaseAvailability.unavailable)
@@ -56,33 +62,24 @@ class StoreCoordinatorTests: XCTestCase {
         XCTAssertEqual(availability, PurchaseAvailability.available)
     }
 
-    func testPendingPaymentStoredWhenAllValuesPresent() {
-        let payment: PendingPayment = (5, testProduct, 1000)
+    func testCannotPurchaseWhenPurchaseAlreadyPending() {
+        let payment: PendingPayment = (premium.id, testProduct, testSite)
         let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
-        
-        XCTAssertEqual(coordinator.pendingPayment?.planID, payment.planID)
-        XCTAssertEqual(coordinator.pendingPayment?.productID, payment.productID)
-        XCTAssertEqual(coordinator.pendingPayment?.siteID, payment.siteID)
+        let product = productForPlan(TestPlans.business.plan)
+
+        // And now attempt a second purchase
+        XCTAssertThrowsError(try coordinator.purchasePlan(business, product: product, forSite: testSite))
     }
     
-    func testPendingPaymentHandlesNil() {
-        let payment: PendingPayment? = nil
-        let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
-        
-        XCTAssertNil(coordinator.pendingPayment)
-    }
-    
-    func testExistingPendingPaymentIsClearedWhenSetToNil() {
-        let payment: PendingPayment = (5, testProduct, 1000)
-        let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
-        
-        XCTAssertEqual(coordinator.pendingPayment?.planID, payment.planID)
-        XCTAssertEqual(coordinator.pendingPayment?.productID, payment.productID)
-        XCTAssertEqual(coordinator.pendingPayment?.siteID, payment.siteID)
-        
-        coordinator.pendingPayment = nil
-        
-        XCTAssertNil(coordinator.pendingPayment)
+    func testCanMakePaymentWhenNoPaymentIsPending() {
+        let coordinator = storeCoordinator(paymentsEnabled: true, pending: nil)
+        let product = productForPlan(TestPlans.business.plan)
+
+        do {
+            try coordinator.purchasePlan(business, product: product, forSite: otherSite)
+        } catch {
+            XCTFail("Expected call not to throw")
+        }
     }
     
     // ========================= END OF TESTS =============================== //
@@ -99,9 +96,31 @@ class StoreCoordinatorTests: XCTestCase {
     private func storeCoordinator(paymentsEnabled paymentsEnabled: Bool, pending: PendingPayment?) -> StoreCoordinator<MockStore> {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
+ 
         let coordinator = StoreCoordinator(store: store)
-        coordinator.pendingPayment = pending
+        
+        if let pending = pending,
+            let plan = TestPlans.allPlans.filter({ $0.id == pending.planID }).first {
+            let product = productForPlan(plan)
+            try! coordinator.purchasePlan(plan, product: product, forSite: pending.siteID)
+        }
+        
         return coordinator
+    }
+    
+    private func clearUserDefaults() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey("PendingPaymentPlanIDUserDefaultsKey")
+        defaults.removeObjectForKey("PendingPaymentProductIDUserDefaultsKey")
+        defaults.removeObjectForKey("PendingPaymentSiteIDUserDefaultsKey")
+    }
+    
+    private func productForPlan(plan: Plan) -> MockProduct {
+        return MockProduct(localizedDescription: plan.tagline,
+                           localizedTitle: plan.title,
+                           price: 299.99,
+                           priceLocale: NSLocale.currentLocale(),
+                           productIdentifier: plan.productIdentifier!)
     }
 
     private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
