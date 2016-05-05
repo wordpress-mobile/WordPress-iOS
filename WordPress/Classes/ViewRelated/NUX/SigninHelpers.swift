@@ -212,7 +212,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the username is 50 characters or less.
     ///
-    class func validateUsernameIsMaxFiftyCharacters(username: String) -> Bool {
+    class func validateUsernameMaxLength(username: String) -> Bool {
         return username.characters.count <= 50
     }
 
