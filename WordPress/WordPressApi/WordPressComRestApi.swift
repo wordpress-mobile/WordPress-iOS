@@ -4,7 +4,7 @@ import AFNetworking
 /**
  Error constants for the WordPress.com REST API
 
- - InvalidJSON:                    The JSON that was returned by the server was not parsable
+ - InvalidInput:                   The parameters sent to the server where invalid
  - NoAccessToken:                  There wasn't an access token on the request
  - LoginFailed:                    The login failed for the provided user
  - InvalidToken:                   The token provided was invalid
@@ -14,7 +14,7 @@ import AFNetworking
  - UploadFailedNotEnoughDiskQuota: The upload failed because there wasn enought disk quota
  */
 public enum WordPressComRestApiError: Int, ErrorType {
-    case InvalidJSON
+    case InvalidInput
     case NoAccessToken
     case LoginFailed
     case InvalidToken
@@ -40,7 +40,7 @@ public final class WordPressComRestApi: NSObject
         sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
-        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
+        sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
     }()
 
@@ -145,9 +145,11 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         }
 
         let errorsMap = [
+            "invalid_input" : WordPressComRestApiError.InvalidInput,
             "invalid_token" : WordPressComRestApiError.InvalidToken,
             "authorization_required" : WordPressComRestApiError.AuthorizationRequired,
             "upload_error" : WordPressComRestApiError.UploadFailed,
+            "unauthorized" : WordPressComRestApiError.AuthorizationRequired
         ]
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComRestApiError.Unknown.rawValue;
