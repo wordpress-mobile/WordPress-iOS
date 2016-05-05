@@ -13,12 +13,29 @@
 
 - (id)initWithApi:(WPXMLRPCClient *)api username:(NSString *)username password:(NSString *)password
 {
+    NSParameterAssert(api != nil);
+    NSParameterAssert(username != nil);
+    NSParameterAssert(password != nil);
+
     self = [super init];
     if (self) {
         _api = api;
         _username = username;
         _password = password;
-    }    
+
+        // Convert nil values to empty strings to avoid crashing in production builds
+        // This should not happen but it is, and at least prevents crashing
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/5199
+        if (_username == nil) {
+            _username = @"";
+            DDLogError(@"Initialized %@ with a nil username", NSStringFromClass([self class]));
+        }
+
+        if (_password == nil) {
+            _password = @"";
+            DDLogError(@"Initialized %@ with a nil password", NSStringFromClass([self class]));
+        }
+    }
     return self;
 }
 
