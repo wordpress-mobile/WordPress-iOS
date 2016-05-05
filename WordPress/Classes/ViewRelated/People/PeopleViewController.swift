@@ -37,7 +37,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
     
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        return isViewHorizontallyCompact() ? CGFloat.min : 0
     }
 
     
@@ -67,6 +67,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             refreshControl?.beginRefreshing()
             refresh()
         }
+    }
+    
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableView.reloadData()
     }
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
