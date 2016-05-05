@@ -31,7 +31,7 @@ function clean_build() {
 }
 
 function pretty_travis() {
-  xcpretty -c
+  xcpretty -f `xcpretty-travis-formatter`
 }
 
 function rawlog() {
