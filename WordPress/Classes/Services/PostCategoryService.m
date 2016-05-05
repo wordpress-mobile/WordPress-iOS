@@ -249,7 +249,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        if (blog.restApi) {
+            return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
     } else {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
