@@ -41,7 +41,7 @@ class WordPressComRestApiTests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    func testFailedCall() {
+    func testInvalidTokenFailedCall() {
         stub(isRestAPIRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailRequestInvalidToken.json", self.dynamicType)
             return fixture(stubPath!, status:400, headers: ["Content-Type":"application/json"])
@@ -59,4 +59,23 @@ class WordPressComRestApiTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
+
+    func testInvalidJSONFailedCall() {
+        stub(isRestAPIRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiFailInvalidJSON.json", self.dynamicType)
+            return fixture(stubPath!, status:400, headers: ["Content-Type":"application/json"])
+        }        
+        let expectation = self.expectationWithDescription("One callback should be invoked")
+        let api = WordPressComRestApi(oAuthToken:"fakeToken")
+        api.GET(wordPressMediaRoute, parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+            expectation.fulfill()
+            XCTFail("This call should fail")
+            }, failure: { (error, httpResponse) in
+                expectation.fulfill()
+                XCTAssert(error.domain == "NSCocoaErrorDomain", "The error should a NSCocoaErrorDomain")
+                XCTAssert(error.code == Int(3840), "The code should be invalid token")
+        })
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
 }
