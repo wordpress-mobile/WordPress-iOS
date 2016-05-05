@@ -5,8 +5,8 @@
 #import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
-#import "MenuItemSourceContainerView.h"
-#import "MenuItemTypeSelectionView.h"
+#import "MenuItemSourceViewController.h"
+#import "MenuItemTypeViewController.h"
 #import "ContextManager.h"
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
@@ -32,9 +32,9 @@ typedef NS_ENUM(NSUInteger) {
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
-@property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeView;
-@property (nonatomic, strong) IBOutlet MenuItemSourceContainerView *sourceView;
-@property (nonatomic, weak) IBOutlet UIScrollView *sourceScrollView;
+
+@property (nonatomic, weak) MenuItemTypeViewController *typeViewController;
+@property (nonatomic, weak) MenuItemSourceViewController *sourceViewController;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
@@ -58,7 +58,8 @@ typedef NS_ENUM(NSUInteger) {
 
 - (id)initWithItem:(MenuItem *)item blog:(Blog *)blog
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MenuItemEditing" bundle:nil];
+    self = [storyboard instantiateInitialViewController];
     if (self) {
         
         _blog = blog;
@@ -81,40 +82,32 @@ typedef NS_ENUM(NSUInteger) {
     return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    [super loadView];
+    [super viewDidLoad];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.sourceScrollView.backgroundColor = self.view.backgroundColor;
-    self.sourceScrollView.clipsToBounds = NO;
-    
     self.headerView.item = self.item;
-
+    
     self.headerView.delegate = self;
-    self.typeView.delegate = self;
-    self.sourceView.delegate = self;
+    self.typeViewController.delegate = self;
+    self.sourceViewController.delegate = self;
     self.footerView.delegate = self;
     
     [self.stackView bringSubviewToFront:self.headerView];
     
     [self loadContentLayoutConstraints];
     [self updateLayoutIfNeeded];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     
-    self.typeView.selectedItemType = self.item.type;
-    [self.typeView loadPostTypesForBlog:self.blog];
+    self.typeViewController.selectedItemType = self.item.type;
+    [self.typeViewController loadPostTypesForBlog:self.blog];
     
-    self.sourceView.blog = self.blog;
-    self.sourceView.item = self.item;
+    self.sourceViewController.blog = self.blog;
+    self.sourceViewController.item = self.item;
 }
 
 - (void)viewDidLayoutSubviews
@@ -148,6 +141,17 @@ typedef NS_ENUM(NSUInteger) {
     return UIStatusBarStyleLightContent;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ([segue.destinationViewController isKindOfClass:[MenuItemSourceViewController class]]) {
+        self.sourceViewController = segue.destinationViewController;
+    } else if ([segue.destinationViewController isKindOfClass:[MenuItemTypeViewController class]]) {
+        self.typeViewController = segue.destinationViewController;
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
@@ -164,26 +168,26 @@ typedef NS_ENUM(NSUInteger) {
 {
     {
         self.layoutConstraintsForDisplayingTypeView = @[
-                                                        [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                                        [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
-                                                        [self.sourceView.leadingAnchor constraintEqualToAnchor:self.typeView.trailingAnchor],
-                                                        [self.sourceView.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor]
+                                                        [self.typeViewController.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                        [self.typeViewController.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
+                                                        [self.sourceViewController.view.leadingAnchor constraintEqualToAnchor:self.typeViewController.view.trailingAnchor],
+                                                        [self.sourceViewController.view.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor]
                                                         ];
     }
     {
         self.layoutConstraintsForDisplayingSourceView = @[
-                                                          [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                                          [self.typeView.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor],
-                                                          [self.sourceView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                                          [self.sourceView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
+                                                          [self.typeViewController.view.trailingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                          [self.typeViewController.view.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor],
+                                                          [self.sourceViewController.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                          [self.sourceViewController.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
                                                           ];
     }
     {
         self.layoutConstraintsForDisplayingSourceAndTypeViews = @[
-                                                                  [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                                                  [self.typeView.widthAnchor constraintEqualToConstant:180.0],
-                                                                  [self.sourceView.leadingAnchor constraintEqualToAnchor:self.typeView.trailingAnchor],
-                                                                  [self.sourceView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
+                                                                  [self.typeViewController.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                                  [self.typeViewController.view.widthAnchor constraintEqualToConstant:180.0],
+                                                                  [self.sourceViewController.view.leadingAnchor constraintEqualToAnchor:self.typeViewController.view.trailingAnchor],
+                                                                  [self.sourceViewController.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
                                                                   ];
     }
 }
@@ -270,7 +274,7 @@ typedef NS_ENUM(NSUInteger) {
     [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeView];
     [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        [self.typeView updateDesignForLayoutChangeIfNeeded];
+        [self.typeViewController updateDesignForLayoutChangeIfNeeded];
         [self.contentView layoutIfNeeded];
         
     } completion:nil];
@@ -336,9 +340,9 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemTypeSelectionViewDelegate
 
-- (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType
+- (void)itemTypeViewController:(MenuItemTypeViewController *)itemTypeViewController selectedType:(NSString *)itemType
 {
-    [self.sourceView updateSourceSelectionForItemType:itemType];
+    [self.sourceViewController updateSourceSelectionForItemType:itemType];
     self.headerView.itemType = itemType;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -346,32 +350,32 @@ typedef NS_ENUM(NSUInteger) {
     });
 }
 
-- (BOOL)itemTypeSelectionViewRequiresFullSizedLayout:(MenuItemTypeSelectionView *)typeSelectionView
+- (BOOL)itemTypeViewControllerShouldDisplayFullSizedLayout:(MenuItemTypeViewController *)itemTypeViewController
 {
     return self.contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeView;
 }
 
 #pragma mark - MenuItemSourceContainerViewDelegate
 
-- (void)sourceContainerViewDidUpdateItem:(MenuItemSourceContainerView *)sourceContainerView
+- (void)sourceViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController
 {
-    self.headerView.item = sourceContainerView.item;
+    self.headerView.item = sourceViewController.item;
 }
 
-- (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceView
+- (void)sourceViewControllerPressedTypeHeaderView:(MenuItemSourceViewController *)sourceViewController
 {
     if ([self shouldLayoutForCompactWidth]) {
         [self transitionLayoutToDisplayTypeView];
     }
 }
 
-- (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
+- (void)sourceViewControllerDidBeginEditingWithKeyboard:(MenuItemSourceViewController *)sourceViewController
 {
     self.sourceViewIsTyping = YES;
     [self updateLayoutIfNeededAnimated];
 }
 
-- (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
+- (void)sourceViewControllerDidEndEditingWithKeyboard:(MenuItemSourceViewController *)sourceViewController
 {
     self.sourceViewIsTyping = NO;
     [self updateLayoutIfNeededAnimated];
@@ -381,7 +385,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)editingHeaderViewDidUpdateItem:(MenuItemEditingHeaderView *)headerView
 {
-    [self.sourceView refreshForUpdatedItemName];
+    [self.sourceViewController refreshForUpdatedItemName];
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate

@@ -1,218 +1,239 @@
 #import "MenuItemTypeSelectionView.h"
-#import "MenuItemTypeView.h"
-#import "BlogService.h"
-#import "Blog.h"
-#import "PostType.h"
+#import "WPStyleGuide.h"
+#import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
+#import "MenuItem+ViewDesign.h"
 
-@interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
+@import Gridicons;
 
-@property (nonatomic, strong, readonly) UIScrollView *scrollView;
+@interface MenuItemTypeSelectionView ()
+
 @property (nonatomic, strong, readonly) UIStackView *stackView;
-@property (nonatomic, strong, readonly) NSMutableArray *typeViews;
+@property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
+@property (nonatomic, strong, readonly) UIImageView *arrowView;
 
 @end
 
 @implementation MenuItemTypeSelectionView
 
-- (void)awakeFromNib
+- (void)dealloc
 {
-    [super awakeFromNib];
-    
-    _typeViews = [NSMutableArray arrayWithCapacity:5];
-    
-    self.backgroundColor = [UIColor whiteColor];
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentMode = UIViewContentModeRedraw;
-
-    [self setupScrollView];
-    [self setupStackView];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setupScrollView
+- (id)init
 {
-    UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.clipsToBounds = NO;
-    scrollView.scrollsToTop = NO;
-    [self addSubview:scrollView];
+    self = [super init];
+    if (self) {
+        
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.backgroundColor = [UIColor whiteColor];
+        self.contentMode = UIViewContentModeRedraw;
+        
+        [self setupStackView];
+        [self setupIconView];
+        [self setupLabel];
+        [self setupArrowIconView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTypeWasSelected)];
+        [self addGestureRecognizer:tap];
+    }
     
-    [NSLayoutConstraint activateConstraints:@[
-                                              [scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                              [scrollView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                              [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                              [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                              ]];
-    _scrollView = scrollView;
+    return self;
 }
 
 - (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.alignment = UIStackViewAlignmentTop;
+    stackView.alignment = UIStackViewAlignmentFill;
     stackView.distribution = UIStackViewDistributionFill;
-    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.spacing = MenusDesignDefaultContentSpacing;
     
-    NSAssert(_scrollView != nil, @"scrollView is nil");
-    [_scrollView addSubview:stackView];
+    [self addSubview:stackView];
+    
+    NSLayoutConstraint *leading = [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
+    leading.priority = UILayoutPriorityDefaultHigh;
+    
+    NSLayoutConstraint *trailing = [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing];
+    trailing.priority = UILayoutPriorityDefaultHigh;
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:_scrollView.topAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:_scrollView.bottomAnchor]
+                                              leading,
+                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MenusDesignDefaultContentSpacing],
+                                              trailing,
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing]
                                               ]];
     _stackView = stackView;
+}
+
+- (void)setupIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor whiteColor];
+    iconView.tintColor = [WPStyleGuide grey];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
+    
+    NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
+    widthConstraint.priority = 999;
+    widthConstraint.active = YES;
+    
+    _iconView = iconView;
+}
+
+- (void)setupLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 5;
+    label.lineBreakMode = NSLineBreakByTruncatingTail;
+    label.font = [WPStyleGuide tableviewTextFont];
+    label.backgroundColor = [UIColor whiteColor];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:label];
+    
+    [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    
+    _label = label;
+}
+
+- (void)setupArrowIconView
+{
+    UIImageView *iconView = [[UIImageView alloc] init];
+    iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor whiteColor];
+    iconView.tintColor = [WPStyleGuide grey];
+    iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
+    
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [_stackView addArrangedSubview:iconView];
+    
+    NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
+    widthConstraint.priority = 999;
+    widthConstraint.active = YES;
+    
+    iconView.alpha = 0.0;
+    iconView.hidden = YES;
+    _arrowView = iconView;
+
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    if (_selected != selected) {
+        _selected = selected;
+        [self updateSelection];
+    }
+}
+
+- (void)setItemType:(NSString *)itemType
+{
+    if (_itemType != itemType) {
+        _itemType = itemType;
+        self.iconView.image = [MenuItem iconImageForItemType:itemType];
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setItemTypeLabel:(NSString *)itemTypeLabel
+{
+    if (_itemTypeLabel != itemTypeLabel) {
+        _itemTypeLabel = itemTypeLabel;
+        self.label.text = itemTypeLabel;
+    }
+}
+
+- (void)updateSelection
+{
+    self.label.textColor = self.selected ? [WPStyleGuide wordPressBlue] : [WPStyleGuide greyDarken30];
+    if (self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
+        [self showArrowView];
+    } else  {
+        [self hideArrowView];
+    }
+    [self setNeedsDisplay];
+}
+
+- (void)updateDesignForLayoutChangeIfNeeded
+{
+    [self updateSelection];
+}
+
+- (void)showArrowView
+{
+    if (self.arrowView.hidden) {
+        self.arrowView.alpha = 1.0;
+        self.arrowView.hidden = NO;
+    }
+}
+
+- (void)hideArrowView
+{
+    if (!self.arrowView.hidden) {
+        self.arrowView.alpha = 0.0;
+        self.arrowView.hidden = YES;
+    }
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    [self focusSelectedTypeViewIfNeeded:NO];
-}
-
-- (void)setSelectedItemType:(NSString *)selectedItemType
-{
-    if (_selectedItemType != selectedItemType) {
-        _selectedItemType = selectedItemType;
-        [self updateSelectedItemTypeView];
-    }
-}
-
-- (void)loadPostTypesForBlog:(Blog *)blog
-{
-    // Add default types.
-    [self addDefaultItemTypesForBlog:blog];
-    [self updateSelectedItemTypeView];
     
-    // Sync the available postTypes for blog
-    __weak __typeof__(self) weakSelf = self;
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
-    [service syncPostTypesForBlog:blog success:^{
-        // synced post types
-        [weakSelf addCustomBlogPostTypesIfNeeded:blog];
-    } failure:^(NSError *error) {
-        DDLogError(@"Error syncing post-types for Menus: %@", error);
-    }];
-}
-
-- (void)updateDesignForLayoutChangeIfNeeded
-{
-    for (MenuItemTypeView *typeView in self.typeViews) {
-        [typeView updateDesignForLayoutChangeIfNeeded];
-    }
-}
-
-- (void)focusSelectedTypeViewIfNeeded:(BOOL)animated
-{
-    MenuItemTypeView *selectedTypeView = [self typeViewForItemType:self.selectedItemType];
-    CGRect frame = selectedTypeView.frame;
-    const CGFloat padding = 4.0;
-    frame.origin.y -= padding;
-    frame.size.height += padding * 2.0;
-    [self.scrollView scrollRectToVisible:frame animated:animated];
-}
-
-- (void)addDefaultItemTypesForBlog:(Blog *)blog
-{
-    MenuItemTypeView *firstTypeView = [self addTypeView:MenuItemTypePage blog:blog];
-    firstTypeView.designIgnoresDrawingTopBorder = YES;
-    
-    [self addTypeView:MenuItemTypeCustom blog:blog];
-    [self addTypeView:MenuItemTypeCategory blog:blog];
-    [self addTypeView:MenuItemTypeTag blog:blog];
-    [self addTypeView:MenuItemTypePost blog:blog];
-}
-
-- (void)addCustomBlogPostTypesIfNeeded:(Blog *)blog
-{
-    if (!blog.postTypes.count) {
-        return;
-    }
-    NSMutableArray <PostType *> *postTypes = [NSMutableArray arrayWithArray:[blog.postTypes allObjects]];
-    [postTypes sortUsingSelector:@selector(label)];
-    for (PostType *postType in postTypes) {
-        // Not queryable, skip.
-        if (!postType.apiQueryable.boolValue) {
-            continue;
-        }
-        // Already have a type for this postType, skip.
-        if ([self typeViewForItemType:postType.name]) {
-            continue;
-        }
-        // Add this postType as a typeView.
-        [self addTypeView:postType.name blog:blog];
-    }
-    [self updateSelectedItemTypeView];
-}
-
-- (void)updateSelectedItemTypeView
-{
-    for (MenuItemTypeView *typeView in self.typeViews) {
-        if (typeView.selected) {
-            typeView.selected = NO;
-        }
-    }
-    MenuItemTypeView *selectedView = [self typeViewForItemType:self.selectedItemType];
-    selectedView.selected = YES;
-}
-
-- (MenuItemTypeView *)addTypeView:(NSString *)itemType blog:(Blog *)blog
-{
-    MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
-    typeView.delegate = self;
-    typeView.itemType = itemType;
-    typeView.itemTypeLabel = [MenuItem labelForType:itemType blog:blog];
-    [self.stackView addArrangedSubview:typeView];
-    [typeView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-    [self.typeViews addObject:typeView];
-    return typeView;
-}
-
-- (MenuItemTypeView *)typeViewForItemType:(NSString *)itemType
-{
-    MenuItemTypeView *itemTypeView = nil;
-    for (MenuItemTypeView *typeView in self.typeViews) {
-        if ([typeView.itemType isEqualToString:itemType]) {
-            itemTypeView = typeView;
-            break;
-        }
-    }
-    return itemTypeView;
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
+    
     CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
-    CGContextMoveToPoint(context, rect.size.width, 0);
-    CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
-    CGContextStrokePath(context);
+    
+    if (self.selected) {
+        
+        if (!self.designIgnoresDrawingTopBorder) {
+            CGContextMoveToPoint(context, 0, 0);
+            CGContextAddLineToPoint(context, rect.size.width, 0);
+        }
+        
+        CGContextMoveToPoint(context, 0, rect.size.height);
+        CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+        CGContextStrokePath(context);
+
+    } else  {
+        
+        CGContextMoveToPoint(context, rect.size.width, 0);
+        CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+        CGContextStrokePath(context);
+    }
+    
     CGContextRestoreGState(context);
 }
 
 #pragma mark - delegate
 
-- (void)tellDelegateTypeChanged:(NSString *)itemType
+- (void)tellDelegateTypeWasSelected
 {
-    [self.delegate itemTypeSelectionViewChanged:self type:itemType];
+    [self.delegate typeViewPressedForSelection:self];
 }
 
-#pragma mark - MenuItemTypeViewDelegate
+#pragma mark - notifications
 
-- (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView
+- (void)deviceOrientationDidChangeNotification:(NSNotification *)notification
 {
-    self.selectedItemType = typeView.itemType;
-    [self focusSelectedTypeViewIfNeeded:YES];
-    [self tellDelegateTypeChanged:typeView.itemType];
-}
-
-- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView
-{
-    return ![self.delegate itemTypeSelectionViewRequiresFullSizedLayout:self];
+    [self updateSelection];
 }
 
 @end

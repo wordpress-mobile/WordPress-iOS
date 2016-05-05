@@ -1,4 +1,4 @@
-#import "MenuItemSourceContainerView.h"
+#import "MenuItemSourceViewController.h"
 #import "MenuItemSourceHeaderView.h"
 #import "MenuItemSourcePageView.h"
 #import "MenuItemSourceLinkView.h"
@@ -7,7 +7,7 @@
 #import "MenuItemSourcePostView.h"
 #import "Menu.h"
 
-@interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
+@interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
 
 @property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) MenuItemSourceHeaderView *headerView;
@@ -17,14 +17,14 @@
 
 @end
 
-@implementation MenuItemSourceContainerView
+@implementation MenuItemSourceViewController
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.backgroundColor = [UIColor whiteColor];
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     _sourceViewCache = [[NSCache alloc] init];
     
     [self setupStackView];
@@ -39,14 +39,14 @@
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = 0;
-    [self addSubview:stackView];
+    [self.view addSubview:stackView];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-                                              [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor]
+                                              [stackView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+                                              [stackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
                                               ]];
     
     _stackView = stackView;
@@ -74,7 +74,7 @@
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if (IS_IPAD || self.frame.size.width > self.frame.size.height) {
+    if (IS_IPAD || self.view.frame.size.width > self.view.frame.size.height) {
         [self setHeaderViewHidden:YES];
     } else  {
         [self setHeaderViewHidden:NO];
@@ -160,7 +160,7 @@
 - (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
 {
     [self.sourceView resignFirstResponder];
-    [self.delegate sourceContainerViewSelectedTypeHeaderView:self];
+    [self.delegate sourceViewControllerPressedTypeHeaderView:self];
 }
 
 #pragma mark - MenuItemSourceViewDelegate
@@ -187,17 +187,17 @@
 
 - (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView
 {
-    [self.delegate sourceContainerViewDidUpdateItem:self];
+    [self.delegate sourceViewControllerDidUpdateItem:self];
 }
 
 - (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView
 {
-    [self.delegate sourceContainerViewDidBeginEditingWithKeyboard:self];
+    [self.delegate sourceViewControllerDidBeginEditingWithKeyboard:self];
 }
 
 - (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView
 {
-    [self.delegate sourceContainerViewDidEndEditingWithKeyboard:self];
+    [self.delegate sourceViewControllerDidEndEditingWithKeyboard:self];
 }
 
 @end
