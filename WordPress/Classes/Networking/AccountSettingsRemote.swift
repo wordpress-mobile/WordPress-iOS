@@ -149,7 +149,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
             return "display_name"
         case .AboutMe(_):
             return "description"
-        case .Email(_):
+        case .EmailPendingAddress(_):
             return "user_email"
         case .EmailPendingChange(_):
             return "user_email_change_pending"

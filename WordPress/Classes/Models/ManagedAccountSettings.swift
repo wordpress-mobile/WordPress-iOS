@@ -39,8 +39,9 @@ class ManagedAccountSettings: NSManagedObject {
             self.displayName = value
         case .AboutMe(let value):
             self.aboutMe = value
-        case .Email(let value):
-            self.email = value
+        case .EmailPendingAddress(let value):
+            self.emailPendingAddress = value
+            self.emailPendingChange = (value != nil)
         case .EmailPendingChange(let value):
             self.emailPendingChange = value
         case .PrimarySite(let value):
@@ -64,8 +65,8 @@ class ManagedAccountSettings: NSManagedObject {
             return .DisplayName(self.displayName)
         case .AboutMe(_):
             return .AboutMe(self.aboutMe)
-        case .Email(_):
-            return .Email(self.email)
+        case .EmailPendingAddress(_):
+            return .EmailPendingAddress(nil)
         case .EmailPendingChange(_):
             return .EmailPendingChange(self.emailPendingChange)
         case .PrimarySite(_):
@@ -83,7 +84,7 @@ enum AccountSettingsChange {
     case LastName(String)
     case DisplayName(String)
     case AboutMe(String)
-    case Email(String)
+    case EmailPendingAddress(String?)
     case EmailPendingChange(Bool)
     case PrimarySite(Int)
     case WebAddress(String)
@@ -99,8 +100,8 @@ enum AccountSettingsChange {
             return value
         case .AboutMe(let value):
             return value
-        case .Email(let value):
-            return value
+        case .EmailPendingAddress(let value):
+            return value ?? String()
         case .EmailPendingChange(let value):
             return String(value)
         case .PrimarySite(let value):
