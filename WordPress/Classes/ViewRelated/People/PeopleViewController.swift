@@ -117,12 +117,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         guard let blogID = coder.decodeObjectForKey(RestorationKeys.blog) as? String,
             let objectURL = NSURL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(objectURL),
-            let restoredBlog = try? context.existingObjectWithID(objectID) else
+            let restoredBlog = try? context.existingObjectWithID(objectID) as? Blog,
+            let blog = restoredBlog else
         {
-            return nil
-        }
-        
-        guard let blog = restoredBlog as? Blog else {
             return nil
         }
         
