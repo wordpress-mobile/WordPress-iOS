@@ -9,7 +9,6 @@ install:
 - gem install xcpretty-travis-formatter
 - pod install
 script:
-- Scripts/lint.sh
 - Scripts/build.sh
 env:
   global:
