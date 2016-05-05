@@ -199,8 +199,7 @@
 
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
-    self.item.name = textField.text.length ? textField.text : nil;
-    [self.delegate editingHeaderViewDidUpdateItem:self];
+    [self.delegate editingHeaderView:self didUpdateTextForItemName:textField.text];
 }
 
 #pragma mark - notifications

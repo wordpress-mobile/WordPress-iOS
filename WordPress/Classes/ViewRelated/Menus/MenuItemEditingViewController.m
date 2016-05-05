@@ -383,8 +383,9 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemEditingHeaderViewDelegate
 
-- (void)editingHeaderViewDidUpdateItem:(MenuItemEditingHeaderView *)headerView
+- (void)editingHeaderView:(MenuItemEditingHeaderView *)headerView didUpdateTextForItemName:(NSString *)text
 {
+    self.item.name = text.length ? text : nil;
     [self.sourceViewController refreshForUpdatedItemName];
 }
 
