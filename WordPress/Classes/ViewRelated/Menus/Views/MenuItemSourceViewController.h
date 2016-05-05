@@ -3,11 +3,11 @@
 @class Blog;
 @class MenuItem;
 
-@protocol MenuItemSourceContainerViewDelegate;
+@protocol MenuItemSourceViewControllerDelegate;
 
 @interface MenuItemSourceViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemSourceViewControllerDelegate> delegate;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenuItem *item;
 
@@ -23,17 +23,17 @@
 
 @end
 
-@protocol MenuItemSourceContainerViewDelegate <NSObject>
+@protocol MenuItemSourceViewControllerDelegate <NSObject>
 
 /**
  Changes were made to the associated MenuItem.
  */
-- (void)sourceViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController;
+- (void)sourceResultsViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController;
 
 /**
  User pressed the headerView to change the toggle itemType.
  */
-- (void)sourceViewControllerPressedTypeHeaderView:(MenuItemSourceViewController *)sourceViewController;
+- (void)sourceViewControllerTypeHeaderViewWasPressed:(MenuItemSourceViewController *)sourceViewController;
 
 /**
  Helper method for updating any layout constraints for keyboard changes.

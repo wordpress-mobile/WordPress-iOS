@@ -1,4 +1,4 @@
-#import "MenuItemSourceTagView.h"
+#import "MenuItemSourceTagsViewController.h"
 #import "PostTagService.h"
 #import "PostTag.h"
 #import "Menu.h"
@@ -7,30 +7,21 @@
 
 static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
-@interface MenuItemSourceTagView ()
+@interface MenuItemSourceTagsViewController ()
 
-@property (nonatomic, strong) NSTimer *searchRemoteServiceTimer;
 @property (nonatomic, strong) PostTagService *searchTagService;
 @property (nonatomic, assign) BOOL loadedAllAvailableTags;
 
 @end
 
-@implementation MenuItemSourceTagView
+@implementation MenuItemSourceTagsViewController
 
-- (void)dealloc
+- (void)viewDidLoad
 {
-    [self.searchRemoteServiceTimer invalidate];
-}
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        [self insertSearchBarIfNeeded];
-        self.searchBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    }
+    [super viewDidLoad];
     
-    return self;
+    [self insertSearchBarIfNeeded];
+    self.searchBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
 
 - (void)setBlog:(Blog *)blog

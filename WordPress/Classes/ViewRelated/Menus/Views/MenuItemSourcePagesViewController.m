@@ -1,15 +1,15 @@
-#import "MenuItemSourcePageView.h"
+#import "MenuItemSourcePagesViewController.h"
 #import "PostService.h"
 #import "Page.h"
 
-@interface MenuItemSourcePostAbstractView () <MenuItemSourcePostAbstractViewSubclass>
+@interface MenuItemSourceAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 @end
 
-@interface MenuItemSourcePageView ()
+@interface MenuItemSourcePagesViewController ()
 @property (nonatomic, strong) NSString *oldestSyncedPageTitle;
 @end
 
-@implementation MenuItemSourcePageView
+@implementation MenuItemSourcePagesViewController
 
 - (NSString *)sourceItemType
 {

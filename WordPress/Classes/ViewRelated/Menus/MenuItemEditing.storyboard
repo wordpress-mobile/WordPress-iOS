@@ -153,6 +153,10 @@
         <scene sceneID="cVP-ZN-gjI">
             <objects>
                 <viewController id="M5l-a4-veR" customClass="MenuItemTypeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q8L-yc-3Hf"/>
+                        <viewControllerLayoutGuide type="bottom" id="8jP-NZ-jLL"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="oJV-7e-Mfw">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
