@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger) {
     MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews,
 }MenuItemEditingViewControllerContentLayout;
 
-@interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewControllerDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong, readonly) MenuItem *item;
 @property (nonatomic, strong, readonly) Blog *blog;
@@ -355,14 +355,14 @@ typedef NS_ENUM(NSUInteger) {
     return self.contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeView;
 }
 
-#pragma mark - MenuItemSourceContainerViewDelegate
+#pragma mark - MenuItemSourceViewControllerDelegate
 
-- (void)sourceViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController
+- (void)sourceResultsViewControllerDidUpdateItem:(MenuItemSourceViewController *)sourceViewController
 {
     self.headerView.item = sourceViewController.item;
 }
 
-- (void)sourceViewControllerPressedTypeHeaderView:(MenuItemSourceViewController *)sourceViewController
+- (void)sourceViewControllerTypeHeaderViewWasPressed:(MenuItemSourceViewController *)sourceViewController
 {
     if ([self shouldLayoutForCompactWidth]) {
         [self transitionLayoutToDisplayTypeView];

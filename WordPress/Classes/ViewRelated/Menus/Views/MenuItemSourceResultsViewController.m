@@ -1,4 +1,4 @@
-#import "MenuItemSourceView.h"
+#import "MenuItemSourceResultsViewController.h"
 #import "MenuItemSourceTextBar.h"
 #import "Menu.h"
 #import "MenuItemSourceFooterView.h"
@@ -11,7 +11,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 static CGFloat const SearchBarHeight = 44.0;
 
-@interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
+@interface MenuItemSourceResultsViewController () <MenuItemSourceTextBarDelegate>
 
 /**
  View used as the tableView.tableHeaderView container view for self.stackView.
@@ -23,23 +23,19 @@ static CGFloat const SearchBarHeight = 44.0;
 
 @end
 
-@implementation MenuItemSourceView
+@implementation MenuItemSourceResultsViewController
 
-- (id)init
+- (void)viewDidLoad
 {
-    self = [super init];
-    if (self) {
-        
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
-        
-        [self setupTableView];
-        [self setupStackedTableHeaderView];
-        [self setupStackView];
-        [self setupFooterView];
-    }
+    [super viewDidLoad];
     
-    return self;
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupTableView];
+    [self setupStackedTableHeaderView];
+    [self setupStackView];
+    [self setupFooterView];
 }
 
 - (void)setupTableView
@@ -52,13 +48,13 @@ static CGFloat const SearchBarHeight = 44.0;
     UIEdgeInsets inset = tableView.contentInset;
     inset.top = MenusDesignDefaultContentSpacing / 2.0;
     tableView.contentInset = inset;
-    [self addSubview:tableView];
+    [self.view addSubview:tableView];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [tableView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                              [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                              [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                              [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              [tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                              [tableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                              [tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                              [tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
                                               ]];
     _tableView = tableView;
 }
@@ -120,10 +116,8 @@ static CGFloat const SearchBarHeight = 44.0;
 
 #pragma mark - view configuration
 
-- (void)layoutSubviews
+- (void)viewDidLayoutSubviews
 {
-    [super layoutSubviews];
-    
     BOOL needsOffsetFix = NO;
     if (!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
@@ -132,7 +126,7 @@ static CGFloat const SearchBarHeight = 44.0;
         [self.stackedTableHeaderView layoutIfNeeded];
         needsOffsetFix = YES;
     }
-
+    
     // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
     CGRect frame = self.stackView.bounds;
     self.stackedTableHeaderView.frame = frame;
@@ -173,7 +167,7 @@ static CGFloat const SearchBarHeight = 44.0;
     [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     _searchBar = searchBar;
     
-    __weak MenuItemSourceView *weakSelf = self;
+    __weak MenuItemSourceResultsViewController *weakSelf = self;
     {
         MenuItemSourceTextBarFieldObserver *observer = [[MenuItemSourceTextBarFieldObserver alloc] init];
         observer.interval = SearchBarFetchRequestUpdateDelay;
@@ -245,10 +239,10 @@ static CGFloat const SearchBarHeight = 44.0;
     }
     item.contentID = contentID;
     item.type = [self sourceItemType];
-    if (name.length && [self.delegate sourceViewItemNameCanBeOverridden:self]) {
+    if (name.length && [self.delegate sourceResultsViewControllerCanOverrideItemName:self]) {
         item.name = name;
     }
-    [self.delegate sourceViewDidUpdateItem:self];
+    [self.delegate sourceResultsViewControllerDidUpdateItem:self];
 }
 
 - (NSString *)sourceItemType
@@ -454,12 +448,12 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)tellDelegateDidBeginEditingWithKeyBoard
 {
-    [self.delegate sourceViewDidBeginEditingWithKeyBoard:self];
+    [self.delegate sourceResultsViewControllerDidBeginEditingWithKeyBoard:self];
 }
 
 - (void)tellDelegateDidEndEditingWithKeyBoard
 {
-    [self.delegate sourceViewDidEndEditingWithKeyboard:self];
+    [self.delegate sourceResultsViewControllerDidEndEditingWithKeyboard:self];
 }
 
 #pragma mark - MenuItemSourceTextBarDelegate
