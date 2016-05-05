@@ -117,4 +117,4 @@ whitelist_rules:
 
 
 # Rules configuration
-trailing_newline: error
+
