@@ -13,7 +13,7 @@ import AFNetworking
  - UploadFailedInvalidFileType:    The upload failed because it was from a invalid type
  - UploadFailedNotEnoughDiskQuota: The upload failed because there wasn enought disk quota
  */
-enum WordPressComRestApiError: Int, ErrorType {
+public enum WordPressComRestApiError: Int, ErrorType {
     case InvalidJSON
     case NoAccessToken
     case LoginFailed
@@ -39,7 +39,7 @@ public final class WordPressComRestApi: NSObject
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
-        sessionManager.responseSerializer = AFJSONResponseSerializer()
+        sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
         return sessionManager
     }()
@@ -54,24 +54,56 @@ public final class WordPressComRestApi: NSObject
     /**
      Reset the API instance
 
-     Discussion: Clears cookies, and sets `authToken`, `username`, and `password` to nil.
+     Invalidates the session and cancel all pending requests
      */
     public func reset() {        
         sessionManager.invalidateSessionCancelingTasks(true);
     }
 
-    public func POST(URLString: String,
-                     parameters:[NSString:AnyObject],
+    //MARK: - Network requests
+
+    public func GET(URLString: String,
+                     parameters:[NSString:AnyObject]?,
                      success:SuccessResponseBlock,
-                     failure:FailureReponseBlock) -> NSProgress {
-        sessionManager.POST(URLString, parameters: parameters, success: { (dataTask, result) in
-            success(responseObject: result, httpResponse: nil)
+                     failure:FailureReponseBlock) -> NSProgress
+    {
+        let progress = NSProgress()
+        progress.totalUnitCount = 1
+        let task = sessionManager.GET(URLString, parameters: parameters, success: { (dataTask, result) in
+                success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
+                progress.completedUnitCount = 1;
             }, failure: { (dataTask, error) in
-                failure(error: error, httpResponse: nil)
+                failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
+                progress.completedUnitCount = 1;
             }
         )
-        return NSProgress()
+        progress.cancellationHandler = {
+            task?.cancel()
+        }
+        return progress
     }
+
+    public func POST(URLString: String,
+                     parameters:[NSString:AnyObject]?,
+                     success:SuccessResponseBlock,
+                     failure:FailureReponseBlock) -> NSProgress
+    {
+        let progress = NSProgress()
+        progress.totalUnitCount = 1
+        let task = sessionManager.POST(URLString, parameters: parameters, success: { (dataTask, result) in
+                success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
+                progress.completedUnitCount = 1
+            }, failure: { (dataTask, error) in
+                failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
+                progress.completedUnitCount = 1
+            }
+        )
+        progress.cancellationHandler = {
+            task?.cancel()
+        }
+        return progress
+    }
+
     //MARK: - Account management
 
     public func hasCredentials() -> Bool {
