@@ -36,11 +36,11 @@
     self.stackView.alignment = UIStackViewAlignmentCenter;
     self.stackView.spacing = spacing;
     
-    [self initIconView];
-    [self initLabelsStackView];
-    [self initSubtTitleLabel];
-    [self initTitleLabel];
-    [self initAccessoryView];
+    [self setupIconView];
+    [self setupLabelsStackView];
+    [self setupSubtTitleLabel];
+    [self setupTitleLabel];
+    [self setupAccessoryView];
     
     self.backgroundColor = [UIColor clearColor];
     
@@ -48,7 +48,7 @@
     [self addGestureRecognizer:tap];
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
@@ -59,7 +59,7 @@
     _iconView = iconView;
 }
 
-- (void)initLabelsStackView
+- (void)setupLabelsStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.alignment = UIStackViewAlignmentFill;
@@ -71,7 +71,7 @@
     [self.stackView addArrangedSubview:stackView];
 }
 
-- (void)initSubtTitleLabel
+- (void)setupSubtTitleLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 0;
@@ -84,7 +84,7 @@
     [_labelsStackView addArrangedSubview:label];
 }
 
-- (void)initTitleLabel
+- (void)setupTitleLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 1;
@@ -100,7 +100,7 @@
     [_labelsStackView addArrangedSubview:label];
 }
 
-- (void)initAccessoryView
+- (void)setupAccessoryView
 {
     UIImageView *accessoryView = [[UIImageView alloc] init];
     accessoryView.contentMode = UIViewContentModeScaleAspectFit;

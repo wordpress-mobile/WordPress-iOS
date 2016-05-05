@@ -18,12 +18,12 @@
 {
     [super awakeFromNib];
 
-    [self initCancelButton];
-    [self initTrashButton];
-    [self initSaveButton];
+    [self setupCancelButton];
+    [self setupTrashButton];
+    [self setupSaveButton];
 }
 
-- (void)initCancelButton
+- (void)setupCancelButton
 {
     UIButton *button = self.cancelButton;
     button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
@@ -34,7 +34,7 @@
     button.backgroundColor = [UIColor clearColor];
 }
 
-- (void)initTrashButton
+- (void)setupTrashButton
 {
     UIButton *button = self.trashButton;
     button.adjustsImageWhenHighlighted = YES;
@@ -45,7 +45,7 @@
     button.backgroundColor = [UIColor clearColor];
 }
 
-- (void)initSaveButton
+- (void)setupSaveButton
 {
     UIButton *button = self.saveButton;
     button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];

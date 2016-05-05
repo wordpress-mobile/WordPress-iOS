@@ -27,11 +27,11 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     _sourceViewCache = [[NSCache alloc] init];
     
-    [self initStackView];
-    [self initHeaderView];
+    [self setupStackView];
+    [self setupHeaderView];
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -52,7 +52,7 @@
     _stackView = stackView;
 }
 
-- (void)initHeaderView
+- (void)setupHeaderView
 {
     MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
     headerView.delegate = self;

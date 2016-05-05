@@ -24,11 +24,11 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentMode = UIViewContentModeRedraw;
 
-    [self initScrollView];
-    [self initStackView];
+    [self setupScrollView];
+    [self setupStackView];
 }
 
-- (void)initScrollView
+- (void)setupScrollView
 {
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -46,7 +46,7 @@
     _scrollView = scrollView;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;

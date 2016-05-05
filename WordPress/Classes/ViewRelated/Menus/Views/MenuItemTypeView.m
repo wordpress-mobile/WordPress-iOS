@@ -31,10 +31,10 @@
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        [self initStackView];
-        [self initIconView];
-        [self initLabel];
-        [self initArrowIconView];
+        [self setupStackView];
+        [self setupIconView];
+        [self setupLabel];
+        [self setupArrowIconView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
         
@@ -45,7 +45,7 @@
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -71,7 +71,7 @@
     _stackView = stackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -89,7 +89,7 @@
     _iconView = iconView;
 }
 
-- (void)initLabel
+- (void)setupLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -107,7 +107,7 @@
     _label = label;
 }
 
-- (void)initArrowIconView
+- (void)setupArrowIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
