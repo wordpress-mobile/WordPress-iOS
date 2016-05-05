@@ -421,11 +421,10 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePeople:
             return [self restApi] != nil && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
+        case BlogFeatureStats:
             return [self restApi] != nil;
         case BlogFeatureSharing:
             return [self supportsSharing];
-        case BlogFeatureStats:
-            return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
         case BlogFeatureReblog:
         case BlogFeatureMentions:
@@ -589,20 +588,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     if (self.account) {
         return self.account.restApi;
     } else if ([self jetpackRESTSupported]) {
-        return self.jetpackAccount.restApi;
-    }
-    return nil;
-}
-
-/*
- 2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
- It works like restApi, but bypasses Jetpack REST checks, since we always want to use rest for Stats.
- */
-- (WordPressComApi *)restApiForStats
-{
-    if (self.account) {
-        return self.account.restApi;
-    } else if (self.jetpackAccount && self.dotComID) {
         return self.jetpackAccount.restApi;
     }
     return nil;
