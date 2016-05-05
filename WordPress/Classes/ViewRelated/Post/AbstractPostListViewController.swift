@@ -56,7 +56,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     
     var postListFooterView : PostListFooterView!
-    private let animatedBox = WPAnimatedBox.newAnimatedBox()
+    private let animatedBox = WPAnimatedBox()
     
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView : UIView!

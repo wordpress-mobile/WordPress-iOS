@@ -333,7 +333,7 @@ import WordPressComAnalytics
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
 
-        let boxView = WPAnimatedBox.newAnimatedBox()
+        let boxView = WPAnimatedBox()
         resultsStatusView.accessoryView = boxView
         displayResultsStatus()
         boxView.prepareAndAnimateAfterDelay(0.3)
