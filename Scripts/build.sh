@@ -49,6 +49,20 @@ Usage: $0 [-cdhv] [-l logfile]
 EOF
 }
 
+# $1: verbose
+# $2: logfile
+function log() {
+  if [ "$LOGFILE" != "" -a $VERBOSE == 0 ]; then
+    rawlog "$LOGFILE" | pretty_travis
+  elif [ "$LOGFILE" != "" ]; then
+    rawlog "$LOGFILE"
+  elif [ $VERBOSE == 0 ]; then
+    pretty_travis
+  else
+    cat
+  fi
+}
+
 CLEAN=0
 DEBUG=0
 LOGFILE=""
@@ -82,20 +96,9 @@ if [ $CLEAN == 1 ]; then
   BUILD_CMD=clean_build
 fi
 
-CMD="$BUILD_CMD"
-
-if [ "$LOGFILE" != "" ]; then
-  CMD="$CMD | rawlog $LOGFILE"
-fi
-
-if [ $VERBOSE == 0 ]; then
-  CMD="$CMD | pretty_travis"
-fi
-
 if [ $DEBUG == 1 ]; then
-  echo $CMD
   set -x
 fi
 
-eval $CMD
+$BUILD_CMD | log
 
