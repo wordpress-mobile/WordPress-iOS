@@ -99,4 +99,3 @@ fi
 
 eval $CMD
 
-echo
