@@ -12,6 +12,7 @@ struct Person {
     let displayName: String
     let role: Role
     let siteID: Int
+    let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
     
@@ -102,6 +103,10 @@ func <(lhs: Person.Role, rhs: Person.Role) -> Bool {
 }
 
 class ManagedPerson: NSManagedObject {
+    
+}
+
+extension ManagedPerson {
     @NSManaged var avatarURL: String?
     @NSManaged var displayName: String
     @NSManaged var firstName: String?
@@ -109,11 +114,13 @@ class ManagedPerson: NSManagedObject {
     @NSManaged var role: String
     @NSManaged var siteID: Int32
     @NSManaged var userID: Int32
+    @NSManaged var linkedUserID: Int32
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
-
     @NSManaged var blog: Blog
+}
 
+extension ManagedPerson {
     func updateWith(person: Person) {
         avatarURL = person.avatarURL?.absoluteString
         displayName = person.displayName
@@ -122,6 +129,7 @@ class ManagedPerson: NSManagedObject {
         role = String(person.role)
         siteID = Int32(person.siteID)
         userID = Int32(person.ID)
+        linkedUserID = Int32(person.linkedUserID)
         username = person.username
         isSuperAdmin = person.isSuperAdmin
     }
@@ -136,6 +144,7 @@ extension Person {
         displayName = managedPerson.displayName
         role = Role(string: managedPerson.role)
         siteID = Int(managedPerson.siteID)
+        linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
     }
@@ -161,6 +170,7 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.displayName == rhs.displayName
         && lhs.role == rhs.role
         && lhs.siteID == rhs.siteID
+        && lhs.linkedUserID == rhs.linkedUserID
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
 }
