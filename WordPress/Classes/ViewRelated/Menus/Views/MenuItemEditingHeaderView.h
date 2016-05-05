@@ -30,8 +30,8 @@
 @protocol MenuItemEditingHeaderViewDelegate <NSObject>
 
 /**
- The user updated the item, such as the name of the item.
+ The user updated the item name text.
  */
-- (void)editingHeaderViewDidUpdateItem:(MenuItemEditingHeaderView *)headerView;
+- (void)editingHeaderView:(MenuItemEditingHeaderView *)headerView didUpdateTextForItemName:(NSString *)text;
 
 @end
