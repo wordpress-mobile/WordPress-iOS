@@ -164,12 +164,28 @@ private extension PersonViewController {
 
     func updateRole(newRole: Person.Role) {
         let service = PeopleService(blog: blog)
-        let updated = service.updatePerson(person, role: newRole) { (error, person) in
-
+        let updated = service.updatePerson(person, role: newRole) { (error, reloadedPerson) in
+            self.person = reloadedPerson
+            self.retryUpdatingRole(newRole)
         }
         
         // Optimistically refresh the UI
         self.person = updated
+    }
+    
+    func retryUpdatingRole(newRole: Person.Role) {
+        let retryTitle      = NSLocalizedString("Retry", comment: "Retry updating User's Role")
+        let cancelTitle     = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
+        let title           = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
+        let message         = NSLocalizedString("Something went wrong while updating the User's Role.", comment: "Updating Role failed error message")
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        
+        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.updateRole(newRole)
+        }
+        
+        alertController.presentFromRootViewController()
     }
 }
 
