@@ -7,8 +7,9 @@
     UIImageView *_page1;
     UIImageView *_page2;
     UIImageView *_page3;
-    BOOL _isPreparedToAnimate;
 }
+
+@property (nonatomic, assign, readwrite) BOOL isPreparedToAnimate;
 
 @end
 
@@ -22,6 +23,17 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     WPAnimatedBox *animatedBox = [[WPAnimatedBox alloc] init];
     [animatedBox setupView];
     return animatedBox;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self) {
+        self.isPreparedToAnimate = YES;
+    }
+    
+    return self;
 }
 
 - (void)setupView
@@ -60,7 +72,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
 - (void)prepareAnimation:(BOOL)animated
 {
-    if (_isPreparedToAnimate) {
+    if (!self.isPreparedToAnimate) {
         return;
     }
 
@@ -77,14 +89,16 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
 - (void)animate
 {
-    _isPreparedToAnimate = NO;
+    self.isPreparedToAnimate = NO;
 
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page1.transform = CGAffineTransformIdentity;
     } completion:nil];
     [UIView animateWithDuration:1 delay:0.0 usingSpringWithDamping:0.65 initialSpringVelocity:0.01 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page2.transform = CGAffineTransformIdentity;
-    } completion:nil];
+    } completion: ^void(BOOL finished) {
+        self.isPreparedToAnimate = YES;
+    }];
     [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page3.transform = CGAffineTransformIdentity;
     } completion:nil];
@@ -92,6 +106,10 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
 - (void)prepareAndAnimateAfterDelay:(CGFloat)delayInSeconds
 {
+    if (!self.isPreparedToAnimate) {
+        return;
+    }
+    
     [self prepareAnimation:NO];
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
