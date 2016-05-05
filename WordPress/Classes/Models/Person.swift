@@ -103,6 +103,10 @@ func <(lhs: Person.Role, rhs: Person.Role) -> Bool {
 }
 
 class ManagedPerson: NSManagedObject {
+    
+}
+
+extension ManagedPerson {
     @NSManaged var avatarURL: String?
     @NSManaged var displayName: String
     @NSManaged var firstName: String?
@@ -113,9 +117,10 @@ class ManagedPerson: NSManagedObject {
     @NSManaged var linkedUserID: Int32
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
-
     @NSManaged var blog: Blog
+}
 
+extension ManagedPerson {
     func updateWith(person: Person) {
         avatarURL = person.avatarURL?.absoluteString
         displayName = person.displayName
