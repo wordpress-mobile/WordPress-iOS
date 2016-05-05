@@ -1,10 +1,10 @@
 #import "MenuItemSourceViewController.h"
 #import "MenuItemSourceHeaderView.h"
-#import "MenuItemSourcePagesViewController.h"
-#import "MenuItemSourceLinkViewController.h"
-#import "MenuItemSourceCategoriesViewController.h"
-#import "MenuItemSourceTagsViewController.h"
-#import "MenuItemSourcePostsViewController.h"
+#import "MenuItemPagesViewController.h"
+#import "MenuItemLinkViewController.h"
+#import "MenuItemCategoriesViewController.h"
+#import "MenuItemTagsViewController.h"
+#import "MenuItemPostsViewController.h"
 #import "Menu.h"
 
 @interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceResultsViewControllerDelegate>
@@ -127,16 +127,16 @@
     BOOL sourceViewSetupRequired = NO;
     if (!sourceViewController) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
-            sourceViewController = [[MenuItemSourcePagesViewController alloc] init];
+            sourceViewController = [[MenuItemPagesViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
-            sourceViewController = [[MenuItemSourceLinkViewController alloc] init];
+            sourceViewController = [[MenuItemLinkViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
-            sourceViewController = [[MenuItemSourceCategoriesViewController alloc] init];
+            sourceViewController = [[MenuItemCategoriesViewController alloc] init];
         } else if ([itemType isEqualToString:MenuItemTypeTag]) {
-            sourceViewController = [[MenuItemSourceTagsViewController alloc] init];
+            sourceViewController = [[MenuItemTagsViewController alloc] init];
         } else {
             // Default to a post view that will load posts of postType == itemType.
-            MenuItemSourcePostsViewController *postView = [[MenuItemSourcePostsViewController alloc] init];
+            MenuItemPostsViewController *postView = [[MenuItemPostsViewController alloc] init];
             postView.postType = itemType;
             sourceViewController = postView;
         }

@@ -72,14 +72,14 @@
 		08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */; };
 		08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454F1CD7F50900358E8C /* MenusSelectionView.m */; };
 		08D345561CD7FBA900358E8C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenusHeaderView.m */; };
-		08D3456C1CD8004C00358E8C /* MenuItemSourceCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345591CD8004C00358E8C /* MenuItemSourceCategoriesViewController.m */; };
+		08D3456C1CD8004C00358E8C /* MenuItemCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345591CD8004C00358E8C /* MenuItemCategoriesViewController.m */; };
 		08D3456D1CD8004C00358E8C /* MenuItemSourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3455B1CD8004C00358E8C /* MenuItemSourceCell.m */; };
 		08D3456F1CD8004C00358E8C /* MenuItemSourceFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3455F1CD8004C00358E8C /* MenuItemSourceFooterView.m */; };
-		08D345701CD8004C00358E8C /* MenuItemSourceLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345611CD8004C00358E8C /* MenuItemSourceLinkViewController.m */; };
-		08D345711CD8004C00358E8C /* MenuItemSourcePagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345631CD8004C00358E8C /* MenuItemSourcePagesViewController.m */; };
-		08D345721CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345651CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.m */; };
-		08D345731CD8004C00358E8C /* MenuItemSourcePostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345671CD8004C00358E8C /* MenuItemSourcePostsViewController.m */; };
-		08D345741CD8004C00358E8C /* MenuItemSourceTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345691CD8004C00358E8C /* MenuItemSourceTagsViewController.m */; };
+		08D345701CD8004C00358E8C /* MenuItemLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345611CD8004C00358E8C /* MenuItemLinkViewController.m */; };
+		08D345711CD8004C00358E8C /* MenuItemPagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345631CD8004C00358E8C /* MenuItemPagesViewController.m */; };
+		08D345721CD8004C00358E8C /* MenuItemAbstractPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345651CD8004C00358E8C /* MenuItemAbstractPostsViewController.m */; };
+		08D345731CD8004C00358E8C /* MenuItemPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345671CD8004C00358E8C /* MenuItemPostsViewController.m */; };
+		08D345741CD8004C00358E8C /* MenuItemTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345691CD8004C00358E8C /* MenuItemTagsViewController.m */; };
 		08D345751CD8004C00358E8C /* MenuItemSourceResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3456B1CD8004C00358E8C /* MenuItemSourceResultsViewController.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
@@ -981,22 +981,22 @@
 		08D3454F1CD7F50900358E8C /* MenusSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionView.m; sourceTree = "<group>"; };
 		08D345541CD7FBA900358E8C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
 		08D345551CD7FBA900358E8C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
-		08D345581CD8004C00358E8C /* MenuItemSourceCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceCategoriesViewController.h; sourceTree = "<group>"; };
-		08D345591CD8004C00358E8C /* MenuItemSourceCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceCategoriesViewController.m; sourceTree = "<group>"; };
+		08D345581CD8004C00358E8C /* MenuItemCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemCategoriesViewController.h; sourceTree = "<group>"; };
+		08D345591CD8004C00358E8C /* MenuItemCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemCategoriesViewController.m; sourceTree = "<group>"; };
 		08D3455A1CD8004C00358E8C /* MenuItemSourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceCell.h; sourceTree = "<group>"; };
 		08D3455B1CD8004C00358E8C /* MenuItemSourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceCell.m; sourceTree = "<group>"; };
 		08D3455E1CD8004C00358E8C /* MenuItemSourceFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceFooterView.h; sourceTree = "<group>"; };
 		08D3455F1CD8004C00358E8C /* MenuItemSourceFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceFooterView.m; sourceTree = "<group>"; };
-		08D345601CD8004C00358E8C /* MenuItemSourceLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceLinkViewController.h; sourceTree = "<group>"; };
-		08D345611CD8004C00358E8C /* MenuItemSourceLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceLinkViewController.m; sourceTree = "<group>"; };
-		08D345621CD8004C00358E8C /* MenuItemSourcePagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourcePagesViewController.h; sourceTree = "<group>"; };
-		08D345631CD8004C00358E8C /* MenuItemSourcePagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourcePagesViewController.m; sourceTree = "<group>"; };
-		08D345641CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceAbstractPostsViewController.h; sourceTree = "<group>"; };
-		08D345651CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceAbstractPostsViewController.m; sourceTree = "<group>"; };
-		08D345661CD8004C00358E8C /* MenuItemSourcePostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourcePostsViewController.h; sourceTree = "<group>"; };
-		08D345671CD8004C00358E8C /* MenuItemSourcePostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourcePostsViewController.m; sourceTree = "<group>"; };
-		08D345681CD8004C00358E8C /* MenuItemSourceTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceTagsViewController.h; sourceTree = "<group>"; };
-		08D345691CD8004C00358E8C /* MenuItemSourceTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceTagsViewController.m; sourceTree = "<group>"; };
+		08D345601CD8004C00358E8C /* MenuItemLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemLinkViewController.h; sourceTree = "<group>"; };
+		08D345611CD8004C00358E8C /* MenuItemLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemLinkViewController.m; sourceTree = "<group>"; };
+		08D345621CD8004C00358E8C /* MenuItemPagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemPagesViewController.h; sourceTree = "<group>"; };
+		08D345631CD8004C00358E8C /* MenuItemPagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemPagesViewController.m; sourceTree = "<group>"; };
+		08D345641CD8004C00358E8C /* MenuItemAbstractPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemAbstractPostsViewController.h; sourceTree = "<group>"; };
+		08D345651CD8004C00358E8C /* MenuItemAbstractPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemAbstractPostsViewController.m; sourceTree = "<group>"; };
+		08D345661CD8004C00358E8C /* MenuItemPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemPostsViewController.h; sourceTree = "<group>"; };
+		08D345671CD8004C00358E8C /* MenuItemPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemPostsViewController.m; sourceTree = "<group>"; };
+		08D345681CD8004C00358E8C /* MenuItemTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTagsViewController.h; sourceTree = "<group>"; };
+		08D345691CD8004C00358E8C /* MenuItemTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTagsViewController.m; sourceTree = "<group>"; };
 		08D3456A1CD8004C00358E8C /* MenuItemSourceResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceResultsViewController.h; sourceTree = "<group>"; };
 		08D3456B1CD8004C00358E8C /* MenuItemSourceResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceResultsViewController.m; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
@@ -2335,18 +2335,18 @@
 				08823B1B1C1B7756000581E8 /* MenuItemSourceViewController.m */,
 				08D3456A1CD8004C00358E8C /* MenuItemSourceResultsViewController.h */,
 				08D3456B1CD8004C00358E8C /* MenuItemSourceResultsViewController.m */,
-				08D345641CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.h */,
-				08D345651CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.m */,
-				08D345621CD8004C00358E8C /* MenuItemSourcePagesViewController.h */,
-				08D345631CD8004C00358E8C /* MenuItemSourcePagesViewController.m */,
-				08D345661CD8004C00358E8C /* MenuItemSourcePostsViewController.h */,
-				08D345671CD8004C00358E8C /* MenuItemSourcePostsViewController.m */,
-				08D345601CD8004C00358E8C /* MenuItemSourceLinkViewController.h */,
-				08D345611CD8004C00358E8C /* MenuItemSourceLinkViewController.m */,
-				08D345581CD8004C00358E8C /* MenuItemSourceCategoriesViewController.h */,
-				08D345591CD8004C00358E8C /* MenuItemSourceCategoriesViewController.m */,
-				08D345681CD8004C00358E8C /* MenuItemSourceTagsViewController.h */,
-				08D345691CD8004C00358E8C /* MenuItemSourceTagsViewController.m */,
+				08D345641CD8004C00358E8C /* MenuItemAbstractPostsViewController.h */,
+				08D345651CD8004C00358E8C /* MenuItemAbstractPostsViewController.m */,
+				08D345621CD8004C00358E8C /* MenuItemPagesViewController.h */,
+				08D345631CD8004C00358E8C /* MenuItemPagesViewController.m */,
+				08D345661CD8004C00358E8C /* MenuItemPostsViewController.h */,
+				08D345671CD8004C00358E8C /* MenuItemPostsViewController.m */,
+				08D345601CD8004C00358E8C /* MenuItemLinkViewController.h */,
+				08D345611CD8004C00358E8C /* MenuItemLinkViewController.m */,
+				08D345581CD8004C00358E8C /* MenuItemCategoriesViewController.h */,
+				08D345591CD8004C00358E8C /* MenuItemCategoriesViewController.m */,
+				08D345681CD8004C00358E8C /* MenuItemTagsViewController.h */,
+				08D345691CD8004C00358E8C /* MenuItemTagsViewController.m */,
 				08D978511CD2AF7D0054F19A /* MenuItemSourceHeaderView.h */,
 				08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */,
 				08D978531CD2AF7D0054F19A /* MenuItemSourceTextBar.h */,
@@ -5483,7 +5483,7 @@
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
-				08D345731CD8004C00358E8C /* MenuItemSourcePostsViewController.m in Sources */,
+				08D345731CD8004C00358E8C /* MenuItemPostsViewController.m in Sources */,
 				E6417BA41CA07E260084050A /* SigninWPComViewController.swift in Sources */,
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
@@ -5566,7 +5566,7 @@
 				E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */,
 				B58FD8CE1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift in Sources */,
 				0859DCF71CB847F700EB4069 /* RemoteMenuItem.m in Sources */,
-				08D345711CD8004C00358E8C /* MenuItemSourcePagesViewController.m in Sources */,
+				08D345711CD8004C00358E8C /* MenuItemPagesViewController.m in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				E6417BA21CA07D910084050A /* Signin2FAViewController.swift in Sources */,
@@ -5574,7 +5574,7 @@
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
 				E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */,
 				E127A0F11C43B7CB00085129 /* SiteServiceRemoteREST.m in Sources */,
-				08D3456C1CD8004C00358E8C /* MenuItemSourceCategoriesViewController.m in Sources */,
+				08D3456C1CD8004C00358E8C /* MenuItemCategoriesViewController.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */,
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
@@ -5640,7 +5640,7 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
-				08D345741CD8004C00358E8C /* MenuItemSourceTagsViewController.m in Sources */,
+				08D345741CD8004C00358E8C /* MenuItemTagsViewController.m in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */,
@@ -5758,7 +5758,7 @@
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
 				081D84081C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m in Sources */,
 				5DE293C11AD8009E00825DE5 /* PostListFilter.m in Sources */,
-				08D345701CD8004C00358E8C /* MenuItemSourceLinkViewController.m in Sources */,
+				08D345701CD8004C00358E8C /* MenuItemLinkViewController.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
@@ -5834,7 +5834,7 @@
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				E14B13C31C4E7675009DD68F /* Reachability+Rx.swift in Sources */,
-				08D345721CD8004C00358E8C /* MenuItemSourceAbstractPostsViewController.m in Sources */,
+				08D345721CD8004C00358E8C /* MenuItemAbstractPostsViewController.m in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				E148362F1C6DF7D8005ACF53 /* Product.swift in Sources */,

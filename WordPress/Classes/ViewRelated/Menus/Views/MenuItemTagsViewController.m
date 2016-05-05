@@ -1,4 +1,4 @@
-#import "MenuItemSourceTagsViewController.h"
+#import "MenuItemTagsViewController.h"
 #import "PostTagService.h"
 #import "PostTag.h"
 #import "Menu.h"
@@ -7,14 +7,14 @@
 
 static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
-@interface MenuItemSourceTagsViewController ()
+@interface MenuItemTagsViewController ()
 
 @property (nonatomic, strong) PostTagService *searchTagService;
 @property (nonatomic, assign) BOOL loadedAllAvailableTags;
 
 @end
 
-@implementation MenuItemSourceTagsViewController
+@implementation MenuItemTagsViewController
 
 - (void)viewDidLoad
 {

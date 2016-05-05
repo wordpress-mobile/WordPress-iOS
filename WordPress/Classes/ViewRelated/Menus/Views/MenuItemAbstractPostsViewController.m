@@ -1,15 +1,15 @@
-#import "MenuItemSourceAbstractPostsViewController.h"
+#import "MenuItemAbstractPostsViewController.h"
 #import "PostService.h"
 #import "AbstractPost.h"
 
-@interface MenuItemSourceAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
+@interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 
 @property (nonatomic, assign) NSUInteger numberOfSyncedPosts;
 @property (nonatomic, assign) BOOL additionalPostsAvailableForSync;
 
 @end
 
-@implementation MenuItemSourceAbstractPostsViewController
+@implementation MenuItemAbstractPostsViewController
 
 - (void)viewDidLoad
 {
