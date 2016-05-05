@@ -28,12 +28,12 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [UIColor clearColor];
 
-    [self initStackView];
-    [self initIconView];
-    [self initTextField];
+    [self setupStackView];
+    [self setupIconView];
+    [self setupTextField];
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIEdgeInsets margins = UIEdgeInsetsZero;
     const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
@@ -67,7 +67,7 @@
     _stackView = stackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -83,7 +83,7 @@
     [_stackView addArrangedSubview:iconView];
 }
 
-- (void)initTextField
+- (void)setupTextField
 {
     UIView *textFieldContainerView = [[UIView alloc] init];
     textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;

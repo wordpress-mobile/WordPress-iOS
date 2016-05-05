@@ -39,16 +39,16 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         
         _drawsLineSeparator = YES;
         
-        [self initContentView];
-        [self initStackView];
-        [self initIconView];
-        [self initTextLabel];
+        [self setupContentView];
+        [self setupStackView];
+        [self setupIconView];
+        [self setupTextLabel];
     }
     
     return self;
 }
 
-- (void)initContentView
+- (void)setupContentView
 {
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
@@ -70,7 +70,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
                                               ]];
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -99,7 +99,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     _stackView = stackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,7 +115,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     [_stackView addArrangedSubview:iconView];
 }
 
-- (void)initTextLabel
+- (void)setupTextLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
