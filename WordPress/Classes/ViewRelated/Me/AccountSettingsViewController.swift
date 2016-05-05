@@ -106,8 +106,12 @@ private struct AccountSettingsController: SettingsController {
         return { row in
             let editableRow = row as! EditableTextRow
             let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+            let changeType = { rawValue in
+                return AccountSettingsChange.EmailPendingAddress(rawValue)
+            }
+            
             let settingsViewController =  self.controllerForEditableText(editableRow,
-                                                                         changeType: AccountSettingsChange.Email,
+                                                                         changeType: changeType,
                                                                          hint: hint,
                                                                          service: service)
             settingsViewController.mode = .Email
