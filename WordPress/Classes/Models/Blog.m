@@ -422,7 +422,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self restApi] != nil && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureStats:
-            return [self restApi] != nil;
+            return [self supportsRestApi];
         case BlogFeatureSharing:
             return [self supportsSharing];
         case BlogFeatureCommentLikes:
@@ -591,6 +591,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+- (BOOL)supportsRestApi {
+    // We don't want to check for `restApi` as it can be `nil` when the token
+    // is missing from the keychain.
+    return (self.account || [self jetpackRESTSupported]);
 }
 
 #pragma mark - Jetpack
