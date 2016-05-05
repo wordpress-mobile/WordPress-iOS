@@ -1,14 +1,14 @@
-#import "MenuItemSourcePostsViewController.h"
+#import "MenuItemPostsViewController.h"
 #import "PostService.h"
 #import "Post.h"
 
-@interface MenuItemSourceAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
+@interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 @end
 
-@interface MenuItemSourcePostsViewController ()
+@interface MenuItemPostsViewController ()
 @end
 
-@implementation MenuItemSourcePostsViewController
+@implementation MenuItemPostsViewController
 
 - (NSString *)sourceItemType
 {

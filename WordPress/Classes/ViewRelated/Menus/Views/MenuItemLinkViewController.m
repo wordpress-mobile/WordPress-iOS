@@ -1,11 +1,11 @@
-#import "MenuItemSourceLinkViewController.h"
+#import "MenuItemLinkViewController.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "MenuItemCheckButtonView.h"
 
 static CGFloat const LinkTextBarHeight = 48.0;
 
-@interface MenuItemSourceLinkViewController () <MenuItemSourceTextBarDelegate>
+@interface MenuItemLinkViewController () <MenuItemSourceTextBarDelegate>
 
 @property (nonatomic, strong, readonly) UILabel *label;
 @property (nonatomic, strong, readonly) MenuItemSourceTextBar *textBar;
@@ -13,7 +13,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
 
 @end
 
-@implementation MenuItemSourceLinkViewController
+@implementation MenuItemLinkViewController
 
 - (void)viewDidLoad
 {
