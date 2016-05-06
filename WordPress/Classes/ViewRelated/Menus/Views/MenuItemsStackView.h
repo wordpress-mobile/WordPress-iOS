@@ -5,7 +5,7 @@
 
 @protocol MenuItemsStackViewDelegate;
 
-@interface MenuItemsStackView : UIView
+@interface MenuItemsStackView : UIViewController
 
 @property (nonatomic, weak) id <MenuItemsStackViewDelegate> delegate;
 @property (nonatomic, strong) Menu *menu;

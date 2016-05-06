@@ -227,30 +227,18 @@
                                                     <outlet property="trashButton" destination="vKW-hI-LcB" id="426-ns-Gwp"/>
                                                 </connections>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsI-AD-gFi" customClass="MenuItemsStackView">
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DsJ-Ns-q0r">
                                                 <rect key="frame" x="0.0" y="129" width="600" height="471"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="JIH-cO-Pxp">
-                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="471"/>
-                                                    </stackView>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="JIH-cO-Pxp" secondAttribute="bottom" id="8fl-7A-AQx"/>
-                                                    <constraint firstAttribute="trailing" secondItem="JIH-cO-Pxp" secondAttribute="trailing" id="NCU-DV-V1o"/>
-                                                    <constraint firstItem="JIH-cO-Pxp" firstAttribute="leading" secondItem="AsI-AD-gFi" secondAttribute="leading" id="q65-3f-n0x"/>
-                                                    <constraint firstItem="JIH-cO-Pxp" firstAttribute="top" secondItem="AsI-AD-gFi" secondAttribute="top" id="veD-Aa-Fcn"/>
-                                                </constraints>
                                                 <connections>
-                                                    <outlet property="stackView" destination="JIH-cO-Pxp" id="nn7-yM-ui6"/>
+                                                    <segue destination="RgC-zH-1f6" kind="embed" id="prB-5y-3cx"/>
                                                 </connections>
-                                            </view>
+                                            </containerView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Pke-zI-OwZ" firstAttribute="width" secondItem="rKi-z3-DxP" secondAttribute="width" id="6jB-LH-RvX"/>
-                                            <constraint firstItem="AsI-AD-gFi" firstAttribute="width" secondItem="rKi-z3-DxP" secondAttribute="width" id="H0r-Ho-2Gd"/>
                                             <constraint firstItem="you-MH-OY0" firstAttribute="width" secondItem="rKi-z3-DxP" secondAttribute="width" id="K3J-pc-GRk"/>
                                             <constraint firstItem="vQz-Gx-SBt" firstAttribute="width" secondItem="rKi-z3-DxP" secondAttribute="width" id="R2o-EC-oH0"/>
+                                            <constraint firstItem="DsJ-Ns-q0r" firstAttribute="width" secondItem="rKi-z3-DxP" secondAttribute="width" id="xCM-JM-qI6"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -278,7 +266,6 @@
                     <connections>
                         <outlet property="detailsView" destination="you-MH-OY0" id="ZLf-rv-ksz"/>
                         <outlet property="headerView" destination="Pke-zI-OwZ" id="cit-L0-oVl"/>
-                        <outlet property="itemsView" destination="AsI-AD-gFi" id="ZYF-l0-s07"/>
                         <outlet property="scrollView" destination="jeR-f3-QEg" id="wLu-Wi-cOT"/>
                         <outlet property="stackView" destination="rKi-z3-DxP" id="emT-vi-oFh"/>
                         <outlet property="view" destination="cls-wf-pzE" id="m6t-Er-QL8"/>
@@ -287,6 +274,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRz-hy-xIl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="469" y="297"/>
+        </scene>
+        <!--Menu Items Stack View-->
+        <scene sceneID="RfW-I7-bO0">
+            <objects>
+                <viewController id="RgC-zH-1f6" customClass="MenuItemsStackView" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bdk-zs-oZO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="471"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i1t-wI-fd4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1101" y="304.5"/>
         </scene>
     </scenes>
 </document>
