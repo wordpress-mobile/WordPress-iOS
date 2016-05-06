@@ -243,11 +243,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func noResultsTitleText() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func noResultsMessageText() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func noResultsAccessoryView() -> UIView {
@@ -263,11 +263,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func noResultsButtonText() -> String? {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func configureAuthorFilter() {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func configureSearchController() {
@@ -316,7 +316,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     // MARK: TableViewHandler Delegate Methods
     
     func entityName() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func managedObjectContext() -> NSManagedObjectContext {
@@ -401,7 +401,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func predicateForFetchRequest() -> NSPredicate {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     // MARK: - Table View Handling
@@ -917,7 +917,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func keyForCurrentListStatusFilter() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func currentFilterIndex() -> Int {
