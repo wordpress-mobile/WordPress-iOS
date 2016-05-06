@@ -95,9 +95,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
-    
-    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
+
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;
@@ -110,30 +110,39 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.detailsView.delegate = self;
     self.itemsView.delegate = self;
     
-    {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonSystemItemSave target:self action:@selector(saveBarButtonItemPressed:)];
-        self.navigationItem.rightBarButtonItem = button;
-        button.enabled = NO;
-        _saveButtonItem = button;
-    }
-    {
-        WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
-        loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
-        _loadingView = loadingView;
-    }
-    {
-        UILabel *label = [[UILabel alloc] init];
-        label.font = [WPFontManager systemLightFontOfSize:14];
-        label.textColor = [WPStyleGuide darkBlue];
-        label.numberOfLines = 0;
-        [self.stackView addArrangedSubview:label];
-        [label.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:MenusDesignDefaultContentSpacing].active = YES;
-        [label.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-MenusDesignDefaultContentSpacing].active = YES;
-        label.hidden = YES;
-        _itemsLoadingLabel = label;
-    }
+    [self setupSaveButtonItem];
+    [self setupLoadingView];
+    [self setupItemsLoadingLabel];
     
     [self syncWithBlogMenus];
+}
+
+- (void)setupSaveButtonItem
+{
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonSystemItemSave target:self action:@selector(saveBarButtonItemPressed:)];
+    self.navigationItem.rightBarButtonItem = button;
+    button.enabled = NO;
+    _saveButtonItem = button;
+}
+
+- (void)setupLoadingView
+{
+    WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
+    loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
+    _loadingView = loadingView;
+}
+
+- (void)setupItemsLoadingLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.font = [WPFontManager systemLightFontOfSize:14];
+    label.textColor = [WPStyleGuide darkBlue];
+    label.numberOfLines = 0;
+    [self.stackView addArrangedSubview:label];
+    [label.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:MenusDesignDefaultContentSpacing].active = YES;
+    [label.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-MenusDesignDefaultContentSpacing].active = YES;
+    label.hidden = YES;
+    _itemsLoadingLabel = label;
 }
 
 - (void)viewDidLayoutSubviews
