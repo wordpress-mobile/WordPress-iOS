@@ -9,7 +9,7 @@
     UIImageView *_page3;
 }
 
-@property (nonatomic, assign, readwrite) BOOL isPreparedToAnimate;
+@property (nonatomic, assign, readwrite) BOOL isAnimating;
 
 @end
 
@@ -25,7 +25,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     if (self) {
         [self setupView];
         
-        self.isPreparedToAnimate = YES;
+        self.isAnimating = NO;
     }
     
     return self;
@@ -63,28 +63,23 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [self insertSubview:_containerBack belowSubview:_page3];
 
     self.clipsToBounds = YES;
+    
+    [self moveAnimationToFirstFrame];
 }
 
-- (void)prepareAnimation:(BOOL)animated
+- (void)moveAnimationToFirstFrame
 {
-    if (!self.isPreparedToAnimate) {
-        return;
+    // Transform pages all the way down
+    NSArray *pages = @[_page1, _page2, _page3];
+    for (UIView *view in pages) {
+        CGFloat YOrigin = CGRectGetMinY(view.frame);
+        view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - YOrigin);
     }
-
-    [UIView animateWithDuration:animated ? 0.2 : 0.0
-                     animations:^{
-                         // Transform pages all the way down
-                         NSArray *pages = @[_page1, _page2, _page3];
-                         for (UIView *view in pages) {
-                             CGFloat YOrigin = CGRectGetMinY(view.frame);
-                             view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - YOrigin);
-                         }
-                     }];
 }
 
-- (void)animate
+- (void)playAnimation
 {
-    self.isPreparedToAnimate = NO;
+    self.isAnimating = YES;
 
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page1.transform = CGAffineTransformIdentity;
@@ -92,23 +87,34 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [UIView animateWithDuration:1 delay:0.0 usingSpringWithDamping:0.65 initialSpringVelocity:0.01 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page2.transform = CGAffineTransformIdentity;
     } completion: ^void(BOOL finished) {
-        self.isPreparedToAnimate = YES;
+        self.isAnimating = NO;
     }];
     [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _page3.transform = CGAffineTransformIdentity;
     } completion:nil];
 }
 
-- (void)prepareAndAnimateAfterDelay:(CGFloat)delayInSeconds
+- (void)animate
 {
-    if (!self.isPreparedToAnimate) {
+    if (self.isAnimating) {
         return;
     }
     
-    [self prepareAnimation:NO];
+    [self moveAnimationToFirstFrame];
+    [self playAnimation];
+}
+
+- (void)animateAfterDelay:(CGFloat)delayInSeconds
+{
+    if (self.isAnimating) {
+        return;
+    }
+    
+    [self moveAnimationToFirstFrame];
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self animate];
+        [self playAnimation];
     });
 }
 
