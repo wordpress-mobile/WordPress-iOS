@@ -526,8 +526,9 @@ import WordPressShared
         // to recover the next time it tries to sync blogs.
         guard let blogName = (blogOptions[BlogNameLowerCaseNKey] ?? blogOptions[BlogNameUpperCaseNKey]) as? String,
             xmlrpc = blogOptions[XMLRPCKey] as? String,
-            dotComID = blogOptions[BlogIDKey] as? NSNumber,
-            blogURL = blogOptions[URLKey] as? String
+            blogURL = blogOptions[URLKey] as? String,
+            stringID = blogOptions[BlogIDKey] as? String,
+            dotComID = Int64(stringID)
         else {
             DDLogSwift.logError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
             assertionFailure()
@@ -547,7 +548,7 @@ import WordPressShared
             blog.xmlrpc = xmlrpc
         }
 
-        blog.dotComID = dotComID
+        blog.dotComID = NSNumber(longLong: dotComID)
         blog.url = blogURL
         blog.settings.name = blogName.stringByDecodingXMLCharacters()
 
