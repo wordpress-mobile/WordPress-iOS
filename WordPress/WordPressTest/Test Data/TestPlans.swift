@@ -44,7 +44,6 @@ enum TestPlans {
     }
 
     var product: MockProduct {
-        let plan = self.plan
         return MockProduct(localizedDescription: plan.tagline,
                            localizedTitle: plan.title,
                            price: 299.99,
