@@ -30,9 +30,8 @@ struct PlanService<S: Store> {
             }, failure: failure)
     }
 
-    func verifyPurchase(siteID: Int, planID: PlanID, receipt: NSData, completion: Bool -> Void) {
-        // Let's pretend this suceeds for now
-        PlanStorage.activatePlan(planID, forSite: siteID)
+    func verifyPurchase(siteID: Int, productID: String, receipt: NSData, completion: Bool -> Void) {
+        // Let's pretend this succeeds for now
         completion(true)
     }
 }
