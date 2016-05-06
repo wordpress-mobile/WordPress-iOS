@@ -1,6 +1,8 @@
 import Foundation
 import CoreData
 
+// MARK: - Reflects the user's Account Settings, as stored in Core Data.
+//
 class ManagedAccountSettings: NSManagedObject {
     static let entityName = "AccountSettings"
 
