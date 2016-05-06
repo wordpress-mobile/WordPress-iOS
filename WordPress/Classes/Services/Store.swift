@@ -28,7 +28,7 @@ struct StoreKitCoordinator {
     static let NotificationProductIdentifierKey = "StoreCoordinatorNotificationProductIdentifierKey"
 }
 
-typealias PendingPayment = (planID: PlanID, productID: String, siteID: Int)
+typealias PendingPayment = (productID: String, siteID: Int)
 
 enum StoreCoordinatorError: ErrorType {
     case PaymentAlreadyInProgress
@@ -37,7 +37,7 @@ enum StoreCoordinatorError: ErrorType {
 /// StoreCoordinator coordinates purchasing of products, processing of transactions, and
 /// verification of purchases between the App Store (StoreKit) and WordPress.com.
 ///
-/// Users of this class can simply attempt a purchase using `purchasePlan(_:product:forSite)`,
+/// Users of this class can simply attempt a purchase using `purchaseProduct(_:forSite)`,
 /// and the coordinator will post a notification on a successful or failed purchase:
 ///
 /// - `StoreKitCoordinator.TransactionDidFinishNotification` on success.
@@ -54,11 +54,9 @@ class StoreCoordinator<S: Store> {
             let defaults = NSUserDefaults.standardUserDefaults()
             
             if let pending = newValue {
-                defaults.setInteger(pending.planID, forKey: UserDefaultsKeys.pendingPaymentPlanID)
                 defaults.setObject(pending.productID, forKey: UserDefaultsKeys.pendingPaymentProductID)
                 defaults.setInteger(pending.siteID, forKey:UserDefaultsKeys.pendingPaymentSiteID)
             } else {
-                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentPlanID)
                 defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentProductID)
                 defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentSiteID)
             }
@@ -66,13 +64,12 @@ class StoreCoordinator<S: Store> {
         
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
-            let planID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentPlanID)
             let productID = defaults.stringForKey(UserDefaultsKeys.pendingPaymentProductID)
             let siteID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentSiteID)
             
-            guard let product = productID where planID != 0 && siteID != 0 else { return nil }
+            guard let product = productID where siteID != 0 else { return nil }
             
-            return (planID, product, siteID)
+            return (product, siteID)
         }
     }
 
@@ -80,20 +77,18 @@ class StoreCoordinator<S: Store> {
         self.store = store
     }
 
-    /// Initiates a purchase for the specified plan if a purchase isn't already in progress.
+    /// Initiates a purchase for the specified product if a purchase isn't already in progress.
     ///
     /// - throws: A `StoreCoordinatorError.PaymentAlreadyInProgress` error if the purchase
     ///           fails immediately due to an already in progress purchase.
     ///
-    func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) throws {
-        precondition(plan.productIdentifier == product.productIdentifier)
-        
+    func purchaseProduct(product: S.ProductType, forSite siteID: Int) throws {
         // We _should_ never have a pending payment at this point, so we'll fail in that case.
         guard pendingPayment == nil else {
             throw StoreCoordinatorError.PaymentAlreadyInProgress
         }
         
-        pendingPayment = (plan.id, product.productIdentifier, siteID)
+        pendingPayment = (product.productIdentifier, siteID)
         store.requestPayment(product)
     }
 
@@ -134,7 +129,7 @@ class StoreCoordinator<S: Store> {
         }
         
         DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
-        service.verifyPurchase(pendingPayment.siteID, planID: pendingPayment.planID, receipt: receipt, completion: { [weak self] _ in
+        service.verifyPurchase(pendingPayment.siteID, productID: pendingPayment.productID, receipt: receipt, completion: { [weak self] _ in
             // TODO: Handle success / failure of verification attempt
             self?.finishTransaction(transaction)
         })
@@ -187,7 +182,7 @@ class StoreCoordinator<S: Store> {
             return .unavailable
         }
         if let pendingPayment = pendingPayment {
-            if pendingPayment.planID == plan.id && pendingPayment.siteID == siteID {
+            if pendingPayment.productID == plan.productIdentifier && pendingPayment.siteID == siteID {
                 return .pending
             } else {
                 return .unavailable
@@ -199,7 +194,6 @@ class StoreCoordinator<S: Store> {
 }
 
 private struct UserDefaultsKeys {
-    static let pendingPaymentPlanID    = "PendingPaymentPlanIDUserDefaultsKey"
     static let pendingPaymentProductID = "PendingPaymentProductIDUserDefaultsKey"
     static let pendingPaymentSiteID    = "PendingPaymentSiteIDUserDefaultsKey"
 }
