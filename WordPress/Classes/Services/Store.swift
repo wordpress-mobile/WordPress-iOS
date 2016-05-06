@@ -82,7 +82,7 @@ class StoreCoordinator<S: Store> {
 
     /// Initiates a purchase for the specified plan if a purchase isn't already in progress.
     ///
-    /// - Throws: A `StoreCoordinatorError.PaymentAlreadyInProgress` error if the purchase 
+    /// - throws: A `StoreCoordinatorError.PaymentAlreadyInProgress` error if the purchase
     ///           fails immediately due to an already in progress purchase.
     ///
     func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) throws {
@@ -176,8 +176,8 @@ class StoreCoordinator<S: Store> {
                                                                   userInfo: userInfo)
     }
     
-    /// - Returns: A PurchaseAvailability indicating whether the specified plan is currently
-    ///            available for purchase for the specified site, given the current active plan.
+    /// Used to determine whether the specified plan is currently available for purchase
+    /// for the specified site, given the current active plan.
     func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
         guard store.canMakePayments
             && plan.isPaidPlan
