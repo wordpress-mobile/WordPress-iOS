@@ -358,9 +358,11 @@ import WordPressShared
         let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
         asyncOp.addBlock( { (operation: WPAsyncBlockOperation?) in
             let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
+                self.displayLoginMessage("")
                 operation?.didSucceed()
             }
             let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
+                self.displayLoginMessage("")
                 operation?.didFail()
                 self.configureLoading(false)
                 if let error = error {
@@ -377,6 +379,8 @@ import WordPressShared
                 andLanguageId: languageId,
                 success: successBlock,
                 failure: failureBlock)
+
+            self.displayLoginMessage(NSLocalizedString("Validating...", comment: "Short status message shown to the user when validating a new blog's name."))
         })
         return asyncOp
     }
@@ -390,10 +394,12 @@ import WordPressShared
         let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
         asyncOp.addBlock({ (operation: WPAsyncBlockOperation?) in
             let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
+                self.displayLoginMessage("")
                 operation?.didSucceed()
             }
             let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
                 DDLogSwift.logError("Failed creating user: \(error)")
+                self.displayLoginMessage("")
                 operation?.didFail()
                 self.configureLoading(false)
                 if let error = error {
@@ -407,6 +413,8 @@ import WordPressShared
                 andPassword: self.loginFields.password,
                 success: successBlock,
                 failure: failureBlock)
+
+            self.displayLoginMessage(NSLocalizedString("Creating account...", comment: "Brief status message shown to the user when creating a new wpcom account."))
         })
         return asyncOp
     }
@@ -420,6 +428,7 @@ import WordPressShared
         let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
         asyncOp.addBlock({ (operation: WPAsyncBlockOperation?) in
             let successBlock = { (authToken: String?) in
+                self.displayLoginMessage("")
                 guard let authToken = authToken else {
                     DDLogSwift.logError("Faied signing in the user. Success block was called but the auth token was nil.")
                     assertionFailure()
@@ -439,6 +448,7 @@ import WordPressShared
 
             let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
                 DDLogSwift.logError("Failed signing in user: \(error)")
+                self.displayLoginMessage("")
                 // We've hit a strange failure at this point, the user has been created successfully but for some reason
                 // we are unable to sign in and proceed
                 operation?.didFail()
@@ -454,6 +464,8 @@ import WordPressShared
                 multifactorCode: nil,
                 success: successBlock,
                 failure: failureBlock)
+
+            self.displayLoginMessage(NSLocalizedString("Signing in...", comment: "Brief status message shown when signing into a newly created blog and account."))
         })
         return asyncOp
     }
@@ -469,6 +481,7 @@ import WordPressShared
         asyncOp.addBlock( { (operation: WPAsyncBlockOperation?) in
             let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
                 WPAppAnalytics.track(.CreatedAccount)
+                self.displayLoginMessage("")
                 operation?.didSucceed()
 
                 if let blogOptions = responseDictionary[self.BlogDetailsKey] as? [String: AnyObject] {
@@ -484,6 +497,7 @@ import WordPressShared
 
             let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
                 DDLogSwift.logError("Failed creating blog: \(error)")
+                self.displayLoginMessage("")
                 operation?.didFail()
                 self.configureLoading(false)
                 if let error = error {
@@ -506,6 +520,8 @@ import WordPressShared
                 andBlogVisibility: .Public,
                 success: successBlock,
                 failure: failureBlock)
+
+            self.displayLoginMessage(NSLocalizedString("Creating site...", comment: "Short status message shown while a new site is being created for a new user."))
         })
         return asyncOp
     }
@@ -582,7 +598,6 @@ import WordPressShared
 
     func handleOnePasswordButtonTapped(sender: UIButton) {
         view.endEditing(true)
-
 
         OnePasswordFacade().createLoginForURLString(WPOnePasswordWordPressComURL,
                                                     username: loginFields.username,
