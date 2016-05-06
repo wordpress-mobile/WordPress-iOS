@@ -11,6 +11,6 @@
 /// @param  delayInSeconds      The seconds, or fraction of a second, to wait before animating
 ///                             the view.
 ///
-- (void)animateAfterDelay:(CGFloat)delayInSeconds;
+- (void)animateAfterDelay:(NSTimeInterval)delayInSeconds;
 
 @end
