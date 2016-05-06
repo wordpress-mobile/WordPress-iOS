@@ -105,13 +105,9 @@ private struct AccountSettingsController: SettingsController {
     func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
-            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-            let changeType = { rawValue in
-                return AccountSettingsChange.Email(rawValue)
-            }
-            
+            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")            
             let settingsViewController =  self.controllerForEditableText(editableRow,
-                                                                         changeType: changeType,
+                                                                         changeType: AccountSettingsChange.Email,
                                                                          hint: hint,
                                                                          service: service)
             settingsViewController.mode = .Email
