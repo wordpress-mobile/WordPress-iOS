@@ -1,15 +1,15 @@
-#import "MenuItemsStackView.h"
+#import "MenuItemsViewController.h"
 #import "Menu.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
-#import "MenuItemsStackableView.h"
+#import "MenuItemAbstractView.h"
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
 #import "ContextManager.h"
 #import "Menu+ViewDesign.h"
 
-@interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
+@interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
 @property (nonatomic, strong) NSMutableSet *itemViews;
 @property (nonatomic, strong) UIStackView *stackView;
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation MenuItemsStackView
+@implementation MenuItemsViewController
 
 - (void)viewDidLoad
 {
@@ -77,7 +77,7 @@
     MenuItemView *itemView = [self itemViewForItem:item];
     [itemView refresh];
     if (focusesView) {
-        [self.delegate itemsView:self requiresScrollingToCenterView:itemView];
+        [self.delegate itemsViewController:self requiresScrollingToCenterView:itemView];
     }
 }
 
@@ -112,7 +112,7 @@
 
 - (void)reloadItems
 {
-    for (MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
+    for (MenuItemAbstractView *stackableView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:stackableView];
         [stackableView removeFromSuperview];
     }
@@ -438,7 +438,7 @@
     
     [self hideOrdering];
     self.itemViewForOrdering = nil;
-    [self.delegate itemsView:self prefersScrollingEnabled:YES];
+    [self.delegate itemsViewController:self prefersScrollingEnabled:YES];
 }
 
 - (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
@@ -508,7 +508,7 @@
     }
     
     if (self.observesOrderingTouches) {
-        [self.delegate itemsView:self prefersScrollingEnabled:NO];
+        [self.delegate itemsViewController:self prefersScrollingEnabled:NO];
         
         //// vertical ordering detection (order of the items in the menu)
         if (!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
@@ -539,7 +539,7 @@
     if (modelUpdated) {
         [self updateParentChildIndentationForItemViews];
         [self.visualOrderingView updateForVisualOrderingMenuItemsModelChange];
-        [self.delegate itemsView:self didUpdateMenuItemsOrdering:self.menu];
+        [self.delegate itemsViewController:self didUpdateMenuItemsOrdering:self.menu];
     }
 }
 
@@ -665,7 +665,7 @@
         }];
         
         self.menu.items = orderedItems;
-        [self.delegate itemsView:self didUpdateMenuItemsOrdering:self.menu];
+        [self.delegate itemsViewController:self didUpdateMenuItemsOrdering:self.menu];
     }
     
     return updated;
@@ -768,19 +768,19 @@
 
 - (void)visualOrderingView:(MenuItemsVisualOrderingView *)visualOrderingView animatingVisualItemViewForOrdering:(MenuItemView *)orderingView
 {
-    [self.delegate itemsView:self prefersAdjustingScrollingOffsetForAnimatingView:orderingView];
+    [self.delegate itemsViewController:self prefersAdjustingScrollingOffsetForAnimatingView:orderingView];
 }
 
 #pragma mark - MenuItemViewDelegate
 
-- (void)stackableItemView:(MenuItemsStackableView *)stackableView highlighted:(BOOL)highlighted
+- (void)itemView:(MenuItemAbstractView *)itemView highlighted:(BOOL)highlighted
 {
     // Toggle drawing the line separator on the previous view in the stackView.
     // Otherwise the drawn line stacks oddling against the highlighted drawing.
-    NSUInteger indexOfView = [self.stackView.arrangedSubviews indexOfObject:stackableView];
+    NSUInteger indexOfView = [self.stackView.arrangedSubviews indexOfObject:itemView];
     if (indexOfView != NSNotFound && indexOfView > 0) {
-        MenuItemsStackableView *view = [self.stackView.arrangedSubviews objectAtIndex:indexOfView - 1];
-        if ([view isKindOfClass:[MenuItemsStackableView class]]) {
+        MenuItemAbstractView *view = [self.stackView.arrangedSubviews objectAtIndex:indexOfView - 1];
+        if ([view isKindOfClass:[MenuItemAbstractView class]]) {
             view.drawsLineSeparator = !highlighted;
         }
     }
@@ -788,7 +788,7 @@
 
 - (void)itemViewSelected:(MenuItemView *)itemView
 {
-    [self.delegate itemsView:self selectedItemForEditing:itemView.item];
+    [self.delegate itemsViewController:self selectedItemForEditing:itemView.item];
 }
 
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView
@@ -869,7 +869,7 @@
         [self removeItemInsertionViews:YES];
         
         // Inform the delegate to begin editing the new item.
-        [self.delegate itemsView:self createdNewItemForEditing:newItem];
+        [self.delegate itemsViewController:self createdNewItemForEditing:newItem];
     });
 }
 

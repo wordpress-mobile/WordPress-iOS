@@ -1,12 +1,12 @@
-#import "MenuItemsStackableView.h"
+#import "MenuItemAbstractView.h"
 
 @class MenuItem;
 
 @protocol MenuItemViewDelegate;
 
-@interface MenuItemView : MenuItemsStackableView
+@interface MenuItemView : MenuItemAbstractView
 
-@property (nonatomic, weak) id <MenuItemsStackableViewDelegate, MenuItemViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemAbstractViewDelegate, MenuItemViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 
 /**
