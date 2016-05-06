@@ -81,7 +81,7 @@ import WordPressShared
     func localizeControls() {
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
-        let submitButtonTitle = NSLocalizedString("VERIFY", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
         submitButton.setTitle(submitButtonTitle, forState: .Normal)
         submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
     }

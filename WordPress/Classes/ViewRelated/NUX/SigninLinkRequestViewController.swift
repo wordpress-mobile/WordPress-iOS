@@ -56,7 +56,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
         let format = NSLocalizedString("Get a link sent to %@ to sign in instantly.", comment: "Short instructional text. The %@ is a placeholder for the user's email address.")
         label.text = NSString(format: format, loginFields.username) as String
 
-        let sendLinkButtonTitle = NSLocalizedString("SEND LINK", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercaseString
+        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercaseString
         sendLinkButton.setTitle(sendLinkButtonTitle, forState: .Normal)
         sendLinkButton.setTitle(sendLinkButtonTitle, forState: .Highlighted)
 
