@@ -63,8 +63,9 @@ struct PlanListRow: ImmuTableRow {
                 attributedTitle.appendAttributedString(attributedPrice)
 
                 attributedTitle.appendString(" ")
-                let pricePeriod = NSAttributedString(string: NSLocalizedString("per year", comment: ""), attributes: pricePeriodAttributes)
-                attributedTitle.appendAttributedString(pricePeriod)
+                let pricePeriod = String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
+                let attributedPricePeriod = NSAttributedString(string: pricePeriod, attributes: pricePeriodAttributes)
+                attributedTitle.appendAttributedString(attributedPricePeriod)
             }
             return attributedTitle
         }
