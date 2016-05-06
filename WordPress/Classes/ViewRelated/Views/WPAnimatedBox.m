@@ -104,7 +104,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     [self playAnimation];
 }
 
-- (void)animateAfterDelay:(CGFloat)delayInSeconds
+- (void)animateAfterDelay:(NSTimeInterval)delayInSeconds
 {
     if (self.isAnimating) {
         return;
