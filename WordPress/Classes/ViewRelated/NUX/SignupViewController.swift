@@ -22,6 +22,7 @@ import WordPressShared
     @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
     var didCorrectEmailOnce: Bool = false
+    var userDefinedSiteAddress: Bool = false
     let operationQueue = NSOperationQueue()
     var account: WPAccount?
 
@@ -666,11 +667,27 @@ extension SignupViewController: UITextFieldDelegate {
     }
 
 
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField != usernameField || userDefinedSiteAddress {
+            return
+        }
+        // If the user has not customized the site name, then let it match the 
+        // username they chose.
+        loginFields.siteUrl = loginFields.username
+        siteURLField.text = loginFields.username
+    }
+
+
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         // Disallow spaces except for the password field
         if string == " " && (textField == emailField || textField == usernameField || textField == siteURLField) {
             return false
         }
+
+        if textField == siteURLField {
+            userDefinedSiteAddress = true
+        }
+
         return true
     }
 }
