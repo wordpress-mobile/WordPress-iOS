@@ -56,5 +56,4 @@ enum TestPlans {
     
     static let allPlans = allTestPlans.map({ $0.plan })
     static let allProducts = allTestPlans.map({ $0.product })
-    static let allPlansAndProducts = zip(allPlans, allProducts)
 }

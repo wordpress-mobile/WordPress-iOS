@@ -63,12 +63,12 @@ class StoreCoordinatorTests: XCTestCase {
     }
 
     func testCannotPurchaseWhenPurchaseAlreadyPending() {
-        let payment: PendingPayment = (premium.id, testProduct, testSite)
+        let payment: PendingPayment = (testProduct, testSite)
         let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
         let product = TestPlans.business.product
 
         // And now attempt a second purchase
-        XCTAssertThrowsError(try coordinator.purchasePlan(business, product: product, forSite: testSite))
+        XCTAssertThrowsError(try coordinator.purchaseProduct(product, forSite: testSite))
     }
     
     func testCanMakePaymentWhenNoPaymentIsPending() {
@@ -76,7 +76,7 @@ class StoreCoordinatorTests: XCTestCase {
         let product = TestPlans.business.product
 
         do {
-            try coordinator.purchasePlan(business, product: product, forSite: otherSite)
+            try coordinator.purchaseProduct(product, forSite: otherSite)
         } catch {
             XCTFail("Expected call not to throw")
         }
@@ -100,8 +100,8 @@ class StoreCoordinatorTests: XCTestCase {
         let coordinator = StoreCoordinator(store: store)
         
         if let pending = pending,
-            let planAndProduct = TestPlans.allPlansAndProducts.filter({ $0.0.id == pending.planID }).first {
-            try! coordinator.purchasePlan(planAndProduct.0, product: planAndProduct.1, forSite: pending.siteID)
+            let product = TestPlans.allProducts.filter({ $0.productIdentifier == pending.productID }).first {
+            try! coordinator.purchaseProduct(product, forSite: pending.siteID)
         }
         
         return coordinator
@@ -109,7 +109,6 @@ class StoreCoordinatorTests: XCTestCase {
     
     private func clearUserDefaults() {
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey("PendingPaymentPlanIDUserDefaultsKey")
         defaults.removeObjectForKey("PendingPaymentProductIDUserDefaultsKey")
         defaults.removeObjectForKey("PendingPaymentSiteIDUserDefaultsKey")
     }
@@ -117,10 +116,10 @@ class StoreCoordinatorTests: XCTestCase {
     private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
         switch state {
         case .none: return nil
-        case .sameSitePlan: return (plan.id, productID, siteID)
-        case .sameSite: return (otherPlan(plan).id, productID, siteID)
-        case .samePlan: return (plan.id, productID, otherSite)
-        case .differentSitePlan: return (otherPlan(plan).id, productID, otherSite)
+        case .sameSitePlan: return (productID, siteID)
+        case .sameSite: return (otherPlan(plan).productIdentifier!, siteID)
+        case .samePlan: return (productID, otherSite)
+        case .differentSitePlan: return (otherPlan(plan).productIdentifier!, otherSite)
         }
     }
 
