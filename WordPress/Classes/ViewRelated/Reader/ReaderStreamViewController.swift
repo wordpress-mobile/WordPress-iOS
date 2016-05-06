@@ -336,7 +336,7 @@ import WordPressComAnalytics
         let boxView = WPAnimatedBox()
         resultsStatusView.accessoryView = boxView
         displayResultsStatus()
-        boxView.prepareAndAnimateAfterDelay(0.3)
+        boxView.animateAfterDelay(0.3)
     }
 
     func displayNoResultsView() {

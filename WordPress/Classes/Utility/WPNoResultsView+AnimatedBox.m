@@ -19,7 +19,6 @@
 
     [view addSubview:noResultsView];
     
-    [animatedBox prepareAnimation:NO];
     [animatedBox animate];
 }
 
