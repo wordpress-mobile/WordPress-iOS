@@ -1,4 +1,4 @@
-#import "MenuItemsStackableView.h"
+#import "MenuItemAbstractView.h"
 
 typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
     MenuItemInsertionOrderAbove = 1,
@@ -8,9 +8,9 @@ typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
 
 @protocol MenuItemInsertionViewDelegate;
 
-@interface MenuItemInsertionView : MenuItemsStackableView
+@interface MenuItemInsertionView : MenuItemAbstractView
 
-@property (nonatomic, weak) id <MenuItemsStackableViewDelegate, MenuItemInsertionViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemAbstractViewDelegate, MenuItemInsertionViewDelegate> delegate;
 
 /**
  The type of insertion the view represents.
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
 
 @end
 
-@protocol MenuItemInsertionViewDelegate <MenuItemsStackableViewDelegate>
+@protocol MenuItemInsertionViewDelegate <MenuItemAbstractViewDelegate>
 
 /**
  User interaction detected for selecting the insertion.
