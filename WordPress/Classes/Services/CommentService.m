@@ -996,7 +996,7 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
         if (blog.restApi) {
             remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
         }
-    } else {
+    } else if (blog.api) {
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
     return remote;
