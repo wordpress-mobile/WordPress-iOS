@@ -252,7 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (blog.restApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
         }
-    } else {
+    } else if (blog.api) {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
     return nil;
