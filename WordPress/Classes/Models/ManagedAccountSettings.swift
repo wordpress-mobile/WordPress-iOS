@@ -39,11 +39,12 @@ class ManagedAccountSettings: NSManagedObject {
             self.displayName = value
         case .AboutMe(let value):
             self.aboutMe = value
-        case .EmailPendingAddress(let value):
+        case .Email(let value):
             self.emailPendingAddress = value
-            self.emailPendingChange = (value != nil)
-        case .EmailPendingChange(let value):
-            self.emailPendingChange = value
+            self.emailPendingChange = true
+        case .EmailRevertPendingChange:
+            self.emailPendingAddress = nil
+            self.emailPendingChange = false
         case .PrimarySite(let value):
             self.primarySiteID = value
         case .WebAddress(let value):
@@ -65,10 +66,10 @@ class ManagedAccountSettings: NSManagedObject {
             return .DisplayName(self.displayName)
         case .AboutMe(_):
             return .AboutMe(self.aboutMe)
-        case .EmailPendingAddress(_):
-            return .EmailPendingAddress(nil)
-        case .EmailPendingChange(_):
-            return .EmailPendingChange(self.emailPendingChange)
+        case .Email(_):
+            return .EmailRevertPendingChange
+        case .EmailRevertPendingChange(_):
+            return .Email(self.emailPendingAddress ?? String())
         case .PrimarySite(_):
             return .PrimarySite(self.primarySiteID.integerValue)
         case .WebAddress(_):
@@ -84,8 +85,8 @@ enum AccountSettingsChange {
     case LastName(String)
     case DisplayName(String)
     case AboutMe(String)
-    case EmailPendingAddress(String?)
-    case EmailPendingChange(Bool)
+    case Email(String)
+    case EmailRevertPendingChange
     case PrimarySite(Int)
     case WebAddress(String)
     case Language(String)
@@ -100,10 +101,10 @@ enum AccountSettingsChange {
             return value
         case .AboutMe(let value):
             return value
-        case .EmailPendingAddress(let value):
-            return value ?? String()
-        case .EmailPendingChange(let value):
-            return String(value)
+        case .Email(let value):
+            return value
+        case .EmailRevertPendingChange:
+            return String(false)
         case .PrimarySite(let value):
             return String(value)
         case .WebAddress(let value):
