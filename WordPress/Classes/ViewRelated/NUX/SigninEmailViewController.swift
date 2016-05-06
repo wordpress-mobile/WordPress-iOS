@@ -95,7 +95,7 @@ import WordPressShared
     func localizeControls() {
         emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
 
-        let submitButtonTitle = NSLocalizedString("NEXT", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
         submitButton.setTitle(submitButtonTitle, forState: .Normal)
         submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
 
