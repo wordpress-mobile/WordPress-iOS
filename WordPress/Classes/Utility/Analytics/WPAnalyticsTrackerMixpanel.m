@@ -498,13 +498,13 @@ NSString *const SessionCount = @"session_count";
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
         case WPAnalyticsStatGravatarCropped:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Gravatar - Cropped"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Cropped"];
             break;
         case WPAnalyticsStatGravatarTapped:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Gravatar - Pressed"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Tapped Gravatar"];
             break;
         case WPAnalyticsStatGravatarUploaded:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Gravatar - Uploaded"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Uploaded"];
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
