@@ -587,7 +587,7 @@ static NSString * const MediaDirectory = @"Media";
         if (blog.restApi) {
             remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
         }
-    } else {
+    } else if (blog.api) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
         remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
     }
