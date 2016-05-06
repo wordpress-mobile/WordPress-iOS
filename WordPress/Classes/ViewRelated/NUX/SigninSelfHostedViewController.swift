@@ -42,6 +42,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
     }
@@ -74,6 +75,23 @@ import WordPressShared
 
 
     // MARK: Setup and Configuration
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        usernameField.placeholder = NSLocalizedString("Username / Email", comment: "Username placeholder")
+        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        siteURLField.placeholder = NSLocalizedString("Site Address (URL)", comment: "Site Address placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Add Site", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Normal)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Highlighted)
+    }
 
 
     /// Sets up a 1Password button if 1Password is available.
