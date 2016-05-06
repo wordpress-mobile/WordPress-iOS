@@ -66,7 +66,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (id)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
+    self = [storyboard instantiateInitialViewController];
     if (self) {
         
         // using a new child context to keep local changes disacardable
@@ -88,9 +89,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    [super loadView];
+    [super viewDidLoad];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
@@ -128,14 +132,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         label.hidden = YES;
         _itemsLoadingLabel = label;
     }
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     
     [self syncWithBlogMenus];
 }

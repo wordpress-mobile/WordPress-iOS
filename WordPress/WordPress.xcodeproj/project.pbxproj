@@ -81,7 +81,7 @@
 		08D345731CD8004C00358E8C /* MenuItemPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345671CD8004C00358E8C /* MenuItemPostsViewController.m */; };
 		08D345741CD8004C00358E8C /* MenuItemTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345691CD8004C00358E8C /* MenuItemTagsViewController.m */; };
 		08D345751CD8004C00358E8C /* MenuItemSourceResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3456B1CD8004C00358E8C /* MenuItemSourceResultsViewController.m */; };
-		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
+		08D499671CDD20450004809A /* Menus.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08D499661CDD20450004809A /* Menus.storyboard */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
 		08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */; };
 		08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */; };
@@ -1000,8 +1000,8 @@
 		08D345691CD8004C00358E8C /* MenuItemTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTagsViewController.m; sourceTree = "<group>"; };
 		08D3456A1CD8004C00358E8C /* MenuItemSourceResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceResultsViewController.h; sourceTree = "<group>"; };
 		08D3456B1CD8004C00358E8C /* MenuItemSourceResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceResultsViewController.m; sourceTree = "<group>"; };
+		08D499661CDD20450004809A /* Menus.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menus.storyboard; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
-		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
 		08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Menu+ViewDesign.h"; sourceTree = "<group>"; };
 		08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Menu+ViewDesign.m"; sourceTree = "<group>"; };
 		08D9784D1CD2AF7D0054F19A /* MenuItem+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MenuItem+ViewDesign.h"; sourceTree = "<group>"; };
@@ -2424,7 +2424,7 @@
 			children = (
 				086E1FDE1BBB35D2002D86CA /* MenusViewController.h */,
 				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
-				08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */,
+				08D499661CDD20450004809A /* Menus.storyboard */,
 				081D83FD1C1A194500C7BF40 /* MenuItemEditingViewController.h */,
 				081D83FE1C1A194500C7BF40 /* MenuItemEditingViewController.m */,
 				08D0C5501CDBBC7E001E994A /* MenuItemEditing.storyboard */,
@@ -4952,6 +4952,7 @@
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
+				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
 				93C3C2571CAB031E0092F837 /* Info-Internal.plist in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
@@ -4977,7 +4978,6 @@
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
 				B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */,
-				08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
