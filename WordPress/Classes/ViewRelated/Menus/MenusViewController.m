@@ -37,7 +37,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
 @property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
-@property (weak, nonatomic) IBOutlet MenuItemsStackView *itemsView;
+@property (weak, nonatomic) MenuItemsStackView *itemsView;
 
 @property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
 @property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
@@ -143,6 +143,15 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [label.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-MenusDesignDefaultContentSpacing].active = YES;
     label.hidden = YES;
     _itemsLoadingLabel = label;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ([[segue destinationViewController] isKindOfClass:[MenuItemsStackView class]]) {
+        self.itemsView = segue.destinationViewController;
+    }
 }
 
 - (void)viewDidLayoutSubviews

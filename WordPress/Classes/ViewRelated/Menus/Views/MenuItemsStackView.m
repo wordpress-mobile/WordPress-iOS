@@ -11,9 +11,8 @@
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *itemViews;
-
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *insertionViews;
 @property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
 @property (nonatomic, assign) BOOL isEditingForItemViewInsertion;
@@ -32,21 +31,37 @@
 
 @implementation MenuItemsStackView
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
     
-    self.backgroundColor = [UIColor whiteColor];
-    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-    self.layer.borderWidth = MenusDesignStrokeWidth;
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.view.layer.borderWidth = MenusDesignStrokeWidth;
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.stackView.alignment = UIStackViewAlignmentTop;
-    self.stackView.spacing = 0.0;
+    [self setupStackView];
     
     self.touchesBeganLocation = CGPointZero;
     self.touchesMovedLocation = CGPointZero;
+}
+
+- (void)setupStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.distribution = UIStackViewDistributionEqualSpacing;
+    stackView.alignment = UIStackViewAlignmentTop;
+    stackView.spacing = 0.0;
+    [self.view addSubview:stackView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+                                              ]];
+    _stackView = stackView;
 }
 
 - (void)setMenu:(Menu *)menu
@@ -123,7 +138,7 @@
     heightConstraint.active = YES;
     [self.itemViews addObject:itemView];
     [self.stackView addArrangedSubview:itemView];
-    [itemView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+    [itemView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
     
     MenuItem *parentItem = item.parent;
     while (parentItem) {
@@ -314,7 +329,7 @@
 
 - (void)updateWithTouchesStarted:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    CGPoint location = [[touches anyObject] locationInView:self];
+    CGPoint location = [[touches anyObject] locationInView:self.view];
 
     self.touchesBeganLocation = location;
     
@@ -340,7 +355,7 @@
 
 - (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    CGPoint location = [[touches anyObject] locationInView:self];
+    CGPoint location = [[touches anyObject] locationInView:self.view];
     
     CGPoint startLocation = self.touchesBeganLocation;
     
@@ -432,7 +447,7 @@
         return;
     }
     
-    const CGPoint touchPoint = [[touches anyObject] locationInView:self];
+    const CGPoint touchPoint = [[touches anyObject] locationInView:self.view];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
     MenuItem *selectedItem = selectedItemView.item;
     BOOL modelUpdated = NO;
@@ -725,7 +740,7 @@
         orderingView.userInteractionEnabled = NO;
         orderingView.hidden = YES;
         
-        [self addSubview:orderingView];
+        [self.view addSubview:orderingView];
         [NSLayoutConstraint activateConstraints:@[
                                                   [orderingView.topAnchor constraintEqualToAnchor:self.stackView.topAnchor],
                                                   [orderingView.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor],
