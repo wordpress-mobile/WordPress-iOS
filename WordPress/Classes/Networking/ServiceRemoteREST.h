@@ -7,6 +7,7 @@ typedef enum
 } ServiceRemoteRESTApiVersion;
 
 @class WordPressComApi;
+@class WordPressComRestApi;
 
 /**
  *  @class  ServiceRemoteREST
@@ -20,6 +21,11 @@ typedef enum
 @property (nonatomic, strong, readonly) WordPressComApi *api;
 
 /**
+ *  @brief      The API object to use for communications.
+ */
+@property (nonatomic, strong, readonly) WordPressComRestApi *comRestApi;
+
+/**
  *  @brief      Designated initializer.
  *
  *  @param      api     The API to use for communitcation.  Cannot be nil.
@@ -27,6 +33,15 @@ typedef enum
  *  @returns    The initialized object.
  */
 - (id)initWithApi:(WordPressComApi *)api;
+
+/**
+ *  @brief      Designated initializer.
+ *
+ *  @param      api     The API to use for communication.  Cannot be nil.
+ *
+ *  @returns    The initialized object.
+ */
+- (id)initWithComRestApi:(WordPressComRestApi *)api;
 
 #pragma mark - Request URL construction
 

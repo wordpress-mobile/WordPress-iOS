@@ -594,6 +594,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return nil;
 }
 
+- (WordPressComRestApi *)comRestApi
+{
+    if (self.account) {
+        return self.account.wordPressComRestApi;
+    } else if ([self jetpackRESTSupported]) {
+        return self.jetpackAccount.wordPressComRestApi;
+    }
+    return nil;
+}
+
 /*
  2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
  It works like restApi, but bypasses Jetpack REST checks, since we always want to use rest for Stats.
