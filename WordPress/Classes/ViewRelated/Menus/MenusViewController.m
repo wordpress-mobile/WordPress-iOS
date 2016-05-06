@@ -8,7 +8,7 @@
 #import "WPFontManager.h"
 #import "MenusHeaderView.h"
 #import "MenuDetailsView.h"
-#import "MenuItemsStackView.h"
+#import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "WPNoResultsView.h"
 #import "Menu+ViewDesign.h"
@@ -31,13 +31,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @end
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsStackViewDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
 @property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
-@property (weak, nonatomic) MenuItemsStackView *itemsView;
+@property (weak, nonatomic) MenuItemsViewController *itemsView;
 
 @property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
 @property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
@@ -149,7 +149,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [super prepareForSegue:segue sender:sender];
     
-    if ([[segue destinationViewController] isKindOfClass:[MenuItemsStackView class]]) {
+    if ([[segue destinationViewController] isKindOfClass:[MenuItemsViewController class]]) {
         self.itemsView = segue.destinationViewController;
     }
 }
@@ -700,27 +700,27 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark - MenuItemsStackViewDelegate
+#pragma mark - MenuItemsViewControllerDelegate
 
-- (void)itemsView:(MenuItemsStackView *)itemsView createdNewItemForEditing:(MenuItem *)item
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController createdNewItemForEditing:(MenuItem *)item
 {
     MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     controller.onSelectedToCancel = controller.onSelectedToTrash;
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController selectedItemForEditing:(MenuItem *)item
 {
     MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)itemsView:(MenuItemsStackView *)itemsView didUpdateMenuItemsOrdering:(Menu *)menu
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController didUpdateMenuItemsOrdering:(Menu *)menu
 {
     [self setNeedsSave:YES forMenu:menu significantChanges:YES];
 }
 
-- (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController requiresScrollingToCenterView:(UIView *)viewForScrolling
 {
     CGRect visibleRect = [self.scrollView convertRect:viewForScrolling.frame fromView:viewForScrolling.superview];
     visibleRect.origin.y -= (self.scrollView.frame.size.height - visibleRect.size.height) / 2.0;
@@ -728,12 +728,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self.scrollView scrollRectToVisible:visibleRect animated:YES];
 }
 
-- (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController prefersScrollingEnabled:(BOOL)enabled
 {
     self.scrollView.scrollEnabled = enabled;
 }
 
-- (void)itemsView:(MenuItemsStackView *)itemsView prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view
+- (void)itemsViewController:(MenuItemsViewController *)itemsViewController prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view
 {
     // adjust the scrollView offset to ensure this view is easily viewable
     const CGFloat padding = 10.0;
@@ -764,7 +764,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
-- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsStackView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
+- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsViewController *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
 {
     CGPoint offset = self.scrollView.contentOffset;
     offset.y += updatedFocusRect.origin.y - focusedRect.origin.y;

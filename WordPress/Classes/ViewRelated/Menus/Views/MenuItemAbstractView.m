@@ -1,4 +1,4 @@
-#import "MenuItemsStackableView.h"
+#import "MenuItemAbstractView.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "MenuItem+ViewDesign.h"
@@ -20,14 +20,14 @@
 
 CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
-@interface MenuItemsStackableView ()
+@interface MenuItemAbstractView ()
 
 @property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 
 @end
 
-@implementation MenuItemsStackableView
+@implementation MenuItemAbstractView
 
 - (id)init
 {
@@ -156,7 +156,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         self.contentView.backgroundColor = [self contentViewBackgroundColor];
         [self.contentView setNeedsDisplay];
         
-        [self.delegate stackableItemView:self highlighted:highlighted];
+        [self.delegate itemView:self highlighted:highlighted];
     }
 }
 

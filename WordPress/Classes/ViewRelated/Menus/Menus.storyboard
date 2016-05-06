@@ -275,10 +275,14 @@
             </objects>
             <point key="canvasLocation" x="469" y="297"/>
         </scene>
-        <!--Menu Items Stack View-->
+        <!--Menu Items View Controller-->
         <scene sceneID="RfW-I7-bO0">
             <objects>
-                <viewController id="RgC-zH-1f6" customClass="MenuItemsStackView" sceneMemberID="viewController">
+                <viewController id="RgC-zH-1f6" customClass="MenuItemsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="U9I-b9-tlR"/>
+                        <viewControllerLayoutGuide type="bottom" id="iSi-Rl-mAC"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bdk-zs-oZO">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="471"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

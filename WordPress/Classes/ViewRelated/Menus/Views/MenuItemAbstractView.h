@@ -10,11 +10,11 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 @end
 
-@protocol MenuItemsStackableViewDelegate;
+@protocol MenuItemAbstractViewDelegate;
 
-@interface MenuItemsStackableView : UIView <MenuItemDrawingViewDelegate>
+@interface MenuItemAbstractView : UIView <MenuItemDrawingViewDelegate>
 
-@property (nonatomic, weak) id <MenuItemsStackableViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemAbstractViewDelegate> delegate;
 
 /**
  Content view in which most of the drawing and MenuItem content is setup in.
@@ -64,12 +64,12 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 /**
  Tracker for a stackableView appearing before this view in a stack.
 */
-@property (nonatomic, weak) MenuItemsStackableView *previous;
+@property (nonatomic, weak) MenuItemAbstractView *previous;
 
 /**
  Tracker for a stackableView appearing after this view in a stack.
  */
-@property (nonatomic, weak) MenuItemsStackableView *next;
+@property (nonatomic, weak) MenuItemAbstractView *next;
 
 /**
  Add an accessory button to the accessoryStackView.
@@ -98,10 +98,10 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 @end
 
-@protocol MenuItemsStackableViewDelegate <NSObject>
+@protocol MenuItemAbstractViewDelegate <NSObject>
 
 /**
  The highlighted state changed for the stackableView.
  */
-- (void)stackableItemView:(MenuItemsStackableView *)stackableView highlighted:(BOOL)highlighted;
+- (void)itemView:(MenuItemAbstractView *)itemView highlighted:(BOOL)highlighted;
 @end
