@@ -65,7 +65,7 @@ class StoreCoordinatorTests: XCTestCase {
     func testCannotPurchaseWhenPurchaseAlreadyPending() {
         let payment: PendingPayment = (premium.id, testProduct, testSite)
         let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
-        let product = productForPlan(TestPlans.business.plan)
+        let product = TestPlans.business.product
 
         // And now attempt a second purchase
         XCTAssertThrowsError(try coordinator.purchasePlan(business, product: product, forSite: testSite))
@@ -73,7 +73,7 @@ class StoreCoordinatorTests: XCTestCase {
     
     func testCanMakePaymentWhenNoPaymentIsPending() {
         let coordinator = storeCoordinator(paymentsEnabled: true, pending: nil)
-        let product = productForPlan(TestPlans.business.plan)
+        let product = TestPlans.business.product
 
         do {
             try coordinator.purchasePlan(business, product: product, forSite: otherSite)
@@ -100,9 +100,8 @@ class StoreCoordinatorTests: XCTestCase {
         let coordinator = StoreCoordinator(store: store)
         
         if let pending = pending,
-            let plan = TestPlans.allPlans.filter({ $0.id == pending.planID }).first {
-            let product = productForPlan(plan)
-            try! coordinator.purchasePlan(plan, product: product, forSite: pending.siteID)
+            let planAndProduct = TestPlans.allPlansAndProducts.filter({ $0.0.id == pending.planID }).first {
+            try! coordinator.purchasePlan(planAndProduct.0, product: planAndProduct.1, forSite: pending.siteID)
         }
         
         return coordinator
@@ -115,14 +114,6 @@ class StoreCoordinatorTests: XCTestCase {
         defaults.removeObjectForKey("PendingPaymentSiteIDUserDefaultsKey")
     }
     
-    private func productForPlan(plan: Plan) -> MockProduct {
-        return MockProduct(localizedDescription: plan.tagline,
-                           localizedTitle: plan.title,
-                           price: 299.99,
-                           priceLocale: NSLocale.currentLocale(),
-                           productIdentifier: plan.productIdentifier!)
-    }
-
     private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
         switch state {
         case .none: return nil
