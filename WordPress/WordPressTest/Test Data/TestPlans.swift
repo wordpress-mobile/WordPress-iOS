@@ -43,12 +43,18 @@ enum TestPlans {
         }
     }
 
-    static let allPlans = {
-        return [
-            TestPlans.free,
-            TestPlans.premium,
-            TestPlans.business
-            ]
-            .map({ $0.plan })
-    }()
+    var product: MockProduct {
+        let plan = self.plan
+        return MockProduct(localizedDescription: plan.tagline,
+                           localizedTitle: plan.title,
+                           price: 299.99,
+                           priceLocale: NSLocale(localeIdentifier: "en-US"),
+                           productIdentifier: plan.productIdentifier ?? "")
+    }
+    
+    private static let allTestPlans = [ TestPlans.free, TestPlans.premium, TestPlans.business ]
+    
+    static let allPlans = allTestPlans.map({ $0.plan })
+    static let allProducts = allTestPlans.map({ $0.product })
+    static let allPlansAndProducts = zip(allPlans, allProducts)
 }
