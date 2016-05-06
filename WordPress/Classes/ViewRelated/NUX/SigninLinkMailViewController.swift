@@ -54,7 +54,7 @@ class SigninLinkMailViewController : NUXAbstractViewController
         let format = NSLocalizedString("We've sent your link to %@.", comment: "Short instructional text. The %@ is a placeholder for the user's email address.")
         label.text = NSString(format: format, loginFields.username) as String
 
-        let openMailButtonTitle = NSLocalizedString("OPEN MAIL", comment: "Title of a button. The text should be uppercase.  Clicking opens the mail app in the user's iOS device.").localizedUppercaseString
+        let openMailButtonTitle = NSLocalizedString("Open Mail", comment: "Title of a button. The text should be uppercase.  Clicking opens the mail app in the user's iOS device.").localizedUppercaseString
         openMailButton.setTitle(openMailButtonTitle, forState: .Normal)
         openMailButton.setTitle(openMailButtonTitle, forState: .Highlighted)
 
