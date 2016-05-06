@@ -39,11 +39,8 @@
 
 - (void)testThatWordPressBlogSupportsThemeServices
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
-    
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog restApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(@1);
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
     
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     
@@ -57,9 +54,8 @@
 - (void)testThatSelfHostedBlogDoesNotSupportThemeServices
 {    
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog restApi]).andReturn(nil);
-    OCMStub([blog dotComID]).andReturn(nil);
-    
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(NO);
+
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     
     ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
@@ -82,7 +78,8 @@
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
-    
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg any]
@@ -116,7 +113,8 @@
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
-    
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg any]
@@ -236,7 +234,8 @@
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
-    
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
              success:[OCMArg any]
@@ -277,7 +276,8 @@
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
-    
+    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
               success:[OCMArg any]
