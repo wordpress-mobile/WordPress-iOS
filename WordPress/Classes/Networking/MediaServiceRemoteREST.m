@@ -3,6 +3,7 @@
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
 #import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
@@ -18,12 +19,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary * parameters = @{};
     
-    [self.api GET:requestUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.comRestApi GET:requestUrl parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
             success([self remoteMediaFromJSONDictionary:response]);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *response) {
         if (failure) {
             failure(error);
         }
@@ -57,9 +58,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.comRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *response) {
               NSArray *mediaItems = responseObject[@"media"];
               NSArray *pageItems = [self remoteMediaFromJSONArray:mediaItems];
               if (pageItems.count) {
@@ -77,7 +78,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                   success([NSArray arrayWithArray:media]);
               }
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSError *error, NSHTTPURLResponse *response) {
               if (failure) {
                   failure(error);
               }
@@ -93,16 +94,16 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary *parameters = @{ @"number" : @1 };
     
-    [self.api GET:requestUrl
+    [self.comRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *response) {
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
               NSNumber *count = [jsonDictionary numberForKey:@"found"];
               if (success) {
                   success([count intValue]);
               }
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSError *error, NSHTTPURLResponse *response) {
               if (failure) {
                   failure(error);
               }
@@ -198,14 +199,14 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     NSDictionary *parameters = [self parametersFromRemoteMedia:media];
 
-    [self.api POST:requestUrl
+    [self.comRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *response) {
                RemoteMedia *media = [self remoteMediaFromJSONDictionary:responseObject];
                if (success) {
                    success(media);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *response) {
                if (failure) {
                    failure(error);
                }

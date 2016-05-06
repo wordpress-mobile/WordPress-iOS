@@ -6,6 +6,7 @@
 @class BlogSettings;
 @class WPAccount;
 @class WordPressComApi;
+@class WordPressComRestApi;
 @class WPXMLRPCClient;
 
 extern NSString * const PostFormatStandard;
@@ -191,5 +192,17 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComApi object if available
  */
 - (WordPressComApi *)restApi;
+
+/**
+ Returns a REST API client if available
+
+ If the blog is a WordPress.com one or it has Jetpack it will return a REST API
+ client. Otherwise, the XML-RPC API should be used.
+
+ @warning this method doesn't know if a Jetpack blog has the JSON API disabled
+
+ @return a WordPressComRestApi object if available
+ */
+- (WordPressComRestApi *)comRestApi;
 
 @end
