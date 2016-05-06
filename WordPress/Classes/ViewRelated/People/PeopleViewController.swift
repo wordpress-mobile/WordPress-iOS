@@ -95,7 +95,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - Helpers
     
     @IBAction func refresh() {
-        let service = PeopleService(blog: blog!)
+        guard let blog = blog,
+            service = PeopleService(blog: blog) else {
+                return
+        }
         service.refreshTeam { [weak self] _ in
             self?.refreshControl?.endRefreshing()
         }
