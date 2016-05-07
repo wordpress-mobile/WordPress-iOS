@@ -146,7 +146,7 @@ import WordPressShared
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.editingAccessoryType = .DisclosureIndicator
             cell.textLabel?.text = self.labelTitle
-            cell.detailTextLabel?.text = self.blog.settings!.sharingLabel
+            cell.detailTextLabel!.text = self.blog.settings!.sharingLabel
         }
         section.rows = [row]
         return section
@@ -165,7 +165,7 @@ import WordPressShared
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.editingAccessoryType = .DisclosureIndicator
             cell.textLabel?.text = self.buttonStyleTitle
-            cell.detailTextLabel?.text = self.buttonStyles[self.blog.settings!.sharingButtonStyle]
+            cell.detailTextLabel!.text = self.buttonStyles[self.blog.settings!.sharingButtonStyle]
         }
         section.rows = [row]
         return section
@@ -189,7 +189,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Show Reblog button", comment:"Title for the `show reblog button` setting")
                 switchCell.on = !self.blog.settings!.sharingDisabledReblogs
                 switchCell.onChange = { newValue in
-                    self.blog.settings?.sharingDisabledReblogs = !newValue
+                    self.blog.settings!.sharingDisabledReblogs = !newValue
                     self.saveBlogSettingsChanges(false)
 
                     let properties = [
@@ -211,7 +211,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Show Like button", comment:"Title for the `show like button` setting")
                 switchCell.on = !self.blog.settings!.sharingDisabledLikes
                 switchCell.onChange = { newValue in
-                    self.blog.settings?.sharingDisabledLikes = !newValue
+                    self.blog.settings!.sharingDisabledLikes = !newValue
                     self.saveBlogSettingsChanges(false)
                 }
             }
@@ -238,7 +238,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Comment Likes", comment:"Title for the `comment likes` setting")
                 switchCell.on = self.blog.settings!.sharingCommentLikesEnabled
                 switchCell.onChange = { newValue in
-                    self.blog.settings?.sharingCommentLikesEnabled = newValue
+                    self.blog.settings!.sharingCommentLikesEnabled = newValue
                     self.saveBlogSettingsChanges(false)
                 }
             }
@@ -702,7 +702,7 @@ import WordPressShared
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
-            self.blog.settings?.sharingLabel = value
+            self.blog.settings!.sharingLabel = value
             self.saveBlogSettingsChanges(true)
         }
 
@@ -738,7 +738,7 @@ import WordPressShared
                     return
                 }
 
-                self.blog.settings?.sharingButtonStyle = str
+                self.blog.settings!.sharingButtonStyle = str
                 self.saveBlogSettingsChanges(true)
             }
 
