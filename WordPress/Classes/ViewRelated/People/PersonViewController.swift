@@ -134,7 +134,7 @@ class PersonViewController : UITableViewController {
     
     // MARK: - Private Properties
     private var isSomeoneElse : Bool {
-        return blog.account.userID != person.ID
+        return blog.account!.userID != person.ID
     }
     
     private var canPromote : Bool {
