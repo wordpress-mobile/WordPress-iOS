@@ -380,7 +380,7 @@ import WordPressShared
                 success: successBlock,
                 failure: failureBlock)
 
-            self.displayLoginMessage(NSLocalizedString("Validating...", comment: "Short status message shown to the user when validating a new blog's name."))
+            self.displayLoginMessage(NSLocalizedString("Validating", comment: "Short status message shown to the user when validating a new blog's name."))
         })
         return asyncOp
     }
@@ -414,7 +414,7 @@ import WordPressShared
                 success: successBlock,
                 failure: failureBlock)
 
-            self.displayLoginMessage(NSLocalizedString("Creating account...", comment: "Brief status message shown to the user when creating a new wpcom account."))
+            self.displayLoginMessage(NSLocalizedString("Creating account", comment: "Brief status message shown to the user when creating a new wpcom account."))
         })
         return asyncOp
     }
@@ -465,7 +465,7 @@ import WordPressShared
                 success: successBlock,
                 failure: failureBlock)
 
-            self.displayLoginMessage(NSLocalizedString("Signing in...", comment: "Brief status message shown when signing into a newly created blog and account."))
+            self.displayLoginMessage(NSLocalizedString("Authenticating", comment: "Brief status message shown when signing into a newly created blog and account."))
         })
         return asyncOp
     }
@@ -521,7 +521,7 @@ import WordPressShared
                 success: successBlock,
                 failure: failureBlock)
 
-            self.displayLoginMessage(NSLocalizedString("Creating site...", comment: "Short status message shown while a new site is being created for a new user."))
+            self.displayLoginMessage(NSLocalizedString("Creating site", comment: "Short status message shown while a new site is being created for a new user."))
         })
         return asyncOp
     }
