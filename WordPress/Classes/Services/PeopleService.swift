@@ -12,7 +12,7 @@ struct PeopleService {
         }
 
         remote = PeopleRemote(api: api)
-        siteID = blog.dotComID as Int
+        siteID = blog.dotComID as! Int
     }
 
     func refreshTeam(completion: (Bool) -> Void) {
