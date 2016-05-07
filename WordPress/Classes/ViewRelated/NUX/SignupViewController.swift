@@ -544,7 +544,7 @@ import WordPressShared
             xmlrpc = blogOptions[XMLRPCKey] as? String,
             blogURL = blogOptions[URLKey] as? String,
             stringID = blogOptions[BlogIDKey] as? String,
-            dotComID = Int64(stringID)
+            dotComID = Int(stringID)
         else {
             DDLogSwift.logError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
             assertionFailure()
@@ -564,7 +564,7 @@ import WordPressShared
             blog.xmlrpc = xmlrpc
         }
 
-        blog.dotComID = NSNumber(longLong: dotComID)
+        blog.dotComID = NSNumber(integer: dotComID)
         blog.url = blogURL
         blog.settings.name = blogName.stringByDecodingXMLCharacters()
 
