@@ -27,7 +27,7 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.deleteSite(blog.dotComID,
+        remote.deleteSite(blog.dotComID!,
             success: {
                 self.managedObjectContext.performBlock {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
@@ -56,7 +56,7 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.exportContent(blog.dotComID,
+        remote.exportContent(blog.dotComID!,
             success: {
                 success?()
             },
@@ -76,7 +76,7 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.getActivePurchases(blog.dotComID,
+        remote.getActivePurchases(blog.dotComID!,
             success: { purchases in
                 success?(purchases)
             },
