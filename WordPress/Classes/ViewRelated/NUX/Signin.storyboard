@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -190,7 +190,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93K-a0-Rgt">
-                                        <rect key="frame" x="0.0" y="55" width="600" height="351"/>
+                                        <rect key="frame" x="0.0" y="53" width="600" height="353"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-XJ-7yJ">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="59"/>
@@ -206,7 +206,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-Vw-DFk">
-                                                <rect key="frame" x="0.0" y="93" width="600" height="176"/>
+                                                <rect key="frame" x="0.0" y="95" width="600" height="176"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="It3-g0-cxp" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -273,13 +273,13 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=".wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHQ-iH-Ffv">
-                                                <rect key="frame" x="490" y="238" width="102" height="17"/>
+                                                <rect key="frame" x="490" y="240" width="102" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="237" y="285" width="125" height="34"/>
+                                                <rect key="frame" x="237" y="287" width="125" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="K2q-BG-LM9"/>
                                                 </constraints>
@@ -290,7 +290,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unf-Tr-tHZ">
-                                                <rect key="frame" x="283" y="335" width="33" height="16"/>
+                                                <rect key="frame" x="283" y="337" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -311,7 +311,7 @@
                                             <constraint firstItem="Unf-Tr-tHZ" firstAttribute="top" secondItem="b3A-gQ-xPp" secondAttribute="bottom" constant="16" id="Tqd-Hm-5NC"/>
                                             <constraint firstItem="tdS-XJ-7yJ" firstAttribute="centerX" secondItem="93K-a0-Rgt" secondAttribute="centerX" id="ZmR-Ak-CIs"/>
                                             <constraint firstAttribute="trailing" secondItem="yx4-Vw-DFk" secondAttribute="trailing" id="azV-G7-mF1"/>
-                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" constant="10" id="f4f-9M-wDB"/>
+                                            <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" secondItem="onu-DI-gxe" secondAttribute="bottom" constant="12" id="f4f-9M-wDB"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="leading" secondItem="93K-a0-Rgt" secondAttribute="leading" id="f7s-yd-MIk"/>
                                             <constraint firstItem="yx4-Vw-DFk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="93K-a0-Rgt" secondAttribute="top" id="gdJ-IJ-euW"/>
                                             <constraint firstItem="BHQ-iH-Ffv" firstAttribute="centerY" secondItem="HNy-PM-AgS" secondAttribute="centerY" id="p39-vz-OOj"/>
