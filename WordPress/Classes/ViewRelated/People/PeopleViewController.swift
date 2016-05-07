@@ -8,8 +8,13 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public var blog: Blog?
     
     private lazy var resultsController: NSFetchedResultsController = {
+        
+        guard let dotComID = self.blog?.dotComID else {
+            preconditionFailure("Failed to obtain a dotComID.")
+        }
+        
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID)
+        request.predicate = NSPredicate(format: "siteID = %@", dotComID)
         // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         let context = ContextManager.sharedInstance().mainContext

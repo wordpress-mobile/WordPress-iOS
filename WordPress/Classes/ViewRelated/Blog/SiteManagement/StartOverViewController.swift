@@ -92,10 +92,13 @@ public class StartOverViewController: UITableViewController
 
         WPAppAnalytics.track(.SiteSettingsStartOverContactSupportClicked, withBlog: blog)
         if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account)
             
-            let metadata = helpshiftMetadata(blog)
-            HelpshiftSupport.showConversation(self, withOptions: metadata)
+            if let account = blog.wpComAccount() {
+                setupHelpshift(account)
+                
+                let metadata = helpshiftMetadata(blog)
+                HelpshiftSupport.showConversation(self, withOptions: metadata)
+            }
         } else {
             if let contact = NSURL(string: "https://support.wordpress.com/contact/") {
                 UIApplication.sharedApplication().openURL(contact)
