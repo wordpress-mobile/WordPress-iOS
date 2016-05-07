@@ -63,10 +63,16 @@ public class SharingService : LocalCoreDataService
     ///
     public func syncPublicizeConnectionsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
+        
+        guard let dotComID = blog.dotComID else {
+            preconditionFailure("Expected a dotComID.")
+        }
+        
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
+        
+        remote.getPublicizeConnections(dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
 
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
@@ -93,11 +99,17 @@ public class SharingService : LocalCoreDataService
         success: (PublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?)
     {
-        let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        let dotComID = blog.dotComID
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID")
+            return
+        }
+        
+        let blogObjectID = blog.objectID
+        
         remote.createPublicizeConnection(dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
@@ -546,12 +558,18 @@ public class SharingService : LocalCoreDataService
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
     public func syncSharingButtonsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
-        let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
         }
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID")
+            return
+        }
+        
+        let blogObjectID = blog.objectID
 
-        remote.getSharingButtonsForSite(blog.dotComID,
+        remote.getSharingButtonsForSite(dotComID,
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
@@ -570,12 +588,18 @@ public class SharingService : LocalCoreDataService
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
     public func updateSharingButtonsForBlog(blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: (NSError! -> Void)?) {
-
-        let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.updateSharingButtonsForSite(blog.dotComID,
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID")
+            return
+        }
+        
+        let blogObjectID = blog.objectID
+        
+        remote.updateSharingButtonsForSite(dotComID,
             sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)

@@ -146,7 +146,7 @@ import WordPressShared
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.editingAccessoryType = .DisclosureIndicator
             cell.textLabel?.text = self.labelTitle
-            cell.detailTextLabel?.text = self.blog.settings.sharingLabel
+            cell.detailTextLabel?.text = self.blog.settings?.sharingLabel
         }
         section.rows = [row]
         return section

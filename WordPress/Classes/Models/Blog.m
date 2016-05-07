@@ -657,4 +657,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return optionValue;
 }
 
+#pragma mark - Account info
+
+- (nullable WPAccount *)wpComAccount
+{
+    return self.account ? self.account : self.jetpackAccount;
+}
+
 @end

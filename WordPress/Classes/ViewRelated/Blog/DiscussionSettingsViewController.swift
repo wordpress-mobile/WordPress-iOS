@@ -601,7 +601,12 @@ public class DiscussionSettingsViewController : UITableViewController
     
     // MARK: - Computed Properties
     private var settings : BlogSettings {
-        return blog.settings
+        
+        guard let settings = blog.settings else {
+            preconditionFailure("Failed to obtain the blog settings.")
+        }
+        
+        return settings
     }
     
     // MARK: - Typealiases

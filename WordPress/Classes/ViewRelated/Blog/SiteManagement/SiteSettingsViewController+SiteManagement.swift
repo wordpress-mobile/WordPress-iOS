@@ -10,19 +10,22 @@ public extension SiteSettingsViewController
     ///
     public func confirmExportContent() {
         tableView.deselectSelectedRowWithAnimation(true)
-
-        WPAppAnalytics.track(.SiteSettingsExportSiteAccessed, withBlog: self.blog)
-        presentViewController(confirmExportController(), animated: true, completion: nil)
+        
+        if let email = blog.wpComAccount()?.email {
+            WPAppAnalytics.track(.SiteSettingsExportSiteAccessed, withBlog: self.blog)
+            presentViewController(confirmExportController(email), animated: true, completion: nil)
+        }
     }
 
     /// Creates confirmation alert for Export Content
     ///
     /// - Returns: UIAlertController
     ///
-    private func confirmExportController() -> UIAlertController {
+    private func confirmExportController(email: String) -> UIAlertController {
+        
         let confirmTitle = NSLocalizedString("Export Your Content", comment: "Title of Export Content confirmation alert")
         let messageFormat = NSLocalizedString("Your posts, pages, and settings will be mailed to you at %@.", comment: "Message of Export Content confirmation alert; substitution is user's email address")
-        let message = String(format: messageFormat, blog.account.email)
+        let message = String(format: messageFormat, email)
         let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .Alert)
         
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")

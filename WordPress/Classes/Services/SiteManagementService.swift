@@ -27,7 +27,13 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.deleteSite(blog.dotComID,
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID.")
+            return
+        }
+        
+        remote.deleteSite(dotComID,
             success: {
                 self.managedObjectContext.performBlock {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
@@ -56,7 +62,13 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.exportContent(blog.dotComID,
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID.")
+            return
+        }
+        
+        remote.exportContent(dotComID,
             success: {
                 success?()
             },
@@ -76,7 +88,13 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.getActivePurchases(blog.dotComID,
+        
+        guard let dotComID = blog.dotComID else {
+            assertionFailure("Expected a dotComID.")
+            return
+        }
+        
+        remote.getActivePurchases(dotComID,
             success: { purchases in
                 success?(purchases)
             },
