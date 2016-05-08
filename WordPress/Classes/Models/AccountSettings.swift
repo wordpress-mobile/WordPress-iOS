@@ -32,4 +32,8 @@ extension AccountSettings {
         webAddress = managed.webAddress
         language = managed.language
     }
+    
+    var emailForDisplay : String {
+        return emailPendingAddress?.nonEmptyString() ?? email
+    }
 }

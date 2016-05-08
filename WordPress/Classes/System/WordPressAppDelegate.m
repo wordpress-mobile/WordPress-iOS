@@ -45,7 +45,7 @@
 
 // Networking
 #import "WPUserAgent.h"
-#import "WordPressComApiCredentials.h"
+#import "ApiCredentials.h"
 
 // Swift support
 #import "WordPress-Swift.h"
@@ -142,7 +142,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        NSString *lookbackToken = [WordPressComApiCredentials lookbackToken];
+        NSString *lookbackToken = [ApiCredentials lookbackToken];
         
         if ([lookbackToken length] > 0) {
             UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
@@ -164,8 +164,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)setupAppbotX
 {
-    if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
-        [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
+    if ([ApiCredentials appbotXAPIKey].length > 0) {
+        [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
     }
 }
 
@@ -242,11 +242,11 @@ int ddLogLevel = DDLogLevelInfo;
                 NSString *debugType = [params stringForKey:@"type"];
                 NSString *debugKey = [params stringForKey:@"key"];
 
-                if ([[WordPressComApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
+                if ([[ApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
                     return NO;
                 }
 
-                if ([debugKey isEqualToString:[WordPressComApiCredentials debuggingKey]]) {
+                if ([debugKey isEqualToString:[ApiCredentials debuggingKey]]) {
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
                     }
@@ -360,7 +360,10 @@ int ddLogLevel = DDLogLevelInfo;
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-    
+#if DEBUG
+    [KeychainTools processKeychainDebugArguments];
+#endif
+
     // Stats and feedback
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
@@ -705,7 +708,7 @@ int ddLogLevel = DDLogLevelInfo;
     return;
 #endif
     
-    NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
+    NSString* apiKey = [ApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
         self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
@@ -782,14 +785,14 @@ int ddLogLevel = DDLogLevelInfo;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account              = [accountService defaultWordPressComAccount];
-    NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+    NSString *apiKey                = [ApiCredentials simperiumAPIKey];
 
     if (!account.authToken.length || !apiKey.length) {
         return;
     }
 
     NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-    NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+    NSString *simperiumAppID = [ApiCredentials simperiumAppId];
     [self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
