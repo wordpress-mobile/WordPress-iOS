@@ -1,8 +1,6 @@
 import Foundation
 import CoreData
 
-// MARK: - Encapsulates all of the ManagedAccountSettings Core Data properties.
-//
 extension ManagedAccountSettings {
     @NSManaged var firstName: String
     @NSManaged var lastName: String

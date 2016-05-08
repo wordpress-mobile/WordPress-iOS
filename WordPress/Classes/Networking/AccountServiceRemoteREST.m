@@ -183,8 +183,8 @@ static NSString * const UserDictionaryDateKey = @"date";
     [self.api POST:path
         parameters:@{
                      @"email": email,
-                     @"client_id": [ApiCredentials client],
-                     @"client_secret": [ApiCredentials secret],
+                     @"client_id": [WordPressComApiCredentials client],
+                     @"client_secret": [WordPressComApiCredentials secret],
                      }
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -232,7 +232,6 @@ static NSString * const UserDictionaryDateKey = @"date";
     blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
-    blog.capabilities = [jsonBlog dictionaryForKey:@"capabilities"];
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];

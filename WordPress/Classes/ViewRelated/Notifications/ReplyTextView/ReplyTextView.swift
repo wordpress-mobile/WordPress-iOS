@@ -82,17 +82,12 @@ import WordPressShared.WPStyleGuide
     
     
     // MARK: - Public Methods
-    public func replaceTextAtCaret(text: NSString?, withText replacement: String?) {
-        guard let replacementText = replacement,
-              let textToReplace = text,
-              let selectedRange = textView.selectedTextRange,
-              let newPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length),
-              let newRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start) else
-        {
-            return
-        }
-
-        textView.replaceRange(newRange, withText: replacementText)
+    public func replaceTextAtCaret(text: String!, withText replacement: String!) {
+        let textToReplace: NSString = text ?? NSString();
+        let selectedRange: UITextRange = textView.selectedTextRange!
+        let newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        let newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)!
+        textView.replaceRange(newRange, withText: replacement)
     }
     
     

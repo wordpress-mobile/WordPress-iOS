@@ -4,19 +4,18 @@ import WordPressShared
 struct PlanListRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellSubtitle)
     static let customHeight: Float? = 92
-    private let iconSize = CGSize(width: 60, height: 60)
 
     let title: String
     let active: Bool
     let price: String
     let description: String
-    let iconUrl: NSURL
+    let icon: UIImage
 
     let action: ImmuTableAction?
 
     func configureCell(cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
-        cell.imageView?.downloadResizedImage(iconUrl, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: iconSize)
+        cell.imageView?.image = icon
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
@@ -143,7 +142,7 @@ enum PlanListViewModel {
         case .Ready(let siteID, let activePlan, let plans):
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
-                let iconUrl = active ? plan.activeIconUrl : plan.iconUrl
+                let icon = active ? plan.activeImage : plan.image
                 var action: ImmuTableAction? = nil
                 if let presenter = presenter,
                     let planService = planService {
@@ -156,7 +155,7 @@ enum PlanListViewModel {
                     active: active,
                     price: price,
                     description: plan.tagline,
-                    iconUrl: iconUrl,
+                    icon: icon,
                     action: action
                 )
             })
@@ -243,11 +242,9 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     static let restorationIdentifier = "PlanList"
 
-    convenience init?(blog: Blog) {
+    convenience init(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
-            return nil
-        }
+        let service = PlanService(blog: blog, store: StoreKitStore())
         self.init(siteID: Int(blog.dotComID), service: service)
     }
 

@@ -125,3 +125,4 @@ public class AppSettingsViewController: UITableViewController {
         }
     }
 }
+

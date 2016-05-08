@@ -1,5 +1,5 @@
 #import "WordPressComOAuthClientFacade.h"
-#import "WordPress-Swift.h"
+#import "WordPressComOAuthClient.h"
 
 @implementation WordPressComOAuthClientFacade
 

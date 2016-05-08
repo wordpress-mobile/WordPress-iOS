@@ -21,7 +21,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
-    return [blog supports:BlogFeatureWPComRESTAPI];
+    return blog.restApi && [blog dotComID];
 }
 
 #pragma mark - Local queries: Creating themes
@@ -138,10 +138,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
-    if (blog.restApi == nil) {
-        return nil;
-    }
-
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getActiveThemeForBlogId:[blog dotComID]
@@ -167,10 +163,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
-    if (blog.restApi == nil) {
-        return nil;
-    }
-
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getPurchasedThemesForBlogId:[blog dotComID]
@@ -194,11 +186,6 @@ const NSInteger ThemeOrderTrailing = 9999;
                     failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSParameterAssert(account.restApi != nil);
-
-    if (account.restApi == nil) {
-        return nil;
-    }
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
@@ -223,10 +210,6 @@ const NSInteger ThemeOrderTrailing = 9999;
                              failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-
-    if (account.restApi == nil) {
-        return nil;
-    }
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
@@ -255,10 +238,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
-    if (blog.restApi == nil) {
-        return nil;
-    }
-
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
     
@@ -299,10 +278,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
-    if (blog.restApi == nil) {
-        return nil;
-    }
-
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote activateThemeId:theme.themeId

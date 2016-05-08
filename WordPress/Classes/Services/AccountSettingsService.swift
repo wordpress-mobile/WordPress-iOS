@@ -143,23 +143,12 @@ class AccountSettingsService {
 
     /// Emits a value when the settings for the associated account change.
     var settings: Observable<AccountSettings?> {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationObserver = notificationCenter.rx_notification(NSManagedObjectContextDidSaveNotification, object: context)
         // This was the simplest implementation. If performance is an issue, we could try
         // adding `distinctUntilChanged` or `filter` on the notification userInfo and only
         // emit if the changed objects include the observed account.
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        let notificationObserver = notificationCenter.rx_notification(NSManagedObjectContextDidSaveNotification, object: context)
-
-        // Grab an initial settings value, since the notification observer will
-        // only emit values on save.
-        // Use `deferred` since we want to call `getSettings` when the observable
-        // is subscribed, not when it's created.
-        let initial = Observable.deferred({
-            return Observable.just(self.getSettings())
-        })
-
-        // Subsequent changes after subscription are generated from the save notification.
-        let updates = notificationObserver.map(getSettings)
-        return initial.concat(updates)
+        return notificationObserver.map(getSettings).startWith(getSettings())
     }
 
     func primarySiteNameForSettings(settings: AccountSettings) -> String? {        

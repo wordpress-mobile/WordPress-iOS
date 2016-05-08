@@ -4,6 +4,6 @@
 @interface Page : AbstractPost
 
 @property (nonatomic, strong) NSNumber * parentID;
-- (NSString *)sectionIdentifier;
+@property (nonatomic, strong, readonly) NSString *sectionIdentifier;
 
 @end

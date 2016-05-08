@@ -277,7 +277,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .PurchaseComplete:
             if let plan = plan {
-                imageView.setImageWithURL(plan.activeIconUrl)
+                imageView.image = UIImage(named: "\(plan.activeImageName)-large")
             }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
@@ -328,22 +328,17 @@ class PlanPostPurchasePageViewController: UIViewController {
     }
 }
 
-enum PlanPostPurchasePageType: String {
-    case PurchaseComplete = "purchase-complete"
-    case Customize = "custom-design"
-    case VideoPress = "videopress"
-    case Themes = "premium-themes"
-    
-    // This is the order we'd like pages to appear in the post purchase flow
-    static let orderedPageTypes: [PlanPostPurchasePageType] = [ .Customize, .VideoPress, .Themes ]
+enum PlanPostPurchasePageType: Int {
+    case PurchaseComplete
+    case Customize
+    case VideoPress
+    case Themes
     
     static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
-        // Get all of the page types for the plan's features
-        let slugs = plan.featureGroups
-            .flatMap({ $0.slugs })
-            .flatMap(PlanPostPurchasePageType.init)
-        
-        // Put them in the order we'd like
-        return [.PurchaseComplete] + orderedPageTypes.filter({ slugs.contains($0) })
+        switch plan.slug {
+        case "premium": return [.PurchaseComplete, .Customize, .VideoPress]
+        case "business": return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
+        default: return []
+        }
     }
 }

@@ -124,3 +124,5 @@ class LoginTests: XCTestCase {
         passwordField.typeText(WordPressTestCredentials.oneStepPassword)        
     }
 }
+
+

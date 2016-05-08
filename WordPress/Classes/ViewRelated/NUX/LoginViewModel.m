@@ -497,6 +497,10 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self dismissLoginMessage];
     [self.presenter updateAutoFillLoginCredentialsIfNeeded:username password:self.password];
     
+    if (self.shouldReauthenticateDefaultAccount) {
+        [self.accountServiceFacade removeLegacyAccount:username];
+    }
+    
     [self createWordPressComAccountForUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
 }
 
@@ -516,8 +520,6 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
     WPAccount *account = [self.accountServiceFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-    [self.accountServiceFacade setDefaultWordPressComAccount:account];
-    
     [self.blogSyncFacade syncBlogsForAccount:account success:^{
         // once blogs for the accounts are synced, we want to update account details for it
         [self.accountServiceFacade updateUserDetailsForAccount:account success:^{

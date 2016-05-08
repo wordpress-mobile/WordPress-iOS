@@ -4,11 +4,8 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
-@interface PrivateSiteURLProtocol()<NSURLSessionDataDelegate>
-
-@property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) NSURLSessionDataTask *sessionTask;
-
+@interface PrivateSiteURLProtocol()
+@property (nonatomic, strong) NSURLConnection *connection;
 @end
 
 static NSInteger regcount = 0;
@@ -18,7 +15,7 @@ static NSString *cachedToken;
 @implementation PrivateSiteURLProtocol
 
 + (void)registerPrivateSiteURLProtocol
-{    
+{
     @synchronized(mutex) {
         if (regcount == 0) {
             [NSURLProtocol registerClass:[self class]];
@@ -95,52 +92,34 @@ static NSString *cachedToken;
 {
     NSMutableURLRequest *mRequest = [self.request mutableCopy];
     [mRequest addValue:[NSString stringWithFormat:@"Bearer %@", [[self class] bearerToken]] forHTTPHeaderField:@"Authorization"];
-    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];
-    self.sessionTask = [self.session dataTaskWithRequest:mRequest];
-    [self.sessionTask resume];
+    self.connection = [NSURLConnection connectionWithRequest:mRequest delegate:self];
 }
 
 - (void)stopLoading
 {
-    [self.sessionTask cancel];
-    [self.session invalidateAndCancel];
-    self.sessionTask = nil;
-    self.session = nil;
+    [self.connection cancel];
 }
 
-- (void)URLSession:(NSURLSession *)session
-          dataTask:(NSURLSessionDataTask *)dataTask
-    didReceiveData:(NSData *)data
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [self.client URLProtocol:self didLoadData:data];
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
-{
-    if (error) {
-        [self.client URLProtocol:self didFailWithError:error];
-    } else {
-        [self.client URLProtocolDidFinishLoading:self];
-    }
-    self.sessionTask = nil;
-    [self.session invalidateAndCancel];
-}
-
-- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     [self.client URLProtocol:self didFailWithError:error];
-    self.sessionTask = nil;
-    [self.session invalidateAndCancel];
+    self.connection = nil;
 }
 
-- (void)URLSession:(NSURLSession *)session
-          dataTask:(NSURLSessionDataTask *)dataTask
-didReceiveResponse:(NSURLResponse *)response
- completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
-    completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    [self.client URLProtocolDidFinishLoading:self];
+    self.connection = nil;
 }
 
 @end

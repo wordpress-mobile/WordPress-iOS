@@ -1,7 +1,7 @@
 #import "WordPressComServiceRemote.h"
 #import "NSString+Helpers.h"
 #import "WordPressComApi.h"
-#import "ApiCredentials.h"
+#import "WordPressComApiCredentials.h"
 
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
@@ -71,8 +71,8 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                              @"username" : username,
                              @"password" : password,
                              @"validate" : @(validate),
-                             @"client_id" : [ApiCredentials client],
-                             @"client_secret" : [ApiCredentials secret]
+                             @"client_id" : [WordPressComApiCredentials client],
+                             @"client_secret" : [WordPressComApiCredentials secret]
                              };
     
     NSString *requestUrl = [self pathForEndpoint:@"users/new"
@@ -181,8 +181,8 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                              @"lang_id": languageId,
                              @"public": @(blogVisibility),
                              @"validate": @(validate),
-                             @"client_id": [ApiCredentials client],
-                             @"client_secret": [ApiCredentials secret]
+                             @"client_id": [WordPressComApiCredentials client],
+                             @"client_secret": [WordPressComApiCredentials secret]
                              };
     
     

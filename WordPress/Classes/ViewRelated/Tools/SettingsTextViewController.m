@@ -8,27 +8,18 @@
 
 #pragma mark - Constants
 
-static CGFloat const SettingsTextHorizontalMargin = 15.0f;
+static CGFloat const HorizontalMargin = 15.0f;
 
-typedef NS_ENUM(NSInteger, SettingsTextSections) {
-    SettingsTextSectionsTextfield = 0,
-    SettingsTextSectionsAction,
-    SettingsTextSectionsCount
-};
 
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
-@property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
-@property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
 @property (nonatomic, strong) NSString          *hint;
 @property (nonatomic, strong) NSString          *placeholder;
 @property (nonatomic, strong) NSString          *text;
-@property (nonatomic, assign) BOOL              doneButtonEnabled;
-@property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
 
 
@@ -53,7 +44,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
-        _shouldNotifyValue = YES;
     }
     return self;
 }
@@ -64,7 +54,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -72,7 +61,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupNoticeAnimatorIfNeeded];
+    [self setupNavigationButtonsIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -86,52 +75,45 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
-    if (self.shouldNotifyValue) {
+    if (self.displaysNavigationButtons == NO) {
         [self notifyValueDidChangeIfNeeded];
     }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    [self.noticeAnimator layout];
 }
 
 
 #pragma mark - NavigationItem Buttons
 
-- (void)cancel
+- (void)setupNavigationButtonsIfNeeded
 {
-    self.shouldNotifyValue = NO;
-    [self dismissViewController];
-}
-
-- (void)confirm
-{
-    [self dismissViewController];
-}
-
-- (void)setupNoticeAnimatorIfNeeded
-{
-    if (self.notice == nil) {
+    if (self.displaysNavigationButtons == NO) {
         return;
     }
     
-    self.noticeAnimator = [[NoticeAnimator alloc] initWithTarget:self.view];
-    [self.noticeAnimator animateMessage:self.notice];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelButtonWasPressed:)];
+    
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                           target:self
+                                                                                           action:@selector(doneButtonWasPressed:)];
+    
+    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
+}
+
+- (IBAction)cancelButtonWasPressed:(id)sender
+{
+    [self dismissViewController];
+}
+
+- (IBAction)doneButtonWasPressed:(id)sender
+{
+    [self notifyValueDidChangeIfNeeded];
+    [self dismissViewController];
 }
 
 
 #pragma mark - Validation
-
-- (void)startListeningTextfieldChanges
-{
-    // Hook up to Change Events
-    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
-    
-    // Fire initial status
-    [self validateTextInput:_textField];
-}
 
 - (BOOL)textPassesValidation
 {
@@ -141,7 +123,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)validateTextInput:(id)sender
 {
-    self.doneButtonEnabled = [self textPassesValidation];
+    self.navigationItem.rightBarButtonItem.enabled = [self textPassesValidation];
 }
 
 
@@ -160,24 +142,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [_textFieldCell.contentView addSubview:self.textField];
-    _textField.frame = CGRectInset(_textFieldCell.bounds, SettingsTextHorizontalMargin, 0);
+    _textField.frame = CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0);
     
     return _textFieldCell;
-}
-
-- (WPTableViewCell *)actionCell
-{
-    if (_actionCell) {
-        return _actionCell;
-    }
-    _actionCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    _actionCell.frame = CGRectInset(_actionCell.bounds, SettingsTextHorizontalMargin, 0);
-    _actionCell.textLabel.text = self.actionText;
-    _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [WPStyleGuide configureTableViewActionCell:_actionCell];
-    
-    return _actionCell;
 }
 
 - (UITextField *)textField
@@ -217,7 +184,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _displaysActionButton ? SettingsTextSectionsCount : SettingsTextSectionsCount - 1;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -227,26 +194,12 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SettingsTextSectionsTextfield) {
-        return self.textFieldCell;
-    }
-    
-    return self.actionCell;
+    return self.textFieldCell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    return (section == SettingsTextSectionsTextfield) ? self.hintView : nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectSelectedRowWithAnimation:YES];
-    
-    if (indexPath.section == SettingsTextSectionsAction && self.onActionPress != nil) {
-        self.onActionPress();
-        [self dismissViewController];
-    }
+    return self.hintView;
 }
 
 
@@ -275,16 +228,13 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
-    UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
-        autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     
-    self.textField.autocapitalizationType = autocapitalizationType;
     self.textField.keyboardType = keyboardType;
     self.textField.secureTextEntry = requiresSecureTextEntry;
 }
@@ -296,7 +246,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     BOOL isValid = self.textPassesValidation;
     if (isValid) {
-        [self confirm];
+        [self doneButtonWasPressed:self];
     }
     
     return isValid;

@@ -2,8 +2,6 @@
 
 @class WPXMLRPCClient;
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface ServiceRemoteXMLRPC : NSObject
 
 - (id)initWithApi:(WPXMLRPCClient *)api username:(NSString *)username password:(NSString *)password;
@@ -11,8 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) WPXMLRPCClient *api;
 
 - (NSArray *)defaultXMLRPCArguments;
-- (NSArray *)XMLRPCArgumentsWithExtra:(_Nullable id)extra;
+- (NSArray *)XMLRPCArgumentsWithExtra:(id)extra;
 
 @end
-
-NS_ASSUME_NONNULL_END

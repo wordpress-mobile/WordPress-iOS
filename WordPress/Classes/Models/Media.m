@@ -200,19 +200,36 @@
 
         if (self.shortcode != nil) {
             result = self.shortcode;
-        } else if (self.videopressGUID.length > 0) {
-            result = [NSString stringWithFormat:
-                      @"[wpvideo %@]",
-                      self.videopressGUID];
         } else if (self.remoteURL != nil) {
-            // Use HTML 5 <video> tag
-            result = [NSString stringWithFormat:
-                      @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
-                      "Your browser does not support the video tag"
-                      "</video>",
-                      self.remoteURL,
-                      embedWidth,
-                      embedHeight];
+            self.remoteURL = [self.remoteURL stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            NSNumber *htmlPreference = [NSNumber numberWithInt:
+                                        [[[NSUserDefaults standardUserDefaults]
+                                          objectForKey:@"video_html_preference"] intValue]];
+
+            if ([htmlPreference intValue] == 0) {
+                // Use HTML 5 <video> tag
+                result = [NSString stringWithFormat:
+                          @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
+                          "Your browser does not support the video tag"
+                          "</video>",
+                          self.remoteURL,
+                          embedWidth,
+                          embedHeight];
+            } else {
+                // Use HTML 4 <object><embed> tags
+                embedHeight = [NSString stringWithFormat:@"%d", ([embedHeight intValue] + 16)];
+                result = [NSString stringWithFormat:
+                          @"<object classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
+                          "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\""
+                          "width=\"%@\" height=\"%@\">"
+                          "<param name=\"src\" value=\"%@\">"
+                          "<param name=\"autoplay\" value=\"false\">"
+                          "<embed src=\"%@\" autoplay=\"false\" "
+                          "width=\"%@\" height=\"%@\" type=\"video/quicktime\" "
+                          "pluginspage=\"http://www.apple.com/quicktime/download/\" "
+                          "/></object>",
+                          embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
+            }
 
             DDLogVerbose(@"media.html: %@", result);
         }

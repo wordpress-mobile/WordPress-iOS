@@ -2,12 +2,8 @@ import UIKit
 import RxSwift
 import WordPressShared
 
-func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.restApi else {
-        return nil
-    }
-
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
+func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController {
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
     return MyProfileViewController(service: service)
 }
 
@@ -45,7 +41,7 @@ private struct MyProfileController: SettingsController {
         })
     }
     
-    var noticeMessage: Observable<String?> {
+    var errorMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)

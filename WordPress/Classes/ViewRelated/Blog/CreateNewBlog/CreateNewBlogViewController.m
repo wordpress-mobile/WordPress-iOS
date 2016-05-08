@@ -4,6 +4,7 @@
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPComLanguages.h"
 #import "WPWalkthroughOverlayView.h"
 #import "WPNUXUtility.h"
 #import "WPStyleGuide.h"
@@ -34,7 +35,7 @@
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
     
-    NSNumber *_currentLanguageId;
+    NSDictionary *_currentLanguage;
 }
 
 @end
@@ -57,7 +58,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     self = [super init];
     if (self) {
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguageId = [[WordPressComLanguageDatabase new] deviceLanguageId];
+        _currentLanguage = [WPComLanguages currentLanguage];
     }
     return self;
 }
@@ -528,7 +529,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             [self displayRemoteError:error];
         };
         
-        NSString *languageId = [_currentLanguageId stringValue];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];

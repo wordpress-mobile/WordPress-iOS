@@ -34,8 +34,6 @@ class TodayViewController: UIViewController {
     
     var isConfigured = false
     
-    var tracks = Tracks(appGroupName: WPAppGroupName)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,10 +94,8 @@ class TodayViewController: UIViewController {
     
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
-            tracks.trackExtensionStatsLaunched(unwrappedSiteID.integerValue)
             extensionContext!.openURL(NSURL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
         } else {
-            tracks.trackExtensionConfigureLaunched()
             extensionContext!.openURL(NSURL(string: "\(WPComScheme)://")!, completionHandler: nil)
         }
     }
@@ -159,8 +155,6 @@ extension TodayViewController: NCWidgetProviding {
             completionHandler(NCUpdateResult.Failed)
             return
         }
-        
-        tracks.trackExtensionAccessed()
         
         let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval:0)
         statsService.retrieveTodayStatsWithCompletionHandler({ wpStatsSummary, error in

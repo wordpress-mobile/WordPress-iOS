@@ -3,8 +3,6 @@
 #import "DateUtils.h"
 #import "PostContentProvider.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
     AbstractPostRemoteStatusFailed,      // Upload failed
@@ -23,30 +21,30 @@ extern NSString * const PostStatusDeleted;
 @interface BasePost : NSManagedObject<PostContentProvider>
 
 // Attributes
-@property (nonatomic, strong, nullable) NSNumber * postID;
-@property (nonatomic, strong, nullable) NSNumber * authorID;
-@property (nonatomic, strong, nullable) NSString * author;
-@property (nonatomic, strong, nullable) NSString * authorAvatarURL;
-@property (nonatomic, strong, nullable) NSDate * date_created_gmt;
-@property (nonatomic, strong, nullable) NSString * postTitle;
-@property (nonatomic, strong, nullable) NSString * content;
-@property (nonatomic, strong, nullable) NSString * status;
-@property (nonatomic, weak, readonly, nullable) NSString * statusTitle;
-@property (nonatomic, strong, nullable) NSString * password;
-@property (nonatomic, strong, nullable) NSString * permaLink;
-@property (nonatomic, strong, nullable) NSString * mt_excerpt;
-@property (nonatomic, strong, nullable) NSString * mt_text_more;
-@property (nonatomic, strong, nullable) NSString * wp_slug;
-@property (nonatomic, strong, nullable) NSNumber * remoteStatusNumber;
+@property (nonatomic, strong) NSNumber * postID;
+@property (nonatomic, strong) NSNumber * authorID;
+@property (nonatomic, strong) NSString * author;
+@property (nonatomic, strong) NSString * authorAvatarURL;
+@property (nonatomic, strong) NSDate * date_created_gmt;
+@property (nonatomic, strong) NSString * postTitle;
+@property (nonatomic, strong) NSString * content;
+@property (nonatomic, strong) NSString * status;
+@property (nonatomic, weak, readonly) NSString * statusTitle;
+@property (nonatomic, strong) NSString * password;
+@property (nonatomic, strong) NSString * permaLink;
+@property (nonatomic, strong) NSString * mt_excerpt;
+@property (nonatomic, strong) NSString * mt_text_more;
+@property (nonatomic, strong) NSString * wp_slug;
+@property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
-@property (nonatomic, strong, nullable) NSNumber * post_thumbnail;
+@property (nonatomic, strong) NSNumber * post_thumbnail;
 
 // Helpers
 /**
  Cached path of an image from the post to use for display purposes. 
  Not part of the post's canoncial data.
  */
-@property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
+@property (nonatomic, strong) NSString *pathForDisplayImage;
 /**
  BOOL flag if the feature image was changed.
  */
@@ -123,16 +121,14 @@ extern NSString * const PostStatusDeleted;
 - (void)save;
 
 //date conversion
-- (nullable NSDate *)dateCreated;
-- (void)setDateCreated:(nullable NSDate *)localDate;
+- (NSDate *)dateCreated;
+- (void)setDateCreated:(NSDate *)localDate;
 
 //comments
 - (void)findComments;
 
 // Subclass methods
-- (nullable NSString *)remoteStatusText;
-+ (NSString *)titleForRemoteStatus:(nullable NSNumber *)remoteStatus;
+- (NSString *)remoteStatusText;
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
 
 @end
-
-NS_ASSUME_NONNULL_END

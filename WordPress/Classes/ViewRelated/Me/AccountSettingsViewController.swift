@@ -3,11 +3,8 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.restApi else {
-        return nil
-    }
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
+func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController {    
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
     return AccountSettingsViewController(service: service)
 }
 
@@ -43,7 +40,7 @@ private struct AccountSettingsController: SettingsController {
         })
     }
 
-    var refreshStatusMessage: Observable<String?> {
+    var errorMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
@@ -51,19 +48,6 @@ private struct AccountSettingsController: SettingsController {
             .map({ $0.errorMessage })
     }
 
-    var emailNoticeMessage: Observable<String?> {
-        return service.settings.map {
-            return self.noticeForAccountSettings($0)
-        }
-    }
-    
-    var noticeMessage: Observable<String?> {
-        return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
-            return refresh ?? email
-        }
-    }
-
-    
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
@@ -75,8 +59,8 @@ private struct AccountSettingsController: SettingsController {
         
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-            value: settings?.emailForDisplay ?? "",
-            action: presenter.prompt(editEmailAddress(settings, service: service))
+            value: settings?.email ?? "",
+            action: presenter.present(insideNavigationController(editEmailAddress(service)))
         )
         
         let primarySite = EditableTextRow(
@@ -88,7 +72,7 @@ private struct AccountSettingsController: SettingsController {
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.prompt(editWebAddress(service))
+            action: presenter.present(insideNavigationController(editWebAddress(service)))
         )
         
         return ImmuTable(sections: [
@@ -104,31 +88,15 @@ private struct AccountSettingsController: SettingsController {
     
     
     // MARK: - Actions
-    
-    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
-        return { row in
-            let editableRow = row as! EditableTextRow
-            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-            let settingsViewController =  self.controllerForEditableText(editableRow,
-                                                                         changeType: AccountSettingsChange.Email,
-                                                                         hint: hint,
-                                                                         service: service)
-            settingsViewController.mode = .Email
-            settingsViewController.notice = self.noticeForAccountSettings(settings)
-            settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
-            settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
-            settingsViewController.onActionPress = {
-                let change = AccountSettingsChange.EmailPendingChange(false)
-                service.saveChange(change)
-            }
-            
-            return settingsViewController
-        }
+
+    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+        return editEmailAddress(AccountSettingsChange.Email, hint: hint, displaysNavigationButtons: true, service: service)
     }
     
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
+    func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
         let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
-        return editText(AccountSettingsChange.WebAddress, hint: hint, service: service)
+        return editText(AccountSettingsChange.WebAddress, hint: hint, displaysNavigationButtons: true, service: service)
     }
     
     func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
@@ -151,16 +119,5 @@ private struct AccountSettingsController: SettingsController {
             return selectorViewController
         }
     }
-    
-    
-    // MARK: - Private Helpers
-    
-    private func noticeForAccountSettings(settings: AccountSettings?) -> String? {
-        guard let pendingAddress = settings?.emailPendingAddress where settings?.emailPendingChange == true else {
-            return nil
-        }
-        
-        return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
-                                 comment: "Displayed when there's a pending Email Change")
-    }
 }
+

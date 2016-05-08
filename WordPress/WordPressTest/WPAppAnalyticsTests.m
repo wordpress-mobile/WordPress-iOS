@@ -3,7 +3,7 @@
 #import <XCTest/XCTest.h>
 
 #import "WordPressAppDelegate.h"
-#import "ApiCredentials.h"
+#import "WordPressComApiCredentials.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -20,7 +20,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
     
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
-    id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
+    id apiCredentialsMock = [OCMockObject mockForClass:[WordPressComApiCredentials class]];
     
     OCMockInvocationBlock firstRegisterTrackerInvocationBlock = ^(NSInvocation *invocation) {
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
@@ -64,7 +64,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
     
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
-    id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
+    id apiCredentialsMock = [OCMockObject mockForClass:[WordPressComApiCredentials class]];
     
     OCMockInvocationBlock registerTrackerInvocationBlock = ^(NSInvocation *invocation) {
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
@@ -96,7 +96,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
     
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
-    id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
+    id apiCredentialsMock = [OCMockObject mockForClass:[WordPressComApiCredentials class]];
     
     OCMockInvocationBlock firstRegisterTrackerInvocationBlock = ^(NSInvocation *invocation) {
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;

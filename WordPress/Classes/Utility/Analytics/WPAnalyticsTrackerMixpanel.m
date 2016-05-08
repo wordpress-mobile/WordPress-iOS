@@ -1,7 +1,7 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "MixpanelProxy.h"
 #import "WPAnalyticsTrackerMixpanelInstructionsForStat.h"
-#import "ApiCredentials.h"
+#import "WordPressComApiCredentials.h"
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
@@ -50,7 +50,7 @@ NSString *const SessionCount = @"session_count";
 
 - (void)beginSession
 {
-    [self.mixpanelProxy registerInstanceWithToken:[ApiCredentials mixpanelAPIToken]];
+    [self.mixpanelProxy registerInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
     [self flagIfUserHasSeenLegacyEditor];
 }

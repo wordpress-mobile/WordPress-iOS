@@ -149,3 +149,4 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 }
+
