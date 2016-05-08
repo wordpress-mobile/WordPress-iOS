@@ -326,3 +326,4 @@ extension UITableView: CellRegistrator {
         }
     }
 }
+

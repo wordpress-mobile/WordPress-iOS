@@ -1,7 +1,0 @@
-{
-  "blog_id": 0,
-  "scope": "global",
-  "blog_url": null,
-  "token_type": "bearer",
-  "access_token": "fakeToken"
-}

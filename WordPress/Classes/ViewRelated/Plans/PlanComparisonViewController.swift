@@ -38,7 +38,8 @@ class PlanComparisonViewController: PagedViewController {
         self.service = service
 
         let viewControllers: [PlanDetailViewController] = pricedPlans.map({ (plan, price) in
-            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: sitePricedPlans.siteID, activePlan: sitePricedPlans.activePlan, price: price)
+            let isActive = sitePricedPlans.activePlan == plan
+            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: sitePricedPlans.siteID, isActive: isActive, price: price)
 
             return controller
         })

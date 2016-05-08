@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "Confirmable.h"
+
 
 // Typedef's
 typedef NS_ENUM(NSInteger, SettingsTextModes) {
@@ -8,32 +8,19 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesPassword
 };
 
-typedef void (^SettingsTextAction)(void);
-typedef void (^SettingsTextChanged)(NSString * _Nonnull);
+typedef void (^SettingsTextChanged)(NSString *);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
-@interface SettingsTextViewController : UITableViewController<Confirmable>
+@interface SettingsTextViewController : UITableViewController
 
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
-@property (nullable, nonatomic, copy) SettingsTextChanged onValueChanged;
+@property (nonatomic, copy) SettingsTextChanged onValueChanged;
 
-/// Block to be executed whenever the Action, if visible, is pressed.
+/// Specifies whether we should display navigation buttons (Cancel / Done) or not.
 ///
-@property (nullable, nonatomic, copy) SettingsTextAction onActionPress;
-
-/// Specifies the Notice Message that should be displayed on top of the table.
-///
-@property (nullable, nonatomic, copy) NSString *notice;
-
-/// Specifies the Action Button Text. If visible.
-///
-@property (nullable, nonatomic, copy) NSString *actionText;
-
-/// Indicates whether an action button should be displayed at the bottom, or not.
-///
-@property (nonatomic, assign) BOOL displaysActionButton;
+@property (nonatomic, assign) BOOL displaysNavigationButtons;
 
 /// Sets the Text Input Mode:
 ///
@@ -50,8 +37,6 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///  - placeholder: Placeholder string to be displayed, in case the text is empty.
 ///  - hint: String to be displayed at the bottom.
 ///
-- (nonnull instancetype)initWithText:(NSString * __nullable)text
-                         placeholder:(NSString * __nullable)placeholder
-                                hint:(NSString * __nullable)hint;
+- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint;
 
 @end

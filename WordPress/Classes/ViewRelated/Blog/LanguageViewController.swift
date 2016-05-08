@@ -38,8 +38,12 @@ public class LanguageViewController : UITableViewController
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Reload + Clear selection. Let's avoid flickers by dispatching the deselect call asynchronously
         tableView.reloadDataPreservingSelection()
-        tableView.deselectSelectedRowWithAnimationAfterDelay(true)
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.deselectSelectedRowWithAnimation(true)
+        }
     }
     
     
@@ -89,7 +93,7 @@ public class LanguageViewController : UITableViewController
     private func configureTableViewCell(cell: UITableViewCell) {
         let languageId = blog.settings.languageID.integerValue
         cell.textLabel?.text = NSLocalizedString("Language", comment: "Language of the current blog")
-        cell.detailTextLabel?.text = languageDatabase.nameForLanguageWithId(languageId)
+        cell.detailTextLabel?.text = Languages.sharedInstance.nameForLanguageWithId(languageId)
     }
     
     private func pressedLanguageRow() {
@@ -99,10 +103,10 @@ public class LanguageViewController : UITableViewController
             NSLocalizedString("All languages", comment: "Section title for All Languages")
         ]
 
-        let languages   = languageDatabase.grouped
+        let languages   = Languages.sharedInstance.grouped
         let titles      = languages.map { $0.map { $0.name } }
         let subtitles   = languages.map { $0.map { $0.description } }
-        let values      = languages.map { $0.map { $0.id } } as [[NSObject]]
+        let values      = languages.map { $0.map { $0.languageId } } as [[NSObject]]
         
         // Setup ListPickerViewController
         let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
@@ -125,8 +129,7 @@ public class LanguageViewController : UITableViewController
     private let reuseIdentifier = "reuseIdentifier"
     private let footerText = NSLocalizedString("The language in which this site is primarily written.",
                                                 comment: "Footer Text displayed in Blog Language Settings View")
-
+    
     // MARK: - Private Properties
     private var blog : Blog!
-    private let languageDatabase = WordPressComLanguageDatabase()
 }

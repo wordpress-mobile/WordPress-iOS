@@ -18,6 +18,7 @@
 #import "WPWalkthroughOverlayView.h"
 #import "WPWebViewController.h"
 
+#import "WordPressComOAuthClient.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"

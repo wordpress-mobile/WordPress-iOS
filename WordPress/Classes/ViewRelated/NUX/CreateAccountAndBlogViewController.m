@@ -8,7 +8,9 @@
 #import "WPPostViewController.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPComLanguages.h"
 #import "WPWalkthroughOverlayView.h"
+#import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
@@ -16,6 +18,7 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "WordPressComOAuthClient.h"
 #import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
@@ -51,7 +54,7 @@
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
 
-    NSNumber *_currentLanguageId;
+    NSDictionary *_currentLanguage;
 
     WPAccount *_account;
 }
@@ -82,7 +85,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     if (self) {
         _shouldCorrectEmail = YES;
         _operationQueue = [[NSOperationQueue alloc] init];
-        _currentLanguageId = [[WordPressComLanguageDatabase new] deviceLanguageId];
+        _currentLanguage = [WPComLanguages currentLanguage];
     }
     return self;
 }
@@ -781,7 +784,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSString *languageId = [_currentLanguageId stringValue];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
         
         WordPressComApi *api = [WordPressComApi anonymousApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
@@ -886,7 +889,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSString *languageId = [_currentLanguageId stringValue];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
         
         WordPressComApi *api = [_account restApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];

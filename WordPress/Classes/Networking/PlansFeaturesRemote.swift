@@ -7,11 +7,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     }
 
     private var cacheDate: NSDate?
-    private let languageDatabase = WordPressComLanguageDatabase()
-    private var cacheFilename: String {
-        let locale = languageDatabase.deviceLanguage.slug
-        return "plan-features-\(locale).json"
-    }
+    private let cacheFilename = "plan-features.json"
 
     func getPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         // First we'll try and return plan features from memory, then check our disk cache,
@@ -83,11 +79,9 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     private func fetchPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         let endpoint = "plans/features"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
-        let locale = languageDatabase.deviceLanguage.slug
-        let parameters = ["locale": locale]
 
         api.GET(path,
-                parameters: parameters,
+                parameters: nil,
                 success: {
                     [weak self] requestOperation, response in
                     do {

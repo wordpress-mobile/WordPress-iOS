@@ -2,6 +2,7 @@
 #import "Media.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
+#import "WPComLanguages.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "NSString+Helpers.h"
@@ -162,7 +163,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 }
 
 - (NSString *)remoteStatusText
-{    
+{
     return [BasePost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
@@ -255,10 +256,15 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         return self.statusTitle;
     }
 
-    if (self.remoteStatus == AbstractPostRemoteStatusPushing) {
-        return NSLocalizedString(@"Uploading...", @"Status displayed for a post being uploaded");
+    NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
+    if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
+        if ([WPComLanguages isRightToLeft]) {
+            return [NSString stringWithFormat:@"…%@", statusText];
+        }
+
+        return [NSString stringWithFormat:@"%@…", statusText];
     }
-    return [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
+    return statusText;
 }
 
 @end

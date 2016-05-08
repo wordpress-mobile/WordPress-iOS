@@ -12,19 +12,15 @@ class PlansRemote: ServiceRemoteREST {
     func getPlansForSite(siteID: Int, success: SitePlans -> Void, failure: ErrorType -> Void) {
         let endpoint = "sites/\(siteID)/plans"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
-        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
-        let parameters = ["locale": locale]
 
         api.GET(path,
-            parameters: parameters,
+            parameters: nil,
             success: {
                 _, response in
                 do {
                     try success(mapPlansResponse(response))
                 } catch {
-                    DDLogSwift.logError("Error parsing plans response for site \(siteID)")
-                    DDLogSwift.logError("\(error)")
-                    DDLogSwift.logDebug("Full response: \(response)")
+                    DDLogSwift.logError("Error parsing plans response (\(error)): \(response)")
                     failure(error)
                 }
             }, failure: {
@@ -46,10 +42,6 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
             let title = planDetails["product_name_short"] as? String,
             let fullTitle = planDetails["product_name"] as? String,
             let tagline = planDetails["tagline"] as? String,
-            let icon = planDetails["icon"] as? String,
-            let iconUrl = NSURL(string: icon),
-            let activeIcon = planDetails["icon_active"] as? String,
-            let activeIconUrl = NSURL(string: activeIcon),
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
             throw PlansRemote.Error.DecodeError
         }
@@ -57,7 +49,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })
         let featureGroups = try parseFeatureGroups(featureGroupsJson)
 
-        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, iconUrl: iconUrl, activeIconUrl: activeIconUrl, productIdentifier: productIdentifier, featureGroups: featureGroups)
+        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, productIdentifier: productIdentifier, featureGroups: featureGroups)
 
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool where
@@ -81,3 +73,4 @@ private func parseFeatureGroups(json: [[String: AnyObject]]) throws -> [PlanFeat
         return PlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }
 }
+

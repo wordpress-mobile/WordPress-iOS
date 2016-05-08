@@ -7,6 +7,7 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
+@property (nonatomic, strong) id<WPPostContentViewProvider> contentProvider;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelTopMarginConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomMarginConstraint;
@@ -14,6 +15,8 @@
 @end
 
 @implementation PageListTableViewCell
+
+@synthesize delegate;
 
 - (void)awakeFromNib
 {
@@ -68,9 +71,10 @@
     return width;
 }
 
-- (void)setPost:(AbstractPost *)post
+- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
 {
-    [super setPost:post];
+    _contentProvider = contentProvider;
+
     [self configureTitle];
 }
 
@@ -83,12 +87,27 @@
     [WPStyleGuide applyPageTitleStyle:self.titleLabel];
 }
 
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
+{
+    self.contentProvider = contentProvider;
+}
+
 - (void)configureTitle
 {
-    AbstractPost *post = [self.post hasRevision] ? [self.post revision] : self.post;
-    NSString *str = [post titleForDisplay] ?: [NSString string];
+    id<WPPostContentViewProvider>provider = [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
+    NSString *str = [provider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide pageCellTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+}
+
+
+#pragma mark - Actions
+
+- (IBAction)didTapMenuButton:(id)sender
+{
+    if (self.delegate) {
+        [self.delegate cell:self receivedMenuActionFromButton:self.menuButton forProvider:self.contentProvider];
+    }
 }
 
 @end

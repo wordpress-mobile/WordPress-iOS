@@ -207,9 +207,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             }
 
             WPAppAnalytics.track(.OpenedMyProfile)
-            guard let controller = MyProfileViewController(account: account) else {
-                return
-            }
+            let controller = MyProfileViewController(account: account)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -218,9 +216,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if let account = self.defaultAccount() {
                 WPAppAnalytics.track(.OpenedAccountSettings)
-                guard let controller = AccountSettingsViewController(account: account) else {
-                    return
-                }
+                let controller = AccountSettingsViewController(account: account)
                 self.navigationController?.pushViewController(controller, animated: true)
             }
         }

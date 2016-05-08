@@ -27,19 +27,10 @@ extension ImmuTablePresenter where Self: UIViewController {
     }
 }
 
-extension ImmuTablePresenter {
-    func prompt<T: UIViewController where T: Confirmable>(controllerGenerator: ImmuTableRow -> T) -> ImmuTableAction {
-        return present({
-            let controller = controllerGenerator($0)
-            return PromptViewController(controller)
-        })
-    }
-}
-
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var noticeMessage: Observable<String?> { get }
+    var errorMessage: Observable<String?> { get }
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
 }
 
@@ -55,7 +46,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var visibleSubject = PublishSubject<Bool>()
 
-    private var noticeAnimator: NoticeAnimator!
+    private var errorAnimator: ErrorAnimator!
 
     let controller: ImmuTableController
 
@@ -69,15 +60,17 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         title = controller.title
         registerRows(controller.immuTableRows)
         controller.tableViewModelWithPresenter(self)
+            .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
                 self?.handler.viewModel = $0
                 })
             .addDisposableTo(bag)
-        controller.noticeMessage
+        controller.errorMessage
+            .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
-                self?.noticeMessage = $0
+                self?.errorMessage = $0
                 })
             .addDisposableTo(bag)
     }
@@ -89,7 +82,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noticeAnimator = NoticeAnimator(target: view)
+        errorAnimator = ErrorAnimator(target: view)
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -97,7 +90,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        noticeAnimator.layout()
+        errorAnimator.layout()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -118,9 +111,9 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    var noticeMessage: String? = nil {
+    var errorMessage: String? = nil {
         didSet {
-            noticeAnimator.animateMessage(noticeMessage)
+            errorAnimator.animateErrorMessage(errorMessage)
         }
     }
 

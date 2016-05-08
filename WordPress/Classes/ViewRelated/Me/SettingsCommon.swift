@@ -12,20 +12,34 @@ extension SettingsController {
             return navigation
         }
     }
-    
-    func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
+
+    func editText(changeType: AccountSettingsChangeWithString,
+                  hint: String? = nil,
+                  displaysNavigationButtons: Bool = false,
+                  service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
         return { row in
             let editableRow = row as! EditableTextRow
-            return self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
+            return self.controllerForEditableText(editableRow,
+                                                  changeType: changeType,
+                                                  hint: hint,
+                                                  displaysNavigationButtons: displaysNavigationButtons,
+                                                  service: service)
         }
     }
 
-    func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
+    func editEmailAddress(changeType: AccountSettingsChangeWithString,
+                          hint: String? = nil,
+                          displaysNavigationButtons: Bool = false,
+                          service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
         return { row in
             let editableRow = row as! EditableTextRow
-            let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
+            let settingsViewController =  self.controllerForEditableText(editableRow,
+                                                                         changeType: changeType,
+                                                                         hint: hint,
+                                                                         displaysNavigationButtons: displaysNavigationButtons,
+                                                                         service: service)
             settingsViewController.mode = .Email
             
             return settingsViewController
@@ -35,6 +49,7 @@ extension SettingsController {
     func controllerForEditableText(row: EditableTextRow,
                                    changeType: AccountSettingsChangeWithString,
                                    hint: String? = nil,
+                                   displaysNavigationButtons: Bool = false,
                                    service: AccountSettingsService) -> SettingsTextViewController
     {
         let title = row.title
@@ -43,6 +58,7 @@ extension SettingsController {
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
+        controller.displaysNavigationButtons = displaysNavigationButtons
         controller.onValueChanged = {
             value in
 

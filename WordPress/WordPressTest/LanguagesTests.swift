@@ -6,14 +6,14 @@ import XCTest
 class LanguagesTests: XCTestCase
 {
     func testLanguagesEffectivelyLoadJsonFile() {
-        let languages = WordPressComLanguageDatabase()
+        let languages = Languages.sharedInstance
         
         XCTAssert(languages.all.count != 0)
         XCTAssert(languages.popular.count != 0)
     }
     
     func testAllLanguagesHaveValidFields() {
-        let languages = WordPressComLanguageDatabase()
+        let languages = Languages.sharedInstance
         let sum = languages.all + languages.popular
         
         for language in sum {
@@ -23,98 +23,21 @@ class LanguagesTests: XCTestCase
     }
     
     func testAllLanguagesContainPopularLanguages() {
-        let languages = WordPressComLanguageDatabase()
+        let languages = Languages.sharedInstance
         
         for language in languages.popular {
-            let filtered = languages.all.filter { $0.id == language.id }
+            let filtered = languages.all.filter { $0.languageId == language.languageId }
             XCTAssert(filtered.count == 1)
         }
     }
     
     func testNameForLanguageWithIdentifierReturnsTheRightName() {
-        let languages = WordPressComLanguageDatabase()
+        let languages = Languages.sharedInstance
         
-        let english = languages.nameForLanguageWithId(en)
-        let spanish = languages.nameForLanguageWithId(es)
+        let english = languages.nameForLanguageWithId(1)
+        let spanish = languages.nameForLanguageWithId(19)
         
         XCTAssert(english == "English")
         XCTAssert(spanish == "Español")
     }
-
-    func testDeviceLanguageReturnsValueForSpanish() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("es")
-
-        XCTAssertEqual(languages.deviceLanguage.id, es)
-    }
-
-    func testDeviceLanguageReturnsValueForSpanishSpainLowercase() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("es-es")
-
-        XCTAssertEqual(languages.deviceLanguage.id, es)
-    }
-
-    func testDeviceLanguageReturnsValueForSpanishSpain() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("es-ES")
-
-        XCTAssertEqual(languages.deviceLanguage.id, es)
-    }
-
-    func testDeviceLanguageReturnsEnglishForUnknownLanguage() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("not-a-language")
-
-        XCTAssertEqual(languages.deviceLanguage.id, en)
-    }
-
-    func testDeviceLanguageReturnsValueForSpanishSpainExtra() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("es-ES-extra")
-
-        XCTAssertEqual(languages.deviceLanguage.id, es)
-    }
-
-    func testDeviceLanguageReturnsValueForSpanishNO() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("es-NO")
-
-        XCTAssertEqual(languages.deviceLanguage.id, es)
-    }
-
-    func testDeviceLanguageReturnsZhCNForZhHans() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("zh-Hans")
-
-        XCTAssertEqual(languages.deviceLanguage.id, zhCN)
-    }
-
-    func testDeviceLanguageReturnsZhTWForZhHant() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("zh-Hant")
-
-        XCTAssertEqual(languages.deviceLanguage.id, zhTW)
-    }
-
-    func testDeviceLanguageReturnsZhCNForZhHansES() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("zh-Hans-ES")
-
-        XCTAssertEqual(languages.deviceLanguage.id, zhCN)
-    }
-
-    func testDeviceLanguageReturnsZhTWForZhHantES() {
-        let languages = WordPressComLanguageDatabase()
-        languages._overrideDeviceLanguageCode("zh-Hant-ES")
-
-        XCTAssertEqual(languages.deviceLanguage.id, zhTW)
-    }
-
-
-    private let en = 1
-    private let es = 19
-    private let zhCN = 449
-    private let zhTW = 452
-
 }

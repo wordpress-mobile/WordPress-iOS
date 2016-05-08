@@ -24,9 +24,7 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
-            return
-        }
+        let remote = siteManagementServiceRemoteForBlog(blog)
         remote.deleteSite(blog.dotComID,
             success: {
                 self.managedObjectContext.performBlock {
@@ -53,9 +51,7 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
-            return
-        }
+        let remote = siteManagementServiceRemoteForBlog(blog)
         remote.exportContent(blog.dotComID,
             success: {
                 success?()
@@ -73,9 +69,7 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func getActivePurchasesForBlog(blog: Blog, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
-        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
-            return
-        }
+        let remote = siteManagementServiceRemoteForBlog(blog)
         remote.getActivePurchases(blog.dotComID,
             success: { purchases in
                 success?(purchases)
@@ -94,11 +88,7 @@ public class SiteManagementService : LocalCoreDataService
     ///
     /// - Returns: Remote service for site management
     ///
-    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote? {
-        guard let api = blog.restApi() else {
-            return nil
-        }
-
-        return SiteManagementServiceRemote(api: api)
+    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
+        return SiteManagementServiceRemote(api: blog.restApi())
     }
 }
