@@ -31,19 +31,11 @@ function clean_build() {
 }
 
 function pretty_travis() {
-  xcpretty -c
-}
-
-function pretty_circleci() {
-  xcpretty -c --report junit --output $CIRCLE_TEST_REPORTS/xcode/results.xml
+  xcpretty -f `xcpretty-travis-formatter`
 }
 
 function rawlog() {
   tee $1
-}
-
-function rawlog_circleci() {
-  rawlog $CIRCLE_ARTIFACTS/xcode_raw.log
 }
 
 function usage() {
@@ -55,6 +47,20 @@ Usage: $0 [-cdhv] [-l logfile]
   -v  Verbose. Skips xcpretty.
   -h  Show this message.
 EOF
+}
+
+# $1: verbose
+# $2: logfile
+function log() {
+  if [ "$LOGFILE" != "" -a $VERBOSE == 0 ]; then
+    rawlog "$LOGFILE" | pretty_travis
+  elif [ "$LOGFILE" != "" ]; then
+    rawlog "$LOGFILE"
+  elif [ $VERBOSE == 0 ]; then
+    pretty_travis
+  else
+    cat
+  fi
 }
 
 CLEAN=0
@@ -90,24 +96,9 @@ if [ $CLEAN == 1 ]; then
   BUILD_CMD=clean_build
 fi
 
-CMD="$BUILD_CMD"
-
-if [ "$LOGFILE" != "" ]; then
-  CMD="$CMD | rawlog $LOGFILE"
-fi
-
-if [ $VERBOSE == 0 ]; then
-  if [ $CIRCLECI ]; then
-    CMD="$CMD | rawlog_circleci | pretty_circleci"
-  else
-    CMD="$CMD | pretty_travis"
-  fi
-fi
-
 if [ $DEBUG == 1 ]; then
-  echo $CMD
   set -x
 fi
 
-eval $CMD
+$BUILD_CMD | log
 

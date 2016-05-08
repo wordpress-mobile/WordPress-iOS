@@ -211,7 +211,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)findAccountWithUsername:(NSString *)username
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"username like %@", username]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"username =[c] %@", username]];
     [request setIncludesPendingChanges:YES];
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
@@ -256,6 +256,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
+    if (account.restApi == nil) {
+        return nil;
+    }
+
     return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 

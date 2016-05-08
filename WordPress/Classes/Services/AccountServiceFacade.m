@@ -21,16 +21,21 @@
     [accountService updateUserDetailsForAccount:account success:success failure:failure];
 }
 
--(void)removeLegacyAccount:(NSString *)newUsername
+-(void)setDefaultWordPressComAccount:(WPAccount *)account
 {
-    NSParameterAssert(newUsername);
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
-    if (![accountService.defaultWordPressComAccount.username isEqual:newUsername]) {
+    if ([defaultAccount isEqual:account]) {
+        // No update needed.
+        return;
+    } else if (defaultAccount) {
+        // Remove the current unrelated account.
         [accountService removeDefaultWordPressComAccount];
     }
+    [accountService setDefaultWordPressComAccount:account];
 }
 
 @end
