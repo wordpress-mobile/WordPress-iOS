@@ -7,8 +7,7 @@ public class GravatarService
 {
     /// Designated Initializer
     ///
-    /// - Parameters:
-    ///     - context: The Core Data context that should be used by the service.
+    /// - Parameter context: The Core Data context that should be used by the service.
     ///
     /// - Returns: nil if there's no valid WordPressCom Account available.
     ///

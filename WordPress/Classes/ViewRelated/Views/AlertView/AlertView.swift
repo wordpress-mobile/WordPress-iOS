@@ -12,7 +12,7 @@ public class AlertView : NSObject
 
     
     /// Designated Initializer
-    /// -   parameters:
+    /// - Parameters:
     ///     - title: The title of the AlertView.
     ///     - message: Message string to be displayed. Note: Bold is supported, **markdown flavor**.
     ///     - completion: A closure to be executed right after the button is pressed.
@@ -58,7 +58,7 @@ public class AlertView : NSObject
     
     
     /// Finds the root view attached to the window
-    /// -   returns: The Key View.
+    /// - Returns: The Key View.
     ///
     private func keyView() -> UIView {
         return (UIApplication.sharedApplication().keyWindow?.subviews.first)!
@@ -81,9 +81,10 @@ public class AlertView : NSObject
     
     
     /// Apples Bold Style over all of the text surrounded by **double stars**.
-    /// -   parameters:
-    ///     - message: The Message that should be stylized.
-    /// -   returns: The Message with Bold Substrings styled.
+    ///
+    /// - Parameter message: The Message that should be stylized.
+    ///
+    /// - Returns: The Message with Bold Substrings styled.
     ///
     private func applyBoldStyles(message: NSMutableAttributedString) -> NSMutableAttributedString {
         let boldPattern = "(\\*{1,2}).+?\\1"
@@ -95,10 +96,9 @@ public class AlertView : NSObject
     
     /// Removes the Bold Markers from an Attributed String.
     ///
-    /// -   parameters:
-    ///     - message: The Message that should be stylized.
+    /// - Parameter message: The Message that should be stylized.
     ///
-    /// -   returns: The Message without the **bold** markers.
+    /// - Returns: The Message without the **bold** markers.
     ///
     private func removeBoldMarkers(message: NSMutableAttributedString) -> NSMutableAttributedString {
         let range = NSRange(location: 0, length: message.length)

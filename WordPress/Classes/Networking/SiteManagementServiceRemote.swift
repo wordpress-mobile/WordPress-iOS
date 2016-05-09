@@ -8,7 +8,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     /// Deletes the specified WordPress.com site.
     ///
     /// - Parameters:
-    ///    - siteID:  The WordPress.com ID of the site.
+    ///    - siteID: The WordPress.com ID of the site.
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
@@ -45,7 +45,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     /// - Note: An email will be sent with download link when export completes.
     ///
     /// - Parameters:
-    ///    - siteID:  The WordPress.com ID of the site.
+    ///    - siteID: The WordPress.com ID of the site.
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
@@ -79,7 +79,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     /// Gets the list of active purchases of the specified WordPress.com site.
     ///
     /// - Parameters:
-    ///     - siteID:  The WordPress.com ID of the site.
+    ///     - siteID: The WordPress.com ID of the site.
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
