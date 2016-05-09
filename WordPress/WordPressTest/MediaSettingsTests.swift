@@ -15,7 +15,7 @@ class MediaSettingsTests: XCTestCase {
     }
 
     func testDefaultMaxImageSize() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(storage: KeyValueDatabase.InMemoryDatabase())
         let maxImageSize = settings.maxImageSizeSetting
         expect(maxImageSize).to(equal(settings.allowedImageSizeRange.max))
     }
@@ -23,7 +23,7 @@ class MediaSettingsTests: XCTestCase {
     func testMaxImageSizeMigratesCGSizeToInt() {
         let dimension = 1200
         let size = CGSize(width: dimension, height: dimension)
-        let storage = MediaSettings.EphemeralStorage()
+        let storage = KeyValueDatabase.InMemoryDatabase()
         storage.setValue(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
 
         let settings = MediaSettings(storage: storage)
@@ -33,7 +33,7 @@ class MediaSettingsTests: XCTestCase {
     }
 
     func testMaxImageSizeClampsValues() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(storage: KeyValueDatabase.InMemoryDatabase())
         let lowValue = settings.allowedImageSizeRange.min - 1
         let highValue = settings.allowedImageSizeRange.max + 1
 
@@ -44,7 +44,7 @@ class MediaSettingsTests: XCTestCase {
     }
 
     func testImageSizeForUploadReturnsIntMax() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(storage: KeyValueDatabase.InMemoryDatabase())
         let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = highValue
