@@ -12,6 +12,7 @@ extension UITableViewController {
     /// viewWillAppear method.
     ///
     /// - precondition: clearsSelectionOnViewWillAppear must be false before this is called.
+    ///
     func animateDeselectionInteractively() {
         precondition(clearsSelectionOnViewWillAppear == false, "Can't take over deselection unless clearsSelectionOnViewWillAppear is false")
 

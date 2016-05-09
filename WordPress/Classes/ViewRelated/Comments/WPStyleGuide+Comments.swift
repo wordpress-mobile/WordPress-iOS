@@ -1,11 +1,8 @@
 import Foundation
 import WordPressShared
 
-/**
-*  @class           WPStyleGuide+Comments
-*  @brief           This class groups all of the styles used by all of the CommentsViewController.
-*/
-
+/// This class groups all of the styles used by all of the CommentsViewController.
+///
 extension WPStyleGuide
 {
     public struct Comments

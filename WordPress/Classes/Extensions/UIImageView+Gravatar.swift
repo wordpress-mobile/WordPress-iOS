@@ -83,9 +83,9 @@ extension UIImageView
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
     ///
     /// -   Parameters:
-    ///     - email: the user's email
-    ///     - size: required download size
-    ///     - rating: image rating filtering
+    ///     -   email: the user's email
+    ///     -   size: required download size
+    ///     -   rating: image rating filtering
     ///
     /// -   Returns: Gravatar's URL
     ///
