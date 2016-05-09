@@ -22,14 +22,13 @@ extension Int {
 }
 
 extension Comparable {
-    /**
-     Clamps self between a minimum and maximum value
-     
-     - returns: the method returns
-        - min if self < min
-        - max if self > max
-        - otherwise it returns self
-     */
+    /// Clamps self between a minimum and maximum value
+    ///
+    /// - Returns: the method returns
+    ///     - min if self < min
+    ///     - max if self > max
+    ///     - otherwise it returns self
+    ///
     func clamp(min minValue: Self, max maxValue: Self) -> Self {
         return Swift.min(Swift.max(self, minValue), maxValue)
     }

@@ -54,8 +54,7 @@ extension SigninWPComSyncHandler
 
     /// Cleans up the view after a successful sync and dismisses the NUX controller.
     /// 
-    /// - Parameters: 
-    ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
+    /// - Parameter requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
     func handleSyncSuccess(requiredMultifactor: Bool) {
         configureStatusLabel("")

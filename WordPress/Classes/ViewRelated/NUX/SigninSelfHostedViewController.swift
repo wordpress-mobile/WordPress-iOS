@@ -26,8 +26,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninSelfHostedViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -123,8 +122,7 @@ import WordPressShared
 
     /// Sets the view's state to loading or not loading.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureLoading(loading: Bool) {
         usernameField.enabled = !loading

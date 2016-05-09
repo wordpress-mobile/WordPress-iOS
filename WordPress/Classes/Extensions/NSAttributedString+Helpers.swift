@@ -7,10 +7,9 @@ extension NSAttributedString {
     /// This method will embed a collection of assets, in the specified NSRange's.
     /// Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
     ///
-    /// -   parameters:
-    ///     -   embeds: A colleciton of embeds. NSRange > UIImage.
+    /// - Parameter embeds: A colleciton of embeds. NSRange > UIImage.
     ///
-    /// -   returns: An attributed string with all of the embeds specified, inlined.
+    /// - Returns: An attributed string with all of the embeds specified, inlined.
     ///
     public func stringByEmbeddingImageAttachments(embeds: [NSValue: UIImage]?) -> NSAttributedString {
         // Allow nil embeds: behave as a simple NO-OP

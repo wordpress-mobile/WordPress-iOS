@@ -33,8 +33,8 @@ public class AlertInternalView : UIView
     
     
     /// Handles the Dismiss Button Tap.
-    /// -   parameters:
-    ///     - sender: The button that was pressed.
+    ///
+    /// - Parameter sender: The button that was pressed.
     ///
     @IBAction private func buttonWasPressed(sender: AnyObject!) {
         onClick?()

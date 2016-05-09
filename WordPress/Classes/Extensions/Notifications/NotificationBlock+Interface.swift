@@ -16,7 +16,7 @@ extension NotificationBlock {
     
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
-    /// -   returns: A Subject Attributed String
+    /// - Returns: A Subject Attributed String
     ///
     public func attributedSubjectText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
@@ -31,7 +31,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
-    /// -   returns: A Snippet Attributed String
+    /// - Returns: A Snippet Attributed String
     ///
     public func attributedSnippetText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
@@ -46,7 +46,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
-    /// -   returns: A Header Attributed String
+    /// - Returns: A Header Attributed String
     ///
     public func attributedHeaderTitleText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
@@ -61,7 +61,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
-    /// -   returns: A Header Attributed String
+    /// - Returns: A Header Attributed String
     ///
     public func attributedFooterText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
@@ -77,7 +77,7 @@ extension NotificationBlock {
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and 
     /// NoteBlockCommentTableViewCell.
     ///
-    /// -   returns: An Attributed String for usage in both, comments and cell cells
+    /// - Returns: An Attributed String for usage in both, comments and cell cells
     ///
     public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
@@ -99,7 +99,7 @@ extension NotificationBlock {
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom 
     /// formatting that differs from regular notifications, such as centered texts.
     ///
-    /// -   returns: An Attributed String for usage in Badge Notifications
+    /// - Returns: An Attributed String for usage in Badge Notifications
     ///
     public func attributedBadgeText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
@@ -118,10 +118,9 @@ extension NotificationBlock {
     ///
     /// This is used to build an Attributed String containing inline images.
     ///
-    /// -   parameters:
-    ///     - mediaMap: A Dictionary mapping asset URL's to the already-downloaded assets
+    /// - Parameter mediaMap: A Dictionary mapping asset URL's to the already-downloaded assets
     ///
-    /// -   returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
+    /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
     public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
@@ -153,11 +152,10 @@ extension NotificationBlock {
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
-    /// -   parameters:
-    ///     -   fn:  A Closure that, on execution, returns an attributed string.
+    /// - Parameter fn: A Closure that, on execution, returns an attributed string.
     ///
-    /// -   returns: A new Closure that on execution will either hit the cache, or execute the closure `fn`
-    ///              and store its return value in the cache.
+    /// - Returns: A new Closure that on execution will either hit the cache, or execute the closure `fn`
+    ///            and store its return value in the cache.
     ///
     private func memoize(fn: () -> NSAttributedString) -> String -> NSAttributedString {
         return {
@@ -177,14 +175,14 @@ extension NotificationBlock {
     
     /// This method is an all-purpose helper to aid formatting the NotificationBlock's payload text.
     ///
-    /// -   parameters:
+    /// - Parameters:
     ///     - attributes: Represents the attributes to be applied, initially, to the Text.
     ///     - quoteStyles: The Styles to be applied to "any quoted text"
     ///     - rangeStylesMap: A Dictionary object mapping NotificationBlock types to a dictionary of styles
     ///                       to be applied.
     ///     - linksColor: The color that should be used on any links contained.
     ///
-    /// -   returns: A NSAttributedString instance, formatted with all of the specified parameters
+    /// - Returns: A NSAttributedString instance, formatted with all of the specified parameters
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
