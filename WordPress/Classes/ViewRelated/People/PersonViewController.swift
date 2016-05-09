@@ -163,7 +163,11 @@ private extension PersonViewController {
     }
 
     func updateRole(newRole: Person.Role) {
-        let service = PeopleService(blog: blog)
+        guard let service = PeopleService(blog: blog) else {
+            DDLogSwift.logError("Couldn't instantiate People Service")
+            return
+        }
+        
         let updated = service.updatePerson(person, role: newRole) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
