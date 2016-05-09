@@ -1,6 +1,5 @@
 #import "ServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "WordPress-Swift.h"
 
 static NSString* const ServiceRemoteRESTApiVersionStringInvalid = @"invalid_api_version";
 static NSString* const ServiceRemoteRESTApiVersionString_1_1 = @"v1.1";
@@ -22,18 +21,6 @@ static NSString* const ServiceRemoteRESTApiVersionString_1_3 = @"v1.3";
     }
     return self;
 }
-
-- (id)initWithComRestApi:(WordPressComRestApi *)wordPressComRestApi {
-
-    NSParameterAssert([wordPressComRestApi isKindOfClass:[WordPressComRestApi class]]);
-
-    self = [super init];
-    if (self) {
-        _wordPressComRestApi = wordPressComRestApi;
-    }
-    return self;
-}
-
 
 #pragma mark - API Version
 

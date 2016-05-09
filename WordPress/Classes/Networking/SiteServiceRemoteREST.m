@@ -14,12 +14,4 @@
     return self;
 }
 
-- (instancetype)initWithComRestApi:(WordPressComRestApi *)api siteID:(NSNumber *)siteID {
-    self = [super initWithComRestApi:api];
-    if (self) {
-        _siteID = siteID;
-    }
-    return self;
-}
-
 @end

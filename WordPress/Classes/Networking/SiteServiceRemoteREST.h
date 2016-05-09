@@ -9,9 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithApi:(WordPressComApi *)api __unavailable;
 - (instancetype)initWithApi:(WordPressComApi *)api siteID:(NSNumber *)siteID;
 
-- (instancetype)initWithComRestApi:(WordPressComRestApi *)api __unavailable;
-- (instancetype)initWithComRestApi:(WordPressComRestApi *)api siteID:(NSNumber *)siteID;
-
 @end
 
 NS_ASSUME_NONNULL_END

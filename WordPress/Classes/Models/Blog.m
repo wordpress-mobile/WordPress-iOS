@@ -593,7 +593,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return nil;
 }
 
-- (WordPressComRestApi *)comRestApi
+- (WordPressComRestApi *)wordPressComRestApi
 {
     if (self.account) {
         return self.account.wordPressComRestApi;
