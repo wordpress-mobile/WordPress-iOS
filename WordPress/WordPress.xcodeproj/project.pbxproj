@@ -2351,9 +2351,22 @@
 			name = "Item Source";
 			sourceTree = "<group>";
 		};
+		08AFB8351CE1300500000E1C /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */,
+				08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */,
+				08D9784D1CD2AF7D0054F19A /* MenuItem+ViewDesign.h */,
+				08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		08D345461CD7F4E300358E8C /* Menu and Location Selection */ = {
 			isa = PBXGroup;
 			children = (
+				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
+				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
 				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
 				08D3454F1CD7F50900358E8C /* MenusSelectionView.m */,
 				08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */,
@@ -2385,24 +2398,11 @@
 				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
 				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
 				08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */,
-				08D9784A1CD2AF7D0054F19A /* Views */,
-			);
-			path = Menus;
-			sourceTree = "<group>";
-		};
-		08D9784A1CD2AF7D0054F19A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */,
-				08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */,
-				08D9784D1CD2AF7D0054F19A /* MenuItem+ViewDesign.h */,
-				08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */,
-				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
-				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
+				08AFB8351CE1300500000E1C /* Categories */,
 				08D345461CD7F4E300358E8C /* Menu and Location Selection */,
 				08D345471CD7F4EF00358E8C /* MenuItem Editing */,
 			);
-			path = Views;
+			path = Menus;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
