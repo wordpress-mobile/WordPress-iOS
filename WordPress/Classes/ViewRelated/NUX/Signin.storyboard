@@ -164,8 +164,10 @@
                     </view>
                     <connections>
                         <outlet property="bottomContentConstraint" destination="69z-Ci-34m" id="P7I-rP-Yd4"/>
+                        <outlet property="createSiteButton" destination="PCj-nt-T9Y" id="YmC-Pm-ReZ"/>
                         <outlet property="emailTextField" destination="XXO-aV-keK" id="GZQ-cn-hKd"/>
                         <outlet property="safariPasswordButton" destination="DvS-7c-C5u" id="QWl-vu-AuY"/>
+                        <outlet property="selfHostedSigninButton" destination="5Hn-ZK-h9k" id="hZn-AT-eQt"/>
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
                         <outlet property="verticalCenterConstraint" destination="iah-J8-nUj" id="yM3-vH-3tw"/>
                     </connections>
@@ -519,7 +521,9 @@
                     </view>
                     <connections>
                         <outlet property="bottomContentConstraint" destination="cuz-xK-BSJ" id="fwY-mo-qJg"/>
+                        <outlet property="forgotPasswordButton" destination="0P1-6g-BI3" id="UkJ-jm-n4v"/>
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
+                        <outlet property="selfHostedButton" destination="H0W-Yk-8M8" id="hYO-6p-cKo"/>
                         <outlet property="statusLabel" destination="ZqY-I8-yWG" id="JAz-Px-ECW"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
                         <outlet property="usernameField" destination="GLH-TC-M0d" id="wBH-SI-k2G"/>
@@ -908,6 +912,7 @@
                     <connections>
                         <outlet property="label" destination="CmN-ir-1YK" id="Xhc-3L-kvy"/>
                         <outlet property="sendLinkButton" destination="iIy-Sm-1r0" id="9My-fJ-l9S"/>
+                        <outlet property="usePasswordButton" destination="B6x-b7-hU9" id="mB8-03-VBa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cja-vu-y88" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -990,6 +995,8 @@
                     </view>
                     <connections>
                         <outlet property="label" destination="pkM-xx-821" id="nOS-5r-86h"/>
+                        <outlet property="openMailButton" destination="0Iy-9H-ykD" id="Xwh-40-c65"/>
+                        <outlet property="usePasswordButton" destination="b0O-LO-6ax" id="mqE-R7-rGj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ypF-IN-pDx" userLabel="First Responder" sceneMemberID="firstResponder"/>
