@@ -40,7 +40,8 @@ public struct ImmuTable {
     }
 
     /// Returns the row model for a specific index path.
-    /// - precondition: `indexPath` should represent a valid section and row, otherwise this method 
+    ///
+    /// - Precondition: `indexPath` should represent a valid section and row, otherwise this method
     ///                 will raise an exception.
     ///
     public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
@@ -142,17 +143,22 @@ public protocol ImmuTableRow {
     var action: ImmuTableAction? { get }
 
     /// This method is called when an associated cell needs to be configured.
-    /// - precondition: You can assume that the passed cell is of the type defined
+    ///
+    /// - Precondition: You can assume that the passed cell is of the type defined
     ///   by cell.cellClass and force downcast accordingly.
+    ///
     func configureCell(cell: UITableViewCell)
 
     /// An ImmuTableCell value defining the associated cell type.
-    /// - seealso: See ImmuTableCell for possible options.
+    ///
+    /// - Seealso: See ImmuTableCell for possible options.
+    ///
     static var cell: ImmuTableCell { get }
 
     /// The desired row height (Optional)
     ///
     /// If not defined or nil, the default height will be used.
+    ///
     static var customHeight: Float? { get }
 }
 
@@ -182,7 +188,7 @@ extension ImmuTableRow {
 /// Both cases presume a custom UITableViewCell subclass. If you aren't subclassing,
 /// you can also use UITableViewCell as the type.
 ///
-/// - note: If you need to use any cell style other than .Default we recommend you
+/// - Note: If you need to use any cell style other than .Default we recommend you
 ///  subclass UITableViewCell and override init(style:reuseIdentifier:).
 ///
 public enum ImmuTableCell {
@@ -224,7 +230,7 @@ public enum ImmuTableCell {
 /// It acts as the table view data source and delegate, and signals the table view to
 /// reload its data when the underlying model changes.
 ///
-/// - note: as it keeps a weak reference to its target, you should keep a strong
+/// - Note: As it keeps a weak reference to its target, you should keep a strong
 ///         reference to the handler from your view controller.
 ///
 public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
