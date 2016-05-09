@@ -41,7 +41,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
     
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return isViewHorizontallyCompact() ? CGFloat.min : 0
+        return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
 
     
