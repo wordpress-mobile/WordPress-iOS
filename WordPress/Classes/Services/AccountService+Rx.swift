@@ -6,6 +6,7 @@ extension AccountService {
     /// Observable that emits new values when the default account is set
     ///
     /// - warning: This should only be observed from the main thread, otherwise behavior is undefined
+    ///
     var defaultAccountObjectID: Observable<NSManagedObjectID?> {
         return NSNotificationCenter.defaultCenter()
             .rx_notification(WPAccountDefaultWordPressComAccountChangedNotification)
@@ -17,6 +18,7 @@ extension AccountService {
     /// This can be that the default account is set or removed, or one of its properties changes.
     ///
     /// - warning: This should only be observed from the main thread, otherwise behavior is undefined
+    ///
     var defaultAccountChanged: Observable<WPAccount?> {
         // Keep a reference to the context to avoid having to reference self
         // within the closure

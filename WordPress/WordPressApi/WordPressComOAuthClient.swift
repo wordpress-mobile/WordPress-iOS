@@ -41,24 +41,23 @@ public final class WordPressComOAuthClient: NSObject {
 
     /// Creates a WordPressComOAuthClient using the defined clientID and secret
     ///
-    /// -   parameters:
-    ///     -   clientID: the app oauth clientID
-    ///     -   secret: the app secret
+    /// - Parameters:
+    ///     - clientID: the app oauth clientID
+    ///     - secret: the app secret
     ///
     public init(clientID: String, secret: String) {
         self.clientID = clientID
         self.secret = secret
-
     }
 
     /// Authenticates on WordPress.com with Multifactor code.
     ///
-    /// -   parameters:
-    ///     -   username: the account's username.
-    ///     -   password: the account's password.
-    ///     -   multifactorCode: Multifactor Authentication One-Time-Password. If not needed, can be nil
-    ///     -   success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
-    ///     -   failure: block to be called if authentication failed. The error object is passed as a parameter.
+    /// - Parameters:
+    ///     - username: the account's username.
+    ///     - password: the account's password.
+    ///     - multifactorCode: Multifactor Authentication One-Time-Password. If not needed, can be nil
+    ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
+    ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
     public func authenticateWithUsername(username: String,
                                   password: String,
@@ -97,11 +96,11 @@ public final class WordPressComOAuthClient: NSObject {
 
     /// Requests a One Time Code, to be sent via SMS.
     ///
-    /// - parameters:
-    ///     -   username: the account's username.
-    ///     -   password: the account's password.
-    ///     -   success: block to be called if authentication was successful.
-    ///     -   failure: block to be called if authentication failed. The error object is passed as a parameter.
+    /// - Parameters:
+    ///     - username: the account's username.
+    ///     - password: the account's password.
+    ///     - success: block to be called if authentication was successful.
+    ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
     public func requestOneTimeCodeWithUsername(username: String, password:String,
                                         success: () -> (), failure: (error: NSError) -> ())
@@ -164,11 +163,11 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         }
 
         /// Possible errors:
-        /// -   invalid_client: client_id is missing or wrong, it shouldn't happen
-        /// -   unsupported_grant_type: client_id doesn't support password grants
-        /// -   invalid_request: A required field is missing/malformed
-        /// -   invalid_request: Authentication failed
-        /// -   needs_2fa: Multifactor Authentication code is required
+        ///     - invalid_client: client_id is missing or wrong, it shouldn't happen
+        ///     - unsupported_grant_type: client_id doesn't support password grants
+        ///     - invalid_request: A required field is missing/malformed
+        ///     - invalid_request: Authentication failed
+        ///     - needs_2fa: Multifactor Authentication code is required
         ///
         let errorsMap = [
             "invalid_client" : WordPressComOAuthError.InvalidClient,

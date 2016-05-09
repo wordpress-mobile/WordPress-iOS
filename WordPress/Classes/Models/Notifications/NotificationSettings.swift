@@ -23,10 +23,11 @@ public class NotificationSettings
     
     
     /// Designated Initializer
-    /// -   parameters:
-    ///     -   channel: The related Notifications Channel
-    ///     -   streams: An array of all of the involved streams
-    ///     -   blog: The associated blog, if any
+    ///
+    /// - Parameters:
+    ///     - channel: The related Notifications Channel
+    ///     - streams: An array of all of the involved streams
+    ///     - blog: The associated blog, if any
     ///
     public init(channel: Channel, streams: [Stream], blog: Blog?) {
         self.channel = channel
@@ -95,9 +96,9 @@ public class NotificationSettings
         
         /// Designated Initializer
         ///
-        /// -   parameters:
-        ///     -   kind: The Kind of stream we're currently dealing with
-        ///     -   preferences: Raw remote preferences, retrieved from the backend
+        /// - Parameters:
+        ///     - kind: The Kind of stream we're currently dealing with
+        ///     - preferences: Raw remote preferences, retrieved from the backend
         ///
         public init(kind: String, preferences: [String : Bool]?) {
             self.kind           = Kind(rawValue: kind) ?? .Email
