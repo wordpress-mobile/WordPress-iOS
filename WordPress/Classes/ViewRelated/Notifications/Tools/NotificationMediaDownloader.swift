@@ -1,15 +1,12 @@
 import Foundation
 import AFNetworking
 
-/**
-*  @class           NotificationMediaDownloader
-*  @brief           The purpose of this class is to provide a simple API to download assets from the web.
-*  @details         Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
-*                   Internally, images get downloaded and resized: both copies of the image get cached.
-*                   Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
-*                   which will take care of resizing the original image, to fit the new orientation.
-*/
-
+/// The purpose of this class is to provide a simple API to download assets from the web.
+/// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
+/// Internally, images get downloaded and resized: both copies of the image get cached.
+/// Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
+/// which will take care of resizing the original image, to fit the new orientation.
+///
 @objc public class NotificationMediaDownloader : NSObject
 {
     //
