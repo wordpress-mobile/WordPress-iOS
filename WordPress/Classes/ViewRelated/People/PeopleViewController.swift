@@ -19,7 +19,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }()
     
     
-    
     // MARK: - UITableView Methods
     
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -30,8 +29,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as! PeopleCell
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as? PeopleCell else {
+            fatalError()
+        }
+        
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
 
@@ -61,24 +63,24 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         } catch {
             DDLogSwift.logError("Error fetching People: \(error)")
         }
-        
+
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if resultsController.fetchedObjects?.count == 0 {
-            refreshControl?.beginRefreshing()
-            refresh()
-        }
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshTeam()
     }
+    
+    
+    // MARK: - Storyboard Methods
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let personViewController = segue.destinationViewController as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow
         {
-            personViewController.person = personAtIndexPath(selectedIndexPath)
             personViewController.blog = blog
+            personViewController.person = personAtIndexPath(selectedIndexPath)
         }
     }
 
@@ -92,18 +94,27 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     
-    // MARK: - Helpers
+    // MARK: - Refresh Helpers
     
-    @IBAction func refresh() {
-        guard let blog = blog,
-            service = PeopleService(blog: blog) else {
-                return
-        }
-        service.refreshTeam { [weak self] _ in
+    @IBAction public func refresh() {
+        refreshTeam() { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
     }
+    
+    private func refreshTeam(onCompletion: (Void -> Void)? = nil) {
+        guard let blog = blog, service = PeopleService(blog: blog) else {
+            return
+        }
+        
+        service.refreshTeam { _ in
+            onCompletion?()
+        }
+    }
 
+    
+    // MARK: - Private Helpers
+    
     private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
         let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
         let person = Person(managedPerson: managedPerson)
@@ -114,7 +125,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - UIViewControllerRestoration
     
     public class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        
         let context = ContextManager.sharedInstance().mainContext
         
         guard let blogID = coder.decodeObjectForKey(RestorationKeys.blog) as? String,
