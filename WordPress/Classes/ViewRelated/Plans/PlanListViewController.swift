@@ -243,9 +243,11 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     static let restorationIdentifier = "PlanList"
 
-    convenience init(blog: Blog) {
+    convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        let service = PlanService(blog: blog, store: StoreKitStore())
+        guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
+            return nil
+        }
         self.init(siteID: Int(blog.dotComID), service: service)
     }
 

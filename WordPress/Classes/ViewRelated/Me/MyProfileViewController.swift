@@ -2,8 +2,12 @@ import UIKit
 import RxSwift
 import WordPressShared
 
-func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController {
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
+    guard let api = account.restApi else {
+        return nil
+    }
+
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
     return MyProfileViewController(service: service)
 }
 

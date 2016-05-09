@@ -17,8 +17,12 @@ struct PeopleService {
     /// -   Parameters:
     ///     - blog: Target Blog Instance
     ///
-    init(blog: Blog) {
-        remote = PeopleRemote(api: blog.restApi())
+    init?(blog: Blog) {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        remote = PeopleRemote(api: api)
         siteID = blog.dotComID as Int
     }
 

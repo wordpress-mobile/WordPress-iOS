@@ -176,6 +176,18 @@ class PlanDetailViewController: UIViewController {
         populateHeader()
         updateNoResults()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerForPurchaseNotifications()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        unregisterForPurchaseNotifications()
+    }
 
     private func configureAppearance() {
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
@@ -257,12 +269,65 @@ class PlanDetailViewController: UIViewController {
         store.getProductsWithIdentifiers(
             Set([identifier]),
             success: { [viewModel] products in
-                StoreKitCoordinator.instance.purchasePlan(viewModel.plan, product: products[0], forSite: viewModel.siteID)
+                do {
+                    try StoreKitCoordinator.instance.purchaseProduct(products[0], forSite: viewModel.siteID)
+                } catch StoreCoordinatorError.PaymentAlreadyInProgress {
+                    self.purchaseButton?.selected = false
+                } catch {}
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")
                 self.purchaseButton?.selected = false
         })
+    }
+    
+    private func registerForPurchaseNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(storeTransactionDidFinish(_:)),
+                                                         name: StoreKitCoordinator.TransactionDidFinishNotification,
+                                                         object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(storeTransactionDidFail(_:)),
+                                                         name: StoreKitCoordinator.TransactionDidFailNotification,
+                                                         object: nil)
+    }
+    
+    private func unregisterForPurchaseNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+                                                            name: StoreKitCoordinator.TransactionDidFinishNotification,
+                                                            object: nil)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+                                                            name: StoreKitCoordinator.TransactionDidFailNotification,
+                                                            object: nil)
+    }
+    
+    @objc private func storeTransactionDidFinish(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+        let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String else { return }
+        
+        if productID == viewModel.plan.productIdentifier {
+            purchaseButton?.selected = false
+            
+            let postPurchaseViewController = PlanPostPurchaseViewController(plan: viewModel.plan)
+            presentViewController(postPurchaseViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func storeTransactionDidFail(notification: NSNotification) {
+        purchaseButton?.selected = false
+        
+        if let userInfo = notification.userInfo,
+            let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String,
+            let error = userInfo[NSUnderlyingErrorKey] as? NSError
+            where productID == viewModel.plan.productIdentifier {
+            let alert = UIAlertController(title: NSLocalizedString("Purchase Failed", comment: "Title of alert displayed when an in-app purchase couldn't be completed."),
+                                          message: error.localizedDescription,
+                                          preferredStyle: .Alert)
+            alert.addActionWithTitle(NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb."), style: .Cancel, handler: nil)
+            alert.presentFromRootViewController()
+        }
     }
 }
 
