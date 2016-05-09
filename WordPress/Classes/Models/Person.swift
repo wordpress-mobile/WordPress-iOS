@@ -28,6 +28,9 @@ struct Person: Equatable {
         case Contributor
         case Unsupported
         
+        /// Note:
+        /// This array represents the list of roles that can be assigned during edition. Missing
+        /// ones are skipped on purpose!.
         static let roles = [Role.Admin, .Editor, .Author, .Contributor]
     }
 }
