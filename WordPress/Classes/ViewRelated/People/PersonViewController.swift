@@ -135,7 +135,8 @@ final class PersonViewController : UITableViewController {
             return
         }
         
-        roleViewController.role = person.role
+        roleViewController.blog = blog
+        roleViewController.selectedRole = person.role
         roleViewController.onChange = { newRole in
             self.updateRole(newRole)
         }
