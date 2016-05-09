@@ -870,7 +870,12 @@ extension ReaderDetailViewController : UIScrollViewDelegate
         if y > scrollView.contentOffset.y && y > threshold {
             setBarsHidden(true)
         } else {
-            setBarsHidden(false)
+            // Velocity will be 0,0 if the user taps to stop an in progress scroll.
+            // If the bars are already visible its fine but if the bars are hidden
+            // we don't want to jar the user by having them reappear.
+            if !CGPointEqualToPoint(velocity, CGPointZero) {
+                setBarsHidden(false)
+            }
         }
     }
 
