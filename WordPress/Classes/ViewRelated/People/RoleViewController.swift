@@ -102,7 +102,7 @@ class RoleViewController : UITableViewController {
         tableView.reloadDataPreservingSelection()
         
         // Callback
-        onChange?(role: roleForSelectedRow)
+        onChange?(roleForSelectedRow)
         navigationController?.popViewControllerAnimated(true)
     }
     
