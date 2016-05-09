@@ -66,9 +66,9 @@ public final class WordPressComRestApi: NSObject
      - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
      */
     public func GET(URLString: String,
-                     parameters:[NSString:AnyObject]?,
-                     success:SuccessResponseBlock,
-                     failure:FailureReponseBlock) -> NSProgress?
+                     parameters: [String:AnyObject]?,
+                     success: SuccessResponseBlock,
+                     failure: FailureReponseBlock) -> NSProgress?
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
@@ -101,9 +101,9 @@ public final class WordPressComRestApi: NSObject
      - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
      */
     public func POST(URLString: String,
-                     parameters:[NSString:AnyObject]?,
-                     success:SuccessResponseBlock,
-                     failure:FailureReponseBlock) -> NSProgress?
+                     parameters: [String:AnyObject]?,
+                     success: SuccessResponseBlock,
+                     failure: FailureReponseBlock) -> NSProgress?
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
@@ -139,10 +139,10 @@ public final class WordPressComRestApi: NSObject
      - returns: a NSProgress object that can be used to track the progress of the upload and to cancel the upload
      */
     public func multipartPOST(URLString: String,
-                              parameters:[NSString:AnyObject]?,
-                              fileParts:[FilePart],
-                              success:SuccessResponseBlock,
-                              failure:FailureReponseBlock) -> NSProgress?
+                              parameters: [String:AnyObject]?,
+                              fileParts: [FilePart],
+                              success: SuccessResponseBlock,
+                              failure: FailureReponseBlock) -> NSProgress?
     {
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
             let requestURLString = NSURL(string:URLString,
@@ -187,7 +187,8 @@ public final class WordPressComRestApi: NSObject
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
-public final class FilePart : NSObject {
+public final class FilePart : NSObject
+{
     let parameterName: String
     let url: NSURL
     let filename: String
