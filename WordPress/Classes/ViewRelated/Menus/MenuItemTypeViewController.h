@@ -3,11 +3,11 @@
 
 @class Blog;
 
-@protocol MenuItemTypeSelectionViewDelegate;
+@protocol MenuItemTypeViewControllerDelegate;
 
 @interface MenuItemTypeViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuItemTypeSelectionViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemTypeViewControllerDelegate> delegate;
 
 /**
  The itemType to display as selected in the UI, such as MenuItemTypePage.
@@ -31,7 +31,7 @@
 
 @end
 
-@protocol MenuItemTypeSelectionViewDelegate <NSObject>
+@protocol MenuItemTypeViewControllerDelegate <NSObject>
 
 /**
  User selected an itemType.

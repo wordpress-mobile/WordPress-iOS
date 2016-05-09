@@ -168,22 +168,19 @@ static CGFloat const SearchBarHeight = 44.0;
     _searchBar = searchBar;
     
     __weak MenuItemSourceResultsViewController *weakSelf = self;
-    {
-        MenuItemSourceTextBarFieldObserver *observer = [[MenuItemSourceTextBarFieldObserver alloc] init];
-        observer.interval = SearchBarFetchRequestUpdateDelay;
-        [observer setOnTextChange:^(NSString *text) {
-            [weakSelf searchBarInputChangeDetectedForLocalResultsUpdateWithText:text];
-        }];
-        [_searchBar addTextObserver:observer];
-    }
-    {
-        MenuItemSourceTextBarFieldObserver *observer = [[MenuItemSourceTextBarFieldObserver alloc] init];
-        observer.interval = SearchBarRemoteServiceUpdateDelay;
-        [observer setOnTextChange:^(NSString *text) {
-            [weakSelf searchBarInputChangeDetectedForRemoteResultsUpdateWithText:text];
-        }];
-        [_searchBar addTextObserver:observer];
-    }
+    MenuItemSourceTextBarFieldObserver *localSearchObserver = [[MenuItemSourceTextBarFieldObserver alloc] init];
+    localSearchObserver.interval = SearchBarFetchRequestUpdateDelay;
+    [localSearchObserver setOnTextChange:^(NSString *text) {
+        [weakSelf searchBarInputChangeDetectedForLocalResultsUpdateWithText:text];
+    }];
+    [_searchBar addTextObserver:localSearchObserver];
+    
+    MenuItemSourceTextBarFieldObserver *remoteSearchObserver = [[MenuItemSourceTextBarFieldObserver alloc] init];
+    remoteSearchObserver.interval = SearchBarRemoteServiceUpdateDelay;
+    [remoteSearchObserver setOnTextChange:^(NSString *text) {
+        [weakSelf searchBarInputChangeDetectedForRemoteResultsUpdateWithText:text];
+    }];
+    [_searchBar addTextObserver:remoteSearchObserver];
 }
 
 - (BOOL)searchBarInputIsActive

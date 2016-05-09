@@ -34,21 +34,21 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
         self.backgroundColor = [UIColor whiteColor];
         
-        [self initStackView];
-        [self initLabel];
+        [self setupStackView];
+        [self setupLabel];
     }
     
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -81,7 +81,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     _stackView = stackView;
 }
 
-- (void)initLabel
+- (void)setupLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;

@@ -31,7 +31,6 @@
     [button setTitleColor:[WPStyleGuide greyDarken20] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    button.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setupTrashButton
@@ -42,7 +41,6 @@
     button.tintColor = [WPStyleGuide grey];
     [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    button.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setupSaveButton
@@ -54,7 +52,6 @@
     [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
     [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    button.backgroundColor = [UIColor clearColor];
 }
 
 - (void)drawRect:(CGRect)rect

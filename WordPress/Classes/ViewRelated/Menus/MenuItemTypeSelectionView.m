@@ -97,6 +97,7 @@
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     label.font = [WPStyleGuide tableviewTextFont];
     label.backgroundColor = [UIColor whiteColor];
+    label.textColor = [WPStyleGuide greyDarken30];
     
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
