@@ -1,7 +1,7 @@
 import Foundation
 import AFNetworking
 
-///  The purpose of this class is to encapsulate all of the interaction with the REST endpoint,
+/// The purpose of this class is to encapsulate all of the interaction with the REST endpoint,
 /// required to handle WordPress.com 2FA Code Veritication via Push Notifications
 ///
 @objc public class PushAuthenticationServiceRemote : ServiceRemoteREST
