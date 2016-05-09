@@ -4,11 +4,6 @@ import Nimble
 
 
 class StoreCoordinatorTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        
-        clearUserDefaults()
-    }
     
     func testPurchaseUnavailableWithPaymentDisabled() {
         let availability = availabilityWith(plan: business, active: free, paymentsEnabled: false, pendingState: .none)
@@ -97,7 +92,7 @@ class StoreCoordinatorTests: XCTestCase {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
  
-        let coordinator = StoreCoordinator(store: store)
+        let coordinator = StoreCoordinator(store: store, keyValueStorage: KeyValueDatabase.InMemoryDatabase())
         
         if let pending = pending,
             let product = TestPlans.allProducts.filter({ $0.productIdentifier == pending.productID }).first {
@@ -105,12 +100,6 @@ class StoreCoordinatorTests: XCTestCase {
         }
         
         return coordinator
-    }
-    
-    private func clearUserDefaults() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey("PendingPaymentProductIDUserDefaultsKey")
-        defaults.removeObjectForKey("PendingPaymentSiteIDUserDefaultsKey")
     }
     
     private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {

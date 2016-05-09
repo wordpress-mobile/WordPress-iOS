@@ -1,10 +1,5 @@
 import Foundation
 
-protocol MediaSettingsStorage {
-    func valueForKey(key: String) -> AnyObject?
-    func setValue(value: AnyObject, forKey key: String)
-}
-
 class MediaSettings: NSObject {
     // MARK: - Constants
     private let maxImageSizeKey = "SavedMaxImageSizeSetting"
@@ -14,16 +9,16 @@ class MediaSettings: NSObject {
     private let maxImageDimension = 3000
 
     // MARK: - Internal variables
-    private let storage: MediaSettingsStorage
+    private let storage: KeyValueStorage
 
     // MARK: - Initialization
-    init(storage: MediaSettingsStorage) {
+    init(storage: KeyValueStorage) {
         self.storage = storage
         super.init()
     }
 
     convenience override init() {
-        self.init(storage: DefaultsStorage())
+        self.init(storage: KeyValueDatabase.DefaultsDatabase())
     }
 
     // MARK: Public accessors
@@ -78,30 +73,6 @@ class MediaSettings: NSObject {
         }
         set {
             storage.setValue(newValue, forKey: removeLocationKey)
-        }
-    }
-
-    // MARK: - Storage implementations
-
-    struct DefaultsStorage: MediaSettingsStorage {
-        func setValue(value: AnyObject, forKey key: String) {
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
-            NSUserDefaults.resetStandardUserDefaults()
-        }
-        func valueForKey(key: String) -> AnyObject? {
-            return NSUserDefaults.standardUserDefaults().objectForKey(key)
-        }
-    }
-
-    class EphemeralStorage: MediaSettingsStorage {
-        private var memory = [String: AnyObject]()
-
-        func setValue(value: AnyObject, forKey key: String) {
-            memory[key] = value
-        }
-
-        func valueForKey(key: String) -> AnyObject? {
-            return memory[key]
         }
     }
 }
