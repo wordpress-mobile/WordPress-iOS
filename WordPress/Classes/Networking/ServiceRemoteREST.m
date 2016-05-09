@@ -23,13 +23,13 @@ static NSString* const ServiceRemoteRESTApiVersionString_1_3 = @"v1.3";
     return self;
 }
 
-- (id)initWithComRestApi:(WordPressComRestApi *)api {
+- (id)initWithComRestApi:(WordPressComRestApi *)wordPressComRestApi {
 
-    NSParameterAssert([api isKindOfClass:[WordPressComRestApi class]]);
+    NSParameterAssert([wordPressComRestApi isKindOfClass:[WordPressComRestApi class]]);
 
     self = [super init];
     if (self) {
-        _comRestApi = api;
+        _wordPressComRestApi = wordPressComRestApi;
     }
     return self;
 }

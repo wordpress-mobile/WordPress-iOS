@@ -23,7 +23,7 @@ typedef enum
 /**
  *  @brief      The API object to use for communications.
  */
-@property (nonatomic, strong, readonly) WordPressComRestApi *comRestApi;
+@property (nonatomic, strong, readonly) WordPressComRestApi *wordPressComRestApi;
 
 /**
  *  @brief      Designated initializer.
