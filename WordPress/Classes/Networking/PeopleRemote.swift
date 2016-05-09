@@ -3,6 +3,10 @@ import Foundation
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
 class PeopleRemote: ServiceRemoteREST {
+    /// Typealiases
+    ///
+    typealias Role = Person.Role
+    
     /// Defines the PeopleRemote possible errors.
     ///
     enum Error: ErrorType {
@@ -61,7 +65,7 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     func updatePersonFor(siteID     : Int,
                          personID   : Int,
-                         newRole    : Person.Role,
+                         newRole    : Role,
                          success    : (Person -> ())? = nil,
                          failure    : (ErrorType -> ())? = nil)
     {
@@ -86,6 +90,37 @@ class PeopleRemote: ServiceRemoteREST {
                     (operation, error) in
                     failure?(error)
                 })
+    }
+    
+    
+    /// Retrieves all of the Available Roles, for a given SiteID.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated
+    ///     - success: Optional closure to be executed on success
+    ///     - failure: Optional closure to be executed on error.
+    ///
+    /// - Returns: An array of Person.Role entities.
+    ///
+    func getAvailableRolesFor(siteID    : Int,
+                              success   : ([Role] -> Void),
+                              failure   : (ErrorType -> ())? = nil)
+    {
+        let endpoint = "sites/\(siteID)/roles"
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        
+        api.GET(path, parameters: nil, success: { (operation, responseObject) in
+            guard let response = responseObject as? [String: AnyObject],
+                    roles = try? self.rolesFromResponse(response) else
+            {
+                failure?(Error.DecodeError)
+                return
+            }
+                    
+            success(roles)
+        }, failure: { (operation, error) in
+            failure?(error)
+        })
     }
 }
 
@@ -144,8 +179,8 @@ private extension PeopleRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
         
-        let role = roles?.map({ (role) -> Person.Role in
-            return Person.Role(string: role)
+        let role = roles?.map({ role -> Role in
+            return Role(string: role)
         }).sort().first ?? .Unsupported
         
         return Person(ID            : ID,
@@ -158,5 +193,25 @@ private extension PeopleRemote {
                       linkedUserID  : linkedUserID,
                       avatarURL     : avatarURL,
                       isSuperAdmin  : isSuperAdmin)
+    }
+    
+    /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
+    ///
+    private func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
+        guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
+            throw Error.DecodeError
+        }
+        
+        let parsed = try rawRoles.map { (rawRole) -> Role in
+            guard let name = rawRole["name"] as? String else {
+                throw Error.DecodeError
+            }
+            
+            return Role(string: name)
+        }
+        
+        let filtered = parsed.filter { $0 != .Unsupported }
+        
+        return filtered.sort()
     }
 }
