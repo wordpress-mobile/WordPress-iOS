@@ -362,7 +362,7 @@ static CGFloat BlogCellRowHeight = 54.0;
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
         
         predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
-        return [NSPredicate predicateWithFormat:predicate, defaultAccount, defaultAccount];
+        return [NSPredicate predicateWithFormat:predicate, currentBlog, defaultAccount, defaultAccount];
     }
 }
 
