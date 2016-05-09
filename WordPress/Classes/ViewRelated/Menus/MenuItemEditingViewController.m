@@ -282,45 +282,44 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 - (void)setContentLayout:(MenuItemEditingViewControllerContentLayout)contentLayout
 {
-    if (_contentLayout == contentLayout) {
-        return;
-    }
+    if (_contentLayout != contentLayout) {
     
-    switch (_contentLayout) {
-        case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
-        {
-            [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingTypeView];
-            break;
+        switch (_contentLayout) {
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingTypeView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
+                break;
+            }
         }
-        case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
-        {
-            [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceView];
-            break;
-        }
-        case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
-        {
-            [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
-            break;
-        }
-    }
-    
-    _contentLayout = contentLayout;
-    
-    switch (contentLayout) {
-        case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
-        {
-            [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingTypeView];
-            break;
-        }
-        case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
-        {
-            [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceView];
-            break;
-        }
-        case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
-        {
-            [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
-            break;
+        
+        _contentLayout = contentLayout;
+        
+        switch (contentLayout) {
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingTypeView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
+                break;
+            }
         }
     }
 }
