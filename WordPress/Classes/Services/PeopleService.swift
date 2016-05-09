@@ -85,6 +85,20 @@ struct PeopleService {
         
         return Person(managedPerson: managedPerson)
     }
+    
+    /// Retrieves the collection of Roles, available for a given site
+    ///
+    /// -   Parameters:
+    ///     - success: Closure to be executed in case of success. The collection of Roles will be passed on.
+    ///     - failure: Closure to be executed in case of error
+    ///
+    func loadAvailableRoles(success: ([Role] -> Void), failure: (ErrorType -> Void)) {
+        remote.getAvailableRolesFor(siteID, success: { roles in
+            success(roles)
+        }, failure: { error in
+            failure(error)
+        })
+    }
 }
 
 
