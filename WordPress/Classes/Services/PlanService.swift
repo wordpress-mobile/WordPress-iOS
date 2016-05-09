@@ -21,7 +21,7 @@ struct PlanService<S: Store> {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in
-                PlanStorage.activatePlan(activePlan, forSite: siteID)
+                PlanStorage.activatePlan(activePlan.id, forSite: siteID)
                 self.store.getPricesForPlans(availablePlans,
                     success: { pricedPlans in
                         let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
@@ -30,9 +30,8 @@ struct PlanService<S: Store> {
             }, failure: failure)
     }
 
-    func verifyPurchase(siteID: Int, plan: Plan, receipt: NSData, completion: Bool -> Void) {
-        // Let's pretend this suceeds for now
-        PlanStorage.activatePlan(plan, forSite: siteID)
+    func verifyPurchase(siteID: Int, productID: String, receipt: NSData, completion: Bool -> Void) {
+        // Let's pretend this succeeds for now
         completion(true)
     }
 }
@@ -55,13 +54,18 @@ extension PlanService {
             DDLogSwift.logError(error)
             return nil
         }
-        self.remote = PlansRemote(api: account.restApi)
-        self.featuresRemote = PlanFeaturesRemote(api: account.restApi)
+
+        guard let api = account.restApi else {
+            return nil
+        }
+
+        self.remote = PlansRemote(api: api)
+        self.featuresRemote = PlanFeaturesRemote(api: api)
     }
 }
 
 struct PlanStorage {
-    static func activatePlan(plan: Plan, forSite siteID: Int) {
+    static func activatePlan(planID: PlanID, forSite siteID: Int) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
@@ -72,8 +76,8 @@ struct PlanStorage {
                 DDLogSwift.logError(error)
                 return
             }
-            if blog.planID != plan.id {
-                blog.planID = plan.id
+            if blog.planID != planID {
+                blog.planID = planID
                 manager.saveContextAndWait(context)
             }
         }
@@ -81,9 +85,13 @@ struct PlanStorage {
 }
 
 extension PlanService {
-    init(blog: Blog, store: S) {
-        let remote = PlansRemote(api: blog.restApi())
-        let featuresRemote = PlanFeaturesRemote(api: blog.restApi())
+    init?(blog: Blog, store: S) {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        let remote = PlansRemote(api: api)
+        let featuresRemote = PlanFeaturesRemote(api: api)
         
         self.init(store: store, remote: remote, featuresRemote: featuresRemote)
     }
