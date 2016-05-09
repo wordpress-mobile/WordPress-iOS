@@ -91,6 +91,7 @@ static CGFloat const WPProgressCellHeight = 74.0f;
 - (IBAction)cancelButtonTapped:(id)sender
 {
     [self.masterProgress cancel];
+    [self.tableView reloadData];
 }
 
 @end
