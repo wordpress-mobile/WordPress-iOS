@@ -19,7 +19,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary * parameters = @{};
     
-    [self.comRestApi GET:requestUrl parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
+    [self.wordPressComRestApi GET:requestUrl parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
             success([self remoteMediaFromJSONDictionary:response]);
@@ -58,7 +58,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.comRestApi GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(id responseObject, NSHTTPURLResponse *response) {
               NSArray *mediaItems = responseObject[@"media"];
@@ -94,7 +94,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary *parameters = @{ @"number" : @1 };
     
-    [self.comRestApi GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(id responseObject, NSHTTPURLResponse *response) {
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
@@ -128,7 +128,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }
     NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
     FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:url filename:filename mimeType:type];
-    NSProgress *localProgress = [self.comRestApi multipartPOST:requestUrl
+    NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
@@ -173,7 +173,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     NSDictionary *parameters = [self parametersFromRemoteMedia:media];
 
-    [self.comRestApi POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
            success:^(id responseObject, NSHTTPURLResponse *response) {
                RemoteMedia *media = [self remoteMediaFromJSONDictionary:responseObject];
