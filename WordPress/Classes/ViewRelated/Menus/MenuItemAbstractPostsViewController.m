@@ -26,9 +26,7 @@
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self entityClass]) inManagedObjectContext:[self managedObjectContext]];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self entityClass])];
     fetchRequest.predicate = [self defaultFetchRequestPredicate];
     fetchRequest.fetchLimit = PostServiceDefaultNumberToSync;
     return fetchRequest;
@@ -74,7 +72,7 @@
     
     NSString *postTitle = post.titleForDisplay;
     if (!postTitle.length) {
-        postTitle = NSLocalizedString(@"(Untitled Post)", @"Menus title label text for a post that has no set title.");
+        postTitle = NSLocalizedString(@"(Untitled)", @"Menus title label text for a post that has no set title.");
     }
     [cell setTitle:postTitle];
 }
@@ -159,11 +157,12 @@
         if (self.additionalPostsAvailableForSync) {
             self.defersFooterViewMessageUpdates = YES;
         }
+        DDLogDebug(@"MenuItemSourcePostView: Updating fetch request with search predicate matching: %@", searchText);
     } else {
+        DDLogDebug(@"MenuItemSourcePostView: Updating fetch request with default predicate");
         predicate = defaultPredicate;
     }
     
-    DDLogDebug(@"MenuItemSourcePostView: Updating fetch request predicate");
     self.resultsController.fetchRequest.predicate = predicate;
     [self performResultsControllerFetchRequest];
     [self.tableView reloadData];

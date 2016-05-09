@@ -6,7 +6,8 @@
 #import "Blog.h"
 #import "WPCategoryTree.h"
 
-static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
+static NSUInteger const CategorySyncLimit = 1000;
+static NSString * const CategorySortKey = @"categoryName";
 
 @interface MenuItemCategoriesViewController ()
 
@@ -30,13 +31,11 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[PostCategory entityName] inManagedObjectContext:[self managedObjectContext]];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PostCategory entityName]];
     [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
-    [fetchRequest setFetchLimit:MenuItemSourceCategorySyncLimit];
+    [fetchRequest setFetchLimit:CategorySyncLimit];
     
-    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:CategorySortKey
                                                                        ascending:YES
                                                                         selector:@selector(caseInsensitiveCompare:)];
     
@@ -56,7 +55,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     };
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [categoryService syncCategoriesForBlog:[self blog]
-                                    number:@(MenuItemSourceCategorySyncLimit)
+                                    number:@(CategorySyncLimit)
                                     offset:@(0)
                                    success:^(NSArray<PostCategory *> *categories) {
                                        stopLoading();

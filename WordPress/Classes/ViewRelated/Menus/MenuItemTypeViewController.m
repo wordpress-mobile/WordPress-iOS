@@ -20,8 +20,6 @@
     
     _typeViews = [NSMutableArray arrayWithCapacity:5];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.contentMode = UIViewContentModeRedraw;
 
     [self setupScrollView];
