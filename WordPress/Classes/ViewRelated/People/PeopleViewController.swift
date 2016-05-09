@@ -65,6 +65,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+    
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if resultsController.fetchedObjects?.count == 0 {
