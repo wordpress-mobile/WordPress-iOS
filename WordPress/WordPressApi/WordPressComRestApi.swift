@@ -23,12 +23,12 @@ public final class WordPressComRestApi: NSObject
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
-    private static let endpointURL: String = "https://public-api.wordpress.com/rest/"
+    private static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
     private let oAuthToken: String
 
     private lazy var sessionManager: AFHTTPSessionManager = {
-        let baseURL = NSURL(string:WordPressComRestApi.endpointURL)
+        let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
@@ -55,10 +55,20 @@ public final class WordPressComRestApi: NSObject
 
     //MARK: - Network requests
 
+    /**
+     Executes a GET request to the specified endpoint defined on URLString
+
+     - parameter URLString:  the url string to be added to the baseURL
+     - parameter parameters: the parameters to be encoded on the request
+     - parameter success:    callback to be called on successful request
+     - parameter failure:    callback to be called on failed request
+
+     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     */
     public func GET(URLString: String,
                      parameters:[NSString:AnyObject]?,
                      success:SuccessResponseBlock,
-                     failure:FailureReponseBlock) -> NSProgress
+                     failure:FailureReponseBlock) -> NSProgress?
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
@@ -70,16 +80,30 @@ public final class WordPressComRestApi: NSObject
                 progress.completedUnitCount = 1;
             }
         )
-        progress.cancellationHandler = {
-            task?.cancel()
+        if let task = task {
+            progress.cancellationHandler = {
+                task.cancel()
+            }
+            return progress
+        } else {
+            return nil
         }
-        return progress
     }
 
+    /**
+     Executes a POST request to the specified endpoint defined on URLString
+
+     - parameter URLString:  the url string to be added to the baseURL
+     - parameter parameters: the parameters to be encoded on the request
+     - parameter success:    callback to be called on successful request
+     - parameter failure:    callback to be called on failed request
+
+     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     */
     public func POST(URLString: String,
                      parameters:[NSString:AnyObject]?,
                      success:SuccessResponseBlock,
-                     failure:FailureReponseBlock) -> NSProgress
+                     failure:FailureReponseBlock) -> NSProgress?
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
@@ -91,12 +115,90 @@ public final class WordPressComRestApi: NSObject
                 progress.completedUnitCount = 1
             }
         )
-        progress.cancellationHandler = {
-            task?.cancel()
+        if let task = task {
+            progress.cancellationHandler = {
+                task.cancel()
+            }
+            return progress
+        } else {
+            return nil
         }
+    }
+
+    /**
+     Executes a multipart POST using the current serializer, the parameters defined and the fileParts defined in the request
+     
+     This request will be streamed from disk, so it's ideally to be used for large media post uploads.
+
+     - parameter URLString:  the endpoint to connect
+     - parameter parameters: the parameters to use on the request
+     - parameter fileParts:  the file parameters that are added to the multipart request
+     - parameter success:    callback to be called on successful request
+     - parameter failure:    callback to be called on failed request
+
+     - returns: a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     */
+    public func multipartPOST(URLString: String,
+                              parameters:[NSString:AnyObject]?,
+                              fileParts:[FilePart],
+                              success:SuccessResponseBlock,
+                              failure:FailureReponseBlock) -> NSProgress?
+    {
+        guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
+            let requestURLString = NSURL(string:URLString,
+                                     relativeToURL:baseURL)?.absoluteString else {
+            return nil
+        }
+        var error: NSError?
+        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
+          URLString: requestURLString,
+          parameters: parameters!,
+          constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
+            for filePart in fileParts {
+                let url = filePart.url
+                do {
+                    try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+                } catch let error as NSError {
+                    failure(error: error, httpResponse: nil)
+                }
+            }
+            },
+          error: &error
+        )
+        if let error = error {
+            failure(error: error, httpResponse: nil)
+            return nil
+        }
+        var progress : NSProgress?
+        let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: &progress) { (response, responseObject, error) in
+            if let error = error {
+                failure(error: error, httpResponse: response as? NSHTTPURLResponse)
+            } else {
+                success(responseObject: responseObject!, httpResponse: response as? NSHTTPURLResponse)
+            }
+        }
+        task.resume()
+        progress?.cancellationHandler = {
+            task.cancel()
+        }
+
         return progress
     }
-    
+}
+
+/// FilePart represents the infomartion needed to encode a file on a multipart form request
+public final class FilePart : NSObject {
+    let parameterName: String
+    let url: NSURL
+    let filename: String
+    let mimeType: String
+
+    init(parameterName: String, url: NSURL, filename: String, mimeType: String) {
+        self.parameterName = parameterName
+        self.url = url
+        self.filename = filename
+        self.mimeType = mimeType
+    }
 }
 
 /// A custom serializer to handle JSON error responses when status codes are betwen 400 and 500
