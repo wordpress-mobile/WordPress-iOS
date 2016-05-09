@@ -48,33 +48,31 @@ enum StoreCoordinatorError: ErrorType {
 ///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
 class StoreCoordinator<S: Store> {
     private let store: S
+    private let keyValueStorage: KeyValueStorage
     
     private var pendingPayment: PendingPayment? {
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            
             if let pending = newValue {
-                defaults.setObject(pending.productID, forKey: UserDefaultsKeys.pendingPaymentProductID)
-                defaults.setInteger(pending.siteID, forKey:UserDefaultsKeys.pendingPaymentSiteID)
+                keyValueStorage.setValue(pending.productID, forKey: StorageKeys.pendingPaymentProductID)
+                keyValueStorage.setValue(pending.siteID, forKey:StorageKeys.pendingPaymentSiteID)
             } else {
-                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentProductID)
-                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentSiteID)
+                keyValueStorage.removeValueForKey(StorageKeys.pendingPaymentProductID)
+                keyValueStorage.removeValueForKey(StorageKeys.pendingPaymentSiteID)
             }
         }
         
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let productID = defaults.stringForKey(UserDefaultsKeys.pendingPaymentProductID)
-            let siteID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentSiteID)
+            guard let productID = keyValueStorage.valueForKey(StorageKeys.pendingPaymentProductID) as? String,
+                let siteID = keyValueStorage.valueForKey(StorageKeys.pendingPaymentSiteID) as? Int
+                where siteID != 0 else { return nil }
             
-            guard let product = productID where siteID != 0 else { return nil }
-            
-            return (product, siteID)
+            return (productID, siteID)
         }
     }
 
-    init(store: S) {
+    init(store: S, keyValueStorage: KeyValueStorage = KeyValueDatabase.DefaultsDatabase()) {
         self.store = store
+        self.keyValueStorage = keyValueStorage
     }
 
     /// Initiates a purchase for the specified product if a purchase isn't already in progress.
@@ -193,9 +191,9 @@ class StoreCoordinator<S: Store> {
     }
 }
 
-private struct UserDefaultsKeys {
-    static let pendingPaymentProductID = "PendingPaymentProductIDUserDefaultsKey"
-    static let pendingPaymentSiteID    = "PendingPaymentSiteIDUserDefaultsKey"
+private struct StorageKeys {
+    static let pendingPaymentProductID = "PendingPaymentProductIDStorageKey"
+    static let pendingPaymentSiteID    = "PendingPaymentSiteIDStorageKey"
 }
 
 protocol Store {
