@@ -13,7 +13,6 @@
 #import "WordPress-swift.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WPXMLRPCDecoder.h"
-#import "WordPressComApi.h"
 
 @implementation MediaService
 
@@ -585,7 +584,8 @@ static NSString * const MediaDirectory = @"Media";
     id <MediaServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
         if (blog.restApi) {
-            remote = [[MediaServiceRemoteREST alloc] initWithComRestApi:blog.comRestApi siteID:blog.dotComID];
+            remote = [[MediaServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi
+                                                                          siteID:blog.dotComID];
         }
     } else if (blog.api) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];

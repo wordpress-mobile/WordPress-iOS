@@ -203,6 +203,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
  @return a WordPressComRestApi object if available
  */
-- (WordPressComRestApi *)comRestApi;
+- (WordPressComRestApi *)wordPressComRestApi;
 
 @end
