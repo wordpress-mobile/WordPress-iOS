@@ -1,32 +1,33 @@
 #import <Foundation/Foundation.h>
 
-typedef enum
+typedef NS_ENUM(NSInteger, ServiceRemoteWordPressComRESTApiVersion)
 {
-    ServiceRemoteRESTApiVersion_1_1 = 1001,
-    ServiceRemoteRESTApiVersion_1_2 = 1002,
-} ServiceRemoteRESTApiVersion;
+    ServiceRemoteWordPressComRESTApiVersion_1_1 = 1001,
+    ServiceRemoteWordPressComRESTApiVersion_1_2 = 1002,
+};
 
-@class WordPressComApi;
+@class WordPressComRestApi;
 
 /**
  *  @class  ServiceRemoteREST
  *  @brief  Parent class for all REST service classes.
  */
-@interface ServiceRemoteREST : NSObject
+@interface ServiceRemoteWordPressComREST : NSObject
+
 
 /**
  *  @brief      The API object to use for communications.
  */
-@property (nonatomic, strong, readonly) WordPressComApi *api;
+@property (nonatomic, strong, readonly) WordPressComRestApi *wordPressComRestApi;
 
 /**
  *  @brief      Designated initializer.
  *
- *  @param      api     The API to use for communitcation.  Cannot be nil.
+ *  @param      api     The API to use for communication.  Cannot be nil.
  *
  *  @returns    The initialized object.
  */
-- (id)initWithApi:(WordPressComApi *)api;
+- (id)initWithWordPressComRestApi:(WordPressComRestApi *)api;
 
 #pragma mark - Request URL construction
 
@@ -39,6 +40,6 @@ typedef enum
  *  @returns    The request URL.
  */
 - (NSString *)pathForEndpoint:(NSString *)endpoint
-                  withVersion:(ServiceRemoteRESTApiVersion)apiVersion;
+                  withVersion:(ServiceRemoteWordPressComRESTApiVersion)apiVersion;
 
 @end
