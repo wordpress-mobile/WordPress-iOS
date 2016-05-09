@@ -10,6 +10,8 @@ import WordPressShared
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
     @IBOutlet weak var submitButton: NUXSubmitButton!
+    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var selfHostedButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
@@ -45,6 +47,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
     }
@@ -82,6 +85,26 @@ import WordPressShared
 
 
     // MARK: Setup and Configuration
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        usernameField.placeholder = NSLocalizedString("Email or username", comment: "Username placeholder")
+        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Sign In", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Normal)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Highlighted)
+
+        let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "Title of a button. ")
+        selfHostedButton.setTitle(selfHostedTitle, forState: .Normal)
+        selfHostedButton.setTitle(selfHostedTitle, forState: .Highlighted)
+    }
 
 
     /// Sets up a 1Password button if 1Password is available.
