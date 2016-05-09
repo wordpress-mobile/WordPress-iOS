@@ -67,7 +67,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
 - (void)updateProgress
 {
-    if (_progress.fractionCompleted < 1
+    if (_progress.fractionCompleted < 1 && !_progress.isCancelled
         && !(_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0)) {
         [_progressView startAnimating];
     } else {
@@ -112,6 +112,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 - (void) stopPressed:(id)sender
 {
     [_progress cancel];
+    [self updateProgress];
 }
 
 @end
