@@ -2,6 +2,7 @@ import Foundation
 import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
+import wpxmlrpc
 
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
@@ -21,13 +22,19 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let defaultHeightForFooterView = CGFloat(44.0)
     
     var blog : Blog!
-    var postListViewController : UITableViewController!
+    var tableViewController : UITableViewController!
     
-    lazy var tableView : UITableView = {
-        return self.postListViewController.tableView
-    }()
+    var tableView : UITableView {
+        get {
+            return self.tableViewController.tableView
+        }
+    }
     
-    var refreshControl : UIRefreshControl!
+    var refreshControl : UIRefreshControl? {
+        get {
+            return self.tableViewController.refreshControl
+        }
+    }
     
     lazy var tableViewHandler : WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
@@ -78,9 +85,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView = postListViewController.tableView
-        refreshControl = postListViewController.refreshControl
-        
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
         
         configureCellsForLayout()
@@ -122,17 +126,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
             
-            if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
+            if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
                 strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
             }
         }, completion: nil)
-    }
-    
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
-        
-        let width = view.frame.width
-        tableViewHandler.refreshCachedRowHeightsForWidth(width)
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -246,11 +243,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func noResultsTitleText() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func noResultsMessageText() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func noResultsAccessoryView() -> UIView {
@@ -266,11 +263,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func noResultsButtonText() -> String? {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func configureAuthorFilter() {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func configureSearchController() {
@@ -319,7 +316,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     // MARK: TableViewHandler Delegate Methods
     
     func entityName() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func managedObjectContext() -> NSManagedObjectContext {
@@ -404,7 +401,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func predicateForFetchRequest() -> NSPredicate {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     // MARK: - Table View Handling
@@ -642,7 +639,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func handleSyncFailure(error: NSError) {
-        if error.domain == WPXMLRPCClientErrorDomain
+        if error.domain == WPXMLRPCFaultErrorDomain
             && error.code == self.dynamicType.HTTPErrorCodeForbidden {
             promptForPassword()
             return
@@ -661,11 +658,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         let navController = UINavigationController(rootViewController: editSiteViewController)
         navController.navigationBar.translucent = false
-        
-        if UIDevice.isPad() {
-            navController.modalTransitionStyle = .CrossDissolve
-            navController.modalPresentationStyle = .FormSheet
-        }
+
+        navController.modalTransitionStyle = .CrossDissolve
+        navController.modalPresentationStyle = .FormSheet        
         
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -776,15 +771,17 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
             
-            // If the post was restored, see if it appears in the current filter.
-            // If not, prompt the user to let it know under which filter it appears.
-            let filter = strongSelf.filterThatDisplaysPostsWithStatus(apost.status)
-            
-            if filter == strongSelf.currentPostListFilter() {
-                return
+            if let postStatus = apost.status {
+                // If the post was restored, see if it appears in the current filter.
+                // If not, prompt the user to let it know under which filter it appears.
+                let filter = strongSelf.filterThatDisplaysPostsWithStatus(postStatus)
+                
+                if filter == strongSelf.currentPostListFilter() {
+                    return
+                }
+                
+                strongSelf.promptThatPostRestoredToFilter(filter)
             }
-            
-            strongSelf.promptThatPostRestoredToFilter(filter)
         }) { [weak self] (error: NSError!) in
             
             guard let strongSelf = self else {
@@ -920,7 +917,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func keyForCurrentListStatusFilter() -> String {
-        assert(false, "You should implement this method in the subclass")
+        fatalError("You should implement this method in the subclass")
     }
     
     func currentFilterIndex() -> Int {
@@ -979,40 +976,24 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
         
         let navController = UINavigationController(rootViewController: controller)
-        
-        if UIDevice.isPad() {
-            displayFilterPopover(navController)
-        } else {
-            displayFilterModal(navController)
-        }
+
+        displayFilterPopover(navController)
     }
     
     func displayFilterPopover(controller: UIViewController) {
         controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
         
-        guard let navigationController = navigationController,
-            let titleView = navigationItem.titleView else {
-                
+        guard let titleView = navigationItem.titleView else {                
             return
         }
-        
-        let titleRect = navigationController.view.convertRect(
-            titleView.frame,
-            fromView: titleView.superview)
-        
+
         controller.modalPresentationStyle = .Popover
         presentViewController(controller, animated: true, completion: nil)
         
         let presentationController = controller.popoverPresentationController
         presentationController?.permittedArrowDirections = .Any
-        presentationController?.sourceView = navigationController.view
-        presentationController?.sourceRect = titleRect
-    }
-    
-    func displayFilterModal(controller: UIViewController) {
-        controller.modalPresentationStyle = .PageSheet
-        controller.modalTransitionStyle = .CoverVertical
-        presentViewController(controller, animated: true, completion: nil)
+        presentationController?.sourceView = titleView
+        presentationController?.sourceRect = titleView.bounds
     }
     
     func setFilterWithPostStatus(status: String) {
