@@ -8,6 +8,7 @@ import AFNetworking
  - InvalidToken:                   The token provided was invalid
  - AuthorizationRequired:          Permission required to access resource
  - UploadFailed:                   The upload failed
+ - RequestSerializationFailed:     The serialization of the request failed
  - Unknown:                        Unknow error happen
  */
 public enum WordPressComRestApiError: Int, ErrorType {
@@ -15,6 +16,7 @@ public enum WordPressComRestApiError: Int, ErrorType {
     case InvalidToken
     case AuthorizationRequired
     case UploadFailed
+    case RequestSerializationFailed
     case Unknown
 }
 
@@ -63,7 +65,9 @@ public final class WordPressComRestApi: NSObject
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
-     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     - returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
+     returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
+     will be invoked with the error specificing the serialization issues.
      */
     public func GET(URLString: String,
                      parameters: [String:AnyObject]?,
@@ -98,7 +102,9 @@ public final class WordPressComRestApi: NSObject
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
-     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload. If the method
+     returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
+     will be invoked with the error specificing the serialization issues.
      */
     public func POST(URLString: String,
                      parameters: [String:AnyObject]?,
@@ -136,7 +142,9 @@ public final class WordPressComRestApi: NSObject
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
-     - returns: a NSProgress object that can be used to track the progress of the upload and to cancel the upload
+     - returns:  a NSProgress object that can be used to track the progress of the upload and to cancel the upload. If the method
+     returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
+     will be invoked with the error specificing the serialization issues.
      */
     public func multipartPOST(URLString: String,
                               parameters: [String:AnyObject]?,
@@ -147,6 +155,10 @@ public final class WordPressComRestApi: NSObject
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
             let requestURLString = NSURL(string:URLString,
                                      relativeToURL:baseURL)?.absoluteString else {
+            let error = NSError(domain:String(WordPressComRestApiError),
+                    code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
+                    userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+            failure(error: error, httpResponse: nil)
             return nil
         }
         var error: NSError?
