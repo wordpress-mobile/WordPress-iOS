@@ -22,16 +22,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     
     // MARK: - UITableView Methods
     
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }
 
-    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
-    override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as! PeopleCell
+    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
 
@@ -40,7 +40,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return cell
     }
     
-    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.min
     }
 
@@ -85,7 +85,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     
     // MARK: - UIStateRestoring
     
-    override public func encodeRestorableStateWithCoder(coder: NSCoder) {
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         let objectString = blog?.objectID.URIRepresentation().absoluteString
         coder.encodeObject(objectString, forKey: RestorationKeys.blog)
         super.encodeRestorableStateWithCoder(coder)
