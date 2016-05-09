@@ -26,12 +26,8 @@ struct Person: Equatable {
         case Editor
         case Author
         case Contributor
+        case Subscriber
         case Unsupported
-        
-        /// Note:
-        /// This array represents the list of roles that can be assigned during edition. Missing
-        /// ones are skipped on purpose!.
-        static let roles = [Role.Admin, .Editor, .Author, .Contributor]
     }
 }
 
@@ -79,6 +75,8 @@ extension Person.Role {
             self = .Contributor
         case "super-admin":
             self = .SuperAdmin
+        case "subscriber":
+            self = .Subscriber
         default:
             self = .Unsupported
         }
@@ -95,6 +93,8 @@ extension Person.Role {
         case .Author:
             return WPStyleGuide.People.authorColor
         case .Contributor:
+            return WPStyleGuide.People.contributorColor
+        case .Subscriber:
             return WPStyleGuide.People.contributorColor
         case .Unsupported:
             return WPStyleGuide.People.contributorColor
@@ -113,6 +113,8 @@ extension Person.Role {
             return NSLocalizedString("Author", comment: "User role badge")
         case .Contributor:
             return NSLocalizedString("Contributor", comment: "User role badge")
+        case .Subscriber:
+            return NSLocalizedString("Subscriber", comment: "User role badge")
         case .Unsupported:
             return NSLocalizedString("Unsupported", comment: "User role badge")
         }
@@ -130,6 +132,8 @@ extension Person.Role {
             return "author"
         case .Contributor:
             return "contributor"
+        case .Subscriber:
+            return "subscriber"
         default:
             return "unsupported"
         }
