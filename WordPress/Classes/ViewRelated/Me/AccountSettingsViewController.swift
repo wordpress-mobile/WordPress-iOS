@@ -108,7 +108,7 @@ private struct AccountSettingsController: SettingsController {
     func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
-            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")            
             let settingsViewController =  self.controllerForEditableText(editableRow,
                                                                          changeType: AccountSettingsChange.Email,
                                                                          hint: hint,
@@ -118,8 +118,7 @@ private struct AccountSettingsController: SettingsController {
             settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
             settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
             settingsViewController.onActionPress = {
-                let change = AccountSettingsChange.EmailPendingChange(false)
-                service.saveChange(change)
+                service.saveChange(.EmailRevertPendingChange)
             }
             
             return settingsViewController
