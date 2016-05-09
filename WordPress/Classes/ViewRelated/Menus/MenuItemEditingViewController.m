@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews,
 };
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewControllerDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewControllerDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) MenuItem *item;
 @property (nonatomic, strong, readonly) Blog *blog;
@@ -325,7 +325,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     }
 }
 
-#pragma mark - MenuItemTypeSelectionViewDelegate
+#pragma mark - MenuItemTypeViewControllerDelegate
 
 - (void)itemTypeViewController:(MenuItemTypeViewController *)itemTypeViewController selectedType:(NSString *)itemType
 {

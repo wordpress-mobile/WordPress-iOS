@@ -23,8 +23,6 @@
 {
     [super awakeFromNib];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     _sourceViewControllerCache = [[NSCache alloc] init];
     
     [self setupStackView];

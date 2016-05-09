@@ -37,9 +37,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[PostTag entityName] inManagedObjectContext:[self managedObjectContext]];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PostTag entityName]];
     // Specify criteria for filtering which objects to fetch
     [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
     // Specify how the fetched objects should be sorted
@@ -139,7 +137,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     };
     
     // Load any additional tags available remotely.
-    // This will sync exsiting tags that may already be available locally, as well as loading additional tags.
+    // This will sync existing tags that may already be available locally, as well as loading additional tags.
     PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [tagService syncTagsForBlog:[self blog]
                               number:@(MenuItemSourceTagSyncLimit)

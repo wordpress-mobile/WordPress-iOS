@@ -25,7 +25,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification) name:UIDeviceOrientationDidChangeNotification object:nil];
     
-    self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [UIColor clearColor];
 
     [self setupStackView];
@@ -96,7 +95,11 @@
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
+    // Margins for the textFieldContainerView inset the textField.
     margins.left = MenusDesignDefaultContentSpacing / 2.0;
+    // Inset the right margin a bit less than the left
+    // since the textField also draws the close button and
+    // input area inset on the right.
     margins.right = MenusDesignDefaultContentSpacing / 4.0;
     margins.bottom = margins.top;
     textFieldContainerView.layoutMargins = margins;
@@ -171,8 +174,11 @@
 }
 
 - (void)drawRect:(CGRect)rect
-{    
+{
+    // Draw a mask around the view with a bottom-left arrow cut into the view.
     const CGRect iconRect = [self convertRect:self.iconView.frame fromView:self.iconView.superview];
+    const CGFloat arrowDrawingInsetX = 3.0;
+    const CGFloat arrowDrawingHeight = 10.0;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
@@ -181,9 +187,9 @@
     CGContextMoveToPoint(context, rect.size.width, 0);
     CGContextAddLineToPoint(context, 0, 0);
     CGContextAddLineToPoint(context, 0, rect.size.height);
-    CGContextAddLineToPoint(context, iconRect.origin.x - 3.0, rect.size.height);
-    CGContextAddLineToPoint(context, CGRectGetMidX(iconRect), rect.size.height - 10.0);
-    CGContextAddLineToPoint(context, iconRect.origin.x + iconRect.size.width + 3.0, rect.size.height);
+    CGContextAddLineToPoint(context, iconRect.origin.x - arrowDrawingInsetX, rect.size.height);
+    CGContextAddLineToPoint(context, CGRectGetMidX(iconRect), rect.size.height - arrowDrawingHeight);
+    CGContextAddLineToPoint(context, iconRect.origin.x + iconRect.size.width + arrowDrawingInsetX, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextClosePath(context);
     CGContextFillPath(context);
