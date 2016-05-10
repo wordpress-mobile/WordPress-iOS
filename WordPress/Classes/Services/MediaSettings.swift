@@ -9,16 +9,16 @@ class MediaSettings: NSObject {
     private let maxImageDimension = 3000
 
     // MARK: - Internal variables
-    private let storage: KeyValueStorage
+    private let database: KeyValueDatabase
 
     // MARK: - Initialization
-    init(storage: KeyValueStorage) {
-        self.storage = storage
+    init(database: KeyValueDatabase) {
+        self.database = database
         super.init()
     }
 
     convenience override init() {
-        self.init(storage: KeyValueDatabase.DefaultsDatabase())
+        self.init(database: NSUserDefaults())
     }
 
     // MARK: Public accessors
@@ -47,11 +47,11 @@ class MediaSettings: NSObject {
     /// - important: don't access this propery directly to check what size to resize an image, use `imageSizeForUpload` instead.
     var maxImageSizeSetting: Int {
         get {
-            if let savedSize = storage.valueForKey(maxImageSizeKey) as? Int {
+            if let savedSize = database.objectForKey(maxImageSizeKey) as? Int {
                 return savedSize
-            } else if let savedSize = storage.valueForKey(maxImageSizeKey) as? String {
+            } else if let savedSize = database.objectForKey(maxImageSizeKey) as? String {
                 let newSize = CGSizeFromString(savedSize).width
-                storage.setValue(newSize, forKey: maxImageSizeKey)
+                database.setObject(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
                 return maxImageDimension
@@ -59,20 +59,20 @@ class MediaSettings: NSObject {
         }
         set {
             let size = newValue.clamp(min: minImageDimension, max: maxImageDimension)
-            storage.setValue(size, forKey: maxImageSizeKey)
+            database.setObject(size, forKey: maxImageSizeKey)
         }
     }
 
     var removeLocationSetting: Bool {
         get {
-            if let savedRemoveLocation = storage.valueForKey(removeLocationKey) as? Bool {
+            if let savedRemoveLocation = database.objectForKey(removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
                 return true;
             }
         }
         set {
-            storage.setValue(newValue, forKey: removeLocationKey)
+            database.setObject(newValue, forKey: removeLocationKey)
         }
     }
 }
