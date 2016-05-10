@@ -15,11 +15,13 @@ import WordPressShared
 
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
-    @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var createSiteButton: UIButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
+    @IBOutlet var safariPasswordButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
+
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
     var restrictSigninToWPCom = false {
@@ -49,6 +51,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureSafariPasswordButton(false)
         configureForWPComOnlyIfNeeded()
@@ -99,6 +102,29 @@ import WordPressShared
     ///
     func configureForWPComOnlyIfNeeded() {
         selfHostedSigninButton.hidden = restrictSigninToWPCom
+    }
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
+
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let safariButtonTitle = NSLocalizedString("Sign in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
+        safariPasswordButton.setTitle(safariButtonTitle, forState: .Normal)
+        safariPasswordButton.setTitle(safariButtonTitle, forState: .Highlighted)
+
+        let createSiteTitle = NSLocalizedString("Create a site", comment: "A button title")
+        createSiteButton.setTitle(createSiteTitle, forState: .Normal)
+        createSiteButton.setTitle(createSiteTitle, forState: .Highlighted)
+
+        let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "A button title.")
+        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Normal)
+        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Highlighted)
     }
 
 

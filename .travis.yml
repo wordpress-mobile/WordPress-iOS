@@ -3,11 +3,11 @@ language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
 xcode_sdk: iphonesimulator
+cache:
+- bundler
+- cocoapods
 notifications:
   email: true
-install:
-- gem install xcpretty-travis-formatter
-- pod install
 script:
 - Scripts/build.sh
 env:

@@ -439,7 +439,9 @@ final public class ReaderDetailViewController : UIViewController
     private func configureByLine() {
         // Avatar
         let placeholder = UIImage(named: "gravatar")
-        if let url = NSURL(string: post!.authorAvatarURL) {
+        
+        if let avatarURLString = post?.authorAvatarURL,
+            let url = NSURL(string: avatarURLString) {
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         }
 
@@ -837,8 +839,10 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
     public func richTextView(richTextView: WPRichTextView, didReceiveLinkAction linkURL: NSURL) {
         var url = linkURL
         if url.host != nil {
-            let postURL = NSURL(string: post!.permaLink)
-            url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)!
+            if let postURLString = post?.permaLink {
+                let postURL = NSURL(string: postURLString)
+                url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)!
+            }
         }
         presentWebViewControllerWithURL(url)
     }
@@ -866,7 +870,12 @@ extension ReaderDetailViewController : UIScrollViewDelegate
         if y > scrollView.contentOffset.y && y > threshold {
             setBarsHidden(true)
         } else {
-            setBarsHidden(false)
+            // Velocity will be 0,0 if the user taps to stop an in progress scroll.
+            // If the bars are already visible its fine but if the bars are hidden
+            // we don't want to jar the user by having them reappear.
+            if !CGPointEqualToPoint(velocity, CGPointZero) {
+                setBarsHidden(false)
+            }
         }
     }
 

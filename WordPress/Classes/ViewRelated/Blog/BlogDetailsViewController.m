@@ -5,7 +5,6 @@
 #import "BlogDetailHeaderView.h"
 #import "CommentsViewController.h"
 #import "ContextManager.h"
-#import "PageListViewController.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
@@ -499,8 +498,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 - (void)showPeople
 {
     // TODO(@koke, 2015-11-02): add analytics
-    PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
-    controller.blog = self.blog;
+    PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

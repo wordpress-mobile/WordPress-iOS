@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 49
+
+- @jleandroperez 2016-05-04
+ - `Person` added Int32 `linkedUserID`.
+- @jleandroperez 2016-04-22
+ - `Blog` added transformable `capabilities`.
+
 ## WordPress 48 
 
 - @sergioestevao 2016-04-05
