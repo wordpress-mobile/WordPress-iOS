@@ -14,7 +14,7 @@ extension String
 
         let range   = NSMakeRange(0, characters.count)
         var offset  = 0
-        
+
         detector.enumerateMatchesInString(self, options: [], range: range) { (result, flags, stop) in
             guard let range = result?.range else {
                 return
@@ -27,7 +27,7 @@ extension String
             output.replaceCharactersInRange(rangeWithOffset, withString: anchoredURL)
             offset += anchoredURL.characters.count - rawURL.characters.count
         }
-        
+
         return output as String
     }
 }

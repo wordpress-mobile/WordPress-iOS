@@ -14,7 +14,7 @@ extension WPStyleGuide
     public class func sharingCellWarningAccessoryImageView() -> UIImageView {
 
         let imageSize = 20.0
-        let horizontalPadding = 8.0;
+        let horizontalPadding = 8.0
         let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
         imageView.image = UIImage(named: "sharing-notice")

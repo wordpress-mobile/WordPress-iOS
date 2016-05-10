@@ -39,7 +39,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // Preventing MultiTouch Scenarios
         view.exclusiveTouch = true
-        
+
         ImmuTable.registerRows([
             NavigationItemRow.self,
             BadgeNavigationItemRow.self,
@@ -82,7 +82,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
-    
+
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
         headerView.displayName = account.displayName
         headerView.username = account.username
@@ -190,13 +190,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             if let updatedGravatarImage = image {
                 self?.uploadGravatarImage(updatedGravatarImage)
             }
-            
+
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
         pickerViewController.modalPresentationStyle = .FormSheet
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
-    
+
     private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             guard let account = self.defaultAccount() else {
@@ -247,7 +247,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
-    
+
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
@@ -287,16 +287,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    
+
     // MARK: - Notification observers
 
     func refreshModelWithNotification(notification: NSNotification) {
         reloadViewModel()
     }
 
-    
+
     // MARK: - Gravatar Helpers
-    
+
     private func uploadGravatarImage(newGravatar: UIImage) {
         gravatarUploadInProgress = true
         headerView.overrideGravatarImage(newGravatar)
@@ -309,7 +309,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             })
         }
     }
-    
+
     // MARK: - Helpers
 
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
@@ -343,7 +343,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             headerView.userInteractionEnabled = !gravatarUploadInProgress
         }
     }
-    
+
     private lazy var headerView : MeHeaderView = {
         let headerView = MeHeaderView()
         headerView.onGravatarPress = { [weak self] in
