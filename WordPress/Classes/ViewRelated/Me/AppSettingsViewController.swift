@@ -20,7 +20,7 @@ public class AppSettingsViewController: UITableViewController {
     public required convenience init() {
         self.init(style: .Grouped)
     }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,7 +32,7 @@ public class AppSettingsViewController: UITableViewController {
 
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
-            
+
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -59,7 +59,7 @@ public class AppSettingsViewController: UITableViewController {
             value: WPPostViewController.isNewEditorEnabled(),
             onChange: visualEditorChanged()
         )
-        
+
         let aboutHeader = NSLocalizedString("About", comment: "Link to About section (contains info about the app)")
         let aboutApp = NavigationItemRow(
             title: NSLocalizedString("WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
@@ -88,8 +88,8 @@ public class AppSettingsViewController: UITableViewController {
                 footerText: nil)
             ])
     }
-    
-    
+
+
     // MARK: - Actions
 
     func mediaSizeChanged() -> Int -> Void {
@@ -117,7 +117,7 @@ public class AppSettingsViewController: UITableViewController {
             WPPostViewController.setNewEditorEnabled(enabled)
         }
     }
-    
+
     func pushAbout() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = AboutViewController()
@@ -125,4 +125,3 @@ public class AppSettingsViewController: UITableViewController {
         }
     }
 }
-

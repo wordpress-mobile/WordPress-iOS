@@ -3,6 +3,9 @@
 // Free for personal or commercial use, with or without modification.
 // No warranty is expressed or implied.
 
+#import <UIKit/UIKit.h>
+
+
 // Helper methods for adding an alpha layer to an image
 @interface UIImage (Alpha)
 - (BOOL)hasAlpha;

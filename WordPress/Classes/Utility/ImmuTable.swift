@@ -41,7 +41,7 @@ public struct ImmuTable {
 
     /**
      Returns the row model for a specific index path.
-     
+
      - precondition: `indexPath` should represent a valid section and row,
      otherwise this method will raise an exception.
      */
@@ -120,10 +120,10 @@ public protocol ImmuTableRow {
 
      To improve readability, we recommend that you implement the action logic in one of
      your view controller methods, instead of including the closure inline.
-     
+
      Also, be mindful of retain cycles. If your closure needs to reference `self` in
      any way, make sure to use `[unowned self]` in the parameter list.
-     
+
      An example row with its action could look like this:
 
          class ViewController: UITableViewController {
@@ -141,7 +141,7 @@ public protocol ImmuTableRow {
              }
 
              ...
-             
+
          }
 
      */
@@ -172,7 +172,7 @@ extension ImmuTableRow {
     }
 
     public static var customHeight: Float? {
-        return nil;
+        return nil
     }
 }
 
@@ -232,7 +232,7 @@ table view controllers.
 It acts as the table view data source and delegate, and signals the table view to
 reload its data when the underlying model changes.
 
-- note: as it keeps a weak reference to its target, you should keep a strong 
+- note: as it keeps a weak reference to its target, you should keep a strong
   reference to the handler from your view controller.
 */
 public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -326,4 +326,3 @@ extension UITableView: CellRegistrator {
         }
     }
 }
-

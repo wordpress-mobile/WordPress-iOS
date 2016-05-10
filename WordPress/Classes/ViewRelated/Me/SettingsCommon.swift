@@ -12,7 +12,7 @@ extension SettingsController {
             return navigation
         }
     }
-    
+
     func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
     {
         return { row in
@@ -27,11 +27,11 @@ extension SettingsController {
             let editableRow = row as! EditableTextRow
             let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
             settingsViewController.mode = .Email
-            
+
             return settingsViewController
         }
     }
-    
+
     func controllerForEditableText(row: EditableTextRow,
                                    changeType: AccountSettingsChangeWithString,
                                    hint: String? = nil,

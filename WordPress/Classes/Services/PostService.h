@@ -11,7 +11,7 @@ extern NSString * const PostServiceTypeAny;
 
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
-typedef void(^PostServiceSyncSuccess)(NSArray *posts);
+typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> *posts);
 typedef void(^PostServiceSyncFailure)(NSError *error);
 
 @interface PostService : LocalCoreDataService

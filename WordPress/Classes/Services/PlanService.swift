@@ -54,8 +54,13 @@ extension PlanService {
             DDLogSwift.logError(error)
             return nil
         }
-        self.remote = PlansRemote(api: account.restApi)
-        self.featuresRemote = PlanFeaturesRemote(api: account.restApi)
+
+        guard let api = account.restApi else {
+            return nil
+        }
+
+        self.remote = PlansRemote(api: api)
+        self.featuresRemote = PlanFeaturesRemote(api: api)
     }
 }
 
@@ -80,10 +85,14 @@ struct PlanStorage {
 }
 
 extension PlanService {
-    init(blog: Blog, store: S) {
-        let remote = PlansRemote(api: blog.restApi())
-        let featuresRemote = PlanFeaturesRemote(api: blog.restApi())
-        
+    init?(blog: Blog, store: S) {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        let remote = PlansRemote(api: api)
+        let featuresRemote = PlanFeaturesRemote(api: api)
+
         self.init(store: store, remote: remote, featuresRemote: featuresRemote)
     }
 }
