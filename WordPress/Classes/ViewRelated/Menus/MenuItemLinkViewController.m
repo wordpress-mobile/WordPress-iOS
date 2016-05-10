@@ -95,6 +95,14 @@ static CGFloat const LinkTextBarHeight = 48.0;
     }
 }
 
+- (BOOL)isFirstResponder
+{
+    if ([self.textBar isFirstResponder]) {
+        return [self.textBar isFirstResponder];
+    }
+    return [super isFirstResponder];
+}
+
 - (BOOL)resignFirstResponder
 {
     if ([self.textBar isFirstResponder]) {
