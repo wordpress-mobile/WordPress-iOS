@@ -8,7 +8,7 @@ import WordPressShared
 public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource
 {
     // MARK: - Public Properties
-    
+
     /// Closure, to be executed on selection change
     ///
     public var onChange : ((newValue: Int) -> ())?
@@ -51,7 +51,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: - Initializers
-    
+
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupSubviews()
@@ -65,7 +65,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: - Private Helpers
-    
+
     private func setupSubviews() {
         // Setup Picker
         picker.dataSource = self
@@ -98,7 +98,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: UIPickerView Methods
-    
+
     public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return numberOfComponentsInPicker
     }

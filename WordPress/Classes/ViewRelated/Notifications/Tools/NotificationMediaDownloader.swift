@@ -10,7 +10,7 @@ import AFNetworking
 @objc public class NotificationMediaDownloader : NSObject
 {
     // MARK: - Public Methods
-    
+
     deinit {
         downloadQueue.cancelAllOperations()
     }
@@ -118,8 +118,8 @@ import AFNetworking
 
         return filtered
     }
-    
-    
+
+
     // MARK: - Private Helpers
 
 
