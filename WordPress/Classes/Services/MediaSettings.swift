@@ -54,7 +54,7 @@ class MediaSettings: NSObject {
     /// be resized on upload.
     /// If you set this to `minImageDimension` or lower, it will be set to `minImageDimension`.
     ///
-    /// - Important: don't access this propery directly to check what size to resize an image, use 
+    /// - Important: don't access this propery directly to check what size to resize an image, use
     ///             `imageSizeForUpload` instead.
     ///
     var maxImageSizeSetting: Int {

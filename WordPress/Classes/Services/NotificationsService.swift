@@ -117,7 +117,7 @@ public class NotificationsService : LocalCoreDataService
     }
 
 
-    /// Static Helper that will parse RemoteNotificationSettings instances into a collection of 
+    /// Static Helper that will parse RemoteNotificationSettings instances into a collection of
     /// NotificationSettings instances.
     ///
     /// - Parameters:

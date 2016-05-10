@@ -7,7 +7,7 @@ import UIKit
 ///
 extension WPWebViewController {
 
-    /// This class helper method will return a WPWebViewController instance, already preinitialized 
+    /// This class helper method will return a WPWebViewController instance, already preinitialized
     /// with the Main Account's Username and Bearer Token (if any).
     ///
     public class func authenticatedWebViewController(URL: NSURL!) -> WPWebViewController {

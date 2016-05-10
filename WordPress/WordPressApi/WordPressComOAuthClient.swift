@@ -31,7 +31,7 @@ public final class WordPressComOAuthClient: NSObject {
     private let clientID: String
     private let secret: String
 
-    /// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the 
+    /// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the
     /// ApiCredentials singleton
     ///
     public class func client() -> WordPressComOAuthClient {
@@ -139,7 +139,7 @@ public final class WordPressComOAuthClient: NSObject {
 /// A custom serializer to handle standard 400 error responses coming from the OAUTH server
 ///
 final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
-    
+
     override init() {
         super.init()
         let extraStatusCodes = NSMutableIndexSet(indexSet: self.acceptableStatusCodes!)

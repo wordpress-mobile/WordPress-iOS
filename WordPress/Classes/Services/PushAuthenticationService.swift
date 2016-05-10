@@ -5,7 +5,7 @@ import Foundation
 /// Code Verification.
 ///
 @objc public class PushAuthenticationService : LocalCoreDataService {
-    
+
     public var authenticationServiceRemote: PushAuthenticationServiceRemote?
 
     /// Designated Initializer

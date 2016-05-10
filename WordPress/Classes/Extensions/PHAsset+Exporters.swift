@@ -11,7 +11,7 @@ typealias ErrorHandler = (error: NSError) -> ()
     /// The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that
     /// maitains the aspect ratio of the asset.
     ///
-    /// - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original 
+    /// - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original
     ///         image, it will not resize.
     ///
     /// - Parameters:
@@ -30,12 +30,12 @@ typealias ErrorHandler = (error: NSError) -> ()
                      errorHandler: ErrorHandler)
 
     /// Exports an image thumbnail of the asset to a file URL that respects the targetSize.
-    /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that 
+    /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that
     /// mantains the aspect ratio of the asset
     ///
     /// - Parameters:
     ///     - url: File url to where the asset should be exported, this must be writable location.
-    ///     - targetSize: The maximum pixel resolution that the file can have after exporting. 
+    ///     - targetSize: The maximum pixel resolution that the file can have after exporting.
     ///                   If CGSizeZero is provided the original size of image is returned.
     ///     - successHandler: A handler that will be invoked on success with the resulting resolution of the image
     ///     - errorHandler: A handler that will be invoked when some error occurs when generating the thumbnail

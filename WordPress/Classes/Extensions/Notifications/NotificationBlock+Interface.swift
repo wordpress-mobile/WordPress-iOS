@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-/// This class extension implements helper methods to aid formatting a NotificationBlock's payload, 
+/// This class extension implements helper methods to aid formatting a NotificationBlock's payload,
 /// for usage in several different spots of the app.
 ///
 /// The main goal of this helper Extension is to encapsulate presentation details into a single piece of
@@ -10,7 +10,7 @@ import WordPressShared.WPStyleGuide
 /// related Notification object gets updated.
 ///
 extension NotificationBlock {
-    
+
     // MARK: - Public Methods
     //
 
@@ -74,7 +74,7 @@ extension NotificationBlock {
         return attributedText(Constants.richHeaderTitleCacheKey)
     }
 
-    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and 
+    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and
     /// NoteBlockCommentTableViewCell.
     ///
     /// - Returns: An Attributed String for usage in both, comments and cell cells
@@ -96,7 +96,7 @@ extension NotificationBlock {
         return attributedText(Constants.richTextCacheKey)
     }
 
-    /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom 
+    /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom
     /// formatting that differs from regular notifications, such as centered texts.
     ///
     /// - Returns: An Attributed String for usage in Badge Notifications

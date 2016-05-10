@@ -2,7 +2,7 @@ import Foundation
 
 
 extension NSAttributedString {
-    
+
     /// Checks if a given Push Notification is a Push Authentication.
     /// This method will embed a collection of assets, in the specified NSRange's.
     /// Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
