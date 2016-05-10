@@ -145,8 +145,24 @@
                     <view key="view" contentMode="scaleToFill" id="28J-vu-bvx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eXT-bU-3Fv">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pJp-eG-nJr" firstAttribute="top" secondItem="eXT-bU-3Fv" secondAttribute="bottom" id="97X-Lw-gn4"/>
+                            <constraint firstItem="eXT-bU-3Fv" firstAttribute="centerX" secondItem="28J-vu-bvx" secondAttribute="centerX" id="cKD-YE-cFq"/>
+                            <constraint firstItem="eXT-bU-3Fv" firstAttribute="top" secondItem="y0J-Rb-YYG" secondAttribute="bottom" id="eXb-px-M0l"/>
+                            <constraint firstItem="eXT-bU-3Fv" firstAttribute="width" secondItem="28J-vu-bvx" secondAttribute="width" id="hEN-n4-LTI"/>
+                            <constraint firstItem="eXT-bU-3Fv" firstAttribute="centerY" secondItem="28J-vu-bvx" secondAttribute="centerY" placeholder="YES" id="rnB-7M-QyY"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="stackView" destination="eXT-bU-3Fv" id="4Kh-cp-Edz"/>
+                        <outlet property="view" destination="28J-vu-bvx" id="spK-CY-Fe0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Ey-S3-dc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
