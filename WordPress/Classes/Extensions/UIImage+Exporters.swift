@@ -6,17 +6,17 @@ extension UIImage {
     enum ErrorCode : Int {
         case FailedToWrite = 1
     }
-    
+
     private func errorForCode(errorCode: ErrorCode, failureReason: String) -> NSError {
         let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
         let error = NSError(domain: "UIImage+ImageIOExtensions", code: errorCode.rawValue, userInfo: userInfo)
-        
+
         return error
     }
-    
+
     /**
      Writes an image to a url location with the designated type format and EXIF metadata
-     
+
      - Parameters:
      - url: file url to where the asset should be exported, this must be writable location
      - type: the UTI format to use when exporting the asset
@@ -87,7 +87,7 @@ extension UIImage: ExportableAsset
         if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
             finalImage = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:maximumResolution, interpolationQuality:.High)
         }
-        
+
         do {
             try finalImage.writeToURL(url, type:targetUTI, compressionQuality:0.9, metadata: nil)
             successHandler(resultingSize: finalImage.size)
@@ -95,7 +95,7 @@ extension UIImage: ExportableAsset
             errorHandler(error: error)
         }
     }
-    
+
     func exportThumbnailToURL(url: NSURL,
                               targetSize: CGSize,
                               synchronous: Bool,
@@ -110,17 +110,17 @@ extension UIImage: ExportableAsset
             errorHandler(error:error)
         }
     }
-    
+
     func originalUTI() -> String? {
         return kUTTypeJPEG as String
     }
-    
+
     var assetMediaType: MediaType {
         get {
             return .Image
         }
     }
-    
+
     var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String

@@ -7,36 +7,36 @@ class LanguagesTests: XCTestCase
 {
     func testLanguagesEffectivelyLoadJsonFile() {
         let languages = WordPressComLanguageDatabase()
-        
+
         XCTAssert(languages.all.count != 0)
         XCTAssert(languages.popular.count != 0)
     }
-    
+
     func testAllLanguagesHaveValidFields() {
         let languages = WordPressComLanguageDatabase()
         let sum = languages.all + languages.popular
-        
+
         for language in sum {
             XCTAssert(language.slug.characters.count > 0)
             XCTAssert(language.name.characters.count > 0)
         }
     }
-    
+
     func testAllLanguagesContainPopularLanguages() {
         let languages = WordPressComLanguageDatabase()
-        
+
         for language in languages.popular {
             let filtered = languages.all.filter { $0.id == language.id }
             XCTAssert(filtered.count == 1)
         }
     }
-    
+
     func testNameForLanguageWithIdentifierReturnsTheRightName() {
         let languages = WordPressComLanguageDatabase()
-        
+
         let english = languages.nameForLanguageWithId(en)
         let spanish = languages.nameForLanguageWithId(es)
-        
+
         XCTAssert(english == "English")
         XCTAssert(spanish == "Español")
     }

@@ -112,9 +112,9 @@ import WordPressShared
     }
 
 
-    /// Builds the ImmuTableSection that displays unconnected keyring accounts. 
+    /// Builds the ImmuTableSection that displays unconnected keyring accounts.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - rows: An array of ImmuTableRow objects appearing in the section.
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
@@ -217,7 +217,7 @@ import WordPressShared
     /// Checks if the specified keyring account is connected.
     ///
     /// - Parameters:
-    ///     - keyringAccount: The keyring account to check. 
+    ///     - keyringAccount: The keyring account to check.
     ///
     /// - Returns: true if the keyring account is being used by an existing publicize connection. False otherwise.
     ///

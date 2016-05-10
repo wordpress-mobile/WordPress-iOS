@@ -18,7 +18,7 @@ import AFNetworking
 
 public final class WordPressComOAuthClient: NSObject {
 
-    public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"    
+    public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
 
@@ -99,7 +99,7 @@ public final class WordPressComOAuthClient: NSObject {
     }
 
     /** Requests a One Time Code, to be sent via SMS.
-     
+
      - Parameters:
         - username the account's username.
         - password the account's password.
@@ -133,11 +133,11 @@ public final class WordPressComOAuthClient: NSObject {
             else {
                 return response;
         }
-        
+
         responseDictionary["access_token"] = "*** REDACTED ***"
         return responseDictionary;
     }
-    
+
 }
 
 /// A custom serializer to handle standard 400 error responses coming from the OAUTH server

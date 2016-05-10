@@ -124,8 +124,8 @@ import WordPressShared
     }
 
 
-    /// Displays the specified text in the status label. 
-    /// 
+    /// Displays the specified text in the status label.
+    ///
     /// - Parameters:
     ///     - message: The text to display in the label.
     ///
@@ -155,7 +155,7 @@ import WordPressShared
     func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
         passwordField.enabled = !loading
-        
+
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }

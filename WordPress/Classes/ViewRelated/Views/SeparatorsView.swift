@@ -64,9 +64,9 @@ public class SeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    
-    
-    
+
+
+
     // MARK: - UIView methods
     convenience init() {
         self.init(frame: CGRectZero)
@@ -80,10 +80,10 @@ public class SeparatorsView : UIView
         super.init(coder: aDecoder)!
         setupView()
     }
-    
+
     public override func drawRect(rect: CGRect) {
         super.drawRect(rect)
-        
+
         let scale = UIScreen.mainScreen().scale
         let ctx = UIGraphicsGetCurrentContext()
         CGContextClearRect(ctx, rect);
@@ -94,7 +94,7 @@ public class SeparatorsView : UIView
             backgroundColor?.setFill()
             CGContextFillRect(ctx, rect)
         }
-        
+
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
@@ -123,10 +123,10 @@ public class SeparatorsView : UIView
             CGContextStrokePath(ctx);
         }
     }
-    
+
     private func setupView() {
         backgroundColor = UIColor.clearColor()
-        
+
         // Make sure this is re-drawn if the bounds change!
         layer.needsDisplayOnBoundsChange = true
     }
