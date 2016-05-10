@@ -5,8 +5,7 @@ extension UIImageView
 {
     /// Downloads an image and updates the UIImageView Instance
     ///
-    /// - Parameters:
-    ///     - url: The URL of the target image
+    /// - Parameter url: The URL of the target image
     ///
     public func downloadImage(url: NSURL) {
         // Hit the cache
@@ -59,8 +58,7 @@ extension UIImageView
 
     /// Downloads a resized Blavatar, meant to perfectly fit the UIImageView's Dimensions
     ///
-    /// - Parameters:
-    ///     - url: The URL of the target blavatar
+    /// - Parameter url: The URL of the target blavatar
     ///
     public func downloadBlavatar(url: NSURL) {
         let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
@@ -73,11 +71,13 @@ extension UIImageView
 
 
     /// Returns the desired Blavatar Side-Size, in pixels
+    ///
     private var blavatarSize : Int {
         return blavatarSizeInPoints * Int(mainScreenScale)
     }
 
     /// Returns the desired Blavatar Side-Size, in points
+    ///
     private var blavatarSizeInPoints : Int {
         var size = Downloader.defaultImageSize
 
@@ -89,12 +89,14 @@ extension UIImageView
     }
 
     /// Returns the Main Screen Scale
+    ///
     private var mainScreenScale : CGFloat {
         return UIScreen.mainScreen().scale
     }
 
 
     /// Stores the current DataTask, in charge of downloading the remote Image
+    ///
     private var downloadTask : NSURLSessionDataTask? {
         get {
             return objc_getAssociatedObject(self, Downloader.taskKey) as? NSURLSessionDataTask
@@ -107,18 +109,23 @@ extension UIImageView
 
 
     /// Private helper structure
+    ///
     private struct Downloader
     {
         /// Default Blavatar Image Size
+        ///
         static let defaultImageSize = CGFloat(40)
 
         /// Blavatar Resize Query FormatString
+        ///
         static let blavatarResizeFormat = "d=404&s=%d"
 
         /// Stores all of the previously downloaded images
+        ///
         static let cache = NSCache()
 
         /// Key used to associate a Download task to the current instance
+        ///
         static let taskKey = "downloadTaskKey"
     }
 }

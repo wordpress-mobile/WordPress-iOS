@@ -15,8 +15,7 @@ public class LanguageViewController : UITableViewController
 
     /// Designated Initializer
     ///
-    /// - Parameters
-    ///     - Blog: The blog for which we wanna display the languages picker
+    /// - Parameter Blog: The blog for which we wanna display the languages picker
     ///
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
