@@ -3,7 +3,7 @@ import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 
-@objc class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
+class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
     
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -85,7 +85,7 @@ import WordPressShared
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         precondition(segue.destinationViewController is UITableViewController)
-        super.postListViewController = (segue.destinationViewController as! UITableViewController)
+        super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
     
     override func viewDidLoad() {
@@ -102,11 +102,9 @@ import WordPressShared
         forceUpdateCellLayout(textCellForLayout)
         forceUpdateCellLayout(imageCellForLayout)
         
-        tableViewHandler?.clearCachedRowHeights()
+        tableViewHandler.clearCachedRowHeights()
         
-        if let tableView = tableView,
-            let indexPaths = tableView.indexPathsForVisibleRows {
-            
+        if let indexPaths = tableView.indexPathsForVisibleRows {
             tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
         }
     }
@@ -124,7 +122,7 @@ import WordPressShared
         return self.dynamicType.postListHeightForFooterView
     }
     
-    func configureCellsForLayout() {
+    override func configureCellsForLayout() {
         
         let bundle = NSBundle.mainBundle()
         
@@ -135,13 +133,7 @@ import WordPressShared
         forceUpdateCellLayout(imageCellForLayout)
     }
     
-    func configureTableView() {
-        
-        assert(tableView != nil, "We expect tableView to never be nil at this point.")
-        
-        guard let tableView = tableView else {
-            return
-        }
+    override func configureTableView() {
         
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
@@ -160,18 +152,16 @@ import WordPressShared
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
     
-    func noResultsTitleText() -> String {
-        if syncHelper?.isSyncing == true {
+    override func noResultsTitleText() -> String {
+        if syncHelper.isSyncing == true {
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
         }
         
-        if let filter = currentPostListFilter() {
-            let titles = noResultsTitles()
-            let title = titles[filter.filterType]
-            return title ?? ""
-        } else {
-            return ""
-        }
+        let filter = currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+        
+        return title ?? ""
     }
     
     private func noResultsTitles() -> [PostListStatusFilter:String] {
@@ -207,21 +197,12 @@ import WordPressShared
                 .Published: published]
     }
     
-    func noResultsMessageText() -> String {
-        if syncHelper?.isSyncing == true || isSearching() {
+    override func noResultsMessageText() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
             return ""
         }
         
-        let filter = currentPostListFilter()
-        
-        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
-        // `nullable`).  This will probably change once we can migrate
-        // AbstractPostListViewController to Swift, but for the time being we're defining a default
-        // filter here.
-        //
-        // Diego Rey Mendez - 2016/04/18
-        //
-        let filterType = filter?.filterType ?? .Draft
+        let filterType = currentPostListFilter().filterType
         var message: String
         
         switch filterType {
@@ -242,21 +223,12 @@ import WordPressShared
         return message
     }
     
-    func noResultsButtonText() -> String? {
-        if syncHelper?.isSyncing == true || isSearching() {
+    override func noResultsButtonText() -> String? {
+        if syncHelper.isSyncing == true || isSearching() {
             return nil
         }
         
-        let filter = currentPostListFilter()
-        
-        // currentPostListFilter() may return `nil` at this time (ie: it's been declared as
-        // `nullable`).  This will probably change once we can migrate
-        // AbstractPostListViewController to Swift, but for the time being we're defining a default
-        // filter here.
-        //
-        // Diego Rey Mendez - 2016/04/18
-        //
-        let filterType = filter?.filterType ?? .Draft
+        let filterType = currentPostListFilter().filterType
         var title: String
         
         switch filterType {
@@ -274,7 +246,7 @@ import WordPressShared
         return title
     }
     
-    func configureAuthorFilter() {
+    override func configureAuthorFilter() {
         let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
         let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
         
@@ -319,11 +291,11 @@ import WordPressShared
     
     // MARK: - TableViewHandler
     
-    func entityName() -> String {
+    override func entityName() -> String {
         return String(Post.self)
     }
     
-    func predicateForFetchRequest() -> NSPredicate {
+    override func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
         
         if let blog = blog {
@@ -335,13 +307,11 @@ import WordPressShared
         predicates.append(typePredicate)
         
         let searchText = currentSearchTerm()
-        var filterPredicate = currentPostListFilter()?.predicateForFetchRequest
+        var filterPredicate = currentPostListFilter().predicateForFetchRequest
         
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if let recentlyTrashedPostObjectIDs = recentlyTrashedPostObjectIDs
-            where searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
-            
+        if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
             
             if let originalFilterPredicate = filterPredicate {
@@ -356,7 +326,7 @@ import WordPressShared
         }
         
         if shouldShowOnlyMyPosts() {
-            let myAuthorID = blog?.account.userID ?? 0
+            let myAuthorID = blogUserID() ?? 0
             
             // Brand new local drafts have an authorID of 0.
             let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
@@ -375,7 +345,7 @@ import WordPressShared
     // MARK: - Table View Handling
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
             let message = "Expected a post object."
             assertionFailure(message)
             DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
@@ -395,7 +365,7 @@ import WordPressShared
     }
    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
             let message = "Expected a post object."
             assertionFailure(message)
             DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
@@ -421,10 +391,10 @@ import WordPressShared
         return height
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
             let message = "Expected a post object."
             assertionFailure(message)
             DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
@@ -445,7 +415,7 @@ import WordPressShared
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
             preconditionFailure("Expected a post object.")
         }
         
@@ -457,14 +427,14 @@ import WordPressShared
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    override func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
         if let postCell = cell as? PostCardCell {
             postCell.delegate = self
             
-            if let post = tableViewHandler?.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
+            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
                 let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
                 
                 postCell.configureCell?(post, layoutOnly: layoutOnly)
@@ -475,7 +445,7 @@ import WordPressShared
     private func cellIdentifierForPost(post: Post) -> String {
         var identifier: String
         
-        if recentlyTrashedPostObjectIDs?.containsObject(post.objectID) == true && currentPostListFilter()?.filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
             identifier = self.dynamicType.postCardImageCellIdentifier
@@ -488,7 +458,7 @@ import WordPressShared
     
     // MARK: - Post Actions
     
-    func createPost() {
+    override func createPost() {
         if WPPostViewController.isNewEditorEnabled() {
             createPostInNewEditor()
         } else {
@@ -501,7 +471,9 @@ import WordPressShared
         
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
-                self?.setFilterWithPostStatus(viewController.post.status)
+                if let postStatus = viewController.post.status {
+                    self?.setFilterWithPostStatus(postStatus)
+                }
             }
             
             viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
@@ -548,7 +520,9 @@ import WordPressShared
             postViewController.onClose = {[weak self] viewController, changesSaved in
                 
                 if changesSaved {
-                    self?.setFilterWithPostStatus(viewController.post.status)
+                    if let postStatus = viewController.post.status {
+                        self?.setFilterWithPostStatus(postStatus)
+                    }
                 }
                 
                 viewController.navigationController?.popViewControllerAnimated(true)
@@ -568,7 +542,7 @@ import WordPressShared
         }
     }
     
-    func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    override func promptThatPostRestoredToFilter(filter: PostListFilter) {
         var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
         
         switch filter.filterType {
@@ -657,13 +631,13 @@ import WordPressShared
         NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
         NSUserDefaults.resetStandardUserDefaults()
         
-        recentlyTrashedPostObjectIDs?.removeAllObjects()
+        recentlyTrashedPostObjectIDs.removeAll()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
         syncItemsWithUserInteraction(false)
     }
 
-    func keyForCurrentListStatusFilter() -> String {
+    override func keyForCurrentListStatusFilter() -> String {
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
@@ -735,8 +709,3 @@ import WordPressShared
         restorePost(apost)
     }
 }
-
-
-
-
-

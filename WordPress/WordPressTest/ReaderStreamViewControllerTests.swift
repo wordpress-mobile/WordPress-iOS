@@ -20,5 +20,3 @@ class ReaderStreamViewControllerTests: XCTestCase {
     }
 
 }
-
-
