@@ -8,7 +8,7 @@ extension UIScreen
         if UIDevice.isOS8() {
             return screenBounds.width
         }
-        
+
         let statusBarOrientation = UIApplication.sharedApplication().statusBarOrientation
         return statusBarOrientation.isPortrait ? screenBounds.width : screenBounds.height
     }

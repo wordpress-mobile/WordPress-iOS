@@ -4,7 +4,7 @@ import Foundation
 /// Encapsulates all of the NSMutableData Helper Methods.
 ///
 extension NSMutableData {
-    
+
     /// Encodes a raw String into UTF8, and appends it to the current instance.
     ///
     /// - Parameters:

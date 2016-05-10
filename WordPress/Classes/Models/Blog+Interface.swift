@@ -12,7 +12,7 @@ extension Blog
         guard let defaultBlogAccountUserID = accountForDefaultBlog?.userID else {
             return String()
         }
-        
+
         return "\(defaultBlogAccountUserID)"
     }
 }

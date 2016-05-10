@@ -67,7 +67,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
             return (result.0, plans)
         }
     })
-    
+
     guard let activePlan = parsedResponse.0 else {
         throw PlansRemote.Error.NoActivePlan
     }
