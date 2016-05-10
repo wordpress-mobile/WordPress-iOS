@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MJZ-q0-1DX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MJZ-q0-1DX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -173,10 +173,10 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" horizontalHuggingPriority="230" placeholderIntrinsicWidth="471" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="kSs-ks-M3n">
-                                                                <rect key="frame" x="0.0" y="6" width="554" height="40"/>
+                                                                <rect key="frame" x="0.0" y="6" width="489" height="40"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BKP-IB-YN5">
-                                                                        <rect key="frame" x="10" y="0.0" width="534" height="40"/>
+                                                                        <rect key="frame" x="10" y="0.0" width="475" height="40"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
@@ -187,11 +187,19 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstItem="BKP-IB-YN5" firstAttribute="leading" secondItem="kSs-ks-M3n" secondAttribute="leading" constant="10" id="0A6-eo-RoU"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="BKP-IB-YN5" secondAttribute="trailing" constant="10" id="CVh-FS-zm1"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="BKP-IB-YN5" secondAttribute="trailing" constant="4" id="CVh-FS-zm1"/>
                                                                     <constraint firstItem="BKP-IB-YN5" firstAttribute="centerY" secondItem="kSs-ks-M3n" secondAttribute="centerY" id="S4w-w9-Kn2"/>
                                                                     <constraint firstItem="BKP-IB-YN5" firstAttribute="height" secondItem="kSs-ks-M3n" secondAttribute="height" id="qKc-bA-r1G"/>
                                                                 </constraints>
                                                             </view>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lcR-qm-P7F">
+                                                                <rect key="frame" x="499" y="6" width="55" height="40"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" priority="999" constant="55" id="DVf-uK-yYq"/>
+                                                                    <constraint firstAttribute="height" constant="40" id="NpW-eX-XE2"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Done"/>
+                                                            </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKW-hI-LcB">
                                                                 <rect key="frame" x="564" y="6" width="36" height="40"/>
                                                                 <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -221,6 +229,7 @@
                                                     <constraint firstItem="Iaw-Fn-JE3" firstAttribute="height" secondItem="you-MH-OY0" secondAttribute="height" id="vte-ei-Hya"/>
                                                 </constraints>
                                                 <connections>
+                                                    <outlet property="doneButton" destination="lcR-qm-P7F" id="6V0-iD-jbC"/>
                                                     <outlet property="stackView" destination="Iaw-Fn-JE3" id="nLe-9c-19h"/>
                                                     <outlet property="textField" destination="BKP-IB-YN5" id="nr9-vQ-8HC"/>
                                                     <outlet property="textFieldDesignView" destination="kSs-ks-M3n" id="OFa-wU-Gxh"/>
