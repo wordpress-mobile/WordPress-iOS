@@ -77,7 +77,7 @@ extension NotificationBlock {
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and
     /// NoteBlockCommentTableViewCell.
     ///
-    /// - Returns: An Attributed String for usage in both, comments and cell cells
+    /// - Returns: An Attributed String for usage in both, comments and regular cells
     ///
     public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
