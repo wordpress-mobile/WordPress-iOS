@@ -114,7 +114,9 @@
             // No update needed.
             return;
         }
-        
+        if ([self.sourceViewController isFirstResponder]) {
+            [self.sourceViewController resignFirstResponder];
+        }
         [self.sourceViewController willMoveToParentViewController:nil];
         [self.stackView removeArrangedSubview:self.sourceViewController.view];
         [self.sourceViewController.view removeFromSuperview];
