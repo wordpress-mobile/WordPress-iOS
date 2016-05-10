@@ -4,9 +4,9 @@ import WordPressShared
 public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate, UIViewControllerRestoration {
 
     // MARK: - Properties
-    
+
     public var blog: Blog?
-    
+
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID)
@@ -43,19 +43,19 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
     
     public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
 
-    
+
     // MARK: - NSFetchedResultsController Methods
-    
+
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
     }
 
-    
+
     // MARK: - View Lifecycle Methods
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         do {
@@ -69,12 +69,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tableView.deselectSelectedRowWithAnimation(true)
         refreshTeam()
     }
-    
-    
-    // MARK: - Storyboard Methods
-    
+
+
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableView.reloadData()
+    }
+
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let personViewController = segue.destinationViewController as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow
@@ -84,7 +88,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
-    
+
     // MARK: - UIStateRestoring
     
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
@@ -120,13 +124,13 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         let person = Person(managedPerson: managedPerson)
         return person
     }
-    
-    
+
+
     // MARK: - UIViewControllerRestoration
-    
+
     public class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
-        
+
         guard let blogID = coder.decodeObjectForKey(RestorationKeys.blog) as? String,
             let objectURL = NSURL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(objectURL),
@@ -135,29 +139,29 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         {
             return nil
         }
-        
+
         return self.controllerWithBlog(blog)
     }
-    
-    
+
+
     // MARK: - Static Helpers
-    
+
     public class func controllerWithBlog(blog: Blog) -> PeopleViewController? {
         let storyboard = UIStoryboard(name: "People", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
             return nil
         }
-        
+
         viewController.blog = blog
         viewController.restorationClass = self
-        
+
         return viewController
     }
-    
-    
-    
+
+
+
     // MARK: - Constants
-    
+
     private struct RestorationKeys {
         static let blog = "peopleBlogRestorationKey"
     }

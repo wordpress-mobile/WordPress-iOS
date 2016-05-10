@@ -4,7 +4,7 @@ import CoreData
 // MARK: - Reflects a Person, stored in Core Data
 //
 class ManagedPerson: NSManagedObject {
-    
+
     func updateWith(person: Person) {
         avatarURL = person.avatarURL?.absoluteString
         displayName = person.displayName

@@ -50,9 +50,9 @@ enum TestPlans {
                            priceLocale: NSLocale(localeIdentifier: "en-US"),
                            productIdentifier: plan.productIdentifier ?? "")
     }
-    
+
     private static let allTestPlans = [ TestPlans.free, TestPlans.premium, TestPlans.business ]
-    
+
     static let allPlans = allTestPlans.map({ $0.plan })
     static let allProducts = allTestPlans.map({ $0.product })
 }
