@@ -8,13 +8,13 @@ public class AlertInternalView : UIView
 {
     // MARK: - Public Properties
     public var onClick : (() -> ())?
-    
-    
-    
+
+
+
     // MARK: - View Methods
     public override func awakeFromNib() {
          super.awakeFromNib()
-        
+
         assert(backgroundView   != nil)
         assert(alertView        != nil)
         assert(titleLabel       != nil)
@@ -29,9 +29,9 @@ public class AlertInternalView : UIView
 
         dismissButton.titleLabel?.font = Styles.buttonFont
     }
-    
-    
-    
+
+
+
     /// Handles the Dismiss Button Tap.
     ///
     /// - Parameter sender: The button that was pressed.
@@ -40,15 +40,15 @@ public class AlertInternalView : UIView
         onClick?()
         onClick = nil
     }
-    
-    
-    
+
+
+
     // MARK: - Private Aliases
     private typealias Styles = WPStyleGuide.AlertView
-    
+
     // MARK: - Private Constants
     private let cornerRadius = CGFloat(7)
-    
+
     // MARK: - Outlets
     @IBOutlet var backgroundView    : UIView!
     @IBOutlet var alertView         : UIView!

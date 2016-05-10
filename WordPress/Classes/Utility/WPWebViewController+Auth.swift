@@ -12,7 +12,7 @@ extension WPWebViewController {
     ///
     public class func authenticatedWebViewController(URL: NSURL!) -> WPWebViewController {
         assert(URL != nil)
-        
+
         let webViewController = WPWebViewController(URL: URL)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
@@ -20,7 +20,7 @@ extension WPWebViewController {
             webViewController.username  = defaultAccount.username
             webViewController.authToken = defaultAccount.authToken
         }
-        
+
         return webViewController
     }
 }
