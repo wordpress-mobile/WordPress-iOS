@@ -35,14 +35,14 @@ extension Notification
         
         return "\(identifier.rawValue)"
     }
-    
+
     public class func descriptionForSectionIdentifier(identifier: String) -> String {
         guard let identifierAsInteger = Int(identifier),
                 let kind = Sections(rawValue: identifierAsInteger) else
         {
             return String()
         }
-        
+
         switch kind {
         case .Months:
             return NSLocalizedString("Older than a Month",  comment: "Notifications Months Section Header")
