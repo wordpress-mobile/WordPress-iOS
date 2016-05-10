@@ -388,6 +388,7 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkedUserID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="role" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="userID" attributeType="Integer 32" syncable="YES"/>
@@ -624,7 +625,7 @@
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Person" positionX="18" positionY="153" width="128" height="180"/>
+        <element name="Person" positionX="18" positionY="153" width="128" height="195"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>

@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class PeopleCell: UITableViewCell {
+class PeopleCell: WPTableViewCell {
     @IBOutlet var avatarImageView: CircularImageView!
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!

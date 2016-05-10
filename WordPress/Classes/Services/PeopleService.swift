@@ -6,22 +6,23 @@ struct PeopleService {
 
     private let context = ContextManager.sharedInstance().mainContext
 
-    init(blog: Blog) {
-        remote = PeopleRemote(api: blog.restApi())
+    init?(blog: Blog) {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        remote = PeopleRemote(api: api)
         siteID = blog.dotComID as Int
     }
 
     func refreshTeam(completion: (Bool) -> Void) {
         remote.getTeamFor(siteID,
-            success: {
-                (people) -> () in
+            success: { people in
 
                 self.mergeTeam(people)
                 completion(true)
             },
-            failure: {
-                (error) -> () in
-
+            failure: { error in
                 DDLogSwift.logError(String(error))
                 completion(false)
         })

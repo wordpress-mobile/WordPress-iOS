@@ -13,12 +13,19 @@
 
 - (id)initWithApi:(WPXMLRPCClient *)api username:(NSString *)username password:(NSString *)password
 {
+    NSParameterAssert(api != nil);
+    NSParameterAssert(username != nil);
+    NSParameterAssert(password != nil);
+    if (username == nil || password == nil) {
+        return nil;
+    }
+
     self = [super init];
     if (self) {
         _api = api;
         _username = username;
         _password = password;
-    }    
+    }
     return self;
 }
 
