@@ -86,4 +86,13 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
 
         return imageCropViewController
     }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
+    override func childViewControllerForStatusBarStyle() -> UIViewController? {
+        return nil
+    }
+
 }
