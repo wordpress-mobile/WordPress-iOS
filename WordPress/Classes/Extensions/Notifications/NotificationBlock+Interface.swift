@@ -13,7 +13,7 @@ extension NotificationBlock {
     
     // MARK: - Public Methods
     //
-    
+
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     /// - Returns: A Subject Attributed String
@@ -25,7 +25,7 @@ extension NotificationBlock {
                 rangeStylesMap: Constants.subjectRangeStylesMap,
                 linksColor:     nil)
         }
-        
+
         return attributedText(Constants.richSubjectCacheKey)
     }
 
@@ -40,7 +40,7 @@ extension NotificationBlock {
                 rangeStylesMap: nil,
                 linksColor:     nil)
         }
-        
+
         return attributedText(Constants.richSnippetCacheKey)
     }
 
@@ -55,7 +55,7 @@ extension NotificationBlock {
                 rangeStylesMap: Constants.headerTitleRangeStylesMap,
                 linksColor:     nil)
         }
-                
+
         return attributedText(Constants.richHeaderTitleCacheKey)
     }
 
@@ -70,10 +70,10 @@ extension NotificationBlock {
                 rangeStylesMap: Constants.footerStylesMap,
                 linksColor:     nil)
         }
-        
+
         return attributedText(Constants.richHeaderTitleCacheKey)
     }
-    
+
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and 
     /// NoteBlockCommentTableViewCell.
     ///
@@ -85,7 +85,7 @@ extension NotificationBlock {
         if textOverride != nil {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
-        
+
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.contentBlockRegularStyle,
                 quoteStyles:    Styles.contentBlockBoldStyle,
@@ -95,7 +95,7 @@ extension NotificationBlock {
 
         return attributedText(Constants.richTextCacheKey)
     }
-    
+
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom 
     /// formatting that differs from regular notifications, such as centered texts.
     ///
@@ -108,11 +108,11 @@ extension NotificationBlock {
                 rangeStylesMap: Constants.badgeRangeStylesMap,
                 linksColor:     Styles.badgeLinkColor)
         }
-        
+
         return attributedText(Constants.richBadgeCacheKey)
     }
 
-    
+
     /// Given a set of URL's and the Images they reference to, this method will return a Dictionary
     /// with the NSRange's in which the given UIImage's should be injected.
     ///
@@ -127,28 +127,28 @@ extension NotificationBlock {
         if mediaMap == nil || textOverride != nil {
             return nil
         }
-        
+
         var ranges = [NSValue: UIImage]()
-        
+
         for theMedia in media as! [NotificationMedia] {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
             if theMedia.mediaURL == nil {
                 continue
             }
-            
+
             if let image = mediaMap![theMedia.mediaURL] {
                 let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
             }
         }
-        
+
         return ranges
     }
-    
-    
+
+
     // MARK: - Private Helpers
     //
-    
+
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
@@ -160,7 +160,7 @@ extension NotificationBlock {
     private func memoize(fn: () -> NSAttributedString) -> String -> NSAttributedString {
         return {
             (cacheKey : String) -> NSAttributedString in
-            
+
             // Is it already cached?
             if let cachedSubject = self.cacheValueForKey(cacheKey) as? NSAttributedString {
                 return cachedSubject
@@ -172,7 +172,7 @@ extension NotificationBlock {
             return newValue
         }
     }
-    
+
     /// This method is an all-purpose helper to aid formatting the NotificationBlock's payload text.
     ///
     /// - Parameters:
@@ -193,7 +193,7 @@ extension NotificationBlock {
         if text == nil {
             return NSAttributedString()
         }
-        
+
         // Format the String
         let theString = NSMutableAttributedString(string: text, attributes: attributes)
 
@@ -201,10 +201,10 @@ extension NotificationBlock {
         if let unwrappedQuoteStyles = quoteStyles {
             theString.applyAttributesToQuotes(unwrappedQuoteStyles)
         }
-        
+
         // Apply the Ranges
         var lengthShift = 0
-        
+
         for range in ranges as! [NotificationRange] {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
@@ -215,21 +215,21 @@ extension NotificationBlock {
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
             }
-            
+
             if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [String: AnyObject] {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
-            
+
             if range.url != nil && linksColor != nil {
                 theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
                 theString.addAttribute(NSForegroundColorAttributeName, value: linksColor!, range: shiftedRange)
             }
         }
-        
+
         return theString
     }
-    
-    
+
+
     // MARK: - Constants
     //
     private struct Constants {
@@ -250,26 +250,26 @@ extension NotificationBlock {
         static let footerStylesMap = [
             NoteRangeTypeNoticon            : Styles.blockNoticonStyle
         ]
-        
+
         static let richRangeStylesMap = [
             NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
             NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
             NoteRangeTypeMatch              : Styles.contentBlockMatchStyle
         ]
-        
+
         static let badgeRangeStylesMap = [
             NoteRangeTypeUser               : Styles.badgeBoldStyle,
             NoteRangeTypePost               : Styles.badgeItalicsStyle,
             NoteRangeTypeComment            : Styles.badgeItalicsStyle,
             NoteRangeTypeBlockquote         : Styles.badgeQuotedStyle
         ]
-        
+
         static let richSubjectCacheKey      = "richSubjectCacheKey"
         static let richSnippetCacheKey      = "richSnippetCacheKey"
         static let richHeaderTitleCacheKey  = "richHeaderTitleCacheKey"
         static let richTextCacheKey         = "richTextCacheKey"
         static let richBadgeCacheKey        = "richBadgeCacheKey"
     }
-    
+
     private typealias Styles                = WPStyleGuide.Notifications
 }

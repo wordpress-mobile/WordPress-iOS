@@ -115,10 +115,10 @@ public protocol ImmuTableRow {
 
      To improve readability, we recommend that you implement the action logic in one of
      your view controller methods, instead of including the closure inline.
-     
+
      Also, be mindful of retain cycles. If your closure needs to reference `self` in
      any way, make sure to use `[unowned self]` in the parameter list.
-     
+
      An example row with its action could look like this:
 
          class ViewController: UITableViewController {
@@ -136,7 +136,7 @@ public protocol ImmuTableRow {
              }
 
              ...
-             
+
          }
 
      */
@@ -172,7 +172,7 @@ extension ImmuTableRow {
     }
 
     public static var customHeight: Float? {
-        return nil;
+        return nil
     }
 }
 

@@ -14,7 +14,7 @@ import AFNetworking
     deinit {
         downloadQueue.cancelAllOperations()
     }
-    
+
     /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
     /// The completion block will get called just once all of the assets are downloaded, and properly sized.
     ///
@@ -29,37 +29,37 @@ import AFNetworking
         let shouldHitCompletion = !missingUrls.isEmpty
 
         for url in missingUrls {
-            
+
             dispatch_group_enter(group)
-            
+
             downloadImage(url) { (error: NSError?, image: UIImage?) in
-                
+
                 // On error: Don't proceed any further
                 if error != nil || image == nil {
                     dispatch_group_leave(group)
                     return
                 }
-                
+
                 // On success: Cache the original image, and resize (if needed)
                 self.originalImagesMap[url] = image!
-                
+
                 self.resizeImageIfNeeded(image!, maximumWidth: maximumWidth) {
                     self.resizedImagesMap[url] = $0
                     dispatch_group_leave(group)
                 }
             }
         }
-        
+
         // When all of the workers are ready, hit the completion callback, *if needed*
         if !shouldHitCompletion {
             return
         }
-        
+
         dispatch_group_notify(group, dispatch_get_main_queue()) {
             completion()
         }
     }
-    
+
     /// Resizes the downloaded media to fit a "new" maximumWidth ***if needed**.
     /// This method will check the cache of "resized images", and will verify if the original image *could*
     /// be resized again, so that it better fits the *maximumWidth* received.
@@ -74,24 +74,24 @@ import AFNetworking
     public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
         let group               = dispatch_group_create()
         var shouldHitCompletion = false
-        
+
         for (url, originalImage) in originalImagesMap {
             let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
             let resizedImage    = resizedImagesMap[url]
-            
+
             if resizedImage == nil || resizedImage?.size == targetSize {
                 continue
             }
-            
+
             dispatch_group_enter(group)
             shouldHitCompletion = true
-            
+
             resizeImageIfNeeded(originalImage, maximumWidth: maximumWidth) {
                 self.resizedImagesMap[url] = $0
                 dispatch_group_leave(group)
             }
         }
-        
+
         dispatch_group_notify(group, dispatch_get_main_queue()) {
             if shouldHitCompletion {
                 completion()
@@ -109,20 +109,20 @@ import AFNetworking
     ///
     public func imagesForUrls(urls: [NSURL]) -> [NSURL: UIImage] {
         var filtered = [NSURL: UIImage]()
-        
+
         for (url, image) in resizedImagesMap {
             if urls.contains(url) {
                 filtered[url] = image
             }
         }
-        
+
         return filtered
     }
     
     
     // MARK: - Private Helpers
-    
-    
+
+
     /// Downloads an asset, given its URL.
     /// - Note: On failure, this method will attempt the download *maximumRetryCount* times.
     ///         If the URL cannot be downloaded, it'll be marked to be skipped.
@@ -136,27 +136,27 @@ import AFNetworking
         let request                     = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-        
+
         let operation                   = AFHTTPRequestOperation(request: request)
         operation.responseSerializer    = responseSerializer
         operation.setCompletionBlockWithSuccess({
             (operation, responseObject) -> Void in
-            
+
             if let unwrappedImage = responseObject as? UIImage {
                 completion(nil, unwrappedImage)
             } else {
                 let error = NSError(domain: self.downloaderDomain, code: self.emptyMediaErrorCode, userInfo: nil)
                 completion(error, nil)
             }
-            
+
             self.urlsBeingDownloaded.remove(url)
         }, failure: {
             (operation, error) -> Void in
-            
+
             // If possible, retry
             if retryCount < self.maximumRetryCount {
                 self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
-                
+
             // Otherwise, we just failed!
             } else {
                 completion(error, nil)
@@ -164,11 +164,11 @@ import AFNetworking
                 self.urlsFailed.insert(url)
             }
         })
-        
+
         downloadQueue.addOperation(operation)
         urlsBeingDownloaded.insert(url)
     }
-    
+
     /// Checks if an image should be downloaded, or not. An image should be downloaded if:
     ///
     ///     - It's not already being downloaded
@@ -182,7 +182,7 @@ import AFNetworking
     private func shouldDownloadImage(url url: NSURL) -> Bool {
         return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
-    
+
     /// Resizes -in background- a given image, if needed, to fit a maximum width
     ///
     /// - Parameters:
@@ -196,7 +196,7 @@ import AFNetworking
             callback(image)
             return
         }
-        
+
         dispatch_async(resizeQueue) {
             let resizedImage = image.resizedImage(targetSize, interpolationQuality: .High)
             dispatch_async(dispatch_get_main_queue()) {
@@ -220,19 +220,19 @@ import AFNetworking
             targetSize.height   = round(maximumWidth * targetSize.height / targetSize.width)
             targetSize.width    = maximumWidth
         }
-        
+
         return targetSize
     }
-    
-    
+
+
     // MARK: - Public Aliases
     public typealias SuccessBlock   = (Void -> Void)
-    
+
     // MARK: - Private Constants
     private let maximumRetryCount   = 3
     private let emptyMediaErrorCode = -1
     private let downloaderDomain    = "notifications.media.downloader"
-    
+
     // MARK: - Private Properties
     private let responseSerializer  = AFImageResponseSerializer()
     private let downloadQueue       = NSOperationQueue()

@@ -28,7 +28,7 @@ typealias ErrorHandler = (error: NSError) -> ()
                      stripGeoLocation: Bool,
                      successHandler: SuccessHandler,
                      errorHandler: ErrorHandler)
-    
+
     /// Exports an image thumbnail of the asset to a file URL that respects the targetSize.
     /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that 
     /// mantains the aspect ratio of the asset
@@ -45,27 +45,27 @@ typealias ErrorHandler = (error: NSError) -> ()
                               synchronous: Bool,
                               successHandler: SuccessHandler,
                               errorHandler: ErrorHandler)
-    
+
     func originalUTI() -> String?
-    
+
     /// The MediaType for the asset
     ///
     var assetMediaType: MediaType { get }
-    
+
     /// The default UTI for thumbnails
     ///
     var defaultThumbnailUTI: String { get }
 }
 
 extension PHAsset: ExportableAsset {
-    
+
     func exportToURL(url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
-        
+
         switch self.mediaType {
         case .Image:
             exportImageToURL(url,
@@ -87,14 +87,14 @@ extension PHAsset: ExportableAsset {
                                                  comment: "Error reason to display when exporting an unknow asset type from the device library")))
         }
     }
-    
+
     func exportImageToURL(url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
-        
+
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
         let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
 
@@ -127,12 +127,12 @@ extension PHAsset: ExportableAsset {
             })
         }
     }
-    
+
     func exportMaximumSizeImage(completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
         let targetSize = CGSize(width: pixelWidth, height: pixelHeight)
         exportImageWithSize(targetSize, completion: completion)
     }
-    
+
     func exportImageWithSize(targetSize: CGSize, completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
         let options = PHImageRequestOptions()
         options.version = .Current
@@ -140,7 +140,7 @@ extension PHAsset: ExportableAsset {
         options.resizeMode = .Exact
         options.synchronous = false
         options.networkAccessAllowed = true
-        
+
         let manager = PHImageManager.defaultManager()
         manager.requestImageForAsset(self,
                                      targetSize: targetSize,
@@ -150,7 +150,7 @@ extension PHAsset: ExportableAsset {
             completion(image, info)
         }
     }
-    
+
     func removeAttributes(attributes: [String], fromMetadata: [String:AnyObject]) -> [String:AnyObject]{
         var resultingMetadata = fromMetadata
         for attribute in attributes {
@@ -192,7 +192,7 @@ extension PHAsset: ExportableAsset {
         stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
-            
+
             let options = PHVideoRequestOptions()
             options.networkAccessAllowed = true
             PHImageManager.defaultManager().requestExportSessionForVideo(self,
@@ -209,7 +209,7 @@ extension PHAsset: ExportableAsset {
                         }
                         return
                     }
-                    exportSession.outputFileType = targetUTI;
+                    exportSession.outputFileType = targetUTI
                     exportSession.shouldOptimizeForNetworkUse = true
                     exportSession.outputURL = url
                     exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in
@@ -217,13 +217,13 @@ extension PHAsset: ExportableAsset {
                             if let error = exportSession.error {
                                 errorHandler(error: error)
                             }
-                            return;
+                            return
                         }
                         successHandler(resultingSize: CGSize(width: self.pixelWidth, height: self.pixelHeight))
                     })
             }
     }
-    
+
     func exportThumbnailToURL(url: NSURL,
         targetSize: CGSize,
         synchronous: Bool,
@@ -239,7 +239,7 @@ extension PHAsset: ExportableAsset {
             if (requestedSize == CGSize.zero) {
                 requestedSize = PHImageManagerMaximumSize
             }
-            
+
             PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
                 guard let image = image
                 else {
@@ -260,13 +260,13 @@ extension PHAsset: ExportableAsset {
                 }
             }
     }
-    
+
     var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String
         }
     }
-    
+
     var assetMediaType: MediaType {
         get {
             if self.mediaType == .Image {
@@ -281,25 +281,25 @@ extension PHAsset: ExportableAsset {
             return .Document
         }
     }
-    
+
     // MARK: - Error Handling
-    
+
     enum ErrorCode : Int {
         case UnsupportedAssetType = 1
         case FailedToExport = 2
         case FailedToExportMetadata = 3
     }
-    
+
     private func errorForCode(errorCode: ErrorCode, failureReason: String) -> NSError {
         let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
         let error = NSError(domain: "PHAsset+ExporterExtensions", code: errorCode.rawValue, userInfo: userInfo)
-        
+
         return error
     }
-    
+
     func requestMetadataWithCompletionBlock(completionBlock: (metadata:[String:AnyObject]) ->(), failureBlock: (error:NSError) -> ()) {
-        let editOptions = PHContentEditingInputRequestOptions();
-        editOptions.networkAccessAllowed = true;
+        let editOptions = PHContentEditingInputRequestOptions()
+        editOptions.networkAccessAllowed = true
         self.requestContentEditingInputWithOptions(editOptions) { (contentEditingInput, info) -> Void in
             guard let contentEditingInput = contentEditingInput,
                 let fullSizeImageURL = contentEditingInput.fullSizeImageURL,
@@ -317,10 +317,10 @@ extension PHAsset: ExportableAsset {
             completionBlock(metadata:image.properties)
         }
     }
-    
+
     func originalUTI() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
-        var types = [];
+        var types = []
         if (mediaType == PHAssetMediaType.Image) {
             types = [PHAssetResourceType.Photo.rawValue]
         } else if (mediaType == PHAssetMediaType.Video){
@@ -333,10 +333,10 @@ extension PHAsset: ExportableAsset {
         }
         return nil
     }
-    
+
     func originalFilename() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
-        var types = [];
+        var types = []
         if (mediaType == PHAssetMediaType.Image) {
             types = [PHAssetResourceType.Photo.rawValue]
         } else if (mediaType == PHAssetMediaType.Video){

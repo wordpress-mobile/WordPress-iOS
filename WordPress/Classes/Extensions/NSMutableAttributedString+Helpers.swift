@@ -16,7 +16,7 @@ extension NSMutableAttributedString {
 
             regex.enumerateMatchesInString(string, options: .ReportCompletion, range: range) {
                 (result: NSTextCheckingResult?, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                
+
                 if let theResult = result {
                     self.addAttributes(styles, range: theResult.range)
                 }

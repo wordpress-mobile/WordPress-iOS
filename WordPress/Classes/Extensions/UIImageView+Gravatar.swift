@@ -14,7 +14,7 @@ extension UIImageView
         case PG
         case R
         case X
-        
+
         func stringValue() -> String {
             switch self {
                 case .G:    return "g"
@@ -35,7 +35,7 @@ extension UIImageView
     func downloadGravatarWithEmail(email : String, rating : GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
     }
-    
+
     /// Downloads and sets the User's Gravatar, given his email.
     ///
     /// - Parameters:
@@ -50,15 +50,15 @@ extension UIImageView
 
         setImageWithURLRequest(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
-    
+
     /// Sets an Image Override in both, AFNetworking's Private Cache + NSURLCache
     ///
-    /// Note I: 
+    /// Note I:
     /// *WHY* is this required?. *WHY* life has to be so complicated?, is the universe against us?
-    /// This has been implemented as a workaround. During Upload, we want any async calls made to the 
+    /// This has been implemented as a workaround. During Upload, we want any async calls made to the
     /// `downloadGravatar` API to return the "Fresh" image.
     ///
-    /// Note II: 
+    /// Note II:
     /// We cannot just clear NSURLCache, since the helper that's supposed to do that, is broken since iOS 8.
     /// Ref: Ref: http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/
     ///
@@ -69,17 +69,17 @@ extension UIImageView
         guard let targetURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
-        
+
         let request = NSURLRequest(URL: targetURL)
-        
+
         self.dynamicType.sharedImageCache().cacheImage(image, forRequest: request)
         NSURLCache.sharedURLCache().cacheImage(image, forRequest: request)
     }
-    
-    
-    
+
+
+
     // MARK: - Private Helpers
-    
+
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
     ///
     /// - Parameters:
@@ -93,7 +93,7 @@ extension UIImageView
         let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
         return NSURL(string: targetURL)
     }
-    
+
     /// Returns the required gravatar size. If the current view's size is zero, falls back to the default size.
     ///
     private func gravatarDefaultSize() -> Int {
@@ -104,7 +104,7 @@ extension UIImageView
         let targetSize = max(bounds.width, bounds.height) * UIScreen.mainScreen().scale
         return Int(targetSize)
     }
-    
+
     /// Private helper structure: contains the default Gravatar parameters
     ///
     private struct GravatarDefaults {

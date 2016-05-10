@@ -7,7 +7,7 @@ import Foundation
 @objc public class PushAuthenticationService : LocalCoreDataService {
     
     public var authenticationServiceRemote: PushAuthenticationServiceRemote?
-    
+
     /// Designated Initializer
     ///
     /// - Parameter managedObjectContext: A Reference to the MOC that should be used to interact with
@@ -28,7 +28,7 @@ import Foundation
         if self.authenticationServiceRemote == nil {
             return
         }
-        
+
         self.authenticationServiceRemote!.authorizeLogin(token,
             success:    {
                             completion(true)
@@ -38,26 +38,26 @@ import Foundation
                         })
 
     }
-    
+
     /// Helper method to get the WordPress.com REST Api, if any
     ///
     /// - Returns: WordPressComApi instance.  It can be an anonymous API instance if there are no credentials.
     ///
     private func apiForRequest() -> WordPressComApi {
-        
+
         var api : WordPressComApi? = nil
-        
+
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.restApi {
             if unwrappedRestApi.hasCredentials() {
                 api = unwrappedRestApi
             }
         }
-        
+
         if api == nil {
             api = WordPressComApi.anonymousApi()
         }
-        
+
         return api!
     }
 }

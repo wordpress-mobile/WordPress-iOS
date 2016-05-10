@@ -6,7 +6,7 @@ import WordPressShared
 extension WPStyleGuide
 {
 
-    // MARK: Original Post/Site Attribution Styles. 
+    // MARK: Original Post/Site Attribution Styles.
 
     public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()

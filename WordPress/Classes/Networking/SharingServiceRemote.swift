@@ -65,7 +65,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                     pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connectURL)
                     pub.detail = dict.stringForKey(ServiceDictionaryKeys.description)
-                    pub.icon = dict.stringForKey(ServiceDictionaryKeys.icon);
+                    pub.icon = dict.stringForKey(ServiceDictionaryKeys.icon)
                     pub.serviceID = dict.stringForKey(ServiceDictionaryKeys.ID)
                     pub.jetpackModuleRequired = dict.stringForKey(ServiceDictionaryKeys.jetpackModuleRequired)
                     pub.jetpackSupport = dict.numberForKey(ServiceDictionaryKeys.jetpackSupport).boolValue
@@ -143,7 +143,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     }
 
 
-    /// Creates KeyringConnectionExternalUser instances from the past array of 
+    /// Creates KeyringConnectionExternalUser instances from the past array of
     /// external user dictionaries.
     ///
     /// - Parameters:
@@ -476,7 +476,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///
     private func remoteSharingButtonsFromDictionary(buttons: NSArray) -> [RemoteSharingButton] {
-        var order = 0;
+        var order = 0
         let sharingButtons: [RemoteSharingButton] = buttons.map { (let dict) -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = dict.stringForKey(SharingButtonsKeys.buttonID) ?? btn.buttonID

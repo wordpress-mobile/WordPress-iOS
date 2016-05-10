@@ -20,7 +20,7 @@ extension String {
         return isEmpty ? nil : self
     }
 
-    /// Remove the specified suffix from the string and returns the new string. 
+    /// Remove the specified suffix from the string and returns the new string.
     ///
     /// - Parameter suffix: The suffix to remove. If this is a regular expression it should not include an ending `$`.
     ///
