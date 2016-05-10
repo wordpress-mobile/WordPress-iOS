@@ -32,9 +32,9 @@ extension AccountSettings {
         webAddress = managed.webAddress
         language = managed.language
     }
-    
+
     var emailForDisplay : String {
-        let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email        
+        let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email
         return emailPendingChange ? pendingEmail : email
     }
 }
