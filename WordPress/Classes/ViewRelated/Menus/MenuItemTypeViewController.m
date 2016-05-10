@@ -6,8 +6,8 @@
 
 @interface MenuItemTypeViewController () <MenuItemTypeViewDelegate>
 
-@property (nonatomic, strong, readonly) UIScrollView *scrollView;
-@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong, readonly) NSMutableArray *typeViews;
 
 @end
@@ -17,53 +17,18 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
 
     _typeViews = [NSMutableArray arrayWithCapacity:5];
-    
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.contentMode = UIViewContentModeRedraw;
 
     [self setupScrollView];
-    [self setupStackView];
 }
 
 - (void)setupScrollView
 {
-    UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.clipsToBounds = NO;
-    scrollView.scrollsToTop = NO;
-    [self.view addSubview:scrollView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-                                              [scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                              [scrollView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                              [scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                              [scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-                                              ]];
-    _scrollView = scrollView;
-}
-
-- (void)setupStackView
-{
-    UIStackView *stackView = [[UIStackView alloc] init];
-    stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.alignment = UIStackViewAlignmentTop;
-    stackView.distribution = UIStackViewDistributionFill;
-    stackView.axis = UILayoutConstraintAxisVertical;
-    
-    NSAssert(_scrollView != nil, @"scrollView is nil");
-    [_scrollView addSubview:stackView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:_scrollView.topAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:_scrollView.bottomAnchor]
-                                              ]];
-    _stackView = stackView;
+    self.scrollView.clipsToBounds = NO;
+    self.scrollView.scrollsToTop = NO;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
