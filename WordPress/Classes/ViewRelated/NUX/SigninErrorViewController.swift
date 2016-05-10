@@ -3,8 +3,8 @@ import WordPressShared
 import wpxmlrpc
 
 
-/// A view controller for prompting a user about sign in related errors. 
-/// It provides for a title, message, and for specialized button actions. 
+/// A view controller for prompting a user about sign in related errors.
+/// It provides for a title, message, and for specialized button actions.
 /// It is assumed the controller will always be presented modally.
 ///
 class SigninErrorViewController : UIViewController
@@ -95,7 +95,7 @@ class SigninErrorViewController : UIViewController
     // MARK: - Instance Methods
 
 
-    /// The preferred method for presenting the error view controller full screen 
+    /// The preferred method for presenting the error view controller full screen
     /// and modal.  This method takes care of configuring presentation style and
     /// context so the controller is correctly displayed full screen.
     ///
@@ -275,7 +275,7 @@ class SigninErrorViewController : UIViewController
             self.dismiss()
             self.delegate?.displayWebviewForURL(NSURL(string: "https://apps.wordpress.org/support/#faq-ios-3")!, username: nil, password: nil)
         }
-        
+
         configureView(message,
                            firstButtonText: nil,
                            firstButtonCallback: nil,

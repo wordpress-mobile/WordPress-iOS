@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-/// Provides a form and functionality to sign-in and add an existing self-hosted 
+/// Provides a form and functionality to sign-in and add an existing self-hosted
 /// site to the app.
 ///
 @objc class SigninSelfHostedViewController : NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler
@@ -177,7 +177,7 @@ import WordPressShared
     ///
     ///
     func updateSafariCredentialsIfNeeded() {
-        // Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted 
+        // Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted
         // controller's implementation does not use safari saved credentials.
     }
 
@@ -193,7 +193,7 @@ import WordPressShared
             WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
                                        message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
                                        withSupportButton: false)
-            
+
             return
         }
 
@@ -207,7 +207,7 @@ import WordPressShared
         }
 
         configureViewLoading(true)
-        
+
         loginFacade.signInWithLoginFields(loginFields)
     }
 

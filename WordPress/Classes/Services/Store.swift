@@ -22,7 +22,7 @@ class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
 // stored property since it's a generic class.
 struct StoreKitCoordinator {
     static let instance = StoreCoordinator(store: StoreKitStore())
-    
+
     static let TransactionDidFinishNotification = "StoreCoordinatorTransactionDidFinishNotification"
     static let TransactionDidFailNotification   = "StoreCoordinatorTransactionDidFailNotification"
     static let NotificationProductIdentifierKey = "StoreCoordinatorNotificationProductIdentifierKey"
@@ -48,11 +48,11 @@ enum StoreCoordinatorError: ErrorType {
 ///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
 class StoreCoordinator<S: Store> {
     private let store: S
-    
+
     private var pendingPayment: PendingPayment? {
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
-            
+
             if let pending = newValue {
                 defaults.setObject(pending.productID, forKey: UserDefaultsKeys.pendingPaymentProductID)
                 defaults.setInteger(pending.siteID, forKey:UserDefaultsKeys.pendingPaymentSiteID)
@@ -61,14 +61,14 @@ class StoreCoordinator<S: Store> {
                 defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentSiteID)
             }
         }
-        
+
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
             let productID = defaults.stringForKey(UserDefaultsKeys.pendingPaymentProductID)
             let siteID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentSiteID)
-            
+
             guard let product = productID where siteID != 0 else { return nil }
-            
+
             return (product, siteID)
         }
     }
@@ -87,7 +87,7 @@ class StoreCoordinator<S: Store> {
         guard pendingPayment == nil else {
             throw StoreCoordinatorError.PaymentAlreadyInProgress
         }
-        
+
         pendingPayment = (product.productIdentifier, siteID)
         store.requestPayment(product)
     }
@@ -106,20 +106,20 @@ class StoreCoordinator<S: Store> {
             verifyTransaction(transaction)
         }
     }
-    
+
     private func verifyTransaction(transaction: SKPaymentTransaction) {
         guard let pendingPayment = pendingPayment else {
             DDLogSwift.logInfo("[Store] Transaction with no pending payment information \(transaction)")
-            
+
             // TODO: (@frosty 2016-04-27) Still attempt to verify purchase, sending only user info /
             // receipt data – we should at least be able to tell if this is a renewal.
-            
+
             finishTransaction(transaction)
             return
         }
-        
+
         assert(transaction.payment.productIdentifier == pendingPayment.productID)
-        
+
         guard let service = PlanService(siteID: pendingPayment.siteID, store: StoreKitStore()),
             let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
             let receipt = NSData(contentsOfURL: receiptURL)
@@ -127,7 +127,7 @@ class StoreCoordinator<S: Store> {
                 assertionFailure()
                 return
         }
-        
+
         DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
         service.verifyPurchase(pendingPayment.siteID, productID: pendingPayment.productID, receipt: receipt, completion: { [weak self] _ in
             // TODO: Handle success / failure of verification attempt
@@ -139,38 +139,38 @@ class StoreCoordinator<S: Store> {
         DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
 
         SKPaymentQueue.defaultQueue().finishTransaction(transaction)
-    
+
         guard let productID = pendingPayment?.productID else { return }
-        
+
         if transaction.payment.productIdentifier == productID {
             pendingPayment = nil
         }
-        
+
         var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID]
-        
+
         if let error = transaction.error {
             if error.code != SKErrorCode.PaymentCancelled.rawValue {
                 userInfo[NSUnderlyingErrorKey] = error
             }
-            
+
             postTransactionFailedNotification(userInfo)
         } else {
             postTransactionFinishedNotification(userInfo)
         }
     }
-    
+
     private func postTransactionFailedNotification(userInfo: [NSObject: AnyObject]? = nil) {
         NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFailNotification,
                                                                   object: nil,
                                                                   userInfo: userInfo)
     }
-    
+
     private func postTransactionFinishedNotification(userInfo: [NSObject: AnyObject]? = nil) {
         NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFinishNotification,
                                                                   object: nil,
                                                                   userInfo: userInfo)
     }
-    
+
     /// Used to determine whether the specified plan is currently available for purchase
     /// for the specified site, given the current active plan.
     func purchaseAvailability(forPlan plan: Plan, siteID: Int, activePlan: Plan) -> PurchaseAvailability {
@@ -349,7 +349,7 @@ struct MockStore: Store {
 private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     typealias Success = [SKProduct] -> Void
     typealias Failure = ErrorType -> Void
-    
+
     let onSuccess: Success
     let onError: Failure
     var retainedObjects = [NSObject]()
@@ -363,14 +363,14 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     func retainUntilFinished(object: NSObject) {
         retainedObjects.append(object)
     }
-    
+
     @objc func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
         if !response.invalidProductIdentifiers.isEmpty {
             DDLogSwift.logWarn("Invalid product identifiers: \(response.invalidProductIdentifiers)")
         }
         onSuccess(response.products)
     }
-    
+
     @objc func request(request: SKRequest, didFailWithError error: NSError) {
         onError(error)
     }

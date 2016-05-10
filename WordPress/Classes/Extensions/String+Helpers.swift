@@ -19,9 +19,9 @@ extension String {
         return isEmpty ? nil : self
     }
 
-    /// Remove the specified suffix from the string and returns the new string. 
+    /// Remove the specified suffix from the string and returns the new string.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - suffix: The suffix to remove.If this is a regular expression it should not include an ending `$`.
     ///
     func trimSuffix(regexp suffix: String) -> String {
