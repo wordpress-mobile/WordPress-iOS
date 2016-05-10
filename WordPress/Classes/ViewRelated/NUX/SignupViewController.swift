@@ -304,31 +304,7 @@ import WordPressShared
 
         configureLoading(true)
 
-        createUserAndSite()
-    }
-
-
-    /// Composes and enqueues the operations to validate the site information,
-    /// user create, user authenticaiton, and blog creation.
-    ///
-    func createUserAndSite() {
-
-        // The site must be validated prior to making an account. Without validation,
-        // the situation could exist where a user account is created, but the site creation
-        // fails.
-        let siteValidationOp = siteValidationOperation()
-        let userCreationOp = userCreationOperation()
-        let userSigninOp = userSigninOperation()
-        let blogCreationOp = blogCreationOperation()
-
-        blogCreationOp.addDependency(userSigninOp)
-        userSigninOp.addDependency(userCreationOp)
-        userCreationOp.addDependency(siteValidationOp)
-
-        operationQueue.addOperation(siteValidationOp)
-        operationQueue.addOperation(userCreationOp)
-        operationQueue.addOperation(userSigninOp)
-        operationQueue.addOperation(blogCreationOp)
+        createAccountAndSite()
     }
 
 
@@ -347,234 +323,68 @@ import WordPressShared
     }
 
 
-    // MARK: - Operations
-
-
-    /// Returns the block operation to validate the site to create.
+    /// Create the account and the site. Call this after everything passes validation.
     ///
-    /// - Returns: AWPAsyncBlockOperation
-    ///
-    func siteValidationOperation() -> WPAsyncBlockOperation {
-        let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
-        asyncOp.addBlock( { (operation: WPAsyncBlockOperation?) in
-            let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
-                self.displayLoginMessage("")
-                operation?.didSucceed()
+    func createAccountAndSite() {
+        let statusBlock = { (status: SignupStatus) in
+            self.displayLoginMessageForStatus(status)
+        }
+
+        let successBlock = {
+            self.displayLoginMessage("")
+            self.configureLoading(false)
+            self.dismiss()
+        }
+
+        let failureBlock = { (error: NSError?) in
+            self.displayLoginMessage("")
+            self.configureLoading(false)
+            if let error = error {
+                self.displayError(error)
             }
-            let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
-                self.displayLoginMessage("")
-                operation?.didFail()
-                self.configureLoading(false)
-                if let error = error {
-                    self.displayError(error)
-                }
-            }
+        }
 
-            let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
-            let languageId = currentLanguage.stringValue
-
-            let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
-            remote.validateWPComBlogWithUrl(self.loginFields.siteUrl,
-                andBlogTitle: self.generateSiteTitleFromUsername(self.loginFields.username),
-                andLanguageId: languageId,
-                success: successBlock,
-                failure: failureBlock)
-
-            self.displayLoginMessage(NSLocalizedString("Validating", comment: "Short status message shown to the user when validating a new blog's name."))
-        })
-        return asyncOp
-    }
-
-
-    /// Returns the block operation to create a new user
-    ///
-    /// - Returns: AWPAsyncBlockOperation
-    ///
-    func userCreationOperation() -> WPAsyncBlockOperation {
-        let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
-        asyncOp.addBlock({ (operation: WPAsyncBlockOperation?) in
-            let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
-                self.displayLoginMessage("")
-                operation?.didSucceed()
-            }
-            let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
-                DDLogSwift.logError("Failed creating user: \(error)")
-                self.displayLoginMessage("")
-                operation?.didFail()
-                self.configureLoading(false)
-                if let error = error {
-                    self.displayError(error)
-                }
-            }
-
-            let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
-            remote.createWPComAccountWithEmail(self.loginFields.emailAddress,
-                andUsername: self.loginFields.username,
-                andPassword: self.loginFields.password,
-                success: successBlock,
-                failure: failureBlock)
-
-            self.displayLoginMessage(NSLocalizedString("Creating account", comment: "Brief status message shown to the user when creating a new wpcom account."))
-        })
-        return asyncOp
-    }
-
-
-    /// Returns the block operation to authenticate the user
-    ///
-    /// - Returns: AWPAsyncBlockOperation
-    ///
-    func userSigninOperation() -> WPAsyncBlockOperation {
-        let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
-        asyncOp.addBlock({ (operation: WPAsyncBlockOperation?) in
-            let successBlock = { (authToken: String?) in
-                self.displayLoginMessage("")
-                guard let authToken = authToken else {
-                    DDLogSwift.logError("Faied signing in the user. Success block was called but the auth token was nil.")
-                    assertionFailure()
-                    return
-                }
-                let context = ContextManager.sharedInstance().mainContext
-                let service = AccountService(managedObjectContext: context)
-
-                let account = service.createOrUpdateAccountWithUsername(self.loginFields.username, authToken: authToken)
-                account.email = self.loginFields.emailAddress
-                if service.defaultWordPressComAccount() == nil {
-                    service.setDefaultWordPressComAccount(account)
-                }
-                self.account = account
-                operation?.didSucceed()
-            }
-
-            let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
-                DDLogSwift.logError("Failed signing in user: \(error)")
-                self.displayLoginMessage("")
-                // We've hit a strange failure at this point, the user has been created successfully but for some reason
-                // we are unable to sign in and proceed
-                operation?.didFail()
-                self.configureLoading(false)
-                if let error = error {
-                    self.displayError(error)
-                }
-            }
-
-            let client = WordPressComOAuthClient.client()
-            client.authenticateWithUsername(self.loginFields.username,
-                password: self.loginFields.password,
-                multifactorCode: nil,
-                success: successBlock,
-                failure: failureBlock)
-
-            self.displayLoginMessage(NSLocalizedString("Authenticating", comment: "Brief status message shown when signing into a newly created blog and account."))
-        })
-        return asyncOp
-    }
-
-
-    /// Returns the block operation to create the user's blog.
-    ///
-    /// - Returns: AWPAsyncBlockOperation
-    ///
-    func blogCreationOperation() -> WPAsyncBlockOperation {
-
-        let asyncOp: WPAsyncBlockOperation = WPAsyncBlockOperation()
-        asyncOp.addBlock( { (operation: WPAsyncBlockOperation?) in
-            let successBlock: WordPressComServiceSuccessBlock = { (responseDictionary) in
-                WPAppAnalytics.track(.CreatedAccount)
-                self.displayLoginMessage("")
-                operation?.didSucceed()
-
-                if let blogOptions = responseDictionary[self.BlogDetailsKey] as? [String: AnyObject] {
-                    self.finishAccountCreationAndSetup(blogOptions)
-                } else {
-                    DDLogSwift.logError("Failed creating blog. The response dictionary did not contain the expected results")
-                    assertionFailure()
-                }
-
-                self.configureLoading(false)
-                self.dismiss()
-            }
-
-            let failureBlock: WordPressComServiceFailureBlock = { (error: NSError?) in
-                DDLogSwift.logError("Failed creating blog: \(error)")
-                self.displayLoginMessage("")
-                operation?.didFail()
-                self.configureLoading(false)
-                if let error = error {
-                    self.displayError(error)
-                }
-            }
-
-            let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
-            let languageId = currentLanguage.stringValue
-            guard let api = self.account?.restApi else {
-                DDLogSwift.logError("Failed to get the REST API from the account.")
-                assertionFailure()
-                return
-            }
-
-            let remote = WordPressComServiceRemote(api: api)
-            remote.createWPComBlogWithUrl(self.loginFields.siteUrl,
-                andBlogTitle: self.generateSiteTitleFromUsername(self.loginFields.username),
-                andLanguageId: languageId,
-                andBlogVisibility: .Public,
-                success: successBlock,
-                failure: failureBlock)
-
-            self.displayLoginMessage(NSLocalizedString("Creating site", comment: "Short status message shown while a new site is being created for a new user."))
-        })
-        return asyncOp
-    }
-
-
-    /// The final step in the user/blog creation process.
-    ///
-    /// - Parameters:
-    ///     - blogOptions: The options dictionary returned from the call to create the user's blog.
-    ///
-    func finishAccountCreationAndSetup(blogOptions: [String: AnyObject]) {
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        let blogService = BlogService(managedObjectContext: context)
+        let service = SignupService(managedObjectContext: context)
+        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
+                                           blogTitle: loginFields.username,
+                                           emailAddress: loginFields.emailAddress,
+                                           username: loginFields.username,
+                                           password: loginFields.password,
+                                           status: statusBlock,
+                                           success: successBlock,
+                                           failure: failureBlock)
+    }
 
-        // Treat missing dictionary keys as an api issue. If we've reached this point
-        // the account/blog creation was probably successful and the app might be able
-        // to recover the next time it tries to sync blogs.
-        guard let blogName = (blogOptions[BlogNameLowerCaseNKey] ?? blogOptions[BlogNameUpperCaseNKey]) as? String,
-            xmlrpc = blogOptions[XMLRPCKey] as? String,
-            blogURL = blogOptions[URLKey] as? String,
-            stringID = blogOptions[BlogIDKey] as? String,
-            dotComID = Int(stringID)
-        else {
-            DDLogSwift.logError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
-            assertionFailure()
-            return
+
+    /// Display a status message for the specified SignupStatus
+    ///
+    /// - Paramaters: 
+    ///     - status: SignupStatus
+    ///
+    func displayLoginMessageForStatus(status: SignupStatus) {
+        switch status {
+        case .Validating :
+            displayLoginMessage(NSLocalizedString("Validating", comment: "Short status message shown to the user when validating a new blog's name."))
+            break
+
+        case .CreatingUser :
+            displayLoginMessage(NSLocalizedString("Creating account", comment: "Brief status message shown to the user when creating a new wpcom account."))
+            break
+
+        case .Authenticating :
+            displayLoginMessage(NSLocalizedString("Authenticating", comment: "Brief status message shown when signing into a newly created blog and account."))
+            break
+
+        case .CreatingBlog :
+            displayLoginMessage(NSLocalizedString("Creating site", comment: "Short status message shown while a new site is being created for a new user."))
+            break
+
+        case .Syncing :
+            displayLoginMessage(NSLocalizedString("Syncing account information", comment: "Short status message shown while blog and account information is being synced."))
+            break
+
         }
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            DDLogSwift.logError("Failed finishing account creation. The default wpcom account was not found.")
-            assertionFailure()
-            return
-        }
-
-        var blog: Blog
-        if let existingBlog = blogService.findBlogWithXmlrpc(xmlrpc, inAccount: defaultAccount) {
-            blog = existingBlog
-        } else {
-            blog = blogService.createBlogWithAccount(defaultAccount)
-            blog.xmlrpc = xmlrpc
-        }
-
-        blog.dotComID = NSNumber(integer: dotComID)
-        blog.url = blogURL
-        blog.settings.name = blogName.stringByDecodingXMLCharacters()
-
-        defaultAccount.defaultBlog = blog
-
-        ContextManager.sharedInstance().saveContext(context)
-
-        blogService.syncBlog(blog, completionHandler: {
-            accountService.updateUserDetailsForAccount(defaultAccount, success: {}, failure: {(error) in})
-        })
     }
 
 
