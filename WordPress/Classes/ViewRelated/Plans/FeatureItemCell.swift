@@ -44,4 +44,3 @@ class FeatureItemCell: WPTableViewCell {
         featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
     }
 }
-
