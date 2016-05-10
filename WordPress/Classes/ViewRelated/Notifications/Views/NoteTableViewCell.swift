@@ -72,9 +72,9 @@ import WordPressShared
         }
     }
     public var onUndelete: (Void -> Void)?
-    
-    
-    
+
+
+
     // MARK: - Public Methods
     public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
@@ -86,7 +86,7 @@ import WordPressShared
             downloadGravatarWithURL(url)
             return
         }
-        
+
         // Handle non-gravatar images
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
         iconImageView.downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: { (error) in
@@ -95,11 +95,11 @@ import WordPressShared
                 self.gravatarURL = nil
             }
         })
-        
+
         gravatarURL = url
     }
-    
-    
+
+
     // MARK: - Gravatar Helpers
     private func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
@@ -108,7 +108,7 @@ import WordPressShared
 
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
         let gravatar = url.flatMap { Gravatar($0) }
-        
+
         if gravatar == nil {
             // Note: If we've got any issues with the Gravatar instance, fallback to the placeholder, and dont'
             // cache the URL!
@@ -116,7 +116,7 @@ import WordPressShared
             gravatarURL = nil
             return
         }
-        
+
         iconImageView.downloadGravatar(gravatar,
             placeholder: placeholderImage,
             animate: false,
@@ -129,9 +129,9 @@ import WordPressShared
 
         gravatarURL = url
     }
- 
-    
-    
+
+
+
     // MARK: - UITableViewCell Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -145,18 +145,18 @@ import WordPressShared
         noticonView.layer.cornerRadius  = Settings.noticonRadius
         noticonLabel.font               = Style.noticonFont
         noticonLabel.textColor          = Style.noticonTextColor
-        
+
         subjectLabel.numberOfLines      = Settings.subjectNumberOfLinesWithSnippet
         subjectLabel.shadowOffset       = CGSizeZero
 
         snippetLabel.numberOfLines      = Settings.snippetNumberOfLines
-        
+
         // Separators: Setup bottom separators!
         separatorsView.bottomColor      = WPStyleGuide.Notifications.noteSeparatorColor
         separatorsView.bottomInsets     = Settings.separatorInsets
         backgroundView                  = separatorsView
     }
-    
+
     public override func layoutSubviews() {
         refreshLabelPreferredMaxLayoutWidth()
         refreshBackgrounds()
@@ -168,22 +168,22 @@ import WordPressShared
         super.setSelected(selected, animated: animated)
         refreshBackgrounds()
     }
-    
+
     public override func setHighlighted(highlighted: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setHighlighted(highlighted, animated: animated)
         refreshBackgrounds()
     }
-    
-    
-    
+
+
+
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         let maxWidthLabel                    = frame.width - Settings.textInsets.right - subjectLabel.frame.minX
         subjectLabel.preferredMaxLayoutWidth = maxWidthLabel
         snippetLabel.preferredMaxLayoutWidth = maxWidthLabel
     }
-    
+
     private func refreshBackgrounds() {
         // Noticon Background
         if unapproved {
@@ -204,26 +204,26 @@ import WordPressShared
             backgroundColor = newBackgroundColor
         }
     }
-    
+
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews {
             subview.hidden = markedForDeletion
         }
     }
-    
+
     private func refreshNumberOfLines() {
         // When the snippet is present, let's clip the number of lines in the subject
         let showsSnippet = attributedSnippet != nil
         subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
     }
-    
+
     private func refreshUndoOverlay() {
         // Remove
         if markedForDeletion == false {
             undoOverlayView?.removeFromSuperview()
             return
         }
-        
+
         // Load
         if undoOverlayView == nil {
             let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
@@ -238,54 +238,54 @@ import WordPressShared
         }
     }
 
-    
-    
+
+
     // MARK: - Public Static Helpers
     public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
-        
+
         // Limit the width (iPad Devices)
         let cellWidth               = min(width, Style.maximumCellWidth)
         var cellHeight              = Settings.textInsets.top + Settings.textInsets.bottom
-        
+
         // Calculate the maximum label size
         let maxLabelWidth           = cellWidth - Settings.textInsets.left - Settings.textInsets.right
         let maxLabelSize            = CGSize(width: maxLabelWidth, height: CGFloat.max)
-        
+
         // Helpers
         let showsSnippet            = snippet != nil
-        
+
         // If we must render a snippet, the maximum subject height will change. Account for that please
         if let unwrappedSubject = subject {
             let subjectRect         = unwrappedSubject.boundingRectWithSize(maxLabelSize,
                                         options: .UsesLineFragmentOrigin,
                                         context: nil)
-            
+
             cellHeight              += min(subjectRect.height, Settings.subjectMaximumHeight(showsSnippet))
         }
-        
+
         if let unwrappedSubject = snippet {
             let snippetRect         = unwrappedSubject.boundingRectWithSize(maxLabelSize,
                                         options: .UsesLineFragmentOrigin,
                                         context: nil)
-            
+
             cellHeight              += min(snippetRect.height, Settings.snippetMaximumHeight())
         }
-        
+
         return max(cellHeight, Settings.minimumCellHeight)
     }
-    
-    
-    
+
+
+
     // MARK: - Action Handlers
     @IBAction public func undeleteWasPressed(sender: AnyObject) {
         onUndelete?()
     }
-    
-    
-    
+
+
+
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
-    
+
     // MARK: - Private Settings
     private struct Settings {
         static let minimumCellHeight                    = CGFloat(70)
@@ -295,7 +295,7 @@ import WordPressShared
         static let subjectNumberOfLinesWithSnippet      = 2
         static let snippetNumberOfLines                 = 2
         static let noticonRadius                        = CGFloat(10)
-        
+
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
         }
@@ -303,7 +303,7 @@ import WordPressShared
         static func subjectMaximumHeight(showsSnippet: Bool) -> CGFloat {
             return CGFloat(Settings.subjectNumberOfLines(showsSnippet)) * Style.subjectLineSize
         }
-        
+
         static func snippetMaximumHeight() -> CGFloat {
             return CGFloat(snippetNumberOfLines) * Style.snippetLineSize
         }
@@ -312,7 +312,7 @@ import WordPressShared
     // MARK: - Private Properties
     private var gravatarURL : NSURL?
     private var separatorsView = SeparatorsView()
-    
+
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!
     @IBOutlet private weak var noticonLabel:            UILabel!
@@ -321,7 +321,7 @@ import WordPressShared
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
-    
+
     // MARK: - Undo Overlay Optional
     @IBOutlet private var undoOverlayView:              NoteUndoOverlayView!
 }

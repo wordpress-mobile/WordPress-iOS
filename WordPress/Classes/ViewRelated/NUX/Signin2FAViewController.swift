@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-/// Provides a form and functionality for entering a two factor auth code and 
+/// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
 @objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
@@ -39,6 +39,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         configureSendCodeButtonText()
         configureStatusLabel("")
         configureSubmitButton(animating: false)
@@ -66,13 +67,24 @@ import WordPressShared
         unregisterForKeyboardEvents()
 
         // Multifactor codes are time sensitive, so clear the stored code if the
-        // user dismisses the view. They'll need to reentered it upon return. 
+        // user dismisses the view. They'll need to reentered it upon return.
         loginFields.multifactorCode = ""
         verificationCodeField.text = ""
     }
 
 
     // MARK: Configuration Methods
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+    }
 
 
     /// Configures the appearance of the button to request a 2fa code be sent via SMS.
@@ -154,7 +166,7 @@ import WordPressShared
             verificationCodeField.becomeFirstResponder()
         }
     }
-    
+
 
     // MARK: - Instance Methods
 
@@ -200,8 +212,8 @@ import WordPressShared
     @IBAction func handleSubmitForm() {
         validateForm()
     }
-    
-    
+
+
     @IBAction func handleSubmitButtonTapped(sender: UIButton) {
         validateForm()
     }

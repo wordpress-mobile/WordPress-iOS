@@ -23,7 +23,7 @@ class PagedViewController: UIViewController {
         self.currentIndex = initialIndex
         super.init(nibName: "PagedViewController", bundle: NSBundle(forClass: PagedViewController.self))
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
