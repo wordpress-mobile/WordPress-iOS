@@ -9,7 +9,7 @@
 
 @interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceResultsViewControllerDelegate>
 
-@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong, readonly) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) MenuItemSourceResultsViewController *sourceViewController;
 @property (nonatomic, strong, readonly) NSCache *sourceViewControllerCache;
@@ -19,35 +19,13 @@
 
 @implementation MenuItemSourceViewController
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
     
     _sourceViewControllerCache = [[NSCache alloc] init];
     
-    [self setupStackView];
     [self setupHeaderView];
-}
-
-- (void)setupStackView
-{
-    UIStackView *stackView = [[UIStackView alloc] init];
-    stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.distribution = UIStackViewDistributionFill;
-    stackView.alignment = UIStackViewAlignmentFill;
-    stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.spacing = 0;
-    [self.view addSubview:stackView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-                                              [stackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
-                                              ]];
-    
-    _stackView = stackView;
 }
 
 - (void)setupHeaderView
@@ -55,8 +33,7 @@
     MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
     headerView.delegate = self;
     
-    NSAssert(_stackView != nil, @"stackView is nil");
-    [_stackView addArrangedSubview:headerView];
+    [self.stackView addArrangedSubview:headerView];
     
     NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
     height.priority = 999;
