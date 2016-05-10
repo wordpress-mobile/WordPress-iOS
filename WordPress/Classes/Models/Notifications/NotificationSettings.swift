@@ -11,17 +11,17 @@ public class NotificationSettings
     /// Represents the Channel to which the current settings are associated.
     ///
     public let channel  : Channel
-    
+
     /// Contains an array of the available Notification Streams.
     ///
     public let streams  : [Stream]
-    
+
     /// Maps to the associated blog, if any.
     ///
     public let blog     : Blog?
-    
-    
-    
+
+
+
     /// Designated Initializer
     ///
     /// - Parameters:
@@ -34,21 +34,21 @@ public class NotificationSettings
         self.streams = streams
         self.blog    = blog
     }
-    
-    
+
+
     /// Returns the localized description for any given preference key
     ///
     public func localizedDescription(preferenceKey: String) -> String {
         return Keys.localizedDescriptionMap[preferenceKey] ?? String()
     }
-    
+
     /// Returns the details for a given preference key
     ///
     public func localizedDetails(preferenceKey: String) -> String? {
         return Keys.localizedDetailsMap[preferenceKey]
     }
-    
-    
+
+
     /// Returns an array of the sorted Preference Keys
     ///
     public func sortedPreferenceKeys(stream: Stream?) -> [String] {
@@ -62,7 +62,6 @@ public class NotificationSettings
             return wpcomPreferenceKeys
         }
     }
-    
 
     /// Represents a communication channel that may post notifications to the user.
     ///
@@ -70,8 +69,8 @@ public class NotificationSettings
         case Blog(blogId: Int)
         case Other
         case WordPressCom
-        
-        
+
+
         /// Returns the localized description of the current enum value
         ///
         func description() -> String {
@@ -85,15 +84,15 @@ public class NotificationSettings
             }
         }
     }
-    
-    
+
+
     /// Contains the Notification Settings collection for a specific communications stream.
     ///
     public class Stream {
         public var kind         : Kind
         public var preferences  : [String : Bool]?
-        
-        
+
+
         /// Designated Initializer
         ///
         /// - Parameters:
@@ -104,16 +103,16 @@ public class NotificationSettings
             self.kind           = Kind(rawValue: kind) ?? .Email
             self.preferences    = preferences
         }
-        
-        
+
+
         /// Enumerates all of the possible Stream Kinds
         ///
         public enum Kind : String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
-            
-            
+
+
             /// Returns the localized description of the current enum value
             ///
             func description() -> String {
@@ -126,17 +125,17 @@ public class NotificationSettings
                     return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
                 }
             }
-            
+
             static let allValues = [ Timeline, Email, Device ]
         }
     }
-    
+
     // MARK: - Private Properties
     private let blogPreferenceKeys      = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
     private let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
     private let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
     private let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
-    
+
     // MARK: - Setting Keys
     private struct Keys
     {
@@ -150,7 +149,7 @@ public class NotificationSettings
         static let marketing        = "marketing"
         static let research         = "research"
         static let community        = "community"
-        
+
         static let localizedDescriptionMap = [
             commentAdded    : NSLocalizedString("Comments on my site",
                                 comment: "Setting: indicates if New Comments will be notified"),
@@ -173,7 +172,7 @@ public class NotificationSettings
             community       : NSLocalizedString("Community",
                                 comment: "Setting: WordPress.com Community")
         ]
-        
+
         static let localizedDetailsMap = [
             marketing       : NSLocalizedString("Tips for getting the most out of WordPress.com.",
                                 comment: "WordPress.com Marketing Footer Text"),

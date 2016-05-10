@@ -108,5 +108,5 @@ class WordPressOAuthClientTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
-    
+
 }

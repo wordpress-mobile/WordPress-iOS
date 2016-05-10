@@ -32,13 +32,13 @@ import UIKit
 ///                     })
 ///             }
 ///         }
-///     
+///
 ///         func createErrorView() -> UIView {
 ///             // Create the error view
 ///         }
 ///         var errorView: UIView? = nil
 ///     }
-///     
+///
 /// Animator is heavily inspired by the final demo on WWDC 2014 Session 236
 /// [Building Interruptible and Responsive Interactions](https://developer.apple.com/videos/play/wwdc2014-236/).
 class Animator: NSObject {
