@@ -682,7 +682,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     NSString *alertTitle = NSLocalizedString(@"Are you sure you want to delete the menu?", @"Menus confirmation text for confirming if a user wants to delete a menu.");
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
                                                                              message:nil
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
     NSString *confirmTitle = NSLocalizedString(@"Delete Menu", @"Menus confirmation button for deleting a menu.");
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Menus cancel button for deleting a menu.");
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:confirmTitle
