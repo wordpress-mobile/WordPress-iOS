@@ -17,7 +17,7 @@ import WordPressShared
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
-    var immediateSignin = false;
+    var immediateSignin = false
 
     var restrictSigninToWPCom = false {
         didSet {
@@ -140,8 +140,8 @@ import WordPressShared
     }
 
 
-    /// Displays the specified text in the status label. 
-    /// 
+    /// Displays the specified text in the status label.
+    ///
     /// - Parameters:
     ///     - message: The text to display in the label.
     ///
@@ -171,7 +171,7 @@ import WordPressShared
     func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
         passwordField.enabled = !loading
-        
+
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }
@@ -255,7 +255,7 @@ import WordPressShared
 
 
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }

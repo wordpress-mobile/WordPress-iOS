@@ -4,13 +4,13 @@ import StoreKit
 @objc
 protocol Product {
     var localizedDescription: String { get }
-    
+
     var localizedTitle: String { get }
-    
+
     var price: NSDecimalNumber { get }
-    
+
     var priceLocale: NSLocale { get }
-    
+
     var productIdentifier: String { get }
 }
 

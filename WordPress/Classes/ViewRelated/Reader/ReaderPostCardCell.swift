@@ -322,7 +322,7 @@ import WordPressShared
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
                 } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                    // private wpcom image needs special handling. 
+                    // private wpcom image needs special handling.
                     let request = requestForURL(url)
                     featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
 
@@ -417,7 +417,7 @@ import WordPressShared
 
     private func configureWordCount() {
         // Always reset the attributed string.
-        wordCountLabel.attributedText = nil;
+        wordCountLabel.attributedText = nil
 
         // For now, if showing the attribution view do not show the word count label
         if attributionHeightConstraint.constant > 0 {
@@ -552,7 +552,7 @@ import WordPressShared
         if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
             actionButtonViewHeightConstraint.constant = 0
         } else {
-            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant;
+            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant
         }
     }
 
@@ -568,7 +568,7 @@ import WordPressShared
     }
 
 
-    // MARK: - 
+    // MARK: -
 
     func notifyDelegateHeaderWasTapped() {
         if blogNameButtonIsEnabled {

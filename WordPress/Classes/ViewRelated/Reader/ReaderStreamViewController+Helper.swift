@@ -56,7 +56,7 @@ extension ReaderStreamViewController
 
     /**
     Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
-    
+
     @param topic A ReaderTopic.
     @return An NoResultsResponse instance.
     */
