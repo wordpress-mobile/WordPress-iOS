@@ -9,7 +9,7 @@ class AccountSettingsRemoteTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         // It should be already empty if we did memory management right
         // But let's be safe

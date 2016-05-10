@@ -21,8 +21,8 @@ extension WPStyleGuide
 
     public class func commentDTCoreTextOptions() -> NSDictionary {
         let defaultStyles = "blockquote { width: 100%; display: block; font-style: italic; }"
-        let cssStylesheet:DTCSSStylesheet = DTCSSStylesheet(styleBlock: defaultStyles);
-        let fontSize = UIDevice.isPad() ? 16.0 : 14.0;
+        let cssStylesheet:DTCSSStylesheet = DTCSSStylesheet(styleBlock: defaultStyles)
+        let fontSize = UIDevice.isPad() ? 16.0 : 14.0
         return [
             DTDefaultFontFamily             : WPRichTextDefaultFontFamily,
             DTDefaultFontName               : WPRichTextDefaultFontName,
