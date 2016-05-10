@@ -51,6 +51,7 @@ NSString * const PostRESTKeySlug = @"slug";
 NSString * const PostRESTKeyStatus = @"status";
 NSString * const PostRESTKeyTitle = @"title";
 NSString * const PostRESTKeyTags = @"tags";
+NSString * const POSTRESTKeyTagDisplayName = @"display_name";
 NSString * const PostRESTKeyURL = @"URL";
 NSString * const PostRESTKeyWordCount = @"word_count";
 
@@ -95,9 +96,9 @@ static const NSInteger MinutesToReadThreshold = 2;
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"read/sites/%d/posts/%d/?meta=site", siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
     
     [self.api GET:requestUrl
            parameters:nil
@@ -323,6 +324,7 @@ static const NSInteger MinutesToReadThreshold = 2;
     if (remoteTags) {
         NSInteger highestCount = 0;
         NSInteger secondHighestCount = 0;
+        NSString *tagTitle;
         for (NSDictionary *tag in remoteTags) {
             NSInteger count = [[tag numberForKey:PostRESTKeyPostCount] integerValue];
             if (count > highestCount) {
@@ -330,12 +332,14 @@ static const NSInteger MinutesToReadThreshold = 2;
                 secondaryTagSlug = primaryTagSlug;
                 secondHighestCount = highestCount;
 
-                primaryTag = [tag stringForKey:PostRESTKeyName] ?: @"";
+                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayName] ?: [tag stringForKey:PostRESTKeyName];
+                primaryTag = tagTitle ?: @"";
                 primaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
                 highestCount = count;
 
             } else if (count > secondHighestCount) {
-                secondaryTag = [tag stringForKey:PostRESTKeyName] ?: @"";
+                tagTitle = [tag stringForKey:POSTRESTKeyTagDisplayName] ?: [tag stringForKey:PostRESTKeyName];
+                secondaryTag = tagTitle ?: @"";
                 secondaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
                 secondHighestCount = count;
 

@@ -2,7 +2,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "JetpackServiceRemote.h"
-#import "WordPressComOAuthClient.h"
+#import "WordPress-Swift.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "Blog.h"

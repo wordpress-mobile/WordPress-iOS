@@ -10,8 +10,9 @@ import WordPressShared
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
     @IBOutlet weak var submitButton: NUXSubmitButton!
+    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var selfHostedButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var selfHostedSigninButton: UIButton!
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
@@ -54,6 +55,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         configureForWPComOnlyIfNeeded()
@@ -97,7 +99,27 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedSigninButton.hidden = restrictSigninToWPCom
+        selfHostedButton.hidden = restrictSigninToWPCom
+    }
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        usernameField.placeholder = NSLocalizedString("Email or username", comment: "Username placeholder")
+        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Sign In", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Normal)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Highlighted)
+
+        let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "Title of a button. ")
+        selfHostedButton.setTitle(selfHostedTitle, forState: .Normal)
+        selfHostedButton.setTitle(selfHostedTitle, forState: .Highlighted)
     }
 
 

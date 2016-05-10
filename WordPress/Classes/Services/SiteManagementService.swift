@@ -24,7 +24,9 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.deleteSite(blog.dotComID,
             success: {
                 self.managedObjectContext.performBlock {
@@ -51,7 +53,9 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.exportContent(blog.dotComID,
             success: {
                 success?()
@@ -69,7 +73,9 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func getActivePurchasesForBlog(blog: Blog, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.getActivePurchases(blog.dotComID,
             success: { purchases in
                 success?(purchases)
@@ -88,7 +94,11 @@ public class SiteManagementService : LocalCoreDataService
     ///
     /// - Returns: Remote service for site management
     ///
-    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
-        return SiteManagementServiceRemote(api: blog.restApi())
+    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote? {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        return SiteManagementServiceRemote(api: api)
     }
 }

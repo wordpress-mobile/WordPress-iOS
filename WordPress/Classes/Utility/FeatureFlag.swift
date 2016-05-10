@@ -20,9 +20,7 @@ enum FeatureFlag: Int {
         case .Plans:
             return build(.Debug)
         case .MyProfile, .AccountSettings:
-            // Disabled until we figure out this:
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/4888
-            return build(.Debug)
+            return true
         }
     }
 }

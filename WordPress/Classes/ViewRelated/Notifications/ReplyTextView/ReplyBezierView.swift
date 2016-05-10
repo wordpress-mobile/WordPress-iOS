@@ -64,4 +64,3 @@ public class ReplyBezierView : UIView
         bezier.fill()
     }
 }
-
