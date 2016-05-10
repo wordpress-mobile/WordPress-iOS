@@ -7,7 +7,7 @@ extension NSAttributedString {
     /// This method will embed a collection of assets, in the specified NSRange's.
     /// Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
     ///
-    /// - Parameter embeds: A colleciton of embeds. NSRange > UIImage.
+    /// - Parameter embeds: A collection of embeds. NSRange > UIImage.
     ///
     /// - Returns: An attributed string with all of the embeds specified, inlined.
     ///
@@ -45,7 +45,7 @@ extension NSAttributedString {
         return theString
     }
 
-    /// This helper method return a new NSAttributedString instance, with all of the the trailing newLines
+    /// This helper method returns a new NSAttributedString instance, with all of the the trailing newLines
     /// characters removed.
     ///
     public func trimTrailingNewlines() -> NSMutableAttributedString {
