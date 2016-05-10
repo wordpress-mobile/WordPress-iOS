@@ -18,6 +18,8 @@
 {
     [super awakeFromNib];
     
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
+
     _typeViews = [NSMutableArray arrayWithCapacity:5];
     
     self.view.contentMode = UIViewContentModeRedraw;
