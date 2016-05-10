@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressComAnalytics
 import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
@@ -185,6 +186,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Actions
 
     private func presentGravatarPicker() {
+        WPAppAnalytics.track(.GravatarTapped)
+        
         let pickerViewController = GravatarPickerViewController()
         pickerViewController.onCompletion = { [weak self] image in
             if let updatedGravatarImage = image {
@@ -298,6 +301,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Gravatar Helpers
 
     private func uploadGravatarImage(newGravatar: UIImage) {
+        WPAppAnalytics.track(.GravatarUploaded)
+        
         gravatarUploadInProgress = true
         headerView.overrideGravatarImage(newGravatar)
 
