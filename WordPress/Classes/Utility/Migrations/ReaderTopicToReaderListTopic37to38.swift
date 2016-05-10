@@ -27,7 +27,7 @@ class ReaderTopicToReaderListTopic37to38: NSEntityMigrationPolicy {
         // Associate the source and destination instances
         manager.associateSourceInstance(sInstance, withDestinationInstance: newTopic, forEntityMapping: mapping)
     }
-    
+
     override func createRelationshipsForDestinationInstance(dInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // preserve no posts
         return

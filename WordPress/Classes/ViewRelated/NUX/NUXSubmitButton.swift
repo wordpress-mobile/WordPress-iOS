@@ -3,11 +3,18 @@ import WordPressShared
 
 let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
-/// A stylized button used by NUX controllers. The button presents white text 
+/// A stylized button used by NUX controllers. The button presents white text
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
 @objc class NUXSubmitButton : UIButton
 {
+    var isAnimating: Bool {
+        get {
+            return activityIndicator.isAnimating()
+        }
+    }
+
+
     let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
         indicator.hidesWhenStopped = true
@@ -103,7 +110,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
 
     /// Toggles the visibility of the activity indicator.  When visible the button
-    /// title is hidden. 
+    /// title is hidden.
     ///
     /// - Parameters:
     ///     - show: True to show the spinner. False hides it.
