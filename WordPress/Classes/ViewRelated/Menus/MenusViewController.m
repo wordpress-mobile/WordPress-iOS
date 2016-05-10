@@ -796,7 +796,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     {
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.")
-                                                         style:UIAlertActionStyleDefault
+                                                         style:UIAlertActionStyleDestructive
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                            if (confirmationBlock) {
                                                                confirmationBlock();
@@ -825,7 +825,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     {
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.")
-                                                         style:UIAlertActionStyleDefault
+                                                         style:UIAlertActionStyleDestructive
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                            if (confirmationBlock) {
                                                                confirmationBlock();
@@ -854,7 +854,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     {
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.")
-                                                         style:UIAlertActionStyleDefault
+                                                         style:UIAlertActionStyleDestructive
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                            if (confirmationBlock) {
                                                                confirmationBlock();
