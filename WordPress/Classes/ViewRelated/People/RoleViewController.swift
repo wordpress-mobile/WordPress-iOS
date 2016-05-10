@@ -5,33 +5,33 @@ import WordPressShared
 /// Displays a Person Role Picker
 ///
 class RoleViewController : UITableViewController {
-    
+
     /// Typealiases
     ///
     typealias Role = Person.Role
-    
+
     /// Person's Blog
     ///
     var blog : Blog!
-    
+
     /// Currently Selected Role
     ///
     var selectedRole : Role!
-    
+
     /// Closure to be executed whenever the selected role changes.
     ///
     var onChange : (Role -> Void)?
-    
+
     /// Private collection of roles, available for the current blog.
     ///
     private var roles = [Role]()
-    
+
     /// Activity Spinner, to be animated during Backend Interaction
     ///
     private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
 
-    
-    
+
+
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,23 +40,23 @@ class RoleViewController : UITableViewController {
         setupActivityIndicator()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refreshAvailableRoles()
     }
-    
-    
+
+
     // MARK: - Private Helpers
     private func setupActivityIndicator() {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(activityIndicator)
         view.pinSubviewAtCenter(activityIndicator)
     }
-    
+
     private func refreshAvailableRoles() {
         activityIndicator.startAnimating()
-        
+
         let service = PeopleService(blog: blog)
         service?.loadAvailableRoles({ roles in
             self.roles = roles
@@ -66,8 +66,8 @@ class RoleViewController : UITableViewController {
             self.activityIndicator.stopAnimating()
         })
     }
-    
-    
+
+
     // MARK: - UITableView Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return numberOfSections

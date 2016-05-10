@@ -5,13 +5,13 @@ import Foundation
 ///
 struct PeopleService {
     typealias Role = Person.Role
-    
+
     let remote: PeopleRemote
     let siteID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
 
-    
+
     /// Designated Initializer.
     ///
     /// -   Parameters:
@@ -26,7 +26,7 @@ struct PeopleService {
         siteID = blog.dotComID as Int
     }
 
-    
+
     /// Refreshes the team of Users associated to a blog.
     ///
     /// -   Parameters:
@@ -58,34 +58,34 @@ struct PeopleService {
         guard let managedPerson = managedPersonWithID(person.ID) else {
             return person
         }
-        
+
         // OP Reversal
         let pristineRole = managedPerson.role
-        
+
         // Hit the Backend
         remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
-            
+
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
-            
+
             guard let managedPerson = self.managedPersonWithID(person.ID) else {
                 DDLogSwift.logError("### Person with ID \(person.ID) deleted before update")
                 return
             }
-            
+
             managedPerson.role = pristineRole
             ContextManager.sharedInstance().saveContext(self.context)
-            
+
             let reloadedPerson = Person(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
         })
-        
+
         // Pre-emptively update the role
         managedPerson.role = role.description
         ContextManager.sharedInstance().saveContext(context)
-        
+
         return Person(managedPerson: managedPerson)
     }
-    
+
     /// Retrieves the collection of Roles, available for a given site
     ///
     /// -   Parameters:
