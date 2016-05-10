@@ -1,37 +1,30 @@
 import Foundation
 
 
-/**
-*  @class           RemoteNotificationSettings
-*  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure it
-*                   in a meaningful way. Notification Settings come in three different flavors:
-*
-*                   -   "Our Own" Blog Settings
-*                   -   "Third Party" Site Settings
-*                   -   WordPress.com Settings
-*
-*                   Each one of the possible channels may post notifications via different streams: Email,
-*                   Push Notifications, and Timeline.
-*/
-
+/// The goal of this class is to parse Notification Settings data from the backend, and structure it in a
+/// meaningful way. Notification Settings come in three different flavors:
+///
+///     - "Our Own" Blog Settings
+///     - "Third Party" Site Settings
+///     - WordPress.com Settings
+///
+/// Each one of the possible channels may post notifications via different streams:
+/// Email, Push Notifications, and Timeline.
+///
 public class RemoteNotificationSettings
 {
-    /**
-    *  @details Represents the Channel to which the current settings are associated.
-    */
+    /// Represents the Channel to which the current settings are associated.
+    ///
     public let channel : Channel
 
-    /**
-    *  @details Contains an array of the available Notification Streams.
-    */
+    /// Contains an array of the available Notification Streams.
+    ///
     public let streams : [Stream]
 
 
 
-    /**
-    *  @enum        Channel
-    *  @brief       Represents a communication channel that may post notifications to the user.
-    */
+    /// Represents a communication channel that may post notifications to the user.
+    ///
     public enum Channel : Equatable {
         case Blog(blogId: Int)
         case Other
@@ -39,19 +32,15 @@ public class RemoteNotificationSettings
     }
 
 
-    /**
-    *  @class       Stream
-    *  @brief       Contains the Notification Settings for a specific communications stream.
-    */
+    /// Contains the Notification Settings for a specific communications stream.
+    ///
     public class Stream {
         public var kind         : Kind
         public var preferences  : [String : Bool]?
 
 
-        /**
-        *  @enum    Stream.Kind
-        *  @brief   Enumerates all of the possible Stream Kinds
-        */
+        /// Enumerates all of the possible Stream Kinds
+        ///
         public enum Kind : String {
             case Timeline       = "timeline"
             case Email          = "email"
@@ -61,22 +50,24 @@ public class RemoteNotificationSettings
         }
 
 
-        /**
-        *  @details Private Designated Initializer
-        *  @param   kind            The Kind of stream we're currently dealing with
-        *  @param   preferences     Raw remote preferences, retrieved from the backend
-        */
+        /// Private Designated Initializer
+        ///
+        /// - Parameters:
+        ///     - kind: The Kind of stream we're currently dealing with
+        ///     - preferences: Raw remote preferences, retrieved from the backend
+        ///
         private init(kind: Kind, preferences: NSDictionary?) {
             self.kind           = kind
             self.preferences    = filterNonBooleanEntries(preferences)
         }
 
 
-        /**
-        *  @brief   Helper method that will filter out non boolean entries, and return a native Swift collection.
-        *  @param   dictionary      NextStep Dictionary containing raw values
-        *  @return                  A native Swift dictionary, containing only the Boolean entries
-        */
+        /// Helper method that will filter out non boolean entries, and return a native Swift collection.
+        ///
+        /// - Parameter dictionary: NextStep Dictionary containing raw values
+        ///
+        /// - Returns: A native Swift dictionary, containing only the Boolean entries
+        ///
         private func filterNonBooleanEntries(dictionary: NSDictionary?) -> [String : Bool] {
             var filtered = [String : Bool]()
             if dictionary == nil {
@@ -98,11 +89,12 @@ public class RemoteNotificationSettings
         }
 
 
-        /**
-        *  @brief   Parser method that will convert a raw dictionary of stream settings into Swift Native objects.
-        *  @param   dictionary      NextStep Dictionary containing raw Stream Preferences
-        *  @return                  A native Swift array containing Stream entities
-        */
+        /// Parser method that will convert a raw dictionary of stream settings into Swift Native objects.
+        ///
+        /// - Parameter dictionary: NextStep Dictionary containing raw Stream Preferences
+        ///
+        /// - Returns: A native Swift array containing Stream entities
+        ///
         private static func fromDictionary(dictionary: NSDictionary?) -> [Stream] {
             var parsed = [Stream]()
 
@@ -117,21 +109,22 @@ public class RemoteNotificationSettings
     }
 
 
-    /**
-    *  @details     Private Designated Initializer
-    *  @param       channel         The communications channel that uses the current settings
-    *  @param       settings        Raw dictionary containing the remote settings response
-    */
+    /// Private Designated Initializer
+    ///
+    /// - Parameters:
+    ///     - channel: The communications channel that uses the current settings
+    ///     - settings: Raw dictionary containing the remote settings response
+    ///
     private init(channel: Channel, settings: NSDictionary?) {
         self.channel = channel
         self.streams = Stream.fromDictionary(settings)
     }
 
 
-    /**
-    *  @details     Private Designated Initializer
-    *  @param       wpcomSettings   Dictionary containing the collection of WordPress.com Settings
-    */
+    /// Private Designated Initializer
+    ///
+    /// - Parameter wpcomSettings: Dictionary containing the collection of WordPress.com Settings
+    ///
     private init(wpcomSettings: NSDictionary?) {
         // WordPress.com is a special scenario: It contains just one (unspecified) stream: Email
         self.channel = Channel.WordPressCom
@@ -139,32 +132,33 @@ public class RemoteNotificationSettings
     }
 
 
-    /**
-    *  @details     Private Convenience Initializer
-    *  @param       blogSettings    Dictionary containing the collection of settings for a single blog
-    */
+    /// Private Convenience Initializer
+    ///
+    /// - Parameter blogSettings: Dictionary containing the collection of settings for a single blog
+    ///
     private convenience init(blogSettings: NSDictionary?) {
         let blogId = blogSettings?["blog_id"] as? Int ?? Int.max
         self.init(channel: Channel.Blog(blogId: blogId), settings: blogSettings)
     }
 
 
-    /**
-    *  @details     Private Convenience Initializer
-    *  @param       otherSettings   Dictionary containing the collection of "Other Settings"
-    */
+    /// Private Convenience Initializer
+    ///
+    /// - Parameter otherSettings: Dictionary containing the collection of "Other Settings"
+    ///
     private convenience init(otherSettings: NSDictionary?) {
         self.init(channel: Channel.Other, settings: otherSettings)
     }
 
 
 
-    /**
-    *  @details     Static Helper that will parse all of the Remote Settings, into a collection of
-    *               Swift Native RemoteNotificationSettings objects
-    *  @param       dictionary      Dictionary containing the remote Settings response
-    *  @returns                     An array of RemoteNotificationSettings objects
-    */
+    /// Static Helper that will parse all of the Remote Settings, into a collection of Swift Native
+    /// RemoteNotificationSettings objects.
+    ///
+    /// - Parameter dictionary: Dictionary containing the remote Settings response
+    ///
+    /// - Returns: An array of RemoteNotificationSettings objects
+    ///
     public static func fromDictionary(dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
         var parsed = [RemoteNotificationSettings]()
 
@@ -187,14 +181,14 @@ public class RemoteNotificationSettings
 
 
 
-/**
-*  @brief           RemoteNotificationSettings.Channel Equatable Implementation
-*  @details         Swift requires this method to be implemented globally. Sorry about that!
-*
-*  @param           lhs         Left Hand Side Channel
-*  @param           rhs         Right Hand Side Channel
-*  @returns                     A boolean indicating whether two channels are equal. Or not!
-*/
+/// Swift requires this method to be implemented globally. Sorry about that!
+///
+/// - Parameters:
+///     - lhs: Left Hand Side Channel
+///     - rhs: Right Hand Side Channel
+///
+/// - Returns: A boolean indicating whether two channels are equal. Or not!
+///
 public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
 {
     switch (lhs, rhs) {

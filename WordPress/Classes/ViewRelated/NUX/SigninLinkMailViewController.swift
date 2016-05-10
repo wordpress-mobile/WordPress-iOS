@@ -12,8 +12,7 @@ class SigninLinkMailViewController : NUXAbstractViewController
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninLinkMailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
