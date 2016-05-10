@@ -5,9 +5,9 @@ import WordPressShared
 /// This vc is the entry point for the normal sign in flow.
 ///
 /// - Note: The sign in flow should be managed b ya NUXNavigationController for
-/// appearance reasons. 
+/// appearance reasons.
 /// By convention the NUXNavigationController should be presented
-/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure 
+/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
 @objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
@@ -27,8 +27,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: Optional. A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields? = nil) -> SigninEmailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -138,7 +137,7 @@ import WordPressShared
         UIView.animateWithDuration(0.2,
                                    delay: 0.0,
                                    options: .BeginFromCurrentState,
-                                   animations: { 
+                                   animations: {
                                         self.safariPasswordButton.hidden = !self.didFindSafariSharedCredentials
                                     },
                                    completion: nil)
@@ -162,8 +161,7 @@ import WordPressShared
 
     /// Sets the view's state to loading or not loading.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         emailTextField.enabled = !loading
@@ -200,7 +198,7 @@ import WordPressShared
     /// Handles Safari shared credentials if any where found.
     ///
     /// - Parameters:
-    ///     - found: True if credentails were found. 
+    ///     - found: True if credentails were found.
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
@@ -231,7 +229,7 @@ import WordPressShared
     ///
     /// - Parameters:
     ///     - immediateSignin: True if the newly loaded controller should immedately attempt
-    /// to authenticate the user with the available credentails.  Default is `false`.
+    ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
@@ -242,12 +240,12 @@ import WordPressShared
     /// Displays the self-hosted sign in form.
     ///
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    /// Proceeds along the "magic link" sign-in flow, showing a form that let's 
+    /// Proceeds along the "magic link" sign-in flow, showing a form that let's
     /// the user request a magic link.
     ///
     func requestLink() {
@@ -256,7 +254,7 @@ import WordPressShared
     }
 
 
-    /// Validates what is entered in the various form fields and, if valid, 
+    /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
     func validateForm() {
@@ -284,7 +282,7 @@ import WordPressShared
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
-                    // No matching email address found so treat this as a 
+                    // No matching email address found so treat this as a
                     // self-hosted sign in.
                     self?.signinToSelfHostedSite()
                 } else {
@@ -320,7 +318,7 @@ import WordPressShared
             self.signinWithUsernamePassword(true)
         }
     }
-    
+
 
     @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
         signinToSelfHostedSite()

@@ -49,8 +49,8 @@ public class ReaderPostMenu
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                let sharingController = PostSharingController();
-                
+                let sharingController = PostSharingController()
+
                 sharingController.shareReaderPost(post, fromView: anchorView, inViewController: viewController)
         })
 

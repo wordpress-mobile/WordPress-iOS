@@ -14,8 +14,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninLinkRequestViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -104,7 +103,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     }
 
 
-    /// Displays the next step in the magic links sign in flow. 
+    /// Displays the next step in the magic links sign in flow.
     ///
     func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.LoginMagicLinkRequested)
