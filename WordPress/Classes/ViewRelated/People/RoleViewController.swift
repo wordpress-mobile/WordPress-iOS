@@ -5,29 +5,76 @@ import WordPressShared
 /// Displays a Person Role Picker
 ///
 class RoleViewController : UITableViewController {
-
+    
+    /// Typealiases
+    ///
     typealias Role = Person.Role
+    
+    /// Person's Blog
+    ///
+    var blog : Blog!
+    
+    /// Currently Selected Role
+    ///
+    var selectedRole : Role!
+    
+    /// Closure to be executed whenever the selected role changes.
+    ///
+    var onChange : (Role -> Void)?
+    
+    /// Private collection of roles, available for the current blog.
+    ///
+    private var roles = [Role]()
+    
+    /// Activity Spinner, to be animated during Backend Interaction
+    ///
+    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
 
-    var role        : Role!
-    var onChange    : ((role: Role) -> Void)?
-
-
+    
+    
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Role", comment: "User Roles Title")
+        setupActivityIndicator()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
-
-
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshAvailableRoles()
+    }
+    
+    
+    // MARK: - Private Helpers
+    private func setupActivityIndicator() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(activityIndicator)
+        view.pinSubviewAtCenter(activityIndicator)
+    }
+    
+    private func refreshAvailableRoles() {
+        activityIndicator.startAnimating()
+        
+        let service = PeopleService(blog: blog)
+        service?.loadAvailableRoles({ roles in
+            self.roles = roles
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+        }, failure: { error in
+            self.activityIndicator.stopAnimating()
+        })
+    }
+    
+    
     // MARK: - UITableView Methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return numberOfSections
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Role.roles.count
+        return roles.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -35,7 +82,7 @@ class RoleViewController : UITableViewController {
         let roleForCurrentRow = roleAtIndexPath(indexPath)
 
         cell.textLabel?.text = roleForCurrentRow.localizedName()
-        cell.accessoryType = (roleForCurrentRow == role) ? .Checkmark : .None
+        cell.accessoryType = (roleForCurrentRow == selectedRole) ? .Checkmark : .None
 
         WPStyleGuide.configureTableViewCell(cell)
 
@@ -46,23 +93,23 @@ class RoleViewController : UITableViewController {
         tableView.deselectSelectedRowWithAnimationAfterDelay(true)
 
         let roleForSelectedRow = roleAtIndexPath(indexPath)
-        guard role != roleForSelectedRow else {
+        guard selectedRole != roleForSelectedRow else {
             return
         }
 
         // Refresh Interface
-        role = roleForSelectedRow
+        selectedRole = roleForSelectedRow
         tableView.reloadDataPreservingSelection()
 
         // Callback
-        onChange?(role: role)
+        onChange?(roleForSelectedRow)
         navigationController?.popViewControllerAnimated(true)
     }
 
 
     // MARK: - Private Methods
     private func roleAtIndexPath(indexPath: NSIndexPath) -> Role {
-        return Role.roles[indexPath.row]
+        return roles[indexPath.row]
     }
 
 
