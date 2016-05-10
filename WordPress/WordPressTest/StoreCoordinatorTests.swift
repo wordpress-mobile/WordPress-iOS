@@ -92,7 +92,7 @@ class StoreCoordinatorTests: XCTestCase {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
  
-        let coordinator = StoreCoordinator(store: store, keyValueStorage: KeyValueDatabase.InMemoryDatabase())
+        let coordinator = StoreCoordinator(store: store, database: EphemeralKeyValueDatabase())
         
         if let pending = pending,
             let product = TestPlans.allProducts.filter({ $0.productIdentifier == pending.productID }).first {
