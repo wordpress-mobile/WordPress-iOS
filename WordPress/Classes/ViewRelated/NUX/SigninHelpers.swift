@@ -40,11 +40,11 @@ import WordPressComAnalytics
         // The way the magic link flow works the `SigninLinkMailViewController`,
         // or some other view controller, might still be presented when the app
         // is resumed by tapping on the auth link.
-        // We need to do a little work to present the SigninLinkAuth controller 
+        // We need to do a little work to present the SigninLinkAuth controller
         // from the right place.
         // - If the rootViewController is not presenting another vc then just
         // present the auth controller.
-        // - If the rootViewController is presenting another NUX vc, dismiss the 
+        // - If the rootViewController is presenting another NUX vc, dismiss the
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
@@ -64,8 +64,7 @@ import WordPressComAnalytics
 
     /// Determine the proper UIViewController to use as a presenter for the auth controller.
     ///
-    /// - Parameters: 
-    ///     - controller: A UIViewController. By convention this should be the app's rootViewController
+    /// - Parameter controller: A UIViewController. By convention this should be the app's rootViewController
     ///
     /// - Return: The view controller to use as the presenter.
     ///
@@ -80,8 +79,7 @@ import WordPressComAnalytics
 
     /// Check if the specified controller was presented from the application's root vc.
     ///
-    /// - Parameters:
-    ///     - controller: A UIViewController
+    /// - Parameter controller: A UIViewController
     ///
     /// - Return: True if presented from the root vc.
     ///
@@ -95,8 +93,7 @@ import WordPressComAnalytics
 
     /// The base site URL path derived from `loginFields.siteUrl`
     ///
-    /// - Parameters:
-    ///     - string: The source URL as a string.
+    /// - Parameter string: The source URL as a string.
     ///
     /// - Returns: The base URL or an empty string.
     ///
@@ -130,9 +127,8 @@ import WordPressComAnalytics
 
 
     /// Checks if the passed string matches a reserved username.
-    /// 
-    /// - Parameters:
-    ///     - username: The username to test.
+    ///
+    /// - Parameter username: The username to test.
     ///
     class func isUsernameReserved(username: String) -> Bool {
         let name = username.lowercaseString.trim()
@@ -142,8 +138,7 @@ import WordPressComAnalytics
 
     /// Checks whether credentials have been populated.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
+    /// - Parameter loginFields: An instance of LoginFields to check
     ///
     /// - Returns: True if credentails have been provided. False otherwise.
     ///
@@ -156,8 +151,7 @@ import WordPressComAnalytics
 
     /// Simple validation check to confirm LoginFields has a valid site URL.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
+    /// - Parameter loginFields: An instance of LoginFields to check
     ///
     /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
     ///
@@ -179,8 +173,7 @@ import WordPressComAnalytics
 
     /// Saves the specified email address in NSUserDefaults
     ///
-    /// - Parameters:
-    ///     - email: The email address to save.
+    /// - Parameter email: The email address to save.
     ///
     class func saveEmailAddressForTokenAuth(email: String) {
         NSUserDefaults.standardUserDefaults().setObject(email, forKey: AuthenticationEmailKey)
@@ -206,11 +199,10 @@ import WordPressComAnalytics
     // MARK: - Other Helpers
 
 
-    /// Opens Safari to display the forgot password page for a wpcom or self-hosted 
+    /// Opens Safari to display the forgot password page for a wpcom or self-hosted
     /// based on the passed LoginFields instance.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance.
+    /// - Parameter loginFields: A LoginFields instance.
     ///
     class func openForgotPasswordURL(loginFields: LoginFields) {
         let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
@@ -225,8 +217,7 @@ import WordPressComAnalytics
 
     /// Request credentails from 1Password (if supported)
     ///
-    /// - Parameters:
-    ///     - sender: A UIView. Typically the button the user tapped on.
+    /// - Parameter sender: A UIView. Typically the button the user tapped on.
     ///
     class func fetchOnePasswordCredentials(controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: ((loginFields: LoginFields) -> Void)) {
 
@@ -259,7 +250,7 @@ import WordPressComAnalytics
 
             success(loginFields: loginFields)
         })
-        
+
     }
 
 
@@ -272,13 +263,12 @@ import WordPressComAnalytics
 
     /// Update safari stored credentials.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields
+    /// - Parameter loginFields: An instance of LoginFields
     ///
     class func updateSafariCredentialsIfNeeded(loginFields: LoginFields) {
         // Paranioa. Don't try and update credentials for self-hosted.
         if !loginFields.userIsDotCom {
-            return;
+            return
         }
 
         // If the user changed screen names, don't try and update/create a new shared web credential.
@@ -299,7 +289,7 @@ import WordPressComAnalytics
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
                 let err = error! as NSError
-                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)");
+                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)")
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -311,8 +301,7 @@ import WordPressComAnalytics
 
     /// Request shared safari credentials if they exist.
     ///
-    /// - Parameters:
-    ///     - completion: A completion block.
+    /// - Parameter completion: A completion block.
     ///
     class func requestSharedWebCredentials(completion: SharedWebCredentialsCallback) {
         SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in

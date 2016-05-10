@@ -62,7 +62,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         return planFeatures
     }
 
-    /// - returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
+    /// - Returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
     private func cachedPlanFeaturesWithDate() -> (PlanFeatures, NSDate)? {
         guard let cacheFileURL = cacheFileURL,
             let path = cacheFileURL.path,

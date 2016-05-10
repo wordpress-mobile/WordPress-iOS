@@ -1,14 +1,12 @@
 import Foundation
 import WordPressShared
 
-/**
-    A WPStyleGuide extension with styles and methods specific to the
-    Reader feature.
-*/
+/// A WPStyleGuide extension with styles and methods specific to the Reader feature.
+///
 extension WPStyleGuide
 {
 
-    // MARK: Original Post/Site Attribution Styles. 
+    // MARK: Original Post/Site Attribution Styles.
 
     public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()
