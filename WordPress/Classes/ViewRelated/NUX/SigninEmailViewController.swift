@@ -5,9 +5,9 @@ import WordPressShared
 /// This vc is the entry point for the normal sign in flow.
 ///
 /// - Note: The sign in flow should be managed b ya NUXNavigationController for
-/// appearance reasons. 
+/// appearance reasons.
 /// By convention the NUXNavigationController should be presented
-/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure 
+/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
 @objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
@@ -138,7 +138,7 @@ import WordPressShared
         UIView.animateWithDuration(0.2,
                                    delay: 0.0,
                                    options: .BeginFromCurrentState,
-                                   animations: { 
+                                   animations: {
                                         self.safariPasswordButton.hidden = !self.didFindSafariSharedCredentials
                                     },
                                    completion: nil)
@@ -200,7 +200,7 @@ import WordPressShared
     /// Handles Safari shared credentials if any where found.
     ///
     /// - Parameters:
-    ///     - found: True if credentails were found. 
+    ///     - found: True if credentails were found.
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
@@ -242,12 +242,12 @@ import WordPressShared
     /// Displays the self-hosted sign in form.
     ///
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    /// Proceeds along the "magic link" sign-in flow, showing a form that let's 
+    /// Proceeds along the "magic link" sign-in flow, showing a form that let's
     /// the user request a magic link.
     ///
     func requestLink() {
@@ -256,7 +256,7 @@ import WordPressShared
     }
 
 
-    /// Validates what is entered in the various form fields and, if valid, 
+    /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
     func validateForm() {
@@ -284,7 +284,7 @@ import WordPressShared
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
-                    // No matching email address found so treat this as a 
+                    // No matching email address found so treat this as a
                     // self-hosted sign in.
                     self?.signinToSelfHostedSite()
                 } else {
@@ -320,7 +320,7 @@ import WordPressShared
             self.signinWithUsernamePassword(true)
         }
     }
-    
+
 
     @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
         signinToSelfHostedSite()

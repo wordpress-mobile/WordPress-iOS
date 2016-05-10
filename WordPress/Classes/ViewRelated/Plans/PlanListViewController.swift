@@ -12,37 +12,37 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             updateFooterView()
         }
     }
-    
+
     func updateFooterView() {
         let footerViewModel = viewModel.tableFooterViewModelWithPresenter(self)
-        
+
         tableView.tableFooterView = tableFooterViewWithViewModel(footerViewModel)
     }
-    
+
     private var footerTapAction: (() -> Void)?
     private func tableFooterViewWithViewModel(viewModel: (title: NSAttributedString, action: () -> Void)?) -> UIView? {
         guard let viewModel = viewModel else { return nil }
-        
+
         let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
-        
+
         let title = viewModel.title
         footerView.attributedTitle = title
         footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
-        
+
         // Don't add a recognizer if we already have one
         let recognizers = footerView.gestureRecognizers
         if recognizers == nil || recognizers?.count == 0 {
             footerTapAction = viewModel.action
-            
+
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
             footerView.addGestureRecognizer(tapRecognizer)
         }
-        
+
         return footerView
     }
-    
+
     private let noResultsView = WPNoResultsView()
-    
+
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
@@ -50,7 +50,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             hideNoResults()
         }
     }
-    
+
     func showNoResults(viewModel: WPNoResultsView.Model) {
         noResultsView.bindViewModel(viewModel)
         if noResultsView.isDescendantOfView(tableView) {
@@ -59,7 +59,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             tableView.addSubviewWithFadeAnimation(noResultsView)
         }
     }
-    
+
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
@@ -111,7 +111,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             }
         )
     }
-    
+
     func footerTapped() {
         footerTapAction?()
     }

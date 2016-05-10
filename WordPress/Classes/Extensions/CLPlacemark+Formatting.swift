@@ -7,7 +7,7 @@ extension CLPlacemark
     func formattedAddress() -> String? {
         guard let addressDictionary = self.addressDictionary,
               let formattedAddressLines = addressDictionary["FormattedAddressLines"] as? [String] else {
-                return self.name;
+                return self.name
         }
         if formattedAddressLines.count <= 1 {
             return formattedAddressLines.joinWithSeparator(", ")
