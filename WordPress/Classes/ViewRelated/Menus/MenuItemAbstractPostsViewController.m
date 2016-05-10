@@ -5,6 +5,8 @@
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 
 @property (nonatomic, assign) NSUInteger numberOfSyncedPosts;
+@property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign) BOOL isSyncingAdditionalPosts;
 @property (nonatomic, assign) BOOL additionalPostsAvailableForSync;
 
 @end
@@ -42,7 +44,13 @@
 
 - (void)syncPosts
 {
+    if (self.isSyncing) {
+        return;
+    }
+
     [self performResultsControllerFetchRequest];
+    
+    self.isSyncing = YES;
     [self showLoadingSourcesIndicatorIfEmpty];
     self.additionalPostsAvailableForSync = YES;
     
@@ -108,6 +116,7 @@
 
 - (void)didFinishSyncingPosts:(NSArray *)posts options:(PostServiceSyncOptions *)options
 {
+    self.isSyncing = NO;
     if (posts) {
         self.numberOfSyncedPosts = self.numberOfSyncedPosts + posts.count;
         self.additionalPostsAvailableForSync = posts.count >= options.number.unsignedIntegerValue;
@@ -122,10 +131,14 @@
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    if (!self.additionalPostsAvailableForSync || [self searchBarInputIsActive]) {
+    if (self.isSyncingAdditionalPosts || !self.additionalPostsAvailableForSync || [self searchBarInputIsActive]) {
         return;
     }
+
+    self.isSyncing = YES;
+    self.isSyncingAdditionalPosts = YES;
     [self showLoadingSourcesIndicator];
+    
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     options.offset = @(self.resultsController.fetchedObjects.count);
@@ -134,8 +147,10 @@
                      forBlog:[self blog]
                      success:^(NSArray *posts) {
                          [self didFinishSyncingPosts:posts options:options];
+                         self.isSyncingAdditionalPosts = NO;
                      } failure:^(NSError *error) {
                          [self didFinishSyncingPosts:nil options:options];
+                         self.isSyncingAdditionalPosts = NO;
                          [self showLoadingErrorMessageForResults];
                      }];
 }
