@@ -205,7 +205,7 @@ extension PHAsset: ExportableAsset {
                         }
                         return
                     }
-                    exportSession.outputFileType = targetUTI;
+                    exportSession.outputFileType = targetUTI
                     exportSession.shouldOptimizeForNetworkUse = true
                     exportSession.outputURL = url
                     exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in
@@ -213,7 +213,7 @@ extension PHAsset: ExportableAsset {
                             if let error = exportSession.error {
                                 errorHandler(error: error)
                             }
-                            return;
+                            return
                         }
                         successHandler(resultingSize: CGSize(width: self.pixelWidth, height: self.pixelHeight))
                     })
@@ -294,8 +294,8 @@ extension PHAsset: ExportableAsset {
     }
 
     func requestMetadataWithCompletionBlock(completionBlock: (metadata:[String:AnyObject]) ->(), failureBlock: (error:NSError) -> ()) {
-        let editOptions = PHContentEditingInputRequestOptions();
-        editOptions.networkAccessAllowed = true;
+        let editOptions = PHContentEditingInputRequestOptions()
+        editOptions.networkAccessAllowed = true
         self.requestContentEditingInputWithOptions(editOptions) { (contentEditingInput, info) -> Void in
             guard let contentEditingInput = contentEditingInput,
                 let fullSizeImageURL = contentEditingInput.fullSizeImageURL,
@@ -316,7 +316,7 @@ extension PHAsset: ExportableAsset {
 
     func originalUTI() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
-        var types = [];
+        var types = []
         if (mediaType == PHAssetMediaType.Image) {
             types = [PHAssetResourceType.Photo.rawValue]
         } else if (mediaType == PHAssetMediaType.Video){
@@ -332,7 +332,7 @@ extension PHAsset: ExportableAsset {
 
     func originalFilename() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
-        var types = [];
+        var types = []
         if (mediaType == PHAssetMediaType.Image) {
             types = [PHAssetResourceType.Photo.rawValue]
         } else if (mediaType == PHAssetMediaType.Video){

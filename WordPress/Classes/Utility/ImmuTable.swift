@@ -172,7 +172,7 @@ extension ImmuTableRow {
     }
 
     public static var customHeight: Float? {
-        return nil;
+        return nil
     }
 }
 

@@ -481,7 +481,7 @@ public protocol ThemePresenter: class
             let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
             return footer
         default:
-            fatalError("Unexpected theme browser element");
+            fatalError("Unexpected theme browser element")
         }
     }
 

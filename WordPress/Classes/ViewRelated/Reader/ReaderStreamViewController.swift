@@ -227,7 +227,7 @@ import WordPressComAnalytics
         if isViewLoaded() {
             displayLoadingStream()
         }
-        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic");
+        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.tagTopicForTagWithSlug(tagSlug,
             success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
@@ -318,8 +318,8 @@ import WordPressComAnalytics
     }
 
     func displayLoadingStreamFailed() {
-        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.");
-        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.");
+        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.")
+        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.")
         displayResultsStatus()
     }
 
@@ -639,7 +639,7 @@ import WordPressComAnalytics
             // Consider a like from the list to be enough to push a page view.
             // Solves a long-standing question from folks who ask 'why do I
             // have more likes than page views?'.
-            ReaderHelpers.bumpPageViewForPost(post);
+            ReaderHelpers.bumpPageViewForPost(post)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
@@ -1137,7 +1137,7 @@ import WordPressComAnalytics
         if post.isCrossPost() {
             let cell = tableView.dequeueReusableCellWithIdentifier(readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
             configureCrossPostCell(cell, atIndexPath: indexPath)
-            return cell;
+            return cell
         }
 
         let cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell

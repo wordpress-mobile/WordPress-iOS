@@ -18,7 +18,7 @@ func AccountSettingsViewController(service service: AccountSettingsService) -> I
 }
 
 private struct AccountSettingsController: SettingsController {
-    let title = NSLocalizedString("Account Settings", comment: "Account Settings Title");
+    let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [
@@ -141,7 +141,7 @@ private struct AccountSettingsController: SettingsController {
                 },
                 dismissHandler: nil)
 
-            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
+            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title")
             selectorViewController.displaysOnlyDefaultAccountSites = true
             selectorViewController.displaysCancelButton = true
             selectorViewController.dismissOnCompletion = true

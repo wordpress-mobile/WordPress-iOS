@@ -141,7 +141,7 @@ public class SharingService : LocalCoreDataService
 
             if pubConn.shared == shared {
                 success?()
-                return;
+                return
             }
 
             let oldValue = pubConn.shared
@@ -149,7 +149,7 @@ public class SharingService : LocalCoreDataService
             ContextManager.sharedInstance().saveContext(managedObjectContext)
 
             let blogObjectID = blog.objectID
-            let siteID = pubConn.siteID;
+            let siteID = pubConn.siteID
             guard let remote = remoteForBlog(blog) else {
                 return
             }
@@ -199,11 +199,11 @@ public class SharingService : LocalCoreDataService
         failure: (NSError! -> Void)?) {
             if pubConn.externalID == externalID {
                 success?()
-                return;
+                return
             }
 
             let blogObjectID = blog.objectID
-            let siteID = pubConn.siteID;
+            let siteID = pubConn.siteID
             guard let remote = remoteForBlog(blog) else {
                 return
             }
@@ -241,8 +241,8 @@ public class SharingService : LocalCoreDataService
     ///
     public func deletePublicizeConnectionForBlog(blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         // optimistically delete the connection locally.
-        let siteID = pubConn.siteID;
-        managedObjectContext.deleteObject(pubConn);
+        let siteID = pubConn.siteID
+        managedObjectContext.deleteObject(pubConn)
         ContextManager.sharedInstance().saveContext(managedObjectContext)
 
         guard let remote = remoteForBlog(blog) else {

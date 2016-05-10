@@ -154,7 +154,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     override func noResultsTitleText() -> String {
         if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
+            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
 
         let filter = currentPostListFilter()

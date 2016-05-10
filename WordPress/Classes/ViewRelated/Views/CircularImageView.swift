@@ -5,8 +5,8 @@ class CircularImageView : UIImageView
 {
     var shouldRoundCorners : Bool = true {
         didSet {
-            let rect = frame;
-            frame = rect;
+            let rect = frame
+            frame = rect
         }
     }
 

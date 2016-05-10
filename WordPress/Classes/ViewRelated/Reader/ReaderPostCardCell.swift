@@ -417,7 +417,7 @@ import WordPressShared
 
     private func configureWordCount() {
         // Always reset the attributed string.
-        wordCountLabel.attributedText = nil;
+        wordCountLabel.attributedText = nil
 
         // For now, if showing the attribution view do not show the word count label
         if attributionHeightConstraint.constant > 0 {
@@ -552,7 +552,7 @@ import WordPressShared
         if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
             actionButtonViewHeightConstraint.constant = 0
         } else {
-            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant;
+            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant
         }
     }
 

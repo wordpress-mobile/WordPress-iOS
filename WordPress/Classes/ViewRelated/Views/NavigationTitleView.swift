@@ -42,7 +42,7 @@ public class NavigationTitleView : UIView
         subtitleLabel.textColor         = UIColor.whiteColor()
         subtitleLabel.textAlignment     = .Center
         subtitleLabel.backgroundColor   = UIColor.clearColor()
-        subtitleLabel.autoresizingMask  = UIViewAutoresizing.FlexibleWidth;
+        subtitleLabel.autoresizingMask  = UIViewAutoresizing.FlexibleWidth
 
         backgroundColor                 = UIColor.clearColor()
         autoresizingMask                = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleTopMargin]

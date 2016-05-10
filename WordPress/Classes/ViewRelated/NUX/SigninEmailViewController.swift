@@ -242,7 +242,7 @@ import WordPressShared
     /// Displays the self-hosted sign in form.
     ///
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
 

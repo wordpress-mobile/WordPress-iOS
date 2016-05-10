@@ -26,7 +26,7 @@ class NUXAbstractViewController : UIViewController
 
 
     override func viewDidLoad() {
-        super.viewDidLoad();
+        super.viewDidLoad()
 
         WPStyleGuide.configureColorsForSigninView(view)
 

@@ -38,7 +38,7 @@ class ContextManagerTests: XCTestCase {
 
         // Migrate to the latest
         let persistentStore = psc.persistentStores.first!
-        try! psc.removePersistentStore(persistentStore);
+        try! psc.removePersistentStore(persistentStore)
 
         let standardPSC = contextManager.standardPSC
 
@@ -295,7 +295,7 @@ class ContextManagerTests: XCTestCase {
         _ = contextManager.mainContext
 
         let persistentStore = psc.persistentStores.first!
-        try! psc.removePersistentStore(persistentStore);
+        try! psc.removePersistentStore(persistentStore)
 
         let newModelURL = urlForModelName(newModelName)
         contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: newModelURL!)
@@ -350,9 +350,9 @@ class ContextManagerTests: XCTestCase {
 
     private func newBlogInAccount(account: WPAccount) -> Blog {
         let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: account.managedObjectContext!) as! Blog
-        blog.xmlrpc = "http://test.blog/xmlrpc.php";
-        blog.url = "http://test.blog/";
+        blog.xmlrpc = "http://test.blog/xmlrpc.php"
+        blog.url = "http://test.blog/"
         blog.account = account
-        return blog;
+        return blog
     }
 }

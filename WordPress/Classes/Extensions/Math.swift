@@ -12,7 +12,7 @@ extension Int {
     func round(divisor: UInt) -> Int {
         assert(divisor > 0)
         if self == 0 || divisor == 0 {
-            return self;
+            return self
         }
         let sign = self / abs(self)
         let divisor = Int(divisor)

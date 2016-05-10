@@ -278,7 +278,7 @@ import WordPressComAnalytics
     class func updateSafariCredentialsIfNeeded(loginFields: LoginFields) {
         // Paranioa. Don't try and update credentials for self-hosted.
         if !loginFields.userIsDotCom {
-            return;
+            return
         }
 
         // If the user changed screen names, don't try and update/create a new shared web credential.
@@ -299,7 +299,7 @@ import WordPressComAnalytics
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
                 let err = error! as NSError
-                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)");
+                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)")
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
