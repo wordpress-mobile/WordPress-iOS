@@ -277,8 +277,7 @@ public class SharingService : LocalCoreDataService
 
     /// Finds a cached `PublicizeService` matching the specified service name.
     ///
-    /// - Parameters:
-    ///     - name: The name of the service. This is the `serviceID` attribute for a `PublicizeService` object.
+    /// - Parameter name: The name of the service. This is the `serviceID` attribute for a `PublicizeService` object.
     ///
     /// - Returns: The requested `PublicizeService` or nil.
     ///
@@ -356,8 +355,7 @@ public class SharingService : LocalCoreDataService
 
     /// Composes a new `PublicizeService`, or updates an existing one, with data represented by the passed `RemotePublicizeService`.
     ///
-    /// - Parameters:
-    ///     - remoteService: The remote publicize service representing a `PublicizeService`
+    /// - Parameter remoteService: The remote publicize service representing a `PublicizeService`
     ///
     /// - Returns: A `PublicizeService`.
     ///
@@ -387,8 +385,7 @@ public class SharingService : LocalCoreDataService
 
     /// Finds a cached `PublicizeConnection` by its `connectionID`
     ///
-    /// - Parameters:
-    ///     - connectionID: The ID of the `PublicizeConnection`.
+    /// - Parameter connectionID: The ID of the `PublicizeConnection`.
     ///
     /// - Returns: The requested `PublicizeConnection` or nil.
     ///
@@ -482,8 +479,7 @@ public class SharingService : LocalCoreDataService
     /// Composes a new `PublicizeConnection`, or updates an existing one, with
     /// data represented by the passed `RemotePublicizeConnection`.
     ///
-    /// - Parameters:
-    ///     - remoteConnection: The remote connection representing the publicize connection.
+    /// - Parameter remoteConnection: The remote connection representing the publicize connection.
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
@@ -520,8 +516,7 @@ public class SharingService : LocalCoreDataService
     /// Composes a new `PublicizeConnection`, with data represented by the passed `RemotePublicizeConnection`.
     /// Throws an error if unable to find a `Blog` for the `blogObjectID`
     ///
-    /// - Parameters:
-    ///     - blogObjectID: And `NSManagedObjectID` for for a `Blog` entity.
+    /// - Parameter blogObjectID: And `NSManagedObjectID` for for a `Blog` entity.
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
@@ -733,8 +728,7 @@ public class SharingService : LocalCoreDataService
 
     /// Returns the remote to use with the service.
     ///
-    /// - Parameters:
-    ///     - blog: The blog to use for the rest api.
+    /// - Parameter blog: The blog to use for the rest api.
     ///
     private func remoteForBlog(blog: Blog) -> SharingServiceRemote? {
         guard let api = blog.restApi() else {

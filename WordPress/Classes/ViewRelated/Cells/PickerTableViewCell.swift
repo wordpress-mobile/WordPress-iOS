@@ -4,17 +4,18 @@ import WordPressShared
 
 /// The purpose of this class is to display a UIPickerView instance inside a UITableView,
 /// and wrap up all of the Picker Delegate / DataSource methods
-
+///
 public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource
 {
     // MARK: - Public Properties
 
-
     /// Closure, to be executed on selection change
+    ///
     public var onChange : ((newValue: Int) -> ())?
 
 
     /// String Format, to be applied to the Row Titles
+    ///
     public var textFormat : String? {
         didSet {
             picker.reloadAllComponents()
@@ -23,6 +24,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     /// Currently Selected Value
+    ///
     public var selectedValue : Int? {
         didSet {
             refreshSelectedValue()
@@ -31,6 +33,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     /// Specifies the Minimum Possible Value
+    ///
     public var minimumValue : Int = 0 {
         didSet {
             picker.reloadAllComponents()
@@ -38,6 +41,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
     }
 
     /// Specifies the Maximum Possible Value
+    ///
     public var maximumValue : Int = 0 {
         didSet {
             picker.reloadAllComponents()
@@ -47,6 +51,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: - Initializers
+
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupSubviews()
@@ -60,6 +65,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: - Private Helpers
+
     private func setupSubviews() {
         // Setup Picker
         picker.dataSource = self
@@ -92,6 +98,7 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
 
 
     // MARK: UIPickerView Methods
+
     public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return numberOfComponentsInPicker
     }

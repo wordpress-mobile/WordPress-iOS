@@ -126,8 +126,8 @@ import WordPressShared
 
     /// Displays the specified text in the status label.
     ///
-    /// - Parameters:
-    ///     - message: The text to display in the label.
+    /// - Parameter message: The text to display in the label.
+    ///
     ///
     func configureStatusLabel(message: String) {
         statusLabel.text = message
@@ -149,8 +149,7 @@ import WordPressShared
 
     /// Configure the view's loading state.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
