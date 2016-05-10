@@ -2,8 +2,8 @@ import UIKit
 import WordPressComAnalytics
 import WordPressShared
 
-/// A base class for the various NUX related related view controllers. 
-/// The base class sets up and configures common functionality, such as the help 
+/// A base class for the various NUX related related view controllers.
+/// The base class sets up and configures common functionality, such as the help
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
@@ -26,7 +26,7 @@ class NUXAbstractViewController : UIViewController
 
 
     override func viewDidLoad() {
-        super.viewDidLoad();
+        super.viewDidLoad()
 
         WPStyleGuide.configureColorsForSigninView(view)
 
@@ -64,7 +64,7 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    /// Sets up the cancel button for the navbar if its needed. 
+    /// Sets up the cancel button for the navbar if its needed.
     /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
     ///
     func setupCancelButtonIfNeeded() {
@@ -158,7 +158,7 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    /// It is assumed that NUX view controllers are always presented modally. 
+    /// It is assumed that NUX view controllers are always presented modally.
     /// This method dismisses the view controller.
     ///
     func dismiss() {

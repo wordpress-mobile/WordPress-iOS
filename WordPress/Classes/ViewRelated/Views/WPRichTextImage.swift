@@ -22,7 +22,7 @@ public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
-        imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height));
+        imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height))
         imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         imageView.contentMode = .ScaleAspectFit
 
@@ -40,7 +40,7 @@ public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     }
 
     override public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(imageView, forKey: UIImage.classNameWithoutNamespaces());
+        aCoder.encodeObject(imageView, forKey: UIImage.classNameWithoutNamespaces())
 
         if let url = contentURL {
             aCoder.encodeObject(url, forKey: "contentURL")

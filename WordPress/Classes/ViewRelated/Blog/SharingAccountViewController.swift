@@ -112,9 +112,9 @@ import WordPressShared
     }
 
 
-    /// Builds the ImmuTableSection that displays unconnected keyring accounts. 
+    /// Builds the ImmuTableSection that displays unconnected keyring accounts.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - rows: An array of ImmuTableRow objects appearing in the section.
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
@@ -124,7 +124,7 @@ import WordPressShared
             return nil
         }
 
-        var title =  NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name");
+        var title =  NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
         title = NSString(format: title, publicizeService.serviceID) as String
 
         let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "")
@@ -145,7 +145,7 @@ import WordPressShared
     private func rowsForUnconnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
         for acct in accounts {
-            let row = KeyringRow(title: acct.name, value: "", action: actionForRow(acct));
+            let row = KeyringRow(title: acct.name, value: "", action: actionForRow(acct))
 
             rows.append(row)
         }
@@ -182,7 +182,7 @@ import WordPressShared
     private func rowsForConnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
         for acct in accounts {
-            let row = TextRow(title: acct.name, value: "");
+            let row = TextRow(title: acct.name, value: "")
             rows.append(row)
         }
 
@@ -217,7 +217,7 @@ import WordPressShared
     /// Checks if the specified keyring account is connected.
     ///
     /// - Parameters:
-    ///     - keyringAccount: The keyring account to check. 
+    ///     - keyringAccount: The keyring account to check.
     ///
     /// - Returns: true if the keyring account is being used by an existing publicize connection. False otherwise.
     ///
