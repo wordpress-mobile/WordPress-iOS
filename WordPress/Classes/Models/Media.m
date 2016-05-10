@@ -132,11 +132,14 @@
 
 - (void)prepareForDeletion {
     NSError *error = nil;
-    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error]) {
-        DDLogError(@"Error removing media files:%@", error);
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:self.absoluteLocalURL] &&
+        ![fileManager removeItemAtPath:self.absoluteLocalURL error:&error]) {
+        DDLogInfo(@"Error removing media files:%@", error);
     }
-    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
-        DDLogError(@"Error removing media files:%@", error);
+    if ([fileManager fileExistsAtPath:self.absoluteThumbnailLocalURL] &&
+        ![fileManager removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
+        DDLogInfo(@"Error removing media files:%@", error);
     }
     [super prepareForDeletion];
 }
