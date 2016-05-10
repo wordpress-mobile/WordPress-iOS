@@ -43,7 +43,7 @@ class ReaderTopicSwiftTest : XCTestCase
         topic3.type = ReaderTagTopic.TopicType
 
         do {
-            try context.save();
+            try context.save()
         } catch let error as NSError{
             XCTAssertNil(error, "Error seeding topics")
         }
@@ -137,7 +137,7 @@ class ReaderTopicSwiftTest : XCTestCase
         // Setup
         var expectation = expectationWithDescription("topics saved expectation")
         let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context);
+        let service = ReaderTopicService(managedObjectContext: context)
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
@@ -182,7 +182,7 @@ class ReaderTopicSwiftTest : XCTestCase
         // Setup
         var expectation = expectationWithDescription("topics saved expectation")
         let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context);
+        let service = ReaderTopicService(managedObjectContext: context)
         service.mergeMenuTopics(startingTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
@@ -225,7 +225,7 @@ class ReaderTopicSwiftTest : XCTestCase
         // Setup
         let expectation = expectationWithDescription("topics saved expectation")
         let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context);
+        let service = ReaderTopicService(managedObjectContext: context)
         service.currentTopic = nil
 
         // Current topic is not nil after a sync
@@ -258,7 +258,7 @@ class ReaderTopicSwiftTest : XCTestCase
         seedTopics()
         XCTAssertFalse(countTopics() == 0, "The number of seeded topics should not be zero")
         let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context);
+        let service = ReaderTopicService(managedObjectContext: context)
         service.deleteAllTopics()
         XCTAssertTrue(countTopics() == 0, "The number of seeded topics should be zero")
     }
@@ -306,7 +306,7 @@ class ReaderTopicSwiftTest : XCTestCase
 
     func testTopicTitleFormatting() {
         let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context);
+        let service = ReaderTopicService(managedObjectContext: context)
 
         var unformatted = "WordPress"
         var formatted = service.formatTitle(unformatted)
@@ -327,7 +327,7 @@ class ReaderTopicSwiftTest : XCTestCase
         XCTAssertTrue(formatted == unformatted, "ePaper should have maintained its case")
 
         // All caps stays all caps.
-        unformatted = "VINE";
+        unformatted = "VINE"
         formatted = service.formatTitle(unformatted)
         XCTAssertTrue(formatted == unformatted, "VINE should have remained all caps")
     }

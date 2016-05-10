@@ -82,7 +82,7 @@ extension UIImageView
         var size = Downloader.defaultImageSize
 
         if !CGSizeEqualToSize(bounds.size, CGSizeZero) {
-            size = max(bounds.width, bounds.height);
+            size = max(bounds.width, bounds.height)
         }
 
         return Int(size)

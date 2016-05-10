@@ -73,7 +73,7 @@ class MediaSettings: NSObject {
             if let savedRemoveLocation = storage.valueForKey(removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
-                return true;
+                return true
             }
         }
         set {

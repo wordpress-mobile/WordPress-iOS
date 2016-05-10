@@ -72,7 +72,7 @@ import WordPressShared
 
         blogLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor                 = WPStyleGuide.Notifications.blockSubtitleColor
-        blogLabel.adjustsFontSizeToFitWidth = false;
+        blogLabel.adjustsFontSizeToFitWidth = false
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {

@@ -47,7 +47,7 @@ class PushAuthenticationManagerTests : XCTestCase {
     override func setUp() {
         super.setUp()
         pushAuthenticationManager = PushAuthenticationManager(pushAuthenticationService: mockPushAuthenticationService)
-        pushAuthenticationManager?.alertControllerProxy = mockAlertControllerProxy;
+        pushAuthenticationManager?.alertControllerProxy = mockAlertControllerProxy
 
         approvalAlertController = UIAlertController()
         approvalAlertController.addCancelActionWithTitle("Ignore", handler: nil)

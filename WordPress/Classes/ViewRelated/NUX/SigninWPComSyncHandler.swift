@@ -32,7 +32,7 @@ extension SigninWPComSyncHandler
     func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
         updateSafariCredentialsIfNeeded()
 
-        configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."));
+        configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."))
 
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccountWithUsername(username, authToken: authToken)

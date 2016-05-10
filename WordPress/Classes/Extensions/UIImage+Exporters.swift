@@ -37,8 +37,8 @@ extension UIImage {
                     failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
                 )
         }
-        CGImageDestinationSetProperties(destination, properties);
-        CGImageDestinationAddImage(destination, imageRef, finalMetadata);
+        CGImageDestinationSetProperties(destination, properties)
+        CGImageDestinationAddImage(destination, imageRef, finalMetadata)
         if (!CGImageDestinationFinalize(destination)) {
             throw errorForCode(.FailedToWrite,
                 failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")

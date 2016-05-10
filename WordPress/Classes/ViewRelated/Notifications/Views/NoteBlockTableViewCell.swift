@@ -21,7 +21,7 @@ import WordPressShared
         // Exception: Badges require no separators
         if isBadge {
             separatorsView.bottomVisible = false
-            return;
+            return
         }
 
         // Last Rows requires full separators

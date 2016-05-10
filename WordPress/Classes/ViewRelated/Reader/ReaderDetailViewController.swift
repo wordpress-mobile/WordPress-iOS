@@ -578,7 +578,7 @@ final public class ReaderDetailViewController : UIViewController
                     let rotate = CGAffineTransformMakeRotation(angle)
                     let scale = CGAffineTransformMakeScale(0.75, 0.75)
                     imageView.transform = CGAffineTransformConcat(rotate, scale)
-                    imageView.alpha = 1.0;
+                    imageView.alpha = 1.0
                     imageView.center = likeImageView.center // In case the button's imageView shifted position
                 },
                 completion: { (_) in
@@ -600,7 +600,7 @@ final public class ReaderDetailViewController : UIViewController
                     let rotate = CGAffineTransformMakeRotation(angle)
                     let scale = CGAffineTransformMakeScale(3.0, 3.0)
                     imageView.transform = CGAffineTransformConcat(rotate, scale)
-                    imageView.alpha = 0;
+                    imageView.alpha = 0
                 },
                 completion: { (_) in
                     imageView.removeFromSuperview()

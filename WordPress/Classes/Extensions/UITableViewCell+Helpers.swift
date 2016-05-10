@@ -16,6 +16,6 @@ extension UITableViewCell
         // Workaround: Layout calculations fail under certain scenarios by 1px, cutting labels
         let PaddingY: CGFloat = 1
 
-        return ceil(layoutSize.height) + PaddingY;
+        return ceil(layoutSize.height) + PaddingY
     }
 }
