@@ -13,17 +13,14 @@ extension Notification
         let calendar    = NSCalendar.currentCalendar()
         let flags       = [.Day, .WeekOfYear, .Month] as NSCalendarUnit
         let components  = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: .MatchFirst)
-        
         let identifier: Sections
 
         // Months
         if components.month >= 1 {
             identifier = .Months
-            
         // Weeks
         } else if components.weekOfYear >= 1 {
             identifier = .Weeks
-            
         // Days
         } else if components.day > 1 {
             identifier = .Days
@@ -32,7 +29,7 @@ extension Notification
         } else {
             identifier = .Today
         }
-        
+
         return "\(identifier.rawValue)"
     }
 
@@ -56,7 +53,7 @@ extension Notification
             return NSLocalizedString("Today",               comment: "Notifications Today Section Header")
         }
     }
-        
+
     private enum Sections : Int {
         case Months       = 0
         case Weeks        = 2
