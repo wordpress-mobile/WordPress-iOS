@@ -7,7 +7,7 @@
 
 @implementation PostListFilter
 
-+ (NSArray *)newPostListFilters
++ (NSArray<PostListFilter*>*)newPostListFilters
 {
     return @[
              [self newPublishedFilter],

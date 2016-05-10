@@ -50,7 +50,7 @@ import WordPressShared
         height += descriptionLabel.sizeThatFits(adjustedSize).height
         height += descriptionBottomConstraint.constant
         height += followCountLabel.sizeThatFits(adjustedSize).height
-        height += followCountBottomConstraint.constant;
+        height += followCountBottomConstraint.constant
 
         return CGSize(width: size.width, height: height)
     }

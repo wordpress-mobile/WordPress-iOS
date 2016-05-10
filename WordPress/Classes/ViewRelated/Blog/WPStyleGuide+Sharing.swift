@@ -14,7 +14,7 @@ extension WPStyleGuide
     public class func sharingCellWarningAccessoryImageView() -> UIImageView {
 
         let imageSize = 20.0
-        let horizontalPadding = 8.0;
+        let horizontalPadding = 8.0
         let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
         imageView.image = UIImage(named: "sharing-notice")
@@ -41,7 +41,7 @@ extension WPStyleGuide
             return Gridicon.iconOfType(.Print)
         case "email" :
             return Gridicon.iconOfType(.Mail)
-        case "google-plus-one" :
+        case "google-plus-1" :
             iconName = "social-google-plus"
         case "press-this" :
             iconName = "social-wordpress"

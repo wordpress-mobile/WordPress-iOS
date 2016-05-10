@@ -51,25 +51,36 @@ PODS:
   - EmailChecker (0.1)
   - Expecta (0.3.2)
   - Fabric (1.6.7)
-  - FormatterKit (1.8.0):
-    - FormatterKit/AddressFormatter (= 1.8.0)
-    - FormatterKit/ArrayFormatter (= 1.8.0)
-    - FormatterKit/ColorFormatter (= 1.8.0)
-    - FormatterKit/LocationFormatter (= 1.8.0)
-    - FormatterKit/NameFormatter (= 1.8.0)
-    - FormatterKit/OrdinalNumberFormatter (= 1.8.0)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.0)
-    - FormatterKit/UnitOfInformationFormatter (= 1.8.0)
-    - FormatterKit/URLRequestFormatter (= 1.8.0)
-  - FormatterKit/AddressFormatter (1.8.0)
-  - FormatterKit/ArrayFormatter (1.8.0)
-  - FormatterKit/ColorFormatter (1.8.0)
-  - FormatterKit/LocationFormatter (1.8.0)
-  - FormatterKit/NameFormatter (1.8.0)
-  - FormatterKit/OrdinalNumberFormatter (1.8.0)
-  - FormatterKit/TimeIntervalFormatter (1.8.0)
-  - FormatterKit/UnitOfInformationFormatter (1.8.0)
-  - FormatterKit/URLRequestFormatter (1.8.0)
+  - FormatterKit (1.8.1):
+    - FormatterKit/AddressFormatter (= 1.8.1)
+    - FormatterKit/ArrayFormatter (= 1.8.1)
+    - FormatterKit/ColorFormatter (= 1.8.1)
+    - FormatterKit/LocationFormatter (= 1.8.1)
+    - FormatterKit/NameFormatter (= 1.8.1)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.1)
+    - FormatterKit/Resources (= 1.8.1)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.1)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.1)
+    - FormatterKit/URLRequestFormatter (= 1.8.1)
+  - FormatterKit/AddressFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/ArrayFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/ColorFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/LocationFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/NameFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/OrdinalNumberFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/Resources (1.8.1)
+  - FormatterKit/TimeIntervalFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/UnitOfInformationFormatter (1.8.1):
+    - FormatterKit/Resources
+  - FormatterKit/URLRequestFormatter (1.8.1):
+    - FormatterKit/Resources
   - Gridicons (0.2)
   - Helpshift (5.5.1)
   - HockeySDK (3.8.6):
@@ -108,7 +119,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (4.0.0)
+  - Nimble (4.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
@@ -160,7 +171,7 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.5.6):
+  - WordPress-iOS-Shared (0.5.7):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
@@ -195,7 +206,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
-  - FormatterKit (~> 1.8.0)
+  - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.2)
   - Helpshift (~> 5.5.1)
   - HockeySDK (~> 3.8.0)
@@ -220,7 +231,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (= 1.6)
-  - WordPress-iOS-Shared (= 0.5.6)
+  - WordPress-iOS-Shared (= 0.5.7)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.9)
   - WordPressCom-Stats-iOS/Services (= 0.7.0)
@@ -267,14 +278,14 @@ SPEC CHECKSUMS:
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
+  FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
   Helpshift: 1b89b3632bf46af10d2c9d9f448e64a0ccf667ec
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 72bcc3e2f02242e6bfaaf8d9412ca7bfe3d8b417
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
@@ -291,7 +302,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 78fde4503494a664be5e4df72e3dc04617b6f66c
-  WordPress-iOS-Shared: ce4b6e02763532e1737bf2bc7deed78d64ba4934
+  WordPress-iOS-Shared: 00b9186b1293078ecb3b724204e05ceade4cf872
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: 3fccb433506f136cc04b735e6ab2efae9edfae7e
   WordPressCom-Stats-iOS: d1996675fadd5a2c8548344a40663834898114f3

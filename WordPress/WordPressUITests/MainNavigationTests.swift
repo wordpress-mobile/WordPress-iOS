@@ -28,7 +28,7 @@ class MainNavigationTests: XCTestCase {
         let app = XCUIApplication()
 
         let mainNavigationTabBar = app.tabBars["Main Navigation"]
-        
+
         mainNavigationTabBar.buttons["My Sites"].tap()
         mainNavigationTabBar.buttons["My Sites"].tap()
         self.waitForElementToAppear(app.tables["Blogs"])
@@ -47,5 +47,3 @@ class MainNavigationTests: XCTestCase {
     }
 
 }
-
-

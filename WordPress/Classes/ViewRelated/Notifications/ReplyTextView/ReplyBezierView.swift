@@ -6,7 +6,7 @@ import WordPressShared.WPStyleGuide
 //
 public class ReplyBezierView : UIView
 {
-    
+
     public var outerColor: UIColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
@@ -27,23 +27,23 @@ public class ReplyBezierView : UIView
             setNeedsDisplay()
         }
     }
-    
+
     // MARK: - Initializers
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupView()
     }
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
-    
+
     private func setupView() {
         // Make sure this is re-drawn on rotation events
         layer.needsDisplayOnBoundsChange = true
     }
-    
+
     // MARK: - View Methods
     public override func drawRect(rect: CGRect) {
         // Draw the background, while clipping a rounded rect with the given insets
@@ -57,11 +57,10 @@ public class ReplyBezierView : UIView
 
         bezierColor.set()
         bezier.stroke()
-        
+
         outerColor.set()
         bezier.appendPath(outer)
         bezier.usesEvenOddFillRule = true
         bezier.fill()
     }
 }
-

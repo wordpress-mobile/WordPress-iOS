@@ -17,7 +17,7 @@ target 'WordPress', :exclusive => true do
   pod 'AMPopTip', '~> 0.7'
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'DTCoreText',   '1.6.16'
-  pod 'FormatterKit', '~> 1.8.0'
+  pod 'FormatterKit', '~> 1.8.1'
   pod 'Helpshift', '~> 5.5.1'
   pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -46,7 +46,7 @@ target 'WordPress', :exclusive => true do
   pod 'Simperium', '0.8.15'
   pod 'WPMediaPicker', '~> 0.9.1'
   pod 'WordPress-iOS-Editor', '1.6'
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
   pod 'WordPressApi', '0.4.0'
   pod 'WordPressCom-Analytics-iOS', '0.1.9'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
@@ -58,11 +58,11 @@ end
 target 'WordPressShareExtension', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
   pod 'WordPressCom-Stats-iOS/Services', '0.7.0'
 end
 
@@ -78,14 +78,7 @@ target :WordPressTest, :exclusive => true do
 end
 
 post_install do |installer_representation|
-  # We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
   installer_representation.pods_project.targets.each do |target|
-    if ["Pods-WordPressTodayWidget-WordPressCom-Stats-iOS", "Pods-WordPressTodayWidget-AFNetworking"].include?(target.name)
-      target.build_configurations.each do |config|
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AF_APP_EXTENSIONS=1']
-      end
-    end
-
     # See https://github.com/CocoaPods/CocoaPods/issues/3838
     if target.name.end_with?('WordPressCom-Stats-iOS')
       target.build_configurations.each do |config|
@@ -99,4 +92,10 @@ post_install do |installer_representation|
   installer_representation.pods_project.build_configurations.each do |config|
       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   end
+  
+  # Does a quick hack to turn off Swift embedding of libraries for extensions
+  # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressShareExtension/*.xcconfig"
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressTodayWidget/*.xcconfig"
+  
 end

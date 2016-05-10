@@ -10,12 +10,12 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 @interface PostListFilter : NSObject
 
 @property (nonatomic, assign) BOOL hasMore;
-@property (nonatomic, strong) NSDate *oldestPostDate;
+@property (nonatomic, strong, nullable) NSDate *oldestPostDate;
 @property (nonatomic, assign) PostListStatusFilter filterType;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSArray *statuses;
-@property (nonatomic, strong) NSPredicate *predicateForFetchRequest;
+@property (nonatomic, strong, nullable) NSString *title;
+@property (nonatomic, strong, nullable) NSArray<NSString*>* statuses;
+@property (nonatomic, strong, nullable) NSPredicate *predicateForFetchRequest;
 
-+ (NSArray *)newPostListFilters;
++ (nonnull NSArray<PostListFilter*>*)newPostListFilters;
 
 @end

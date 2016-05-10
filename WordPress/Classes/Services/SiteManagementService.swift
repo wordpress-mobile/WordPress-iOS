@@ -24,13 +24,15 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.deleteSite(blog.dotComID,
             success: {
                 self.managedObjectContext.performBlock {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
                     blogService.removeBlog(blog)
-                    
+
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         success?()
                     })
@@ -40,7 +42,7 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Triggers content export of the specified WordPress.com site.
     ///
     /// - Note: An email will be sent with download link when export completes.
@@ -51,7 +53,9 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.exportContent(blog.dotComID,
             success: {
                 success?()
@@ -60,7 +64,7 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Gets the list of active purchases of the specified WordPress.com site.
     ///
     /// - Parameters:
@@ -69,7 +73,9 @@ public class SiteManagementService : LocalCoreDataService
     ///     - failure: Optional failure block with NSError
     ///
     public func getActivePurchasesForBlog(blog: Blog, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
-        let remote = siteManagementServiceRemoteForBlog(blog)
+        guard let remote = siteManagementServiceRemoteForBlog(blog) else {
+            return
+        }
         remote.getActivePurchases(blog.dotComID,
             success: { purchases in
                 success?(purchases)
@@ -78,7 +84,7 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Creates a remote service for site management
     ///
     /// - Note: Only WordPress.com API supports site management
@@ -88,7 +94,11 @@ public class SiteManagementService : LocalCoreDataService
     ///
     /// - Returns: Remote service for site management
     ///
-    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
-        return SiteManagementServiceRemote(api: blog.restApi())
+    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote? {
+        guard let api = blog.restApi() else {
+            return nil
+        }
+
+        return SiteManagementServiceRemote(api: api)
     }
 }

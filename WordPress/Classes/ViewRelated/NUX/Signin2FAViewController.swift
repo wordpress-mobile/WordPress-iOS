@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-/// Provides a form and functionality for entering a two factor auth code and 
+/// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
 @objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
@@ -39,6 +39,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         configureSendCodeButtonText()
         configureStatusLabel("")
         configureSubmitButton(animating: false)
@@ -66,7 +67,7 @@ import WordPressShared
         unregisterForKeyboardEvents()
 
         // Multifactor codes are time sensitive, so clear the stored code if the
-        // user dismisses the view. They'll need to reentered it upon return. 
+        // user dismisses the view. They'll need to reentered it upon return.
         loginFields.multifactorCode = ""
         verificationCodeField.text = ""
     }
@@ -75,25 +76,30 @@ import WordPressShared
     // MARK: Configuration Methods
 
 
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+    }
+
+
     /// Configures the appearance of the button to request a 2fa code be sent via SMS.
     ///
     func configureSendCodeButtonText() {
         // Text: Verification Code SMS
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
-        let options = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
-        ]
 
-        let styledString = "<style>body {font-family: -apple-system, sans-serif; font-size:14px; color: #ffffff; text-align:center;}</style>" + string
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(14),
+                                                                   NSForegroundColorAttributeName: UIColor.whiteColor(),
+                                                                   NSTextAlignmentAttributeName: NSTextAlignment.Center.rawValue ]]
 
-        guard let data = styledString.dataUsingEncoding(NSUTF8StringEncoding),
-            attributedCode = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil),
-            attributedCodeHighlighted = attributedCode.mutableCopy() as? NSMutableAttributedString
-            else {
-                return
-        }
-
+        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
+        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
         if let titleLabel = sendCodeButton.titleLabel  {
@@ -154,7 +160,7 @@ import WordPressShared
             verificationCodeField.becomeFirstResponder()
         }
     }
-    
+
 
     // MARK: - Instance Methods
 
@@ -200,8 +206,8 @@ import WordPressShared
     @IBAction func handleSubmitForm() {
         validateForm()
     }
-    
-    
+
+
     @IBAction func handleSubmitButtonTapped(sender: UIButton) {
         validateForm()
     }
