@@ -1,14 +1,14 @@
 import Foundation
 
 
-/// The goal of this class is to parse Notification Settings data from the backend, and structure it in a 
+/// The goal of this class is to parse Notification Settings data from the backend, and structure it in a
 /// meaningful way. Notification Settings come in three different flavors:
 ///
 ///     - "Our Own" Blog Settings
 ///     - "Third Party" Site Settings
 ///     - WordPress.com Settings
 ///
-/// Each one of the possible channels may post notifications via different streams: 
+/// Each one of the possible channels may post notifications via different streams:
 /// Email, Push Notifications, and Timeline.
 ///
 public class RemoteNotificationSettings

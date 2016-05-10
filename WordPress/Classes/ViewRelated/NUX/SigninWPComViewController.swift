@@ -124,8 +124,8 @@ import WordPressShared
     }
 
 
-    /// Displays the specified text in the status label. 
-    /// 
+    /// Displays the specified text in the status label.
+    ///
     /// - Parameter message: The text to display in the label.
     ///
     ///
