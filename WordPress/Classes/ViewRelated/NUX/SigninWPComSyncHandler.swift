@@ -1,8 +1,8 @@
 import UIKit
 import WordPressComAnalytics
 
-/// A protocol and extension encapsulating syncing behavior common to WPCom 
-/// signin controllers.  Responsible for syncing account information and blog 
+/// A protocol and extension encapsulating syncing behavior common to WPCom
+/// signin controllers.  Responsible for syncing account information and blog
 /// details of the user.
 ///
 protocol SigninWPComSyncHandler: class
@@ -24,7 +24,7 @@ extension SigninWPComSyncHandler
 
     /// Syncs account and blog information for the authenticated wpcom user.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - username: The username.
     ///     - authToken: The authentication token.
     ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
@@ -32,7 +32,7 @@ extension SigninWPComSyncHandler
     func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
         updateSafariCredentialsIfNeeded()
 
-        configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."));
+        configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."))
 
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccountWithUsername(username, authToken: authToken)
@@ -54,8 +54,8 @@ extension SigninWPComSyncHandler
 
 
     /// Cleans up the view after a successful sync and dismisses the NUX controller.
-    /// 
-    /// - Parameters: 
+    ///
+    /// - Parameters:
     ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
     func handleSyncSuccess(requiredMultifactor: Bool) {
@@ -72,7 +72,7 @@ extension SigninWPComSyncHandler
     }
 
 
-    /// Handles an error while syncing account and blog information for the 
+    /// Handles an error while syncing account and blog information for the
     /// authenticated user.
     ///
     func handleSyncFailure(error: NSError) {

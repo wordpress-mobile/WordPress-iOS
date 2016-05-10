@@ -18,12 +18,12 @@ import AFNetworking
     public func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
         let path = "me/two-step/push-authentication"
         let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        
+
         let parameters  = [
             "action"        : "authorize_login",
             "push_token"    : token
         ]
-        
+
         api.POST(requestUrl,
             parameters: parameters,
             success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in

@@ -4,11 +4,11 @@ import WordPressShared
 @objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
     public typealias EventHandler = (() -> Void)
-    
+
     // MARK: - Public Properties
     public var onFollowClick:      EventHandler?
     public var onUnfollowClick:    EventHandler?
-    
+
     public var isFollowEnabled: Bool {
         set {
             btnFollow.hidden = !newValue
@@ -25,7 +25,7 @@ import WordPressShared
             return btnFollow.selected
         }
     }
-    
+
     public var name: String? {
         set {
             nameLabel.text  = newValue
@@ -42,7 +42,7 @@ import WordPressShared
             return blogLabel.text
         }
     }
-    
+
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
@@ -52,10 +52,10 @@ import WordPressShared
         let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         let gravatar = url.flatMap { Gravatar($0) }
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
-        
+
         gravatarURL = url
     }
-    
+
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -66,21 +66,21 @@ import WordPressShared
         backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType                       = .None
         contentView.autoresizingMask        = [.FlexibleHeight, .FlexibleWidth]
-        
+
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColor
-        
+
         blogLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor                 = WPStyleGuide.Notifications.blockSubtitleColor
-        blogLabel.adjustsFontSizeToFitWidth = false;
-        
+        blogLabel.adjustsFontSizeToFitWidth = false
+
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
             gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
         }
     }
-    
+
     // MARK: - IBActions
     @IBAction public func followWasPressed(sender: AnyObject) {
         if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
@@ -88,11 +88,11 @@ import WordPressShared
         }
         isFollowOn = !isFollowOn
     }
-    
+
     // MARK: - Private
     private let gravatarImageSizePad:               CGSize = CGSize(width: 54.0, height: 54.0)
     private var gravatarURL:                        NSURL?
-    
+
     // MARK: - IBOutlets
     @IBOutlet private weak var nameLabel:           UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!

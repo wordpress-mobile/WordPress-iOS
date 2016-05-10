@@ -19,7 +19,7 @@ struct Person: Equatable {
     let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
-    
+
     enum Role: Int, Comparable, Equatable, CustomStringConvertible {
         case SuperAdmin
         case Admin
@@ -27,7 +27,7 @@ struct Person: Equatable {
         case Author
         case Contributor
         case Unsupported
-        
+
         static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
     }
 }
@@ -54,7 +54,7 @@ extension Person {
         let first = firstName ?? String()
         let last = lastName ?? String()
         let separator = (first.isEmpty == false && last.isEmpty == false) ? " " : ""
-        
+
         return "\(first)\(separator)\(last)"
     }
 }
@@ -78,7 +78,7 @@ extension Person.Role {
             self = .Unsupported
         }
     }
-    
+
     func color() -> UIColor {
         switch self {
         case .SuperAdmin:
@@ -95,7 +95,7 @@ extension Person.Role {
             return WPStyleGuide.People.contributorColor
         }
     }
-    
+
     func localizedName() -> String {
         switch self {
         case .SuperAdmin:
@@ -112,7 +112,7 @@ extension Person.Role {
             return NSLocalizedString("Unsupported", comment: "User role badge")
         }
     }
-    
+
     var description: String {
         switch self {
         case .SuperAdmin:
