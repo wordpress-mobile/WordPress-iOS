@@ -176,16 +176,16 @@ class PlanDetailViewController: UIViewController {
         populateHeader()
         updateNoResults()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         registerForPurchaseNotifications()
     }
-    
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         unregisterForPurchaseNotifications()
     }
 
@@ -218,7 +218,7 @@ class PlanDetailViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var purchaseWrapperView: UIView!
-    
+
     private func populateHeader() {
         let plan = viewModel.plan
         let iconUrl = viewModel.isActivePlan ? plan.activeIconUrl : plan.iconUrl
@@ -241,13 +241,13 @@ class PlanDetailViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         layoutHeaderIfNeeded()
     }
-    
+
     private func layoutHeaderIfNeeded() {
         headerView.layoutIfNeeded()
-        
+
         // Table header views don't automatically resize using Auto Layout,
         // so we need to calculate the correct size to fit the content, update the frame,
         // and then reset the tableHeaderView property so that the new size takes effect.
@@ -257,7 +257,7 @@ class PlanDetailViewController: UIViewController {
             tableView.tableHeaderView = headerView
         }
     }
-    
+
     //MARK: - IBActions
 
     @IBAction private func purchaseTapped() {
@@ -280,44 +280,44 @@ class PlanDetailViewController: UIViewController {
                 self.purchaseButton?.selected = false
         })
     }
-    
+
     private func registerForPurchaseNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(storeTransactionDidFinish(_:)),
                                                          name: StoreKitCoordinator.TransactionDidFinishNotification,
                                                          object: nil)
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(storeTransactionDidFail(_:)),
                                                          name: StoreKitCoordinator.TransactionDidFailNotification,
                                                          object: nil)
     }
-    
+
     private func unregisterForPurchaseNotifications() {
         NSNotificationCenter.defaultCenter().removeObserver(self,
                                                             name: StoreKitCoordinator.TransactionDidFinishNotification,
                                                             object: nil)
-        
+
         NSNotificationCenter.defaultCenter().removeObserver(self,
                                                             name: StoreKitCoordinator.TransactionDidFailNotification,
                                                             object: nil)
     }
-    
+
     @objc private func storeTransactionDidFinish(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
         let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String else { return }
-        
+
         if productID == viewModel.plan.productIdentifier {
             purchaseButton?.selected = false
-            
+
             let postPurchaseViewController = PlanPostPurchaseViewController(plan: viewModel.plan)
             presentViewController(postPurchaseViewController, animated: true, completion: nil)
         }
     }
-    
+
     @objc private func storeTransactionDidFail(notification: NSNotification) {
         purchaseButton?.selected = false
-        
+
         if let userInfo = notification.userInfo,
             let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String,
             let error = userInfo[NSUnderlyingErrorKey] as? NSError
@@ -383,7 +383,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             return nil
         }
     }
-    
+
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let headerView = self.tableView(tableView, viewForHeaderInSection: section) as? WPTableViewSectionHeaderFooterView {
             return WPTableViewSectionHeaderFooterView.heightForHeader(headerView.title, width: CGRectGetWidth(view.bounds))

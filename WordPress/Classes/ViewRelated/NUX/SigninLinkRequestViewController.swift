@@ -104,7 +104,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     }
 
 
-    /// Displays the next step in the magic links sign in flow. 
+    /// Displays the next step in the magic links sign in flow.
     ///
     func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.LoginMagicLinkRequested)
