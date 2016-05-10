@@ -21,7 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Alamofire (3.3.1)
+  - Alamofire (3.4.0)
   - AMPopTip (0.10.2)
   - Automattic-Tracks-iOS (0.0.13):
     - CocoaLumberjack (~> 2.2.0)
@@ -177,7 +177,7 @@ PODS:
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressCom-Analytics-iOS (0.1.10)
+  - WordPressCom-Analytics-iOS (0.1.11)
   - WordPressCom-Stats-iOS/Services (0.7.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -235,7 +235,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.6)
   - WordPress-iOS-Shared (= 0.5.7)
   - WordPressApi (= 0.4.0)
-  - WordPressCom-Analytics-iOS (= 0.1.10)
+  - WordPressCom-Analytics-iOS (= 0.1.11)
   - WordPressCom-Stats-iOS/Services (= 0.7.0)
   - WordPressCom-Stats-iOS/UI (= 0.7.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag
@@ -270,7 +270,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
+  Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
   AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
   Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
@@ -307,7 +307,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 78fde4503494a664be5e4df72e3dc04617b6f66c
   WordPress-iOS-Shared: 00b9186b1293078ecb3b724204e05ceade4cf872
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
-  WordPressCom-Analytics-iOS: f784f4cf272157595382cf12d08faf81dc9d0983
+  WordPressCom-Analytics-iOS: a844ac791b2627dbb64ba62090654f43dd2abc1c
   WordPressCom-Stats-iOS: d1996675fadd5a2c8548344a40663834898114f3
   WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede

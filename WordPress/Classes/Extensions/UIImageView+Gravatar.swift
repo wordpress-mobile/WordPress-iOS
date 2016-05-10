@@ -28,9 +28,9 @@ extension UIImageView
     /// Downloads and sets the User's Gravatar, given his email.
     /// TODO: This is a convenience method. Please, remove once all of the code has been migrated over to Swift.
     ///
-    /// -   Parameters:
-    ///     -   email: the user's email
-    ///     -   rating: expected image rating
+    /// - Parameters:
+    ///     - email: the user's email
+    ///     - rating: expected image rating
     ///
     func downloadGravatarWithEmail(email : String, rating : GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
@@ -38,10 +38,10 @@ extension UIImageView
 
     /// Downloads and sets the User's Gravatar, given his email.
     ///
-    /// -   Parameters:
-    ///     -   email: the user's email
-    ///     -   rating: expected image rating
-    ///     -   placeholderImage: Image to be used as Placeholder
+    /// - Parameters:
+    ///     - email: the user's email
+    ///     - rating: expected image rating
+    ///     - placeholderImage: Image to be used as Placeholder
     ///
     func downloadGravatarWithEmail(email : String, rating : GravatarRatings = GravatarDefaults.rating, placeholderImage : UIImage) {
         let targetSize = gravatarDefaultSize()
@@ -82,12 +82,12 @@ extension UIImageView
 
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - email: the user's email
     ///     - size: required download size
     ///     - rating: image rating filtering
     ///
-    /// -   Returns: Gravatar's URL
+    /// - Returns: Gravatar's URL
     ///
     private func gravatarUrlForEmail(email: String, size: NSInteger, rating: String) -> NSURL? {
         let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)

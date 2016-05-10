@@ -112,8 +112,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     /// Toggles the visibility of the activity indicator.  When visible the button
     /// title is hidden.
     ///
-    /// - Parameters:
-    ///     - show: True to show the spinner. False hides it.
+    /// - Parameter show: True to show the spinner. False hides it.
     ///
     func showActivityIndicator(show: Bool) {
         if show {

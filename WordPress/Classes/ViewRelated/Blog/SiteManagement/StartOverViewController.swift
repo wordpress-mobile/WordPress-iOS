@@ -35,8 +35,7 @@ public class StartOverViewController: UITableViewController
 
     /// Preferred initializer for DeleteSiteViewController
     ///
-    /// - Parameters:
-    ///     - blog: The Blog currently at the site
+    /// - Parameter blog: The Blog currently at the site
     ///
     convenience init(blog: Blog) {
         self.init(style: .Grouped)

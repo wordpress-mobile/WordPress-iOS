@@ -26,9 +26,8 @@ struct Person: Equatable {
         case Editor
         case Author
         case Contributor
+        case Subscriber
         case Unsupported
-
-        static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
     }
 }
 
@@ -74,6 +73,10 @@ extension Person.Role {
             self = .Author
         case "contributor":
             self = .Contributor
+        case "super-admin":
+            self = .SuperAdmin
+        case "subscriber":
+            self = .Subscriber
         default:
             self = .Unsupported
         }
@@ -90,6 +93,8 @@ extension Person.Role {
         case .Author:
             return WPStyleGuide.People.authorColor
         case .Contributor:
+            return WPStyleGuide.People.contributorColor
+        case .Subscriber:
             return WPStyleGuide.People.contributorColor
         case .Unsupported:
             return WPStyleGuide.People.contributorColor
@@ -108,6 +113,8 @@ extension Person.Role {
             return NSLocalizedString("Author", comment: "User role badge")
         case .Contributor:
             return NSLocalizedString("Contributor", comment: "User role badge")
+        case .Subscriber:
+            return NSLocalizedString("Subscriber", comment: "User role badge")
         case .Unsupported:
             return NSLocalizedString("Unsupported", comment: "User role badge")
         }
@@ -125,6 +132,8 @@ extension Person.Role {
             return "author"
         case .Contributor:
             return "contributor"
+        case .Subscriber:
+            return "subscriber"
         default:
             return "unsupported"
         }

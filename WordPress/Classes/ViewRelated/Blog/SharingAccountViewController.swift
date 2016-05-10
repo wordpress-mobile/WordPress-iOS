@@ -14,7 +14,7 @@ import WordPressShared
     var delegate: SharingAccountSelectionDelegate?
 
 
-    //MARK: - Lifecycle Methods
+    // MARK: - Lifecycle Methods
 
 
     init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
@@ -114,8 +114,7 @@ import WordPressShared
 
     /// Builds the ImmuTableSection that displays unconnected keyring accounts.
     ///
-    /// - Parameters:
-    ///     - rows: An array of ImmuTableRow objects appearing in the section.
+    /// - Parameter rows: An array of ImmuTableRow objects appearing in the section.
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
@@ -137,8 +136,7 @@ import WordPressShared
 
     /// Builds the ImmuTableSection that displays connected keyring accounts.
     ///
-    /// - Parameters:
-    ///     - rows: An array of ImmuTableRow objects appearing in the section.
+    /// - Parameter rows: An array of ImmuTableRow objects appearing in the section.
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
@@ -156,8 +154,7 @@ import WordPressShared
 
     /// Builds an ImmuTableAction that should be performed when a specific row is selected.
     ///
-    /// - Parameters:
-    ///     - The keyring account for the row.
+    /// - Parameter keyringAccount: The keyring account for the row.
     ///
     /// - Returns: An ImmuTableAction instance.
     ///
@@ -174,8 +171,7 @@ import WordPressShared
 
     /// Builds ImmuTableRows for the specified keyring accounts.
     ///
-    /// - Parameters:
-    ///     - accounts: An array of KeyringAccount objects.
+    /// - Parameter accounts: An array of KeyringAccount objects.
     ///
     /// - Returns: An array of ImmuTableRows representing the keyring accounts.
     ///
@@ -192,8 +188,7 @@ import WordPressShared
 
     /// Normalizes available accounts for a KeyringConnection and its `additionalExternalUsers`
     ///
-    /// - Parameters:
-    ///     - connections: An array of `KeyringConnection` instances to normalize.
+    /// - Parameter connections: An array of `KeyringConnection` instances to normalize.
     ///
     /// - Returns: An array of `KeyringAccount` objects.
     ///
@@ -216,8 +211,7 @@ import WordPressShared
 
     /// Checks if the specified keyring account is connected.
     ///
-    /// - Parameters:
-    ///     - keyringAccount: The keyring account to check.
+    /// - Parameter keyringAccount: The keyring account to check.
     ///
     /// - Returns: true if the keyring account is being used by an existing publicize connection. False otherwise.
     ///
@@ -239,20 +233,19 @@ import WordPressShared
     }
 
 
-    //MARK: - Actions
+    // MARK: - Actions
 
 
     /// Notifies the delegate that the user has clicked the close button to dismiss the controller.
     ///
-    /// - Parameters:
-    ///     - sender: The close button that was tapped.
+    /// - Parameter sender: The close button that was tapped.
     ///
     func handleCloseTapped(sender: UIBarButtonItem) {
         delegate?.didDismissSharingAccountViewController(self)
     }
 
 
-    //MARK: - Structs
+    // MARK: - Structs
 
 
     /// KeyringAccount is used to normalize the list of avaiable accounts while

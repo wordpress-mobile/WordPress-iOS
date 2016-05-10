@@ -34,8 +34,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: Optional. A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields? = nil) -> SigninEmailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -177,8 +176,7 @@ import WordPressShared
 
     /// Sets the view's state to loading or not loading.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         emailTextField.enabled = !loading
@@ -246,7 +244,7 @@ import WordPressShared
     ///
     /// - Parameters:
     ///     - immediateSignin: True if the newly loaded controller should immedately attempt
-    /// to authenticate the user with the available credentails.  Default is `false`.
+    ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
