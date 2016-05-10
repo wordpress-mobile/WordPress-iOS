@@ -13,7 +13,7 @@ public class SharingService : LocalCoreDataService
 
     /// Syncs the list of Publicize services.  The list is expected to very rarely change.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - blog: The `Blog` for which to sync publicize services
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
@@ -274,7 +274,7 @@ public class SharingService : LocalCoreDataService
 
     // MARK: - Public PublicizeService Methods
 
-    
+
     /// Finds a cached `PublicizeService` matching the specified service name.
     ///
     /// - Parameters:
@@ -481,7 +481,7 @@ public class SharingService : LocalCoreDataService
 
     /// Composes a new `PublicizeConnection`, or updates an existing one, with
     /// data represented by the passed `RemotePublicizeConnection`.
-    /// 
+    ///
     /// - Parameters:
     ///     - remoteConnection: The remote connection representing the publicize connection.
     ///
@@ -519,7 +519,7 @@ public class SharingService : LocalCoreDataService
 
     /// Composes a new `PublicizeConnection`, with data represented by the passed `RemotePublicizeConnection`.
     /// Throws an error if unable to find a `Blog` for the `blogObjectID`
-    /// 
+    ///
     /// - Parameters:
     ///     - blogObjectID: And `NSManagedObjectID` for for a `Blog` entity.
     ///

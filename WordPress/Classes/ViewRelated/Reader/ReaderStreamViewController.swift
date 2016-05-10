@@ -80,8 +80,8 @@ import WordPressComAnalytics
 
     /**
         Convenience method for instantiating an instance of ReaderListViewController
-        for a particular topic. 
-        
+        for a particular topic.
+
         @param topic The reader topic for the list.
 
         @return A ReaderListViewController instance.
@@ -402,7 +402,7 @@ import WordPressComAnalytics
         let account = service.defaultWordPressComAccount()
         isLoggedIn = account != nil
 
-        // Reset our display context to ensure its current. 
+        // Reset our display context to ensure its current.
         managedObjectContext().reset()
 
         configureTitleForTopic()
@@ -556,11 +556,11 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
-    
+
     private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
         if let post = self.postWithObjectID(postID) {
             let sharingController = PostSharingController()
-            
+
             sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
         }
     }
@@ -916,7 +916,7 @@ import WordPressComAnalytics
     func loadMoreItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost
         if post == nil {
-            // failsafe 
+            // failsafe
             return
         }
 
@@ -1001,7 +1001,7 @@ import WordPressComAnalytics
 
         // If readerTopic is nil return a predicate that is valid, but still
         // avoids returning readerPosts that do not belong to a topic (e.g. those
-        // loaded from a notification). We can do this by specifying that self 
+        // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
         let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
 
@@ -1068,7 +1068,7 @@ import WordPressComAnalytics
 
     func handleContextDidSaveNotification(notification:NSNotification) {
         // We want to ignore these notifications when our view has focus so as not
-        // to conflict with the list refresh mechanism. 
+        // to conflict with the list refresh mechanism.
         if view.window != nil {
             return
         }

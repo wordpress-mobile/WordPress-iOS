@@ -50,7 +50,7 @@ public class ReaderPostMenu
             style: .Default,
             handler: { (action:UIAlertAction) in
                 let sharingController = PostSharingController();
-                
+
                 sharingController.shareReaderPost(post, fromView: anchorView, inViewController: viewController)
         })
 

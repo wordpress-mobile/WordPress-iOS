@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-/// Provides a form and functionality for entering a two factor auth code and 
+/// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
 @objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
@@ -67,7 +67,7 @@ import WordPressShared
         unregisterForKeyboardEvents()
 
         // Multifactor codes are time sensitive, so clear the stored code if the
-        // user dismisses the view. They'll need to reentered it upon return. 
+        // user dismisses the view. They'll need to reentered it upon return.
         loginFields.multifactorCode = ""
         verificationCodeField.text = ""
     }
@@ -166,7 +166,7 @@ import WordPressShared
             verificationCodeField.becomeFirstResponder()
         }
     }
-    
+
 
     // MARK: - Instance Methods
 
@@ -212,8 +212,8 @@ import WordPressShared
     @IBAction func handleSubmitForm() {
         validateForm()
     }
-    
-    
+
+
     @IBAction func handleSubmitButtonTapped(sender: UIButton) {
         validateForm()
     }
