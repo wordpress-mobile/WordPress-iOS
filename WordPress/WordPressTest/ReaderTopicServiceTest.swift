@@ -8,7 +8,7 @@ class ReaderTopicSwiftTest : XCTestCase
 
     var testContextManager: TestContextManager?
     let expectationTimeout = 5.0
-    
+
     // MARK: - Lifecycle
 
     override func setUp() {
@@ -133,7 +133,7 @@ class ReaderTopicSwiftTest : XCTestCase
     */
     func testUnsubscribedTopicIsRemovedDuringSync() {
         let remoteTopics = remoteTopicsForTests()
-        
+
         // Setup
         var expectation = expectationWithDescription("topics saved expectation")
         let context = ContextManager.sharedInstance().mainContext

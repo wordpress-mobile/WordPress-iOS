@@ -13,7 +13,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     /// Returns an error message to use is the API returns an unexpected result.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - operation: The AFHTTPRequestOperation that returned the unexpected result.
     ///
     /// - Returns: An `NSError` object.
@@ -144,7 +144,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     }
 
 
-    /// Creates KeyringConnectionExternalUser instances from the past array of 
+    /// Creates KeyringConnectionExternalUser instances from the past array of
     /// external user dictionaries.
     ///
     /// - Parameters:

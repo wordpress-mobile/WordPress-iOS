@@ -55,7 +55,7 @@ public class ReaderCrossPostCell: UITableViewCell
 
         applyStyles()
     }
-    
+
     /**
      Ignore taps in the card margins
      */

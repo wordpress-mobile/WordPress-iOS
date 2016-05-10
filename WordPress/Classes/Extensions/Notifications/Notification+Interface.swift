@@ -13,17 +13,17 @@ extension Notification
         let calendar                = NSCalendar.currentCalendar()
         let flags: NSCalendarUnit   = [.Day, .WeekOfYear, .Month]
         let components              = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: .MatchFirst)
-        
+
         var identifier: Int
 
         // Months
         if components.month >= 1 {
             identifier = Sections.Months
-            
+
         // Weeks
         } else if components.weekOfYear >= 1 {
             identifier = Sections.Weeks
-            
+
         // Days
         } else if components.day > 1 {
             identifier = Sections.Days
@@ -32,15 +32,15 @@ extension Notification
         } else {
             identifier = Sections.Today
         }
-        
+
         return String(format: "%d", identifier)
     }
-    
+
     public class func descriptionForSectionIdentifier(identifier: String) -> String {
         guard let kind = Int(identifier) else {
             return String()
         }
-        
+
         switch kind {
         case Sections.Months:
             return NSLocalizedString("Older than a Month",  comment: "Notifications Months Section Header")
@@ -54,7 +54,7 @@ extension Notification
             return NSLocalizedString("Today",               comment: "Notifications Today Section Header")
         }
     }
-        
+
     // FIXME: Turn this into an enum, when llvm is fixed
     private struct Sections
     {

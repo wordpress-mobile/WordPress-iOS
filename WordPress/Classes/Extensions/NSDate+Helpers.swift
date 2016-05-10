@@ -13,7 +13,7 @@ extension NSDate
             formatter.timeZone      = NSTimeZone(forSecondsFromGMT: 0)
             return formatter
         }()
-        
+
         static let rfc1123 : NSDateFormatter = {
             let formatter           = NSDateFormatter()
             formatter.locale        = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -22,7 +22,7 @@ extension NSDate
             return formatter
         }()
     }
-    
+
     /// Returns a NSDate Instance, given it's ISO8601 String Representation
     ///
     public class func dateWithISO8601String(string: String) -> NSDate? {
@@ -37,7 +37,7 @@ extension NSDate
         calendar.timeZone   = NSTimeZone.localTimeZone()
 
         let flags: NSCalendarUnit = [.Day, .WeekOfYear, .Month, .Year]
-  
+
         let components      = calendar.components(flags, fromDate: self)
 
         let normalized      = NSDateComponents()
@@ -48,7 +48,7 @@ extension NSDate
 
         return calendar.dateFromComponents(normalized) ?? self
     }
-    
+
     /// Formats the current NSDate instance using the RFC1123 Standard
     ///
     public func toStringAsRFC1123() -> String {

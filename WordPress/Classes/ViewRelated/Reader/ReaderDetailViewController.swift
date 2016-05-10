@@ -62,7 +62,7 @@ final public class ReaderDetailViewController : UIViewController
     private var didBumpStats = false
     private var didBumpPageViews = false
     private var footerViewHeightConstraintConstant = CGFloat(0.0)
-    
+
     private let sharingController = PostSharingController()
 
     public var post: ReaderPost? {
@@ -159,7 +159,7 @@ final public class ReaderDetailViewController : UIViewController
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // This is something we do to help with the resizing that can occur with 
+        // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
 
@@ -182,7 +182,7 @@ final public class ReaderDetailViewController : UIViewController
         }
 
         // The image frames in the WPRichTextView are a little bit dumb about their
-        // resizing after an orientation change. Use the completion block to 
+        // resizing after an orientation change. Use the completion block to
         // refresh media layout.
         coordinator.animateAlongsideTransition(nil) { (_) in
             self.richTextView.refreshLayout()
@@ -434,12 +434,12 @@ final public class ReaderDetailViewController : UIViewController
             titleLabel.hidden = true
         }
     }
-    
+
 
     private func configureByLine() {
         // Avatar
         let placeholder = UIImage(named: "gravatar")
-        
+
         if let avatarURLString = post?.authorAvatarURL,
             let url = NSURL(string: avatarURLString) {
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
@@ -857,8 +857,8 @@ extension ReaderDetailViewController : UIScrollViewDelegate
             return
         }
 
-        // The threshold for hiding the bars is twice the height of the hidden bars. 
-        // This ensures that once the bars are hidden the view can still be scrolled 
+        // The threshold for hiding the bars is twice the height of the hidden bars.
+        // This ensures that once the bars are hidden the view can still be scrolled
         // and thus can unhide the bars.
         var threshold = footerViewHeightConstraintConstant
         if let navHeight = navigationController?.navigationBar.frame.height {

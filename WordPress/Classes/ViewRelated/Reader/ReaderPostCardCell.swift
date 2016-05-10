@@ -322,7 +322,7 @@ import WordPressShared
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
                 } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                    // private wpcom image needs special handling. 
+                    // private wpcom image needs special handling.
                     let request = requestForURL(url)
                     featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
 
@@ -568,7 +568,7 @@ import WordPressShared
     }
 
 
-    // MARK: - 
+    // MARK: -
 
     func notifyDelegateHeaderWasTapped() {
         if blogNameButtonIsEnabled {
