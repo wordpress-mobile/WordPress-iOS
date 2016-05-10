@@ -1,12 +1,11 @@
 import UIKit
 import WordPressShared
 
-/// Provides a form and functionality to sign-in and add an existing self-hosted 
+/// Provides a form and functionality to sign-in and add an existing self-hosted
 /// site to the app.
 ///
-@objc class SigninSelfHostedViewController : NUXAbstractViewController, SigninKeyboardResponder
+@objc class SigninSelfHostedViewController : NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler
 {
-
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
@@ -43,6 +42,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
     }
@@ -77,6 +77,23 @@ import WordPressShared
     // MARK: Setup and Configuration
 
 
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        usernameField.placeholder = NSLocalizedString("Username / Email", comment: "Username placeholder")
+        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        siteURLField.placeholder = NSLocalizedString("Site Address (URL)", comment: "Site Address placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Add Site", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Normal)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Highlighted)
+    }
+
+
     /// Sets up a 1Password button if 1Password is available.
     ///
     func setupOnePasswordButtonIfNeeded() {
@@ -95,15 +112,20 @@ import WordPressShared
     }
 
 
+    /// Displays the specified text in the status label.
+    ///
+    /// - Parameters:
+    ///     - message: The text to display in the label.
+    ///
+    func configureStatusLabel(message: String) {
+        statusLabel.text = message
+    }
+
+
     /// Configures the appearance and state of the forgot password button.
     ///
     func configureForgotPasswordButton() {
-        var status = ""
-        if statusLabel.text != nil {
-            status = statusLabel.text!
-        }
-
-        forgotPasswordButton.hidden = loginFields.siteUrl.isEmpty || !status.isEmpty
+        forgotPasswordButton.hidden = loginFields.siteUrl.isEmpty || submitButton.isAnimating
     }
 
 
@@ -126,12 +148,13 @@ import WordPressShared
     /// - Parameters:
     ///     - loading: True if the form should be configured to a "loading" state.
     ///
-    func configureLoading(loading: Bool) {
+    func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
         passwordField.enabled = !loading
         siteURLField.enabled = !loading
 
         configureSubmitButton(animating: loading)
+        configureForgotPasswordButton()
         navigationItem.hidesBackButton = loading
     }
 
@@ -151,6 +174,14 @@ import WordPressShared
     // MARK: - Instance Methods
 
 
+    ///
+    ///
+    func updateSafariCredentialsIfNeeded() {
+        // Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted
+        // controller's implementation does not use safari saved credentials.
+    }
+
+
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
@@ -162,7 +193,7 @@ import WordPressShared
             WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
                                        message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
                                        withSupportButton: false)
-            
+
             return
         }
 
@@ -175,8 +206,8 @@ import WordPressShared
             return
         }
 
-        configureLoading(true)
-        
+        configureViewLoading(true)
+
         loginFacade.signInWithLoginFields(loginFields)
     }
 
@@ -249,25 +280,42 @@ import WordPressShared
 
 extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
+    func finishedLoginWithUsername(username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+    }
+
+
     func finishedLoginWithUsername(username: String!, password: String!, xmlrpc: String!, options: [NSObject : AnyObject]!) {
         displayLoginMessage("")
         BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            self?.configureLoading(false)
+            self?.configureViewLoading(false)
             self?.dismiss()
         }
     }
 
 
     func displayLoginMessage(message: String!) {
-        statusLabel.text = message
+        configureStatusLabel(message)
         configureForgotPasswordButton()
     }
 
 
     func displayRemoteError(error: NSError!) {
         displayLoginMessage("")
-        configureLoading(false)
+        configureViewLoading(false)
         displayError(error)
+    }
+
+
+    func needsMultifactorCode() {
+        configureStatusLabel("")
+        configureViewLoading(false)
+
+        WPAppAnalytics.track(.TwoFactorCodeRequested)
+        // Credentials were good but a 2fa code is needed.
+        loginFields.shouldDisplayMultifactor = true // technically not needed
+        let controller = Signin2FAViewController.controller(loginFields)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 

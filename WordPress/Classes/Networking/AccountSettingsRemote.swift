@@ -14,7 +14,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
         // In theory this would be taken care of by the fact that the api comes
         // from a WPAccount, and since WPAccount is a managed object Core Data
         // guarantees there's only one of it.
-        // 
+        //
         // However it might be possible that the account gets deallocated and
         // when it's fetched again it would create a different api object.
         let key = api.authToken.hashValue
@@ -151,7 +151,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
             return "description"
         case .Email(_):
             return "user_email"
-        case .EmailPendingChange(_):
+        case .EmailRevertPendingChange(_):
             return "user_email_change_pending"
         case .PrimarySite(_):
             return "primary_site_ID"
@@ -161,7 +161,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
             return "language"
         }
     }
-    
+
     enum Error: ErrorType {
         case DecodeError
     }

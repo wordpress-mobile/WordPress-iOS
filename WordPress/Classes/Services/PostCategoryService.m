@@ -248,11 +248,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
-    if (blog.restApi) {
-        return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
-    } else {
+    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+        if (blog.restApi) {
+            return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
+    } else if (blog.api) {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
+    return nil;
 }
 
 @end
