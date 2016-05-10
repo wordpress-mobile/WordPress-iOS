@@ -6,13 +6,13 @@ class PeopleRemote: ServiceRemoteREST {
     /// Typealiases
     ///
     typealias Role = Person.Role
-    
+
     /// Defines the PeopleRemote possible errors.
     ///
     enum Error: ErrorType {
         case DecodeError
     }
-    
+
     /// Retrieves the team of users associated to a given Site.
     ///
     /// - Parameters:
@@ -51,7 +51,7 @@ class PeopleRemote: ServiceRemoteREST {
                 failure(error)
             })
     }
-    
+
     /// Updates a given User, of the specified site, with a new Role.
     ///
     /// - Parameters:
@@ -72,7 +72,7 @@ class PeopleRemote: ServiceRemoteREST {
         let endpoint = "sites/\(siteID)/users/\(personID)"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = ["roles" : [newRole.description]]
-        
+
         api.POST(path,
                 parameters: parameters,
                 success: {
@@ -83,7 +83,7 @@ class PeopleRemote: ServiceRemoteREST {
                         failure?(Error.DecodeError)
                         return
                     }
-                    
+
                     success?(person)
                 },
                 failure: {
@@ -91,8 +91,8 @@ class PeopleRemote: ServiceRemoteREST {
                     failure?(error)
                 })
     }
-    
-    
+
+
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
     /// - Parameters:
@@ -108,7 +108,7 @@ class PeopleRemote: ServiceRemoteREST {
     {
         let endpoint = "sites/\(siteID)/roles"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        
+
         api.GET(path, parameters: nil, success: { (operation, responseObject) in
             guard let response = responseObject as? [String: AnyObject],
                     roles = try? self.rolesFromResponse(response) else
@@ -116,7 +116,7 @@ class PeopleRemote: ServiceRemoteREST {
                 failure?(Error.DecodeError)
                 return
             }
-                    
+
             success(roles)
         }, failure: { (operation, error) in
             failure?(error)
@@ -144,10 +144,10 @@ private extension PeopleRemote {
         let people = try users.flatMap { (user) -> Person? in
             return try personFromResponse(user, siteID: siteID)
         }
-        
+
         return people
     }
-    
+
     /// Parses a dictionary representing a Person, and returns an instance.
     ///
     /// - Parameters:
@@ -160,29 +160,29 @@ private extension PeopleRemote {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
         }
-        
+
         guard let username = user["nice_name"] as? String else {
             throw Error.DecodeError
         }
-        
+
         guard let displayName = user["name"] as? String else {
             throw Error.DecodeError
         }
-        
+
         let firstName = user["first_name"] as? String
         let lastName = user["last_name"] as? String
         let avatarURL = (user["avatar_URL"] as? NSString)
             .flatMap { NSURL(string: $0.stringByUrlEncoding())}
             .flatMap { Gravatar($0)?.canonicalURL }
-        
+
         let linkedUserID = user["linked_user_ID"] as? Int ?? ID
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
-        
+
         let role = roles?.map({ role -> Role in
             return Role(string: role)
         }).sort().first ?? .Unsupported
-        
+
         return Person(ID            : ID,
                       username      : username,
                       firstName     : firstName,
@@ -194,24 +194,23 @@ private extension PeopleRemote {
                       avatarURL     : avatarURL,
                       isSuperAdmin  : isSuperAdmin)
     }
-    
+
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
     private func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
-        
+
         let parsed = try rawRoles.map { (rawRole) -> Role in
             guard let name = rawRole["name"] as? String else {
                 throw Error.DecodeError
             }
-            
+
             return Role(string: name)
         }
-        
+
         let filtered = parsed.filter { $0 != .Unsupported }
-        
         return filtered.sort()
     }
 }
