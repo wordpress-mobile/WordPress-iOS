@@ -1,9 +1,9 @@
 import Foundation
 
-// A UIView used to defined a spacer to be used in a UIStackView when custom spacing 
-// is desired and the stack view's uniform spacing won't do the trick. 
-// Defining the spacing via intrinsicContentSize plays nice with the UIStackView's 
-// behavior of applying a 0 height constraint to hidden views. 
+// A UIView used to defined a spacer to be used in a UIStackView when custom spacing
+// is desired and the stack view's uniform spacing won't do the trick.
+// Defining the spacing via intrinsicContentSize plays nice with the UIStackView's
+// behavior of applying a 0 height constraint to hidden views.
 class ReaderSpacerView : UIView
 {
 

@@ -11,14 +11,14 @@ extension UIView
         let parameters = ScaleParameters(0.8, 0.0, 0.4)
         scaleAnimation(parameters)
     }
-    
+
     /// Applies a "Expand to 100%" animation
     ///
     public func normalizeAnimation() {
         let parameters = ScaleParameters(1.0, 0.0, 0.4)
         scaleAnimation(parameters)
     }
-    
+
     /// Applies a Scaling with Spring Animation.
     ///
     /// - Parameters:
@@ -28,11 +28,11 @@ extension UIView
     private func scaleAnimation(parameters: ScaleParameters, completion: (Bool -> Void)? = nil) {
         let damping         = CGFloat(0.3)
         let velocity        = CGFloat(0.1)
-        
+
         let animations = {
             self.transform  = CGAffineTransformMakeScale(parameters.scale, parameters.scale)
         }
-        
+
         UIView.animateWithDuration(parameters.duration,
                                    delay:                   parameters.delay,
                                    usingSpringWithDamping:  damping,
@@ -41,7 +41,7 @@ extension UIView
                                    animations:              animations,
                                    completion:              completion)
     }
-    
+
     /// Applies a spring animation, from size 0 to final size
     ///
     public func displayWithSpringAnimation() {
@@ -55,11 +55,11 @@ extension UIView
 
         hidden              = false
         transform           = CGAffineTransformMakeScale(scaleInitial, scaleInitial)
-        
+
         let animations = {
             self.transform  = CGAffineTransformMakeScale(scaleFinal, scaleFinal)
         }
-        
+
         UIView.animateWithDuration(duration,
             delay:                  delay,
             usingSpringWithDamping: damping,
@@ -79,13 +79,13 @@ extension UIView
         let alphaFinal      = CGFloat(1.0)
 
         alpha               = alphaInitial
-        
+
         UIView.animateWithDuration(duration) { [weak self] in
             self?.alpha = alphaFinal
         }
     }
-    
-    
+
+
     /// MARK: - Private Typealiases
     private typealias ScaleParameters = (scale: CGFloat, delay: NSTimeInterval, duration: NSTimeInterval)
 }
