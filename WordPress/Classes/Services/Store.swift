@@ -48,33 +48,31 @@ enum StoreCoordinatorError: ErrorType {
 ///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
 class StoreCoordinator<S: Store> {
     private let store: S
+    private let database: KeyValueDatabase
 
     private var pendingPayment: PendingPayment? {
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-
             if let pending = newValue {
-                defaults.setObject(pending.productID, forKey: UserDefaultsKeys.pendingPaymentProductID)
-                defaults.setInteger(pending.siteID, forKey:UserDefaultsKeys.pendingPaymentSiteID)
+                database.setObject(pending.productID, forKey: DatabaseKeys.pendingPaymentProductID)
+                database.setObject(pending.siteID, forKey:DatabaseKeys.pendingPaymentSiteID)
             } else {
-                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentProductID)
-                defaults.removeObjectForKey(UserDefaultsKeys.pendingPaymentSiteID)
+                database.removeObjectForKey(DatabaseKeys.pendingPaymentProductID)
+                database.removeObjectForKey(DatabaseKeys.pendingPaymentSiteID)
             }
         }
 
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let productID = defaults.stringForKey(UserDefaultsKeys.pendingPaymentProductID)
-            let siteID = defaults.integerForKey(UserDefaultsKeys.pendingPaymentSiteID)
+            guard let productID = database.objectForKey(DatabaseKeys.pendingPaymentProductID) as? String,
+                let siteID = database.objectForKey(DatabaseKeys.pendingPaymentSiteID) as? Int
+                where siteID != 0 else { return nil }
 
-            guard let product = productID where siteID != 0 else { return nil }
-
-            return (product, siteID)
+            return (productID, siteID)
         }
     }
 
-    init(store: S) {
+    init(store: S, database: KeyValueDatabase = NSUserDefaults()) {
         self.store = store
+        self.database = database
     }
 
     /// Initiates a purchase for the specified product if a purchase isn't already in progress.
@@ -193,9 +191,9 @@ class StoreCoordinator<S: Store> {
     }
 }
 
-private struct UserDefaultsKeys {
-    static let pendingPaymentProductID = "PendingPaymentProductIDUserDefaultsKey"
-    static let pendingPaymentSiteID    = "PendingPaymentSiteIDUserDefaultsKey"
+private struct DatabaseKeys {
+    static let pendingPaymentProductID = "PendingPaymentProductIDDatabaseKey"
+    static let pendingPaymentSiteID    = "PendingPaymentSiteIDDatabaseKey"
 }
 
 protocol Store {
