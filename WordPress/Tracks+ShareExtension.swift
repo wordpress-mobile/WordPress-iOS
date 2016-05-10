@@ -10,22 +10,22 @@ extension Tracks
         let properties = ["is_configured_dotcom" : wpcomAvailable]
         trackExtensionEvent(.Launched, properties: properties)
     }
-    
+
     public func trackExtensionPosted(status: String) {
         let properties = ["post_status" : status]
         trackExtensionEvent(.Posted, properties: properties)
     }
-    
+
     public func trackExtensionCancelled() {
         trackExtensionEvent(.Canceled)
     }
-    
-    
+
+
     // MARK: - Private Helpers
     private func trackExtensionEvent(event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         track(event.rawValue, properties: properties)
     }
-    
+
 
     // MARK: - Private Enums
     private enum ExtensionEvents : String {

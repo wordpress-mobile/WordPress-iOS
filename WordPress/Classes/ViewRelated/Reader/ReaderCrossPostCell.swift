@@ -55,7 +55,7 @@ public class ReaderCrossPostCell: UITableViewCell
 
         applyStyles()
     }
-    
+
     /**
      Ignore taps in the card margins
      */
@@ -99,8 +99,8 @@ public class ReaderCrossPostCell: UITableViewCell
         backgroundColor = WPStyleGuide.greyLighten30()
 
         cardBorderView.layer.borderColor = WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor
-        cardBorderView.layer.borderWidth = 1.0;
-        cardBorderView.alpha = 0.0;
+        cardBorderView.layer.borderWidth = 1.0
+        cardBorderView.alpha = 0.0
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
@@ -109,7 +109,7 @@ public class ReaderCrossPostCell: UITableViewCell
             delay: 0,
             options: .CurveEaseInOut,
             animations: {
-                self.cardBorderView.alpha = highlighted ? 1.0 : 0.0;
+                self.cardBorderView.alpha = highlighted ? 1.0 : 0.0
             }, completion: nil)
     }
 
@@ -176,7 +176,7 @@ public class ReaderCrossPostCell: UITableViewCell
         // These templates are deliberately not localized (for now) given the intended audience.
         let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
         let siteTemplate = "%@ cross-posted from %@ to %@"
-        let template = contentProvider!.isCommentCrossPost() ? commentTemplate : siteTemplate;
+        let template = contentProvider!.isCommentCrossPost() ? commentTemplate : siteTemplate
 
         let authorName:NSString = contentProvider!.authorForDisplay()
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
@@ -184,7 +184,7 @@ public class ReaderCrossPostCell: UITableViewCell
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
         let subtitleAttributes = WPStyleGuide.readerCrossPostSubtitleAttributes() as! [String:AnyObject]
-        let boldSubtitleAttributes = WPStyleGuide.readerCrossPostBoldSubtitleAttributes() as! [String:AnyObject];
+        let boldSubtitleAttributes = WPStyleGuide.readerCrossPostBoldSubtitleAttributes() as! [String:AnyObject]
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
         attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
