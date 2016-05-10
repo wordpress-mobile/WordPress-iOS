@@ -10,11 +10,11 @@ extension WPStyleGuide
 
         //  NoteTableViewHeader
         public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
-        
+
         public static let sectionHeaderRegularStyle = [ NSParagraphStyleAttributeName:  sectionHeaderParagraph,
                                                         NSFontAttributeName:            sectionHeaderFont,
                                                         NSForegroundColorAttributeName: sectionHeaderTextColor ]
-        
+
         //  NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.whiteColor()
@@ -24,35 +24,35 @@ extension WPStyleGuide
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
-        
+
         public static let noteSeparatorColor        = blockSeparatorColor
 
         public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")!
         public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")!
         public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")!
-        
+
         //  NoteUndoOverlayView
         public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
         public static let noteUndoTextColor         = UIColor.whiteColor()
         public static let noteUndoTextFont          = subjectRegularFont
-        
+
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
                                                         NSForegroundColorAttributeName: subjectTextColor ]
-        
+
         public static let subjectBoldStyle          = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectBoldFont ]
-        
+
         public static let subjectItalicsStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectItalicsFont ]
 
         public static let subjectNoticonStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectNoticonFont!,
                                                         NSForegroundColorAttributeName: subjectNoticonColor ]
-        
+
         public static let subjectQuotedStyle        = blockQuotedStyle
-        
+
         //  Subject Snippet
         public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName:  snippetParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
@@ -64,39 +64,39 @@ extension WPStyleGuide
         // Header
         public static let headerTitleColor          = blockTextColor
         public static let headerTitleBoldFont       = blockBoldFont
-        
+
         public static let headerDetailsColor        = blockSubtitleColor
         public static let headerDetailsRegularFont  = blockRegularFont
-        
+
         public static let headerTitleRegularStyle   = [ NSParagraphStyleAttributeName:  headerTitleParagraph,
                                                         NSFontAttributeName:            headerTitleRegularFont,
                                                         NSForegroundColorAttributeName: headerTitleColor]
-        
+
         public static let headerTitleBoldStyle      =  [ NSParagraphStyleAttributeName: headerTitleParagraph,
                                                         NSFontAttributeName:            headerTitleBoldFont,
                                                         NSForegroundColorAttributeName: headerTitleColor]
-        
+
         public static let headerTitleContextStyle   = [ NSParagraphStyleAttributeName:  headerTitleParagraph,
                                                         NSFontAttributeName:            headerTitleItalicsFont,
                                                         NSForegroundColorAttributeName: headerTitleContextColor]
-        
+
         //  Footer
         public static let footerRegularStyle        = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: footerTextColor]
-        
+
         //  Badges
         public static let badgeBackgroundColor      = UIColor.clearColor()
         public static let badgeLinkColor            = blockLinkColor
-        
+
         public static let badgeRegularStyle         = [ NSParagraphStyleAttributeName:  badgeParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor]
-        
+
         public static let badgeBoldStyle            = blockBoldStyle
         public static let badgeItalicsStyle         = blockItalicsStyle
         public static let badgeQuotedStyle          = blockQuotedStyle
-        
+
         //  Blocks
         public static let contentBlockRegularFont   = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
         public static let contentBlockBoldFont      = WPFontManager.merriweatherBoldFontOfSize(blockFontSize)
@@ -112,12 +112,12 @@ extension WPStyleGuide
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
 
         public static let blockApprovedBgColor      = UIColor.clearColor()
-        
+
         public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
         public static let blockUnapprovedBgColor    = WPStyleGuide.alertYellowLighter()
         public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
         public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
-        
+
         public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
                                                         NSFontAttributeName:            contentBlockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
@@ -141,15 +141,15 @@ extension WPStyleGuide
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
-        
+
         public static let blockBoldStyle            = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockBoldFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
-        
+
         public static let blockItalicsStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
-        
+
         public static let blockQuotedStyle          = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor ]
@@ -157,11 +157,11 @@ extension WPStyleGuide
         public static let blockMatchStyle           = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: blockLinkColor ]
-        
+
         public static let blockNoticonStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockNoticonFont!,
                                                         NSForegroundColorAttributeName: blockNoticonColor ]
-        
+
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
@@ -170,12 +170,12 @@ extension WPStyleGuide
         public static func blockBackgroundColorForRichText(isBadge: Bool) -> UIColor {
             return isBadge ? badgeBackgroundColor : blockBackgroundColor
         }
-        
+
         //  Comment Helpers
         public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
             return approved ? gravatarPlaceholderImage : gravatarUnapprovedImage
         }
-        
+
         public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockSeparatorColor : blockUnapprovedSideColor
         }
@@ -183,7 +183,7 @@ extension WPStyleGuide
         public static func blockBackgroundColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockApprovedBgColor : blockUnapprovedBgColor
         }
-        
+
         public static func blockTitleColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
@@ -191,12 +191,12 @@ extension WPStyleGuide
         public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedSideColor
         }
-        
+
         public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockLinkColor : blockUnapprovedLinkColor
         }
 
-        
+
         // MARK: - Constants
         //
 
@@ -237,7 +237,7 @@ extension WPStyleGuide
         private static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Center
         )
-        
+
         // Colors
         private static let sectionHeaderTextColor   = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
         private static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
@@ -246,7 +246,7 @@ extension WPStyleGuide
         private static let blockNoticonColor        = WPStyleGuide.allTAllShadeGrey()
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
-        
+
         // Fonts
         private static let sectionHeaderFont        = WPFontManager.systemSemiBoldFontOfSize(headerFontSize)
         private static let subjectRegularFont       = WPFontManager.systemRegularFontOfSize(subjectFontSize)
@@ -258,14 +258,14 @@ extension WPStyleGuide
         private static let blockItalicsFont         = WPFontManager.systemItalicFontOfSize(blockFontSize)
         private static let blockNoticonFont         = subjectNoticonFont
     }
-    
-    
+
+
     // TODO: Move this over to the Notifications struct, once NotificationsViewController has been
     // fully migrated to Swift!. JLP 10.2.2015.
     //
     public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
         let style = [ NSFontAttributeName: WPFontManager.systemRegularFontOfSize(12) ]
-        
+
         segmentedControl.setTitleTextAttributes(style, forState: .Normal)
     }
 }

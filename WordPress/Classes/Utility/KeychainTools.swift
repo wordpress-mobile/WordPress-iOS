@@ -14,7 +14,7 @@ final class KeychainTools: NSObject {
     ///   * "wordpress.com": removes any WordPress.com OAuth2 token
     ///   * hostname: removes a self hosted password
     ///
-    /// - note: 
+    /// - note:
     ///     The self hosted case uses a hostname for convenience, but the
     ///     password is stored using the XML-RPC as a key. If the xmlrpc.php
     ///     endpoint is not in the root directory this won't work.

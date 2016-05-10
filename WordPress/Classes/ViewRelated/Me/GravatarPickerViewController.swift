@@ -8,31 +8,31 @@ import WordPressComAnalytics
 class GravatarPickerViewController : UIViewController, WPMediaPickerViewControllerDelegate
 {
     // MARK: - Public Properties
-    
+
     var onCompletion : (UIImage? -> Void)?
-    
-    
+
+
     // MARK: - View Lifecycle Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChildrenViewControllers()
     }
-    
-    
+
+
     // MARK: - WPMediaPickerViewControllerDelegate
-    
+
     func mediaPickerController(picker: WPMediaPickerViewController, shouldShowAsset asset: WPMediaAsset) -> Bool {
         return asset.isKindOfClass(PHAsset)
     }
-    
+
     func mediaPickerController(picker: WPMediaPickerViewController, didFinishPickingAssets assets: [AnyObject]) {
         // Export the UIImage Asset
         guard let asset = assets.first as? PHAsset else {
             onCompletion?(nil)
             return
         }
-        
+
         asset.exportMaximumSizeImage { (image, info) in
             guard let rawGravatar = image else {
                 self.onCompletion?(nil)
@@ -47,19 +47,19 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
             picker.showAfterViewController(imageCropViewController)
         }
     }
-    
+
     func mediaPickerControllerDidCancel(picker: WPMediaPickerViewController) {
         onCompletion?(nil)
     }
-    
-    
+
+
     // MARK: - Private Methods
-    
+
     // Instantiates a new MediaPickerViewController, and sets it up as a children ViewController.
     //
     private func setupChildrenViewControllers() {
         let pickerViewController = newMediaPickerViewController()
-        
+
         pickerViewController.willMoveToParentViewController(self)
         pickerViewController.view.bounds = view.bounds
         view.addSubview(pickerViewController.view)
@@ -75,10 +75,10 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
         pickerViewController.showMostRecentFirst = true
         pickerViewController.allowMultipleSelection = false
         pickerViewController.filter = .Image
-        
+
         return pickerViewController
     }
-    
+
     // Returns a new ImageCropViewController instance.
     //
     private func newImageCropViewController(rawGravatar: UIImage) -> ImageCropViewController {
@@ -87,7 +87,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
             self?.onCompletion?(image)
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
-        
+
         return imageCropViewController
     }
 }
