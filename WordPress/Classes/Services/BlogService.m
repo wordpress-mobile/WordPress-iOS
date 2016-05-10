@@ -638,9 +638,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
     id<BlogServiceRemote> remote;
-    if (blog.restApi) {
-        remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
-    } else {
+    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+        if (blog.restApi) {
+            remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
+    } else if (blog.api) {
         remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 
@@ -649,6 +651,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
+    if (account.restApi == nil) {
+        return nil;
+    }
+
     return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 

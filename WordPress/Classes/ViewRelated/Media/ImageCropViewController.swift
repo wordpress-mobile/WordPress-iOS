@@ -9,22 +9,22 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
 {
     // MARK: - Public Properties
     var onCompletion: (UIImage -> Void)?
-    
-    
+
+
     // MARK: - Public Initializers
-    
+
     convenience init(image: UIImage) {
         let nibName = ImageCropViewController.classNameWithoutNamespaces()
         self.init(nibName: nibName, bundle: nil)
         rawImage = image
     }
-    
-    
+
+
     // MARK: - UIViewController Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Title
         title = NSLocalizedString("Resize & Crop", comment: "")
 
@@ -34,33 +34,33 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
                                                             style: .Plain,
                                                             target: self,
                                                             action: #selector(btnCropWasPressed))
-        
+
         // Setup: ImageView
         imageView.image = rawImage
-        
+
         // Setup: ScrollView
         let minimumScale = max(scrollView.frame.width / rawImage.size.width, scrollView.frame.height / rawImage.size.height)
         scrollView.minimumZoomScale = minimumScale
         scrollView.maximumZoomScale = minimumScale * maximumScaleFactor
         scrollView.zoomScale = minimumScale
-        
+
         // Setup: Overlay
         overlayView.borderColor = WPStyleGuide.newKidOnTheBlockBlue()
     }
-    
-    
+
+
     // MARK: - UIScrollViewDelegate Methods
-    
+
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView
     }
-    
+
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
         // NO-OP:
         // Required to enable scrollView Zooming
     }
-    
-    
+
+
     // MARK: - Action Handlers
     @IBAction func btnCropWasPressed() {
         // Calculations!
@@ -78,23 +78,23 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
         rawImage?.drawInRect(resizeRect)
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         // Crop
         guard let clippedImageRef = CGImageCreateWithImageInRect(scaledImage.CGImage, clippingRect.integral) else {
             return
         }
-        
+
         let clippedImage = UIImage(CGImage: clippedImageRef, scale: screenScale, orientation: .Up)
         onCompletion?(clippedImage)
     }
-    
-    
+
+
     // MARK: - Private Constants
     private let maximumScaleFactor  = CGFloat(3)
-    
+
     // MARK: - Private Properties
     private var rawImage                : UIImage!
-    
+
     // MARK: - IBOutlets
     @IBOutlet private var scrollView    : UIScrollView!
     @IBOutlet private var imageView     : UIImageView!

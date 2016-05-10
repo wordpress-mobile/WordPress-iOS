@@ -68,7 +68,7 @@ class MediaSettings: NSObject {
             if let savedRemoveLocation = database.objectForKey(removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
-                return true;
+                return true
             }
         }
         set {
