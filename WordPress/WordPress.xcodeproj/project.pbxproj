@@ -2319,23 +2319,35 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		080C44AF1CE14ABD00B3A02F /* Menus Views */ = {
+		080C44AF1CE14ABD00B3A02F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				080C449D1CE14A9F00B3A02F /* MenuDetailsView.h */,
-				080C449E1CE14A9F00B3A02F /* MenuDetailsView.m */,
+				086E1FDE1BBB35D2002D86CA /* MenusViewController.h */,
+				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
+				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
+				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
 				080C44A31CE14A9F00B3A02F /* MenuItemsViewController.h */,
 				080C44A41CE14A9F00B3A02F /* MenuItemsViewController.m */,
-				080C449F1CE14A9F00B3A02F /* MenuItemAbstractView.h */,
-				080C44A01CE14A9F00B3A02F /* MenuItemAbstractView.m */,
-				080C44A11CE14A9F00B3A02F /* MenuItemInsertionView.h */,
-				080C44A21CE14A9F00B3A02F /* MenuItemInsertionView.m */,
-				080C44A71CE14A9F00B3A02F /* MenuItemView.h */,
-				080C44A81CE14A9F00B3A02F /* MenuItemView.m */,
-				080C44A51CE14A9F00B3A02F /* MenuItemsVisualOrderingView.h */,
-				080C44A61CE14A9F00B3A02F /* MenuItemsVisualOrderingView.m */,
+				08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */,
+				08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */,
+				08216FC01CDBF96000304BA7 /* MenuItemSourceViewController.h */,
+				08216FC11CDBF96000304BA7 /* MenuItemSourceViewController.m */,
+				08216FBE1CDBF96000304BA7 /* MenuItemSourceResultsViewController.h */,
+				08216FBF1CDBF96000304BA7 /* MenuItemSourceResultsViewController.m */,
+				08216FAC1CDBF96000304BA7 /* MenuItemAbstractPostsViewController.h */,
+				08216FAD1CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m */,
+				08216FB61CDBF96000304BA7 /* MenuItemPagesViewController.h */,
+				08216FB71CDBF96000304BA7 /* MenuItemPagesViewController.m */,
+				08216FB81CDBF96000304BA7 /* MenuItemPostsViewController.h */,
+				08216FB91CDBF96000304BA7 /* MenuItemPostsViewController.m */,
+				08216FAE1CDBF96000304BA7 /* MenuItemCategoriesViewController.h */,
+				08216FAF1CDBF96000304BA7 /* MenuItemCategoriesViewController.m */,
+				08216FC21CDBF96000304BA7 /* MenuItemTagsViewController.h */,
+				08216FC31CDBF96000304BA7 /* MenuItemTagsViewController.m */,
+				08216FB41CDBF96000304BA7 /* MenuItemLinkViewController.h */,
+				08216FB51CDBF96000304BA7 /* MenuItemLinkViewController.m */,
 			);
-			name = "Menus Views";
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		080E96DDFE201D6D7F000001 /* Classes */ = {
@@ -2353,36 +2365,33 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		08216FD61CDBF99F00304BA7 /* Item Type */ = {
+		0842ED581CE25BCF00DAA90D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */,
-				08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */,
+				080C449D1CE14A9F00B3A02F /* MenuDetailsView.h */,
+				080C449E1CE14A9F00B3A02F /* MenuDetailsView.m */,
+				080C449F1CE14A9F00B3A02F /* MenuItemAbstractView.h */,
+				080C44A01CE14A9F00B3A02F /* MenuItemAbstractView.m */,
+				080C44A11CE14A9F00B3A02F /* MenuItemInsertionView.h */,
+				080C44A21CE14A9F00B3A02F /* MenuItemInsertionView.m */,
+				080C44A71CE14A9F00B3A02F /* MenuItemView.h */,
+				080C44A81CE14A9F00B3A02F /* MenuItemView.m */,
+				080C44A51CE14A9F00B3A02F /* MenuItemsVisualOrderingView.h */,
+				080C44A61CE14A9F00B3A02F /* MenuItemsVisualOrderingView.m */,
+				08216FB21CDBF96000304BA7 /* MenuItemEditingHeaderView.h */,
+				08216FB31CDBF96000304BA7 /* MenuItemEditingHeaderView.m */,
+				08216FB01CDBF96000304BA7 /* MenuItemEditingFooterView.h */,
+				08216FB11CDBF96000304BA7 /* MenuItemEditingFooterView.m */,
+				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
+				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
+				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
+				08D3454F1CD7F50900358E8C /* MenusSelectionView.m */,
+				08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */,
+				08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */,
+				08D3454C1CD7F50900358E8C /* MenusSelectionItemView.h */,
+				08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */,
 				08216FC41CDBF96000304BA7 /* MenuItemTypeSelectionView.h */,
 				08216FC51CDBF96000304BA7 /* MenuItemTypeSelectionView.m */,
-			);
-			name = "Item Type";
-			sourceTree = "<group>";
-		};
-		08216FD71CDBF9AA00304BA7 /* Item Source */ = {
-			isa = PBXGroup;
-			children = (
-				08216FC01CDBF96000304BA7 /* MenuItemSourceViewController.h */,
-				08216FC11CDBF96000304BA7 /* MenuItemSourceViewController.m */,
-				08216FBE1CDBF96000304BA7 /* MenuItemSourceResultsViewController.h */,
-				08216FBF1CDBF96000304BA7 /* MenuItemSourceResultsViewController.m */,
-				08216FAC1CDBF96000304BA7 /* MenuItemAbstractPostsViewController.h */,
-				08216FAD1CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m */,
-				08216FB61CDBF96000304BA7 /* MenuItemPagesViewController.h */,
-				08216FB71CDBF96000304BA7 /* MenuItemPagesViewController.m */,
-				08216FB81CDBF96000304BA7 /* MenuItemPostsViewController.h */,
-				08216FB91CDBF96000304BA7 /* MenuItemPostsViewController.m */,
-				08216FAE1CDBF96000304BA7 /* MenuItemCategoriesViewController.h */,
-				08216FAF1CDBF96000304BA7 /* MenuItemCategoriesViewController.m */,
-				08216FC21CDBF96000304BA7 /* MenuItemTagsViewController.h */,
-				08216FC31CDBF96000304BA7 /* MenuItemTagsViewController.m */,
-				08216FB41CDBF96000304BA7 /* MenuItemLinkViewController.h */,
-				08216FB51CDBF96000304BA7 /* MenuItemLinkViewController.m */,
 				08216FBA1CDBF96000304BA7 /* MenuItemSourceCell.h */,
 				08216FBB1CDBF96000304BA7 /* MenuItemSourceCell.m */,
 				08D978511CD2AF7D0054F19A /* MenuItemSourceHeaderView.h */,
@@ -2394,7 +2403,7 @@
 				08D9784F1CD2AF7D0054F19A /* MenuItemCheckButtonView.h */,
 				08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */,
 			);
-			name = "Item Source";
+			name = Views;
 			sourceTree = "<group>";
 		};
 		08AFB8351CE1300500000E1C /* Categories */ = {
@@ -2408,48 +2417,23 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
-		08D345461CD7F4E300358E8C /* Menu and Location Selection */ = {
+		08D345461CD7F4E300358E8C /* View Models */ = {
 			isa = PBXGroup;
 			children = (
-				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
-				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
-				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
-				08D3454F1CD7F50900358E8C /* MenusSelectionView.m */,
-				08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */,
-				08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */,
-				08D3454C1CD7F50900358E8C /* MenusSelectionItemView.h */,
-				08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */,
 				08D3454A1CD7F50900358E8C /* MenusSelectionItem.h */,
 				08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */,
 			);
-			name = "Menu and Location Selection";
-			sourceTree = "<group>";
-		};
-		08D345471CD7F4EF00358E8C /* MenuItem Editing */ = {
-			isa = PBXGroup;
-			children = (
-				08216FB21CDBF96000304BA7 /* MenuItemEditingHeaderView.h */,
-				08216FB31CDBF96000304BA7 /* MenuItemEditingHeaderView.m */,
-				08216FB01CDBF96000304BA7 /* MenuItemEditingFooterView.h */,
-				08216FB11CDBF96000304BA7 /* MenuItemEditingFooterView.m */,
-				08216FD61CDBF99F00304BA7 /* Item Type */,
-				08216FD71CDBF9AA00304BA7 /* Item Source */,
-			);
-			name = "MenuItem Editing";
+			name = "View Models";
 			sourceTree = "<group>";
 		};
 		08D978491CD2AF7D0054F19A /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				086E1FDE1BBB35D2002D86CA /* MenusViewController.h */,
-				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
 				08D499661CDD20450004809A /* Menus.storyboard */,
-				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
-				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
 				08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */,
-				080C44AF1CE14ABD00B3A02F /* Menus Views */,
-				08D345461CD7F4E300358E8C /* Menu and Location Selection */,
-				08D345471CD7F4EF00358E8C /* MenuItem Editing */,
+				080C44AF1CE14ABD00B3A02F /* Controllers */,
+				0842ED581CE25BCF00DAA90D /* Views */,
+				08D345461CD7F4E300358E8C /* View Models */,
 				08AFB8351CE1300500000E1C /* Categories */,
 			);
 			path = Menus;
