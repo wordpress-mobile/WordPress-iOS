@@ -38,12 +38,8 @@ public class LanguageViewController : UITableViewController
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Reload + Clear selection. Let's avoid flickers by dispatching the deselect call asynchronously
         tableView.reloadDataPreservingSelection()
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tableView.deselectSelectedRowWithAnimation(true)
-        }
+        tableView.deselectSelectedRowWithAnimationAfterDelay(true)
     }
     
     
@@ -106,7 +102,7 @@ public class LanguageViewController : UITableViewController
         let languages   = languageDatabase.grouped
         let titles      = languages.map { $0.map { $0.name } }
         let subtitles   = languages.map { $0.map { $0.description } }
-        let values      = languages.map { $0.map { $0.languageId } } as [[NSObject]]
+        let values      = languages.map { $0.map { $0.id } } as [[NSObject]]
         
         // Setup ListPickerViewController
         let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
