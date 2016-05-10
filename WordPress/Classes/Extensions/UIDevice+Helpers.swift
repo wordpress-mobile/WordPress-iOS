@@ -6,7 +6,7 @@ extension UIDevice
     public class func isPad() -> Bool {
         return UIDevice.currentDevice().userInterfaceIdiom == .Pad
     }
-    
+
     public class func isPhone() -> Bool {
         return UIDevice.currentDevice().userInterfaceIdiom == .Phone
     }
