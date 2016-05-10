@@ -6,7 +6,7 @@ class PeopleRemote: ServiceRemoteREST {
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
             "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin",
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
         api.GET(path,
@@ -51,6 +51,7 @@ class PeopleRemote: ServiceRemoteREST {
                 .flatMap { NSURL(string: $0)}
                 .flatMap { Gravatar($0)?.canonicalURL }
             let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
+            let linkedUserID = user["linked_user_ID"] as? Int ?? ID
             let roles = user["roles"] as? [String]
 
             let role = roles?.map({
@@ -58,7 +59,7 @@ class PeopleRemote: ServiceRemoteREST {
                 return Person.Role(string: role)
             }).sort().first ?? .Unsupported
 
-            return Person(ID: ID, username: username, firstName: firstName, lastName: lastName, displayName: displayName, role: role, siteID: siteID, avatarURL: avatarURL, isSuperAdmin: isSuperAdmin)
+            return Person(ID: ID, username: username, firstName: firstName, lastName: lastName, displayName: displayName, role: role, siteID: siteID, linkedUserID: linkedUserID, avatarURL: avatarURL, isSuperAdmin: isSuperAdmin)
         }
 
         let errorCount = people.reduce(0) { (sum, person) -> Int in

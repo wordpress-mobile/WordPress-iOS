@@ -31,7 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
-    
+
+    if (blog.restApi == nil) {
+        return;
+    }
+
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
     [remote getMenusForBlog:blog
                     success:^(NSArray<RemoteMenu *> * _Nullable remoteMenus, NSArray<RemoteMenuLocation *> * _Nullable remoteLocations) {
@@ -88,6 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
+    if (blog.restApi == nil) {
+        return;
+    }
+
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
     [remote createMenuWithName:menuName
                           blog:blog
@@ -110,6 +118,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
+    if (blog.restApi == nil) {
+        return;
+    }
+
     NSMutableArray *locationNames = nil;
     if (menu.locations.count) {
         locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
@@ -160,6 +172,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
+    if (blog.restApi == nil) {
+        return;
+    }
+
     void(^completeMenuDeletion)() = ^() {
         [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:menu];

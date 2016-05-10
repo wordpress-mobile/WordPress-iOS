@@ -15,7 +15,7 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
             }
         }
     }
-    
+
     /// Detail is displayed in standard section footer style
     ///
     public var detail: String = "" {
@@ -26,7 +26,7 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
             }
         }
     }
-    
+
     /// layoutWidth may be set from heightForHeaderInSection then intrinsicSize queried for height
     ///
     public var layoutWidth: CGFloat = 0 {
@@ -36,15 +36,15 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
                 let labelWidth = max(layoutWidth - stackView.layoutMargins.left - stackView.layoutMargins.right, 0)
                 titleLabel.preferredMaxLayoutWidth = labelWidth
                 detailLabel.preferredMaxLayoutWidth = labelWidth
-                
+
                 stackWidthConstraint?.constant = layoutWidth
                 setNeedsUpdateConstraints()
             }
         }
     }
-    
+
     // MARK: - Private Aliases
-    
+
     private typealias Style = WPStyleGuide.TableViewHeaderDetailView
 
     // MARK: - Private Properties
@@ -56,10 +56,10 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
         titleLabel.lineBreakMode = .ByWordWrapping
         titleLabel.font = Style.titleFont
         titleLabel.textColor = Style.titleColor
-        
+
         return titleLabel
     }()
-    
+
     private let detailLabel: UILabel = {
         let detailLabel = UILabel()
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -67,10 +67,10 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
         detailLabel.lineBreakMode = .ByWordWrapping
         detailLabel.font = Style.detailFont
         detailLabel.textColor = Style.detailColor
-        
+
         return detailLabel
     }()
-    
+
     private let stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,14 +80,14 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
         stackView.spacing = Style.headerDetailSpacing
         stackView.layoutMargins = Style.layoutMargins
         stackView.layoutMarginsRelativeArrangement = true
-        
+
         return stackView
     }()
-    
+
     private var stackWidthConstraint: NSLayoutConstraint?
 
     // MARK: - Initializers
-    
+
     /// Convenience initializer for TableViewHeaderDetailView
     ///
     /// - Parameters:
@@ -101,50 +101,50 @@ public class TableViewHeaderDetailView : UITableViewHeaderFooterView
             self.detail = detail ?? ""
         }
     }
-    
+
     override public init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         stackSubviews()
     }
-    
+
     required public init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
         stackSubviews()
     }
-    
+
     private func stackSubviews() {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(detailLabel)
-        
+
         stackView.centerXAnchor.constraintEqualToAnchor(contentView.centerXAnchor).active = true
         stackWidthConstraint = stackView.widthAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width)
         stackWidthConstraint?.active = true
     }
-    
+
     // MARK: - View Lifecycle
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        
+
         layoutWidth = frame.size.width
     }
-    
+
     override public func intrinsicContentSize() -> CGSize {
         guard layoutWidth > 0 else {
             return CGSize.zero
         }
-        
+
         let titleSize = titleLabel.intrinsicContentSize()
         let detailSize = detailLabel.intrinsicContentSize()
         let height = stackView.layoutMargins.top + titleSize.height + stackView.spacing + detailSize.height + stackView.layoutMargins.bottom
-        
+
         return CGSize(width: layoutWidth, height: height)
     }
-    
+
     override public func prepareForReuse() {
         super.prepareForReuse()
-        
+
         title = ""
         detail = ""
     }
@@ -178,7 +178,7 @@ extension WPStyleGuide
         public static let bottomMargin: CGFloat = 8
         public static let sideMargin: CGFloat = 16
         public static let layoutMargins = UIEdgeInsets(top: topMargin, left: sideMargin, bottom: bottomMargin, right: sideMargin)
-        
+
         public static let headerDetailSpacing: CGFloat = 8
     }
 }

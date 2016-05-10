@@ -46,6 +46,7 @@
     NSDictionary *topicDictionaryWithID = @{
                                             @"ID": @"16166",
                                             @"title": @"Coffee",
+                                            @"display_name": @"coffee",
                                             @"URL": @"https://public-api.wordpress.com/rest/v1/read/tags/coffee/posts"
                                             };
     NSDictionary *topicDictionaryWithoutID = @{
@@ -60,7 +61,7 @@
     XCTAssertTrue(remoteTopic.isRecommended, @"Remote topic should be recommended but wasn't.");
     XCTAssertTrue(remoteTopic.isSubscribed, @"Remote topic should be subscribed but wasn't.");
     XCTAssertTrue([remoteTopic.path isEqualToString:topicDictionaryWithID[@"URL"]], @"Remote topic path did not match.");
-    XCTAssertEqual(remoteTopic.title, topicDictionaryWithID[@"title"], @"Remote topic title did not match.");
+    XCTAssertEqual(remoteTopic.title, topicDictionaryWithID[@"display_name"], @"Remote topic should prefer display_name over title.");
     XCTAssertEqual([remoteTopic.topicID integerValue], [topicDictionaryWithID[@"ID"] integerValue], @"Remote topic ID did not match.");
 
     remoteTopic = [remoteService normalizeTopicDictionary:topicDictionaryWithoutID subscribed:NO recommended:NO];

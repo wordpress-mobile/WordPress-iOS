@@ -42,7 +42,7 @@ public class ReaderGapMarkerCell: UITableViewCell
     }
 
     public func animateActivityView(animate:Bool) {
-        button.hidden = animate;
+        button.hidden = animate
         if animate {
             activityView.startAnimating()
         } else {

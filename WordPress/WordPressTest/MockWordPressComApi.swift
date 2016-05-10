@@ -8,14 +8,14 @@ class MockWordPressComApi : WordPressComApi {
     var parametersPassedIn:AnyObject?
     var successBlockPassedIn:((AFHTTPRequestOperation!, AnyObject!) -> Void)?
     var failureBlockPassedIn:((AFHTTPRequestOperation!, NSError!) -> Void)?
-    
+
     override func GET(URLString: String?, parameters: AnyObject!, success: ((AFHTTPRequestOperation!, AnyObject!) -> Void)!, failure: ((AFHTTPRequestOperation!, NSError!) -> Void)!) -> AFHTTPRequestOperation {
         getMethodCalled = true
         URLStringPassedIn = URLString
         parametersPassedIn = parameters
         successBlockPassedIn = success
         failureBlockPassedIn = failure
-        
+
         return AFHTTPRequestOperation()
     }
 
@@ -25,7 +25,7 @@ class MockWordPressComApi : WordPressComApi {
         parametersPassedIn = parameters
         successBlockPassedIn = success
         failureBlockPassedIn = failure
-        
+
         return AFHTTPRequestOperation()
     }
 }
