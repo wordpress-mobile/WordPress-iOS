@@ -93,10 +93,10 @@ whitelist_rules:
   - trailing_newline
 
   # Lines should not have trailing semicolons.
-  # - trailing_semicolon
+  - trailing_semicolon
 
   # Lines should not have trailing whitespace.
-  # - trailing_whitespace
+  - trailing_whitespace
 
   # Type bodies should not span too many lines.
   # - type_body_length
