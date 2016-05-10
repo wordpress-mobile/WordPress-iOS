@@ -35,7 +35,7 @@ class RoleViewController : UITableViewController {
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = NSLocalizedString("Role", comment: "User Roles Title")
         setupActivityIndicator()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -72,47 +72,47 @@ class RoleViewController : UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return numberOfSections
     }
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return roles.count
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reusableIdentifier, forIndexPath: indexPath)
         let roleForCurrentRow = roleAtIndexPath(indexPath)
-        
+
         cell.textLabel?.text = roleForCurrentRow.localizedName()
         cell.accessoryType = (roleForCurrentRow == selectedRole) ? .Checkmark : .None
-        
+
         WPStyleGuide.configureTableViewCell(cell)
-        
+
         return cell
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimationAfterDelay(true)
-        
+
         let roleForSelectedRow = roleAtIndexPath(indexPath)
         guard selectedRole != roleForSelectedRow else {
             return
         }
-        
+
         // Refresh Interface
         selectedRole = roleForSelectedRow
         tableView.reloadDataPreservingSelection()
-        
+
         // Callback
         onChange?(roleForSelectedRow)
         navigationController?.popViewControllerAnimated(true)
     }
-    
-    
+
+
     // MARK: - Private Methods
     private func roleAtIndexPath(indexPath: NSIndexPath) -> Role {
         return roles[indexPath.row]
     }
-    
-    
+
+
     // MARK: - Private Constants
     private let numberOfSections = 1
     private let reusableIdentifier = "roleCell"

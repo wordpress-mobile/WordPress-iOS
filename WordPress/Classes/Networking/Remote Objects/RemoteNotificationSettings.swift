@@ -5,12 +5,12 @@ import Foundation
 *  @class           RemoteNotificationSettings
 *  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure it
 *                   in a meaningful way. Notification Settings come in three different flavors:
-*                   
+*
 *                   -   "Our Own" Blog Settings
 *                   -   "Third Party" Site Settings
 *                   -   WordPress.com Settings
 *
-*                   Each one of the possible channels may post notifications via different streams: Email, 
+*                   Each one of the possible channels may post notifications via different streams: Email,
 *                   Push Notifications, and Timeline.
 */
 
@@ -20,14 +20,14 @@ public class RemoteNotificationSettings
     *  @details Represents the Channel to which the current settings are associated.
     */
     public let channel : Channel
-    
+
     /**
     *  @details Contains an array of the available Notification Streams.
     */
     public let streams : [Stream]
-    
-    
-    
+
+
+
     /**
     *  @enum        Channel
     *  @brief       Represents a communication channel that may post notifications to the user.
@@ -37,8 +37,8 @@ public class RemoteNotificationSettings
         case Other
         case WordPressCom
     }
-    
-    
+
+
     /**
     *  @class       Stream
     *  @brief       Contains the Notification Settings for a specific communications stream.
@@ -46,8 +46,8 @@ public class RemoteNotificationSettings
     public class Stream {
         public var kind         : Kind
         public var preferences  : [String : Bool]?
-        
-        
+
+
         /**
         *  @enum    Stream.Kind
         *  @brief   Enumerates all of the possible Stream Kinds
@@ -56,11 +56,11 @@ public class RemoteNotificationSettings
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
-            
+
             static let allValues = [ Timeline, Email, Device ]
         }
-        
-        
+
+
         /**
         *  @details Private Designated Initializer
         *  @param   kind            The Kind of stream we're currently dealing with
@@ -71,7 +71,7 @@ public class RemoteNotificationSettings
             self.preferences    = filterNonBooleanEntries(preferences)
         }
 
-        
+
         /**
         *  @brief   Helper method that will filter out non boolean entries, and return a native Swift collection.
         *  @param   dictionary      NextStep Dictionary containing raw values
@@ -82,7 +82,7 @@ public class RemoteNotificationSettings
             if dictionary == nil {
                 return filtered
             }
-            
+
             for (key, value) in dictionary! {
                 if let stringKey = key   as? String,
                    let boolValue = value as? Bool
@@ -93,11 +93,11 @@ public class RemoteNotificationSettings
                     }
                 }
             }
-            
+
             return filtered
         }
-        
-        
+
+
         /**
         *  @brief   Parser method that will convert a raw dictionary of stream settings into Swift Native objects.
         *  @param   dictionary      NextStep Dictionary containing raw Stream Preferences
@@ -105,18 +105,18 @@ public class RemoteNotificationSettings
         */
         private static func fromDictionary(dictionary: NSDictionary?) -> [Stream] {
             var parsed = [Stream]()
-            
+
             for kind in Kind.allValues {
                 if let preferences = dictionary?[kind.rawValue] as? NSDictionary {
                     parsed.append(Stream(kind: kind, preferences: preferences))
                 }
             }
-            
+
             return parsed
         }
     }
-    
-    
+
+
     /**
     *  @details     Private Designated Initializer
     *  @param       channel         The communications channel that uses the current settings
@@ -126,8 +126,8 @@ public class RemoteNotificationSettings
         self.channel = channel
         self.streams = Stream.fromDictionary(settings)
     }
-    
-    
+
+
     /**
     *  @details     Private Designated Initializer
     *  @param       wpcomSettings   Dictionary containing the collection of WordPress.com Settings
@@ -137,8 +137,8 @@ public class RemoteNotificationSettings
         self.channel = Channel.WordPressCom
         self.streams = [ Stream(kind: .Email, preferences: wpcomSettings) ]
     }
-    
-    
+
+
     /**
     *  @details     Private Convenience Initializer
     *  @param       blogSettings    Dictionary containing the collection of settings for a single blog
@@ -147,8 +147,8 @@ public class RemoteNotificationSettings
         let blogId = blogSettings?["blog_id"] as? Int ?? Int.max
         self.init(channel: Channel.Blog(blogId: blogId), settings: blogSettings)
     }
-    
-    
+
+
     /**
     *  @details     Private Convenience Initializer
     *  @param       otherSettings   Dictionary containing the collection of "Other Settings"
@@ -156,9 +156,9 @@ public class RemoteNotificationSettings
     private convenience init(otherSettings: NSDictionary?) {
         self.init(channel: Channel.Other, settings: otherSettings)
     }
-    
-    
-    
+
+
+
     /**
     *  @details     Static Helper that will parse all of the Remote Settings, into a collection of
     *               Swift Native RemoteNotificationSettings objects
@@ -167,20 +167,20 @@ public class RemoteNotificationSettings
     */
     public static func fromDictionary(dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
         var parsed = [RemoteNotificationSettings]()
-        
+
         if let rawBlogs = dictionary?["blogs"] as? [NSDictionary] {
             for rawBlog in rawBlogs {
                 let parsedBlog = RemoteNotificationSettings(blogSettings: rawBlog)
                 parsed.append(parsedBlog)
             }
         }
-        
+
         let other = RemoteNotificationSettings(otherSettings: dictionary?["other"] as? NSDictionary)
         parsed.append(other)
-        
+
         let wpcom = RemoteNotificationSettings(wpcomSettings: dictionary?["wpcom"] as? NSDictionary)
         parsed.append(wpcom)
-        
+
         return parsed
     }
 }

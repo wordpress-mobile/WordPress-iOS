@@ -98,20 +98,19 @@ final class PersonViewController : UITableViewController {
     override func viewDidLoad() {
         assert(person != nil)
         assert(blog != nil)
-        
+
         super.viewDidLoad()
-        
+
         title = person.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
-    
-    
+
     
     // MARK: - UITableView Methods
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
-        
+
         guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
             return
         }
@@ -125,8 +124,7 @@ final class PersonViewController : UITableViewController {
             break
         }
     }
-    
-    
+
     
     // MARK: - Storyboard Methods
     
@@ -312,7 +310,7 @@ private extension PersonViewController {
     var isRemoveEnabled : Bool {
 // TODO: JLP May.3.2016. To be uncommented as part of #5288
         return false
-        
+
 //        // Note: YES, ListUsers. Brought from Calypso's code
 //        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
     }

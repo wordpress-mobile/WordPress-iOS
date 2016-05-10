@@ -15,8 +15,8 @@ extension NSURLCache
         static let contentTypeKey   = "Content-Type"
         static let contentTypePNG   = "image/png"
     }
-    
-    
+
+
     /// Updates the cache contents for a given request, and stores the specified image.
     ///
     /// -   Parameters:
@@ -29,13 +29,13 @@ extension NSURLCache
         {
             return
         }
-        
+
         // Fist: Prepare the Response Headers
         let headerFields = [
             Constants.contentTypeKey : Constants.contentTypePNG,
             Constants.expirationKey  : NSDate(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
         ]
-        
+
         // Second: Construct a proper NSHTTPURLResponse
         guard let response = NSHTTPURLResponse(URL: URL,
                                                statusCode: Constants.statusCodeOK,
@@ -44,7 +44,7 @@ extension NSURLCache
         {
             return
         }
-        
+
         // Third: Proceed storing the cache
         let cached = NSCachedURLResponse(response: response, data: responseData, userInfo: nil, storagePolicy: .Allowed)
         storeCachedResponse(cached, forRequest: request)
