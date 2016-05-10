@@ -8,7 +8,7 @@ extension WPStyleGuide
     class Share
     {
         static let blavatarPlaceholderImage = UIImage(named: "blavatar-default")
-        
+
         static func configureBlogTableViewCell(cell: UITableViewCell) {
             WPStyleGuide.configureTableViewCell(cell)
             cell.backgroundColor = UIColor.clearColor()

@@ -96,7 +96,7 @@ static const NSInteger MinutesToReadThreshold = 2;
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"read/sites/%d/posts/%d/?meta=site", siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_2];
     

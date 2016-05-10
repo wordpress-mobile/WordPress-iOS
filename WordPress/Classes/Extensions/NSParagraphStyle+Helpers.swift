@@ -9,7 +9,7 @@ extension NSMutableParagraphStyle
         self.lineBreakMode      = lineBreakMode
         self.alignment          = alignment
     }
-    
+
     convenience init(minLineHeight: CGFloat, maxLineHeight: CGFloat, lineBreakMode: NSLineBreakMode, alignment: NSTextAlignment) {
         self.init(minLineHeight: minLineHeight, lineBreakMode: lineBreakMode, alignment: alignment)
         self.maximumLineHeight  = maxLineHeight
