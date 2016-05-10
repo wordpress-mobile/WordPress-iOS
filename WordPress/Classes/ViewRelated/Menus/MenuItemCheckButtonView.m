@@ -60,7 +60,7 @@ static CGFloat const iconPadding = 3.0;
     
     NSDictionary *attributes = [self attributesForText];
     label.font = [attributes objectForKey:NSFontAttributeName];
-    label.textColor = [attributes objectForKey:NSForegroundColorAttributeName];
+    label.textColor = [WPStyleGuide greyDarken30];
     
     [self addSubview:label];
     
