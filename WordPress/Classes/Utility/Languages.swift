@@ -45,8 +45,7 @@ class WordPressComLanguageDatabase : NSObject
 
     /// Returns the Human Readable name for a given Language Identifier
     ///
-    /// - Parameters:
-    ///     - languageId: The Identifier of the language.
+    /// - Parameter languageId: The Identifier of the language.
     ///
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///

@@ -13,8 +13,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     /// Returns an error message to use is the API returns an unexpected result.
     ///
-    /// - Parameters:
-    ///     - operation: The AFHTTPRequestOperation that returned the unexpected result.
+    /// - Parameter operation: The AFHTTPRequestOperation that returned the unexpected result.
     ///
     /// - Returns: An `NSError` object.
     ///
@@ -256,10 +255,10 @@ public class SharingServiceRemote : ServiceRemoteREST
     /// - Parameters:
     ///     - connectionID: The ID of the publicize connection.
     ///     - externalID: The connection's externalID. Pass `nil` if the keyring
-    /// connection's default external ID should be used.  Otherwise pass the external
-    /// ID of one if the keyring connection's `additionalExternalUsers`.
+    ///                   connection's default external ID should be used.  Otherwise pass the external
+    ///                   ID of one if the keyring connection's `additionalExternalUsers`.
     ///     - siteID: The WordPress.com ID of the site.
-    ///      -success: An optional success block accepting no arguments.
+    ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func updatePublicizeConnectionWithID(connectionID: NSNumber,
@@ -304,7 +303,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///     - connectionID: The ID of the publicize connection.
     ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
     ///     - siteID: The WordPress.com ID of the site.
-    ///      -success: An optional success block accepting no arguments.
+    ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func updatePublicizeConnectionWithID(connectionID: NSNumber,
@@ -346,7 +345,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     /// - Parameters:
     ///     - siteID: The WordPress.com ID of the site.
     ///     - connectionID: The ID of the publicize connection.
-    ///      -success: An optional success block accepting no arguments.
+    ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func deletePublicizeConnection(siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
@@ -366,8 +365,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
     ///
-    /// - Parameters:
-    ///     - dict: An `NSDictionary` representing a `RemotePublicizeConnection`.
+    /// - Parameter dict: An `NSDictionary` representing a `RemotePublicizeConnection`.
     ///
     /// - Returns: A `RemotePublicizeConnection` object.
     ///
@@ -473,8 +471,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
     ///
-    /// - Parameters:
-    ///     - buttons: An `NSArray` of `NSDictionary`s representing `RemoteSharingButton` objects.
+    /// - Parameter buttons: An `NSArray` of `NSDictionary`s representing `RemoteSharingButton` objects.
     ///
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///

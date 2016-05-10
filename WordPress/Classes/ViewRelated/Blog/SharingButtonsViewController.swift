@@ -289,8 +289,7 @@ import WordPressShared
 
     /// Creates a sortable row for the specified button.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -310,8 +309,7 @@ import WordPressShared
 
     /// Creates a switch row for the specified button in the sharing buttons section.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -336,8 +334,7 @@ import WordPressShared
 
     /// Creates a switch row for the specified button in the more buttons section.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -491,8 +488,7 @@ import WordPressShared
 
     /// Provides the icon that represents the sharing button's service.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button for the icon.
+    /// - Parameter button: The sharing button for the icon.
     ///
     /// - Returns: The UIImage for the icon
     ///
@@ -521,8 +517,7 @@ import WordPressShared
     /// Saves changes to blog settings back to the blog and optionally refreshes
     /// the tableview.
     ///
-    /// - Parameters:
-    ///     - refresh: True if the tableview should be reloaded.
+    /// - Parameter refresh: True if the tableview should be reloaded.
     ///
     func saveBlogSettingsChanges(refresh: Bool) {
         if refresh {
@@ -624,8 +619,7 @@ import WordPressShared
     /// Saves changes to sharing buttons to core data, reloads the buttons, then
     /// pushes the changes up to the blog, optionally refreshing when done.
     ///
-    /// - Parameters:
-    ///     - refreshAfterSync: If true buttons are reloaded when the sync completes.
+    /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
     func saveButtonChanges(refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
@@ -650,8 +644,7 @@ import WordPressShared
 
     /// Saves changes to the sharing buttons back to the blog.
     ///
-    /// - Parameters:
-    ///     - refresh: True if the tableview sections should be reloaded.
+    /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
     func syncButtonChangesToBlog(refresh: Bool) {
         let service = SharingService(managedObjectContext: managedObjectContext)
@@ -672,8 +665,7 @@ import WordPressShared
     /// Shows an alert. The localized description of the specified NSError is
     /// included in the alert.
     ///
-    /// - Parameters:
-    ///     - error: An NSError object.
+    /// - Parameter error: An NSError object.
     ///
     func showErrorSyncingMessage(error: NSError) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
@@ -971,5 +963,4 @@ import WordPressShared
             cellIdentifier = SharingCellIdentifiers.SettingsCellIdentifier
         }
     }
-
 }

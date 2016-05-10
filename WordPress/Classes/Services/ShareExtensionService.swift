@@ -5,8 +5,7 @@ public class ShareExtensionService: NSObject
 {
     /// Sets the OAuth Token that should be used by the Share Extension to hit the Dotcom Backend.
     ///
-    /// -   Parameters:
-    ///     - oauth2Token: WordPress.com OAuth Token
+    /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
     class func configureShareExtensionToken(oauth2Token: String) {
         do {
@@ -22,8 +21,7 @@ public class ShareExtensionService: NSObject
 
     /// Sets the Username that should be used by the Share Extension to hit the Dotcom Backend.
     ///
-    /// -   Parameters:
-    ///     - oauth2Token: WordPress.com OAuth Token
+    /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
     class func configureShareExtensionUsername(username: String) {
         do {
@@ -39,7 +37,7 @@ public class ShareExtensionService: NSObject
 
     /// Sets the Primary Site that should be pre-selected in the Share Extension.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - defaultSiteID: The ID of the Primary Site.
     ///     - defaultSiteName: The Primary Site's Name
     ///
