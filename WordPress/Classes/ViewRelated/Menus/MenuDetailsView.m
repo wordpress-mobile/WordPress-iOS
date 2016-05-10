@@ -10,10 +10,11 @@
 
 @interface MenuDetailsView () <UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, weak) IBOutlet UITextField *textField;
-@property (nonatomic, weak) IBOutlet UIView *textFieldDesignView;
-@property (nonatomic, weak) IBOutlet UIButton *trashButton;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet UITextField *textField;
+@property (nonatomic, strong) IBOutlet UIView *textFieldDesignView;
+@property (nonatomic, strong) IBOutlet UIButton *doneButton;
+@property (nonatomic, strong) IBOutlet UIButton *trashButton;
 @property (nonatomic, strong, readonly) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong, readonly) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
@@ -37,6 +38,7 @@
     
     [self setupTextField];
     [self setupTextFieldDesignViews];
+    [self setupDoneButton];
     [self setupTrashButton];
     
     [self updateTextFieldDesignIconPositioning];
@@ -55,6 +57,18 @@
     textField.adjustsFontSizeToFitWidth = NO;
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+}
+
+- (void)setupDoneButton
+{
+    UIButton *doneButton = self.doneButton;
+    [doneButton setTitle:NSLocalizedString(@"Done", @"Menu button title for finishing editing the Menu name.") forState:UIControlStateNormal];
+    [doneButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateNormal];
+    doneButton.titleLabel.font = [WPFontManager systemRegularFontOfSize:16];
+    doneButton.backgroundColor = [UIColor clearColor];
+    doneButton.hidden = YES;
+    doneButton.alpha = 0.0;
+    [doneButton addTarget:self action:@selector(doneButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setupTrashButton
@@ -134,27 +148,27 @@
     [self.textFieldDesignIcon setNeedsLayout];
 }
 
-- (void)showTextFieldEditingState:(NSTimeInterval)duration animationOptions:(UIViewAnimationOptions)options
+- (void)showTextFieldEditingState:(NSTimeInterval)duration
 {
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+    [UIView animateWithDuration:duration animations:^{
         
         self.textFieldDesignIcon.hidden = YES;
         self.textFieldDesignView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+        self.doneButton.hidden = NO;
+        self.doneButton.alpha = 1.0;
         
-    } completion:^(BOOL finished) {
-        
-    }];
+    } completion:nil];
 }
 
-- (void)hideTextFieldEditingState:(NSTimeInterval)duration animationOptions:(UIViewAnimationOptions)options
+- (void)hideTextFieldEditingState:(NSTimeInterval)duration
 {
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+    [UIView animateWithDuration:duration animations:^{
         
         self.textFieldDesignView.backgroundColor = [UIColor clearColor];
+        self.doneButton.hidden = YES;
+        self.doneButton.alpha = 0.0;
 
-    } completion:^(BOOL finished) {
-
-    }];
+    } completion:nil];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -170,6 +184,11 @@
 }
 
 #pragma mark - buttons
+
+- (void)doneButtonPressed
+{
+    [self.textField resignFirstResponder];
+}
 
 - (void)trashButtonPressed
 {
@@ -202,7 +221,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.editingBeginningName = textField.text;
-    [self showTextFieldEditingState:0.3 animationOptions:UIViewAnimationOptionCurveEaseOut];
+    [self showTextFieldEditingState:0.3];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -215,7 +234,7 @@
         self.textFieldDesignIcon.hidden = NO;
     }];
     
-    [self hideTextFieldEditingState:0.3 animationOptions:UIViewAnimationOptionCurveEaseOut];
+    [self hideTextFieldEditingState:0.3];
 }
 
 @end
