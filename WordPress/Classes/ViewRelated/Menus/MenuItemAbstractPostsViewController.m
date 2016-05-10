@@ -67,6 +67,15 @@
                      }];
 }
 
+- (NSString *)titleForPost:(AbstractPost *)post
+{
+    NSString *postTitle = post.titleForDisplay;
+    if (!postTitle.length) {
+        postTitle = NSLocalizedString(@"(Untitled)", @"Menus title label text for a post that has no set title.");
+    }
+    return postTitle;
+}
+
 #pragma mark - TableView methods
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
@@ -77,12 +86,7 @@
     } else {
         cell.sourceSelected = NO;
     }
-    
-    NSString *postTitle = post.titleForDisplay;
-    if (!postTitle.length) {
-        postTitle = NSLocalizedString(@"(Untitled)", @"Menus title label text for a post that has no set title.");
-    }
-    [cell setTitle:postTitle];
+    [cell setTitle:[self titleForPost:post]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,8 +94,8 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    [self setItemSourceWithContentID:post.postID name:post.titleForDisplay];
     
+    [self setItemSourceWithContentID:post.postID name:[self titleForPost:post]];
     [self deselectVisibleSourceCellsIfNeeded];
     
     MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
