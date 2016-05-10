@@ -220,6 +220,8 @@
 
 - (void)insertItemInsertionViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
+    BOOL wasEditing = self.isEditingForItemViewInsertion;
+
     CGRect previousRect = toggledItemView.frame;
     CGRect updatedRect = toggledItemView.frame;
     
@@ -236,7 +238,6 @@
         insertionView.hidden = YES;
         insertionView.alpha = 0.0;
     }
-    
     [UIView animateWithDuration:0.3 animations:^{
         
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
@@ -245,7 +246,9 @@
         }
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
-        [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
+        if (!wasEditing) {
+            [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
+        }
         
     } completion:^(BOOL finished) {
         
