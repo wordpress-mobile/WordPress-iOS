@@ -41,7 +41,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
 
 
@@ -65,6 +65,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+    
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if resultsController.fetchedObjects?.count == 0 {
@@ -72,7 +77,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             refresh()
         }
     }
-
+    
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableView.reloadData()
+    }
+    
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let personViewController = segue.destinationViewController as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow
