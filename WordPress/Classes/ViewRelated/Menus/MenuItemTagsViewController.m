@@ -178,17 +178,18 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     if (searchText.length) {
         self.defersFooterViewMessageUpdates = YES;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
+        DDLogDebug(@"MenuItemSourceTagView: Updating fetch request with search predicate matching: %@", searchText);
     } else {
         self.defersFooterViewMessageUpdates = NO;
+        DDLogDebug(@"MenuItemSourceTagView: Updating fetch request with default predicate");
         predicate = defaultPredicate;
     }
-    
+
     if ([self.resultsController.fetchRequest.predicate isEqual:predicate]) {
         // same predicate, no update needed
         return;
     }
     
-    DDLogDebug(@"MenuItemSourceTagView: Updating fetch request predicate");
     self.resultsController.fetchRequest.predicate = predicate;
     [self performResultsControllerFetchRequest];
     [self.tableView reloadData];
