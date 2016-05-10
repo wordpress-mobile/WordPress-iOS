@@ -306,6 +306,15 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatEditorUploadMediaRetried:
             eventName = @"editor_upload_media_retried";
             break;
+        case WPAnalyticsStatGravatarCropped:
+            eventName = @"me_gravatar_cropped";
+            break;
+        case WPAnalyticsStatGravatarTapped:
+            eventName = @"me_gravatar_tapped";
+            break;
+        case WPAnalyticsStatGravatarUploaded:
+            eventName = @"me_gravatar_uploaded";
+            break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
             break;

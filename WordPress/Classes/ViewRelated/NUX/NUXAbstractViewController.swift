@@ -149,8 +149,7 @@ class NUXAbstractViewController : UIViewController
 
     /// Display the specified error in a modal.
     ///
-    /// - Parameters:
-    ///     - error: An NSError instance
+    /// - Parameter error: An NSError instance
     ///
     func displayError(error: NSError) {
         let presentingController = navigationController ?? self

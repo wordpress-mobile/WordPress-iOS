@@ -107,8 +107,8 @@ extension BlogSettings
 
 
         /// Designated Initializer
-        /// -   Parameters:
-        ///     -   rawValue: The Threading raw value (Core Data Integer)
+        ///
+        /// - Parameter rawValue: The Threading raw value (Core Data Integer)
         ///
         init?(rawValue : Int) {
             switch rawValue {
