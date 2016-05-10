@@ -39,6 +39,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         configureSendCodeButtonText()
         configureStatusLabel("")
         configureSubmitButton(animating: false)
@@ -73,6 +74,17 @@ import WordPressShared
 
 
     // MARK: Configuration Methods
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
+
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+    }
 
 
     /// Configures the appearance of the button to request a 2fa code be sent via SMS.
