@@ -4,7 +4,7 @@ import WordPressComAnalytics
 
 
 /// The purpose of this class is to handle WordPress.com Push Authentication Notifications.
-/// When logging into a WordPress.com that has 2FA enabled, the user will be presented with the possibility of 
+/// When logging into a WordPress.com that has 2FA enabled, the user will be presented with the possibility of
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
@@ -14,23 +14,22 @@ import WordPressComAnalytics
     //
     public var alertControllerProxy = UIAlertControllerProxy()
     public let pushAuthenticationService:PushAuthenticationService
-    
+
     override convenience init() {
         self.init(pushAuthenticationService: PushAuthenticationService(managedObjectContext: ContextManager.sharedInstance().mainContext))
     }
-    
+
     public init(pushAuthenticationService: PushAuthenticationService) {
         self.pushAuthenticationService = pushAuthenticationService
         super.init()
     }
-    
-    
+
+
     /// Checks if a given Push Notification is a Push Authentication.
     ///
     /// - Note: A Push Notification should be handled by this helper whenever the 'Type' field is of the 'push_auth' kind.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload. Can be nil.
+    /// - Parameter userInfo: Is the Notification's payload. Can be nil.
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
@@ -42,14 +41,13 @@ import WordPressComAnalytics
         return false
     }
 
-    /// Will display a popup requesting for permission to verify a WordPress.com login attempt. 
+    /// Will display a popup requesting for permission to verify a WordPress.com login attempt.
     /// The notification's type *is expected* to be of the Push Authentication kind.
     /// If the alertView is confirmed, will proceed notifying WordPress.com's backend.
-    /// On error, the backend call to verify the WordPress.com login attempt will be retried a maximum of (three) times, 
+    /// On error, the backend call to verify the WordPress.com login attempt will be retried a maximum of (three) times,
     /// automatically.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload.
+    /// - Parameter userInfo: Is the Notification's payload.
     ///
     public func handlePushAuthenticationNotification(userInfo: NSDictionary?) {
         // Expired: Display a message!
@@ -58,15 +56,15 @@ import WordPressComAnalytics
             WPAnalytics.track(.PushAuthenticationExpired)
             return
         }
-        
+
         // Verify: Ask for approval
         let token   = userInfo?["push_auth_token"]           as? String
         let message = userInfo?.valueForKeyPath("aps.alert") as? String
-            
+
         if token == nil || message == nil {
             return
         }
-        
+
         showLoginVerificationAlert(message!) { (approved) -> () in
             if approved {
                 self.authorizeLogin(token!, retryCount: self.initialRetryCount)
@@ -76,12 +74,12 @@ import WordPressComAnalytics
             }
         }
     }
-    
-    
-    
+
+
+
     // MARK: - Private Helpers
     //
-    
+
     /// Authorizes a WordPress.com login attempt.
     ///
     /// - Parameters:
@@ -100,24 +98,23 @@ import WordPressComAnalytics
             }
         }
     }
-    
-    
+
+
     /// Checks if a given Push Authentication Notification has already expired.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload.
+    /// - Parameter userInfo: Is the Notification's payload.
     ///
     private func isNotificationExpired(userInfo: NSDictionary?) -> Bool {
         let rawExpiration = userInfo?["expires"] as? Int
         if rawExpiration == nil {
             return false
         }
-        
+
         let parsedExpiration = NSDate(timeIntervalSince1970: NSTimeInterval(rawExpiration!))
         return parsedExpiration.timeIntervalSinceNow < minimumRemainingExpirationTime
     }
-    
-    
+
+
     /// Displays an AlertView indicating that a Login Request has expired.
     ///
     private func showLoginExpiredAlert() {
@@ -125,14 +122,14 @@ import WordPressComAnalytics
         let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
                                                     comment: "WordPress.com Push Authentication Expired message")
         let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
-        
+
         alertControllerProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle:  acceptButtonTitle,
             otherButtonTitles:  nil,
             tapBlock:           nil)
     }
-    
+
     /// Displays an AlertView asking for WordPress.com Authentication Approval.
     ///
     /// - Parameters:
@@ -143,7 +140,7 @@ import WordPressComAnalytics
         let title               = NSLocalizedString("Verify Sign In", comment: "Push Authentication Alert Title")
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
-        
+
         alertControllerProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle: cancelButtonTitle,
@@ -154,8 +151,8 @@ import WordPressComAnalytics
                 completion(approved: approved)
             }
     }
-    
-    
+
+
     // MARK: - Private Internal Constants
     private let initialRetryCount                   = 0
     private let maximumRetryCount                   = 3
