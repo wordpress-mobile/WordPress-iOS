@@ -40,11 +40,11 @@ import WordPressComAnalytics
         // The way the magic link flow works the `SigninLinkMailViewController`,
         // or some other view controller, might still be presented when the app
         // is resumed by tapping on the auth link.
-        // We need to do a little work to present the SigninLinkAuth controller 
+        // We need to do a little work to present the SigninLinkAuth controller
         // from the right place.
         // - If the rootViewController is not presenting another vc then just
         // present the auth controller.
-        // - If the rootViewController is presenting another NUX vc, dismiss the 
+        // - If the rootViewController is presenting another NUX vc, dismiss the
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
@@ -64,7 +64,7 @@ import WordPressComAnalytics
 
     /// Determine the proper UIViewController to use as a presenter for the auth controller.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - controller: A UIViewController. By convention this should be the app's rootViewController
     ///
     /// - Return: The view controller to use as the presenter.
@@ -130,7 +130,7 @@ import WordPressComAnalytics
 
 
     /// Checks if the passed string matches a reserved username.
-    /// 
+    ///
     /// - Parameters:
     ///     - username: The username to test.
     ///
@@ -206,7 +206,7 @@ import WordPressComAnalytics
     // MARK: - Other Helpers
 
 
-    /// Opens Safari to display the forgot password page for a wpcom or self-hosted 
+    /// Opens Safari to display the forgot password page for a wpcom or self-hosted
     /// based on the passed LoginFields instance.
     ///
     /// - Parameters:
@@ -259,7 +259,7 @@ import WordPressComAnalytics
 
             success(loginFields: loginFields)
         })
-        
+
     }
 
 
@@ -278,7 +278,7 @@ import WordPressComAnalytics
     class func updateSafariCredentialsIfNeeded(loginFields: LoginFields) {
         // Paranioa. Don't try and update credentials for self-hosted.
         if !loginFields.userIsDotCom {
-            return;
+            return
         }
 
         // If the user changed screen names, don't try and update/create a new shared web credential.
@@ -299,7 +299,7 @@ import WordPressComAnalytics
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
                 let err = error! as NSError
-                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)");
+                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)")
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
