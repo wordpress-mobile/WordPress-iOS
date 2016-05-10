@@ -34,6 +34,7 @@ extension AccountSettings {
     }
     
     var emailForDisplay : String {
-        return emailPendingAddress?.nonEmptyString() ?? email
+        let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email        
+        return emailPendingChange ? pendingEmail : email
     }
 }

@@ -59,7 +59,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.postListViewController = (segue.destinationViewController as! UITableViewController)
+        super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
     
     override func viewDidLoad() {
@@ -545,12 +545,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
         
         WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
-        
-        if !UIDevice.isPad() {
-            presentViewController(alertController, animated: true, completion: nil)
-            return
-        }
-        
+
         alertController.modalPresentationStyle = .Popover
         presentViewController(alertController, animated: true, completion: nil)
         

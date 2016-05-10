@@ -149,12 +149,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
         
         selectedValue = newValue
         tableView.reloadDataPreservingSelection()
-        
-        // Note: due to a weird UITableView interaction between reloadData and deselectSelectedRow,
-        // we'll introduce a slight delay before deselecting, to avoid getting the highlighted row flickering.
-        dispatch_async(dispatch_get_main_queue()) {
-            tableView.deselectSelectedRowWithAnimation(true)
-        }
+        tableView.deselectSelectedRowWithAnimationAfterDelay(true)
         
         // Callback!
         onChange?(newValue)
