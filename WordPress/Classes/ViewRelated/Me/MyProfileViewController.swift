@@ -74,7 +74,9 @@ private struct MyProfileController: SettingsController {
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: presenter.push(editText(AccountSettingsChange.AboutMe, service: service)))
+            action: presenter.push(editMultilineText(AccountSettingsChange.AboutMe,
+                hint:NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
+                service: service)))
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [

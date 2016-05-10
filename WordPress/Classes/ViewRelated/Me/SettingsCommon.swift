@@ -21,6 +21,14 @@ extension SettingsController {
         }
     }
 
+    func editMultilineText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsMultiTextViewController
+    {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            return self.controllerForEditableMultilineText(editableRow, changeType: changeType, hint: hint, service: service)
+        }
+    }
+
     func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
     {
         return { row in
@@ -41,6 +49,28 @@ extension SettingsController {
         let value = row.value
 
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.onValueChanged = {
+            value in
+
+            let change = changeType(value)
+            service.saveChange(change)
+            DDLogSwift.logDebug("\(title) changed: \(value)")
+        }
+
+        return controller
+    }
+
+    func controllerForEditableMultilineText(row: EditableTextRow,
+                                   changeType: AccountSettingsChangeWithString,
+                                   hint: String? = nil,
+                                   service: AccountSettingsService) -> SettingsMultiTextViewController
+    {
+        let title = row.title
+        let value = row.value
+
+        let controller = SettingsMultiTextViewController(text: value, placeholder: "\(title)...", hint: hint, isPassword: false)
 
         controller.title = title
         controller.onValueChanged = {
