@@ -19,7 +19,7 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
             "icon", "isActivated", "isAdmin", "isMultiAuthor", "lastCommentsSync",
             "lastPagesSync", "lastPostsSync", "lastStatsSync", "lastUpdateWarning",
             "options", "postFormats", "url", "visible", "xmlrpc",
-        ];
+        ]
         destBlog.setValuesForKeysWithDictionary(sInstance.dictionaryWithValuesForKeys(keysToMigrate))
 
         // 3. Set the username to the account username, except for Jetpack managed blogs

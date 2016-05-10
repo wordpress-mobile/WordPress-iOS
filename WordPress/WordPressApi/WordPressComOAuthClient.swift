@@ -79,7 +79,7 @@ public final class WordPressComOAuthClient: NSObject {
         ]
 
         if let multifactorCode = multifactorCode where !multifactorCode.isEmpty() {
-            parameters["wpcom_otp"] = multifactorCode;
+            parameters["wpcom_otp"] = multifactorCode
         }
 
         sessionManager.POST("token", parameters: parameters, success: { (task, responseObject) in
@@ -93,7 +93,7 @@ public final class WordPressComOAuthClient: NSObject {
 
             }, failure: { (task, error) in
                 failure(error: error)
-                DDLogSwift.logError("Error receiving OAuth2 token: \(error)");
+                DDLogSwift.logError("Error receiving OAuth2 token: \(error)")
             }
         )
     }
@@ -131,11 +131,11 @@ public final class WordPressComOAuthClient: NSObject {
         guard var responseDictionary = response as? [String:AnyObject],
             let _ = responseDictionary["access_token"]
             else {
-                return response;
+                return response
         }
 
         responseDictionary["access_token"] = "*** REDACTED ***"
-        return responseDictionary;
+        return responseDictionary
     }
 
 }
@@ -146,7 +146,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer
     override init() {
         super.init()
         let extraStatusCodes = NSMutableIndexSet(indexSet: self.acceptableStatusCodes!)
-        extraStatusCodes.addIndex(400);
+        extraStatusCodes.addIndex(400)
         self.acceptableStatusCodes = extraStatusCodes
     }
 
@@ -180,7 +180,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer
             "needs_2fa" : WordPressComOAuthError.NeedsMultifactorCode
         ]
 
-        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.Unknown.rawValue;
+        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.Unknown.rawValue
 
         error.memory = NSError(domain:WordPressComOAuthClient.WordPressComOAuthErrorDomain,
                        code:mappedCode,

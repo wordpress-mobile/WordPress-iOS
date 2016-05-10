@@ -209,9 +209,9 @@ public extension SiteSettingsViewController
         let purchasesUrl = "https://wordpress.com/purchases"
 
         let controller = WPWebViewController()
-        controller.authToken = blog.authToken;
-        controller.username = blog.usernameForSite;
-        controller.password = blog.password;
+        controller.authToken = blog.authToken
+        controller.username = blog.usernameForSite
+        controller.password = blog.password
         controller.wpLoginURL = NSURL(string: blog.loginUrl())
         controller.secureInteraction = true
         controller.url = NSURL(string: purchasesUrl)

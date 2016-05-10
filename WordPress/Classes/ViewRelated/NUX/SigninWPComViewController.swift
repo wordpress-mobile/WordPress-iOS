@@ -17,7 +17,7 @@ import WordPressShared
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
-    var immediateSignin = false;
+    var immediateSignin = false
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -218,7 +218,7 @@ import WordPressShared
 
 
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
 

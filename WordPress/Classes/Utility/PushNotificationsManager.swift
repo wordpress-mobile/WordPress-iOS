@@ -93,7 +93,7 @@ final public class PushNotificationsManager : NSObject
     ///
     func registerForRemoteNotifications() {
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
-            return;
+            return
         }
 
         sharedApplication.registerForRemoteNotifications()
@@ -204,7 +204,7 @@ final public class PushNotificationsManager : NSObject
     ///
     func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
         DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
-        DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)");
+        DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)")
 
         // Badge: Update
         if let badgeCountNumber = userInfo.numberForKeyPath(notificationBadgePath)?.integerValue {
