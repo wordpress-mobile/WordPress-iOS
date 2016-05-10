@@ -70,9 +70,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
-        refreshTeam()
-    }
 
+        displaySpinnerIfNeeded()
+        refresh()
+    }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
@@ -99,20 +100,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     
     // MARK: - Refresh Helpers
-    
+
     @IBAction public func refresh() {
-        refreshTeam() { [weak self] in
-            self?.refreshControl?.endRefreshing()
-        }
-    }
-    
-    private func refreshTeam(onCompletion: (Void -> Void)? = nil) {
         guard let blog = blog, service = PeopleService(blog: blog) else {
             return
         }
-        
-        service.refreshTeam { _ in
-            onCompletion?()
+
+        service.refreshTeam { [weak self] _ in
+            self?.refreshControl?.endRefreshing()
         }
     }
 
@@ -123,6 +118,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
         let person = Person(managedPerson: managedPerson)
         return person
+    }
+
+    private func displaySpinnerIfNeeded() {
+        if resultsController.fetchedObjects?.count > 0 {
+            return
+        }
+
+        refreshControl?.beginRefreshing()
     }
 
 
