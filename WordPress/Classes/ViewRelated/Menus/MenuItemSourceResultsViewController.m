@@ -106,6 +106,14 @@ static CGFloat const SearchBarHeight = 44.0;
     _footerView = footerView;
 }
 
+- (BOOL)isFirstResponder
+{
+    if ([self.searchBar isFirstResponder]) {
+        return [self.searchBar isFirstResponder];
+    }
+    return [super isFirstResponder];
+}
+
 - (BOOL)resignFirstResponder
 {
     if ([self.searchBar isFirstResponder]) {
