@@ -40,7 +40,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
             }
             
             // Track
-            WPAnalytics.track(.GravatarCropped)
+            WPAppAnalytics.track(.GravatarCropped)
             
             // Proceed Cropping
             let imageCropViewController = self.newImageCropViewController(rawGravatar)
