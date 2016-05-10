@@ -17,7 +17,7 @@ import WordPressShared
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
-    var immediateSignin = false;
+    var immediateSignin = false
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -124,10 +124,10 @@ import WordPressShared
     }
 
 
-    /// Displays the specified text in the status label. 
-    /// 
-    /// - Parameters:
-    ///     - message: The text to display in the label.
+    /// Displays the specified text in the status label.
+    ///
+    /// - Parameter message: The text to display in the label.
+    ///
     ///
     func configureStatusLabel(message: String) {
         statusLabel.text = message
@@ -149,13 +149,12 @@ import WordPressShared
 
     /// Configure the view's loading state.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
         passwordField.enabled = !loading
-        
+
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }
@@ -218,7 +217,7 @@ import WordPressShared
 
 
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
 

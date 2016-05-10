@@ -24,7 +24,7 @@ extension UIImageView
         let request = NSMutableURLRequest(URL: unwrappedUrl)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-        
+
         setImageWithURLRequest(request,
             placeholderImage: placeholderImage,
             success: { [weak self]

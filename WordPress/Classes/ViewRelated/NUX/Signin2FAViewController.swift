@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-/// Provides a form and functionality for entering a two factor auth code and 
+/// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
 @objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
@@ -25,8 +25,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> Signin2FAViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -67,7 +66,7 @@ import WordPressShared
         unregisterForKeyboardEvents()
 
         // Multifactor codes are time sensitive, so clear the stored code if the
-        // user dismisses the view. They'll need to reentered it upon return. 
+        // user dismisses the view. They'll need to reentered it upon return.
         loginFields.multifactorCode = ""
         verificationCodeField.text = ""
     }
@@ -121,8 +120,7 @@ import WordPressShared
 
     /// Displays the specified text in the status label.
     ///
-    /// - Parameters:
-    ///     - message: The text to display in the label.
+    /// - Parameter message: The text to display in the label.
     ///
     func configureStatusLabel(message: String) {
         statusLabel.text = message
@@ -145,8 +143,7 @@ import WordPressShared
 
     /// Configure the view's loading state.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
@@ -166,7 +163,7 @@ import WordPressShared
             verificationCodeField.becomeFirstResponder()
         }
     }
-    
+
 
     // MARK: - Instance Methods
 
@@ -212,8 +209,8 @@ import WordPressShared
     @IBAction func handleSubmitForm() {
         validateForm()
     }
-    
-    
+
+
     @IBAction func handleSubmitButtonTapped(sender: UIButton) {
         validateForm()
     }
