@@ -39,15 +39,15 @@ struct PeopleCellViewModel {
     var superAdminText: String {
         return Person.Role.SuperAdmin.localizedName()
     }
-    
+
     var superAdminBorderColor: UIColor {
         return superAdminBackgroundColor
     }
-    
+
     var superAdminBackgroundColor: UIColor {
         return Person.Role.SuperAdmin.color()
     }
-    
+
     var superAdminHidden: Bool {
         return !superAdmin
     }
