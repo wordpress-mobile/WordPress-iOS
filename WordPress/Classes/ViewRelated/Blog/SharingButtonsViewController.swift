@@ -2,7 +2,7 @@ import UIKit
 import WordPressComAnalytics
 import WordPressShared
 
-/// Manages which sharing button are displayed, their order, and other settings 
+/// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
 ///
 @objc class SharingButtonsViewController : UITableViewController
@@ -78,7 +78,7 @@ import WordPressShared
     // MARK: - Sections Setup and Config
 
 
-    /// Configures the table view. The table view is set to edit mode to allow 
+    /// Configures the table view. The table view is set to edit mode to allow
     /// rows in the buttons and more sections to be reordered.
     ///
     func configureTableView() {
@@ -288,7 +288,7 @@ import WordPressShared
 
 
     /// Creates a sortable row for the specified button.
-    /// 
+    ///
     /// - Parameters:
     ///     - button: The sharing button that the row will represent.
     ///
@@ -376,7 +376,7 @@ import WordPressShared
 
 
     /// Configures the rows for the button section. When the section is editing,
-    /// all buttons are shown with switch cells. When the section is not editing, 
+    /// all buttons are shown with switch cells. When the section is not editing,
     /// only enabled and visible buttons are shown and the rows are sortable.
     ///
     func configureButtonRows() {
@@ -505,7 +505,7 @@ import WordPressShared
 
 
     /// Whether the twitter section should be present or not.
-    /// 
+    ///
     /// - Returns: true if the twitter section should be shown. False otherwise.
     ///
     func shouldShowTwitterSection() -> Bool {
@@ -518,7 +518,7 @@ import WordPressShared
     }
 
 
-    /// Saves changes to blog settings back to the blog and optionally refreshes 
+    /// Saves changes to blog settings back to the blog and optionally refreshes
     /// the tableview.
     ///
     /// - Parameters:
@@ -669,10 +669,10 @@ import WordPressShared
     }
 
 
-    /// Shows an alert. The localized description of the specified NSError is 
+    /// Shows an alert. The localized description of the specified NSError is
     /// included in the alert.
     ///
-    /// - Parameters: 
+    /// - Parameters:
     ///     - error: An NSError object.
     ///
     func showErrorSyncingMessage(error: NSError) {
@@ -710,7 +710,7 @@ import WordPressShared
     }
 
 
-    /// Called when the user taps the button style row.  Shows a controller to 
+    /// Called when the user taps the button style row.  Shows a controller to
     /// choose from available button styles.
     ///
     func handleEditButtonStyle() {
@@ -762,7 +762,7 @@ import WordPressShared
                 return
             }
 
-            // Remove the @ sign if it was entered. 
+            // Remove the @ sign if it was entered.
             var str = NSString(string: value)
             str = str.stringByReplacingOccurrencesOfString("@", withString: "")
             self.blog.settings.sharingTwitterName = str as String

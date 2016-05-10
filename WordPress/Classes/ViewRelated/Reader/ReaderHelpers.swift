@@ -117,7 +117,7 @@ import WordPressComAnalytics
 
 
     public class func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject?, forKey key:String?) -> [NSObject: AnyObject] {
-        var properties = [NSObject: AnyObject]();
+        var properties = [NSObject: AnyObject]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
         properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
