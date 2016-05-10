@@ -1,0 +1,120 @@
+# Project configuration
+included:
+  - WordPress
+
+# Rules
+whitelist_rules:
+  # Closing brace with closing parenthesis should not have any whitespaces in
+  # the middle.
+  # - closing_brace
+
+  # Colons should be next to the identifier when specifying a type.
+  # - colon
+
+  # There should be no space before and one after any comma.
+  # - comma
+
+  # Repeated `let` statements in conditional binding cascade should be avoided.
+  # - conditional_binding_cascade
+
+  # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
+  # - control_statement
+
+  # Create custom rules by providing a regex string. Optionally specify what
+  # syntax kinds to match against, the severity level, and what message to
+  # display.
+  # - custom_rules
+
+  # Complexity of function bodies should be limited.
+  # - cyclomatic_complexity
+
+  # Prefer checking `isEmpty` over comparing `count` to zero.
+  # - empty_count
+
+  # Files should not span too many lines.
+  # - file_length
+
+  # Force casts should be avoided.
+  # - force_cast
+
+  # Force tries should be avoided.
+  # - force_try
+
+  # Force unwrapping should be avoided.
+  # - force_unwrapping
+
+  # Functions bodies should not span too many lines.
+  # - function_body_length
+
+  # Number of function parameters should be low.
+  # - function_parameter_count
+
+  # Files should not contain leading whitespace.
+  # - leading_whitespace
+
+  # Struct extension properties and methods are preferred over legacy functions
+  # - legacy_cggeometry_functions
+
+  # Struct-scoped constants are preferred over legacy global constants.
+  # - legacy_constant
+
+  # Swift constructors are preferred over legacy convenience functions.
+  # - legacy_constructor
+
+  # Lines should not span too many characters.
+  # - line_length
+
+  # Public declarations should be documented.
+  # - missing_docs
+
+  # Types should be nested at most 1 level deep, and statements should be nested
+  # at most 5 levels deep.
+  # - nesting
+
+  # Opening braces should be preceded by a single space and on the same line as
+  # the declaration.
+  # - opening_brace
+
+  # Operators should be surrounded by a single whitespace when defining them.
+  # - operator_whitespace
+
+  # Return arrow and return type should be separated by a single space or on a
+  # separate line.
+  # - return_arrow_whitespace
+
+  # Else and catch should be on the same line, one space after the previous
+  # declaration.
+  # - statement_position
+
+  # TODOs and FIXMEs should be avoided.
+  # - todo
+
+  # Files should have a single trailing newline.
+  - trailing_newline
+
+  # Lines should not have trailing semicolons.
+  - trailing_semicolon
+
+  # Lines should not have trailing whitespace.
+  - trailing_whitespace
+
+  # Type bodies should not span too many lines.
+  # - type_body_length
+
+  # Type name should only contain alphanumeric characters, start with an
+  # uppercase character and span between 3 and 40 characters in length.
+  # - type_name
+
+  # Documented declarations should be valid.
+  # - valid_docs
+
+  # Variable names should only contain alphanumeric characters and start with a
+  # lowercase character or should only contain capital letters. In an exception
+  # to the above, variable names may start with a capital letter when they are
+  # declared static and immutable. Variable names should not be too long or too
+  # short.
+  # - variable_name
+
+
+# Rules configuration
+

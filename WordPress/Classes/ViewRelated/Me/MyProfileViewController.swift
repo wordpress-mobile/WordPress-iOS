@@ -2,8 +2,12 @@ import UIKit
 import RxSwift
 import WordPressShared
 
-func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController {
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
+    guard let api = account.restApi else {
+        return nil
+    }
+
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
     return MyProfileViewController(service: service)
 }
 
@@ -32,15 +36,15 @@ private struct MyProfileController: SettingsController {
     init(service: AccountSettingsService) {
         self.service = service
     }
-    
+
     // MARK: - ImmuTableViewController
-    
+
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
         return service.settings.map({ settings in
             self.mapViewModel(settings, presenter: presenter)
         })
     }
-    
+
     var noticeMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
@@ -48,7 +52,7 @@ private struct MyProfileController: SettingsController {
             // convert status to string
             .map({ $0.errorMessage })
     }
-    
+
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
