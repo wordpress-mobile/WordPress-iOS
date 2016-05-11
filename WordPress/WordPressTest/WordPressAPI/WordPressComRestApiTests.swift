@@ -71,7 +71,7 @@ class WordPressComRestApiTests: XCTestCase {
         stub(isRestAPIRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailInvalidJSON.json", self.dynamicType)
             return fixture(stubPath!, status:200, headers: ["Content-Type":"application/json"])
-        }        
+        }
         let expectation = self.expectationWithDescription("One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
         api.GET(wordPressMediaRoute, parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in

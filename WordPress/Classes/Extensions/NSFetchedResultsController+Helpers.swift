@@ -9,11 +9,11 @@ extension NSFetchedResultsController
         guard let sections = sections else {
             return nil
         }
-        
+
         guard indexPath.section < sections.count && indexPath.row < sections[indexPath.section].numberOfObjects else {
             return nil
         }
-        
+
         return objectAtIndexPath(indexPath) as? T
     }
 }

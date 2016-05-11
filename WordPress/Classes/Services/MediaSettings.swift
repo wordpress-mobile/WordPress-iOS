@@ -1,10 +1,5 @@
 import Foundation
 
-protocol MediaSettingsStorage {
-    func valueForKey(key: String) -> AnyObject?
-    func setValue(value: AnyObject, forKey key: String)
-}
-
 class MediaSettings: NSObject {
     // MARK: - Constants
     private let maxImageSizeKey = "SavedMaxImageSizeSetting"
@@ -14,29 +9,33 @@ class MediaSettings: NSObject {
     private let maxImageDimension = 3000
 
     // MARK: - Internal variables
-    private let storage: MediaSettingsStorage
+    private let database: KeyValueDatabase
 
     // MARK: - Initialization
-    init(storage: MediaSettingsStorage) {
-        self.storage = storage
+    init(database: KeyValueDatabase) {
+        self.database = database
         super.init()
     }
 
     convenience override init() {
-        self.init(storage: DefaultsStorage())
+        self.init(database: NSUserDefaults())
     }
 
     // MARK: Public accessors
 
     /// The minimum and maximum allowed sizes for `maxImageSizeSetting`.
     /// The UI to configure this setting should not allow values outside this limits.
-    /// - seealso: maxImageSizeSetting
+    ///
+    /// - Seealso: maxImageSizeSetting
+    ///
     var allowedImageSizeRange: (min: Int, max: Int) {
         return (minImageDimension, maxImageDimension)
     }
 
     /// The size that an image needs to be resized to before uploading.
-    /// - note: if the image doesn't need to be resized, it returns `Int.max`
+    ///
+    /// - Note: if the image doesn't need to be resized, it returns `Int.max`
+    ///
     var imageSizeForUpload: Int {
         if maxImageSizeSetting >= maxImageDimension {
             return Int.max
@@ -49,14 +48,17 @@ class MediaSettings: NSObject {
     /// If you set this to `maxImageDimension` or higher, it means images won't
     /// be resized on upload.
     /// If you set this to `minImageDimension` or lower, it will be set to `minImageDimension`.
-    /// - important: don't access this propery directly to check what size to resize an image, use `imageSizeForUpload` instead.
+    ///
+    /// - Important: don't access this propery directly to check what size to resize an image, use
+    ///             `imageSizeForUpload` instead.
+    ///
     var maxImageSizeSetting: Int {
         get {
-            if let savedSize = storage.valueForKey(maxImageSizeKey) as? Int {
+            if let savedSize = database.objectForKey(maxImageSizeKey) as? Int {
                 return savedSize
-            } else if let savedSize = storage.valueForKey(maxImageSizeKey) as? String {
+            } else if let savedSize = database.objectForKey(maxImageSizeKey) as? String {
                 let newSize = CGSizeFromString(savedSize).width
-                storage.setValue(newSize, forKey: maxImageSizeKey)
+                database.setObject(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
                 return maxImageDimension
@@ -64,44 +66,20 @@ class MediaSettings: NSObject {
         }
         set {
             let size = newValue.clamp(min: minImageDimension, max: maxImageDimension)
-            storage.setValue(size, forKey: maxImageSizeKey)
+            database.setObject(size, forKey: maxImageSizeKey)
         }
     }
 
     var removeLocationSetting: Bool {
         get {
-            if let savedRemoveLocation = storage.valueForKey(removeLocationKey) as? Bool {
+            if let savedRemoveLocation = database.objectForKey(removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
-                return true;
+                return true
             }
         }
         set {
-            storage.setValue(newValue, forKey: removeLocationKey)
-        }
-    }
-
-    // MARK: - Storage implementations
-
-    struct DefaultsStorage: MediaSettingsStorage {
-        func setValue(value: AnyObject, forKey key: String) {
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
-            NSUserDefaults.resetStandardUserDefaults()
-        }
-        func valueForKey(key: String) -> AnyObject? {
-            return NSUserDefaults.standardUserDefaults().objectForKey(key)
-        }
-    }
-
-    class EphemeralStorage: MediaSettingsStorage {
-        private var memory = [String: AnyObject]()
-
-        func setValue(value: AnyObject, forKey key: String) {
-            memory[key] = value
-        }
-
-        func valueForKey(key: String) -> AnyObject? {
-            return memory[key]
+            database.setObject(newValue, forKey: removeLocationKey)
         }
     }
 }

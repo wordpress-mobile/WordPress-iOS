@@ -177,6 +177,7 @@ struct MediaSizeRow: ImmuTableRow {
         cell.title = title
         cell.value = value
         cell.onChange = onChange
+        cell.selectionStyle = .None
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
     }
