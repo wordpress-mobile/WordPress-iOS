@@ -48,8 +48,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
 
     /// Adjusts constraint constants to adapt the view for a visible keyboard.
     ///
-    /// - Parameters:
-    ///     - visibleKeyboard: Whether to configure for a visible keyboard or without a keyboard.
+    /// - Parameter visibleKeyboard: Whether to configure for a visible keyboard or without a keyboard.
     ///
     func adjustViewForKeyboard(visibleKeyboard: Bool) {
         if visibleKeyboard && SigninEditingState.signinLastKeyboardHeightDelta > 0 {
@@ -64,8 +63,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
 
     /// Process the passed NSNotification from a UIKeyboardWillShowNotification.
     ///
-    /// - Parameters:
-    ///     - notification: the NSNotification object from a UIKeyboardWillShowNotification.
+    /// - Parameter notification: the NSNotification object from a UIKeyboardWillShowNotification.
     ///
     func keyboardWillShow(notification: NSNotification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
@@ -92,8 +90,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
 
     /// Process the passed NSNotification from a UIKeyboardWillHideNotification.
     ///
-    /// - Parameters:
-    ///     - notification: the NSNotification object from a UIKeyboardWillHideNotification.
+    /// - Parameter notification: the NSNotification object from a UIKeyboardWillHideNotification.
     ///
     func keyboardWillHide(notification: NSNotification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
@@ -120,8 +117,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     /// Retrieves the keyboard frame and the animation duration from a keyboard
     /// notificaiton.
     ///
-    /// - Parameters:
-    ///     - notification: the NSNotification object from a keyboard notification.
+    /// - Parameter notification: the NSNotification object from a keyboard notification.
     ///
     /// - Returns: An tupile optional containing the `keyboardFrame` and the `animationDuration`, or nil.
     ///

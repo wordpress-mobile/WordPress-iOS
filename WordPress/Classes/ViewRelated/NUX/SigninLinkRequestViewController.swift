@@ -14,8 +14,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninLinkRequestViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -85,7 +84,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogSwift.logError("Attempted to request authentication link, but the email address did not appear valid.")
             WPError.showAlertWithTitle(NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
-                                       message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous scren and provide a valid email address.", comment: "An error message."))
+                                       message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
             return
         }
 

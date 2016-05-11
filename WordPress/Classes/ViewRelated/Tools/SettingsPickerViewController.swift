@@ -7,7 +7,7 @@ import WordPressShared
 ///     0           1   [Text]  [Switch]    < Shows / Hides Section 1
 ///     1           0   [Text]  [Text]
 ///     1           1   [Picker]
-
+///
 public class SettingsPickerViewController : UITableViewController
 {
     /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker

@@ -119,8 +119,7 @@ final public class InteractiveNotificationsHandler : NSObject
 
     /// Opens the details for a given notificationID
     ///
-    /// - Parameters:
-    ///     - noteID: The Notification's Identifier
+    /// - Parameter noteID: The Notification's Identifier
     ///
     private func showDetailsWithNoteID(noteId: NSNumber) {
         WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
@@ -155,8 +154,7 @@ final public class InteractiveNotificationsHandler : NSObject
     /// Parses a given array of NoteCategoryDefinition, and returns a collection of their
     /// *UIUserNotificationCategory* counterparts.
     ///
-    /// - Parameters:
-    ///     - definitions: A collection of definitions to be instantiated.
+    /// - Parameter definitions: A collection of definitions to be instantiated.
     ///
     /// - Returns: A collection of UIUserNotificationCategory instances
     ///
@@ -183,8 +181,7 @@ final public class InteractiveNotificationsHandler : NSObject
     /// Parses a given array of NoteActionDefinition, and returns a collection mapping them with their
     /// *UIUserNotificationAction* counterparts.
     ///
-    /// - Parameters:
-    ///     - definitions: A collection of definitions to be instantiated.
+    /// - Parameter definitions: A collection of definitions to be instantiated.
     ///
     /// - Returns: A map of Definition > NotificationAction instances
     ///

@@ -9,7 +9,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID)
+        request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID!)
         // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         let context = ContextManager.sharedInstance().mainContext
@@ -41,7 +41,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
 
 
@@ -65,12 +65,22 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if resultsController.fetchedObjects?.count == 0 {
             refreshControl?.beginRefreshing()
             refresh()
         }
+    }
+
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableView.reloadData()
     }
 
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
