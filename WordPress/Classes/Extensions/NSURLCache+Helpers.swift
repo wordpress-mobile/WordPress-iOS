@@ -19,9 +19,9 @@ extension NSURLCache
 
     /// Updates the cache contents for a given request, and stores the specified image.
     ///
-    /// -   Parameters:
-    ///     -   image: the image that should be stored on top of (whatever) is currently cached
-    ///     -   request: the request that should produce the given image
+    /// - Parameters:
+    ///     - image: the image that should be stored on top of (whatever) is currently cached
+    ///     - request: the request that should produce the given image
     ///
     func cacheImage(image: UIImage, forRequest request: NSURLRequest) {
         guard let URL = request.URL,

@@ -1,13 +1,14 @@
 import Foundation
 
 
-extension NSMutableAttributedString
-{
-    /**
-    *  @details     Applies a collection of Styles to all of the substrings that match a given pattern
-    *  @param       pattern     A Regex pattern that should be used to look up for matches
-    *  @param       styles      Collection of styles to be applied on the matched strings
-    */
+extension NSMutableAttributedString {
+
+    /// Applies a collection of Styles to all of the substrings that match a given pattern
+    ///
+    /// - Parameters:
+    ///     - pattern: A Regex pattern that should be used to look up for matches
+    ///     - styles: Collection of styles to be applied on the matched strings
+    ///
     public func applyStylesToMatchesWithPattern(pattern: String, styles: [String: AnyObject]) {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: .DotMatchesLineSeparators)
