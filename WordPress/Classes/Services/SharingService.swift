@@ -66,7 +66,7 @@ public class SharingService : LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
+        remote.getPublicizeConnections(blog.dotComID!, success: {(remoteConnections:[RemotePublicizeConnection]) in
 
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
@@ -97,7 +97,7 @@ public class SharingService : LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        let dotComID = blog.dotComID
+        let dotComID = blog.dotComID!
         remote.createPublicizeConnection(dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
@@ -546,7 +546,7 @@ public class SharingService : LocalCoreDataService
             return
         }
 
-        remote.getSharingButtonsForSite(blog.dotComID,
+        remote.getSharingButtonsForSite(blog.dotComID!,
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
@@ -570,7 +570,7 @@ public class SharingService : LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.updateSharingButtonsForSite(blog.dotComID,
+        remote.updateSharingButtonsForSite(blog.dotComID!,
             sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)

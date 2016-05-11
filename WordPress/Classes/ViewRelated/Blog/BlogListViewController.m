@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
-#import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
 #import "WPBlogTableViewCell.h"
@@ -674,17 +673,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)showLoginControllerForAddingSelfHostedSite
 {
     [self setEditing:NO animated:NO];
-    LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    loginViewController.cancellable = YES;
-
-    if (![self defaultWordPressComAccount]) {
-        loginViewController.prefersSelfHosted = YES;
-    }
-    loginViewController.dismissBlock = ^(BOOL cancelled){
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    [self presentViewController:loginNavigationController animated:YES completion:nil];
+    [SigninHelpers showSigninForSelfHostedSite:self];
 }
 
 - (void)setVisible:(BOOL)visible forBlogAtIndexPath:(NSIndexPath *)indexPath
