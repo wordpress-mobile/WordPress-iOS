@@ -5,6 +5,7 @@
 
 @class Blog;
 @class ManagedAccountSettings;
+@class WordPressComRestApi;
 
 @interface WPAccount : NSManagedObject
 
@@ -39,6 +40,11 @@
  A WordPressComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
  */
 @property (nonatomic, readonly) WordPressComApi *restApi;
+
+/**
+ A WordPressRestComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
+ */
+@property (nonatomic, readonly) WordPressComRestApi *wordPressComRestApi;
 
 @end
 

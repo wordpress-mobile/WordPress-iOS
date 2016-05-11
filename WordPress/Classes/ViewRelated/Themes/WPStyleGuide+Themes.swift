@@ -1,10 +1,8 @@
 import Foundation
 import WordPressShared
 
-/**
-    A WPStyleGuide extension with styles and methods specific to the
-    Themes feature.
-*/
+/// A WPStyleGuide extension with styles and methods specific to the Themes feature.
+///
 extension WPStyleGuide
 {
     public struct Themes
@@ -16,18 +14,18 @@ extension WPStyleGuide
 
         public static let currentThemeLabelFont = WPFontManager.systemRegularFontOfSize(11)
         public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
-        
+
         public static let currentThemeNameFont = WPFontManager.systemSemiBoldFontOfSize(14)
         public static let currentThemeNameColor = WPStyleGuide.darkGrey()
 
         public static let currentThemeButtonFont = WPFontManager.systemRegularFontOfSize(13)
         public static let currentThemeButtonColor = WPStyleGuide.darkGrey()
-        
+
         public static func styleCurrentThemeButton(button: UIButton) {
             button.titleLabel?.font = currentThemeButtonFont
             button.setTitleColor(currentThemeButtonColor, forState: .Normal)
         }
-        
+
         // MARK: - Search Styles
 
         public static let searchBarBackgroundColor = WPStyleGuide.lightGrey()
@@ -70,7 +68,7 @@ extension WPStyleGuide
         public static let currentBarLineHeight: CGFloat = 53
         public static let currentBarSeparator: CGFloat = 1
         public static let searchBarHeight: CGFloat = 53
-       
+
         public static func headerHeight(horizontallyCompact: Bool) -> CGFloat {
             var headerHeight = searchBarHeight + (currentBarSeparator * 2)
             if (horizontallyCompact) {
@@ -88,7 +86,7 @@ extension WPStyleGuide
         public static let cellImageInset: CGFloat = 2
         public static let cellImageRatio: CGFloat = 0.75
         public static let cellInfoBarHeight: CGFloat = 55
-        
+
         public static func cellWidthForFrameWidth(width: CGFloat) -> CGFloat {
             let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
             let numberOfMargins = numberOfColumns + 1
@@ -119,7 +117,7 @@ extension WPStyleGuide
 
         public static let themeMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
         public static let infoMargins = UIEdgeInsets()
-        
+
         public static let minimumSearchHeight: CGFloat = 44
         public static let searchAnimationDuration: NSTimeInterval = 0.2
     }
