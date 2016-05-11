@@ -9,7 +9,7 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.5.7'
+  pod 'WordPress-iOS-Shared', :path => '../WordPress-Shared-iOS'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
 
   target 'WordPress' do
@@ -37,12 +37,12 @@ abstract_target 'WordPress_Base' do
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
-    pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
+    pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '479d05f7d6b963c9b44040e6ea9f190e8bd9a47a'
 
     # --------------------
     # WordPress components
     # --------------------
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.0'
+    pod 'Automattic-Tracks-iOS', :path => '../Automattic-Tracks-iOS'
     pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
     pod 'Gridicons', '0.2'
     pod 'NSObject-SafeExpectations', '0.0.2'
