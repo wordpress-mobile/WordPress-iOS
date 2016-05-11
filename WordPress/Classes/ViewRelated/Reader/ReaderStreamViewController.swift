@@ -16,6 +16,7 @@ import WordPressComAnalytics
     private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
+    private var displayContext: NSManagedObjectContext!
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -32,7 +33,6 @@ import WordPressComAnalytics
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
-    private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
@@ -128,7 +128,7 @@ import WordPressComAnalytics
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupCellForLayout()
+        setupCellsForLayout()
         setupTableView()
         setupFooterView()
         setupTableViewHandler()
@@ -218,16 +218,18 @@ import WordPressComAnalytics
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.siteTopicForSiteWithID(siteID!,
             isFeed:isFeed,
-            success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
-                do {
-                    let context = ContextManager.sharedInstance().mainContext
-                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
-                    self?.readerTopic = topic
-                } catch let error as NSError {
-                    DDLogSwift.logError(error.localizedDescription)
+            success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) in
+
+                let context = ContextManager.sharedInstance().mainContext
+                guard let topic = (try? context.existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
+                    DDLogSwift.logError("Reader: Error retriving an existing site topic by its objectID")
+                    self?.displayLoadingStreamFailed()
+                    return
                 }
+                self?.readerTopic = topic
+
             },
-            failure: {[weak self] (error:NSError!) -> Void in
+            failure: { [weak self] (error:NSError!) in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -240,15 +242,18 @@ import WordPressComAnalytics
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.tagTopicForTagWithSlug(tagSlug,
-            success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
-                do {
-                    let context = ContextManager.sharedInstance().mainContext
-                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
-                    self?.readerTopic = topic
-                } catch let error as NSError {
-                    DDLogSwift.logError(error.localizedDescription)
+            success: { [weak self] (objectID:NSManagedObjectID!) in
+
+                let context = ContextManager.sharedInstance().mainContext
+                guard let topic = (try? context.existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
+                    DDLogSwift.logError("Reader: Error retriving an existing tag topic by its objectID")
+                    self?.displayLoadingStreamFailed()
+                    return
                 }
-            }, failure: { [weak self] (error:NSError!) -> Void in
+                self?.readerTopic = topic
+
+            },
+            failure: { [weak self] (error:NSError!) in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -295,17 +300,27 @@ import WordPressComAnalytics
     }
 
 
-    private func setupCellForLayout() {
+    private func setupCellsForLayout() {
         // Construct the layout cells
-        cellForLayout = NSBundle.mainBundle().loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as! ReaderPostCardCell
-        crossPostCellForLayout = NSBundle.mainBundle().loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as! ReaderCrossPostCell
+        let bundle = NSBundle.mainBundle()
+        if let cell = bundle.loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as? ReaderPostCardCell {
+            cellForLayout = cell
 
-        // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
-        view.addSubview(cellForLayout)
-        cellForLayout.removeFromSuperview()
+            // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
+            view.addSubview(cellForLayout)
+            cellForLayout.removeFromSuperview()
+        } else {
+            assertionFailure()
+        }
 
-        view.addSubview(crossPostCellForLayout)
-        crossPostCellForLayout.removeFromSuperview()
+        if let cell = bundle.loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as? ReaderCrossPostCell {
+            crossPostCellForLayout = cell
+
+            view.addSubview(crossPostCellForLayout)
+            crossPostCellForLayout.removeFromSuperview()
+        } else {
+            assertionFailure()
+        }
     }
 
 
@@ -315,7 +330,12 @@ import WordPressComAnalytics
 
 
     private func setupFooterView() {
-        footerView = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as! PostListFooterView
+        guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as? PostListFooterView else {
+            assertionFailure()
+            return
+        }
+
+        footerView = footer
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
@@ -360,10 +380,11 @@ import WordPressComAnalytics
     func displayNoResultsView() {
         // Its possible the topic was deleted before a sync could be completed,
         // so make certain its not nil.
-        if readerTopic == nil {
+        guard let topic = readerTopic else {
             return
         }
-        let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(readerTopic!)
+
+        let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
@@ -391,10 +412,12 @@ import WordPressComAnalytics
     // MARK: - Configuration / Topic Presentation
 
     func configureStreamHeader() {
-        assert(readerTopic != nil, "A reader topic is required")
+        guard let topic = readerTopic else {
+            assertionFailure()
+            return
+        }
 
-        let header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
-        if header == nil {
+        guard let header = ReaderStreamViewController.headerForStream(topic) else {
             if UIDevice.isPad() {
                 let headerView = UIView(frame: frameForEmptyHeaderView)
                 headerView.backgroundColor = UIColor.clearColor()
@@ -405,9 +428,9 @@ import WordPressComAnalytics
             return
         }
 
-        header!.enableLoggedInFeatures(isLoggedIn)
-        header!.configureHeader(readerTopic!)
-        header!.delegate = self
+        header.enableLoggedInFeatures(isLoggedIn)
+        header.configureHeader(readerTopic!)
+        header.delegate = self
 
         tableView.tableHeaderView = header as? UIView
         refreshTableViewHeaderLayout()
@@ -450,41 +473,41 @@ import WordPressComAnalytics
                 object: nil)
         }
 
-        ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: topicPropertyForStats())
+        if let topic = readerTopic, properties = topicPropertyForStats() {
+            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+        }
     }
 
 
     func configureTitleForTopic() {
-        if readerTopic == nil {
+        guard let topic = readerTopic else {
             title = NSLocalizedString("Reader", comment: "The default title of the Reader")
             return
         }
-        if readerTopic?.type == ReaderSiteTopic.TopicType {
+        if topic.type == ReaderSiteTopic.TopicType {
             title = NSLocalizedString("Site Details", comment: "The title of the reader when previewing posts from a site.")
             return
         }
 
-        title = readerTopic?.title
+        title = topic.title
     }
 
 
     // MARK: - Instance Methods
 
     func postInMainContext(post:ReaderPost) -> ReaderPost? {
-        do {
-            return try ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID) as? ReaderPost
-        } catch let error as NSError {
-            DDLogSwift.logError("\(error.localizedDescription)")
+        guard let post = (try? ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID)) as? ReaderPost else {
+            DDLogSwift.logError("Error retrieving an exsting post from the main context by its object ID.")
+            return nil
         }
-        return nil
+        return post
     }
 
 
     func refreshTableViewHeaderLayout() {
-        if tableView.tableHeaderView == nil {
+        guard let headerView = tableView.tableHeaderView else {
             return
         }
-        let headerView = tableView.tableHeaderView!
 
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
@@ -503,13 +526,16 @@ import WordPressComAnalytics
     }
 
 
-    private func topicPropertyForStats() -> [NSObject: AnyObject] {
-        assert(readerTopic != nil, "A reader topic is required")
-        let title = readerTopic!.title ?? ""
+    private func topicPropertyForStats() -> [NSObject: AnyObject]? {
+        guard let topic = readerTopic else {
+            assertionFailure("A reader topic is required")
+            return nil
+        }
+        let title = topic.title ?? ""
         var key: String = "list"
-        if ReaderHelpers.isTopicTag(readerTopic!) {
+        if ReaderHelpers.isTopicTag(topic) {
             key = "tag"
-        } else if ReaderHelpers.isTopicSite(readerTopic!) {
+        } else if ReaderHelpers.isTopicSite(topic) {
             key = "site"
         }
         return [key : title]
@@ -517,20 +543,24 @@ import WordPressComAnalytics
 
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
+        guard let topic = readerTopic else {
+            return false
+        }
         if (isLoggedIn) {
-            return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
     }
 
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
+        guard let topic = readerTopic else {
+            return
+        }
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel,
-            handler: { (action:UIAlertAction) in
-            })
+        alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel, handler: nil)
 
         // Block button
         if shouldShowBlockSiteMenuItem() {
@@ -544,7 +574,7 @@ import WordPressComAnalytics
         }
 
         // Following
-        if ReaderHelpers.topicIsFollowing(readerTopic!) {
+        if ReaderHelpers.topicIsFollowing(topic) {
             let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
@@ -571,13 +601,14 @@ import WordPressComAnalytics
                 self?.sharePost(post.objectID, fromView: anchorView)
         })
 
-        if UIDevice.isPad() {
+        if WPDeviceIdentification.isiPad() {
             alertController.modalPresentationStyle = .Popover
             presentViewController(alertController, animated: true, completion: nil)
-            let presentationController = alertController.popoverPresentationController
-            presentationController?.permittedArrowDirections = .Any
-            presentationController?.sourceView = anchorView
-            presentationController?.sourceRect = anchorView.bounds
+            if let presentationController = alertController.popoverPresentationController {
+                presentationController.permittedArrowDirections = .Any
+                presentationController.sourceView = anchorView
+                presentationController.sourceRect = anchorView.bounds
+            }
 
         } else {
             presentViewController(alertController, animated: true, completion: nil)
@@ -596,7 +627,7 @@ import WordPressComAnalytics
 
     private func postWithObjectID(objectID: NSManagedObjectID) -> ReaderPost? {
         do {
-            return try managedObjectContext().existingObjectWithID(objectID) as? ReaderPost
+            return (try managedObjectContext().existingObjectWithID(objectID)) as? ReaderPost
         } catch let error as NSError {
             DDLogSwift.logError(error.localizedDescription)
             return nil
@@ -605,9 +636,9 @@ import WordPressComAnalytics
 
 
     private func toggleFollowingForPost(post:ReaderPost) {
-        var successMessage:String!
-        var errorMessage:String!
-        var errorTitle:String!
+        var successMessage:String
+        var errorMessage:String
+        var errorTitle:String
         if post.isFollowing {
             successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
             errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
@@ -620,18 +651,20 @@ import WordPressComAnalytics
 
         SVProgressHUD.show()
         let postService = ReaderPostService(managedObjectContext: managedObjectContext())
-        postService.toggleFollowingForPost(post, success: { () -> Void in
-                SVProgressHUD.showSuccessWithStatus(successMessage)
-            }, failure: { (error:NSError!) -> Void in
-                SVProgressHUD.dismiss()
+        postService.toggleFollowingForPost(post,
+                                            success: {
+                                                SVProgressHUD.showSuccessWithStatus(successMessage)
+                                            },
+                                            failure: { (error:NSError!) in
+                                                SVProgressHUD.dismiss()
 
-                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: errorMessage,
-                    preferredStyle: .Alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-        })
+                                                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
+                                                let alertController = UIAlertController(title: errorTitle,
+                                                    message: errorMessage,
+                                                    preferredStyle: .Alert)
+                                                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                                                alertController.presentFromRootViewController()
+                                        })
     }
 
 
@@ -645,22 +678,22 @@ import WordPressComAnalytics
 
     private func showAttributionForPost(post: ReaderPost) {
         // Fail safe. If there is no attribution exit.
-        if post.sourceAttribution == nil {
+        guard let sourceAttribution = post.sourceAttribution else {
             return
         }
 
         // If there is a blogID preview the site
-        if post.sourceAttribution!.blogID != nil {
-            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID, isFeed: false)
+        if let blogID = sourceAttribution.blogID {
+            let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
             navigationController?.pushViewController(controller, animated: true)
             return
         }
 
-        if post.sourceAttribution!.attributionType != SourcePostAttributionTypeSite {
+        if sourceAttribution.attributionType != SourcePostAttributionTypeSite {
             return
         }
 
-        let linkURL = NSURL(string: post.sourceAttribution.blogURL)
+        let linkURL = NSURL(string: sourceAttribution.blogURL)
         let controller = WPWebViewController(URL: linkURL)
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
@@ -696,24 +729,28 @@ import WordPressComAnalytics
 
 
     func updateStreamHeaderIfNeeded() {
-        assert(readerTopic != nil, "A reader topic is required")
-
+        guard let topic = readerTopic else {
+            assertionFailure("A reader topic is required")
+            return
+        }
         guard let header = tableView.tableHeaderView as? ReaderStreamHeader else {
             return
         }
-
-        header.configureHeader(readerTopic!)
+        header.configureHeader(topic)
     }
 
 
     // MARK: - Blocking
 
     private func blockSiteForPost(post: ReaderPost) {
+        guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
+            return
+        }
+
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.addObject(objectID)
         updateAndPerformFetchRequest()
 
-        let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
         tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
@@ -721,15 +758,16 @@ import WordPressComAnalytics
         service.flagSiteWithID(post.siteID,
             asBlocked: true,
             success: nil,
-            failure: { [weak self] (error:NSError!) in
+            failure: { [weak self] (error:NSError?) in
                 self?.recentlyBlockedSitePostObjectIDs.removeObject(objectID)
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
+                let message = error?.localizedDescription ?? ""
                 let errorTitle = NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
                 let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
                 let alertController = UIAlertController(title: errorTitle,
-                    message: error.localizedDescription,
+                    message: message,
                     preferredStyle: .Alert)
                 alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                 alertController.presentFromRootViewController()
@@ -748,15 +786,16 @@ import WordPressComAnalytics
         service.flagSiteWithID(post.siteID,
             asBlocked: false,
             success: nil,
-            failure: { [weak self] (error:NSError!) in
+            failure: { [weak self] (error:NSError?) in
                 self?.recentlyBlockedSitePostObjectIDs.addObject(objectID)
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
+                let message = error?.localizedDescription ?? ""
                 let errorTitle = NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                 let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
                 let alertController = UIAlertController(title: errorTitle,
-                    message: error.localizedDescription,
+                    message: message,
                     preferredStyle: .Alert)
                 alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                 alertController.presentFromRootViewController()
@@ -769,17 +808,13 @@ import WordPressComAnalytics
             return
         }
 
-        do {
-            guard let post = try managedObjectContext().existingObjectWithID(aPost.objectID) as? ReaderPost else {
-                return
-            }
+        guard let post = (try? managedObjectContext().existingObjectWithID(aPost.objectID)) as? ReaderPost else {
+            DDLogSwift.logError("Error fetching existing post from context.")
+            return
+        }
 
-            if let _ = tableViewHandler.resultsController.indexPathForObject(post) {
-                blockSiteForPost(post)
-            }
-
-        } catch let error as NSError {
-            DDLogSwift.logError("Error fetching existing post from context: \(error.localizedDescription)")
+        if let _ = tableViewHandler.resultsController.indexPathForObject(post) {
+            blockSiteForPost(post)
         }
     }
 
@@ -801,13 +836,12 @@ import WordPressComAnalytics
     // MARK: - Sync Methods
 
     func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
-        do {
-            let topic = try managedObjectContext().existingObjectWithID(objectID) as! ReaderAbstractTopic
-            topic.lastSynced = NSDate()
-            ContextManager.sharedInstance().saveContext(managedObjectContext())
-        } catch let error as NSError {
-            DDLogSwift.logError("Failed to update topic last synced date: \(error.localizedDescription)")
+        guard let topic = (try? managedObjectContext().existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
+            DDLogSwift.logError("Failed to retrive an existing topic when updating last sync date.")
+            return
         }
+        topic.lastSynced = NSDate()
+        ContextManager.sharedInstance().saveContext(managedObjectContext())
     }
 
 
@@ -836,6 +870,8 @@ import WordPressComAnalytics
         if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
             return
         }
+
+        // TODO: Need to fix last synced. EJ 2016/5/10
         let lastSynced = readerTopic?.lastSynced == nil ? NSDate(timeIntervalSince1970: 0) : readerTopic!.lastSynced
         if canSync() && Int(lastSynced.timeIntervalSinceNow) < refreshInterval {
             syncHelper.syncContentWithUserInteraction(false)
@@ -875,121 +911,140 @@ import WordPressComAnalytics
 
 
     func syncItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        guard let topic = readerTopic else {
+            DDLogSwift.logError("Error: Reader tried to sync items when the topic was nil.")
+            return
+        }
+
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
 
-        syncContext.performBlock {[weak self] () -> Void in
-            do {
-                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-                let objectID = topic.objectID
-                service.fetchPostsForTopic(topic,
-                    earlierThan: NSDate(),
-                    success: {[weak self] (count:Int, hasMore:Bool) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if let strongSelf = self {
-                                if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                    strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                    strongSelf.updateAndPerformFetchRequest()
-                                }
-                                strongSelf.updateLastSyncedForTopic(objectID)
-                            }
-                            success?(hasMore: hasMore)
-                        })
-                    }, failure: { (error:NSError!) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            failure?(error: error)
-                        })
-                })
-
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
+        syncContext.performBlock { [weak self] in
+            guard let topicInContext = (try? syncContext.existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
+                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                return
             }
+            let objectID = topicInContext.objectID
+            service.fetchPostsForTopic(topicInContext,
+                earlierThan: NSDate(),
+                success: { [weak self] (count:Int, hasMore:Bool) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if let strongSelf = self {
+                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                                strongSelf.updateAndPerformFetchRequest()
+                            }
+                            strongSelf.updateLastSyncedForTopic(objectID)
+                        }
+                        success?(hasMore: hasMore)
+                    })
+                },
+                failure: { (error:NSError?) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if let error = error {
+                            failure?(error: error)
+                        }
+                    })
+                })
         }
     }
 
 
     func syncItemsForGap(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
-        assert(indexPathForGapMarker != nil)
+        guard let topic = readerTopic else {
+            assertionFailure("Tried to fill a gap when the topic was nil.")
+            return
+        }
 
-        let post = tableViewHandler.resultsController.objectAtIndexPath(indexPathForGapMarker!) as? ReaderGapMarker
-        if post == nil {
-            // failsafe
+        guard let indexPath = indexPathForGapMarker else {
+            DDLogSwift.logError("Error: Tried to sync a gap when the index path for the gap was nil.")
+            return
+        }
+
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderGapMarker else {
+            DDLogSwift.logError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         // Reload the gap cell so it will start animating.
-        tableView.reloadRowsAtIndexPaths([indexPathForGapMarker!], withRowAnimation: .None)
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
 
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-        let sortDate = post!.sortDate
+        let sortDate = post.sortDate
 
-        syncContext.performBlock {[weak self] () -> Void in
-            do {
-                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-                service.fetchPostsForTopic(topic,
-                    earlierThan:sortDate,
-                    deletingEarlier:true,
-                    success: {[weak self] (count:Int, hasMore:Bool) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if let strongSelf = self {
-                                if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                    strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                    strongSelf.updateAndPerformFetchRequest()
-                                }
-                            }
-
-                            success?(hasMore: hasMore)
-                        })
-                    }, failure: { (error:NSError!) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            failure?(error: error)
-                        })
-                })
-
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
+        syncContext.performBlock { [weak self] in
+            guard let topicInContext = (try? syncContext.existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
+                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                return
             }
+
+            service.fetchPostsForTopic(topicInContext,
+                earlierThan:sortDate,
+                deletingEarlier:true,
+                success: { [weak self] (count:Int, hasMore:Bool) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if let strongSelf = self {
+                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                                strongSelf.updateAndPerformFetchRequest()
+                            }
+                        }
+
+                        success?(hasMore: hasMore)
+                    })
+                },
+                failure: { (error:NSError!) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        failure?(error: error)
+                    })
+                })
         }
     }
 
 
     func loadMoreItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
-        let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost
-        if post == nil {
-            // failsafe
+        guard let topic = readerTopic else {
+            assertionFailure("Tried to fill a gap when the topic was nil.")
+            return
+        }
+
+        guard let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost else {
+            DDLogSwift.logError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         footerView.showSpinner(true)
 
-        let earlierThan = post!.sortDate
+        let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
 
-        syncContext.performBlock { [weak self] () -> Void in
-
-            do  {
-                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-                service.fetchPostsForTopic(topic,
-                    earlierThan: earlierThan,
-                    success: { (count:Int, hasMore:Bool) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            success?(hasMore: hasMore)
-                        })
-                    },
-                    failure: { (error:NSError!) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            failure?(error: error)
-                        })
-                })
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
+        syncContext.performBlock {
+            guard let topicInContext = (try? syncContext.existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
+                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                return
             }
+
+            service.fetchPostsForTopic(topicInContext,
+                earlierThan: earlierThan,
+                success: { (count:Int, hasMore:Bool) -> Void in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        success?(hasMore: hasMore)
+                    })
+                },
+                failure: { (error:NSError!) -> Void in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        failure?(error: error)
+                    })
+            })
+
         }
 
-        WPAppAnalytics.track(.ReaderInfiniteScroll, withProperties: topicPropertyForStats())
+        if let properties = topicPropertyForStats() {
+            WPAppAnalytics.track(.ReaderInfiniteScroll, withProperties: properties)
+        }
     }
 
 
@@ -1013,23 +1068,20 @@ import WordPressComAnalytics
         // has to exist within an empty set.
         let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
 
-        if readerTopic == nil {
+        guard let topic = readerTopic else {
             return predicateForNilTopic
         }
 
-        var topic: ReaderAbstractTopic!
-        do {
-            topic = try managedObjectContext().existingObjectWithID(readerTopic!.objectID) as! ReaderAbstractTopic
-        } catch let error as NSError {
-            DDLogSwift.logError(error.description)
+        guard let topicInContext = (try? managedObjectContext().existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
+            DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
             return predicateForNilTopic
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
-            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topic, recentlyBlockedSitePostObjectIDs)
+            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
 
-        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topic)
+        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topicInContext)
     }
 
 
@@ -1046,7 +1098,10 @@ import WordPressComAnalytics
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+            return
+        }
+
         let post = posts[indexPath.row]
         cell.configureCell(post)
     }
@@ -1058,7 +1113,9 @@ import WordPressComAnalytics
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+            return
+        }
         let post = posts[indexPath.row]
         cell.setSiteName(post.blogName)
     }
@@ -1084,7 +1141,7 @@ import WordPressComAnalytics
 
     func toggleFollowingForTag(topic:ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service.toggleFollowingForTag(topic, success: nil, failure: { (error:NSError!) -> Void in
+        service.toggleFollowingForTag(topic, success: nil, failure: { (error:NSError?) in
             self.updateStreamHeaderIfNeeded()
         })
         self.updateStreamHeaderIfNeeded()
@@ -1092,7 +1149,7 @@ import WordPressComAnalytics
 
     func toggleFollowingForSite(topic:ReaderSiteTopic) {
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service.toggleFollowingForSite(topic, success:nil, failure: { (error:NSError!) -> Void in
+        service.toggleFollowingForSite(topic, success:nil, failure: { (error:NSError?) in
             self.updateStreamHeaderIfNeeded()
         })
         self.updateStreamHeaderIfNeeded()
@@ -1239,7 +1296,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
 
-        return displayContext!
+        return displayContext
     }
 
 
@@ -1283,11 +1340,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!, forWidth width: CGFloat) -> CGFloat {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             return 0.0
         }
 
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 
         if post.isKindOfClass(ReaderGapMarker) {
@@ -1310,7 +1366,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 
@@ -1338,7 +1394,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
+    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRowsInSection(indexPath.section) - loadMoreThreashold
         if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
@@ -1351,13 +1407,15 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             DDLogSwift.logError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
 
-        var post = posts[indexPath.row]
+        let apost = posts[indexPath.row]
+        guard let post = postInMainContext(apost) else {
+            return
+        }
 
         if post.isKindOfClass(ReaderGapMarker) {
             syncFillingGap(indexPath)
@@ -1369,7 +1427,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        var controller: ReaderDetailViewController?
+        var controller: ReaderDetailViewController
         if post.sourceAttributionStyle() == .Post &&
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
@@ -1380,28 +1438,32 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
 
         } else {
-            post = postInMainContext(post)!
             controller = ReaderDetailViewController.controllerWithPost(post)
+
         }
 
-        navigationController?.pushViewController(controller!, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
     public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        guard let topic = readerTopic else {
             return
         }
+        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+            return
+        }
+
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
         let postCell = cell as! ReaderPostCardCell
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+
         let post = posts[indexPath.row]
         let layoutOnly = postCell == cellForLayout
 
         postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
+        postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
         postCell.configureCell(post, layoutOnly: layoutOnly)
         postCell.delegate = self
     }
