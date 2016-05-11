@@ -138,7 +138,8 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 - (WordPressComRestApi *)wordPressComRestApi
 {
     if (!_wordPressComRestApi && self.authToken.length > 0) {
-        _wordPressComRestApi = [[WordPressComRestApi alloc] initWithOAuthToken:self.authToken];
+        _wordPressComRestApi = [[WordPressComRestApi alloc] initWithOAuthToken:self.authToken
+                                                                     userAgent: [[WPUserAgent sharedInstance] wordPressUserAgent]];
     }
     return _wordPressComRestApi;
 
