@@ -12,8 +12,8 @@
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 
-static CGFloat const FooterViewDefaultHeight = 60.0;
-static CGFloat const FooterViewCompactHeight = 46.0;
+static CGFloat const FooterViewDefaultHeight = 49.0;
+static CGFloat const FooterViewCompactHeight = 44.0;
 static CGFloat const TypeViewCompactWidth = 180.0;
 static CGFloat const TypeViewSelectionBurnDelay = 0.10;
 static CGFloat const LayoutTransitionDuration = 0.15;
