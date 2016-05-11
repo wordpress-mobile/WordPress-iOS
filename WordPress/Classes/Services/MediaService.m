@@ -294,8 +294,6 @@
         }
         userInfo[NSLocalizedDescriptionKey] = errorMessage;
         newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
-    } else if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
-
     }
     return newError;
 }
