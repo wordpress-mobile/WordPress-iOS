@@ -4,18 +4,8 @@ import Nimble
 
 class MediaSettingsTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
     func testDefaultMaxImageSize() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let maxImageSize = settings.maxImageSizeSetting
         expect(maxImageSize).to(equal(settings.allowedImageSizeRange.max))
     }
@@ -23,17 +13,17 @@ class MediaSettingsTests: XCTestCase {
     func testMaxImageSizeMigratesCGSizeToInt() {
         let dimension = 1200
         let size = CGSize(width: dimension, height: dimension)
-        let storage = MediaSettings.EphemeralStorage()
-        storage.setValue(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
+        let database = EphemeralKeyValueDatabase()
+        database.setObject(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
 
-        let settings = MediaSettings(storage: storage)
+        let settings = MediaSettings(database: database)
         expect(settings.maxImageSizeSetting).to(equal(dimension))
-        let storedValue = storage.valueForKey("SavedMaxImageSizeSetting") as? Int
+        let storedValue = database.objectForKey("SavedMaxImageSizeSetting") as? Int
         expect(storedValue).to(equal(dimension))
     }
 
     func testMaxImageSizeClampsValues() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let lowValue = settings.allowedImageSizeRange.min - 1
         let highValue = settings.allowedImageSizeRange.max + 1
 
@@ -44,7 +34,7 @@ class MediaSettingsTests: XCTestCase {
     }
 
     func testImageSizeForUploadReturnsIntMax() {
-        let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
+        let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = highValue
