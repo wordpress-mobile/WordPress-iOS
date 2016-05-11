@@ -2,7 +2,7 @@ import UIKit
 import WordPressComAnalytics
 import WordPressShared
 
-/// Manages which sharing button are displayed, their order, and other settings 
+/// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
 ///
 @objc class SharingButtonsViewController : UITableViewController
@@ -78,7 +78,7 @@ import WordPressShared
     // MARK: - Sections Setup and Config
 
 
-    /// Configures the table view. The table view is set to edit mode to allow 
+    /// Configures the table view. The table view is set to edit mode to allow
     /// rows in the buttons and more sections to be reordered.
     ///
     func configureTableView() {
@@ -288,9 +288,8 @@ import WordPressShared
 
 
     /// Creates a sortable row for the specified button.
-    /// 
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    ///
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -310,8 +309,7 @@ import WordPressShared
 
     /// Creates a switch row for the specified button in the sharing buttons section.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -336,8 +334,7 @@ import WordPressShared
 
     /// Creates a switch row for the specified button in the more buttons section.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button that the row will represent.
+    /// - Parameter button: The sharing button that the row will represent.
     ///
     /// - Returns: A SortableSharingSwitchRow.
     ///
@@ -376,7 +373,7 @@ import WordPressShared
 
 
     /// Configures the rows for the button section. When the section is editing,
-    /// all buttons are shown with switch cells. When the section is not editing, 
+    /// all buttons are shown with switch cells. When the section is not editing,
     /// only enabled and visible buttons are shown and the rows are sortable.
     ///
     func configureButtonRows() {
@@ -491,8 +488,7 @@ import WordPressShared
 
     /// Provides the icon that represents the sharing button's service.
     ///
-    /// - Parameters:
-    ///     - button: The sharing button for the icon.
+    /// - Parameter button: The sharing button for the icon.
     ///
     /// - Returns: The UIImage for the icon
     ///
@@ -505,7 +501,7 @@ import WordPressShared
 
 
     /// Whether the twitter section should be present or not.
-    /// 
+    ///
     /// - Returns: true if the twitter section should be shown. False otherwise.
     ///
     func shouldShowTwitterSection() -> Bool {
@@ -518,11 +514,10 @@ import WordPressShared
     }
 
 
-    /// Saves changes to blog settings back to the blog and optionally refreshes 
+    /// Saves changes to blog settings back to the blog and optionally refreshes
     /// the tableview.
     ///
-    /// - Parameters:
-    ///     - refresh: True if the tableview should be reloaded.
+    /// - Parameter refresh: True if the tableview should be reloaded.
     ///
     func saveBlogSettingsChanges(refresh: Bool) {
         if refresh {
@@ -624,8 +619,7 @@ import WordPressShared
     /// Saves changes to sharing buttons to core data, reloads the buttons, then
     /// pushes the changes up to the blog, optionally refreshing when done.
     ///
-    /// - Parameters:
-    ///     - refreshAfterSync: If true buttons are reloaded when the sync completes.
+    /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
     func saveButtonChanges(refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
@@ -650,8 +644,7 @@ import WordPressShared
 
     /// Saves changes to the sharing buttons back to the blog.
     ///
-    /// - Parameters:
-    ///     - refresh: True if the tableview sections should be reloaded.
+    /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
     func syncButtonChangesToBlog(refresh: Bool) {
         let service = SharingService(managedObjectContext: managedObjectContext)
@@ -669,11 +662,10 @@ import WordPressShared
     }
 
 
-    /// Shows an alert. The localized description of the specified NSError is 
+    /// Shows an alert. The localized description of the specified NSError is
     /// included in the alert.
     ///
-    /// - Parameters: 
-    ///     - error: An NSError object.
+    /// - Parameter error: An NSError object.
     ///
     func showErrorSyncingMessage(error: NSError) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
@@ -710,7 +702,7 @@ import WordPressShared
     }
 
 
-    /// Called when the user taps the button style row.  Shows a controller to 
+    /// Called when the user taps the button style row.  Shows a controller to
     /// choose from available button styles.
     ///
     func handleEditButtonStyle() {
@@ -762,7 +754,7 @@ import WordPressShared
                 return
             }
 
-            // Remove the @ sign if it was entered. 
+            // Remove the @ sign if it was entered.
             var str = NSString(string: value)
             str = str.stringByReplacingOccurrencesOfString("@", withString: "")
             self.blog.settings!.sharingTwitterName = str as String
@@ -971,5 +963,4 @@ import WordPressShared
             cellIdentifier = SharingCellIdentifiers.SettingsCellIdentifier
         }
     }
-
 }
