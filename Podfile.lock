@@ -23,7 +23,7 @@ PODS:
     - AFNetworking/NSURLSession
   - Alamofire (3.3.1)
   - AMPopTip (0.10.2)
-  - Automattic-Tracks-iOS (0.0.13):
+  - Automattic-Tracks-iOS (0.1.0):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -199,7 +199,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.6.4)
   - AFNetworking (= 2.6.3)
   - AMPopTip (~> 0.7)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.13`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.0`)
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
   - DTCoreText (= 1.6.16)
@@ -241,7 +241,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.13
+    :tag: 0.1.0
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   WordPress-AppbotX:
@@ -254,7 +254,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.13
+    :tag: 0.1.0
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -267,7 +267,7 @@ SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
   AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
-  Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
+  Automattic-Tracks-iOS: 477b10b75264dd5d7644a13afdbaee0e33b1f4ef
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
@@ -307,6 +307,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: ee87ab0bee44f4993a9be81d907b8cb677e8a5bd
+PODFILE CHECKSUM: 2ffe0f683bdb507c754d9d1f36206aaf99762a81
 
-COCOAPODS: 1.0.0.rc.2
+COCOAPODS: 1.0.0
