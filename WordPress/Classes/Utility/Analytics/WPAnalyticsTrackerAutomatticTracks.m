@@ -782,6 +782,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
+            // to be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
+
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
