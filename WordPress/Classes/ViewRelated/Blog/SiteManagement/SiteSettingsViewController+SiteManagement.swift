@@ -22,7 +22,7 @@ public extension SiteSettingsViewController
     private func confirmExportController() -> UIAlertController {
         let confirmTitle = NSLocalizedString("Export Your Content", comment: "Title of Export Content confirmation alert")
         let messageFormat = NSLocalizedString("Your posts, pages, and settings will be mailed to you at %@.", comment: "Message of Export Content confirmation alert; substitution is user's email address")
-        let message = String(format: messageFormat, blog.account.email)
+        let message = String(format: messageFormat, blog.account!.email)
         let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .Alert)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
