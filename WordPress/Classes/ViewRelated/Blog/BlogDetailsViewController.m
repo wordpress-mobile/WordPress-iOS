@@ -498,8 +498,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 - (void)showPeople
 {
     // TODO(@koke, 2015-11-02): add analytics
-    PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
-    controller.blog = self.blog;
+    PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

@@ -508,10 +508,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)createBlogWithAccount:(WPAccount *)account
 {
+    Blog *blog = [self createBlog];
+    blog.account = account;
+    return blog;
+}
+
+- (Blog *)createBlog
+{
     NSString *entityName = NSStringFromClass([Blog class]);
     Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                inManagedObjectContext:self.managedObjectContext];
-    blog.account = account;
     blog.settings = [self createSettingsWithBlog:blog];
     return blog;
 }
@@ -638,9 +644,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
     id<BlogServiceRemote> remote;
-    if (blog.restApi) {
-        remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
-    } else {
+    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+        if (blog.restApi) {
+            remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
+    } else if (blog.api) {
         remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 
@@ -649,6 +657,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
+    if (account.restApi == nil) {
+        return nil;
+    }
+
     return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 

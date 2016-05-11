@@ -101,11 +101,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - helpers
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
-    if (blog.restApi) {
-        return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
-    } else {
+    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+        if (blog.restApi) {
+            return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
+    } else if (blog.api) {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
+    return nil;
 }
 
 - (nullable NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags

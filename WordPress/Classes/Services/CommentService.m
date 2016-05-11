@@ -992,9 +992,11 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
 {
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
-    if (blog.restApi) {
-        remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
-    } else {
+    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+        if (blog.restApi) {
+            remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        }
+    } else if (blog.api) {
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
     return remote;
