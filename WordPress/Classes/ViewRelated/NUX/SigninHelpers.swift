@@ -29,7 +29,7 @@ import WordPressComAnalytics
     // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         if useNewSigninFlow() {
-            let controller = SigninEmailViewController.controller();
+            let controller = SigninEmailViewController.controller()
             controller.dismissBlock = {(cancelled) in
                 // Show the editor if requested, and we weren't cancelled.
                 if !cancelled && thenEditor {
@@ -65,7 +65,7 @@ import WordPressComAnalytics
     // Helper used by the MeViewController
     class func showSigninForJustWPComFromPresenter(presenter: UIViewController) {
         if useNewSigninFlow() {
-            let controller = SigninEmailViewController.controller();
+            let controller = SigninEmailViewController.controller()
             controller.restrictSigninToWPCom = true
 
             let navController = NUXNavigationController(rootViewController: controller)
@@ -286,7 +286,7 @@ import WordPressComAnalytics
     }
 
 
-    /// Checks whether credentials have been populated. 
+    /// Checks whether credentials have been populated.
     /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
     ///
     /// - Parameter loginFields: An instance of LoginFields to check
