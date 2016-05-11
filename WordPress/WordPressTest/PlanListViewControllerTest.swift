@@ -9,7 +9,7 @@ class PlanListViewControllerTest: XCTestCase {
     func testPlanListRowAttributedTitleWhenCurrentDoesNotContainPrice() {
         let (title, price) = ("Title", "$99")
         let attributedTitle = PlanListRow.Formatter.attributedTitle(title, price: price, active: true)
-        
+
         expect(attributedTitle.string).to(contain(title))
         expect(attributedTitle.string).notTo(contain(price))
     }
@@ -17,7 +17,7 @@ class PlanListViewControllerTest: XCTestCase {
     func testPlanListRowAttributedTitleWhenNotCurrentContainsTitleAndPrice() {
         let (title, price) = ("Title", "$99")
         let attributedTitle = PlanListRow.Formatter.attributedTitle(title, price: price, active: false)
-        
+
         expect(attributedTitle.string).to(contain(title))
         expect(attributedTitle.string).to(contain(price))
     }
