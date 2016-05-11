@@ -23,9 +23,9 @@
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        [self initStackView];
-        [self initIconView];
-        [self initTitleLabel];
+        [self setupStackView];
+        [self setupIconView];
+        [self setupTitleLabel];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
         [self addGestureRecognizer:tap];
@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,7 +61,7 @@
     _stackView = stackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -71,7 +71,6 @@
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
     
     NSAssert(_stackView != nil, @"stackView is nil");
-    
     [_stackView addArrangedSubview:iconView];
     
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
@@ -80,7 +79,7 @@
     _iconView = iconView;
 }
 
-- (void)initTitleLabel
+- (void)setupTitleLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -90,7 +89,6 @@
     label.backgroundColor = [UIColor whiteColor];
     
     NSAssert(_stackView != nil, @"stackView is nil");
-    
     [_stackView addArrangedSubview:label];
     
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
