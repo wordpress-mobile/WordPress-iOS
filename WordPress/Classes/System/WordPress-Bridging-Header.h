@@ -131,6 +131,7 @@
 #import "WPSearchController.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
+#import "WPUserAgent.h"
 
 #import <WordPressComAnalytics/WPAnalytics.h>
 
