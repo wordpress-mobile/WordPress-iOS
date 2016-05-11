@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-xcodeproj 'WordPress/WordPress.xcodeproj'
+project 'WordPress/WordPress.xcodeproj'
 
 inhibit_all_warnings!
 
@@ -78,7 +78,7 @@ abstract_target 'WordPress_Base' do
   end
 end
 
-# post_install do |installer_representation|
+post_install do |installer_representation|
 #   installer_representation.pods_project.targets.each do |target|
 #     # See https://github.com/CocoaPods/CocoaPods/issues/3838
 #     if target.name.end_with?('WordPressCom-Stats-iOS')
@@ -93,10 +93,10 @@ end
 #   installer_representation.pods_project.build_configurations.each do |config|
 #       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
 #   end
-#
-#   # Does a quick hack to turn off Swift embedding of libraries for extensions
-#   # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
-#   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressShareExtension/*.xcconfig"
-#   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPressTodayWidget/*.xcconfig"
-#
-# end
+
+  # Does a quick hack to turn off Swift embedding of libraries for extensions
+  # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressShareExtension/*.xcconfig"
+  system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressTodayWidget/*.xcconfig"
+
+end
