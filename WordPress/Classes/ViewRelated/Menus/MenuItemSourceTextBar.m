@@ -114,13 +114,15 @@
     
     [contentView addSubview:contentStackView];
     
+    const CGFloat leadingMargin = spacing;
+    const CGFloat trailingMargin = spacing / 2.0; // Less on the right as the textField adds it's own margin inset.
     [NSLayoutConstraint activateConstraints:@[
                                               [contentStackView.topAnchor constraintEqualToAnchor:contentView.topAnchor constant:spacing],
-                                              [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:spacing],
+                                              [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:leadingMargin],
                                               [contentStackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor constant:-spacing],
-                                              [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-spacing]
+                                              [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-trailingMargin]
                                               ]];
-    
+    [contentStackView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     _contentStackView = contentStackView;
 }
 
@@ -163,6 +165,7 @@
     
     [_contentStackView addArrangedSubview:textField];
     
+    [textField setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
     _textField = textField;
@@ -183,6 +186,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
     [label addGestureRecognizer:tap];
     
+    [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     
     label.hidden = YES;
