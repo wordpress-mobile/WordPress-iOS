@@ -54,7 +54,7 @@ public class SignupService : LocalCoreDataService
                                             success: SignupSuccessBlock,
                                             failure: SignupFailureBlock) {
 
-        let params = SigninParams(url: url, title: blogTitle, email: emailAddress, username: username, password: password)
+        let params = SignupParams(url: url, title: blogTitle, email: emailAddress, username: username, password: password)
         validateWPComBlogWithParams(params, status: status, success: success, failure: failure)
     }
 
@@ -67,7 +67,7 @@ public class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func validateWPComBlogWithParams(params: SigninParams,
+    func validateWPComBlogWithParams(params: SignupParams,
                                      status: SignupStatusBlock,
                                      success: SignupSuccessBlock,
                                      failure: SignupFailureBlock) {
@@ -95,7 +95,7 @@ public class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func createWPComUserWithParams(params: SigninParams,
+    func createWPComUserWithParams(params: SignupParams,
                                    status: SignupStatusBlock,
                                    success: SignupSuccessBlock,
                                    failure: SignupFailureBlock) {
@@ -121,7 +121,7 @@ public class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func signinWPComUserWithParams(params: SigninParams,
+    func signinWPComUserWithParams(params: SignupParams,
                                   status: SignupStatusBlock,
                                   success: () -> Void,
                                   failure: (error: NSError?) -> Void) {
@@ -167,7 +167,7 @@ public class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func createWPComBlogForParams(params: SigninParams,
+    func createWPComBlogForParams(params: SignupParams,
                                     account: WPAccount,
                                     status: SignupStatusBlock,
                                     success: SignupSuccessBlock,
@@ -310,7 +310,7 @@ public class SignupService : LocalCoreDataService
     /// An internal struct for conveniently sharing params between the different 
     /// sign up steps.
     ///
-    struct SigninParams {
+    struct SignupParams {
         // WPCom blog url
         var url: String
 
