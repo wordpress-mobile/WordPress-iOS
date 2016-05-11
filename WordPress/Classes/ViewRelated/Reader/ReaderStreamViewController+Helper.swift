@@ -21,14 +21,13 @@ extension ReaderStreamViewController
     }
 
 
-    /**
-    Returns the ReaderStreamHeader appropriate for a particular ReaderTopic
-    or nil if there is not one.  The caller is expected to configure the
-    returned header.
-
-    @param topic A ReaderTopic
-    @param An unconfigured instance of a ReaderStreamHeader.
-    */
+    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic or nil if there is not one.
+    /// The caller is expected to configure the returned header.
+    ///
+    /// - Parameter topic: A ReaderTopic
+    ///
+    /// - Returns: An unconfigured instance of a ReaderStreamHeader.
+    ///
     public class func headerForStream(topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
         if ReaderHelpers.topicIsFollowing(topic) || ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
@@ -54,12 +53,12 @@ extension ReaderStreamViewController
         return nil
     }
 
-    /**
-    Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
-    
-    @param topic A ReaderTopic.
-    @return An NoResultsResponse instance.
-    */
+    /// Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
+    ///
+    /// - Parameter topic: A ReaderTopic.
+    ///
+    /// - Returns: An NoResultsResponse instance.
+    ///
     public class func responseForNoResults(topic: ReaderAbstractTopic) -> NoResultsResponse {
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {

@@ -8,7 +8,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     /// Deletes the specified WordPress.com site.
     ///
     /// - Parameters:
-    ///    - siteID:  The WordPress.com ID of the site.
+    ///    - siteID: The WordPress.com ID of the site.
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
@@ -31,28 +31,28 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                     failure?(SiteError.DeleteFailed.toNSError())
                     return
                 }
-                
+
                 success?()
             },
             failure: { operation, error in
                 failure?(error)
             })
     }
-    
-    
+
+
     /// Triggers content export of the specified WordPress.com site.
     ///
     /// - Note: An email will be sent with download link when export completes.
     ///
     /// - Parameters:
-    ///    - siteID:  The WordPress.com ID of the site.
+    ///    - siteID: The WordPress.com ID of the site.
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
     public func exportContent(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/exports/start"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        
+
         api.POST(path,
             parameters: nil,
             success: { operation, response in
@@ -68,25 +68,25 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                     failure?(SiteError.ExportFailed.toNSError())
                     return
                 }
-               
+
                 success?()
             },
             failure: { operation, error in
                 failure?(error)
         })
     }
-    
+
     /// Gets the list of active purchases of the specified WordPress.com site.
     ///
     /// - Parameters:
-    ///     - siteID:  The WordPress.com ID of the site.
+    ///     - siteID: The WordPress.com ID of the site.
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
     public func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/purchases"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        
+
         api.GET(path,
             parameters: nil,
             success: { operation, response in
@@ -94,7 +94,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                     failure?(SiteError.PurchasesInvalidResponse.toNSError())
                     return
                 }
-                
+
                 let actives = results.filter { $0[ResultKey.Active]?.boolValue == true }
                 success?(actives)
             },
@@ -130,7 +130,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
         case ExportMissingStatus
         case ExportFailed
         case PurchasesInvalidResponse
-        
+
         var description: String {
             switch self {
             case .DeleteInvalidResponse, .DeleteMissingStatus, .DeleteFailed:
@@ -141,7 +141,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                 return NSLocalizedString("Could not check site purchases.", comment: "Message shown when site purchases API failed")
             }
         }
-        
+
         func toNSError() -> NSError {
             return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(self)])
         }
