@@ -44,15 +44,15 @@ public final class WordPressComRestApi: NSObject
     }
 
     deinit {
-        sessionManager.invalidateSessionCancelingTasks(true);
+        sessionManager.invalidateSessionCancelingTasks(true)
     }
     /**
      Reset the API instance
 
      Invalidates the session and cancel all pending requests
      */
-    public func reset() {        
-        sessionManager.invalidateSessionCancelingTasks(true);
+    public func reset() {
+        sessionManager.invalidateSessionCancelingTasks(true)
     }
 
     //MARK: - Network requests
@@ -78,10 +78,10 @@ public final class WordPressComRestApi: NSObject
         progress.totalUnitCount = 1
         let task = sessionManager.GET(URLString, parameters: parameters, success: { (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1;
+                progress.completedUnitCount = 1
             }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1;
+                progress.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -133,7 +133,6 @@ public final class WordPressComRestApi: NSObject
 
     /**
      Executes a multipart POST using the current serializer, the parameters defined and the fileParts defined in the request
-     
      This request will be streamed from disk, so it's ideally to be used for large media post uploads.
 
      - parameter URLString:  the endpoint to connect
@@ -254,7 +253,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
             "unauthorized" : WordPressComRestApiError.AuthorizationRequired
         ]
 
-        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComRestApiError.Unknown.rawValue;
+        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComRestApiError.Unknown.rawValue
 
         error.memory = NSError(domain:String(WordPressComRestApiError),
                                code:mappedCode,

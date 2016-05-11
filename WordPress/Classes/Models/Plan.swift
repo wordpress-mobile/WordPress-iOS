@@ -49,7 +49,7 @@ final class PlansBridge: NSObject {
     static func titleForPlan(withID planID: PlanID) -> String? {
         // @koke 2016-04-21
         // No quick way to do this without hardcoded plans
-        // We should get and cache the active plan title 
+        // We should get and cache the active plan title
         return nil
     }
 }

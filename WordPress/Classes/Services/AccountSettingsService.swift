@@ -162,13 +162,13 @@ class AccountSettingsService {
         return initial.concat(updates)
     }
 
-    func primarySiteNameForSettings(settings: AccountSettings) -> String? {        
+    func primarySiteNameForSettings(settings: AccountSettings) -> String? {
         let service = BlogService(managedObjectContext: context)
         let blog = service.blogByBlogId(settings.primarySiteID)
-        
+
         return blog?.settings?.name
     }
-    
+
     private func getSettings(_: Any? = nil) -> AccountSettings? {
         return accountSettingsWithID(self.userID)
     }
