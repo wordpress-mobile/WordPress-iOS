@@ -10,7 +10,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     @IBOutlet var label: UILabel!
     @IBOutlet var sendLinkButton: NUXSubmitButton!
     @IBOutlet var usePasswordButton: UIButton!
-
+    var restrictSigninToWPCom = false
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -84,7 +84,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogSwift.logError("Attempted to request authentication link, but the email address did not appear valid.")
             WPError.showAlertWithTitle(NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
-                                       message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous scren and provide a valid email address.", comment: "An error message."))
+                                       message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
             return
         }
 
@@ -109,6 +109,8 @@ class SigninLinkRequestViewController : NUXAbstractViewController
         WPAppAnalytics.track(.LoginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -124,6 +126,8 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     @IBAction func handleUsePasswordTapped(sender: UIButton) {
         WPAppAnalytics.track(.LoginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 

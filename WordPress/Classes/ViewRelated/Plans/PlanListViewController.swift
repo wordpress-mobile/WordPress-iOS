@@ -73,7 +73,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
             return nil
         }
-        self.init(siteID: Int(blog.dotComID), service: service)
+
+        self.init(siteID: Int(blog.dotComID!), service: service)
         restorationBlogURL = blog.objectID.URIRepresentation()
     }
 
