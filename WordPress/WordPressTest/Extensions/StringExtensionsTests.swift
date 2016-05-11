@@ -13,14 +13,14 @@ class StringExtensionsTests: XCTestCase
     private let anchor  = "<a href=\"%@\">%@</a>"
 
 
-    public func testLinkifyingPlainLinks() {
+    func testLinkifyingPlainLinks() {
         for link in links {
             let linkified = String(format: anchor, link, link)
             XCTAssertEqual(link.stringWithAnchoredLinks(), linkified, "Oh noes!")
         }
     }
 
-    public func testLinkifyingLinksWithinText() {
+    func testLinkifyingLinksWithinText() {
         var plain       = String()
         var linkified   = String()
 
@@ -32,7 +32,7 @@ class StringExtensionsTests: XCTestCase
         XCTAssertEqual(plain.stringWithAnchoredLinks(), linkified, "Oh noes!")
     }
 
-    public func testLinkifyingPlainText() {
+    func testLinkifyingPlainText() {
         XCTAssertEqual(text.stringWithAnchoredLinks(), text, "Oh noes!")
     }
 }
