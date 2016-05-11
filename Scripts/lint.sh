@@ -18,4 +18,4 @@ if [[ "$CONFIGURATION" == "Release"* ]]; then
   ARGS="$ARGS --strict"
 fi
 
-swiftlint lint $ARGS
+$SWIFTLINT lint $ARGS
