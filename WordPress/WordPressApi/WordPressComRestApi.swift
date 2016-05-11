@@ -33,10 +33,11 @@ public final class WordPressComRestApi: NSObject
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
+        var additionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
         if let userAgent = self.userAgent {
-            sessionConfiguration.HTTPAdditionalHeaders = ["User-Agent": userAgent]
+            additionalHeaders["User-Agent"] = userAgent
         }
+        sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
