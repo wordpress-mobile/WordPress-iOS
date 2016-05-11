@@ -25,7 +25,7 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     if (self) {
         [self setupView];
         
-        self.isAnimating = NO;
+        _isAnimating = NO;
     }
     
     return self;
