@@ -8,6 +8,8 @@ cache:
 - cocoapods
 notifications:
   email: true
+before_install:
+- Scripts/install-swiftlint.sh
 script:
 - Scripts/build.sh
 env:
