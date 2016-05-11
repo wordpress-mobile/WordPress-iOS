@@ -425,9 +425,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         dismiss();
     };
     controller.onSelectedToTrash = ^() {
-        if (item.itemID.integerValue) {
+        if (item.itemID.integerValue || item.menu.menuID.integerValue == MenuDefaultID) {
             // If the item had an ID, saving is enabled.
-            // Otherwise the item was local only.
+            // Or if the user trying to edit the default menu, saving is enabled.
+            // Otherwise the item was never created remotely, so no need to save this deletion.
             [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
         }
         [self.itemsView removeItem:item];
