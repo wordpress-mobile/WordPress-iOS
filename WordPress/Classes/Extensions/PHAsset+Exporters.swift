@@ -7,20 +7,21 @@ typealias SuccessHandler = (resultingSize: CGSize) -> ()
 typealias ErrorHandler = (error: NSError) -> ()
 
 @objc protocol ExportableAsset {
-    /**
-     Exports an asset to a file URL with the desired targetSize and removing geolocation if requested.
-     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset.
-
-     - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original image, it will not resize.
-
-     - Parameters:
-     - url: file url to where the asset should be exported, this must be writable location
-     - targetUTI: the UTI format to use when exporting the asset
-     - maximumResolution:  the maximum pixel resolution that the asset can have after exporting.
-     - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
-     - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
-     - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
-     */
+    /// Exports an asset to a file URL with the desired targetSize and removing geolocation if requested.
+    /// The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that
+    /// maitains the aspect ratio of the asset.
+    ///
+    /// - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original
+    ///         image, it will not resize.
+    ///
+    /// - Parameters:
+    ///     - url: file url to where the asset should be exported, this must be writable location
+    ///     - targetUTI: the UTI format to use when exporting the asset
+    ///     - maximumResolution:  the maximum pixel resolution that the asset can have after exporting.
+    ///     - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
+    ///     - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
+    ///     - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
+    ///
     func exportToURL(url: NSURL,
                      targetUTI: String,
                      maximumResolution: CGSize,
@@ -28,16 +29,17 @@ typealias ErrorHandler = (error: NSError) -> ()
                      successHandler: SuccessHandler,
                      errorHandler: ErrorHandler)
 
-    /**
-     Exports an image thumbnail of the asset to a file URL that respects the targetSize.
-     The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that mantains the aspect ratio of the asset
-
-     - Parameters:
-     - url: file url to where the asset should be exported, this must be writable location
-     - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
-     - successHandler: a handler that will be invoked on success with the resulting resolution of the image
-     - errorHandler: a handler that will be invoked when some error occurs when generating the thumbnail
-     */
+    /// Exports an image thumbnail of the asset to a file URL that respects the targetSize.
+    /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that
+    /// mantains the aspect ratio of the asset
+    ///
+    /// - Parameters:
+    ///     - url: File url to where the asset should be exported, this must be writable location.
+    ///     - targetSize: The maximum pixel resolution that the file can have after exporting.
+    ///                   If CGSizeZero is provided the original size of image is returned.
+    ///     - successHandler: A handler that will be invoked on success with the resulting resolution of the image
+    ///     - errorHandler: A handler that will be invoked when some error occurs when generating the thumbnail
+    ///
     func exportThumbnailToURL(url: NSURL,
                               targetSize: CGSize,
                               synchronous: Bool,
@@ -46,10 +48,12 @@ typealias ErrorHandler = (error: NSError) -> ()
 
     func originalUTI() -> String?
 
-    /** the MediaType for the asset */
+    /// The MediaType for the asset
+    ///
     var assetMediaType: MediaType { get }
 
-    /** the default UTI for thumbnails */
+    /// The default UTI for thumbnails
+    ///
     var defaultThumbnailUTI: String { get }
 }
 
@@ -162,14 +166,14 @@ extension PHAsset: ExportableAsset {
         return resultingMetadata
     }
 
-    /**
-     Makes sure the metadata of the image is matching the attributes in the Image.
-
-     - parameter metadata: the original metadata of the image
-     - parameter image:    the current image
-
-     - returns: a new metadata object where the values match the values on the UIImage
-     */
+    /// Makes sure the metadata of the image is matching the attributes in the Image.
+    ///
+    /// - Parameters:
+    ///     - metadata: The original metadata of the image.
+    ///     - image: The current image.
+    ///
+    /// - Returns: A new metadata object where the values match the values on the UIImage
+    ///
     func matchMetadata(metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
