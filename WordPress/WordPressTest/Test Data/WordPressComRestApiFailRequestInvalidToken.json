@@ -1,0 +1,4 @@
+{
+    "message": "The OAuth2 token is invalid.",
+    "error": "invalid_token"
+}

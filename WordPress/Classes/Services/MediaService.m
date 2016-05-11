@@ -13,7 +13,8 @@
 #import "WordPress-swift.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WPXMLRPCDecoder.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
+
 
 @implementation MediaService
 
@@ -585,7 +586,8 @@ static NSString * const MediaDirectory = @"Media";
     id <MediaServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
         if (blog.restApi) {
-            remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+            remote = [[MediaServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi
+                                                                          siteID:blog.dotComID];
         }
     } else if (blog.api) {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
@@ -662,7 +664,7 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = [self mimeTypeForFilename:media.localThumbnailURL];
+    remoteMedia.mimeType = [self mimeTypeForFilename:media.absoluteLocalURL];
 	remoteMedia.videopressGUID = media.videopressGUID;
     remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
     remoteMedia.postID = media.postID;

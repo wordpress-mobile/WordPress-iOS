@@ -5,8 +5,8 @@ class CircularImageView : UIImageView
 {
     var shouldRoundCorners : Bool = true {
         didSet {
-            let rect = frame;
-            frame = rect;
+            let rect = frame
+            frame = rect
         }
     }
 
@@ -24,10 +24,10 @@ class CircularImageView : UIImageView
 
     override init(image: UIImage!) {
         super.init(image: image)
-        
+
         layer.masksToBounds = true
     }
-    
+
     convenience init() {
         self.init(frame: CGRectZero)
     }
@@ -37,12 +37,12 @@ class CircularImageView : UIImageView
             refreshRadius()
         }
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         refreshRadius()
     }
-    
+
     private func refreshRadius() {
         layer.cornerRadius = shouldRoundCorners ? (frame.width * 0.5) : 0
     }

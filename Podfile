@@ -23,6 +23,7 @@ target 'WordPress', :exclusive => true do
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
   pod 'Mixpanel', '2.9.4'
+  pod 'Optimizely-iOS-SDK', '~> 1.4.2'
   pod 'Reachability',	'3.2'
   pod 'ReactiveCocoa', '~> 2.4.7'
   pod 'RxCocoa', '~> 2.3.1'
@@ -48,7 +49,7 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Editor', '1.6'
   pod 'WordPress-iOS-Shared', '0.5.7'
   pod 'WordPressApi', '0.4.0'
-  pod 'WordPressCom-Analytics-iOS', '0.1.9'
+  pod 'WordPressCom-Analytics-iOS', '0.1.11'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
   pod 'WordPressCom-Stats-iOS/UI', '0.7.0'
