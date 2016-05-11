@@ -187,6 +187,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     private func presentGravatarPicker() {
         WPAppAnalytics.track(.GravatarTapped)
+
         let pickerViewController = GravatarPickerViewController()
         pickerViewController.onCompletion = { [weak self] image in
             if let updatedGravatarImage = image {
@@ -301,6 +302,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     private func uploadGravatarImage(newGravatar: UIImage) {
         WPAppAnalytics.track(.GravatarUploaded)
+
         gravatarUploadInProgress = true
         headerView.overrideGravatarImage(newGravatar)
 
