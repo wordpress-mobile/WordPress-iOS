@@ -11,7 +11,7 @@ import AFNetworking
  - RequestSerializationFailed:     The serialization of the request failed
  - Unknown:                        Unknow error happen
  */
-public enum WordPressComRestApiError: Int, ErrorType {
+@objc public enum WordPressComRestApiError: Int, ErrorType {
     case InvalidInput
     case InvalidToken
     case AuthorizationRequired
@@ -259,10 +259,10 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
             "unauthorized" : WordPressComRestApiError.AuthorizationRequired
         ]
 
-        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComRestApiError.Unknown.rawValue
-
-        error.memory = NSError(domain:String(WordPressComRestApiError),
-                               code:mappedCode,
+        let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
+        let nserror = mappedError as NSError
+        error.memory = NSError(domain:nserror.domain,
+                               code:nserror.code,
                                userInfo:[NSLocalizedDescriptionKey: errorDescription])
         return responseObject
     }

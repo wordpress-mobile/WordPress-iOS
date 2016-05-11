@@ -13,6 +13,8 @@
 #import "WordPress-swift.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WPXMLRPCDecoder.h"
+#import "WordPress-Swift.h"
+
 
 @implementation MediaService
 
@@ -292,6 +294,8 @@
         }
         userInfo[NSLocalizedDescriptionKey] = errorMessage;
         newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
+    } else if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
+
     }
     return newError;
 }

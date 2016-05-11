@@ -61,7 +61,7 @@ class WordPressComRestApiTests: XCTestCase {
             XCTFail("This call should fail")
             }, failure: { (error, httpResponse) in
                 expectation.fulfill()
-                XCTAssert(error.domain == String(WordPressComRestApiError), "The error should a WordPressComRestApiError")
+                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error should a WordPressComRestApiError")
                 XCTAssert(error.code == Int(WordPressComRestApiError.InvalidToken.rawValue), "The error code should be invalid token")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -97,7 +97,7 @@ class WordPressComRestApiTests: XCTestCase {
             XCTFail("This call should fail")
             }, failure: { (error, httpResponse) in
                 expectation.fulfill()
-                XCTAssert(error.domain == String(WordPressComRestApiError), "The error domain should be WordPressComRestApiError")
+                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
                 XCTAssert(error.code == Int(WordPressComRestApiError.InvalidInput.rawValue), "The error code should be invalid input")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -115,7 +115,7 @@ class WordPressComRestApiTests: XCTestCase {
             XCTFail("This call should fail")
             }, failure: { (error, httpResponse) in
                 expectation.fulfill()
-                XCTAssert(error.domain == String(WordPressComRestApiError), "The error domain should be WordPressComRestApiError")
+                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
                 XCTAssert(error.code == Int(WordPressComRestApiError.AuthorizationRequired.rawValue), "The error code should be AuthorizationRequired")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
