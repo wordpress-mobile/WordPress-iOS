@@ -28,3 +28,15 @@ function swiftlint_needs_install() {
     return 0
   fi
 }
+
+# SwiftLint won't match the exact format that xcpretty expects
+# so we move things around to match it.
+# This converts:
+#   path/to/file.swift:12: warning: Trailing Newline Violation
+# into
+#   warning: path/to/file.swift:12:1: Trailing Newline Violation
+function swiftlint_fix_location() {
+  perl -pe 's/^(\/.+\/.*:.*):\s(warning|error):(\s.*)$/\2: \1:\3/'
+}
+
+# vi: ft=sh

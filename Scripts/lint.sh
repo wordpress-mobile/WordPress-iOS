@@ -7,15 +7,10 @@ if swiftlint_needs_install; then
   exit 1
 fi
 
-scripts_dir=$( dirname $0 )
-project_dir="${scripts_dir}/../"
-
-cd "$project_dir"
-
 ARGS="--quiet"
 
 if [[ "$CONFIGURATION" == "Release"* ]]; then
   ARGS="$ARGS --strict"
 fi
 
-$SWIFTLINT lint $ARGS
+$SWIFTLINT lint $ARGS | swiftlint_fix_location
