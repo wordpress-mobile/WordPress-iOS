@@ -9,14 +9,14 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', :path => '../WordPress-Shared-iOS'
+  pod 'WordPress-iOS-Shared', '0.5.8'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
 
   target 'WordPress' do
     # ---------------------
     # Third party libraries
     # ---------------------
-    pod '1PasswordExtension', '1.6.4'
+    pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'2.6.3'
     pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
@@ -42,14 +42,14 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
-    pod 'Automattic-Tracks-iOS', :path => '../Automattic-Tracks-iOS'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.0'
     pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
     pod 'Gridicons', '0.2'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.9.1'
-    pod 'WordPress-iOS-Editor', '1.6'
+    pod 'WordPress-iOS-Editor', '1.6.1'
     pod 'WordPressApi', '0.4.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.9'
     ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
