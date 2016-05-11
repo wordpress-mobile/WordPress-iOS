@@ -86,7 +86,7 @@ public class LanguageViewController : UITableViewController
 
     // MARK: - Private Methods
     private func configureTableViewCell(cell: UITableViewCell) {
-        let languageId = blog.settings.languageID.integerValue
+        let languageId = blog.settings!.languageID.integerValue
         cell.textLabel?.text = NSLocalizedString("Language", comment: "Language of the current blog")
         cell.detailTextLabel?.text = languageDatabase.nameForLanguageWithId(languageId)
     }
@@ -106,7 +106,7 @@ public class LanguageViewController : UITableViewController
         // Setup ListPickerViewController
         let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
         listViewController.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
-        listViewController.selectedValue = blog.settings.languageID
+        listViewController.selectedValue = blog.settings!.languageID
         listViewController.onChange = { [weak self] (selected: AnyObject) in
             guard let newLanguageID = selected as? NSNumber else {
                 return
