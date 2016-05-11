@@ -1,7 +1,6 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-#import "LoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
@@ -86,7 +85,7 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            [LoginViewController presentModalReauthScreen];
+            [SigninHelpers showSigninForWPComFixingAuthToken];
             return;
         }
     }
