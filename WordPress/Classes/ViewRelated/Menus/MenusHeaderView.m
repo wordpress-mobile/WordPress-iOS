@@ -30,8 +30,6 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
-    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
-    self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -46,6 +44,9 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
         
         [self.locationsView removeAllSelectionItems];
         [self.menusView removeAllSelectionItems];
+        
+        self.locationsView.selectionType = MenusSelectionViewTypeLocations;
+        self.menusView.selectionType = MenusSelectionViewTypeMenus;
         
         if (blog) {
             for (MenuLocation *location in blog.menuLocations) {
