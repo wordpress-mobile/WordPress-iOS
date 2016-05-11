@@ -2,18 +2,30 @@
 
 # Installs the SwiftLint package.
 
+source "$(dirname $0)/common.inc"
+
+# Exit immediately if any command fails
 set -e
 
-SWIFTLINT_VERSION="0.10.0"
-SWIFTLINT_PKG_PATH="/tmp/SwiftLint.pkg"
-SWIFTLINT_PKG_URL="https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLint.pkg"
+# Print commands before running them
+#set -x
 
-curl -L -o $SWIFTLINT_PKG_PATH $SWIFTLINT_PKG_URL
+TMPDIR=$(mktemp -d /tmp/Swiftlint.build.XXXX)
 
-if [ -f $SWIFTLINT_PKG_PATH ]; then
-  echo "SwiftLint package exists! Installing it..."
-  sudo installer -pkg $SWIFTLINT_PKG_PATH -target /
-else
-  echo "error: SwiftLint package doesn't exist"
-  exit 1
+if ! swiftlint_needs_install;then
+  echo "Swiftlint $SWIFTLINT_VERSION already installed"
+  exit 0
 fi
+
+echo "Installing SwiftLint $SWIFTLINT_VERSION into $SWIFTLINT_PREFIX"
+
+git clone --branch $SWIFTLINT_VERSION https://github.com/realm/SwiftLint.git $TMPDIR
+cd $TMPDIR
+git submodule update --init --recursive
+
+rm -rf $SWIFTLINT_PREFIX
+mkdir -p $SWIFTLINT_PREFIX
+make prefix_install PREFIX="$SWIFTLINT_PREFIX"
+
+rm -rf $TMPDIR
+

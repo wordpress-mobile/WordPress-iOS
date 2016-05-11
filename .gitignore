@@ -56,5 +56,6 @@ WordPress/WordPress.xcodeproj/xcuserdata
 /build
 .hockey_app_credentials
 WordPress/InfoPlist.h
+build-tools/
 # coverage.py
 */CoverageData/*

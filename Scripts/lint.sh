@@ -1,8 +1,10 @@
 #!/bin/sh
 
-if ! which swiftlint >/dev/null; then
-  echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint or 'brew install swiftlint'"
-  exit 0
+source "$(dirname $0)/common.inc"
+
+if swiftlint_needs_install; then
+  echo "SwiftLint ${SWIFTLINT_VERSION} not installed. Please run Scripts/install-swiftlint.sh"
+  exit 1
 fi
 
 scripts_dir=$( dirname $0 )

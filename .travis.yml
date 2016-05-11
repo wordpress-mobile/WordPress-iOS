@@ -6,6 +6,8 @@ xcode_sdk: iphonesimulator
 cache:
 - bundler
 - cocoapods
+- directories:
+  - build-tools
 notifications:
   email: true
 before_install:
