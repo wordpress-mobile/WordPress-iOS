@@ -4,7 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import <Automattic_Tracks_iOS/TracksService.h>
+@import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
