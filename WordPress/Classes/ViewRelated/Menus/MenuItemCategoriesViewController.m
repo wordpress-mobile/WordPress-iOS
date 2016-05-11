@@ -49,7 +49,9 @@ static NSString * const CategorySortKey = @"categoryName";
     self.displayCategories = [NSMutableArray array];
     [self performResultsControllerFetchRequest];
     
-    [self showLoadingSourcesIndicatorIfEmpty];
+    if (self.displayCategories.count == 0) {
+        [self showLoadingSourcesIndicator];
+    }
     void(^stopLoading)() = ^() {
         [self hideLoadingSourcesIndicator];
     };
