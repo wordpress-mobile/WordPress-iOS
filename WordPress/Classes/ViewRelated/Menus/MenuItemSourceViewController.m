@@ -7,6 +7,8 @@
 #import "MenuItemPostsViewController.h"
 #import "Menu.h"
 
+static CGFloat const SourceHeaderViewHeight = 60.0;
+
 @interface MenuItemSourceViewController () <MenuItemSourceHeaderViewDelegate, MenuItemSourceResultsViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
@@ -35,7 +37,7 @@
     
     [self.stackView addArrangedSubview:headerView];
     
-    NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
+    NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:SourceHeaderViewHeight];
     height.priority = 999;
     height.active = YES;
     
