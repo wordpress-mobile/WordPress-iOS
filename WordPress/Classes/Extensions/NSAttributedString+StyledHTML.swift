@@ -8,8 +8,7 @@ extension NSAttributedString {
     /// - parameter attributes: A collection of style attributes to apply to `htmlString`.
     ///    See `HTMLAttributeType` for supported attributes.
     ///
-    ///    **Notes:**
-    ///
+    /// - note:
     ///    - Font sizes will be interpreted as pixel sizes, not points.
     ///    - Font family / name will be discarded (generated strings will always
     ///      use the system font), but font size and bold / italic information
