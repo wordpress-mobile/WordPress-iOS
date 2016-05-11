@@ -836,12 +836,13 @@ import WordPressComAnalytics
     // MARK: - Sync Methods
 
     func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
-        guard let topic = (try? managedObjectContext().existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
+        let context = ContextManager.sharedInstance().mainContext
+        guard let topic = (try? context.existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
             DDLogSwift.logError("Failed to retrive an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = NSDate()
-        ContextManager.sharedInstance().saveContext(managedObjectContext())
+        ContextManager.sharedInstance().saveContext(context)
     }
 
 
@@ -871,9 +872,13 @@ import WordPressComAnalytics
             return
         }
 
-        // TODO: Need to fix last synced. EJ 2016/5/10
-        let lastSynced = readerTopic?.lastSynced == nil ? NSDate(timeIntervalSince1970: 0) : readerTopic!.lastSynced
-        if canSync() && Int(lastSynced.timeIntervalSinceNow) < refreshInterval {
+        guard let topic = readerTopic else {
+            return
+        }
+
+        let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
+        let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
+        if canSync() && interval >= refreshInterval {
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
@@ -1124,8 +1129,6 @@ import WordPressComAnalytics
         cell.animateActivityView(syncIsFillingGap)
     }
 
-
-    // MARK: - Notifications
 
     func handleContextDidSaveNotification(notification:NSNotification) {
         // We want to ignore these notifications when our view has focus so as not
