@@ -136,7 +136,8 @@ import WordPressComAnalytics
     }
 
 
-    /// Checks whether credentials have been populated.
+    /// Checks whether credentials have been populated. 
+    /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
     ///
     /// - Parameter loginFields: An instance of LoginFields to check
     ///
@@ -165,6 +166,48 @@ import WordPressComAnalytics
         }
 
         return true
+    }
+
+
+    /// Checks whether necessary info for account creation has been provided.
+    ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if credentails have been provided. False otherwise.
+    ///
+    class func validateFieldsPopulatedForCreateAccount(loginFields: LoginFields) -> Bool {
+        return !loginFields.emailAddress.isEmpty &&
+            !loginFields.username.isEmpty &&
+            !loginFields.password.isEmpty &&
+            !loginFields.siteUrl.isEmpty
+    }
+
+
+    /// Ensures there are no spaces in fields used for signin, (except the password field).
+    ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if no spaces were found. False if spaces were found.
+    ///
+    class func validateFieldsForSigninContainNoSpaces(loginFields: LoginFields) -> Bool {
+        let space = " "
+        return !loginFields.emailAddress.containsString(space) &&
+            !loginFields.username.containsString(space) &&
+            !loginFields.siteUrl.containsString(space)
+    }
+
+
+    /// Verify a username is 50 characters or less.
+    ///
+    /// - Parameters:
+    ///     - username: The username to check
+    ///
+    /// - Returns: True if the username is 50 characters or less.
+    ///
+    class func validateUsernameMaxLength(username: String) -> Bool {
+        return username.characters.count <= 50
     }
 
 
@@ -224,8 +267,8 @@ import WordPressComAnalytics
         let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
 
         let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLoginForURLString(loginURL, viewController: controller, sender: sourceView, completion: { (username: String!, password: String!, oneTimePassword: String!, error: NSError!) in
-            guard error == nil else {
+        onePasswordFacade.findLoginForURLString(loginURL, viewController: controller, sender: sourceView, completion: { (username: String?, password: String?, oneTimePassword: String?, error: NSError?) in
+            if let error = error {
                 DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.OnePasswordFailed)
                 return
@@ -242,7 +285,7 @@ import WordPressComAnalytics
             loginFields.username = username
             loginFields.password = password
 
-            if oneTimePassword != nil {
+            if let oneTimePassword = oneTimePassword {
                 loginFields.multifactorCode = oneTimePassword
             }
 
