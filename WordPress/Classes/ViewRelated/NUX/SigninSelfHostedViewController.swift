@@ -285,6 +285,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
     func finishedLoginWithUsername(username: String!, password: String!, xmlrpc: String!, options: [NSObject : AnyObject]!) {
         displayLoginMessage("")
+        OptimizelyHelper.trackLoggedIn()
         BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
             self?.dismiss()

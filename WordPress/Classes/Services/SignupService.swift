@@ -101,7 +101,7 @@ public class SignupService : LocalCoreDataService
                                      failure: SignupFailureBlock) {
 
         status(status: .Validating)
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
+        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
 
         let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
@@ -209,7 +209,7 @@ public class SignupService : LocalCoreDataService
             return
         }
 
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageId()
+        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
 
         status(status: .CreatingBlog)
@@ -263,7 +263,7 @@ public class SignupService : LocalCoreDataService
         status(status: .Syncing)
         blogService.syncBlog(blog, completionHandler: {
             // The final step
-            accountService.updateUserDetailsForAccount(blog.account, success: success, failure: failure)
+            accountService.updateUserDetailsForAccount(blog.account!, success: success, failure: failure)
         })
     }
 
@@ -317,7 +317,7 @@ public class SignupService : LocalCoreDataService
 
         blog.dotComID = NSNumber(integer: dotComID)
         blog.url = blogURL
-        blog.settings.name = blogName.stringByDecodingXMLCharacters()
+        blog.settings?.name = blogName.stringByDecodingXMLCharacters()
 
         defaultAccount.defaultBlog = blog
 
