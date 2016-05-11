@@ -78,7 +78,7 @@ import WordPressShared
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
 
@@ -356,7 +356,7 @@ import WordPressShared
 
 
     @IBAction func handleCreateSiteButtonTapped(sender: UIButton) {
-        let controller = CreateAccountAndBlogViewController()
+        let controller = SignupViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
     }
 
