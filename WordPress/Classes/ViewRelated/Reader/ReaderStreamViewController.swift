@@ -1122,6 +1122,7 @@ import WordPressComAnalytics
         cell.configureCell(post)
     }
 
+
     public func configureBlockedCell(cell: ReaderBlockedSiteCell, atIndexPath indexPath: NSIndexPath) {
         if tableViewHandler.resultsController.fetchedObjects == nil {
             return
@@ -1135,6 +1136,7 @@ import WordPressComAnalytics
         let post = posts[indexPath.row]
         cell.setSiteName(post.blogName)
     }
+
 
     public func configureGapMarker(cell: ReaderGapMarkerCell) {
         cell.animateActivityView(syncIsFillingGap)
@@ -1155,6 +1157,7 @@ import WordPressComAnalytics
         })
         self.updateStreamHeaderIfNeeded()
     }
+
 
     func toggleFollowingForSite(topic:ReaderSiteTopic) {
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
@@ -1195,9 +1198,11 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
         }
     }
 
+
     func syncHelper(syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         loadMoreItems(success, failure: failure)
     }
+
 
     public func syncContentEnded() {
         if tableViewHandler.isScrolling {
