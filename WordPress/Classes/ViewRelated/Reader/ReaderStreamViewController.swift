@@ -80,8 +80,8 @@ import WordPressComAnalytics
 
     /**
         Convenience method for instantiating an instance of ReaderListViewController
-        for a particular topic. 
-        
+        for a particular topic.
+
         @param topic The reader topic for the list.
 
         @return A ReaderListViewController instance.
@@ -227,7 +227,7 @@ import WordPressComAnalytics
         if isViewLoaded() {
             displayLoadingStream()
         }
-        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic");
+        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.tagTopicForTagWithSlug(tagSlug,
             success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
@@ -318,8 +318,8 @@ import WordPressComAnalytics
     }
 
     func displayLoadingStreamFailed() {
-        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.");
-        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.");
+        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.")
+        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.")
         displayResultsStatus()
     }
 
@@ -333,10 +333,10 @@ import WordPressComAnalytics
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
 
-        let boxView = WPAnimatedBox.newAnimatedBox()
+        let boxView = WPAnimatedBox()
         resultsStatusView.accessoryView = boxView
         displayResultsStatus()
-        boxView.prepareAndAnimateAfterDelay(0.3)
+        boxView.animateAfterDelay(0.3)
     }
 
     func displayNoResultsView() {
@@ -402,7 +402,7 @@ import WordPressComAnalytics
         let account = service.defaultWordPressComAccount()
         isLoggedIn = account != nil
 
-        // Reset our display context to ensure its current. 
+        // Reset our display context to ensure its current.
         managedObjectContext().reset()
 
         configureTitleForTopic()
@@ -556,11 +556,11 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
-    
+
     private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
         if let post = self.postWithObjectID(postID) {
             let sharingController = PostSharingController()
-            
+
             sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
         }
     }
@@ -639,7 +639,7 @@ import WordPressComAnalytics
             // Consider a like from the list to be enough to push a page view.
             // Solves a long-standing question from folks who ask 'why do I
             // have more likes than page views?'.
-            ReaderHelpers.bumpPageViewForPost(post);
+            ReaderHelpers.bumpPageViewForPost(post)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
@@ -916,7 +916,7 @@ import WordPressComAnalytics
     func loadMoreItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost
         if post == nil {
-            // failsafe 
+            // failsafe
             return
         }
 
@@ -1001,7 +1001,7 @@ import WordPressComAnalytics
 
         // If readerTopic is nil return a predicate that is valid, but still
         // avoids returning readerPosts that do not belong to a topic (e.g. those
-        // loaded from a notification). We can do this by specifying that self 
+        // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
         let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
 
@@ -1068,7 +1068,7 @@ import WordPressComAnalytics
 
     func handleContextDidSaveNotification(notification:NSNotification) {
         // We want to ignore these notifications when our view has focus so as not
-        // to conflict with the list refresh mechanism. 
+        // to conflict with the list refresh mechanism.
         if view.window != nil {
             return
         }
@@ -1137,7 +1137,7 @@ import WordPressComAnalytics
         if post.isCrossPost() {
             let cell = tableView.dequeueReusableCellWithIdentifier(readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
             configureCrossPostCell(cell, atIndexPath: indexPath)
-            return cell;
+            return cell
         }
 
         let cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell

@@ -24,14 +24,14 @@ extension Blog
         case UploadFiles        = "upload_files"
         case ViewStats          = "view_stats"
     }
-    
-    
+
+
     /// Returns true if a given capability is enabled. False otherwise
     ///
     public func isUserCapableOf(capability: Capability) -> Bool {
         return capabilities?[capability.rawValue] as? Bool ?? false
     }
-    
+
     /// Returns true if the current user is allowed to list a Blog's Users
     ///
     public func isListingUsersAllowed() -> Bool {

@@ -19,7 +19,7 @@ public class SiteManagementService : LocalCoreDataService
     /// Deletes the specified WordPress.com site.
     ///
     /// - Parameters:
-    ///     - blog:    The Blog whose site to delete
+    ///     - blog: The Blog whose site to delete
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
@@ -27,12 +27,12 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.deleteSite(blog.dotComID,
+        remote.deleteSite(blog.dotComID!,
             success: {
                 self.managedObjectContext.performBlock {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
                     blogService.removeBlog(blog)
-                    
+
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         success?()
                     })
@@ -42,13 +42,13 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Triggers content export of the specified WordPress.com site.
     ///
     /// - Note: An email will be sent with download link when export completes.
     ///
     /// - Parameters:
-    ///     - blog:    The Blog whose content to export
+    ///     - blog: The Blog whose content to export
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
@@ -56,7 +56,7 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.exportContent(blog.dotComID,
+        remote.exportContent(blog.dotComID!,
             success: {
                 success?()
             },
@@ -64,7 +64,7 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Gets the list of active purchases of the specified WordPress.com site.
     ///
     /// - Parameters:
@@ -76,7 +76,7 @@ public class SiteManagementService : LocalCoreDataService
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.getActivePurchases(blog.dotComID,
+        remote.getActivePurchases(blog.dotComID!,
             success: { purchases in
                 success?(purchases)
             },
@@ -84,13 +84,12 @@ public class SiteManagementService : LocalCoreDataService
                 failure?(error)
             })
     }
-    
+
     /// Creates a remote service for site management
     ///
     /// - Note: Only WordPress.com API supports site management
     ///
-    /// - Parameters:
-    ///     - blog: The Blog currently at the site
+    /// - Parameter blog: The Blog currently at the site
     ///
     /// - Returns: Remote service for site management
     ///

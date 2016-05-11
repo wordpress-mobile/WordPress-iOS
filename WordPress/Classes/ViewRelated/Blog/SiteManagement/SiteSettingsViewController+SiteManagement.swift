@@ -22,17 +22,17 @@ public extension SiteSettingsViewController
     private func confirmExportController() -> UIAlertController {
         let confirmTitle = NSLocalizedString("Export Your Content", comment: "Title of Export Content confirmation alert")
         let messageFormat = NSLocalizedString("Your posts, pages, and settings will be mailed to you at %@.", comment: "Message of Export Content confirmation alert; substitution is user's email address")
-        let message = String(format: messageFormat, blog.account.email)
+        let message = String(format: messageFormat, blog.account!.email)
         let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .Alert)
-        
+
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-        
+
         let exportTitle = NSLocalizedString("Export Content", comment: "Export Content confirmation action title")
         alertController.addDefaultActionWithTitle(exportTitle, handler: { _ in
             self.exportContent()
         })
-        
+
         return alertController
     }
 
@@ -43,7 +43,7 @@ public extension SiteSettingsViewController
     private func exportContent() {
         let status = NSLocalizedString("Exporting content…", comment: "Overlay message displayed while starting content export")
         SVProgressHUD.showWithStatus(status, maskType: .Black)
-        
+
         let trackedBlog = blog
         WPAppAnalytics.track(.SiteSettingsExportSiteRequested, withBlog: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -57,22 +57,22 @@ public extension SiteSettingsViewController
                 DDLogSwift.logError("Error exporting content: \(error.localizedDescription)")
                 WPAppAnalytics.track(.SiteSettingsExportSiteResponseError, withBlog: trackedBlog)
                 SVProgressHUD.dismiss()
-                
+
                 let errorTitle = NSLocalizedString("Export Content Error", comment: "Title of alert when export content fails")
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
 
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
-                
+
                 alertController.presentFromRootViewController()
             })
-    }    
+    }
 
     /// Requests site purchases to determine whether site is deletable
     ///
     public func checkSiteDeletable() {
         tableView.deselectSelectedRowWithAnimation(true)
-        
+
         let status = NSLocalizedString("Checking purchases…", comment: "Overlay message displayed while checking if site has premium purchases")
         SVProgressHUD.showWithStatus(status)
 
@@ -84,7 +84,7 @@ public extension SiteSettingsViewController
                 guard let strongSelf = self else {
                     return
                 }
-                
+
                 if purchases.isEmpty {
                     WPAppAnalytics.track(.SiteSettingsDeleteSiteAccessed, withBlog: strongSelf.blog)
                     strongSelf.presentViewController(strongSelf.confirmDeleteController(), animated: true, completion: nil)
@@ -96,17 +96,17 @@ public extension SiteSettingsViewController
             failure: { error in
                 DDLogSwift.logError("Error getting purchases: \(error.localizedDescription)")
                 SVProgressHUD.dismiss()
-                
+
                 let errorTitle = NSLocalizedString("Check Purchases Error", comment: "Title of alert when getting purchases fails")
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
-                
+
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
-                
+
                 alertController.presentFromRootViewController()
             })
     }
-    
+
     /// Creates confirmation alert for Delete Site
     ///
     /// - Returns: UIAlertController
@@ -116,31 +116,31 @@ public extension SiteSettingsViewController
         let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
         let message = String(format: messageFormat, blog.displayURL!)
         let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .Alert)
-        
+
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-        
+
         let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
         let deleteAction = UIAlertAction(title: deleteTitle, style: .Destructive, handler: { action in
             self.deleteSiteConfirmed()
         })
         deleteAction.enabled = false
         alertController.addAction(deleteAction)
-        
+
         alertController.addTextFieldWithConfigurationHandler({ textField in
             textField.addTarget(self, action: #selector(SiteSettingsViewController.alertTextFieldDidChange(_:)), forControlEvents: .EditingChanged)
         })
-        
+
         return alertController
     }
-    
+
     /// Verifies site address as password for Delete Site
     ///
     func alertTextFieldDidChange(sender: UITextField) {
         guard let deleteAction = (presentedViewController as? UIAlertController)?.actions.last else {
             return
         }
-        
+
         let prompt = blog.displayURL?.lowercaseString.trim()
         let password = sender.text?.lowercaseString.trim()
         deleteAction.enabled = prompt == password
@@ -153,7 +153,7 @@ public extension SiteSettingsViewController
     private func deleteSiteConfirmed() {
         let status = NSLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
         SVProgressHUD.showWithStatus(status, maskType: .Black)
-        
+
         let trackedBlog = blog
         WPAppAnalytics.track(.SiteSettingsDeleteSiteRequested, withBlog: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -162,7 +162,7 @@ public extension SiteSettingsViewController
                 WPAppAnalytics.track(.SiteSettingsDeleteSiteResponseOK, withBlog: trackedBlog)
                 let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
                 SVProgressHUD.showSuccessWithStatus(status)
-                
+
                 if let navController = self?.navigationController {
                     navController.popToRootViewControllerAnimated(true)
                 }
@@ -171,17 +171,17 @@ public extension SiteSettingsViewController
                 DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")
                 WPAppAnalytics.track(.SiteSettingsDeleteSiteResponseError, withBlog: trackedBlog)
                 SVProgressHUD.dismiss()
-                
+
                 let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
-                
+
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
-                
+
                 alertController.presentFromRootViewController()
             })
     }
-    
+
     /// Creates purchase warning alert for Delete Site
     ///
     /// - Returns: UIAlertController
@@ -190,35 +190,35 @@ public extension SiteSettingsViewController
         let warnTitle = NSLocalizedString("Premium Upgrades", comment: "Title of alert when attempting to delete site with purchases")
         let message = NSLocalizedString("You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site.", comment: "Message alert when attempting to delete site with purchases")
         let alertController = UIAlertController(title: warnTitle, message: message, preferredStyle: .Alert)
-        
+
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-        
+
         let showTitle = NSLocalizedString("Show Purchases", comment: "Show site purchases action title")
         alertController.addDefaultActionWithTitle(showTitle, handler: { _ in
             WPAppAnalytics.track(.SiteSettingsDeleteSitePurchasesShowClicked, withBlog: self.blog)
             self.showPurchases()
         })
-        
+
         return alertController
     }
-    
+
     /// Brings up web interface showing site purchases for cancellation
     ///
     private func showPurchases() {
         let purchasesUrl = "https://wordpress.com/purchases"
-        
+
         let controller = WPWebViewController()
-        controller.authToken = blog.authToken;
-        controller.username = blog.usernameForSite;
-        controller.password = blog.password;
+        controller.authToken = blog.authToken
+        controller.username = blog.usernameForSite
+        controller.password = blog.password
         controller.wpLoginURL = NSURL(string: blog.loginUrl())
         controller.secureInteraction = true
         controller.url = NSURL(string: purchasesUrl)
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = NSLocalizedString("Purchases", comment: "Title of screen showing site purchases")
-       
+
         navigationController?.pushViewController(controller, animated:true)
     }
 }

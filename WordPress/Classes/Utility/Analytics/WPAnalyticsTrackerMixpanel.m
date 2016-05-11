@@ -249,6 +249,9 @@ NSString *const SessionCount = @"session_count";
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
 
     switch (stat) {
+        case WPAnalyticsStatABTestStart:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"AB Test - Started"];
+            break;
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
             [instructions setPeoplePropertyToIncrement:@"Application Opened"];
@@ -496,6 +499,15 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Published Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
+            break;
+        case WPAnalyticsStatGravatarCropped:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Cropped"];
+            break;
+        case WPAnalyticsStatGravatarTapped:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Tapped Gravatar"];
+            break;
+        case WPAnalyticsStatGravatarUploaded:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Uploaded"];
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
@@ -950,6 +962,11 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
+            // To be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
 
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:

@@ -92,7 +92,7 @@ extension PlanService {
 
         let remote = PlansRemote(api: api)
         let featuresRemote = PlanFeaturesRemote(api: api)
-        
+
         self.init(store: store, remote: remote, featuresRemote: featuresRemote)
     }
 }

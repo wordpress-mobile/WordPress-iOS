@@ -1,13 +1,12 @@
 import WordPressShared
 
-/*
-Until https://github.com/wordpress-mobile/WordPress-iOS/pull/4591 is fixed, we
-need to use the custom WPTableViewSectionHeaderFooterView.
-
-This lives as an extension on a separate file because it's specific to our UI
-implementation and shouldn't be in a generic ImmuTable that we might eventually
-release as a standalone library.
-*/
+/// Until https://github.com/wordpress-mobile/WordPress-iOS/pull/4591 is fixed, we
+/// need to use the custom WPTableViewSectionHeaderFooterView.
+///
+/// This lives as an extension on a separate file because it's specific to our UI
+/// implementation and shouldn't be in a generic ImmuTable that we might eventually
+/// release as a standalone library.
+///
 extension ImmuTableViewHandler {
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let title = self.tableView(tableView, titleForHeaderInSection: section) {

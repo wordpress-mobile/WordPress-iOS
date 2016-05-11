@@ -5,29 +5,36 @@ import WordPressShared
 /// This vc is the entry point for the normal sign in flow.
 ///
 /// - Note: The sign in flow should be managed b ya NUXNavigationController for
-/// appearance reasons. 
+/// appearance reasons.
 /// By convention the NUXNavigationController should be presented
-/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure 
+/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
 @objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
 {
 
-    @IBOutlet var onePasswordButton: UIButton!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
-    @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var createSiteButton: UIButton!
+    @IBOutlet var selfHostedSigninButton: UIButton!
+    @IBOutlet var safariPasswordButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    var onePasswordButton: UIButton!
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
-
+    var restrictSigninToWPCom = false {
+        didSet {
+            if isViewLoaded() {
+                configureForWPComOnlyIfNeeded()
+            }
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: Optional. A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields? = nil) -> SigninEmailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -43,8 +50,10 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureSafariPasswordButton(false)
+        configureForWPComOnlyIfNeeded()
     }
 
 
@@ -69,7 +78,7 @@ import WordPressShared
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
 
@@ -86,6 +95,36 @@ import WordPressShared
 
 
     // MARK: - Setup and Configuration
+
+
+    ///
+    ///
+    func configureForWPComOnlyIfNeeded() {
+        selfHostedSigninButton.hidden = restrictSigninToWPCom
+    }
+
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
+
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        submitButton.setTitle(submitButtonTitle, forState: .Normal)
+        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+
+        let safariButtonTitle = NSLocalizedString("Sign in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
+        safariPasswordButton.setTitle(safariButtonTitle, forState: .Normal)
+        safariPasswordButton.setTitle(safariButtonTitle, forState: .Highlighted)
+
+        let createSiteTitle = NSLocalizedString("Create a site", comment: "A button title")
+        createSiteButton.setTitle(createSiteTitle, forState: .Normal)
+        createSiteButton.setTitle(createSiteTitle, forState: .Highlighted)
+
+        let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "A button title.")
+        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Normal)
+        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Highlighted)
+    }
 
 
     /// Sets up a 1Password button if 1Password is available.
@@ -113,7 +152,7 @@ import WordPressShared
         UIView.animateWithDuration(0.2,
                                    delay: 0.0,
                                    options: .BeginFromCurrentState,
-                                   animations: { 
+                                   animations: {
                                         self.safariPasswordButton.hidden = !self.didFindSafariSharedCredentials
                                     },
                                    completion: nil)
@@ -137,8 +176,7 @@ import WordPressShared
 
     /// Sets the view's state to loading or not loading.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         emailTextField.enabled = !loading
@@ -175,7 +213,7 @@ import WordPressShared
     /// Handles Safari shared credentials if any where found.
     ///
     /// - Parameters:
-    ///     - found: True if credentails were found. 
+    ///     - found: True if credentails were found.
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
@@ -206,10 +244,12 @@ import WordPressShared
     ///
     /// - Parameters:
     ///     - immediateSignin: True if the newly loaded controller should immedately attempt
-    /// to authenticate the user with the available credentails.  Default is `false`.
+    ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
+        controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -217,21 +257,24 @@ import WordPressShared
     /// Displays the self-hosted sign in form.
     ///
     func signinToSelfHostedSite() {
-        let controller = SigninSelfHostedViewController.controller(loginFields);
+        let controller = SigninSelfHostedViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    /// Proceeds along the "magic link" sign-in flow, showing a form that let's 
+    /// Proceeds along the "magic link" sign-in flow, showing a form that let's
     /// the user request a magic link.
     ///
     func requestLink() {
         let controller = SigninLinkRequestViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    /// Validates what is entered in the various form fields and, if valid, 
+    /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
     func validateForm() {
@@ -244,10 +287,20 @@ import WordPressShared
         guard emailOrUsername.isValidEmail() else {
             // A username was entered, not an email address.
             // Proceed to the next form:
-            if SigninHelpers.isUsernameReserved(emailOrUsername) {
-                signinToSelfHostedSite()
-            } else {
+            if !SigninHelpers.isUsernameReserved(emailOrUsername) {
                 signinWithUsernamePassword()
+
+            } else if restrictSigninToWPCom {
+                // When restricted, show a prompt then let the user enter a new username.
+                SigninHelpers.promptForWPComReservedUsername(emailOrUsername, callback: {
+                    self.loginFields.username = ""
+                    self.emailTextField.text = ""
+                    self.emailTextField.becomeFirstResponder()
+                })
+
+            } else {
+                // Switch to the signin flow when not restricted.
+                signinToSelfHostedSite()
             }
             return
         }
@@ -259,7 +312,7 @@ import WordPressShared
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
-                    // No matching email address found so treat this as a 
+                    // No matching email address found so treat this as a
                     // self-hosted sign in.
                     self?.signinToSelfHostedSite()
                 } else {
@@ -295,7 +348,7 @@ import WordPressShared
             self.signinWithUsernamePassword(true)
         }
     }
-    
+
 
     @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
         signinToSelfHostedSite()
@@ -303,7 +356,7 @@ import WordPressShared
 
 
     @IBAction func handleCreateSiteButtonTapped(sender: UIButton) {
-        let controller = CreateAccountAndBlogViewController()
+        let controller = SignupViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
     }
 

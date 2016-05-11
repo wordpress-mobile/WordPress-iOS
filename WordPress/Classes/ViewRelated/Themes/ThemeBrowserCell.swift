@@ -1,9 +1,8 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-/**
- *  @brief      Actions provided in cell button triggered action sheet
- */
+/// Actions provided in cell button triggered action sheet
+///
 public enum ThemeAction
 {
     case Activate
@@ -12,10 +11,10 @@ public enum ThemeAction
     case Support
     case TryCustomize
     case View
-    
+
     static let actives = [Customize, Details, Support]
     static let inactives = [TryCustomize, Activate, View, Details, Support]
-    
+
     var title: String {
         switch self {
         case .Activate:
@@ -32,7 +31,7 @@ public enum ThemeAction
             return NSLocalizedString("View", comment: "Theme View action title")
         }
     }
-    
+
     func present(theme: Theme, _ presenter: ThemePresenter) {
         switch self {
         case .Activate:
@@ -54,15 +53,15 @@ public enum ThemeAction
 public class ThemeBrowserCell : UICollectionViewCell
 {
     // MARK: - Constants
-    
+
     public static let reuseIdentifier = "ThemeBrowserCell"
-    
+
     // MARK: - Private Aliases
-    
+
     private typealias Styles = WPStyleGuide.Themes
-    
+
    // MARK: - Outlets
-    
+
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var nameLabel : UILabel!
@@ -70,22 +69,22 @@ public class ThemeBrowserCell : UICollectionViewCell
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var highlightView: UIView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
-    
+
     // MARK: - Properties
-    
+
     public var theme : Theme? {
         didSet {
             refreshGUI()
         }
     }
     public weak var presenter: ThemePresenter?
-    
+
     private var placeholderImage = UIImage(named: "theme-loading")
     private var activeEllipsisImage = UIImage(named: "icon-menu-ellipsis-white")
     private var inactiveEllipsisImage = UIImage(named: "icon-menu-ellipsis")
-    
+
    // MARK: - GUI
-        
+
     override public var highlighted: Bool {
         didSet {
             let alphaFinal: CGFloat = highlighted ? 0.3 : 0
@@ -94,25 +93,25 @@ public class ThemeBrowserCell : UICollectionViewCell
             }
         }
     }
-    
+
     override public func awakeFromNib() {
         super.awakeFromNib()
-        
+
         actionButton.exclusiveTouch = true
-        
+
         layer.borderWidth = 1
         infoBar.layer.borderWidth = 1
         nameLabel.font = Styles.cellNameFont
         infoLabel.font = Styles.cellInfoFont
         actionButton.layer.borderWidth = 1
     }
-    
+
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
         presenter = nil
     }
-    
+
     private func refreshGUI() {
         if let theme = theme {
            if let imageUrl = theme.screenshotUrl where !imageUrl.isEmpty {
@@ -120,7 +119,7 @@ public class ThemeBrowserCell : UICollectionViewCell
             } else {
                 showPlaceholder()
             }
-            
+
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
@@ -128,7 +127,7 @@ public class ThemeBrowserCell : UICollectionViewCell
                 infoBar.layer.borderColor = Styles.activeCellDividerColor.CGColor
                 actionButton.layer.borderColor = Styles.activeCellDividerColor.CGColor
                 actionButton.setImage(activeEllipsisImage, forState: .Normal)
-                
+
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
@@ -154,24 +153,24 @@ public class ThemeBrowserCell : UICollectionViewCell
             activityView.stopAnimating()
         }
     }
-    
+
     private func showPlaceholder() {
         imageView.contentMode = .Center
         imageView.backgroundColor = Styles.placeholderColor
         imageView.image = placeholderImage
         activityView.stopAnimating()
     }
-    
+
     private func showScreenshot() {
         imageView.contentMode = .ScaleAspectFit
         imageView.backgroundColor = UIColor.clearColor()
         activityView.stopAnimating()
     }
-    
+
     private func refreshScreenshotImage(imageUrl: String) {
         let imageUrlForWidth = imageUrl + "?w=\(presenter!.screenshotWidth)"
         let screenshotUrl = NSURL(string: imageUrlForWidth)
-        
+
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
         imageView.downloadImage(screenshotUrl,
@@ -188,14 +187,14 @@ public class ThemeBrowserCell : UICollectionViewCell
     }
 
     // MARK: - Actions
-    
+
     @IBAction private func didTapActionButton(sender: UIButton) {
         guard let theme = theme, presenter = presenter else {
             return
         }
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
+
         let themeActions = theme.isCurrentTheme() ? ThemeAction.actives : ThemeAction.inactives
         themeActions.forEach { themeAction in
             alertController.addActionWithTitle(themeAction.title,
@@ -204,7 +203,7 @@ public class ThemeBrowserCell : UICollectionViewCell
                     themeAction.present(theme, presenter)
                 })
         }
-        
+
         alertController.modalPresentationStyle = .Popover
         if let popover = alertController.popoverPresentationController {
             popover.sourceView = actionButton
