@@ -1118,7 +1118,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                           __typeof__(self) strongSelf = weakSelf;
                           strongSelf.isUploadingMedia = NO;
                           [strongSelf.tableView reloadData];
-                          if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                          if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
                               return;
                           }
                           [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];

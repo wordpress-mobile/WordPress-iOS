@@ -19,16 +19,15 @@ struct Person: Equatable {
     let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
-    
+
     enum Role: Int, Comparable, Equatable, CustomStringConvertible {
         case SuperAdmin
         case Admin
         case Editor
         case Author
         case Contributor
+        case Subscriber
         case Unsupported
-        
-        static let roles : [Role] = [.SuperAdmin, .Admin, .Editor, .Author, .Contributor]
     }
 }
 
@@ -54,7 +53,7 @@ extension Person {
         let first = firstName ?? String()
         let last = lastName ?? String()
         let separator = (first.isEmpty == false && last.isEmpty == false) ? " " : ""
-        
+
         return "\(first)\(separator)\(last)"
     }
 }
@@ -74,11 +73,15 @@ extension Person.Role {
             self = .Author
         case "contributor":
             self = .Contributor
+        case "super-admin":
+            self = .SuperAdmin
+        case "subscriber":
+            self = .Subscriber
         default:
             self = .Unsupported
         }
     }
-    
+
     func color() -> UIColor {
         switch self {
         case .SuperAdmin:
@@ -91,11 +94,13 @@ extension Person.Role {
             return WPStyleGuide.People.authorColor
         case .Contributor:
             return WPStyleGuide.People.contributorColor
+        case .Subscriber:
+            return WPStyleGuide.People.contributorColor
         case .Unsupported:
             return WPStyleGuide.People.contributorColor
         }
     }
-    
+
     func localizedName() -> String {
         switch self {
         case .SuperAdmin:
@@ -108,11 +113,13 @@ extension Person.Role {
             return NSLocalizedString("Author", comment: "User role badge")
         case .Contributor:
             return NSLocalizedString("Contributor", comment: "User role badge")
+        case .Subscriber:
+            return NSLocalizedString("Subscriber", comment: "User role badge")
         case .Unsupported:
             return NSLocalizedString("Unsupported", comment: "User role badge")
         }
     }
-    
+
     var description: String {
         switch self {
         case .SuperAdmin:
@@ -125,6 +132,8 @@ extension Person.Role {
             return "author"
         case .Contributor:
             return "contributor"
+        case .Subscriber:
+            return "subscriber"
         default:
             return "unsupported"
         }

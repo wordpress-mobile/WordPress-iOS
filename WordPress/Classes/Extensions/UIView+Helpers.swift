@@ -8,14 +8,14 @@ extension UIView
         let constraint = NSLayoutConstraint(item: subview, attribute: .Bottom, relatedBy: .Equal, toItem: aboveSubview, attribute: .Top, multiplier: 1, constant: 0)
         addConstraint(constraint)
     }
-    
+
     public func pinSubviewAtBottom(subview: UIView) {
         let newConstraints = [
             NSLayoutConstraint(item: self, attribute: .Leading,  relatedBy: .Equal, toItem: subview, attribute: .Leading,  multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: subview, attribute: .Trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self, attribute: .Bottom,   relatedBy: .Equal, toItem: subview, attribute: .Bottom,   multiplier: 1, constant: 0),
         ]
-        
+
         addConstraints(newConstraints)
     }
 
@@ -24,10 +24,10 @@ extension UIView
             NSLayoutConstraint(item: self, attribute: .CenterX,  relatedBy: .Equal, toItem: subview, attribute: .CenterX,  multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self, attribute: .CenterY,  relatedBy: .Equal, toItem: subview, attribute: .CenterY,  multiplier: 1, constant: 0)
         ]
-        
+
         addConstraints(newConstraints)
     }
-    
+
     public func pinSubviewToAllEdges(subview: UIView) {
         let newConstraints = [
             NSLayoutConstraint(item: self, attribute: .Leading,  relatedBy: .Equal, toItem: subview, attribute: .Leading,  multiplier: 1, constant: 0),
@@ -35,17 +35,17 @@ extension UIView
             NSLayoutConstraint(item: self, attribute: .Bottom,   relatedBy: .Equal, toItem: subview, attribute: .Bottom,   multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self, attribute: .Top,      relatedBy: .Equal, toItem: subview, attribute: .Top,      multiplier: 1, constant: 0)
         ]
-        
+
         addConstraints(newConstraints)
     }
-    
+
     public func pinSubviewToAllEdgeMargins(subview: UIView) {
         subview.topAnchor.constraintEqualToAnchor(layoutMarginsGuide.topAnchor).active = true
         subview.bottomAnchor.constraintEqualToAnchor(layoutMarginsGuide.bottomAnchor).active = true
         subview.leadingAnchor.constraintEqualToAnchor(layoutMarginsGuide.leadingAnchor).active = true
         subview.trailingAnchor.constraintEqualToAnchor(layoutMarginsGuide.trailingAnchor).active = true
     }
-    
+
     public func constraintForAttribute(attribute: NSLayoutAttribute) -> CGFloat? {
         for constraint in constraints {
             if constraint.firstItem as! NSObject == self {
@@ -56,7 +56,7 @@ extension UIView
         }
         return nil
     }
-    
+
     public func updateConstraint(attribute: NSLayoutAttribute, constant: CGFloat) {
         updateConstraintWithFirstItem(self, attribute: attribute, constant: constant)
     }
@@ -70,7 +70,7 @@ extension UIView
             }
         }
     }
-    
+
     public func updateConstraintWithFirstItem(firstItem: NSObject!, secondItem: NSObject!, firstItemAttribute: NSLayoutAttribute, secondItemAttribute: NSLayoutAttribute, constant: CGFloat) {
         for constraint in constraints {
             if (constraint.firstItem as! NSObject == firstItem) && (constraint.secondItem as? NSObject == secondItem) {

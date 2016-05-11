@@ -2,8 +2,8 @@ import UIKit
 import WordPressComAnalytics
 import WordPressShared
 
-/// A base class for the various NUX related related view controllers. 
-/// The base class sets up and configures common functionality, such as the help 
+/// A base class for the various NUX related related view controllers.
+/// The base class sets up and configures common functionality, such as the help
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
@@ -17,6 +17,8 @@ class NUXAbstractViewController : UIViewController
     let helpBadgeSize = CGSize(width: 12, height: 10)
     let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
+    var dismissBlock: ((cancelled: Bool) -> Void)?
+
     // MARK: - Lifecycle Methods
 
 
@@ -26,7 +28,7 @@ class NUXAbstractViewController : UIViewController
 
 
     override func viewDidLoad() {
-        super.viewDidLoad();
+        super.viewDidLoad()
 
         WPStyleGuide.configureColorsForSigninView(view)
 
@@ -64,7 +66,7 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    /// Sets up the cancel button for the navbar if its needed. 
+    /// Sets up the cancel button for the navbar if its needed.
     /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
     ///
     func setupCancelButtonIfNeeded() {
@@ -147,8 +149,7 @@ class NUXAbstractViewController : UIViewController
 
     /// Display the specified error in a modal.
     ///
-    /// - Parameters:
-    ///     - error: An NSError instance
+    /// - Parameter error: An NSError instance
     ///
     func displayError(error: NSError) {
         let presentingController = navigationController ?? self
@@ -158,10 +159,21 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    /// It is assumed that NUX view controllers are always presented modally. 
-    /// This method dismisses the view controller.
+    /// It is assumed that NUX view controllers are always presented modally.
     ///
     func dismiss() {
+        dismiss(cancelled: false)
+    }
+
+
+    /// It is assumed that NUX view controllers are always presented modally.
+    /// This method dismisses the view controller
+    ///
+    /// - Parameters:
+    ///     - cancelled: Should be passed true only when dismissed by a tap on the cancel button.
+    ///
+    private func dismiss(cancelled cancelled: Bool) {
+        dismissBlock?(cancelled: cancelled)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -187,7 +199,7 @@ class NUXAbstractViewController : UIViewController
 
 
     func handleCancelButtonTapped(sender: UIButton) {
-        dismiss()
+        dismiss(cancelled: true)
     }
 
 
