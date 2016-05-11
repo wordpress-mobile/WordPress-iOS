@@ -41,7 +41,7 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self.bounds.height / 2
                     self.titleLabel?.alpha = 0
 
-                    self.layoutIfNeeded()
+                    self.superview?.layoutIfNeeded()
                     }, completion:  { finished in
                         self.activityIndicatorView.startAnimating()
                         self.borderWidth = 0
@@ -55,7 +55,7 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self._cornerRadius
                     self.borderWidth = 1
 
-                    self.layoutIfNeeded()
+                    self.superview?.layoutIfNeeded()
                     }, completion:  { finished in
                         self.titleLabel?.alpha = 1
                 })
