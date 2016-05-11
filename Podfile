@@ -46,9 +46,9 @@ target 'WordPress', :exclusive => true do
   pod 'Simperium', '0.8.15'
   pod 'WPMediaPicker', '~> 0.9.1'
   pod 'WordPress-iOS-Editor', '1.6'
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
   pod 'WordPressApi', '0.4.0'
-  pod 'WordPressCom-Analytics-iOS', '0.1.9'
+  pod 'WordPressCom-Analytics-iOS', '0.1.11'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
   pod 'WordPressCom-Stats-iOS/UI', '0.7.0'
@@ -58,11 +58,11 @@ end
 target 'WordPressShareExtension', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPress-iOS-Shared', '0.5.6'
+  pod 'WordPress-iOS-Shared', '0.5.7'
   pod 'WordPressCom-Stats-iOS/Services', '0.7.0'
 end
 

@@ -3,8 +3,8 @@ import WordPressShared
 import wpxmlrpc
 
 
-/// A view controller for prompting a user about sign in related errors. 
-/// It provides for a title, message, and for specialized button actions. 
+/// A view controller for prompting a user about sign in related errors.
+/// It provides for a title, message, and for specialized button actions.
 /// It is assumed the controller will always be presented modally.
 ///
 class SigninErrorViewController : UIViewController
@@ -95,12 +95,11 @@ class SigninErrorViewController : UIViewController
     // MARK: - Instance Methods
 
 
-    /// The preferred method for presenting the error view controller full screen 
+    /// The preferred method for presenting the error view controller full screen
     /// and modal.  This method takes care of configuring presentation style and
     /// context so the controller is correctly displayed full screen.
     ///
-    /// - Parameters:
-    ///     - controller: The controller to use as the presenter.
+    /// - Parameter controller: The controller to use as the presenter.
     ///
     func presentFromController(controller: UIViewController) {
         controller.providesPresentationContextTransitionStyle = true
@@ -144,8 +143,7 @@ class SigninErrorViewController : UIViewController
     /// Display the specified error in a WPWalkthroughOverlayView.
     /// The view is configured differently depending on the kind of error.
     ///
-    /// - Parameters:
-    ///     - error: An NSError instance
+    /// - Parameter error: An NSError instance
     ///
     func displayError(error: NSError, loginFields: LoginFields, delegate: SigninErrorViewControllerDelegate) {
         self.loginFields = loginFields
@@ -185,8 +183,7 @@ class SigninErrorViewController : UIViewController
 
     /// Shows a WPWalkthroughOverlayView for a generic error message.
     ///
-    /// - Parameters:
-    ///     - message: The error message to show.
+    /// - Parameter message: The error message to show.
     ///
     func displayGenericErrorMessage(message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
@@ -206,8 +203,7 @@ class SigninErrorViewController : UIViewController
     /// Shows a WPWalkthroughOverlayView for a generic error message. The view
     /// is configured so the user can open Helpshift for assistance.
     ///
-    /// - Parameters:
-    ///     - message: The error message to show.
+    /// - Parameter message: The error message to show.
     ///
     func displayGenericErrorMessageWithHelpshiftButton(message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
@@ -226,8 +222,7 @@ class SigninErrorViewController : UIViewController
 
     /// Shows a WPWalkthroughOverlayView for an XML-RPC error message.
     ///
-    /// - Parameters:
-    ///     - message: The error message to show.
+    /// - Parameter message: The error message to show.
     ///
     func displayErrorMessageForXMLRPC(message: String) {
         let firstCallback: SigninErrorCallback = { [unowned self] in
@@ -267,15 +262,14 @@ class SigninErrorViewController : UIViewController
 
     /// Shows a WPWalkthroughOverlayView for a bad url error message.
     ///
-    /// - Parameters:
-    ///     - message: The error message to show.
+    /// - Parameter message: The error message to show.
     ///
     func displayErrorMessageForBadURL(message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
             self.delegate?.displayWebviewForURL(NSURL(string: "https://apps.wordpress.org/support/#faq-ios-3")!, username: nil, password: nil)
         }
-        
+
         configureView(message,
                            firstButtonText: nil,
                            firstButtonCallback: nil,

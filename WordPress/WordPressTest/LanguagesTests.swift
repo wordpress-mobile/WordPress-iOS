@@ -7,108 +7,108 @@ class LanguagesTests: XCTestCase
 {
     func testLanguagesEffectivelyLoadJsonFile() {
         let languages = WordPressComLanguageDatabase()
-        
+
         XCTAssert(languages.all.count != 0)
         XCTAssert(languages.popular.count != 0)
     }
-    
+
     func testAllLanguagesHaveValidFields() {
         let languages = WordPressComLanguageDatabase()
         let sum = languages.all + languages.popular
-        
+
         for language in sum {
             XCTAssert(language.slug.characters.count > 0)
             XCTAssert(language.name.characters.count > 0)
         }
     }
-    
+
     func testAllLanguagesContainPopularLanguages() {
         let languages = WordPressComLanguageDatabase()
-        
+
         for language in languages.popular {
-            let filtered = languages.all.filter { $0.languageId == language.languageId }
+            let filtered = languages.all.filter { $0.id == language.id }
             XCTAssert(filtered.count == 1)
         }
     }
-    
+
     func testNameForLanguageWithIdentifierReturnsTheRightName() {
         let languages = WordPressComLanguageDatabase()
-        
+
         let english = languages.nameForLanguageWithId(en)
         let spanish = languages.nameForLanguageWithId(es)
-        
+
         XCTAssert(english == "English")
         XCTAssert(spanish == "Español")
     }
 
-    func testDeviceLanguageIdReturnsValueForSpanish() {
+    func testDeviceLanguageReturnsValueForSpanish() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es")
 
-        XCTAssertEqual(languages.deviceLanguageId(), es)
+        XCTAssertEqual(languages.deviceLanguage.id, es)
     }
 
-    func testDeviceLanguageIdReturnsValueForSpanishSpainLowercase() {
+    func testDeviceLanguageReturnsValueForSpanishSpainLowercase() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-es")
 
-        XCTAssertEqual(languages.deviceLanguageId(), es)
+        XCTAssertEqual(languages.deviceLanguage.id, es)
     }
 
-    func testDeviceLanguageIdReturnsValueForSpanishSpain() {
+    func testDeviceLanguageReturnsValueForSpanishSpain() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-ES")
 
-        XCTAssertEqual(languages.deviceLanguageId(), es)
+        XCTAssertEqual(languages.deviceLanguage.id, es)
     }
 
-    func testDeviceLanguageIdReturnsEnglishForUnknownLanguage() {
+    func testDeviceLanguageReturnsEnglishForUnknownLanguage() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("not-a-language")
 
-        XCTAssertEqual(languages.deviceLanguageId(), en)
+        XCTAssertEqual(languages.deviceLanguage.id, en)
     }
 
-    func testDeviceLanguageIdReturnsValueForSpanishSpainExtra() {
+    func testDeviceLanguageReturnsValueForSpanishSpainExtra() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-ES-extra")
 
-        XCTAssertEqual(languages.deviceLanguageId(), es)
+        XCTAssertEqual(languages.deviceLanguage.id, es)
     }
 
-    func testDeviceLanguageIdReturnsValueForSpanishNO() {
+    func testDeviceLanguageReturnsValueForSpanishNO() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("es-NO")
 
-        XCTAssertEqual(languages.deviceLanguageId(), es)
+        XCTAssertEqual(languages.deviceLanguage.id, es)
     }
 
-    func testDeviceLanguageIdReturnsZhCNForZhHans() {
+    func testDeviceLanguageReturnsZhCNForZhHans() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hans")
 
-        XCTAssertEqual(languages.deviceLanguageId(), zhCN)
+        XCTAssertEqual(languages.deviceLanguage.id, zhCN)
     }
 
-    func testDeviceLanguageIdReturnsZhTWForZhHant() {
+    func testDeviceLanguageReturnsZhTWForZhHant() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hant")
 
-        XCTAssertEqual(languages.deviceLanguageId(), zhTW)
+        XCTAssertEqual(languages.deviceLanguage.id, zhTW)
     }
 
-    func testDeviceLanguageIdReturnsZhCNForZhHansES() {
+    func testDeviceLanguageReturnsZhCNForZhHansES() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hans-ES")
 
-        XCTAssertEqual(languages.deviceLanguageId(), zhCN)
+        XCTAssertEqual(languages.deviceLanguage.id, zhCN)
     }
 
-    func testDeviceLanguageIdReturnsZhTWForZhHantES() {
+    func testDeviceLanguageReturnsZhTWForZhHantES() {
         let languages = WordPressComLanguageDatabase()
         languages._overrideDeviceLanguageCode("zh-Hant-ES")
 
-        XCTAssertEqual(languages.deviceLanguageId(), zhTW)
+        XCTAssertEqual(languages.deviceLanguage.id, zhTW)
     }
 
 

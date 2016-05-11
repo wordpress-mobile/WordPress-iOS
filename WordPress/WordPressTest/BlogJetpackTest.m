@@ -172,7 +172,7 @@
     dotcomBlog.url = @"http://dotcom1.wordpress.com/";
     dotcomBlog.dotComID = @1;
 
-    Blog *jetpackLegacyBlog = [blogService createBlogWithAccount:nil];
+    Blog *jetpackLegacyBlog = [blogService createBlog];
     jetpackLegacyBlog.username = @"jetpack";
     jetpackLegacyBlog.xmlrpc = @"http://jetpack.example.com/xmlrpc.php";
     jetpackLegacyBlog.url = @"http://jetpack.example.com/";
