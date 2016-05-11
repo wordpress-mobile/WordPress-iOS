@@ -66,7 +66,6 @@
     [doneButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateNormal];
     doneButton.titleLabel.font = [WPFontManager systemRegularFontOfSize:16];
     doneButton.backgroundColor = [UIColor clearColor];
-    doneButton.hidden = YES;
     doneButton.alpha = 0.0;
     [doneButton addTarget:self action:@selector(doneButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -152,10 +151,9 @@
 {
     [UIView animateWithDuration:duration animations:^{
         
+        self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
         self.textFieldDesignView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-        self.doneButton.hidden = NO;
-        self.doneButton.alpha = 1.0;
         
     } completion:nil];
 }
@@ -165,7 +163,6 @@
     [UIView animateWithDuration:duration animations:^{
         
         self.textFieldDesignView.backgroundColor = [UIColor clearColor];
-        self.doneButton.hidden = YES;
         self.doneButton.alpha = 0.0;
 
     } completion:nil];
