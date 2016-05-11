@@ -47,8 +47,8 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
-    /// Returns the vertical offset to apply to the sign in form. 
-    /// 
+    /// Returns the vertical offset to apply to the sign in form.
+    ///
     /// - Returns: DefaultSigninFormVerticalOffset unless a conforming controller provides its own implementation.
     ///
     func signinFormVerticalOffset() -> CGFloat {
