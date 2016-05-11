@@ -16,7 +16,6 @@ import WordPressComAnalytics
     private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
-    private var displayContext: NSManagedObjectContext!
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -61,6 +60,12 @@ import WordPressComAnalytics
             }
         }
     }
+
+
+    private lazy var displayContext: NSManagedObjectContext = {
+        let context = ContextManager.sharedInstance().newMainContextChildContext()
+        return context
+    }()
 
 
     public var readerTopic: ReaderAbstractTopic? {
@@ -162,12 +167,18 @@ import WordPressComAnalytics
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+        let mainContext = ContextManager.sharedInstance().mainContext
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: mainContext)
     }
 
 
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+        let mainContext = ContextManager.sharedInstance().mainContext
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
     }
 
 
@@ -1131,12 +1142,7 @@ import WordPressComAnalytics
 
 
     func handleContextDidSaveNotification(notification:NSNotification) {
-        // We want to ignore these notifications when our view has focus so as not
-        // to conflict with the list refresh mechanism.
-        if view.window != nil {
-            return
-        }
-        displayContext?.mergeChangesFromContextDidSaveNotification(notification)
+        displayContext.mergeChangesFromContextDidSaveNotification(notification)
     }
 
 
@@ -1290,15 +1296,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     // MARK: - Fetched Results Related
 
     public func managedObjectContext() -> NSManagedObjectContext {
-        if let context = displayContext {
-            return context
-        }
-
-        displayContext = ContextManager.sharedInstance().newMainContextChildContext()
-
-        let mainContext = ContextManager.sharedInstance().mainContext
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
-
         return displayContext
     }
 
