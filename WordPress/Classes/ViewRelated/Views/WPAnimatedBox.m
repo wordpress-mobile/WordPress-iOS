@@ -17,6 +17,12 @@
 
 static CGFloat const WPAnimatedBoxSideLength = 86.0;
 static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
+static CGFloat const WPAnimatedBoxXPosPage1 = 28;
+static CGFloat const WPAnimatedBoxXPosPage2 = 17;
+static CGFloat const WPAnimatedBoxXPosPage3 = 2;
+static CGFloat const WPAnimatedBoxYPosPage1 = WPAnimatedBoxAnimationTolerance + 11;
+static CGFloat const WPAnimatedBoxYPosPage2 = WPAnimatedBoxAnimationTolerance + 0;
+static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 15;
 
 - (instancetype)init
 {
@@ -52,9 +58,9 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     self.frame = CGRectMake(0, 0, WPAnimatedBoxSideLength, WPAnimatedBoxSideLength);
     _container.frame = CGRectMake(0, CGRectGetHeight(self.frame) - CGRectGetHeight(_container.frame), CGRectGetWidth(_container.frame), CGRectGetHeight(_container.frame));
     _containerBack.frame = CGRectMake(0, CGRectGetHeight(self.frame) - CGRectGetHeight(_containerBack.frame), CGRectGetWidth(_containerBack.frame), CGRectGetHeight(_containerBack.frame));
-    _page1.frame = CGRectMake(28, WPAnimatedBoxAnimationTolerance + 11, CGRectGetWidth(_page1.frame), CGRectGetHeight(_page1.frame));
-    _page2.frame = CGRectMake(17, WPAnimatedBoxAnimationTolerance + 0, CGRectGetWidth(_page2.frame), CGRectGetHeight(_page2.frame));
-    _page3.frame = CGRectMake(2, WPAnimatedBoxAnimationTolerance + 15, CGRectGetWidth(_page3.frame), CGRectGetHeight(_page3.frame));
+    _page1.frame = CGRectMake(WPAnimatedBoxXPosPage1, WPAnimatedBoxYPosPage1, CGRectGetWidth(_page1.frame), CGRectGetHeight(_page1.frame));
+    _page2.frame = CGRectMake(WPAnimatedBoxXPosPage2, WPAnimatedBoxYPosPage2, CGRectGetWidth(_page2.frame), CGRectGetHeight(_page2.frame));
+    _page3.frame = CGRectMake(WPAnimatedBoxXPosPage3, WPAnimatedBoxYPosPage3, CGRectGetWidth(_page3.frame), CGRectGetHeight(_page3.frame));
 
     [self addSubview:_container];
     [self insertSubview:_page1 belowSubview:_container];
@@ -69,11 +75,20 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
 - (void)moveAnimationToFirstFrame
 {
-    // Transform pages all the way down
     NSArray *pages = @[_page1, _page2, _page3];
+ 
     for (UIView *view in pages) {
-        CGFloat YOrigin = CGRectGetMinY(view.frame);
-        view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - YOrigin);
+        
+        // We're setting the transform to identity, because the following calculation of `yOrigin`
+        // is relative to `view.frame.origin`, so we want the view to be positioned correctly
+        // before the calculation is done.  The lack of this, was causing trouble when this method
+        // was called twice in a row.
+        //
+        // https://github.com/wordpress-mobile/WordPress-iOS/pull/5295
+        //
+        view.transform = CGAffineTransformIdentity;
+        CGFloat yOrigin = CGRectGetMinY(view.frame);
+        view.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.frame) - yOrigin);
     }
 }
 
