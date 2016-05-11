@@ -155,6 +155,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     NSDictionary *eventProperties;
     
     switch (stat) {
+        case WPAnalyticsStatABTestStart:
+            eventName = @"abtest_start";
+            break;
         case WPAnalyticsStatAddedSelfHostedSite:
             eventName = @"self_hosted_blog_added";
             break;
@@ -778,6 +781,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginMagicLinkOpened:
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+
+            // to be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
 
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:

@@ -38,6 +38,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
                 self.onCompletion?(nil)
                 return
             }
+
             // Track
             WPAppAnalytics.track(.GravatarCropped)
 
