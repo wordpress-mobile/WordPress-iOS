@@ -28,19 +28,24 @@ public final class WordPressComRestApi: NSObject
     private static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
     private let oAuthToken: String
+    private var userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
+        if let userAgent = self.userAgent {
+            sessionConfiguration.HTTPAdditionalHeaders = ["User-Agent": userAgent]
+        }
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
     }()
 
-    public init(oAuthToken: String) {
+    public init(oAuthToken: String, userAgent: String? = nil) {
         self.oAuthToken = oAuthToken
+        self.userAgent = userAgent
     }
 
     deinit {
