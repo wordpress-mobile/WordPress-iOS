@@ -12,9 +12,11 @@ class PlansRemote: ServiceRemoteREST {
     func getPlansForSite(siteID: Int, success: SitePlans -> Void, failure: ErrorType -> Void) {
         let endpoint = "sites/\(siteID)/plans"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        let parameters = ["locale": locale]
 
         api.GET(path,
-            parameters: nil,
+            parameters: parameters,
             success: {
                 _, response in
                 do {
@@ -65,7 +67,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
             return (result.0, plans)
         }
     })
-    
+
     guard let activePlan = parsedResponse.0 else {
         throw PlansRemote.Error.NoActivePlan
     }

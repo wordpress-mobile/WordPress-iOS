@@ -162,7 +162,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 }
 
 - (NSString *)remoteStatusText
-{
+{    
     return [BasePost titleForRemoteStatus:self.remoteStatusNumber];
 }
 

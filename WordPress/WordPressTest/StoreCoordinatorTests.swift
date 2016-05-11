@@ -2,8 +2,8 @@ import Foundation
 import Nimble
 @testable import WordPress
 
-
 class StoreCoordinatorTests: XCTestCase {
+
     func testPurchaseUnavailableWithPaymentDisabled() {
         let availability = availabilityWith(plan: business, active: free, paymentsEnabled: false, pendingState: .none)
         XCTAssertEqual(availability, PurchaseAvailability.unavailable)
@@ -56,32 +56,58 @@ class StoreCoordinatorTests: XCTestCase {
         XCTAssertEqual(availability, PurchaseAvailability.available)
     }
 
+    func testCannotPurchaseWhenPurchaseAlreadyPending() {
+        let payment: PendingPayment = (testProduct, testSite)
+        let coordinator = storeCoordinator(paymentsEnabled: true, pending: payment)
+        let product = TestPlans.business.product
+
+        // And now attempt a second purchase
+        XCTAssertThrowsError(try coordinator.purchaseProduct(product, forSite: testSite))
+    }
+
+    func testCanMakePaymentWhenNoPaymentIsPending() {
+        let coordinator = storeCoordinator(paymentsEnabled: true, pending: nil)
+        let product = TestPlans.business.product
+
+        do {
+            try coordinator.purchaseProduct(product, forSite: otherSite)
+        } catch {
+            XCTFail("Expected call not to throw")
+        }
+    }
+
     // ========================= END OF TESTS =============================== //
 
 
     // MARK: - Helpers
 
     private func availabilityWith(plan plan: Plan, active: Plan, paymentsEnabled: Bool, pendingState: PendingState) -> PurchaseAvailability {
-        let pendingPayment = pending(plan: plan, siteID: testSite, state: pendingState)
+        let pendingPayment = pending(plan: plan, productID: testProduct, siteID: testSite, state: pendingState)
         let coordinator = storeCoordinator(paymentsEnabled: paymentsEnabled, pending: pendingPayment)
         return coordinator.purchaseAvailability(forPlan: plan, siteID: testSite, activePlan: active)
     }
 
-    private func storeCoordinator(paymentsEnabled paymentsEnabled: Bool, pending: (Plan, Int)?) -> StoreCoordinator<MockStore> {
+    private func storeCoordinator(paymentsEnabled paymentsEnabled: Bool, pending: PendingPayment?) -> StoreCoordinator<MockStore> {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
-        let coordinator = StoreCoordinator(store: store)
-        coordinator.pendingPayment = pending
+
+        let coordinator = StoreCoordinator(store: store, database: EphemeralKeyValueDatabase())
+
+        if let pending = pending,
+            let product = TestPlans.allProducts.filter({ $0.productIdentifier == pending.productID }).first {
+            try! coordinator.purchaseProduct(product, forSite: pending.siteID)
+        }
+
         return coordinator
     }
 
-    private func pending(plan plan: Plan, siteID: Int, state: PendingState) -> (Plan, Int)? {
+    private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
         switch state {
         case .none: return nil
-        case .sameSitePlan: return (plan, siteID)
-        case .sameSite: return (otherPlan(plan), siteID)
-        case .samePlan: return (plan, otherSite)
-        case .differentSitePlan: return (otherPlan(plan), otherSite)
+        case .sameSitePlan: return (productID, siteID)
+        case .sameSite: return (otherPlan(plan).productIdentifier!, siteID)
+        case .samePlan: return (productID, otherSite)
+        case .differentSitePlan: return (otherPlan(plan).productIdentifier!, otherSite)
         }
     }
 
@@ -106,4 +132,5 @@ class StoreCoordinatorTests: XCTestCase {
     private let business = TestPlans.business.plan
     private let testSite = 123
     private let otherSite = 321
+    private let testProduct = "com.wordpress.test.premium.subscription.1year"
 }

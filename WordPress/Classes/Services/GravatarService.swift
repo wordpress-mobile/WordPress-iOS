@@ -7,8 +7,7 @@ public class GravatarService
 {
     /// Designated Initializer
     ///
-    /// - Parameters:
-    ///     - context: The Core Data context that should be used by the service.
+    /// - Parameter context: The Core Data context that should be used by the service.
     ///
     /// - Returns: nil if there's no valid WordPressCom Account available.
     ///
@@ -16,13 +15,13 @@ public class GravatarService
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         accountToken    = mainAccount?.restApi.authToken
         accountEmail    = mainAccount?.email
-        
+
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
         }
     }
-    
-    
+
+
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
     /// - Parameters:
@@ -37,12 +36,12 @@ public class GravatarService
             } else {
                 DDLogSwift.logInfo("GravatarService.uploadImage Success!")
             }
-            
+
             completion?(error: error)
         }
     }
-    
-    
+
+
     // MARK: - Private Properties
     private let accountToken : String!
     private let accountEmail : String!
