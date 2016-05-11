@@ -1181,7 +1181,6 @@ extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
             toggleFollowingForSite(readerTopic as! ReaderSiteTopic)
         }
     }
-    
 }
 
 
