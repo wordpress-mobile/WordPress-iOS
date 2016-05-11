@@ -68,7 +68,7 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
         if immediateSignin {
