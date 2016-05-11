@@ -2,17 +2,15 @@
 
 @interface WPAnimatedBox : UIView
 
-+ (instancetype)newAnimatedBox;
-- (void)prepareAnimation:(BOOL)animated;
+/// Animates the view.  If the animation is already running, does nothing.
+///
 - (void)animate;
 
-/**
- Immediately prepares the view to animate. The preparation does not animate.
- Plays the animation after the specified delay.
-
- @param delayInSeconds The seconds, or fraction of a second, to wait before animating
- the view.
- */
-- (void)prepareAndAnimateAfterDelay:(CGFloat)delayInSeconds;
+/// Animates the view.  If the animation is already running, does nothing.
+///
+/// @param  delayInSeconds      The seconds, or fraction of a second, to wait before animating
+///                             the view.
+///
+- (void)animateAfterDelay:(NSTimeInterval)delayInSeconds;
 
 @end
