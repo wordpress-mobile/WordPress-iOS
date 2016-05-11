@@ -9,7 +9,7 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.5.8'
+  pod 'WordPress-iOS-Shared', '0.5.9'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
 
   target 'WordPress' do
