@@ -17,10 +17,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         frc.delegate = self
         return frc
     }()
-    
-    
+
+    private let noResultsView = WPNoResultsView()
+
+
     // MARK: - UITableView Methods
-    
+
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }
@@ -33,7 +35,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         guard let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as? PeopleCell else {
             fatalError()
         }
-        
+
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
 
@@ -41,7 +43,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         return cell
     }
-    
+
     public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
@@ -71,7 +73,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
 
-        displaySpinnerIfNeeded()
+        displayNoResultsIfNeeded()
         refresh()
     }
 
@@ -91,14 +93,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
     // MARK: - UIStateRestoring
-    
+
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         let objectString = blog?.objectID.URIRepresentation().absoluteString
         coder.encodeObject(objectString, forKey: RestorationKeys.blog)
         super.encodeRestorableStateWithCoder(coder)
     }
 
-    
+
     // MARK: - Refresh Helpers
 
     @IBAction public func refresh() {
@@ -108,24 +110,30 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         service.refreshTeam { [weak self] _ in
             self?.refreshControl?.endRefreshing()
+            self?.hideNoResultsIfNeeded()
         }
     }
 
-    
+
     // MARK: - Private Helpers
-    
+
     private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
         let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
         let person = Person(managedPerson: managedPerson)
         return person
     }
 
-    private func displaySpinnerIfNeeded() {
+    private func displayNoResultsIfNeeded() {
         if resultsController.fetchedObjects?.count > 0 {
             return
         }
 
-        refreshControl?.beginRefreshing()
+        noResultsView.titleText = NSLocalizedString("Loading...", comment: "")
+        tableView.addSubviewWithFadeAnimation(noResultsView)
+    }
+
+    private func hideNoResultsIfNeeded() {
+        noResultsView.removeFromSuperview()
     }
 
 
