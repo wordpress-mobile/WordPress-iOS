@@ -91,7 +91,7 @@ public class StartOverViewController: UITableViewController
 
         WPAppAnalytics.track(.SiteSettingsStartOverContactSupportClicked, withBlog: blog)
         if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account)
+            setupHelpshift(blog.account!)
 
             let metadata = helpshiftMetadata(blog)
             HelpshiftSupport.showConversation(self, withOptions: metadata)

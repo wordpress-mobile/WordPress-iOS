@@ -38,10 +38,10 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
                 self.onCompletion?(nil)
                 return
             }
-            
+
             // Track
             WPAppAnalytics.track(.GravatarCropped)
-            
+
             // Proceed Cropping
             let imageCropViewController = self.newImageCropViewController(rawGravatar)
             picker.showAfterViewController(imageCropViewController)
@@ -90,4 +90,13 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
 
         return imageCropViewController
     }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
+    override func childViewControllerForStatusBarStyle() -> UIViewController? {
+        return nil
+    }
+
 }

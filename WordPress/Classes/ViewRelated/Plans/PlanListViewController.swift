@@ -65,13 +65,17 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     static let restorationIdentifier = "PlanList"
+    /// Reference to the blog object if initialized with a blog. Used for state restoration only.
+    private var restorationBlogURL: NSURL? = nil
 
     convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
         guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
             return nil
         }
-        self.init(siteID: Int(blog.dotComID), service: service)
+
+        self.init(siteID: Int(blog.dotComID!), service: service)
+        restorationBlogURL = blog.objectID.URIRepresentation()
     }
 
     let siteID: Int
@@ -128,20 +132,32 @@ extension PlanListViewController: WPNoResultsViewDelegate {
 // MARK: - UIViewControllerRestoration
 
 extension PlanListViewController: UIViewControllerRestoration {
-    struct EncodingKey {
-        static let activePlan = "activePlan"
+    enum EncodingKey {
+        static let blogURL = "blogURL"
     }
+
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         guard let identifier = identifierComponents.last as? String where identifier == PlanListViewController.restorationIdentifier else {
             return nil
         }
 
-        // TODO: postpone restoration until view model is stable
-        // @koke 2016-03-01
-        return nil
+        guard let blogURL = coder.decodeObjectForKey(EncodingKey.blogURL) as? NSURL else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(blogURL),
+            let object = try? context.existingObjectWithID(objectID),
+            let blog = object as? Blog else {
+                return nil
+        }
+        return PlanListViewController(blog: blog)
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
+        if let blogURL = restorationBlogURL {
+            coder.encodeObject(blogURL, forKey: EncodingKey.blogURL)
+        }
     }
 }
