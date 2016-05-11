@@ -2,14 +2,8 @@ import Foundation
 import Nimble
 @testable import WordPress
 
-
 class StoreCoordinatorTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        
-        clearUserDefaults()
-    }
-    
+
     func testPurchaseUnavailableWithPaymentDisabled() {
         let availability = availabilityWith(plan: business, active: free, paymentsEnabled: false, pendingState: .none)
         XCTAssertEqual(availability, PurchaseAvailability.unavailable)
@@ -70,7 +64,7 @@ class StoreCoordinatorTests: XCTestCase {
         // And now attempt a second purchase
         XCTAssertThrowsError(try coordinator.purchaseProduct(product, forSite: testSite))
     }
-    
+
     func testCanMakePaymentWhenNoPaymentIsPending() {
         let coordinator = storeCoordinator(paymentsEnabled: true, pending: nil)
         let product = TestPlans.business.product
@@ -81,7 +75,7 @@ class StoreCoordinatorTests: XCTestCase {
             XCTFail("Expected call not to throw")
         }
     }
-    
+
     // ========================= END OF TESTS =============================== //
 
 
@@ -96,23 +90,17 @@ class StoreCoordinatorTests: XCTestCase {
     private func storeCoordinator(paymentsEnabled paymentsEnabled: Bool, pending: PendingPayment?) -> StoreCoordinator<MockStore> {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
- 
-        let coordinator = StoreCoordinator(store: store)
-        
+
+        let coordinator = StoreCoordinator(store: store, database: EphemeralKeyValueDatabase())
+
         if let pending = pending,
             let product = TestPlans.allProducts.filter({ $0.productIdentifier == pending.productID }).first {
             try! coordinator.purchaseProduct(product, forSite: pending.siteID)
         }
-        
+
         return coordinator
     }
-    
-    private func clearUserDefaults() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey("PendingPaymentProductIDUserDefaultsKey")
-        defaults.removeObjectForKey("PendingPaymentSiteIDUserDefaultsKey")
-    }
-    
+
     private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
         switch state {
         case .none: return nil

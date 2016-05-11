@@ -8,6 +8,7 @@
 #import "AccountService.h"
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
+#import "ApiCredentials.h"
 #import "AppRatingUtility.h"
 
 #import "Blog.h"
@@ -25,6 +26,7 @@
 #import "DDLogSwift.h"
 
 #import "EditPageViewController.h"
+#import "EmailCheckerHelper.h"
 
 #import "HelpshiftUtils.h"
 
@@ -103,12 +105,13 @@
 
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-#import "ApiCredentials.h"
+#import "WordPressComServiceRemote.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
+#import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
@@ -131,6 +134,7 @@
 #import "WPSearchController.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
+#import "WPUserAgent.h"
 
 #import <WordPressComAnalytics/WPAnalytics.h>
 

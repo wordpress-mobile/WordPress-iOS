@@ -175,6 +175,13 @@ extern NSString *const WordPressMinimumVersion;
  */
 - (Blog *)createBlogWithAccount:(WPAccount *)account;
 
+/**
+ Creates a blank `Blog` object with no account
+
+ @return the newly created blog
+ */
+- (Blog *)createBlog;
+
 @end
 
 NS_ASSUME_NONNULL_END

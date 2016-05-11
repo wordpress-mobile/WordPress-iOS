@@ -3,8 +3,8 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
 
-const CGFloat MeHeaderViewHeight = 210;
-const CGFloat MeHeaderViewGravatarSize = 120.0;
+const CGFloat MeHeaderViewHeight = 154;
+const CGFloat MeHeaderViewGravatarSize = 64.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;
 const CGFloat MeHeaderViewVerticalMargin = 20.0;
 const CGFloat MeHeaderViewVerticalSpacing = 10.0;

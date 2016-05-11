@@ -138,6 +138,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (4.6.0)
   - OHHTTPStubs/Swift (4.6.0):
     - OHHTTPStubs/Core
+  - Optimizely-iOS-SDK (1.4.2)
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
@@ -176,7 +177,7 @@ PODS:
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressCom-Analytics-iOS (0.1.9)
+  - WordPressCom-Analytics-iOS (0.1.11)
   - WordPressCom-Stats-iOS/Services (0.7.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -218,6 +219,7 @@ DEPENDENCIES:
   - OCMock (= 3.1.2)
   - OHHTTPStubs (~> 4.6.0)
   - OHHTTPStubs/Swift (~> 4.6.0)
+  - Optimizely-iOS-SDK (~> 1.4.2)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
   - RxCocoa (~> 2.3.1)
@@ -231,7 +233,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.6.1)
   - WordPress-iOS-Shared (= 0.5.8)
   - WordPressApi (= 0.4.0)
-  - WordPressCom-Analytics-iOS (= 0.1.9)
+  - WordPressCom-Analytics-iOS (= 0.1.11)
   - WordPressCom-Stats-iOS/Services (= 0.7.0)
   - WordPressCom-Stats-iOS/UI (= 0.7.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.1`)
@@ -287,6 +289,7 @@ SPEC CHECKSUMS:
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
+  Optimizely-iOS-SDK: 6d23c5cde187f894430d134caa15f56874754cca
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
@@ -301,12 +304,12 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 9daa51cb32ee0c2821045c1035e925eb3c6633ed
   WordPress-iOS-Shared: 63e8fccdcaa217c53abb212879b2add52e44d4d9
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
-  WordPressCom-Analytics-iOS: 3fccb433506f136cc04b735e6ab2efae9edfae7e
+  WordPressCom-Analytics-iOS: a844ac791b2627dbb64ba62090654f43dd2abc1c
   WordPressCom-Stats-iOS: d1996675fadd5a2c8548344a40663834898114f3
   WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: fb4d894ebfbc29d2ea82e00e78e36e7ba2a0e17b
+PODFILE CHECKSUM: 67b195deff6bf8d969b768af22724c04d260fca3
 
 COCOAPODS: 1.0.0
