@@ -962,6 +962,11 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
+            // To be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
 
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
