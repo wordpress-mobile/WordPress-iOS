@@ -249,6 +249,9 @@ NSString *const SessionCount = @"session_count";
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
 
     switch (stat) {
+        case WPAnalyticsStatABTestStart:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"AB Test - Started"];
+            break;
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
             [instructions setPeoplePropertyToIncrement:@"Application Opened"];
@@ -959,6 +962,11 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
+            // To be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
 
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
