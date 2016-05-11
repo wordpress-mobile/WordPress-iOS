@@ -6,8 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
-{
+@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!
@@ -102,7 +101,7 @@ import WordPressShared
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        if let titleLabel = sendCodeButton.titleLabel  {
+        if let titleLabel = sendCodeButton.titleLabel {
             titleLabel.lineBreakMode = .ByWordWrapping
             titleLabel.textAlignment = .Center
             titleLabel.numberOfLines = 3
