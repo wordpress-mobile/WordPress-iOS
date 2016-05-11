@@ -683,37 +683,40 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3">
-                                        <rect key="frame" x="237" y="508" width="125" height="28"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Lost your password?">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0W-Yk-8M8">
-                                        <rect key="frame" x="198" y="556" width="203" height="28"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Add a self-hosted WordPress site"/>
-                                        <connections>
-                                            <action selector="handleSelfHostedButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="nVL-SM-d0t"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="oua-LU-gvC">
+                                        <rect key="frame" x="199" y="508" width="203" height="76"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3">
+                                                <rect key="frame" x="0.0" y="0.0" width="203" height="28"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <state key="normal" title="Lost your password?">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0W-Yk-8M8">
+                                                <rect key="frame" x="0.0" y="48" width="203" height="28"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <state key="normal" title="Add a self-hosted WordPress site"/>
+                                                <connections>
+                                                    <action selector="handleSelfHostedButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="nVL-SM-d0t"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="H0W-Yk-8M8" secondAttribute="bottom" priority="250" constant="16" id="Bzf-Xq-RuC"/>
-                                    <constraint firstItem="0P1-6g-BI3" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="Epk-Ar-sKI"/>
-                                    <constraint firstItem="H0W-Yk-8M8" firstAttribute="top" secondItem="0P1-6g-BI3" secondAttribute="bottom" constant="20" id="H48-GH-T4Y"/>
-                                    <constraint firstItem="0P1-6g-BI3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="No0-9M-kRI"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="P9q-Yk-vce"/>
+                                    <constraint firstItem="oua-LU-gvC" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="Uq0-by-9vU"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" id="VLg-UB-2XP"/>
-                                    <constraint firstItem="H0W-Yk-8M8" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="ZYJ-St-bPx"/>
                                     <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
+                                    <constraint firstItem="0P1-6g-BI3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="eyb-AD-ioH"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
                                     <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" constant="-64" id="pKc-9i-CzT"/>
+                                    <constraint firstAttribute="bottom" secondItem="oua-LU-gvC" secondAttribute="bottom" priority="250" constant="16" id="xtu-3z-lEB"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
