@@ -41,6 +41,13 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self.bounds.height / 2
                     self.titleLabel?.alpha = 0
 
+                    // Ask the superview to layout if necessary, because the 
+                    // button has changed size. This is required otherwise
+                    // we were seeing an animation glitch where the superview's
+                    // constraints weren't animating correctly to contain the 
+                    // button as it changed size.
+                    // See https://github.com/wordpress-mobile/WordPress-iOS/pull/5361
+                    // for more info.
                     self.superview?.layoutIfNeeded()
                     }, completion:  { finished in
                         self.activityIndicatorView.startAnimating()
@@ -55,6 +62,7 @@ class PurchaseButton: RoundedButton {
                     self.cornerRadius = self._cornerRadius
                     self.borderWidth = 1
 
+                    // See comment above
                     self.superview?.layoutIfNeeded()
                     }, completion:  { finished in
                         self.titleLabel?.alpha = 1
