@@ -1,4 +1,4 @@
-
+import XCTest
 import Foundation
 import CoreData
 import WordPress
