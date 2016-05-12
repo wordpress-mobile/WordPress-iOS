@@ -237,6 +237,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
     blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
+    blog.planTitle = [jsonBlog stringForKeyPath:@"plan.product_name_short"];
     return blog;
 }
 
