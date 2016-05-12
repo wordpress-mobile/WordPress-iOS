@@ -104,12 +104,15 @@ import SVProgressHUD
     }
 
     func shareReaderPost(post: ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
-
+        var permalink = post.permaLink ?? ""
+        if !permalink.isEmpty {
+            permalink = WPComReferrerUtil.addUtmSourceToURLPath(permalink)
+        }
         sharePost(
             post.titleForDisplay(),
             summary: post.contentPreviewForDisplay(),
             tags: post.tags,
-            link: post.permaLink,
+            link: permalink,
             fromView: anchorView,
             inViewController: viewController)
     }
