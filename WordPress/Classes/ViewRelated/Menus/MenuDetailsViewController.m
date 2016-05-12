@@ -1,4 +1,4 @@
-#import "MenuDetailsView.h"
+#import "MenuDetailsViewController.h"
 #import "Menu.h"
 #import "WPStyleGuide.h"
 #import "UIColor+Helpers.h"
@@ -8,7 +8,7 @@
 
 @import Gridicons;
 
-@interface MenuDetailsView () <UITextFieldDelegate>
+@interface MenuDetailsViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet UITextField *textField;
@@ -21,14 +21,12 @@
 
 @end
 
-@implementation MenuDetailsView
+@implementation MenuDetailsViewController
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
-    
-    self.backgroundColor = [UIColor clearColor];
-    
+    [super viewDidLoad];
+        
     self.stackView.layoutMarginsRelativeArrangement = YES;
     UIEdgeInsets margin = [Menu viewDefaultDesignInsets];
     margin.top = 0;
@@ -47,14 +45,8 @@
 - (void)setupTextField
 {
     UITextField *textField = self.textField;
-    textField.text = nil;
     textField.placeholder = NSLocalizedString(@"Menu Name", @"Menus placeholder text for the name field of a menu with no name.");
-    textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
-    textField.font = [WPFontManager systemLightFontOfSize:22.0];
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    textField.returnKeyType = UIReturnKeyDone;
-    textField.adjustsFontSizeToFitWidth = NO;
+    textField.textColor = [WPStyleGuide darkGrey];
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
 }
@@ -64,8 +56,6 @@
     UIButton *doneButton = self.doneButton;
     [doneButton setTitle:NSLocalizedString(@"Done", @"Menu button title for finishing editing the Menu name.") forState:UIControlStateNormal];
     [doneButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateNormal];
-    doneButton.titleLabel.font = [WPFontManager systemRegularFontOfSize:16];
-    doneButton.backgroundColor = [UIColor clearColor];
     doneButton.alpha = 0.0;
     [doneButton addTarget:self action:@selector(doneButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -85,7 +75,6 @@
 {    
     UIView *textFieldDesignView = self.textFieldDesignView;
     textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
-    textFieldDesignView.backgroundColor = [UIColor clearColor];
     
     UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -96,13 +85,12 @@
     
     [textFieldDesignView addSubview:imageView];
     
-    NSAssert(_textField != nil, @"textField is nil");
-    NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:_textField.leadingAnchor];
+    NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
     _textFieldDesignIconLeadingConstraint = leadingConstraint;
     [NSLayoutConstraint activateConstraints:@[
                                               [imageView.widthAnchor constraintEqualToConstant:14],
                                               [imageView.heightAnchor constraintEqualToConstant:14],
-                                              [imageView.centerYAnchor constraintEqualToAnchor:_textField.centerYAnchor],
+                                              [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
                                               leadingConstraint
                                               ]];
 }
@@ -189,14 +177,14 @@
 
 - (void)trashButtonPressed
 {
-    [self.delegate detailsViewSelectedToDeleteMenu:self];
+    [self.delegate detailsViewControllerSelectedToDeleteMenu:self];
 }
 
 #pragma mark - delegate helpers
 
 - (void)tellDelegateMenuNameChanged
 {
-    [self.delegate detailsViewUpdatedMenuName:self];
+    [self.delegate detailsViewControllerUpdatedMenuName:self];
 }
 
 #pragma mark - UITextField
