@@ -90,7 +90,7 @@ private func edits(word: String) -> [String] {
 }
 
 private func deletes(word: String) -> [String] {
-    return word.characters.indices.map({ word.removingCharacterAtIndex($0) })
+    return word.characters.indices.map({ word.removing(at: $0) })
 }
 
 private func transposes(word: String) -> [String] {
