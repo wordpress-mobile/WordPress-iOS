@@ -208,7 +208,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 {
     if (textField == _emailField) {
         // check email validity
-        NSString *suggestedEmail = [EmailTypoChecker suggestDomainCorrection:_emailField.text];
+        NSString *suggestedEmail = [EmailTypoChecker guessCorrectionForEmail:_emailField.text];
         if (![suggestedEmail isEqualToString:_emailField.text] && _shouldCorrectEmail) {
             textField.text = suggestedEmail;
             _shouldCorrectEmail = NO;

@@ -43,7 +43,8 @@ private let knownDomains = Set([
     ])
 
 public class EmailTypoChecker: NSObject {
-    public static func suggestDomainCorrection(email: String) -> String {
+    @objc(guessCorrectionForEmail:)
+    public static func guessCorrection(email email: String) -> String {
         let components = email.componentsSeparatedByString("@")
         guard components.count == 2 else {
             return email
