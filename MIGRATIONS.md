@@ -5,6 +5,8 @@ data model as well as any custom migrations.
 
 ## WordPress 49
 
+- @aerych 2016-05-12
+- Added `ReaderSearchTopic` entity. Represents a search in the reader.
 - @jleandroperez 2016-05-04
  - `Person` added Int32 `linkedUserID`.
 - @jleandroperez 2016-04-22
