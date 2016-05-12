@@ -7,19 +7,20 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "MenusHeaderView.h"
-#import "MenuDetailsView.h"
+#import "MenuDetailsViewController.h"
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "WPNoResultsView.h"
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewControllerDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet MenusHeaderView *headerView;
-@property (nonatomic, strong) IBOutlet MenuDetailsView *detailsView;
+
+@property (nonatomic, weak, readonly) MenuDetailsViewController *detailsViewController;
 @property (nonatomic, weak, readonly) MenuItemsViewController *itemsViewController;
 
 @property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
@@ -90,7 +91,7 @@
     self.stackView.layoutMarginsRelativeArrangement = YES;
     
     self.headerView.delegate = self;
-    self.detailsView.delegate = self;
+    self.detailsViewController.delegate = self;
     self.itemsViewController.delegate = self;
     
     [self setupSaveButtonItem];
@@ -132,8 +133,10 @@
 {
     [super prepareForSegue:segue sender:sender];
     
-    if ([[segue destinationViewController] isKindOfClass:[MenuItemsViewController class]]) {
+    if ([segue.destinationViewController isKindOfClass:[MenuItemsViewController class]]) {
         _itemsViewController = segue.destinationViewController;
+    } else if ([segue.destinationViewController isKindOfClass:[MenuDetailsViewController class]]) {
+        _detailsViewController = segue.destinationViewController;
     }
 }
 
@@ -285,7 +288,7 @@
 
 - (void)setViewsWithMenu:(Menu *)menu
 {
-    self.detailsView.menu = menu;
+    self.detailsViewController.menu = menu;
     self.itemsViewController.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
@@ -297,7 +300,7 @@
             // Set up as "No Menu" selected.
             menu.items = nil;
             self.itemsViewController.menu = nil;
-            self.detailsView.menu = nil;
+            self.detailsViewController.menu = nil;
         }
     } else {
         [self insertBlankMenuItemIfNeeded];
@@ -433,7 +436,7 @@
 
 - (void)saveBarButtonItemPressed:(id)sender
 {
-    [self.detailsView resignFirstResponder];
+    [self.detailsViewController resignFirstResponder];
     
     // Buckle up, we gotta save this Menu!
     Menu *menuToSave = self.updatedMenuForSaving ?: self.selectedMenuLocation.menu;
@@ -620,17 +623,17 @@
     }
 }
 
-#pragma mark - MenuDetailsViewDelegate
+#pragma mark - MenuDetailsViewControllerDelegate
 
-- (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
+- (void)detailsViewControllerUpdatedMenuName:(MenuDetailsViewController *)detailsViewController
 {
-    [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
-    [self setNeedsSave:YES forMenu:menuDetailView.menu significantChanges:YES];
+    [self.headerView refreshMenuViewsUsingMenu:detailsViewController.menu];
+    [self setNeedsSave:YES forMenu:detailsViewController.menu significantChanges:YES];
 }
 
-- (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView
+- (void)detailsViewControllerSelectedToDeleteMenu:(MenuDetailsViewController *)detailsViewController
 {
-    Menu *menuToDelete = menuDetailView.menu;
+    Menu *menuToDelete = detailsViewController.menu;
     __weak __typeof(self) weakSelf = self;
     
     void(^selectDefaultMenu)() = ^() {
