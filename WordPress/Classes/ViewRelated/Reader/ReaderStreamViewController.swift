@@ -898,7 +898,7 @@ import WordPressComAnalytics
 
 
     /// A user can block a site from the detail screen.  When this happens, we need
-    /// to update the list UI to properly reflect the change. Listen for the 
+    /// to update the list UI to properly reflect the change. Listen for the
     /// notification and call blockSiteForPost as needed.
     ///
     func handleBlockSiteNotification(notification:NSNotification) {
