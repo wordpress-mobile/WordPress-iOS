@@ -33,8 +33,8 @@ public class SignupService : LocalCoreDataService
     private let URLKey = "url"
 
 
-    /// Starts the process of creating a new blog and wpcom account for the user. 
-    /// 
+    /// Starts the process of creating a new blog and wpcom account for the user.
+    ///
     /// - Parameters:
     ///     - url: The url for the new wpcom site
     ///     - blogTitle: The title of the blog
@@ -57,8 +57,8 @@ public class SignupService : LocalCoreDataService
         // Organize parameters into a struct for easy sharing
         let params = SignupParams(url: url, title: blogTitle, email: emailAddress, username: username, password: password)
 
-        // Create call back blocks for the various methods we'll call to create the user account and blog. 
-        // Each success block calls the next step in the process. 
+        // Create call back blocks for the various methods we'll call to create the user account and blog.
+        // Each success block calls the next step in the process.
         // NOTE: The steps below are constructed in reverse order.
 
         let createWPComBlogSuccessBlock = { (blog: Blog) in
@@ -89,8 +89,8 @@ public class SignupService : LocalCoreDataService
 
     /// Validates that the blog can be created and is not already taken.
     ///
-    /// - Paramaters: 
-    ///     - params: Account and blog information with which to sign up the user. 
+    /// - Paramaters:
+    ///     - params: Account and blog information with which to sign up the user.
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
@@ -233,7 +233,7 @@ public class SignupService : LocalCoreDataService
                                             }
 
                                             guard let blog = self.createBlogFromBlogOptions(blogOptions, failure: failure) else {
-                                                // No need to call the failure block here. It will be called from 
+                                                // No need to call the failure block here. It will be called from
                                                 // `createBlogFromBlogOptions` if needed.
                                                 return
                                             }
@@ -272,7 +272,7 @@ public class SignupService : LocalCoreDataService
     /// failure block if the blog can not be created.
     ///
     /// - Parameters:
-    ///     - blogOptions: A dictionary of blog options. 
+    ///     - blogOptions: A dictionary of blog options.
     ///     - failure: A failure block.
     ///
     /// - Returns: A blog or nil.
@@ -330,7 +330,7 @@ public class SignupService : LocalCoreDataService
     // MARK: Private Instance Methods
 
 
-    /// An internal struct for conveniently sharing params between the different 
+    /// An internal struct for conveniently sharing params between the different
     /// sign up steps.
     ///
     struct SignupParams {
