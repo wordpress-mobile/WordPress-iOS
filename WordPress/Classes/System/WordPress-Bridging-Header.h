@@ -26,7 +26,6 @@
 #import "DDLogSwift.h"
 
 #import "EditPageViewController.h"
-#import "EmailCheckerHelper.h"
 
 #import "HelpshiftUtils.h"
 
