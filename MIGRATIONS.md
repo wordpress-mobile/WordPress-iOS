@@ -9,6 +9,8 @@ data model as well as any custom migrations.
  - `Person` added Int32 `linkedUserID`.
 - @jleandroperez 2016-04-22
  - `Blog` added transformable `capabilities`.
+- @frosty 2016-05-12
+ - `Blog` added String `planTitle`.
 
 ## WordPress 48 
 
