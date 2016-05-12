@@ -3,6 +3,17 @@ import SVProgressHUD
 import WordPressShared
 import WordPressComAnalytics
 
+/// Displays a list of posts for a particular reader topic.
+/// A few things to note:
+///     - Pull to refresh will load new content above the current content, preserving what is currently visible.
+///     - Gaps in content are represented by a "Gap Marker" cell.
+///     - This controller uses MULTIPLE NSManagedObjectContexts to manage syncing and state.
+///         The topic exists in the main context
+///         Syncing is performed on a derived (background) context.
+///         Content is fetched on a child context of the main context.  This allows
+///         new content to be synced without interrupting the UI until desired.
+///     - Row height is cached and 'layout cells' are used to calculate height.
+///
 @objc public class ReaderStreamViewController : UIViewController
 {
     // MARK: - Properties
@@ -44,6 +55,14 @@ import WordPressComAnalytics
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
 
+
+    /// Used for fetching content.
+    private lazy var displayContext: NSManagedObjectContext = {
+        let context = ContextManager.sharedInstance().newMainContextChildContext()
+        return context
+    }()
+
+
     private var siteID:NSNumber? {
         didSet {
             if siteID != nil {
@@ -62,12 +81,7 @@ import WordPressComAnalytics
     }
 
 
-    private lazy var displayContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newMainContextChildContext()
-        return context
-    }()
-
-
+    /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     public var readerTopic: ReaderAbstractTopic? {
         didSet {
             if readerTopic != nil && readerTopic != oldValue {
@@ -82,14 +96,14 @@ import WordPressComAnalytics
     }
 
 
-    /**
-        Convenience method for instantiating an instance of ReaderListViewController
-        for a particular topic.
-
-        @param topic The reader topic for the list.
-
-        @return A ReaderListViewController instance.
-    */
+    /// Convenience method for instantiating an instance of ReaderStreamViewController
+    /// for a existing topic.
+    ///
+    /// - Parameters:
+    ///     - topic: Any subclass of ReaderAbstractTopic
+    ///
+    /// - Returns: An instance of the controller
+    ///
     public class func controllerWithTopic(topic:ReaderAbstractTopic) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
@@ -99,6 +113,15 @@ import WordPressComAnalytics
     }
 
 
+    /// Convenience method for instantiating an instance of ReaderStreamViewController
+    /// for previewing the content of a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The siteID of a blog to preview
+    ///     - isFeed: If the site is an external feed (not hosted at WPcom and not using Jetpack)
+    ///
+    /// - Returns: An instance of the controller
+    ///
     public class func controllerWithSiteID(siteID:NSNumber, isFeed:Bool) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
@@ -109,6 +132,14 @@ import WordPressComAnalytics
     }
 
 
+    /// Convenience method for instantiating an instance of ReaderStreamViewController
+    /// to preview a tag.
+    ///
+    /// - Parameters:
+    ///     - tagSlug: The slug of a tag to preview.
+    ///
+    /// - Returns: An instance of the controller
+    ///
     public class func controllerWithTagSlug(tagSlug:String) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
@@ -177,6 +208,7 @@ import WordPressComAnalytics
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
 
+        // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
     }
@@ -214,6 +246,11 @@ import WordPressComAnalytics
 
     // MARK: - Split view support
 
+
+    /// On devices that support split view multitasking there will be an notification
+    /// whenever the size of the split screen is adjusted. We can listen for this
+    /// and refresh cell heights as needed.
+    ///
     public func handleApplicationDidBecomeActive(notification:NSNotification) {
         needsRefreshCachedCellHeightsBeforeLayout = true
     }
@@ -221,6 +258,8 @@ import WordPressComAnalytics
 
     // MARK: - Topic acquisition
 
+    /// Fetches a site topic for the value of the `siteID` property.
+    ///
     private func fetchSiteTopic() {
         if isViewLoaded() {
             displayLoadingStream()
@@ -246,6 +285,8 @@ import WordPressComAnalytics
     }
 
 
+    /// Fetches a tag topic for the value of the `tagSlug` property
+    ///
     private func fetchTagTopic() {
         if isViewLoaded() {
             displayLoadingStream()
@@ -422,6 +463,7 @@ import WordPressComAnalytics
 
     // MARK: - Configuration / Topic Presentation
 
+
     func configureStreamHeader() {
         guard let topic = readerTopic else {
             assertionFailure()
@@ -448,6 +490,8 @@ import WordPressComAnalytics
     }
 
 
+    /// Configures the controller for the `readerTopic`.  This should only be called
+    /// once when the topic is set.
     func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
@@ -506,6 +550,14 @@ import WordPressComAnalytics
 
     // MARK: - Instance Methods
 
+
+    /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
+    ///
+    /// - Parameters:
+    ///     - post: The post to retrieve.
+    ///
+    /// - Returns: The post fetched from the main context or nil if the post does not exist in the context.
+    ///
     func postInMainContext(post:ReaderPost) -> ReaderPost? {
         guard let post = (try? ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID)) as? ReaderPost else {
             DDLogSwift.logError("Error retrieving an exsting post from the main context by its object ID.")
@@ -515,6 +567,9 @@ import WordPressComAnalytics
     }
 
 
+    /// Refreshes the layout of the header.  Useful in correcting layout issues
+    /// after changing device orientation
+    ///
     func refreshTableViewHeaderLayout() {
         guard let headerView = tableView.tableHeaderView else {
             return
@@ -532,11 +587,14 @@ import WordPressComAnalytics
     }
 
 
+    /// Scrolls to the top of the list of posts.
+    ///
     public func scrollViewToTop() {
         tableView.setContentOffset(CGPoint.zero, animated: true)
     }
 
 
+    /// Returns the analytics property dictionary for the current topic.
     private func topicPropertyForStats() -> [NSObject: AnyObject]? {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
@@ -564,6 +622,13 @@ import WordPressComAnalytics
     }
 
 
+    /// Displays the options menu for the specifed post.  On the iPad the menu
+    /// is displayed as a popover from the anchorview.
+    ///
+    /// - Parameters:
+    ///     - post: The post in question.
+    ///     - anchorView: The view to anchor a popover.
+    ///
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         guard let topic = readerTopic else {
             return
@@ -627,6 +692,12 @@ import WordPressComAnalytics
     }
 
 
+    /// Shares a post from the share controller.
+    ///
+    /// - Parameters:
+    ///     - postID: Object ID for the post.
+    ///     - anchorView: The view to present the sharing controller as a popover.
+    ///
     private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
         if let post = self.postWithObjectID(postID) {
             let sharingController = PostSharingController()
@@ -636,6 +707,13 @@ import WordPressComAnalytics
     }
 
 
+    /// Retrieves a post for the specified object ID from the display context.
+    ///
+    /// - Parameters:
+    ///     - objectID: The object ID of the post.
+    ///
+    /// - Return: The matching post or nil if there is no match.
+    ///
     private func postWithObjectID(objectID: NSManagedObjectID) -> ReaderPost? {
         do {
             return (try managedObjectContext().existingObjectWithID(objectID)) as? ReaderPost
@@ -687,6 +765,8 @@ import WordPressComAnalytics
     }
 
 
+    /// Shows the attribution for a Discover post.
+    ///
     private func showAttributionForPost(post: ReaderPost) {
         // Fail safe. If there is no attribution exit.
         guard let sourceAttribution = post.sourceAttribution else {
@@ -727,6 +807,10 @@ import WordPressComAnalytics
     }
 
 
+    /// The fetch request can need a different predicate depending on how the content
+    /// being displayed has changed (blocking sites for instance).  Call this method to
+    /// update the fetch request predicate and then perform a new fetch.
+    ///
     private func updateAndPerformFetchRequest() {
         assert(NSThread.isMainThread(), "ReaderStreamViewController Error: updating fetch request on a background thread.")
 
@@ -752,6 +836,7 @@ import WordPressComAnalytics
 
 
     // MARK: - Blocking
+
 
     private func blockSiteForPost(post: ReaderPost) {
         guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
@@ -785,6 +870,7 @@ import WordPressComAnalytics
             })
     }
 
+
     private func unblockSiteForPost(post: ReaderPost) {
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
@@ -814,6 +900,8 @@ import WordPressComAnalytics
     }
 
 
+    /// Updates things for a block that was performed on the post detail.
+    ///
     func handleBlockSiteNotification(notification:NSNotification) {
         guard let userInfo = notification.userInfo, aPost = userInfo["post"] as? ReaderPost else {
             return
@@ -832,9 +920,9 @@ import WordPressComAnalytics
 
     // MARK: - Actions
 
-    /**
-        Handles the user initiated pull to refresh action.
-    */
+
+    /// Handles the user initiated pull to refresh action.
+    ///
     func handleRefresh(sender:UIRefreshControl) {
         if !canSync() {
             cleanupAfterSync()
@@ -846,6 +934,14 @@ import WordPressComAnalytics
 
     // MARK: - Sync Methods
 
+
+    /// Updates the last synced date for a topic.  Since its possible for a sync
+    /// to complete *after* the current topic is changed we fetch the correct topic
+    /// via its objectID.
+    ///
+    /// - Parameters:
+    ///     - objectID: The objetID of the topic that was synced.
+    ///
     func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
         let context = ContextManager.sharedInstance().mainContext
         guard let topic = (try? context.existingObjectWithID(objectID)) as? ReaderAbstractTopic else {
@@ -872,12 +968,10 @@ import WordPressComAnalytics
     }
 
 
-    /**
-        Kicks off a "background" sync without updating the UI if certain conditions
-        are met.
-        - The app must have a internet connection.
-        - The current time must be greater than the last sync interval.
-    */
+    /// Kicks off a "background" sync without updating the UI if certain conditions
+    /// are met.
+    /// The app must have a internet connection.
+    /// The current time must be greater than the last sync interval.
     func syncIfAppropriate() {
         if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
             return
@@ -1076,6 +1170,7 @@ import WordPressComAnalytics
 
     // MARK: - Helpers for TableViewHandler
 
+
     func predicateForFetchRequest() -> NSPredicate {
 
         // If readerTopic is nil return a predicate that is valid, but still
@@ -1149,6 +1244,7 @@ import WordPressComAnalytics
 
 
     // MARK: - Helpers for ReaderStreamHeader
+
 
     func toggleFollowingForTag(topic:ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
