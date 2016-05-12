@@ -657,11 +657,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
-    if (account.restApi == nil) {
+    if (account.wordPressComRestApi == nil) {
         return nil;
     }
 
-    return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
 - (Blog *)blogWithPredicate:(NSPredicate *)predicate
