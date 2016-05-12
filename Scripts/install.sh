@@ -11,10 +11,12 @@ function step() {
 }
 
 function bundle_install() {
+  echo "Install bundler dependencies"
   bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
 }
 
 function pod_install() {
+  echo "Install Cocoapods dependencies"
   POD="bundle exec pod"
 
   # Output Cocoapods version
