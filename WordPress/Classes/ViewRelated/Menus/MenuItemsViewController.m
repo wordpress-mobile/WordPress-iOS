@@ -11,8 +11,9 @@
 
 @interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+
 @property (nonatomic, strong, readonly) NSMutableSet *itemViews;
-@property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) NSMutableSet *insertionViews;
 @property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
 @property (nonatomic, assign) BOOL isEditingForItemViewInsertion;
@@ -35,36 +36,15 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     _itemViews = [NSMutableSet set];
     _insertionViews = [NSMutableSet setWithCapacity:3];
     
-    [self setupStackView];
-    
     self.touchesBeganLocation = CGPointZero;
     self.touchesMovedLocation = CGPointZero;
-}
-
-- (void)setupStackView
-{
-    UIStackView *stackView = [[UIStackView alloc] init];
-    stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.distribution = UIStackViewDistributionEqualSpacing;
-    stackView.alignment = UIStackViewAlignmentTop;
-    stackView.spacing = 0.0;
-    [self.view addSubview:stackView];
-    [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-                                              ]];
-    _stackView = stackView;
 }
 
 - (void)setMenu:(Menu *)menu
