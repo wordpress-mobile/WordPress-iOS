@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import "WPAnalyticsTrackerAutomatticTracks.h"
-#import <Automattic_Tracks_iOS/TracksService.h>
+@import AutomatticTracks;
 #import <OCMock/OCMock.h>
 
 @interface WPAnalyticsTrackerAutomatticTracksTests : XCTestCase

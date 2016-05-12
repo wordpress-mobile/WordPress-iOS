@@ -56,26 +56,26 @@ abstract_target 'WordPress_Base' do
     ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
     pod 'WordPressCom-Stats-iOS/UI', '0.7.0'
     pod 'wpxmlrpc', '~> 0.8'
+    
+    target :WordPressTest do
+      pod 'OHHTTPStubs', '~> 4.6.0'
+      pod 'OHHTTPStubs/Swift', '~> 4.6.0'
+      pod 'OCMock', '3.1.2'
+      pod 'Specta', '1.0.5'
+      pod 'Expecta', '0.3.2'
+      pod 'Nimble', '~> 4.0.0'
+      pod 'RxSwift', '~> 2.3.1'
+      pod 'RxTests', '~> 2.3.1'
+    end
   end
 
   target 'WordPressShareExtension' do
-    pod 'CocoaLumberjack', '~> 2.2.0'
   end
 
   target 'WordPressTodayWidget' do
     pod 'WordPressCom-Stats-iOS/Services', '0.7.0'
   end
 
-  target :WordPressTest do
-    pod 'OHHTTPStubs', '~> 4.6.0'
-    pod 'OHHTTPStubs/Swift', '~> 4.6.0'
-    pod 'OCMock', '3.1.2'
-    pod 'Specta', '1.0.5'
-    pod 'Expecta', '0.3.2'
-    pod 'Nimble', '~> 4.0.0'
-    pod 'RxSwift', '~> 2.3.1'
-    pod 'RxTests', '~> 2.3.1'
-  end
 end
 
 post_install do |installer_representation|
