@@ -1,9 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 project 'WordPress/WordPress.xcodeproj'
+install! 'cocoapods',
+         :deterministic_uuids => false
 
 inhibit_all_warnings!
-
 use_frameworks!
 
 platform :ios, '9.0'
@@ -57,6 +58,8 @@ abstract_target 'WordPress_Base' do
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
+      inherit! :search_paths
+
       pod 'OHHTTPStubs', '~> 4.6.0'
       pod 'OHHTTPStubs/Swift', '~> 4.6.0'
       pod 'OCMock', '3.1.2'
