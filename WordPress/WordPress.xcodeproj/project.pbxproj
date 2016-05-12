@@ -4810,9 +4810,9 @@
 				932225A31C7CE50300443B02 /* Sources */,
 				932225A41C7CE50300443B02 /* Frameworks */,
 				932225A51C7CE50300443B02 /* Resources */,
-				931B86C51CC1517200A5CA2B /* Delete Frameworks folder (temporary fix for CocoaPods) */,
 				330FDF1A088E5184B8304585 /* 📦 Embed Pods Frameworks */,
 				F863DE8D814DF610ABD1AFCF /* 📦 Copy Pods Resources */,
+				931B86C51CC1517200A5CA2B /* Delete Frameworks folder (temporary fix for CocoaPods) */,
 			);
 			buildRules = (
 			);
@@ -4831,9 +4831,9 @@
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
-				932A1BA81CB2EDB500DAAF48 /* Delete Frameworks folder (temporary fix for CocoaPods) */,
 				7EFF0EA68DDC7B924E979B42 /* 📦 Embed Pods Frameworks */,
 				8ADD2187EB8D73D858733FE1 /* 📦 Copy Pods Resources */,
+				932A1BA81CB2EDB500DAAF48 /* Delete Frameworks folder (temporary fix for CocoaPods) */,
 			);
 			buildRules = (
 			);
