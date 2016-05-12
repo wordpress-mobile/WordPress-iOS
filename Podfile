@@ -11,6 +11,7 @@ platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.5.9'
+  ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
 
   target 'WordPress' do
@@ -53,8 +54,7 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.6.1'
     pod 'WordPressApi', '0.4.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.11'
-    ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-    pod 'WordPressCom-Stats-iOS/UI', '0.7.0'
+    pod 'WordPressCom-Stats-iOS', '0.7.0'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
