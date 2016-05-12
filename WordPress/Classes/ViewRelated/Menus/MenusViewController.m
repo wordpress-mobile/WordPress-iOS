@@ -6,7 +6,7 @@
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
-#import "MenusHeaderView.h"
+#import "MenuHeaderViewController.h"
 #import "MenuDetailsViewController.h"
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
@@ -14,12 +14,12 @@
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) IBOutlet MenusHeaderView *headerView;
 
+@property (nonatomic, weak, readonly) MenuHeaderViewController *headerViewController;
 @property (nonatomic, weak, readonly) MenuDetailsViewController *detailsViewController;
 @property (nonatomic, weak, readonly) MenuItemsViewController *itemsViewController;
 
@@ -29,6 +29,7 @@
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong, readonly) MenusService *menusService;
+
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) Menu *updatedMenuForSaving;
 
@@ -90,7 +91,7 @@
     self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, 10, 0);
     self.stackView.layoutMarginsRelativeArrangement = YES;
     
-    self.headerView.delegate = self;
+    self.headerViewController.delegate = self;
     self.detailsViewController.delegate = self;
     self.itemsViewController.delegate = self;
     
@@ -133,7 +134,9 @@
 {
     [super prepareForSegue:segue sender:sender];
     
-    if ([segue.destinationViewController isKindOfClass:[MenuItemsViewController class]]) {
+    if ([segue.destinationViewController isKindOfClass:[MenuHeaderViewController class]]) {
+        _headerViewController = segue.destinationViewController;
+    } else if ([segue.destinationViewController isKindOfClass:[MenuItemsViewController class]]) {
         _itemsViewController = segue.destinationViewController;
     } else if ([segue.destinationViewController isKindOfClass:[MenuDetailsViewController class]]) {
         _detailsViewController = segue.destinationViewController;
@@ -209,9 +212,9 @@
     Menu *selectedMenu = selectedLocation.menu;
     self.selectedMenuLocation = selectedLocation;
     
-    self.headerView.blog = self.blog;
-    [self.headerView setSelectedLocation:selectedLocation];
-    [self.headerView setSelectedMenu:selectedMenu];
+    self.headerViewController.blog = self.blog;
+    [self.headerViewController setSelectedLocation:selectedLocation];
+    [self.headerViewController setSelectedMenu:selectedMenu];
     
     [self setViewsWithMenu:selectedMenu];
     
@@ -227,9 +230,9 @@
 
 - (void)reloadMenusViews
 {
-    self.headerView.blog = nil;
-    self.headerView.blog = self.blog;
-    [self.headerView setSelectedMenu:self.selectedMenuLocation.menu];
+    self.headerViewController.blog = nil;
+    self.headerViewController.blog = self.blog;
+    [self.headerViewController setSelectedMenu:self.selectedMenuLocation.menu];
     [self setViewsWithMenu:nil];
     [self setViewsWithMenu:self.selectedMenuLocation.menu];
 }
@@ -468,8 +471,8 @@
         
         // Add and select the new Menu in the UI.
         self.selectedMenuLocation.menu = menuToSave;
-        [self.headerView addMenu:menuToSave];
-        [self.headerView setSelectedMenu:menuToSave];
+        [self.headerViewController addMenu:menuToSave];
+        [self.headerViewController setSelectedMenu:menuToSave];
         [self setViewsWithMenu:menuToSave];
     }
     
@@ -519,9 +522,9 @@
     }
 }
 
-#pragma mark - MenusHeaderViewDelegate
+#pragma mark - MenuHeaderViewControllerDelegate
 
-- (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
+- (void)headerViewController:(MenuHeaderViewController *)headerViewController selectedLocation:(MenuLocation *)location
 {
     if (location == self.selectedMenuLocation) {
         // Ignore, already selected this location.
@@ -541,10 +544,10 @@
             // Default menu is a "No Menu" nullable option when not using the primary location.
             defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
         }
-        [self.headerView refreshMenuViewsUsingMenu:defaultMenu];
+        [self.headerViewController refreshMenuViewsUsingMenu:defaultMenu];
         
-        [self.headerView setSelectedLocation:location];
-        [self.headerView setSelectedMenu:location.menu];
+        [self.headerViewController setSelectedLocation:location];
+        [self.headerViewController setSelectedMenu:location.menu];
         [self setViewsWithMenu:location.menu];
     };
     
@@ -558,7 +561,7 @@
     }
 }
 
-- (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu
+- (void)headerViewController:(MenuHeaderViewController *)headerViewController selectedMenu:(Menu *)menu
 {
     if (menu == self.selectedMenuLocation.menu) {
         // Ignore, already selected this menu.
@@ -579,7 +582,7 @@
         }
         
         self.selectedMenuLocation.menu = menu;
-        [self.headerView setSelectedMenu:menu];
+        [self.headerViewController setSelectedMenu:menu];
         [self setViewsWithMenu:menu];
     };
     
@@ -595,7 +598,7 @@
     }
 }
 
-- (void)headerViewSelectedForCreatingNewMenu:(MenusHeaderView *)headerView
+- (void)headerViewControllerSelectedForCreatingNewMenu:(MenuHeaderViewController *)headerView
 {
     void(^createMenu)() = ^() {
         
@@ -604,8 +607,8 @@
         newMenu.name = [self generateIncrementalMenuName];
         self.selectedMenuLocation.menu = newMenu;
         
-        [self.headerView addMenu:newMenu];
-        [self.headerView setSelectedMenu:newMenu];
+        [self.headerViewController addMenu:newMenu];
+        [self.headerViewController setSelectedMenu:newMenu];
         [self setViewsWithMenu:newMenu];
         
         [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
@@ -627,7 +630,7 @@
 
 - (void)detailsViewControllerUpdatedMenuName:(MenuDetailsViewController *)detailsViewController
 {
-    [self.headerView refreshMenuViewsUsingMenu:detailsViewController.menu];
+    [self.headerViewController refreshMenuViewsUsingMenu:detailsViewController.menu];
     [self setNeedsSave:YES forMenu:detailsViewController.menu significantChanges:YES];
 }
 
@@ -639,16 +642,16 @@
     void(^selectDefaultMenu)() = ^() {
         Menu *defaultMenu =[Menu defaultMenuForBlog:weakSelf.blog];
         weakSelf.selectedMenuLocation.menu = defaultMenu;
-        [weakSelf.headerView setSelectedMenu:defaultMenu];
+        [weakSelf.headerViewController setSelectedMenu:defaultMenu];
         [weakSelf setViewsWithMenu:defaultMenu];
     };
     
     void(^removeMenuFromUI)() = ^() {
-        [weakSelf.headerView removeMenu:menuToDelete];
+        [weakSelf.headerViewController removeMenu:menuToDelete];
     };
     
     void(^restoreMenuToUI)() = ^() {
-        [weakSelf.headerView addMenu:menuToDelete];
+        [weakSelf.headerViewController addMenu:menuToDelete];
     };
     
     void(^deleteMenu)() = ^() {
