@@ -4,15 +4,15 @@ import WordPressShared
 import WordPressComAnalytics
 
 /// Displays a list of posts for a particular reader topic.
-/// A few things to note:
-///     - Pull to refresh will load new content above the current content, preserving what is currently visible.
-///     - Gaps in content are represented by a "Gap Marker" cell.
-///     - This controller uses MULTIPLE NSManagedObjectContexts to manage syncing and state.
-///         The topic exists in the main context
-///         Syncing is performed on a derived (background) context.
-///         Content is fetched on a child context of the main context.  This allows
+/// - note:
+///   - Pull to refresh will load new content above the current content, preserving what is currently visible.
+///   - Gaps in content are represented by a "Gap Marker" cell.
+///   - This controller uses MULTIPLE NSManagedObjectContexts to manage syncing and state.
+///     - The topic exists in the main context
+///     - Syncing is performed on a derived (background) context.
+///     - Content is fetched on a child context of the main context.  This allows
 ///         new content to be synced without interrupting the UI until desired.
-///     - Row height is cached and 'layout cells' are used to calculate height.
+///   - Row height is cached and 'layout cells' are used to calculate height.
 ///
 @objc public class ReaderStreamViewController : UIViewController
 {
@@ -57,10 +57,7 @@ import WordPressComAnalytics
 
 
     /// Used for fetching content.
-    private lazy var displayContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newMainContextChildContext()
-        return context
-    }()
+    private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
 
 
     private var siteID:NSNumber? {
@@ -471,7 +468,7 @@ import WordPressComAnalytics
         }
 
         guard let header = ReaderStreamViewController.headerForStream(topic) else {
-            if UIDevice.isPad() {
+            if WPDeviceIdentification.isiPad() {
                 let headerView = UIView(frame: frameForEmptyHeaderView)
                 headerView.backgroundColor = UIColor.clearColor()
                 tableView.tableHeaderView = headerView
@@ -627,7 +624,7 @@ import WordPressComAnalytics
     ///
     /// - Parameters:
     ///     - post: The post in question.
-    ///     - anchorView: The view to anchor a popover.
+    ///     - fromView: The view to anchor a popover.
     ///
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         guard let topic = readerTopic else {
@@ -696,7 +693,7 @@ import WordPressComAnalytics
     ///
     /// - Parameters:
     ///     - postID: Object ID for the post.
-    ///     - anchorView: The view to present the sharing controller as a popover.
+    ///     - fromView: The view to present the sharing controller as a popover.
     ///
     private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
         if let post = self.postWithObjectID(postID) {
@@ -900,7 +897,9 @@ import WordPressComAnalytics
     }
 
 
-    /// Updates things for a block that was performed on the post detail.
+    /// A user can block a site from the detail screen.  When this happens, we need
+    /// to update the list UI to properly reflect the change. Listen for the 
+    /// notification and call blokSiteForPost as needed.
     ///
     func handleBlockSiteNotification(notification:NSNotification) {
         guard let userInfo = notification.userInfo, aPost = userInfo["post"] as? ReaderPost else {
@@ -940,7 +939,7 @@ import WordPressComAnalytics
     /// via its objectID.
     ///
     /// - Parameters:
-    ///     - objectID: The objetID of the topic that was synced.
+    ///     - objectID: The objectID of the topic that was synced.
     ///
     func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
         let context = ContextManager.sharedInstance().mainContext
@@ -970,8 +969,8 @@ import WordPressComAnalytics
 
     /// Kicks off a "background" sync without updating the UI if certain conditions
     /// are met.
-    /// The app must have a internet connection.
-    /// The current time must be greater than the last sync interval.
+    /// - The app must have a internet connection.
+    /// - The current time must be greater than the last sync interval.
     func syncIfAppropriate() {
         if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
             return
@@ -1426,7 +1425,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    // MARK: - TableView Realted
+    // MARK: - TableView Related
 
     public func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return estimatedRowHeight
