@@ -13,6 +13,16 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @implementation WPUserAgent
 
++ (instancetype) sharedInstance {
+    static id _sharedInstance = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+
+    return _sharedInstance;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -34,14 +44,29 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     NSMutableDictionary *tempRegisteredDefaults = [NSMutableDictionary dictionaryWithDictionary:originalRegisteredDefaults];
     [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
     [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
-    
-    NSString *defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+
+    __block NSString *defaultUserAgent = nil;
+    if ([NSThread isMainThread]) {
+        defaultUserAgent = [self userAgentFromMainThread];
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            defaultUserAgent = [self userAgentFromMainThread];
+        });
+    }
     NSAssert(defaultUserAgent != nil, @"User agent shouldn't be nil");
     NSAssert([defaultUserAgent length] > 0, @"User agent shouldn't be empty");
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:originalRegisteredDefaults];
     
     return defaultUserAgent;
+}
+
+- (NSString *)userAgentFromMainThread {
+    static NSString *_defaultUserAgent = nil;
+    if (_defaultUserAgent == nil) {
+        _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    }
+    return _defaultUserAgent;
 }
 
 - (NSString *)wordPressUserAgent
