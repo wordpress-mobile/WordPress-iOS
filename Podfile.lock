@@ -48,7 +48,6 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.10):
     - DTFoundation/Core
-  - EmailChecker (0.1)
   - Expecta (0.3.2)
   - Fabric (1.6.7)
   - FormatterKit (1.8.1):
@@ -205,7 +204,6 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
   - DTCoreText (= 1.6.16)
-  - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.2)
@@ -247,8 +245,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.0.13
-  EmailChecker:
-    :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -277,7 +273,6 @@ SPEC CHECKSUMS:
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
-  EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
