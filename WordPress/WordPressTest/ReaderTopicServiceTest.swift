@@ -332,4 +332,13 @@ class ReaderTopicSwiftTest : XCTestCase
         XCTAssertTrue(formatted == unformatted, "VINE should have remained all caps")
     }
 
+    func testReaderSearchTopicCreated() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        let phrase = "coffee talk"
+        let topic = service.searchTopicForSearchPhrase(phrase)
+
+        XCTAssert(topic.type == "search")
+    }
 }
