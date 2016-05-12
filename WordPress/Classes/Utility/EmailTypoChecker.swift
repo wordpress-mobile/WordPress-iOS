@@ -42,7 +42,16 @@ private let knownDomains = Set([
     "hotmail.com", "gmail.com", "yahoo.com.mx", "live.com.mx", "yahoo.com", "hotmail.es", "live.com", "hotmail.com.mx", "prodigy.net.mx", "msn.com"
     ])
 
+/// Provides suggestions to fix common typos on email addresses.
+///
+/// It tries to match the email domain with a list of popular hosting providers,
+/// and suggest a correction if it looks like a typo.
+///
 public class EmailTypoChecker: NSObject {
+    /// Suggest a correction to a typo in the given email address.
+    ///
+    /// If it doesn't detect any typo, it returns the given email.
+    ///
     @objc(guessCorrectionForEmail:)
     public static func guessCorrection(email email: String) -> String {
         let components = email.componentsSeparatedByString("@")
