@@ -16,11 +16,11 @@
 
 @interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIStackView *stackView;
-@property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
-@property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
-@property (weak, nonatomic) MenuItemsViewController *itemsView;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet MenusHeaderView *headerView;
+@property (nonatomic, strong) IBOutlet MenuDetailsView *detailsView;
+@property (nonatomic, weak, readonly) MenuItemsViewController *itemsViewController;
 
 @property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
 @property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
@@ -91,7 +91,7 @@
     
     self.headerView.delegate = self;
     self.detailsView.delegate = self;
-    self.itemsView.delegate = self;
+    self.itemsViewController.delegate = self;
     
     [self setupSaveButtonItem];
     [self setupLoadingView];
@@ -133,7 +133,7 @@
     [super prepareForSegue:segue sender:sender];
     
     if ([[segue destinationViewController] isKindOfClass:[MenuItemsViewController class]]) {
-        self.itemsView = segue.destinationViewController;
+        _itemsViewController = segue.destinationViewController;
     }
 }
 
@@ -248,8 +248,8 @@
                 NSOrderedSet *items = [NSOrderedSet orderedSetWithArray:defaultItems];
                 menu.items = items;
                 if (menuEqualToSelectedMenu) {
-                    weakSelf.itemsView.menu = nil;
-                    weakSelf.itemsView.menu = menu;
+                    weakSelf.itemsViewController.menu = nil;
+                    weakSelf.itemsViewController.menu = menu;
                 }
             } else {
                 if (menuEqualToSelectedMenu) {
@@ -278,15 +278,15 @@
         
         [[ContextManager sharedInstance] saveContext:menu.managedObjectContext];
         
-        self.itemsView.menu = nil;
-        self.itemsView.menu = menu;
+        self.itemsViewController.menu = nil;
+        self.itemsViewController.menu = menu;
     }
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
 {
     self.detailsView.menu = menu;
-    self.itemsView.menu = menu;
+    self.itemsViewController.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
     if ([menu.menuID integerValue] == MenuDefaultID) {
@@ -296,7 +296,7 @@
         } else {
             // Set up as "No Menu" selected.
             menu.items = nil;
-            self.itemsView.menu = nil;
+            self.itemsViewController.menu = nil;
             self.detailsView.menu = nil;
         }
     } else {
@@ -404,7 +404,7 @@
     };
     controller.onSelectedToSave = ^() {
         [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
-        [self.itemsView refreshViewWithItem:item focus:YES];
+        [self.itemsViewController refreshViewWithItem:item focus:YES];
         dismiss();
     };
     controller.onSelectedToTrash = ^() {
@@ -414,7 +414,7 @@
             // Otherwise the item was never created remotely, so no need to save this deletion.
             [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
         }
-        [self.itemsView removeItem:item];
+        [self.itemsViewController removeItem:item];
         [self insertBlankMenuItemIfNeeded];
         dismiss();
     };
@@ -491,7 +491,7 @@
                                   forBlog:weakSelf.blog
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
-                                      [weakSelf.itemsView reloadItems];
+                                      [weakSelf.itemsViewController reloadItems];
                                       toggleIsSaving(NO);
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
