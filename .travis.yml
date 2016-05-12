@@ -1,5 +1,3 @@
-install:
-- gem install cocoapods -v 1.0.0 && pod repo update && pod install
 osx_image: xcode7.3
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
