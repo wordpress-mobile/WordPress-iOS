@@ -373,7 +373,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    self.userAgent = [[WPUserAgent sharedInstance] init];
+    self.userAgent = [WPUserAgent sharedInstance];
     [self.userAgent useWordPressUserAgentInUIWebViews];
     [self setupSingleSignOn];
 
