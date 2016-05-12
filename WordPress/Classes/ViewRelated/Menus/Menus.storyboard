@@ -295,8 +295,24 @@
                     <view key="view" contentMode="scaleToFill" id="bdk-zs-oZO">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="471"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="OQY-P1-Jeo">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="471"/>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="OQY-P1-Jeo" firstAttribute="centerX" secondItem="bdk-zs-oZO" secondAttribute="centerX" id="CAC-Gp-he3"/>
+                            <constraint firstItem="OQY-P1-Jeo" firstAttribute="height" secondItem="bdk-zs-oZO" secondAttribute="height" id="Cto-Xv-GHF"/>
+                            <constraint firstItem="OQY-P1-Jeo" firstAttribute="width" secondItem="bdk-zs-oZO" secondAttribute="width" id="Re1-hx-Fjg"/>
+                            <constraint firstItem="iSi-Rl-mAC" firstAttribute="top" secondItem="OQY-P1-Jeo" secondAttribute="bottom" placeholder="YES" id="Up9-fL-3xT"/>
+                            <constraint firstItem="OQY-P1-Jeo" firstAttribute="top" secondItem="U9I-b9-tlR" secondAttribute="bottom" id="srz-fS-7Uf"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="stackView" destination="OQY-P1-Jeo" id="bmq-kG-DC5"/>
+                        <outlet property="view" destination="bdk-zs-oZO" id="pid-Ji-mhe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1t-wI-fd4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
