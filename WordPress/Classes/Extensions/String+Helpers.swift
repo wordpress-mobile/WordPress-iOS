@@ -30,4 +30,13 @@ extension String {
         }
         return self
     }
+
+    /// Returns a string without the character at the specified index.
+    /// This is a non-mutating version of `String.removeAtIndex(_:)`.
+    func removingCharacterAtIndex(index: Index) -> String {
+        var copy = self
+        copy.removeAtIndex(index)
+        return copy
+    }
+
 }
