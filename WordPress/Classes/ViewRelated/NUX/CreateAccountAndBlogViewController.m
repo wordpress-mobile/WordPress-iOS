@@ -1,5 +1,4 @@
 #import "CreateAccountAndBlogViewController.h"
-#import <EmailChecker/EmailChecker.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
@@ -209,7 +208,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 {
     if (textField == _emailField) {
         // check email validity
-        NSString *suggestedEmail = [EmailChecker suggestDomainCorrection: _emailField.text];
+        NSString *suggestedEmail = [EmailTypoChecker suggestDomainCorrection:_emailField.text];
         if (![suggestedEmail isEqualToString:_emailField.text] && _shouldCorrectEmail) {
             textField.text = suggestedEmail;
             _shouldCorrectEmail = NO;
