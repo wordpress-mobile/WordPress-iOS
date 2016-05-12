@@ -4,6 +4,7 @@
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderPost.h"
+#import "ReaderPostServiceRemote.h"
 #import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
@@ -183,6 +184,28 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
+}
+
+- (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase
+{
+    NSAssert([phrase length] > 0, @"A search phrase is required.");
+
+    WordPressComApi *api = [WordPressComApi anonymousApi];
+    ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithApi:api];
+
+    NSString *path = [remote endpointUrlForSearchPhrase:phrase];
+    ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
+    if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
+    topic.type = [ReaderSearchTopic TopicType];
+    topic.title = phrase;
+    topic.path = path;
+    topic.showInMenu = NO;
+    topic.following = NO;
+
+    return topic;
 }
 
 - (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic
