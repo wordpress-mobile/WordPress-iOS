@@ -483,7 +483,11 @@ extension SignupViewController: UITextFieldDelegate {
             return true
         }
 
-        let suggestedEmail = EmailCheckerHelper.suggestDomainCorrection(textField.text)
+        guard let text = textField.text else {
+            return true
+        }
+
+        let suggestedEmail = EmailTypoChecker.suggestDomainCorrection(text)
         if suggestedEmail != textField.text {
             textField.text = suggestedEmail
             didCorrectEmailOnce = true
