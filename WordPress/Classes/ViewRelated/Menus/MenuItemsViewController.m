@@ -11,9 +11,9 @@
 
 @interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
-@property (nonatomic, strong) NSMutableSet *itemViews;
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) NSMutableSet *insertionViews;
+@property (nonatomic, strong, readonly) NSMutableSet *itemViews;
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+@property (nonatomic, strong, readonly) NSMutableSet *insertionViews;
 @property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
 @property (nonatomic, assign) BOOL isEditingForItemViewInsertion;
 
@@ -25,7 +25,7 @@
 @property (nonatomic, assign) BOOL observesParentChildNestingTouches;
 
 @property (nonatomic, strong) MenuItemView *itemViewForOrdering;
-@property (nonatomic, strong) MenuItemsVisualOrderingView *visualOrderingView;
+@property (nonatomic, strong, readonly) MenuItemsVisualOrderingView *visualOrderingView;
 
 @end
 
@@ -39,6 +39,9 @@
     self.view.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    _itemViews = [NSMutableSet set];
+    _insertionViews = [NSMutableSet setWithCapacity:3];
     
     [self setupStackView];
     
@@ -112,15 +115,17 @@
 
 - (void)reloadItems
 {
-    for (MenuItemAbstractView *stackableView in self.stackView.arrangedSubviews) {
+    NSArray *arrangedViews = [NSArray arrayWithArray:self.stackView.arrangedSubviews];
+    for (MenuItemAbstractView *stackableView in arrangedViews) {
         [self.stackView removeArrangedSubview:stackableView];
         [stackableView removeFromSuperview];
     }
     
-    self.itemViews = [NSMutableSet set];
+    [self.itemViews removeAllObjects];
+    [self.insertionViews removeAllObjects];
+    
     self.isEditingForItemViewInsertion = NO;
     self.itemViewForInsertionToggling = nil;
-    self.insertionViews = nil;
     
     for (MenuItem *item in self.menu.items) {
         [self addNewItemViewWithItem:item];
@@ -212,7 +217,6 @@
     toggledItemView.showsCancelButtonOption = YES;
     toggledItemView.showsEditingButtonOptions = NO;
     
-    self.insertionViews = [NSMutableSet setWithCapacity:3];
     [self addNewInsertionViewWithOrder:MenuItemInsertionOrderAbove forItemView:toggledItemView];
     [self addNewInsertionViewWithOrder:MenuItemInsertionOrderBelow forItemView:toggledItemView];
     [self addNewInsertionViewWithOrder:MenuItemInsertionOrderChild forItemView:toggledItemView];
@@ -263,7 +267,7 @@
         [insertionView removeFromSuperview];
     }
     
-    self.insertionViews = nil;
+    [self.insertionViews removeAllObjects];
     self.itemViewForInsertionToggling = nil;
 }
 
@@ -750,8 +754,7 @@
                                                   [orderingView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor],
                                                   [orderingView.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor]
                                                   ]];
-        
-        self.visualOrderingView = orderingView;
+        _visualOrderingView = orderingView;
     }
     
     [self.visualOrderingView setupVisualOrderingWithItemView:selectedItemView];

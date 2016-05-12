@@ -14,23 +14,6 @@
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
 
-typedef NS_ENUM(NSInteger) {
-    MenusSectionSelection = 0,
-    MenusSectionMenuItems
-    
-}MenusSection;
-
-static NSString * const MenusSectionMenuItemsKey = @"menu_items";
-
-@implementation NSDictionary (Menus)
-
-- (NSMutableArray *)menuItems
-{
-    return self[MenusSectionMenuItemsKey];
-}
-
-@end
-
 @interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
