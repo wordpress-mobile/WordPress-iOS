@@ -35,7 +35,7 @@
 		00F2E3F8166EEF9800D0527C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
-		080C44A91CE14A9F00B3A02F /* MenuDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C449E1CE14A9F00B3A02F /* MenuDetailsView.m */; };
+		080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */; };
 		080C44AA1CE14A9F00B3A02F /* MenuItemAbstractView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C44A01CE14A9F00B3A02F /* MenuItemAbstractView.m */; };
 		080C44AB1CE14A9F00B3A02F /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C44A21CE14A9F00B3A02F /* MenuItemInsertionView.m */; };
 		080C44AC1CE14A9F00B3A02F /* MenuItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C44A41CE14A9F00B3A02F /* MenuItemsViewController.m */; };
@@ -941,8 +941,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		080C449D1CE14A9F00B3A02F /* MenuDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsView.h; sourceTree = "<group>"; };
-		080C449E1CE14A9F00B3A02F /* MenuDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsView.m; sourceTree = "<group>"; };
+		0634C674186D35020DC59DED /* Pods_WordPress_Base_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPress_Base_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		080C449D1CE14A9F00B3A02F /* MenuDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsViewController.h; sourceTree = "<group>"; };
+		080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsViewController.m; sourceTree = "<group>"; };
 		080C449F1CE14A9F00B3A02F /* MenuItemAbstractView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemAbstractView.h; sourceTree = "<group>"; };
 		080C44A01CE14A9F00B3A02F /* MenuItemAbstractView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemAbstractView.m; sourceTree = "<group>"; };
 		080C44A11CE14A9F00B3A02F /* MenuItemInsertionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemInsertionView.h; sourceTree = "<group>"; };
@@ -953,7 +954,6 @@
 		080C44A61CE14A9F00B3A02F /* MenuItemsVisualOrderingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsVisualOrderingView.m; sourceTree = "<group>"; };
 		080C44A71CE14A9F00B3A02F /* MenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemView.h; sourceTree = "<group>"; };
 		080C44A81CE14A9F00B3A02F /* MenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemView.m; sourceTree = "<group>"; };
-		0634C674186D35020DC59DED /* Pods_WordPress_Base_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPress_Base_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MenuItemEditing.storyboard; sourceTree = "<group>"; };
 		08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingViewController.h; sourceTree = "<group>"; };
 		08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingViewController.m; sourceTree = "<group>"; };
@@ -2395,6 +2395,8 @@
 				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
 				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
 				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
+				080C449D1CE14A9F00B3A02F /* MenuDetailsViewController.h */,
+				080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */,
 				080C44A31CE14A9F00B3A02F /* MenuItemsViewController.h */,
 				080C44A41CE14A9F00B3A02F /* MenuItemsViewController.m */,
 				08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */,
@@ -2422,8 +2424,6 @@
 		089F08801CE25D43009909F2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				080C449D1CE14A9F00B3A02F /* MenuDetailsView.h */,
-				080C449E1CE14A9F00B3A02F /* MenuDetailsView.m */,
 				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
 				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
 				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
@@ -5723,7 +5723,7 @@
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
 				E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */,
-				080C44A91CE14A9F00B3A02F /* MenuDetailsView.m in Sources */,
+				080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */,
 				E127A0F11C43B7CB00085129 /* SiteServiceRemoteREST.m in Sources */,
 				08216FCF1CDBF96000304BA7 /* MenuItemSourceCell.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
