@@ -62,7 +62,7 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
     }
@@ -285,6 +285,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
     func finishedLoginWithUsername(username: String!, password: String!, xmlrpc: String!, options: [NSObject : AnyObject]!) {
         displayLoginMessage("")
+        OptimizelyHelper.trackLoggedIn()
         BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
             self?.dismiss()

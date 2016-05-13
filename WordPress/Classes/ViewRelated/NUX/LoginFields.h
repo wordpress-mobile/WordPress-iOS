@@ -6,6 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface LoginFields : NSObject
 
+@property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *siteUrl;

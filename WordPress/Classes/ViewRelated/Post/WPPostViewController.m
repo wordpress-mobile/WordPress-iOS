@@ -1790,7 +1790,7 @@ EditImageDetailsViewControllerDelegate
                                           videoPress:media.videopressGUID];
         }
     } failure:^(NSError *error) {
-        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView removeImage:mediaUniqueId];
