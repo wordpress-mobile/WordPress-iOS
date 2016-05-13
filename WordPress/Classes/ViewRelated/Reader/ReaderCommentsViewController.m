@@ -1118,7 +1118,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
     WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
-    webViewController.useCustomReferrer = YES;
+    webViewController.addsWPComReferrer = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1160,7 +1160,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
-    webViewController.useCustomReferrer = YES;
+    webViewController.addsWPComReferrer = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1174,7 +1174,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
     } else if (imageControl.linkURL) {
         WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:imageControl.linkURL];
-        webViewController.useCustomReferrer = YES;
+        webViewController.addsWPComReferrer = YES;
         controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
