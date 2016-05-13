@@ -6,8 +6,6 @@
  */
 @interface WPUserAgent : NSObject
 
-+ (instancetype) sharedInstance;
-
 /**
  *  @brief      WordPress custom User-Agent header.
  */
