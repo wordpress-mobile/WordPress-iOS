@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Menu;
 @class MenuItem;
 
@@ -7,8 +9,8 @@
 
 @interface MenuItemsViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuItemsViewControllerDelegate> delegate;
-@property (nonatomic, strong) Menu *menu;
+@property (nonatomic, weak, nullable) id <MenuItemsViewControllerDelegate> delegate;
+@property (nonatomic, strong, nullable) Menu *menu;
 
 /**
  Reload the views associated with the Menu's items.
@@ -65,3 +67,5 @@
 - (void)itemsViewAnimatingContentSizeChanges:(MenuItemsViewController *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect;
 
 @end
+
+NS_ASSUME_NONNULL_END

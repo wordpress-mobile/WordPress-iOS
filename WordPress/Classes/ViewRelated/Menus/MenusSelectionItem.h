@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Menu;
 @class MenuLocation;
 
@@ -14,7 +16,7 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 /**
  The associated object the item represents.
  */
-@property (nonatomic, strong) id itemObject;
+@property (nonatomic, strong, nullable) id itemObject;
 
 /**
  Tracker for the selected state of the item.
@@ -44,7 +46,7 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 /**
  Get the displayName of the item for the UI.
  */
-- (NSString *)displayName;
+- (nullable NSString *)displayName;
 
 /**
  Helper for posting the MenusSelectionViewItemUpdatedItemObjectNotification notification.
@@ -59,3 +61,5 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 @interface MenusSelectionAddMenuItem : MenusSelectionItem
 
 @end
+
+NS_ASSUME_NONNULL_END

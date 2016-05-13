@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "MenusSelectionItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
     MenusSelectionViewTypeMenus = 1,
     MenusSelectionViewTypeLocations
@@ -13,7 +15,7 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
  */
 @interface MenusSelectionView : UIView
 
-@property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenusSelectionViewDelegate> delegate;
 
 /**
  The type of selection the selectionView should be configured for.
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 /**
  Get the corresponding MenusSelectionItem with an item.itemObject equal to the passed itemObject.
  */
-- (MenusSelectionItem *)selectionItemForObject:(id)itemObject;
+- (nullable MenusSelectionItem *)selectionItemForObject:(id)itemObject;
 
 /**
  Toggle the visual expansion of the selection items in the UI, with animation.
@@ -75,3 +77,5 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 - (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView;
 
 @end
+
+NS_ASSUME_NONNULL_END
