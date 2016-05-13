@@ -1,5 +1,7 @@
 #import "MenuItemAbstractView.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
     MenuItemInsertionOrderAbove = 1,
     MenuItemInsertionOrderBelow,
@@ -13,7 +15,7 @@ typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
  */
 @interface MenuItemInsertionView : MenuItemAbstractView
 
-@property (nonatomic, weak) id <MenuItemAbstractViewDelegate, MenuItemInsertionViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate, MenuItemInsertionViewDelegate> delegate;
 
 /**
  The type of insertion the view represents.
@@ -30,3 +32,5 @@ typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
 - (void)itemInsertionViewSelected:(MenuItemInsertionView *)insertionView;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class MenuItem;
 @class MenuItemView;
 
@@ -10,7 +12,7 @@
  */
 @interface MenuItemsVisualOrderingView : UIView
 
-@property (nonatomic, weak) id <MenuItemsVisualOrderingViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemsVisualOrderingViewDelegate> delegate;
 
 /**
  Set up the view to copy the view's representation in the UI for animating it's ordering.
@@ -38,3 +40,5 @@
 - (void)visualOrderingView:(MenuItemsVisualOrderingView *)visualOrderingView animatingVisualItemViewForOrdering:(MenuItemView *)orderingView;
 
 @end
+
+NS_ASSUME_NONNULL_END
