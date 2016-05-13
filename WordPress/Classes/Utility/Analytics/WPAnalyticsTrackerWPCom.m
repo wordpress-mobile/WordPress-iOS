@@ -31,7 +31,7 @@
 {
     int x = arc4random();
     NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , WPMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
+    NSString *userAgent = [WPUserAgent wordPressUserAgent];
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]];
     [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
