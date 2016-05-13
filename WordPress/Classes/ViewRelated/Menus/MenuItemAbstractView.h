@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 @protocol MenuItemDrawingViewDelegate <NSObject>
@@ -14,7 +16,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 @interface MenuItemAbstractView : UIView <MenuItemDrawingViewDelegate>
 
-@property (nonatomic, weak) id <MenuItemAbstractViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate> delegate;
 
 /**
  Content view in which most of the drawing and MenuItem content is setup in.
@@ -64,12 +66,12 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 /**
  Tracker for a stackableView appearing before this view in a stack.
 */
-@property (nonatomic, weak) MenuItemAbstractView *previous;
+@property (nonatomic, weak, nullable) MenuItemAbstractView *previous;
 
 /**
  Tracker for a stackableView appearing after this view in a stack.
  */
-@property (nonatomic, weak) MenuItemAbstractView *next;
+@property (nonatomic, weak, nullable) MenuItemAbstractView *next;
 
 /**
  Add an accessory button to the accessoryStackView.
@@ -104,4 +106,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
  The highlighted state changed for the stackableView.
  */
 - (void)itemView:(MenuItemAbstractView *)itemView highlighted:(BOOL)highlighted;
+
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class MenuLocation;
 @class Menu;
@@ -12,7 +14,7 @@
  */
 @interface MenuHeaderViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuHeaderViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuHeaderViewControllerDelegate> delegate;
 @property (nonatomic, strong) Blog *blog;
 
 /**
@@ -60,3 +62,5 @@
 - (void)headerViewControllerSelectedForCreatingNewMenu:(MenuHeaderViewController *)headerView;
 
 @end
+
+NS_ASSUME_NONNULL_END
