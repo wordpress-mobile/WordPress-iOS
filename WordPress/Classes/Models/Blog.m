@@ -593,6 +593,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return nil;
 }
 
+- (WordPressComRestApi *)wordPressComRestApi
+{
+    if (self.account) {
+        return self.account.wordPressComRestApi;
+    } else if ([self jetpackRESTSupported]) {
+        return self.jetpackAccount.wordPressComRestApi;
+    }
+    return nil;
+}
+
 - (BOOL)supportsRestApi {
     // We don't want to check for `restApi` as it can be `nil` when the token
     // is missing from the keychain.

@@ -3,6 +3,7 @@
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
 #import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
@@ -18,12 +19,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary * parameters = @{};
     
-    [self.api GET:requestUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:requestUrl parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
             success([self remoteMediaFromJSONDictionary:response]);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *response) {
         if (failure) {
             failure(error);
         }
@@ -57,9 +58,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *response) {
               NSArray *mediaItems = responseObject[@"media"];
               NSArray *pageItems = [self remoteMediaFromJSONArray:mediaItems];
               if (pageItems.count) {
@@ -77,7 +78,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                   success([NSArray arrayWithArray:media]);
               }
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSError *error, NSHTTPURLResponse *response) {
               if (failure) {
                   failure(error);
               }
@@ -93,16 +94,16 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSDictionary *parameters = @{ @"number" : @1 };
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *response) {
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
               NSNumber *count = [jsonDictionary numberForKey:@"found"];
               if (success) {
                   success([count intValue]);
               }
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSError *error, NSHTTPURLResponse *response) {
               if (failure) {
                   failure(error);
               }
@@ -114,7 +115,6 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSProgress *localProgress = [NSProgress progressWithTotalUnitCount:2];
     NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
@@ -126,15 +126,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
-    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
-                                                                                    URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
-                                                                                   parameters:parameters
-                                                                    constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
-        [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
-    } error:nil];
-    
-    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *    operation, id responseObject) {
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
+    FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:url filename:filename mimeType:type];
+    NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
+                                                    parameters:parameters
+                                                     fileParts:@[filePart]
+                                                       success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSArray * errorList = response[@"error"];
         NSArray * mediaList = response[@"media"];
@@ -142,12 +139,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
             if (success) {
                 success(remoteMedia);
-            }
-            localProgress.completedUnitCount=localProgress.totalUnitCount;
+            }            
         } else {
             DDLogDebug(@"Error uploading file: %@", errorList);
-            localProgress.totalUnitCount=0;
-            localProgress.completedUnitCount=0;
             NSError * error = nil;
             if (errorList.count > 0){
                 NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
@@ -158,32 +152,13 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             }
         }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
-        localProgress.totalUnitCount=0;
-        localProgress.completedUnitCount=0;
         if (failure) {
             failure(error);
         }
     }];
-
-    // Setup progress object
-    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        localProgress.completedUnitCount +=bytesWritten;
-    }];
-    unsigned long long size = [[request valueForHTTPHeaderField:@"Content-Length"] longLongValue];
-    // Adding some extra time because after the upload is done the backend takes some time to process the data sent
-    localProgress.totalUnitCount = size+1;
-    localProgress.cancellable = YES;
-    localProgress.pausable = NO;
-    localProgress.cancellationHandler = ^(){
-        [operation cancel];
-    };
-    
-    if (progress) {
-        *progress = localProgress;
-    }
-    [self.api.operationQueue addOperation:operation];
+    *progress = localProgress;
 }
 
 - (void)updateMedia:(RemoteMedia *)media
@@ -198,14 +173,14 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     NSDictionary *parameters = [self parametersFromRemoteMedia:media];
 
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *response) {
                RemoteMedia *media = [self remoteMediaFromJSONDictionary:responseObject];
                if (success) {
                    success(media);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *response) {
                if (failure) {
                    failure(error);
                }

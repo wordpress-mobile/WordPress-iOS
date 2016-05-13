@@ -8,6 +8,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderAbstractTopic;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
+@class ReaderSearchTopic;
 
 @interface ReaderTopicService : LocalCoreDataService
 
@@ -54,6 +55,16 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param topic The ReaderAbstractTopic to follow and make current.
  */
 - (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic;
+
+/**
+ Creates a ReaderSearchTopic from the specified search phrase.
+ 
+ @param phrase: The search phrase.
+ 
+ @return A ReaderSearchTopic instance.
+ */
+- (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase;
+
 
 /**
  Unfollows the specified topic. If the specified topic was the current topic the 

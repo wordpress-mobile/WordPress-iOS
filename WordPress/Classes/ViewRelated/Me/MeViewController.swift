@@ -253,15 +253,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = LoginViewController()
-            controller.onlyDotComAllowed = true
-            controller.cancellable = true
-            controller.dismissBlock = { [unowned self] _ in
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-
-            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
-            self.presentViewController(navigation, animated: true, completion: nil)
+            SigninHelpers.showSigninForJustWPComFromPresenter(self)
         }
     }
 
