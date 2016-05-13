@@ -1,5 +1,7 @@
 #import "MenuItemAbstractView.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class MenuItem;
 
 @protocol MenuItemViewDelegate;
@@ -9,7 +11,7 @@
  */
 @interface MenuItemView : MenuItemAbstractView
 
-@property (nonatomic, weak) id <MenuItemAbstractViewDelegate, MenuItemViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate, MenuItemViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 
 /**
@@ -52,3 +54,5 @@
 - (void)itemViewCancelButtonPressed:(MenuItemView *)itemView;
 
 @end
+
+NS_ASSUME_NONNULL_END
