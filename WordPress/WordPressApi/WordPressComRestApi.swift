@@ -228,7 +228,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         super.init()
         let extraStatusCodes = NSMutableIndexSet(indexSet: self.acceptableStatusCodes!)
         extraStatusCodes.addIndexesInRange(NSRange(400...500))
-        self.acceptableStatusCodes = extraStatusCodes        
+        self.acceptableStatusCodes = extraStatusCodes
     }
 
     required init?(coder aDecoder: NSCoder) {
