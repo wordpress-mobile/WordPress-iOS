@@ -91,8 +91,12 @@ NSString *const SessionCount = @"session_count";
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
+
     if (instructions == nil) {
-        DDLogInfo(@"No instructions, do nothing");
+        // Getting no instructions back means the tracker doesn't want to handle a specific event,
+        // so we can simply return.  This is intentional and allowed.
+        // - Diego Rey Mendez, 12 May 2016
+        //
         return;
     }
 
