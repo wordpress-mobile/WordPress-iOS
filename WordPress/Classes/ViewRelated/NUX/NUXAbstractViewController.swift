@@ -17,6 +17,8 @@ class NUXAbstractViewController : UIViewController
     let helpBadgeSize = CGSize(width: 12, height: 10)
     let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
+    var dismissBlock: ((cancelled: Bool) -> Void)?
+
     // MARK: - Lifecycle Methods
 
 
@@ -158,9 +160,20 @@ class NUXAbstractViewController : UIViewController
 
 
     /// It is assumed that NUX view controllers are always presented modally.
-    /// This method dismisses the view controller.
     ///
     func dismiss() {
+        dismiss(cancelled: false)
+    }
+
+
+    /// It is assumed that NUX view controllers are always presented modally.
+    /// This method dismisses the view controller
+    ///
+    /// - Parameters:
+    ///     - cancelled: Should be passed true only when dismissed by a tap on the cancel button.
+    ///
+    private func dismiss(cancelled cancelled: Bool) {
+        dismissBlock?(cancelled: cancelled)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -186,7 +199,7 @@ class NUXAbstractViewController : UIViewController
 
 
     func handleCancelButtonTapped(sender: UIButton) {
-        dismiss()
+        dismiss(cancelled: true)
     }
 
 

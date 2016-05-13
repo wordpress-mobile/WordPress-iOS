@@ -26,14 +26,14 @@ static CGFloat const iconPadding = 3.0;
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         
-        [self initIconView];
-        [self initLabel];
+        [self setupIconView];
+        [self setupLabel];
     }
     
     return self;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -52,7 +52,7 @@ static CGFloat const iconPadding = 3.0;
     _iconView = iconView;
 }
 
-- (void)initLabel
+- (void)setupLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -60,7 +60,7 @@ static CGFloat const iconPadding = 3.0;
     
     NSDictionary *attributes = [self attributesForText];
     label.font = [attributes objectForKey:NSFontAttributeName];
-    label.textColor = [attributes objectForKey:NSForegroundColorAttributeName];
+    label.textColor = [WPStyleGuide greyDarken30];
     
     [self addSubview:label];
     
