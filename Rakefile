@@ -1,5 +1,9 @@
+SWIFTLINT_VERSION="0.10.0"
+
 require 'fileutils'
+require 'tmpdir'
 require 'rake/clean'
+PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
 
 task default: %w[test]
 
@@ -24,6 +28,7 @@ namespace :dependencies do
       FileUtils.cp(lockfile, manifest)
     end
     CLOBBER << "vendor/bundle"
+    CLOBBER << ".bundle"
   end
 
   namespace :pod do
@@ -43,12 +48,51 @@ namespace :dependencies do
     end
     CLOBBER << "Pods"
   end
+
+  namespace :lint do
+
+    task :check do
+      if swiftlint_needs_install
+        Rake::Task["dependencies:lint:install"].invoke
+      end
+    end
+
+    task :install do
+      fold("install.swiftlint") do
+        puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
+        Dir.mktmpdir do |tmpdir|
+          sh "git clone --branch #{SWIFTLINT_VERSION} https://github.com/realm/SwiftLint.git #{tmpdir}"
+          Dir.chdir(tmpdir) do
+            sh "git submodule update --init --recursive"
+            FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
+            FileUtils.mkdir_p(swiftlint_path)
+            sh "make prefix_install PREFIX='#{swiftlint_path}'"
+          end
+        end
+      end
+    end
+    CLOBBER << "vendor/swiftlint"
+  end
+
 end
 
+CLOBBER << "vendor"
 
 desc "Build and test"
 task :test => [:dependencies] do
   sh './Scripts/build.sh'
+end
+
+desc "Checks the source for style errors"
+task :lint => %w[dependencies:lint:check] do
+  swiftlint %w[lint --quiet]
+end
+
+namespace :lint do
+  desc "Automatically corrects style errors where possible"
+  task :autocorrect => %w[dependencies:lint:check] do
+    swiftlint %w[autocorrect]
+  end
 end
 
 def check_manifest(file, manifest)
@@ -70,4 +114,23 @@ end
 def pod(args)
   args = %w[bundle exec pod] + args
   sh(*args)
+end
+
+def swiftlint_path
+    "#{PROJECT_DIR}/vendor/swiftlint"
+end
+
+def swiftlint(args)
+  args = [swiftlint_bin] + args
+  sh(*args)
+end
+
+def swiftlint_bin
+    "#{swiftlint_path}/bin/swiftlint"
+end
+
+def swiftlint_needs_install
+  return true unless File.exist?(swiftlint_bin)
+  installed_version = `#{swiftlint_bin} version`.chomp
+  return (installed_version != SWIFTLINT_VERSION)
 end
