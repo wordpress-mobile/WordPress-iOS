@@ -69,6 +69,16 @@ class WordPressComLanguageDatabase : NSObject
         return deviceLanguage.id
     }
 
+    /// Returns the slug string for the current device language.
+    /// If the language is not supported, it returns "en" (English).
+    ///
+    /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
+    ///
+    @objc(deviceLanguageSlug)
+    func deviceLanguageSlugString() -> String {
+        return deviceLanguage.slug
+    }
+
     /// Returns the current device language as the corresponding WordPress.com language.
     /// If the language is not supported, it returns English.
     ///
