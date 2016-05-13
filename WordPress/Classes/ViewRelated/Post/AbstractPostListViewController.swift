@@ -54,6 +54,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return syncHelper
     }()
 
+    lazy var searchHelper : WPContentSearchHelper = {
+        let searchHelper = WPContentSearchHelper()
+        return searchHelper
+    }()
+
     lazy var noResultsView : WPNoResultsView = {
         let noResultsView = WPNoResultsView()
         noResultsView.delegate = self
@@ -92,6 +97,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         configureFooterView()
         configureNavbar()
         configureSearchController()
+        configureSearchHelper()
         configureAuthorFilter()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -297,6 +303,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchWrapperView.backgroundColor = WPStyleGuide.wordPressBlue()
     }
 
+    func configureSearchHelper() {
+        searchHelper.resetConfiguration()
+        searchHelper.configureRemoteSearchWithCompletion { [weak self] in
+            DDLogSwift.logDebug("Starting remote search with text: \(self?.searchHelper.searchText!)")
+            self?.searchPostsRemotelyForCurrentSearchText()
+        }
+    }
+
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
@@ -464,6 +478,33 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     @IBAction func didTapFilterButton(sender: AnyObject) {
         displayFilters()
+    }
+
+    // MARK: - Remote Search
+
+    func searchPostsRemotelyForCurrentSearchText() {
+
+        let filter = currentPostListFilter()
+        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+
+        let postService = PostService(managedObjectContext: managedObjectContext())
+
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses
+        options.authorID = author
+        options.number = 20
+        options.purgesLocalSync = false
+        options.search = searchController.searchBar.text
+
+        postService.syncPostsOfType(
+            postTypeToSync(),
+            withOptions: options,
+            forBlog: blog,
+            success: {posts in
+                // Do something with a success.
+            }, failure: {(error: NSError?) -> () in
+                // Do something with a failure.
+            })
     }
 
     // MARK: - Synching
@@ -1023,6 +1064,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         searchController.searchBar.text = nil
+        searchHelper.searchingCanceled()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
@@ -1030,5 +1072,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func updateSearchResultsForSearchController(searchController: WPSearchController!) {
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        searchHelper.searchingUpdatedWithSearchText(searchController.searchBar.text!)
     }
 }
