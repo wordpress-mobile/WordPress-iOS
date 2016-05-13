@@ -13,16 +13,6 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @implementation WPUserAgent
 
-+ (instancetype) sharedInstance {
-    static id _sharedInstance = nil;
-    static dispatch_once_t _onceToken;
-    dispatch_once(&_onceToken, ^{
-        _sharedInstance = [[self alloc] init];
-    });
-
-    return _sharedInstance;
-}
-
 - (instancetype)init
 {
     self = [super init];
