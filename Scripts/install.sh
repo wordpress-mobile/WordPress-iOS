@@ -12,7 +12,14 @@ function step() {
 
 function bundle_install() {
   echo "Install bundler dependencies"
-  bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
+
+  # Check if we need to run bundle install
+  if [[ -f Gemfile.lock && -f vendor/bundle/Manifest.lock ]] && cmp --silent Gemfile.lock vendor/bundle/Manifest.lock; then
+    echo "Gems seem up to date, skipping bundle install"
+  else
+    bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
+    cp Gemfile.lock vendor/bundle/Manifest.lock
+  fi
 }
 
 function pod_install() {
