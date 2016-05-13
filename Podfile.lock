@@ -239,7 +239,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.6.1)
   - WordPress-iOS-Shared (= 0.5.9)
   - WordPressApi (= 0.4.0)
-  - WordPressCom-Analytics-iOS (= 0.1.11)
+  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`, branch `plans`)
   - WordPressCom-Stats-iOS (= 0.7.0)
   - WordPressCom-Stats-iOS/Services (= 0.7.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.1`)
@@ -253,6 +253,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :branch: plans
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -264,6 +267,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :commit: 3915ed845335ff81e5f4267801631a6622e947eb
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -313,6 +319,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 3be528f1f8db6da2934fb5a3442bc44e15558671
+PODFILE CHECKSUM: 64f231861cd14576fe78587735e327fd168db5cc
 
 COCOAPODS: 1.0.0
