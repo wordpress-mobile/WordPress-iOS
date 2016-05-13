@@ -61,9 +61,10 @@ namespace :dependencies do
       fold("install.swiftlint") do
         puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
         Dir.mktmpdir do |tmpdir|
-          sh "git clone --branch #{SWIFTLINT_VERSION} https://github.com/realm/SwiftLint.git #{tmpdir}"
+          sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
           Dir.chdir(tmpdir) do
-            sh "git submodule update --init --recursive"
+            sh "git checkout --quiet #{SWIFTLINT_VERSION}"
+            sh "git submodule --quiet update --init --recursive"
             FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
             FileUtils.mkdir_p(swiftlint_path)
             sh "make prefix_install PREFIX='#{swiftlint_path}'"
