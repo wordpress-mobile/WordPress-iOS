@@ -31,6 +31,8 @@ static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
 static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
 static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
+static NSString *const WPComReferrerURL = @"https://wordpress.com";
+
 
 #pragma mark - Private Properties
 
@@ -312,11 +314,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     
     if (title) {
         [activityItems addObject:title];
-    }
-
-    // Append uta_source to shared links when using the custom referrer
-    if (self.addsWPComReferrer) {
-        permaLink = [WPComReferrerUtil addUtmSourceToURLPath:permaLink];
     }
 
     [activityItems addObject:[NSURL URLWithString:permaLink]];

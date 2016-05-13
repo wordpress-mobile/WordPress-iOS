@@ -70,8 +70,3 @@ NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
 /// Scheme Constants
 ///
 NSString *const WPComScheme = WPCOM_SCHEME;
-
-/// Referrer Constants
-///
-NSString *const WPComReferrerGaUtmSourceKey = @"utm_source";
-NSString *const WPComReferrerURL = @"https://wordpress.com";
