@@ -631,7 +631,7 @@ final public class ReaderDetailViewController : UIViewController
 
     func presentWebViewControllerWithURL(url:NSURL) {
         let controller = WPWebViewController.authenticatedWebViewController(url)
-        controller.useCustomReferrer = true
+        controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
     }

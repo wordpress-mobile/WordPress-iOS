@@ -44,7 +44,7 @@
 /**
  *  @brief  When true adds a custom referrer to NSURLRequest.
  */
-@property (nonatomic, assign) BOOL useCustomReferrer;
+@property (nonatomic, assign) BOOL addsWPComReferrer;
 
 /**
  *	@brief		Dismiss modal presentation

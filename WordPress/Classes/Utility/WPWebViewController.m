@@ -315,7 +315,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     }
 
     // Append uta_source to shared links when using the custom referrer
-    if (self.useCustomReferrer) {
+    if (self.addsWPComReferrer) {
         permaLink = [WPComReferrerUtil addUtmSourceToURLPath:permaLink];
     }
 
@@ -466,14 +466,14 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     } else {
         NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
         request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                 redirectURL:self.url
-                                                    username:self.username
-                                                    password:self.password
-                                                 bearerToken:self.authToken
-                                                   userAgent:userAgent];
+                                                    redirectURL:self.url
+                                                       username:self.username
+                                                       password:self.password
+                                                    bearerToken:self.authToken
+                                                      userAgent:userAgent];
     }
 
-    if (self.useCustomReferrer) {
+    if (self.addsWPComReferrer) {
         NSMutableURLRequest *mReq = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
         [mReq setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
         request = mReq;

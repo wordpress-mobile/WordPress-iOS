@@ -4,7 +4,7 @@ import Foundation
 {
 
     /// Add the utm_source query string param to a URL string.
-    /// If the utm_source already exists the original pathis returned.
+    /// If the utm_source already exists the original path is returned.
     ///
     /// - Parameters:
     ///     - path: A URL string. Can be an absolute or relative URL string.
