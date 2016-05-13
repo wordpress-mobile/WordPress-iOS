@@ -405,6 +405,13 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
             break;
+        case WPAnalyticsStatOpenedPlans:
+            eventName = @"plans_view";
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
+            break;
+        case WPAnalyticsStatOpenedPlansComparison:
+            eventName = @"plans_compare";
+            break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
