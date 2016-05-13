@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class MenuItem;
 
 @protocol MenuItemEditingFooterViewDelegate;
 
 @interface MenuItemEditingFooterView : UIView
 
-@property (nonatomic, weak) id <MenuItemEditingFooterViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemEditingFooterViewDelegate> delegate;
 
 @end
 
@@ -17,3 +19,5 @@
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView;
 
 @end
+
+NS_ASSUME_NONNULL_END

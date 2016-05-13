@@ -1,11 +1,13 @@
 #import <UIKit/UIKit.h>
 #import "MenuItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol MenuItemTypeViewDelegate;
 
 @interface MenuItemTypeSelectionView : UIView
 
-@property (nonatomic, weak) id <MenuItemTypeViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemTypeViewDelegate> delegate;
 
 /**
  Design flag for ignoring drawing a top border because it doesn't look great.
@@ -47,3 +49,5 @@
 - (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeView;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,13 +1,15 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Menu;
 
 @protocol MenuDetailsViewControllerDelegate;
 
 @interface MenuDetailsViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuDetailsViewControllerDelegate> delegate;
-@property (nonatomic, strong) Menu *menu;
+@property (nonatomic, weak, nullable) id <MenuDetailsViewControllerDelegate> delegate;
+@property (nonatomic, strong, nullable) Menu *menu;
 
 @end
 
@@ -24,3 +26,5 @@
 - (void)detailsViewControllerSelectedToDeleteMenu:(MenuDetailsViewController *)detailsViewController;
 
 @end
+
+NS_ASSUME_NONNULL_END
