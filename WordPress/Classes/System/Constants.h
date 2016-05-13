@@ -65,3 +65,8 @@ extern NSInteger const WPOnePasswordGeneratedMaxLength;
 /// Scheme Constants
 ///
 extern NSString *const WPComScheme;
+
+/// Referrer Constants
+///
+extern NSString *const WPComReferrerGaUtmSourceKey;
+extern NSString *const WPComReferrerURL;
