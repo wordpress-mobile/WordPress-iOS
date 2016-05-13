@@ -36,6 +36,12 @@ Run `pod install` from the command line to install dependencies for the project.
 
 *The current version of CocoaPods is recommended.*
 
+### SwiftLint
+
+We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. Xcode will show a warning if you don't have it installed. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors. To install SwiftLint, you can run `Scripts/install-swiftlint.sh`.
+
+If your code has any style violations, you can try to automatically correct them by running `./build-tools/swiftlint/bin/swiftlint autocorrect`. Otherwise you have to fix them manually.
+
 ### Xcode
 
 Launch the workspace by either double clicking on WordPress.xcworkspace file, or launch Xcode and choose File > Open and browse to WordPress.xcworkspace.

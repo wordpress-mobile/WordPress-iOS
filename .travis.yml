@@ -6,8 +6,12 @@ xcode_sdk: iphonesimulator
 cache:
 - bundler
 - cocoapods
+- directories:
+  - build-tools
 notifications:
   email: true
+before_install:
+- Scripts/install-swiftlint.sh
 install:
 - Scripts/install.sh
 script:
