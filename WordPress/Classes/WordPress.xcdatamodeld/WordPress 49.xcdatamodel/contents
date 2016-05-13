@@ -388,10 +388,10 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="linkedUserID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="linkedUserID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="role" attributeType="String" syncable="YES"/>
-        <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="userID" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="userID" attributeType="Integer 64" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
@@ -638,12 +638,12 @@
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
-        <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
     </elements>
 </model>
