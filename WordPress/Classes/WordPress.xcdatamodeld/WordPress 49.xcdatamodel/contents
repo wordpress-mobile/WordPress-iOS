@@ -538,6 +538,7 @@
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
+    <entity name="ReaderSearchTopic" representedClassName="WordPress.ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
@@ -644,5 +645,6 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
+        <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
     </elements>
 </model>

@@ -8,6 +8,8 @@ cache:
 - cocoapods
 notifications:
   email: true
+install:
+- Scripts/install.sh
 script:
 - Scripts/build.sh
 env:
