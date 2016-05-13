@@ -13,11 +13,19 @@ import WordPressShared
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var selfHostedButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
     var immediateSignin = false
+
+    var restrictSigninToWPCom = false {
+        didSet {
+            if isViewLoaded() {
+                configureForWPComOnlyIfNeeded()
+            }
+        }
+    }
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -50,6 +58,7 @@ import WordPressShared
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
+        configureForWPComOnlyIfNeeded()
     }
 
 
@@ -68,7 +77,7 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
         if immediateSignin {
@@ -85,6 +94,13 @@ import WordPressShared
 
 
     // MARK: Setup and Configuration
+
+
+    ///
+    ///
+    func configureForWPComOnlyIfNeeded() {
+        selfHostedButton.hidden = restrictSigninToWPCom
+    }
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
@@ -191,21 +207,42 @@ import WordPressShared
             return
         }
 
-        // If the username is reservied the user might be trying to sign in to a self-hosted site.
+        // If the username is not reserved proceed with the signin
         if SigninHelpers.isUsernameReserved(loginFields.username) {
-            let alert = UIAlertController(title: NSLocalizedString("Self-hosted Site?", comment: "Title of a notice to the user."),
-                                          message: NSLocalizedString("It looks like you're signing in to a self-hosted site.  Enter your site's URL on the next screen.", comment: "A brief notice to the user. Explaining the next step when signing in."),
-                                          preferredStyle: .Alert)
-            alert.addDefaultActionWithTitle(NSLocalizedString("OK", comment: "A button label. Tapping dismisses a prompt."), handler: { (action: UIAlertAction) in
-                self.signinToSelfHostedSite()
-            })
-            presentViewController(alert, animated: true, completion: nil)
+            handleReservedUsername(loginFields.username)
             return
         }
 
         configureViewLoading(true)
 
         loginFacade.signInWithLoginFields(loginFields)
+    }
+
+
+    /// Shows a prompt to the user regarding a reserved username.
+    ///
+    /// - Parameters:
+    ///     - username: The username that was entered.
+    ///
+    func handleReservedUsername(username: String) {
+        // If we're restricted to wpcom, just prmopt that the name is reserved.
+        if restrictSigninToWPCom {
+            SigninHelpers.promptForWPComReservedUsername(username, callback: {
+                self.loginFields.username = ""
+                self.usernameField.text = ""
+                self.usernameField.becomeFirstResponder()
+            })
+            return
+        }
+
+        // When not restricted to wpcom, prompt then switch to the self-hsoted flow.
+        let alert = UIAlertController(title: NSLocalizedString("Self-hosted Site?", comment: "Title of a notice to the user."),
+                                      message: NSLocalizedString("It looks like you're signing in to a self-hosted site.  Enter your site's URL on the next screen.", comment: "A brief notice to the user. Explaining the next step when signing in."),
+                                      preferredStyle: .Alert)
+        alert.addDefaultActionWithTitle(NSLocalizedString("OK", comment: "A button label. Tapping dismisses a prompt."), handler: { (action: UIAlertAction) in
+            self.signinToSelfHostedSite()
+        })
+        presentViewController(alert, animated: true, completion: nil)
     }
 
 
@@ -218,6 +255,7 @@ import WordPressShared
 
     func signinToSelfHostedSite() {
         let controller = SigninSelfHostedViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -300,6 +338,7 @@ extension SigninWPComViewController: LoginFacadeDelegate {
         // Credentials were good but a 2fa code is needed.
         loginFields.shouldDisplayMultifactor = true // technically not needed
         let controller = Signin2FAViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
         navigationController?.pushViewController(controller, animated: true)
     }
 }

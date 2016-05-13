@@ -6,6 +6,7 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
+#import <Optimizely/Optimizely.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -126,7 +127,7 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-
+    [OptimizelyHelper setupOptimizelyWithLaunchOptions:launchOptions];
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
@@ -295,7 +296,8 @@ int ddLogLevel = DDLogLevelInfo;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
         if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
             return @"Post Editor";
-        } else if ([firstViewController isKindOfClass:[LoginViewController class]]) {
+        } else if ([firstViewController isKindOfClass:[LoginViewController class]] || [firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
+            // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
             return @"Login View";
         }
     }
@@ -525,57 +527,9 @@ int ddLogLevel = DDLogLevelInfo;
     }
 }
 
-
-- (void)showSigninScreenIfNeededAnimated:(BOOL)animated
-{
-    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
-        return;
-    }
-
-    UIViewController *presenter = self.window.rootViewController;
-    // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-    // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-    if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
-        [presenter dismissViewControllerAnimated:animated completion:^{
-            [self showSigninScreenAnimated:animated thenEditor:NO];
-        }];
-    } else {
-        [self showSigninScreenAnimated:animated thenEditor:NO];
-    }
-}
-
-- (void)showSigninScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
-{
-    SigninEmailViewController *controller = controller = [SigninEmailViewController controller:nil];
-    UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
-    [self.window.rootViewController presentViewController:navigationController animated:NO completion:nil];
-}
-
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    if ([Feature enabled:FeatureFlagSignin]) {
-        [self showSigninScreenAnimated:animated thenEditor:thenEditor];
-        return;
-    }
-
-    BOOL hasWordpressAccountButNoSelfHostedBlogs = [self noSelfHostedBlogs] && ![self noWordPressDotComAccount];
-    
-    __weak __typeof(self) weakSelf = self;
-    
-    LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    loginViewController.showEditorAfterAddingSites = thenEditor;
-    loginViewController.cancellable = hasWordpressAccountButNoSelfHostedBlogs;
-    loginViewController.dismissBlock = ^(BOOL cancelled){
-        
-        __strong __typeof(weakSelf) strongSelf = self;
-        
-        [strongSelf.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-    };
-
-    UINavigationController *navigationController = [[RotationAwareNavigationViewController alloc] initWithRootViewController:loginViewController];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
+    [SigninHelpers showSigninFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
 - (BOOL)isWelcomeScreenVisible
@@ -585,7 +539,7 @@ int ddLogLevel = DDLogLevelInfo;
         return NO;
     }
 
-    // TODO: Remember to change this when switching to the new signin feature.
+    // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
     UIViewController *controller = presentedViewController.visibleViewController;
     return [controller isKindOfClass:[LoginViewController class]] || [controller isKindOfClass:[NUXAbstractViewController class]];
 }

@@ -59,3 +59,7 @@ WordPress/InfoPlist.h
 build-tools/
 # coverage.py
 */CoverageData/*
+
+# Bundler
+vendor/bundle/
+.bundle/
