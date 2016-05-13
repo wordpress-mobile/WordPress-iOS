@@ -6,7 +6,9 @@ extension NSAttributedString {
     ///    tags to markup sections of the text to style, but should not be wrapped
     ///    with `<html>`, `<body>` or `<p>` tags. See `HTMLAttributeType` for supported tags.
     /// - parameter attributes: A collection of style attributes to apply to `htmlString`.
-    ///    See `HTMLAttributeType` for supported attributes.
+    ///    See `HTMLAttributeType` for supported attributes. To set text alignment,
+    ///    add an `NSParagraphStyle` to the `BodyAttribute` type, using the key
+    ///    `NSParagraphStyleAttributeName`.
     ///
     /// - note:
     ///    - Font sizes will be interpreted as pixel sizes, not points.
@@ -22,8 +24,20 @@ extension NSAttributedString {
             options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding ],
             documentAttributes: nil)
 
-        // Apply a paragaraph style to remove extra padding at the top and bottom
-        let paragraphStyle = NSMutableParagraphStyle()
+        // We can't apply text alignment through CSS, as we need to add a paragraph
+        // style to set paragraph spacing (which will override any text alignment
+        // set via CSS). So we'll look for a paragraph style specified for the
+        // body of the text, so we can copy it use its text alignment.
+        let paragraphStyle: NSMutableParagraphStyle
+        if let attributes = attributes,
+            let bodyAttributes = attributes[.BodyAttribute],
+            let pStyle = bodyAttributes[NSParagraphStyleAttributeName] as? NSParagraphStyle {
+            paragraphStyle = pStyle.mutableCopy() as! NSMutableParagraphStyle
+        } else {
+            paragraphStyle = NSMutableParagraphStyle()
+        }
+
+        // Remove extra padding at the top and bottom of the text.
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
 
@@ -74,32 +88,12 @@ extension NSAttributedString {
                     return "text-decoration: underline;"
                 }
             }
-        case NSTextAlignmentAttributeName:
-            if let intValue = attribute as? Int,
-                let alignment = NSTextAlignment(rawValue: intValue) {
-                let direction: String
-
-                switch alignment {
-                case .Left: direction = "left"
-                case .Right: direction = "right"
-                case .Center: direction = "center"
-                default: return nil
-                }
-
-                return "text-align: \(direction);"
-            }
-
         default: break
         }
 
         return nil
     }
 }
-
-/// NSTextAlignment is usually set via an NSParagraphStyle. This constant has
-/// been added so that it can be set alongside other attributes with a
-/// consistent name.
-public let NSTextAlignmentAttributeName = "NSTextAlignmentAttributeName"
 
 public typealias StyledHTMLAttributes = [HTMLAttributeType : [String : AnyObject]]
 

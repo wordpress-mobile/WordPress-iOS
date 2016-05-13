@@ -92,9 +92,12 @@ import WordPressShared
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
 
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
+
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(14),
                                                                    NSForegroundColorAttributeName: UIColor.whiteColor(),
-                                                                   NSTextAlignmentAttributeName: NSTextAlignment.Center.rawValue ]]
+                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
