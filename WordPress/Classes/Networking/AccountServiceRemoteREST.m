@@ -25,9 +25,13 @@ static NSString * const UserDictionaryDateKey = @"date";
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+
+    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
+    NSDictionary *parameters = @{
+                                 @"locale": locale
+                                 };
     [self.api GET:requestUrl
-       parameters:nil
+       parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
                   success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
@@ -100,7 +104,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     }];
 
     NSDictionary *parameters = @{
-                                 @"sites": sites,
+                                 @"sites": sites
                                  };
     NSString *path = [self pathForEndpoint:@"me/sites"
                                withVersion:ServiceRemoteRESTApiVersion_1_1];
