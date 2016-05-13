@@ -125,7 +125,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     // endpoint is versioned.
     NSString *path = @"https://public-api.wordpress.com/is-available/email";
     [self.wordPressComRestApi GET:path
-       parameters:@{ @"q": email }
+       parameters:@{ @"q": email, @"format": @"json"}
           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (!success) {
                   return;
@@ -140,15 +140,8 @@ static NSString * const UserDictionaryDateKey = @"date";
               BOOL available = NO;
               if ([responseObject isKindOfClass:[NSDictionary class]]) {
                   NSDictionary *dict = (NSDictionary *)responseObject;
-                  NSString *errStr = [dict stringForKey:@"error"];
-                  available = ![@"taken" isEqualToString:errStr];
-              } else if ([responseObject isKindOfClass:[NSNumber class]]) {
-                  // If the email is available the JSON service will respond just true, this is
-                  //valid json if you allow fragments in the serializer
-                  NSNumber *boolValue = (NSNumber *)responseObject;
-                  available = [boolValue boolValue];
+                  available = [[dict numberForKey:@"available"] boolValue];
               }
-
               success(available);
 
           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
