@@ -53,14 +53,13 @@ public final class WordPressComRestApi: NSObject
     }
 
     deinit {
-        sessionManager.invalidateSessionCancelingTasks(true)
+        sessionManager.invalidateSessionCancelingTasks(false)
     }
-    /**
-     Reset the API instance
 
-     Invalidates the session and cancel all pending requests
+    /**
+     Cancels all ongoing and makes the session so the object will not fullfil any more request
      */
-    public func reset() {
+    public func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
     }
 
