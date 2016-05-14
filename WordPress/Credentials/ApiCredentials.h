@@ -16,4 +16,5 @@
 + (NSString *)debuggingKey;
 + (NSString *)lookbackToken;
 + (NSString *)appbotXAPIKey;
++ (NSString *)optimizelyAPIKey;
 @end

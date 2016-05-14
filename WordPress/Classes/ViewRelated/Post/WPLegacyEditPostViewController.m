@@ -949,7 +949,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
     } failure:^(NSError *error) {
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
-        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
             return;
         }

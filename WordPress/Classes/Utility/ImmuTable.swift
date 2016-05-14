@@ -39,20 +39,18 @@ public struct ImmuTable {
         self.sections = sections
     }
 
-    /**
-     Returns the row model for a specific index path.
-
-     - precondition: `indexPath` should represent a valid section and row,
-     otherwise this method will raise an exception.
-     */
+    /// Returns the row model for a specific index path.
+    ///
+    /// - Precondition: `indexPath` should represent a valid section and row, otherwise this method
+    ///                 will raise an exception.
+    ///
     public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
-    /**
-     Registers the row custom class or nib with the table view so it can later be
-     dequeued with `dequeueReusableCellWithIdentifier(_:forIndexPath:)`
-     */
+    /// Registers the row custom class or nib with the table view so it can later be
+    /// dequeued with `dequeueReusableCellWithIdentifier(_:forIndexPath:)`
+    ///
     public static func registerRows(rows: [ImmuTableRow.Type], tableView: UITableView) {
         registerRows(rows, registrator: tableView)
     }
@@ -84,13 +82,11 @@ extension ImmuTable {
 // MARK: -
 
 
-/**
-ImmuTableSection represents the view model for a table view section.
-
-A section has an optional header and footer text, and zero or more rows.
-
-- seealso: ImmuTableRow
-*/
+/// ImmuTableSection represents the view model for a table view section.
+///
+/// A section has an optional header and footer text, and zero or more rows.
+/// - seealso: ImmuTableRow
+///
 public struct ImmuTableSection {
     let headerText: String?
     let rows: [ImmuTableRow]
@@ -108,11 +104,10 @@ public struct ImmuTableSection {
 // MARK: - ImmuTableRow
 
 
-/**
-ImmuTableRow represents the minimum common elements of a row model.
-
-You should implement your own types that conform to ImmuTableRow to define your custom rows.
-*/
+/// ImmuTableRow represents the minimum common elements of a row model.
+///
+/// You should implement your own types that conform to ImmuTableRow to define your custom rows.
+///
 public protocol ImmuTableRow {
 
     /**
@@ -148,17 +143,22 @@ public protocol ImmuTableRow {
     var action: ImmuTableAction? { get }
 
     /// This method is called when an associated cell needs to be configured.
-    /// - precondition: You can assume that the passed cell is of the type defined
+    ///
+    /// - Precondition: You can assume that the passed cell is of the type defined
     ///   by cell.cellClass and force downcast accordingly.
+    ///
     func configureCell(cell: UITableViewCell)
 
     /// An ImmuTableCell value defining the associated cell type.
-    /// - seealso: See ImmuTableCell for possible options.
+    ///
+    /// - Seealso: See ImmuTableCell for possible options.
+    ///
     static var cell: ImmuTableCell { get }
 
     /// The desired row height (Optional)
     ///
     /// If not defined or nil, the default height will be used.
+    ///
     static var customHeight: Float? { get }
 }
 
@@ -180,18 +180,17 @@ extension ImmuTableRow {
 // MARK: - ImmuTableCell
 
 
-/**
-ImmuTableCell describes cell types so they can be registered with a table view.
-
-It supports two options:
-    - Nib for Interface Builder defined cells.
-    - Class for cells defined in code.
-Both cases presume a custom UITableViewCell subclass. If you aren't subclassing,
-you can also use UITableViewCell as the type.
-
-- note: If you need to use any cell style other than .Default we recommend you
-  subclass UITableViewCell and override init(style:reuseIdentifier:).
-*/
+/// ImmuTableCell describes cell types so they can be registered with a table view.
+///
+/// It supports two options:
+///    - Nib for Interface Builder defined cells.
+///    - Class for cells defined in code.
+/// Both cases presume a custom UITableViewCell subclass. If you aren't subclassing,
+/// you can also use UITableViewCell as the type.
+///
+/// - Note: If you need to use any cell style other than .Default we recommend you
+///  subclass UITableViewCell and override init(style:reuseIdentifier:).
+///
 public enum ImmuTableCell {
 
     /// A cell using a UINib. Values are the UINib object and the custom cell class.
@@ -225,16 +224,15 @@ public enum ImmuTableCell {
 // MARK: -
 
 
-/**
-ImmuTableViewHandler is a helper to facilitate integration of ImmuTable in your
-table view controllers.
-
-It acts as the table view data source and delegate, and signals the table view to
-reload its data when the underlying model changes.
-
-- note: as it keeps a weak reference to its target, you should keep a strong
-  reference to the handler from your view controller.
-*/
+/// ImmuTableViewHandler is a helper to facilitate integration of ImmuTable in your
+/// table view controllers.
+///
+/// It acts as the table view data source and delegate, and signals the table view to
+/// reload its data when the underlying model changes.
+///
+/// - Note: As it keeps a weak reference to its target, you should keep a strong
+///         reference to the handler from your view controller.
+///
 public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     unowned let target: UITableViewController
 
@@ -304,12 +302,10 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
 
 // MARK: - Type aliases
 
-
 public typealias ImmuTableAction = (ImmuTableRow) -> Void
 
 
 // MARK: - Internal testing helpers
-
 
 protocol CellRegistrator {
     func register(cell: ImmuTableCell, cellReuseIdentifier: String)

@@ -155,8 +155,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Perform cleanup when the registration for iOS notifications failed
     ///
-    /// - Parameters:
-    ///     - error: Details the reason of failure
+    /// - Parameter error: Details the reason of failure
     ///
     func registrationDidFail(error: NSError) {
         DDLogSwift.logError("Failed to register for push notifications: \(error)")
@@ -362,8 +361,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Tracks a Notification Event
     ///
-    /// - Parameters:
-    ///     - userInfo: The Notification's Payload
+    /// - Parameter userInfo: The Notification's Payload
     ///
     private func trackNotificationWithUserInfo(userInfo: NSDictionary) {
         var properties = [String : String]()
