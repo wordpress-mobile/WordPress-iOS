@@ -100,7 +100,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        configureNoResultsView()
+        refreshNoResultsView()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -213,7 +213,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView.tableFooterView = postListFooterView
     }
 
-    private func configureNoResultsView() {
+    private func refreshNoResultsView() {
         guard isViewLoaded() == true else {
             return
         }
@@ -387,7 +387,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableViewHandler.refreshCachedRowHeightsForWidth(width)
 
         tableView.reloadData()
-        configureNoResultsView()
+        refreshNoResultsView()
     }
 
     func resetTableViewContentOffset() {
@@ -411,7 +411,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         // After any change, make sure that the no results view is properly
         // configured.
 
-        configureNoResultsView()
+        refreshNoResultsView()
     }
 
     func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
@@ -479,14 +479,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let appDelegate = WordPressAppDelegate.sharedInstance()
 
         if appDelegate.connectionAvailable == false {
-            configureNoResultsView()
+            refreshNoResultsView()
             return
         }
 
         if let lastSynced = lastSyncDate()
             where abs(lastSynced.timeIntervalSinceNow) <= self.dynamicType.postsControllerRefreshInterval {
 
-            configureNoResultsView()
+            refreshNoResultsView()
         } else {
             // Update in the background
             syncItemsWithUserInteraction(false)
@@ -495,7 +495,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func syncItemsWithUserInteraction(userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        configureNoResultsView()
+        refreshNoResultsView()
     }
 
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
@@ -632,7 +632,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             // It will be redisplayed if necessary.
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue(), { [weak self] in
-                self?.configureNoResultsView()
+                self?.refreshNoResultsView()
             })
         }
     }
