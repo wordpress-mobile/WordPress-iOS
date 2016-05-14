@@ -86,6 +86,12 @@ struct PeopleService {
         return Person(managedPerson: managedPerson)
     }
 
+    /// Deletes or removes a given person.
+    ///
+    /// -   Parameters:
+    ///     - person: The person that should be deleted
+    ///     - failure: Closure to be executed on error
+    ///
     func deletePerson(person: Person, failure: (ErrorType -> Void)?) {
         guard let managedPerson = managedPersonWithID(person.ID) else {
             return
