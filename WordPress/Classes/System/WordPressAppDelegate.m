@@ -389,6 +389,11 @@ int ddLogLevel = DDLogLevelInfo;
     [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
     [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [MediaService cleanUnusedMediaFileFromTmpDir];
+    });
+    
     // Configure Extensions
     [self setupWordPressExtensions];
     
