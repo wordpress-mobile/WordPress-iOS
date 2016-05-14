@@ -213,7 +213,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView.tableFooterView = postListFooterView
     }
 
-    func configureNoResultsView() {
+    private func configureNoResultsView() {
         guard isViewLoaded() == true else {
             return
         }
@@ -631,7 +631,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             // To compensate, call configureNoResultsView after a short delay.
             // It will be redisplayed if necessary.
 
-            performSelector(#selector(configureNoResultsView), withObject: self, afterDelay: 0.1)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue(), { [weak self] in
+                self?.configureNoResultsView()
+            })
         }
     }
 
