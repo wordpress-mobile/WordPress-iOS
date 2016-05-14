@@ -7,8 +7,6 @@ enum FeatureFlag: Int {
     case People
     /// My Sites > Site > Plans
     case Plans
-    /// New Signin
-    case Signin
     /// Me > My Profile
     case MyProfile
     /// Me > Account Settings
@@ -20,8 +18,6 @@ enum FeatureFlag: Int {
         case .People:
             return build(.Debug)
         case .Plans:
-            return build(.Debug)
-        case .Signin:
             return build(.Debug)
         case .MyProfile, .AccountSettings:
             return true

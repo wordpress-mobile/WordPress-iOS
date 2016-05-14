@@ -33,11 +33,11 @@
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
-        [self initStackView];
-        [self initContentStackView];
-        [self initIconView];
-        [self initTextField];
-        [self initCancelLabel];
+        [self setupStackView];
+        [self setupContentStackView];
+        [self setupIconView];
+        [self setupTextField];
+        [self setupCancelLabel];
     }
     
     return self;
@@ -64,7 +64,7 @@
     return self;
 }
 
-- (void)initStackView
+- (void)setupStackView
 {
     const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
     UIStackView *stackView = [[UIStackView alloc] init];
@@ -90,7 +90,7 @@
     _stackView = stackView;
 }
 
-- (void)initContentStackView
+- (void)setupContentStackView
 {
     UIView *contentView = [[UIView alloc] init];
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -114,17 +114,19 @@
     
     [contentView addSubview:contentStackView];
     
+    const CGFloat leadingMargin = spacing;
+    const CGFloat trailingMargin = spacing / 2.0; // Less on the right as the textField adds it's own margin inset.
     [NSLayoutConstraint activateConstraints:@[
                                               [contentStackView.topAnchor constraintEqualToAnchor:contentView.topAnchor constant:spacing],
-                                              [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:spacing],
+                                              [contentStackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor constant:leadingMargin],
                                               [contentStackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor constant:-spacing],
-                                              [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-spacing]
+                                              [contentStackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-trailingMargin]
                                               ]];
-    
+    [contentStackView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     _contentStackView = contentStackView;
 }
 
-- (void)initIconView
+- (void)setupIconView
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,7 +145,7 @@
     _iconView = iconView;
 }
 
-- (void)initTextField
+- (void)setupTextField
 {
     UITextField *textField = [[UITextField alloc] init];
     textField.delegate = self;
@@ -163,12 +165,13 @@
     
     [_contentStackView addArrangedSubview:textField];
     
+    [textField setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
     _textField = textField;
 }
 
-- (void)initCancelLabel
+- (void)setupCancelLabel
 {
     UILabel *label = [[UILabel alloc] init];
     label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
@@ -183,6 +186,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
     [label addGestureRecognizer:tap];
     
+    [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     
     label.hidden = YES;

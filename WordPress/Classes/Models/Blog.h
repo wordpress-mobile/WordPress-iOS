@@ -3,9 +3,12 @@
 #import <CoreData/CoreData.h>
 #import "JetpackState.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class BlogSettings;
 @class WPAccount;
 @class WordPressComApi;
+@class WordPressComRestApi;
 @class WPXMLRPCClient;
 
 extern NSString * const PostFormatStandard;
@@ -54,53 +57,53 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 @interface Blog : NSManagedObject
 
-@property (nonatomic, strong, readwrite) NSNumber *blogID __deprecated_msg("Use dotComID instead");
-@property (nonatomic, strong, readwrite) NSNumber *dotComID;
-@property (nonatomic, strong, readwrite) NSString *xmlrpc;
-@property (nonatomic, strong, readwrite) NSString *apiKey;
-@property (nonatomic, strong, readwrite) NSNumber *hasOlderPosts;
-@property (nonatomic, strong, readwrite) NSNumber *hasOlderPages;
-@property (nonatomic, strong, readwrite) NSSet *posts;
-@property (nonatomic, strong, readwrite) NSSet *categories;
-@property (nonatomic, strong, readwrite) NSSet *tags;
-@property (nonatomic, strong, readwrite) NSSet *comments;
-@property (nonatomic, strong, readwrite) NSSet *connections;
-@property (nonatomic, strong, readwrite) NSSet *themes;
-@property (nonatomic, strong, readwrite) NSSet *media;
-@property (nonatomic, strong, readwrite) NSOrderedSet *menus;
-@property (nonatomic, strong, readwrite) NSOrderedSet *menuLocations;
-@property (nonatomic, strong, readwrite) NSString *currentThemeId;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *blogID __deprecated_msg("Use dotComID instead");
+@property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
+@property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
+@property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
+@property (nonatomic, strong, readwrite, nullable) NSSet *posts;
+@property (nonatomic, strong, readwrite, nullable) NSSet *categories;
+@property (nonatomic, strong, readwrite, nullable) NSSet *tags;
+@property (nonatomic, strong, readwrite, nullable) NSSet *comments;
+@property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet *themes;
+@property (nonatomic, strong, readwrite, nullable) NSSet *media;
+@property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
+@property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
+@property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPages;
 @property (nonatomic, assign, readwrite) BOOL isSyncingMedia;
-@property (nonatomic, strong, readwrite) NSDate *lastPostsSync;
-@property (nonatomic, strong, readwrite) NSDate *lastPagesSync;
-@property (nonatomic, strong, readwrite) NSDate *lastCommentsSync;
-@property (nonatomic, strong, readwrite) NSDate *lastStatsSync;
-@property (nonatomic, strong, readwrite) NSString *lastUpdateWarning;
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastPostsSync;
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastPagesSync;
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastStatsSync;
+@property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
 @property (nonatomic, assign, readwrite) BOOL visible;
-@property (nonatomic, weak, readwrite) NSNumber *isActivated;
-@property (nonatomic, strong, readwrite) NSDictionary *options;
-@property (nonatomic, strong, readwrite) NSSet *postTypes;
-@property (nonatomic, strong, readwrite) NSDictionary *postFormats;
-@property (nonatomic, strong, readwrite) WPAccount *account;
-@property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
-@property (nonatomic, strong, readwrite) WPAccount *accountForDefaultBlog;
+@property (nonatomic, weak, readwrite, nullable) NSNumber *isActivated;
+@property (nonatomic, strong, readwrite, nullable) NSDictionary *options;
+@property (nonatomic, strong, readwrite, nullable) NSSet *postTypes;
+@property (nonatomic, strong, readwrite, nullable) NSDictionary *postFormats;
+@property (nonatomic, strong, readwrite, nullable) WPAccount *account;
+@property (nonatomic, strong, readwrite, nullable) WPAccount *jetpackAccount;
+@property (nonatomic, strong, readwrite, nullable) WPAccount *accountForDefaultBlog;
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
-@property (nonatomic, strong, readwrite) NSString *icon;
+@property (nonatomic, strong, readwrite, nullable) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
-@property (nonatomic, strong, readwrite) NSNumber *planID;
-@property (nonatomic, strong, readwrite) NSSet *sharingButtons;
-@property (nonatomic, strong, readwrite) NSDictionary *capabilities;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
+@property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
+@property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
  *              and their values.
  */
-@property (nonatomic, strong, readwrite) BlogSettings *settings;
+@property (nonatomic, strong, readwrite, nullable) BlogSettings *settings;
 
 /**
  *  @details    Flags whether the current user is an admin on the blog.
@@ -112,23 +115,23 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use usernameForSite instead
  */
-@property (nonatomic, strong, readwrite) NSString       *username;
-@property (nonatomic, strong, readwrite) NSString       *password;
+@property (nonatomic, strong, readwrite, nullable) NSString       *username;
+@property (nonatomic, strong, readwrite, nullable) NSString       *password;
 
 
 // Readonly Properties
-@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormatNames;
-@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormats;
-@property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
-@property (nonatomic,   weak,  readonly) NSString       *version;
-@property (nonatomic, strong,  readonly) NSString       *authToken;
-@property (nonatomic, strong,  readonly) NSSet *allowedFileTypes;
-@property (nonatomic, copy, readonly) NSString *usernameForSite;
+@property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
+@property (nonatomic, strong,  readonly, nullable) WPXMLRPCClient *api;
+@property (nonatomic,   weak,  readonly, nullable) NSString       *version;
+@property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
+@property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
+@property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
 
 /**
  *  @details    Contains the Jetpack state. Returns nil if the blog options haven't been downloaded yet
  */
-@property (nonatomic, strong,  readonly) JetpackState *jetpack;
+@property (nonatomic, strong,  readonly, nullable) JetpackState *jetpack;
 
 
 /**
@@ -137,23 +140,23 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 // User to display the blog url to the user (IDN decoded, no http:)
 // wp.koke.me/sub
-@property (weak, readonly) NSString *displayURL;
+@property (weak, readonly, nullable) NSString *displayURL;
 // alias of displayURL
 // kept for compatibilty, used as a key to store passwords
-@property (weak, readonly) NSString *hostURL;
-@property (weak, readonly) NSString *homeURL;
+@property (weak, readonly, nullable) NSString *hostURL;
+@property (weak, readonly, nullable) NSString *homeURL;
 // http://wp.koke.me/sub
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong, nullable) NSString *url;
 // Used for reachability checks (IDN encoded)
 // wp.koke.me
-@property (weak, readonly) NSString *hostname;
+@property (weak, readonly, nullable) NSString *hostname;
 
-@property (weak, readonly) NSString *defaultPostFormatText;
+@property (weak, readonly, nullable) NSString *defaultPostFormatText;
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
-- (NSArray *)sortedCategories;
-- (id)getOptionValue:(NSString *) name;
+- (nullable NSArray *)sortedCategories;
+- (nullable id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
@@ -171,7 +174,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @return a string with the post format description and if no description was found the postFormatCode sent.
  */
-- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
+- (nullable NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  
@@ -190,6 +193,20 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  
  @return a WordPressComApi object if available
  */
-- (WordPressComApi *)restApi;
+- (nullable WordPressComApi *)restApi;
+
+/**
+ Returns a REST API client if available
+
+ If the blog is a WordPress.com one or it has Jetpack it will return a REST API
+ client. Otherwise, the XML-RPC API should be used.
+
+ @warning this method doesn't know if a Jetpack blog has the JSON API disabled
+
+ @return a WordPressComRestApi object if available
+ */
+- (WordPressComRestApi *)wordPressComRestApi;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,16 +1,16 @@
 import Foundation
 
 
-extension NSAttributedString
-{
-    /**
-    *  @brief       Checks if a given Push Notification is a Push Authentication.
-    *  @details     This method will embed a collection of assets, in the specified NSRange's.
-    *               Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
-    *
-    *  @param       embeds  A colleciton of embeds. NSRange > UIImage.
-    *  @returns             An attributed string with all of the embeds specified, inlined.
-    */
+extension NSAttributedString {
+
+    /// Checks if a given Push Notification is a Push Authentication.
+    /// This method will embed a collection of assets, in the specified NSRange's.
+    /// Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
+    ///
+    /// - Parameter embeds: A collection of embeds. NSRange > UIImage.
+    ///
+    /// - Returns: An attributed string with all of the embeds specified, inlined.
+    ///
     public func stringByEmbeddingImageAttachments(embeds: [NSValue: UIImage]?) -> NSAttributedString {
         // Allow nil embeds: behave as a simple NO-OP
         if embeds == nil {
@@ -45,10 +45,9 @@ extension NSAttributedString
         return theString
     }
 
-    /**
-    *  @details     This helper method return a new NSAttributedString instance, with all of the
-    *               the trailing newLines characters removed.
-    */
+    /// This helper method returns a new NSAttributedString instance, with all of the the trailing newLines
+    /// characters removed.
+    ///
     public func trimTrailingNewlines() -> NSMutableAttributedString {
         let trimmed         = mutableCopy() as! NSMutableAttributedString
         let characterSet    = NSCharacterSet.newlineCharacterSet()

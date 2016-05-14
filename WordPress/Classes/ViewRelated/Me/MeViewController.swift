@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressComAnalytics
 import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
@@ -185,6 +186,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Actions
 
     private func presentGravatarPicker() {
+        WPAppAnalytics.track(.GravatarTapped)
+
         let pickerViewController = GravatarPickerViewController()
         pickerViewController.onCompletion = { [weak self] image in
             if let updatedGravatarImage = image {
@@ -250,15 +253,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = LoginViewController()
-            controller.onlyDotComAllowed = true
-            controller.cancellable = true
-            controller.dismissBlock = { [unowned self] _ in
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-
-            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
-            self.presentViewController(navigation, animated: true, completion: nil)
+            SigninHelpers.showSigninForJustWPComFromPresenter(self)
         }
     }
 
@@ -298,6 +293,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Gravatar Helpers
 
     private func uploadGravatarImage(newGravatar: UIImage) {
+        WPAppAnalytics.track(.GravatarUploaded)
+
         gravatarUploadInProgress = true
         headerView.overrideGravatarImage(newGravatar)
 

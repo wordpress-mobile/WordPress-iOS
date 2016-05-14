@@ -6,8 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
-{
+@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!
@@ -25,8 +24,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> Signin2FAViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -56,7 +54,7 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
     }
@@ -93,22 +91,19 @@ import WordPressShared
         // Text: Verification Code SMS
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
-        let options = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
-        ]
 
-        let styledString = "<style>body {font-family: -apple-system, sans-serif; font-size:14px; color: #ffffff; text-align:center;}</style>" + string
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
 
-        guard let data = styledString.dataUsingEncoding(NSUTF8StringEncoding),
-            attributedCode = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil),
-            attributedCodeHighlighted = attributedCode.mutableCopy() as? NSMutableAttributedString
-            else {
-                return
-        }
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(14),
+                                                                   NSForegroundColorAttributeName: UIColor.whiteColor(),
+                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
 
+        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
+        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        if let titleLabel = sendCodeButton.titleLabel  {
+        if let titleLabel = sendCodeButton.titleLabel {
             titleLabel.lineBreakMode = .ByWordWrapping
             titleLabel.textAlignment = .Center
             titleLabel.numberOfLines = 3
@@ -121,8 +116,7 @@ import WordPressShared
 
     /// Displays the specified text in the status label.
     ///
-    /// - Parameters:
-    ///     - message: The text to display in the label.
+    /// - Parameter message: The text to display in the label.
     ///
     func configureStatusLabel(message: String) {
         statusLabel.text = message
@@ -145,8 +139,7 @@ import WordPressShared
 
     /// Configure the view's loading state.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading

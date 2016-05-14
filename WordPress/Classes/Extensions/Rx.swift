@@ -4,12 +4,13 @@ import RxSwift
 
 extension ObservableType {
 
-    /**
-     Pauses the underlying observable sequence based upon the observable sequence which yields true/false.
-
-     - parameter pauser: The observable sequence used to pause the underlying sequence.
-     - returns: An observable sequence that subscribes and emits the values of the source observable as long as the last emitted value of the condition observable is true.
-     */
+    /// Pauses the underlying observable sequence based upon the observable sequence which yields true/false.
+    ///
+    /// - Parameter pauser: The observable sequence used to pause the underlying sequence.
+    ///
+    /// - Returns: An observable sequence that subscribes and emits the values of the source observable as
+    ///            long as the last emitted value of the condition observable is true.
+    ///
     public func pausable<ConditionO: ObservableConvertibleType where ConditionO.E == Bool>(pauser: ConditionO) -> Observable<E> {
         return Pausable(source: self, pauser: pauser.asObservable()).asObservable()
     }
@@ -60,12 +61,12 @@ class Pausable<S: ObservableType>: ObservableType {
 // MARK: - retryIf
 
 extension ObservableType {
-    /**
-     Repeats the source observable sequence on error if the given condition evaluates true.
-
-     - parameter condition: A closure to be evaluated on error to decide if the source sequence should be retried. It takes two parameters: an incrementing `count` integer, and a `lastError` containing the latest error emitted.
-     - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or the condition evaluates false.
-     */
+    /// Repeats the source observable sequence on error if the given condition evaluates true.
+    ///
+    /// - Parameter condition: A closure to be evaluated on error to decide if the source sequence should be retried. It takes two parameters: an incrementing `count` integer, and a `lastError` containing the latest error emitted.
+    ///
+    /// - Returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or the condition evaluates false.
+    ///
     public func retryIf(condition: (count: Int, lastError: NSError) -> Bool) -> Observable<E> {
         return retryWhen { (errors: Observable<NSError>) in
             errors.scan((0, nil)) { (accumulator: (Int, NSError!), error) in

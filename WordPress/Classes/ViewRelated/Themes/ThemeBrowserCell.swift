@@ -1,9 +1,8 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-/**
- *  @brief      Actions provided in cell button triggered action sheet
- */
+/// Actions provided in cell button triggered action sheet
+///
 public enum ThemeAction
 {
     case Activate

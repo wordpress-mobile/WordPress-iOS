@@ -9,11 +9,11 @@ class SigninLinkMailViewController : NUXAbstractViewController
     @IBOutlet var label: UILabel!
     @IBOutlet var openMailButton: NUXSubmitButton!
     @IBOutlet var usePasswordButton: UIButton!
+    var restrictSigninToWPCom = false
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninLinkMailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -76,6 +76,8 @@ class SigninLinkMailViewController : NUXAbstractViewController
     @IBAction func handleUsePasswordTapped(sender: UIButton) {
         WPAppAnalytics.track(.LoginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
+        controller.dismissBlock = dismissBlock
+        controller.restrictSigninToWPCom = restrictSigninToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 }
