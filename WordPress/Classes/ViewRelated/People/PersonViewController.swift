@@ -308,10 +308,7 @@ private extension PersonViewController {
     }
 
     var isRemoveEnabled : Bool {
-// TODO: JLP May.3.2016. To be uncommented as part of #5288
-        return false
-
-//        // Note: YES, ListUsers. Brought from Calypso's code
-//        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
+        // Note: YES, ListUsers. Brought from Calypso's code
+        return blog.isUserCapableOf(.ListUsers) && isMyself == false
     }
 }
