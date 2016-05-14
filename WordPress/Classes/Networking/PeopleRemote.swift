@@ -63,11 +63,11 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func updatePersonFor(siteID     : Int,
-                         personID   : Int,
-                         newRole    : Role,
-                         success    : (Person -> ())? = nil,
-                         failure    : (ErrorType -> ())? = nil)
+    func updatePersonFrom(siteID     : Int,
+                          personID   : Int,
+                          newRole    : Role,
+                          success    : (Person -> ())? = nil,
+                          failure    : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(personID)"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
