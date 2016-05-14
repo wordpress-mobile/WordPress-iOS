@@ -4,6 +4,11 @@ import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
 
+protocol AbstractPostListNoResultsViewCustomizer {
+
+    func refreshView(noResultsView: WPNoResultsView)
+}
+
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
@@ -22,6 +27,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let defaultHeightForFooterView = CGFloat(44.0)
 
     var blog : Blog!
+    var noResultsCustomizer : AbstractPostListNoResultsViewCustomizer!
     var tableViewController : UITableViewController!
 
     var tableView : UITableView {
@@ -63,7 +69,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
 
     var postListFooterView : PostListFooterView!
-    private let animatedBox = WPAnimatedBox()
 
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView : UIView!
@@ -100,7 +105,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        refreshNoResultsView()
+        refreshResults()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -213,54 +218,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView.tableFooterView = postListFooterView
     }
 
-    private func refreshNoResultsView() {
+    private func refreshResults() {
         guard isViewLoaded() == true else {
             return
         }
 
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            noResultsView.removeFromSuperview()
-            postListFooterView.hidden = false
-            return
-        }
-        postListFooterView.hidden = true
-
-        // Refresh the NoResultsView Properties
-        noResultsView.titleText = noResultsTitleText()
-        noResultsView.messageText = noResultsMessageText()
-        noResultsView.accessoryView = noResultsAccessoryView()
-        noResultsView.buttonTitle = noResultsButtonText()
-
-        // Only add and animate no results view if it isn't already
-        // in the table view
-        if noResultsView.isDescendantOfView(tableView) == false {
-            tableView.addSubviewWithFadeAnimation(noResultsView)
+            hideNoResultsView()
         } else {
-            noResultsView.centerInSuperview()
+            showNoResultsView()
         }
-
-        tableView.sendSubviewToBack(noResultsView)
-    }
-
-    func noResultsTitleText() -> String {
-        fatalError("You should implement this method in the subclass")
-    }
-
-    func noResultsMessageText() -> String {
-        fatalError("You should implement this method in the subclass")
-    }
-
-    func noResultsAccessoryView() -> UIView {
-        if syncHelper.isSyncing {
-            animatedBox.animateAfterDelay(0.1)
-            return animatedBox
-        }
-
-        return UIImageView(image: UIImage(named: "illustration-posts"))
-    }
-
-    func noResultsButtonText() -> String? {
-        fatalError("You should implement this method in the subclass")
     }
 
     func configureAuthorFilter() {
@@ -310,7 +277,31 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return properties
     }
 
-    // MARK: TableViewHandler Delegate Methods
+    // MARK: - GUI: No results view logic
+
+    private func hideNoResultsView() {
+        postListFooterView.hidden = false
+        noResultsView.removeFromSuperview()
+    }
+
+    private func showNoResultsView() {
+        precondition(noResultsCustomizer != nil)
+
+        postListFooterView.hidden = true
+        noResultsCustomizer.refreshView(noResultsView)
+
+        // Only add and animate no results view if it isn't already
+        // in the table view
+        if noResultsView.isDescendantOfView(tableView) == false {
+            tableView.addSubviewWithFadeAnimation(noResultsView)
+        } else {
+            noResultsView.centerInSuperview()
+        }
+
+        tableView.sendSubviewToBack(noResultsView)
+    }
+
+    // MARK: - TableViewHandler Delegate Methods
 
     func entityName() -> String {
         fatalError("You should implement this method in the subclass")
@@ -387,7 +378,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableViewHandler.refreshCachedRowHeightsForWidth(width)
 
         tableView.reloadData()
-        refreshNoResultsView()
+        refreshResults()
     }
 
     func resetTableViewContentOffset() {
@@ -408,10 +399,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func tableViewDidChangeContent(tableView: UITableView!) {
-        // After any change, make sure that the no results view is properly
-        // configured.
-
-        refreshNoResultsView()
+        refreshResults()
     }
 
     func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
@@ -479,14 +467,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let appDelegate = WordPressAppDelegate.sharedInstance()
 
         if appDelegate.connectionAvailable == false {
-            refreshNoResultsView()
+            refreshResults()
             return
         }
 
         if let lastSynced = lastSyncDate()
             where abs(lastSynced.timeIntervalSinceNow) <= self.dynamicType.postsControllerRefreshInterval {
 
-            refreshNoResultsView()
+            refreshResults()
         } else {
             // Update in the background
             syncItemsWithUserInteraction(false)
@@ -495,7 +483,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func syncItemsWithUserInteraction(userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshNoResultsView()
+        refreshResults()
     }
 
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
@@ -632,7 +620,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             // It will be redisplayed if necessary.
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue(), { [weak self] in
-                self?.refreshNoResultsView()
+                self?.refreshResults()
             })
         }
     }

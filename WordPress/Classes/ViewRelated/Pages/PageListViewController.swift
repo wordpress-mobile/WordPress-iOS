@@ -14,6 +14,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     private var cellForLayout : PageListTableViewCell!
 
+    // MARK: - GUI
+
+    private let animatedBox = WPAnimatedBox()
+
 
     // MARK: - Convenience constructors
 
@@ -59,6 +63,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - UIViewController
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.noResultsCustomizer = self
         super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
 
@@ -90,17 +95,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
         let restorePageCellNib = UINib(nibName: self.dynamicType.restorePageCellNibName, bundle: bundle)
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
-    }
-
-    override func noResultsTitleText() -> String {
-        if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
-        }
-
-        let filter = currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
-        return title ?? ""
     }
 
     private func noResultsTitles() -> [PostListStatusFilter:String] {
@@ -136,44 +130,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 .Scheduled: scheduled,
                 .Trashed: trashed,
                 .Published: published]
-    }
-
-    override func noResultsMessageText() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = currentPostListFilter().filterType
-        var message : String
-
-        switch filterType {
-        case .Draft:
-            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        case .Scheduled:
-            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled pages in the oages list and there are no pages")
-        case .Trashed:
-            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
-        default:
-            message = NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-        }
-
-        return message
-    }
-
-
-    override func noResultsButtonText() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
-            return nil
-        }
-
-        let filterType = currentPostListFilter().filterType
-
-        switch filterType {
-        case .Trashed:
-            return ""
-        default:
-            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
-        }
     }
 
     override func configureAuthorFilter() {
@@ -579,5 +535,76 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         if let apost = provider as? AbstractPost {
             restorePost(apost)
         }
+    }
+}
+
+extension PageListViewController : AbstractPostListNoResultsViewCustomizer {
+
+    // MARK: - AbstractPostListNoResultsViewCustomizer
+
+    func refreshView(noResultsView: WPNoResultsView) {
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.messageText = noResultsMessage()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    // MARK: - NoResultsView Customizer helpers
+
+    private func noResultsAccessoryView() -> UIView {
+        if syncHelper.isSyncing {
+            animatedBox.animateAfterDelay(0.1)
+            return animatedBox
+        }
+
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+
+    private func noResultsButtonTitle() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+
+        switch filterType {
+        case .Trashed:
+            return ""
+        default:
+            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
+        }
+    }
+
+    private func noResultsTitle() -> String {
+        if syncHelper.isSyncing == true {
+            return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
+        }
+
+        let filter = currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+        return title ?? ""
+    }
+
+    private func noResultsMessage() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+        var message : String
+
+        switch filterType {
+        case .Draft:
+            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
+        case .Scheduled:
+            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled pages in the oages list and there are no pages")
+        case .Trashed:
+            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
+        default:
+            message = NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+        }
+
+        return message
     }
 }
