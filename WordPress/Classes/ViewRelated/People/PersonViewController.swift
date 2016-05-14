@@ -158,7 +158,25 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
-// TODO: JLP May.3.2016. To be implemented as part of #5288
+        let name = person.firstName?.nonEmptyString() ?? person.username
+        let title = NSLocalizedString("Remove User", comment: "Remove User Alert Title")
+        let message = NSLocalizedString("If you remove \(name), that user will no longer be able to " +
+                                        "access this site, but any content that was created by \(name) " +
+                                        "will remain on the site.\n\nWould you still like to remove this user?",
+                                        comment: "Remove User Confirmation Message")
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
+        let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+
+        alert.addCancelActionWithTitle(cancelTitle)
+
+        alert.addDestructiveActionWithTitle(removeTitle) { action in
+
+        }
+
+        alert.presentFromRootViewController()
     }
 
     func updateRole(newRole: Person.Role) {
