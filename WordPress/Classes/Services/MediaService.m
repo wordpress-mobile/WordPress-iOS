@@ -521,7 +521,7 @@
 
 static NSString * const MediaDirectory = @"Media";
 
-- (NSURL *)urlForMediaDirectory
++ (NSURL *)urlForMediaDirectory
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL * documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
@@ -540,7 +540,7 @@ static NSString * const MediaDirectory = @"Media";
 
 - (NSURL *)urlForMediaWithFilename:(NSString *)filename andExtension:(NSString *)extension
 {
-    NSURL *mediaDirectoryURL = [self urlForMediaDirectory];
+    NSURL *mediaDirectoryURL = [[self class] urlForMediaDirectory];
     NSString *basename = [[filename stringByDeletingPathExtension] lowercaseString];
     NSURL *resultURL = [mediaDirectoryURL URLByAppendingPathComponent:basename];
     resultURL = [resultURL URLByAppendingPathExtension:extension];
@@ -683,12 +683,13 @@ static NSString * const MediaDirectory = @"Media";
         // Fetch Media URL's and return them as Dictionary Results:
         // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
         NSString *localUrlProperty      = NSStringFromSelector(@selector(localURL));
-        
+        NSString *localThumbUrlProperty      = NSStringFromSelector(@selector(localThumbnailURL));
+
         NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
         fetchRequest.entity             = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
-        fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
+        fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"blog != NULL"];
         
-        fetchRequest.propertiesToFetch  = @[ localUrlProperty ];
+        fetchRequest.propertiesToFetch  = @[ localUrlProperty, localThumbUrlProperty ];
         fetchRequest.resultType         = NSDictionaryResultType;
         
         NSError *error = nil;
@@ -701,33 +702,43 @@ static NSString * const MediaDirectory = @"Media";
         
         // Get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", mediaObjectsToKeep.count);
-        
+        NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSMutableSet *pathsToKeep       = [NSMutableSet set];
         for (NSDictionary *mediaDict in mediaObjectsToKeep) {
             NSString *path = mediaDict[localUrlProperty];
             if (path) {
-                [pathsToKeep addObject:path];
+                NSString *absolutePath = [documentsDirectory stringByAppendingPathComponent:path];
+                [pathsToKeep addObject:absolutePath];
+            }
+
+            NSString *thumbPath = mediaDict[localThumbUrlProperty];
+            if (thumbPath) {
+                NSString *absoluteThumbPath = [documentsDirectory stringByAppendingPathComponent:thumbPath];
+                [pathsToKeep addObject:absoluteThumbPath];
             }
         }
         
-        // Search for [JPG || JPEG || PNG || GIF] files within the Documents Folder
-        NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        // Search for [JPG || JPEG || PNG || GIF] files within the Media Folder
+        NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self urlForMediaDirectory]
+                                                               includingPropertiesForKeys:nil
+                                                                                  options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                    error:nil];
+
+        NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
         
-        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
-        
-        for (NSString *currentPath in contentsOfDir) {
-            NSString *extension = currentPath.pathExtension.lowercaseString;
+        for (NSURL *currentURL in contentsOfDir) {
+            NSString *filepath = [currentURL path];
+            NSString *extension = filepath.pathExtension.lowercaseString;
             if (![mediaExtensions containsObject:extension]) {
                 continue;
             }
             
             // If the file is not referenced in any post we can delete it
-            NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
             
             if (![pathsToKeep containsObject:filepath]) {
                 NSError *nukeError = nil;
-                if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:filepath] &&
+                    [[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
                     DDLogError(@"Error [%@] while nuking unused Media at path [%@]", nukeError.localizedDescription, filepath);
                 }
             }
