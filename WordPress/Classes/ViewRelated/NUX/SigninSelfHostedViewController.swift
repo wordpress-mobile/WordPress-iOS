@@ -25,8 +25,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
+    /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninSelfHostedViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -63,7 +62,7 @@ import WordPressShared
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
     }
@@ -145,8 +144,7 @@ import WordPressShared
 
     /// Sets the view's state to loading or not loading.
     ///
-    /// - Parameters:
-    ///     - loading: True if the form should be configured to a "loading" state.
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(loading: Bool) {
         usernameField.enabled = !loading
@@ -287,6 +285,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
     func finishedLoginWithUsername(username: String!, password: String!, xmlrpc: String!, options: [NSObject : AnyObject]!) {
         displayLoginMessage("")
+        OptimizelyHelper.trackLoggedIn()
         BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
             self?.dismiss()

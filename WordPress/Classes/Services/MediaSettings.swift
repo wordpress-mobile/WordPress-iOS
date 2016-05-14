@@ -25,13 +25,17 @@ class MediaSettings: NSObject {
 
     /// The minimum and maximum allowed sizes for `maxImageSizeSetting`.
     /// The UI to configure this setting should not allow values outside this limits.
-    /// - seealso: maxImageSizeSetting
+    ///
+    /// - Seealso: maxImageSizeSetting
+    ///
     var allowedImageSizeRange: (min: Int, max: Int) {
         return (minImageDimension, maxImageDimension)
     }
 
     /// The size that an image needs to be resized to before uploading.
-    /// - note: if the image doesn't need to be resized, it returns `Int.max`
+    ///
+    /// - Note: if the image doesn't need to be resized, it returns `Int.max`
+    ///
     var imageSizeForUpload: Int {
         if maxImageSizeSetting >= maxImageDimension {
             return Int.max
@@ -44,7 +48,10 @@ class MediaSettings: NSObject {
     /// If you set this to `maxImageDimension` or higher, it means images won't
     /// be resized on upload.
     /// If you set this to `minImageDimension` or lower, it will be set to `minImageDimension`.
-    /// - important: don't access this propery directly to check what size to resize an image, use `imageSizeForUpload` instead.
+    ///
+    /// - Important: don't access this propery directly to check what size to resize an image, use
+    ///             `imageSizeForUpload` instead.
+    ///
     var maxImageSizeSetting: Int {
         get {
             if let savedSize = database.objectForKey(maxImageSizeKey) as? Int {

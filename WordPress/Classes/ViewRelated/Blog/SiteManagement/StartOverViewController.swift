@@ -35,8 +35,7 @@ public class StartOverViewController: UITableViewController
 
     /// Preferred initializer for DeleteSiteViewController
     ///
-    /// - Parameters:
-    ///     - blog: The Blog currently at the site
+    /// - Parameter blog: The Blog currently at the site
     ///
     convenience init(blog: Blog) {
         self.init(style: .Grouped)
@@ -92,7 +91,7 @@ public class StartOverViewController: UITableViewController
 
         WPAppAnalytics.track(.SiteSettingsStartOverContactSupportClicked, withBlog: blog)
         if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account)
+            setupHelpshift(blog.account!)
 
             let metadata = helpshiftMetadata(blog)
             HelpshiftSupport.showConversation(self, withOptions: metadata)

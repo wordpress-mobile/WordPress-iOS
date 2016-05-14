@@ -1,12 +1,159 @@
 import UIKit
 import NSURL_IDN
+import Optimizely
 import WordPressComAnalytics
+
 
 /// A collection of helper methods for NUX.
 ///
 @objc class SigninHelpers: NSObject
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
+
+
+    //MARK: - Helpers for presenting the signin flow
+
+
+    // Allows for A/B testing between the old and new signin flows.
+    class func useNewSigninFlow() -> Bool {
+        let value = OptimizelyHelper.useNewSigninFlow()
+        if (value) {
+            DDLogSwift.logInfo("Using the new sign in flow")
+        } else {
+            DDLogSwift.logInfo("Using the old sign in flow")
+        }
+        return value
+    }
+
+
+    // Helper used by the app delegate
+    class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        if useNewSigninFlow() {
+            let controller = SigninEmailViewController.controller()
+            controller.dismissBlock = {(cancelled) in
+                // Show the editor if requested, and we weren't cancelled.
+                if !cancelled && thenEditor {
+                    WPTabBarController.sharedInstance().showPostTab()
+                    return
+                }
+            }
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: animated, completion: nil)
+
+        } else {
+            let context = ContextManager.sharedInstance().mainContext
+            let accountService = AccountService(managedObjectContext: context)
+            let blogService = BlogService(managedObjectContext: context)
+
+            let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
+
+            let controller = LoginViewController()
+            controller.showEditorAfterAddingSites = thenEditor
+            controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
+            controller.dismissBlock = { (_) in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navController = RotationAwareNavigationViewController(rootViewController: controller)
+            navController.navigationBar.translucent = false
+            presenter.presentViewController(navController, animated: animated, completion: nil)
+        }
+    }
+
+
+    // Helper used by the MeViewController
+    class func showSigninForJustWPComFromPresenter(presenter: UIViewController) {
+        if useNewSigninFlow() {
+            let controller = SigninEmailViewController.controller()
+            controller.restrictSigninToWPCom = true
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: true, completion: nil)
+        } else {
+
+            let controller = LoginViewController()
+            controller.onlyDotComAllowed = true
+            controller.cancellable = true
+            controller.dismissBlock = { (_)in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
+            presenter.presentViewController(navigation, animated: true, completion: nil)
+        }
+    }
+
+
+    // Helper used by the BlogListViewController
+    class func showSigninForSelfHostedSite(presenter: UIViewController) {
+        if useNewSigninFlow() {
+            let controller = SigninSelfHostedViewController.controller(LoginFields())
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: true, completion: nil)
+
+        } else {
+            let controller = LoginViewController()
+            controller.cancellable = true
+            controller.prefersSelfHosted = true
+            controller.dismissBlock = {(_) in
+                presenter.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navController = RotationAwareNavigationViewController(rootViewController: controller)
+            presenter.presentViewController(navController, animated: true, completion: nil)
+        }
+    }
+
+
+    // Helper used by WPAuthTokenIssueSolver
+    class func signinForWPComFixingAuthToken(onDismissed: ((cancelled: Bool) -> Void)?) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        if useNewSigninFlow() {
+            let loginFields = LoginFields()
+            if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
+                loginFields.username = account.username
+            }
+
+            let controller = SigninWPComViewController.controller(loginFields)
+            controller.restrictSigninToWPCom = true
+            controller.dismissBlock = onDismissed
+
+            let navController = NUXNavigationController(rootViewController: controller)
+            return navController
+
+        } else {
+            let blogService = BlogService(managedObjectContext: context)
+            let cancellable = blogService.blogCountSelfHosted() > 0
+
+            let controller = LoginViewController()
+            controller.onlyDotComAllowed = true
+            controller.shouldReauthenticateDefaultAccount = true
+            controller.cancellable = cancellable
+            controller.dismissBlock = {(cancelled) in
+                onDismissed?(cancelled: cancelled)
+            }
+
+            return controller
+        }
+    }
+
+
+    // Helper used by WPError
+    class func showSigninForWPComFixingAuthToken() {
+        let controller = signinForWPComFixingAuthToken(nil)
+        if useNewSigninFlow() {
+            let presenter = UIApplication.sharedApplication().keyWindow?.rootViewController
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter?.presentViewController(navController, animated: true, completion: nil)
+
+        } else {
+            LoginViewController.presentModalReauthScreen()
+        }
+    }
+
+
+    // MARK: - Authentication Link Helpers
 
 
     /// Present a signin view controller to handle an authentication link.
@@ -64,8 +211,7 @@ import WordPressComAnalytics
 
     /// Determine the proper UIViewController to use as a presenter for the auth controller.
     ///
-    /// - Parameters:
-    ///     - controller: A UIViewController. By convention this should be the app's rootViewController
+    /// - Parameter controller: A UIViewController. By convention this should be the app's rootViewController
     ///
     /// - Return: The view controller to use as the presenter.
     ///
@@ -80,8 +226,7 @@ import WordPressComAnalytics
 
     /// Check if the specified controller was presented from the application's root vc.
     ///
-    /// - Parameters:
-    ///     - controller: A UIViewController
+    /// - Parameter controller: A UIViewController
     ///
     /// - Return: True if presented from the root vc.
     ///
@@ -93,10 +238,12 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - Site URL helper
+
+
     /// The base site URL path derived from `loginFields.siteUrl`
     ///
-    /// - Parameters:
-    ///     - string: The source URL as a string.
+    /// - Parameter string: The source URL as a string.
     ///
     /// - Returns: The base URL or an empty string.
     ///
@@ -131,8 +278,7 @@ import WordPressComAnalytics
 
     /// Checks if the passed string matches a reserved username.
     ///
-    /// - Parameters:
-    ///     - username: The username to test.
+    /// - Parameter username: The username to test.
     ///
     class func isUsernameReserved(username: String) -> Bool {
         let name = username.lowercaseString.trim()
@@ -141,9 +287,9 @@ import WordPressComAnalytics
 
 
     /// Checks whether credentials have been populated.
+    /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
+    /// - Parameter loginFields: An instance of LoginFields to check
     ///
     /// - Returns: True if credentails have been provided. False otherwise.
     ///
@@ -156,8 +302,7 @@ import WordPressComAnalytics
 
     /// Simple validation check to confirm LoginFields has a valid site URL.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
+    /// - Parameter loginFields: An instance of LoginFields to check
     ///
     /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
     ///
@@ -174,13 +319,66 @@ import WordPressComAnalytics
     }
 
 
+    class func promptForWPComReservedUsername(username: String, callback: () -> Void) {
+        let title = NSLocalizedString("Reserved Username", comment: "The title of a prompt")
+        let format = NSLocalizedString("'%@' is a reserved username on WordPress.com.",
+                                        comment: "Error message letting the user know the username they entered is reserved. The %@ is a placeholder for the username.")
+        let message = NSString(format: format, username) as String
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
+            callback()
+        })
+    }
+
+
+    /// Checks whether necessary info for account creation has been provided.
+    ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if credentails have been provided. False otherwise.
+    ///
+    class func validateFieldsPopulatedForCreateAccount(loginFields: LoginFields) -> Bool {
+        return !loginFields.emailAddress.isEmpty &&
+            !loginFields.username.isEmpty &&
+            !loginFields.password.isEmpty &&
+            !loginFields.siteUrl.isEmpty
+    }
+
+
+    /// Ensures there are no spaces in fields used for signin, (except the password field).
+    ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if no spaces were found. False if spaces were found.
+    ///
+    class func validateFieldsForSigninContainNoSpaces(loginFields: LoginFields) -> Bool {
+        let space = " "
+        return !loginFields.emailAddress.containsString(space) &&
+            !loginFields.username.containsString(space) &&
+            !loginFields.siteUrl.containsString(space)
+    }
+
+
+    /// Verify a username is 50 characters or less.
+    ///
+    /// - Parameters:
+    ///     - username: The username to check
+    ///
+    /// - Returns: True if the username is 50 characters or less.
+    ///
+    class func validateUsernameMaxLength(username: String) -> Bool {
+        return username.characters.count <= 50
+    }
+
+
     // MARK: - Helpers for Saved Magic Link Email
 
 
     /// Saves the specified email address in NSUserDefaults
     ///
-    /// - Parameters:
-    ///     - email: The email address to save.
+    /// - Parameter email: The email address to save.
     ///
     class func saveEmailAddressForTokenAuth(email: String) {
         NSUserDefaults.standardUserDefaults().setObject(email, forKey: AuthenticationEmailKey)
@@ -209,8 +407,7 @@ import WordPressComAnalytics
     /// Opens Safari to display the forgot password page for a wpcom or self-hosted
     /// based on the passed LoginFields instance.
     ///
-    /// - Parameters:
-    ///     - loginFields: A LoginFields instance.
+    /// - Parameter loginFields: A LoginFields instance.
     ///
     class func openForgotPasswordURL(loginFields: LoginFields) {
         let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
@@ -225,16 +422,15 @@ import WordPressComAnalytics
 
     /// Request credentails from 1Password (if supported)
     ///
-    /// - Parameters:
-    ///     - sender: A UIView. Typically the button the user tapped on.
+    /// - Parameter sender: A UIView. Typically the button the user tapped on.
     ///
     class func fetchOnePasswordCredentials(controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: ((loginFields: LoginFields) -> Void)) {
 
         let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
 
         let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLoginForURLString(loginURL, viewController: controller, sender: sourceView, completion: { (username: String!, password: String!, oneTimePassword: String!, error: NSError!) in
-            guard error == nil else {
+        onePasswordFacade.findLoginForURLString(loginURL, viewController: controller, sender: sourceView, completion: { (username: String?, password: String?, oneTimePassword: String?, error: NSError?) in
+            if let error = error {
                 DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.OnePasswordFailed)
                 return
@@ -251,7 +447,7 @@ import WordPressComAnalytics
             loginFields.username = username
             loginFields.password = password
 
-            if oneTimePassword != nil {
+            if let oneTimePassword = oneTimePassword {
                 loginFields.multifactorCode = oneTimePassword
             }
 
@@ -272,8 +468,7 @@ import WordPressComAnalytics
 
     /// Update safari stored credentials.
     ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields
+    /// - Parameter loginFields: An instance of LoginFields
     ///
     class func updateSafariCredentialsIfNeeded(loginFields: LoginFields) {
         // Paranioa. Don't try and update credentials for self-hosted.
@@ -311,8 +506,7 @@ import WordPressComAnalytics
 
     /// Request shared safari credentials if they exist.
     ///
-    /// - Parameters:
-    ///     - completion: A completion block.
+    /// - Parameter completion: A completion block.
     ///
     class func requestSharedWebCredentials(completion: SharedWebCredentialsCallback) {
         SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in

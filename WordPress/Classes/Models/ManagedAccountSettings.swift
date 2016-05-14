@@ -21,14 +21,13 @@ class ManagedAccountSettings: NSManagedObject {
         language = accountSettings.language
     }
 
-    /**
-     Applies a change to the account settings
-
-     To change a setting, you create a change and apply it to the AccountSettings object.
-     This method will return a new change object to apply if you want to revert the changes (for instance, if they failed to save)
-
-     - returns: the change object needed to revert this change
-     */
+    /// Applies a change to the account settings
+    /// To change a setting, you create a change and apply it to the AccountSettings object.
+    /// This method will return a new change object to apply if you want to revert the changes
+    /// (for instance, if they failed to save)
+    ///
+    /// - Returns: the change object needed to revert this change
+    ///
     func applyChange(change: AccountSettingsChange) -> AccountSettingsChange {
         let reverse = reverseChange(change)
 

@@ -2,89 +2,6 @@ import UIKit
 import WordPressShared
 
 class PlanDetailViewController: UIViewController {
-    struct ViewModel {
-        let plan: Plan
-        let siteID: Int
-        let activePlan: Plan
-
-        /// Plan price. Empty string for a free plan
-        let price: String
-
-        let features: FeaturesViewModel
-
-        enum FeaturesViewModel {
-            case Loading
-            case Error(String)
-            case Ready([PlanFeatureGroup])
-        }
-
-        func withFeatures(features: FeaturesViewModel) -> ViewModel {
-            return ViewModel(
-                plan: plan,
-                siteID: siteID,
-                activePlan: activePlan,
-                price: price,
-                features: features
-            )
-        }
-
-        var tableViewModel: ImmuTable {
-            switch features {
-            case .Loading, .Error(_):
-                return ImmuTable.Empty
-            case .Ready(let groups):
-                return ImmuTable(sections: groups.map { group in
-                    let rows: [ImmuTableRow] = group.features.map({ feature in
-                        return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
-                    })
-                    return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
-                    })
-            }
-        }
-
-        var noResultsViewModel: WPNoResultsView.Model? {
-            switch features {
-            case .Loading:
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
-                )
-            case .Ready(_):
-                return nil
-            case .Error(_):
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "")
-                )
-            }
-        }
-
-        var isActivePlan: Bool {
-            return activePlan == plan
-        }
-
-        var priceText: String {
-            if price.isEmpty  {
-                return NSLocalizedString("Free for life", comment: "Price label for the free plan")
-            } else {
-                return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
-            }
-        }
-
-        var purchaseButtonVisible: Bool {
-            return purchaseAvailability == .available
-                || purchaseAvailability == .pending
-        }
-
-        var purchaseButtonSelected: Bool {
-            return purchaseAvailability == .pending
-        }
-
-        private var purchaseAvailability: PurchaseAvailability {
-            return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
-        }
-    }
-
     private let cellIdentifier = "PlanFeatureListItem"
 
     private let tableViewHorizontalMargin: CGFloat = 24.0
@@ -95,7 +12,7 @@ class PlanDetailViewController: UIViewController {
             tableView?.reloadData()
         }
     }
-    var viewModel: ViewModel! {
+    var viewModel: PlanDetailViewModel! {
         didSet {
             tableViewModel = viewModel.tableViewModel
             title = viewModel.plan.title
@@ -159,7 +76,7 @@ class PlanDetailViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
 
-        controller.viewModel = ViewModel(plan: plan, siteID: siteID, activePlan: activePlan, price: price, features: .Loading)
+        controller.viewModel = PlanDetailViewModel(plan: plan, siteID: siteID, activePlan: activePlan, price: price, features: .Loading)
 
         return controller
     }
@@ -390,85 +307,5 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             return 0
         }
-    }
-}
-
-class FeatureItemCell: WPTableViewCell {
-    @IBOutlet weak var featureIconImageView: UIImageView!
-    @IBOutlet weak var featureTitleLabel: UILabel!
-    @IBOutlet weak var featureDescriptionLabel: UILabel!
-    @IBOutlet weak var separator: UIView!
-    @IBOutlet var separatorEdgeConstraints: [NSLayoutConstraint]!
-
-    override var separatorInset: UIEdgeInsets {
-        didSet {
-            for constraint in separatorEdgeConstraints {
-                if constraint.firstAttribute == .Leading {
-                    constraint.constant = separatorInset.left
-                } else if constraint.firstAttribute == .Trailing {
-                    constraint.constant = separatorInset.right
-                }
-            }
-
-            separator.layoutIfNeeded()
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        layoutMargins = UIEdgeInsetsZero
-
-        separator.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        separator.hidden = false
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        // This is required to fix an issue where only the first line of text would
-        // is displayed on the iPhone 6(s) Plus due to a fractional Y position.
-        featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
-    }
-}
-
-struct FeatureItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.Class(FeatureItemCell)
-
-    let title: String
-    let description: String
-    let iconURL: NSURL
-    let action: ImmuTableAction? = nil
-
-    func configureCell(cell: UITableViewCell) {
-        guard let cell = cell as? FeatureItemCell else { return }
-
-        cell.featureTitleLabel?.text = title
-
-        if let featureDescriptionLabel = cell.featureDescriptionLabel {
-            cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
-        }
-
-        cell.featureIconImageView?.setImageWithURL(iconURL, placeholderImage: nil)
-
-        cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
-        cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
-        WPStyleGuide.configureTableViewCell(cell)
-    }
-
-    private func attributedDescriptionText(text: String, font: UIFont) -> NSAttributedString {
-        let lineHeight: CGFloat = 18
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.maximumLineHeight = lineHeight
-        paragraphStyle.minimumLineHeight = lineHeight
-
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: font])
-        return attributedText
     }
 }

@@ -1,5 +1,6 @@
 import Foundation
 import WPMediaPicker
+import WordPressComAnalytics
 
 
 // Encapsulates all of the interactions required to capture a new Gravatar image, and resize it.
@@ -37,6 +38,9 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
                 self.onCompletion?(nil)
                 return
             }
+
+            // Track
+            WPAppAnalytics.track(.GravatarCropped)
 
             // Proceed Cropping
             let imageCropViewController = self.newImageCropViewController(rawGravatar)
@@ -86,4 +90,13 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
 
         return imageCropViewController
     }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
+    override func childViewControllerForStatusBarStyle() -> UIViewController? {
+        return nil
+    }
+
 }

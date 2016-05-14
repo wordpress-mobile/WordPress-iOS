@@ -64,8 +64,7 @@ import WordPressShared
 
     /// Displays the specified text in the status label.
     ///
-    /// - Parameters:
-    ///     - message: The text to display in the label.
+    /// - Parameter message: The text to display in the label.
     ///
     func configureStatusLabel(message: String) {
         statusLabel.text = message
@@ -80,5 +79,4 @@ import WordPressShared
     func updateSafariCredentialsIfNeeded() {
         // Noop
     }
-
 }

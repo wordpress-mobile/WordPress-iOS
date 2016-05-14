@@ -1,32 +1,28 @@
 import Foundation
 import AFNetworking
 
-/**
-*  @class           NotificationMediaDownloader
-*  @brief           The purpose of this class is to provide a simple API to download assets from the web.
-*  @details         Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
-*                   Internally, images get downloaded and resized: both copies of the image get cached.
-*                   Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
-*                   which will take care of resizing the original image, to fit the new orientation.
-*/
-
+/// The purpose of this class is to provide a simple API to download assets from the web.
+/// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
+/// Internally, images get downloaded and resized: both copies of the image get cached.
+/// Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
+/// which will take care of resizing the original image, to fit the new orientation.
+///
 @objc public class NotificationMediaDownloader : NSObject
 {
-    //
     // MARK: - Public Methods
-    //
+
     deinit {
         downloadQueue.cancelAllOperations()
     }
 
-    /**
-    *  @brief       Downloads a set of assets, resizes them (if needed), and hits a completion block.
-    *  @details     The completion block will get called just once all of the assets are downloaded, and properly sized.
-    *
-    *  @param       urls            Is the collection of unique Image URL's we'd need to download.
-    *  @param       maximumWidth    Represents the maximum width that a returned image should have
-    *  @param       completion      Is a closure that will get executed once all of the assets are ready
-    */
+    /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
+    /// The completion block will get called just once all of the assets are downloaded, and properly sized.
+    ///
+    /// - Parameters:
+    ///     - urls: Is the collection of unique Image URL's we'd need to download.
+    ///     - maximumWidth: Represents the maximum width that a returned image should have.
+    ///     - completion: Is a closure that will get executed once all of the assets are ready
+    ///
     public func downloadMedia(urls urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
         let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
         let group               = dispatch_group_create()
@@ -64,18 +60,17 @@ import AFNetworking
         }
     }
 
-    /**
-    *  @brief       Resizes the downloaded media to fit a "new" maximumWidth ***if needed**.
-    *  @details     This method will check the cache of "resized images", and will verify if the original image
-    *               *could* be resized again, so that it better fits the *maximumWidth* received.
-    *               Once all of the images get resized, we'll hit the completion block
-    *
-    *               Useful to handle rotation events: the downloaded images may need to be resized, again, to
-    *               fit onscreen.
-    *
-    *  @param       maximumWidth    Represents the maximum width that a returned image should have
-    *  @param       completion      Is a closure that will get executed just one time, after all of the assets get resized
-    */
+    /// Resizes the downloaded media to fit a "new" maximumWidth ***if needed**.
+    /// This method will check the cache of "resized images", and will verify if the original image *could*
+    /// be resized again, so that it better fits the *maximumWidth* received.
+    /// Once all of the images get resized, we'll hit the completion block
+    ///
+    /// Useful to handle rotation events: the downloaded images may need to be resized, again, to fit onscreen.
+    ///
+    /// - Parameters:
+    ///     - maximumWidth: Represents the maximum width that a returned image should have
+    ///     - completion: Is a closure that will get executed just one time, after all of the assets get resized
+    ///
     public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
         let group               = dispatch_group_create()
         var shouldHitCompletion = false
@@ -104,14 +99,14 @@ import AFNetworking
         }
     }
 
-    /**
-    *  @brief       Returns a collection of images, ready to be displayed onscreen.
-    *  @details     For convenience, we return a map with URL as Key, and Image as Value, so that each asset can be
-    *               easily addressed.
-    *
-    *  @param       urls            The collection of URL's of the assets you'd need.
-    *  @returns     A dictionary with URL as Key, and Image as Value.
-    */
+    /// Returns a collection of images, ready to be displayed onscreen.
+    /// For convenience, we return a map with URL as Key, and Image as Value, so that each asset can be easily
+    /// addressed.
+    ///
+    /// - Parameter urls: The collection of URL's of the assets you'd need.
+    ///
+    /// - Returns: A dictionary with URL as Key, and Image as Value.
+    ///
     public func imagesForUrls(urls: [NSURL]) -> [NSURL: UIImage] {
         var filtered = [NSURL: UIImage]()
 
@@ -125,20 +120,18 @@ import AFNetworking
     }
 
 
-    //
     // MARK: - Private Helpers
-    //
 
 
-    /**
-    *  @brief       Downloads an asset, given its URL
-    *  @details     On failure, this method will attempt the download *maximumRetryCount* times.
-    *               If the URL cannot be downloaded, it'll be marked to be skipped.
-    *
-    *  @param       url             The URL of the media we should download
-    *  @param       retryCount      Number of times the download has been attempted
-    *  @param       success         A closure to be executed, on success.
-    */
+    /// Downloads an asset, given its URL.
+    /// - Note: On failure, this method will attempt the download *maximumRetryCount* times.
+    ///         If the URL cannot be downloaded, it'll be marked to be skipped.
+    ///
+    /// - Parameters:
+    ///     - url: The URL of the media we should download
+    ///     - retryCount: Number of times the download has been attempted
+    ///     - success: A closure to be executed, on success.
+    ///
     private func downloadImage(url: NSURL, retryCount: Int = 0, completion: ((NSError?, UIImage?) -> ())) {
         let request                     = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
@@ -176,28 +169,27 @@ import AFNetworking
         urlsBeingDownloaded.insert(url)
     }
 
-    /**
-    *  @brief       Checks if an image should be downloaded, or not.
-    *  @details     An image should be downloaded if:
-    *
-    *               -   It's not already being downloaded
-    *               -   Isn't already in the cache!
-    *               -   Hasn't exceeded the retry count
-    *
-    *  @param       urls            The collection of URL's of the assets you'd need.
-    *  @returns     A dictionary with URL as Key, and Image as Value.
-    */
+    /// Checks if an image should be downloaded, or not. An image should be downloaded if:
+    ///
+    ///     - It's not already being downloaded
+    ///     - Isn't already in the cache!
+    ///     - Hasn't exceeded the retry count
+    ///
+    /// - Parameter urls: The collection of URL's of the assets you'd need.
+    ///
+    /// - Returns: A dictionary with URL as Key, and Image as Value.
+    ///
     private func shouldDownloadImage(url url: NSURL) -> Bool {
         return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
 
-    /**
-    *  @brief       Resizes -in background- a given image, if needed, to fit a maximum width
-    *
-    *  @param       image           The image to resize
-    *  @param       maximumWidth    The maximum width in which the image should fit
-    *  @param       callback        A closure to be called, on the main thread, on completion
-    */
+    /// Resizes -in background- a given image, if needed, to fit a maximum width
+    ///
+    /// - Parameters:
+    ///     - image: The image to resize
+    ///     - maximumWidth: The maximum width in which the image should fit
+    ///     - callback: A closure to be called, on the main thread, on completion
+    ///
     private func resizeImageIfNeeded(image: UIImage, maximumWidth: CGFloat, callback: ((UIImage) -> ())) {
         let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
         if image.size == targetSize {
@@ -213,13 +205,14 @@ import AFNetworking
         }
     }
 
-    /**
-    *  @brief       Returns the scaled size, scaled down proportionally (if needed) to fit a maximumWidth
-    *
-    *  @param       originalSize    The original size of the image
-    *  @param       maximumWidth    The maximum width we've got available
-    *  @return      The size, scaled down proportionally (if needed) to fit a maximum width
-    */
+    /// Returns the scaled size, scaled down proportionally (if needed) to fit a maximumWidth
+    ///
+    /// - Parameters:
+    ///     - originalSize: The original size of the image
+    ///     - maximumWidth: The maximum width we've got available
+    ///
+    /// - Returns: The size, scaled down proportionally (if needed) to fit a maximum width
+    ///
     private func cappedImageSize(originalSize: CGSize, maximumWidth: CGFloat) -> CGSize {
         var targetSize = originalSize
 

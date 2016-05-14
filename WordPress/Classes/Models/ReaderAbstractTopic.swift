@@ -8,7 +8,7 @@ import CoreData
 
     // Properties
     @NSManaged public var following: Bool
-    @NSManaged public var lastSynced: NSDate
+    @NSManaged public var lastSynced: NSDate?
     @NSManaged public var path: String
     @NSManaged public var showInMenu: Bool
     @NSManaged public var title: String

@@ -4,7 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import <Automattic_Tracks_iOS/TracksService.h>
+@import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
@@ -155,6 +155,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     NSDictionary *eventProperties;
     
     switch (stat) {
+        case WPAnalyticsStatABTestStart:
+            eventName = @"abtest_start";
+            break;
         case WPAnalyticsStatAddedSelfHostedSite:
             eventName = @"self_hosted_blog_added";
             break;
@@ -302,6 +305,15 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatEditorUploadMediaRetried:
             eventName = @"editor_upload_media_retried";
+            break;
+        case WPAnalyticsStatGravatarCropped:
+            eventName = @"me_gravatar_cropped";
+            break;
+        case WPAnalyticsStatGravatarTapped:
+            eventName = @"me_gravatar_tapped";
+            break;
+        case WPAnalyticsStatGravatarUploaded:
+            eventName = @"me_gravatar_uploaded";
             break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
@@ -769,6 +781,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginMagicLinkOpened:
         case WPAnalyticsStatLoginMagicLinkRequested:
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+
+            // to be implemented
+        case WPAnalyticsStatOpenedPeople:
+        case WPAnalyticsStatOpenedPerson:
+        case WPAnalyticsStatPersonRemoved:
+        case WPAnalyticsStatPersonUpdated:
 
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:

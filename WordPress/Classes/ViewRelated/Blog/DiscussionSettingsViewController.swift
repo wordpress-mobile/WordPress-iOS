@@ -4,7 +4,7 @@ import WordPressShared
 
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
 /// allow the user to tune those settings, as required.
-
+///
 public class DiscussionSettingsViewController : UITableViewController
 {
     // MARK: - Initializers / Deinitializers
@@ -601,7 +601,7 @@ public class DiscussionSettingsViewController : UITableViewController
 
     // MARK: - Computed Properties
     private var settings : BlogSettings {
-        return blog.settings
+        return blog.settings!
     }
 
     // MARK: - Typealiases

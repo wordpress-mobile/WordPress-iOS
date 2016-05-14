@@ -29,8 +29,7 @@ import WordPressComAnalytics
     ///
     /// - Note: A Push Notification should be handled by this helper whenever the 'Type' field is of the 'push_auth' kind.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload. Can be nil.
+    /// - Parameter userInfo: Is the Notification's payload. Can be nil.
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
@@ -48,8 +47,7 @@ import WordPressComAnalytics
     /// On error, the backend call to verify the WordPress.com login attempt will be retried a maximum of (three) times,
     /// automatically.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload.
+    /// - Parameter userInfo: Is the Notification's payload.
     ///
     public func handlePushAuthenticationNotification(userInfo: NSDictionary?) {
         // Expired: Display a message!
@@ -104,8 +102,7 @@ import WordPressComAnalytics
 
     /// Checks if a given Push Authentication Notification has already expired.
     ///
-    /// - Parameters:
-    ///     - userInfo: Is the Notification's payload.
+    /// - Parameter userInfo: Is the Notification's payload.
     ///
     private func isNotificationExpired(userInfo: NSDictionary?) -> Bool {
         let rawExpiration = userInfo?["expires"] as? Int
