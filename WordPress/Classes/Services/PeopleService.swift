@@ -63,7 +63,7 @@ struct PeopleService {
         let pristineRole = managedPerson.role
 
         // Hit the Backend
-        remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+        remote.updatePersonFrom(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
 
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
 
