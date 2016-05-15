@@ -4,11 +4,6 @@ import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
 
-protocol AbstractPostListNoResultsViewCustomizer {
-
-    func refreshView(noResultsView: WPNoResultsView)
-}
-
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
@@ -27,7 +22,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let defaultHeightForFooterView = CGFloat(44.0)
 
     var blog : Blog!
-    var noResultsCustomizer : AbstractPostListNoResultsViewCustomizer!
+
+    /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
+    /// to the subclass to define this property.
+    ///
+    var refreshNoResultsView : ((WPNoResultsView) -> ())!
     var tableViewController : UITableViewController!
 
     var tableView : UITableView {
@@ -285,10 +284,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     private func showNoResultsView() {
-        precondition(noResultsCustomizer != nil)
+        precondition(refreshNoResultsView != nil)
 
         postListFooterView.hidden = true
-        noResultsCustomizer.refreshView(noResultsView)
+        refreshNoResultsView(noResultsView)
 
         // Only add and animate no results view if it isn't already
         // in the table view
