@@ -88,7 +88,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         precondition(segue.destinationViewController is UITableViewController)
 
-        super.noResultsCustomizer = self
+        super.refreshNoResultsView = { [weak self] noResultsView in
+            self?.handleRefreshNoResultsView(noResultsView)
+        }
         super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
 
@@ -651,15 +653,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         restorePost(apost)
     }
-}
 
-// MARK: - AbstractPostListNoResultsViewCustomizer
+    // MARK: - Refreshing noResultsView
 
-extension PostListViewController : AbstractPostListNoResultsViewCustomizer {
-
-    // MARK: - AbstractPostListNoResultsViewCustomizer
-
-    func refreshView(noResultsView: WPNoResultsView) {
+    private func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()

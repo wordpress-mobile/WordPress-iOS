@@ -63,7 +63,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - UIViewController
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.noResultsCustomizer = self
+        super.refreshNoResultsView = { [weak self] noResultsView in
+            self?.handleRefreshNoResultsView(noResultsView)
+        }
         super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
 
@@ -536,13 +538,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             restorePost(apost)
         }
     }
-}
 
-extension PageListViewController : AbstractPostListNoResultsViewCustomizer {
+    // MARK: - Refreshing noResultsView
 
-    // MARK: - AbstractPostListNoResultsViewCustomizer
-
-    func refreshView(noResultsView: WPNoResultsView) {
+    func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
