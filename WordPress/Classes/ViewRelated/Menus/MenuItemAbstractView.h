@@ -14,6 +14,9 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 @protocol MenuItemAbstractViewDelegate;
 
+/**
+ An abstract view encapsulating work needed for representing editable MenuItems as found in MenuItemsViewController.
+ */
 @interface MenuItemAbstractView : UIView <MenuItemDrawingViewDelegate>
 
 @property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate> delegate;
@@ -106,7 +109,6 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
  The highlighted state changed for the stackableView.
  */
 - (void)itemView:(MenuItemAbstractView *)itemView highlighted:(BOOL)highlighted;
-
 @end
 
 NS_ASSUME_NONNULL_END

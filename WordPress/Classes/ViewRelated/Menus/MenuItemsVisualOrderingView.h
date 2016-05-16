@@ -7,6 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol MenuItemsVisualOrderingViewDelegate;
 
+/**
+ A view that manages the visual effect of a MenuItemView dragging across the screen for ordering in MenuItemsViewController.
+ */
 @interface MenuItemsVisualOrderingView : UIView
 
 @property (nonatomic, weak, nullable) id <MenuItemsVisualOrderingViewDelegate> delegate;
