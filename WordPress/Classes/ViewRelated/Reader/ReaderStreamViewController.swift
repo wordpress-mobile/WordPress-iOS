@@ -390,6 +390,7 @@ import WordPressComAnalytics
         frame.size.height = heightForFooterView
         footerView.frame = frame
         tableView.tableFooterView = footerView
+        footerView.hidden = true
     }
 
 
