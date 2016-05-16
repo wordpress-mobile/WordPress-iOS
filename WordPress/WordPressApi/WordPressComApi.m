@@ -80,7 +80,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
-        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
+        NSString *userAgent = [WPUserAgent wordPressUserAgent];
 		[self.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 	}
 	
@@ -250,7 +250,7 @@ constructingBodyWithBlock:block
         DDLogVerbose(@"Initializing anonymous API");
         _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
 
-        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
+        NSString *userAgent = [WPUserAgent wordPressUserAgent];
 		[_anonymousApi.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     });
 
