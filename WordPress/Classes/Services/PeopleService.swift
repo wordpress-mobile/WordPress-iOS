@@ -32,16 +32,14 @@ struct PeopleService {
     /// -   Parameters:
     ///     - completion: Closure to be executed on completion.
     ///
-    func refreshTeam(completion: (Bool) -> Void) {
-        remote.getTeamFor(siteID,
-            success: { people in
+    func refreshUsers(completion: (Bool) -> Void) {
+        remote.getUsersFor(siteID, success: { people in
+            self.mergeTeam(people)
+            completion(true)
 
-                self.mergeTeam(people)
-                completion(true)
-            },
-            failure: { error in
-                DDLogSwift.logError(String(error))
-                completion(false)
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            completion(false)
         })
     }
 

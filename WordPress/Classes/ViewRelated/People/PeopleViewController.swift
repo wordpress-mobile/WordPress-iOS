@@ -108,7 +108,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        service.refreshTeam { [weak self] _ in
+        service.refreshUsers { [weak self] _ in
             self?.refreshControl?.endRefreshing()
             self?.hideNoResultsIfNeeded()
         }

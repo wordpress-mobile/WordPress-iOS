@@ -13,7 +13,7 @@ class PeopleRemote: ServiceRemoteREST {
         case DecodeError
     }
 
-    /// Retrieves the team of users associated to a given Site.
+    /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
@@ -22,10 +22,7 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: An array of *Person* instances (AKA "People).
     ///
-    func getTeamFor(siteID  : Int,
-                    success : People -> (),
-                    failure : ErrorType -> ())
-    {
+    func getUsersFor(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
