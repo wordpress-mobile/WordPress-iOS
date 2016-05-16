@@ -68,4 +68,13 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     });
 }
 
+- (void)testThatRegistarDefaultJustAdds {
+    NSDictionary * registrationDomain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
+    NSDictionary * changedRegistrationDomain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+
+    XCTAssertTrue((registrationDomain.count == changedRegistrationDomain.count) || ((registrationDomain.count +1) == changedRegistrationDomain.count), "It should add or reset");
+}
+
+
 @end
