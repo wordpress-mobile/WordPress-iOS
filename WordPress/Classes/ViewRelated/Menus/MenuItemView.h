@@ -6,6 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol MenuItemViewDelegate;
 
+/**
+ View that encapsulates the display and editing actions for a MenuItem within MenuItemsViewController.
+ */
 @interface MenuItemView : MenuItemAbstractView
 
 @property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate, MenuItemViewDelegate> delegate;

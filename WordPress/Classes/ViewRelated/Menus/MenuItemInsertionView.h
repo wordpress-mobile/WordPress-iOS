@@ -10,6 +10,9 @@ typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
 
 @protocol MenuItemInsertionViewDelegate;
 
+/**
+ An a view encapsulating work for inserting new MenuItems in MenuItemsViewController.
+ */
 @interface MenuItemInsertionView : MenuItemAbstractView
 
 @property (nonatomic, weak, nullable) id <MenuItemAbstractViewDelegate, MenuItemInsertionViewDelegate> delegate;
