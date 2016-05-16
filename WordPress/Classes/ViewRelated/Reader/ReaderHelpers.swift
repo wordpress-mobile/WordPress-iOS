@@ -53,7 +53,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a search topic
     ///
-    public class func topicIsSearchTopic(topic: ReaderAbstractTopic) -> Bool {
+    public class func isTopicSearchTopic(topic: ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderSearchTopic)
     }
 
