@@ -45,6 +45,36 @@ class PeopleRemote: ServiceRemoteREST {
         })
     }
 
+    /// Retrieves the collection of followers associated to a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    /// - Returns: An array of *Person* instances (AKA "People).
+    ///
+    func getFollowersFor(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
+        let endpoint = "sites/\(siteID)/follows"
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let parameters = [
+            "number": 50,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL",
+        ]
+
+        api.GET(path, parameters: parameters, success: { (operation, responseObject) in
+
+            guard let response = responseObject as? [String: AnyObject],
+                        people = try? self.peopleFromResponse(response, siteID: siteID) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+            success(people)
+
+        }, failure: { (operation, error) in
+            failure(error)
+        })
     }
 
     /// Updates a given User, of the specified site, with a new Role.
