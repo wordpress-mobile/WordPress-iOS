@@ -18,6 +18,7 @@
 #import "WPAppAnalytics.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
+NSUInteger const ReaderPostServiceNumberToSyncForSearch = 5; // Search endpoint is currently capped at 20. EJ 2016-05-13
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
@@ -57,7 +58,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
-                                    count:ReaderPostServiceNumberToSync
+                                    count:[self numberToSyncForTopic:topic]
                                    before:date
                                   success:^(NSArray *posts) {
 
@@ -409,6 +410,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return api;
 }
 
+- (NSUInteger)numberToSyncForTopic:(ReaderAbstractTopic *)topic
+{
+    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceNumberToSyncForSearch : ReaderPostServiceNumberToSync;
+}
+
 - (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
@@ -510,7 +516,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 // one extra post. Only remove the extra post if we received a
                 // full set of results. A partial set means we've reached
                 // the end of syncable content.
-                if ([posts count] == ReaderPostServiceNumberToSync) {
+                if ([posts count] == [self numberToSyncForTopic:readerTopic]) {
                     posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
                     postsCount = [posts count];
                 }
