@@ -75,7 +75,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
-@property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
@@ -373,8 +372,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    self.userAgent = [WPUserAgent new];
-    [self.userAgent useWordPressUserAgentInUIWebViews];
+    [WPUserAgent useWordPressUserAgentInUIWebViews];
     [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden

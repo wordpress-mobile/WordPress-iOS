@@ -162,7 +162,7 @@ import WordPressComAnalytics
             NSString(format:"t=%d", arc4random())
         ]
 
-        let userAgent = WordPressAppDelegate.sharedInstance().userAgent.wordPressUserAgent
+        let userAgent = WPUserAgent.wordPressUserAgent()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
         let url = NSURL(string: path)
 

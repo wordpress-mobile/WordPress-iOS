@@ -58,4 +58,13 @@
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
+/**
+ A helper method for constructing the endpoint URL for a reader search request.
+ 
+ @param phrase The search phrase
+ 
+ @return The endpoint URL as a string.
+ */
+- (NSString *)endpointUrlForSearchPhrase:(NSString *)phrase;
+
 @end

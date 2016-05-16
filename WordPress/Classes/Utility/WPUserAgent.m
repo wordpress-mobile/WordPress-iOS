@@ -2,66 +2,38 @@
 
 static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
-@interface WPUserAgent ()
-
-// Default UA to append "wp-iphone/<version>" to
-- (NSString *)defaultUserAgent;
-
-@property (nonatomic, strong, readwrite) NSString *wordPressUserAgent;
-
-@end
-
 @implementation WPUserAgent
 
-- (instancetype)init
++ (NSString *)defaultUserAgent
 {
-    self = [super init];
-    if (self) {
-        // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"AppUserAgent"];
-    }
-    return self;
-}
+    static NSString * _defaultUserAgent;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        NSDictionary * registrationDomain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+        NSString *storeCurrentUA = [registrationDomain objectForKey:WPUserAgentKeyUserAgent];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
+        
+        if ([NSThread isMainThread]){
+            _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        } else {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+            });
+        }
+        if (storeCurrentUA) {
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
+        }
+    });
+    NSAssert(_defaultUserAgent != nil, @"User agent shouldn't be nil");
+    NSAssert([_defaultUserAgent length] > 0, @"User agent shouldn't be empty");
 
-- (NSString *)defaultUserAgent
-{
-    // Temporarily unset "UserAgent" from registered user defaults so that we
-    // always get the default value, independently from what's currently set as
-    // User-Agent
-    NSDictionary *originalRegisteredDefaults = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
-
-    NSMutableDictionary *tempRegisteredDefaults = [NSMutableDictionary dictionaryWithDictionary:originalRegisteredDefaults];
-    [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
-
-    __block NSString *defaultUserAgent = nil;
-    if ([NSThread isMainThread]) {
-        defaultUserAgent = [self userAgentFromMainThread];
-    } else {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            defaultUserAgent = [self userAgentFromMainThread];
-        });
-    }
-    NSAssert(defaultUserAgent != nil, @"User agent shouldn't be nil");
-    NSAssert([defaultUserAgent length] > 0, @"User agent shouldn't be empty");
-    
-    [[NSUserDefaults standardUserDefaults] registerDefaults:originalRegisteredDefaults];
-    
-    return defaultUserAgent;
-}
-
-- (NSString *)userAgentFromMainThread {
-    static NSString *_defaultUserAgent = nil;
-    if (_defaultUserAgent == nil) {
-        _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    }
     return _defaultUserAgent;
 }
 
-- (NSString *)wordPressUserAgent
++ (NSString *)wordPressUserAgent
 {
-    if (! _wordPressUserAgent) {
+    static NSString * _wordPressUserAgent;
+    if (_wordPressUserAgent == nil) {
         NSString *defaultUA = [self defaultUserAgent];
         NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         _wordPressUserAgent = [NSString stringWithFormat:@"%@ wp-iphone/%@", defaultUA, appVersion];
@@ -70,8 +42,12 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return _wordPressUserAgent;
 }
 
-- (void)useWordPressUserAgentInUIWebViews
++ (void)useWordPressUserAgentInUIWebViews
 {
+    // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"AppUserAgent"];
+
     NSString *userAgent = [self wordPressUserAgent];
 
     NSParameterAssert([userAgent isKindOfClass:[NSString class]]);

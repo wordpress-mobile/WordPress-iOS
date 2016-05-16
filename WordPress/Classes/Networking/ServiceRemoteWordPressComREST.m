@@ -62,7 +62,7 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.
 + (WordPressComRestApi *)anonymousWordPressComRestApi {
 
     return [[WordPressComRestApi alloc] initWithOAuthToken:nil
-                                                 userAgent:[[WPUserAgent new] wordPressUserAgent]
+                                                 userAgent:[WPUserAgent wordPressUserAgent]
             ];
 }
 

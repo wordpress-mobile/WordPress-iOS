@@ -91,8 +91,12 @@ NSString *const SessionCount = @"session_count";
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
+
     if (instructions == nil) {
-        DDLogInfo(@"No instructions, do nothing");
+        // Getting no instructions back means the tracker doesn't want to handle a specific event,
+        // so we can simply return.  This is intentional and allowed.
+        // - Diego Rey Mendez, 12 May 2016
+        //
         return;
     }
 
@@ -657,6 +661,12 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedNotificationSettingDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
+            break;
+        case WPAnalyticsStatOpenedPlans:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Plans"];
+            break;
+        case WPAnalyticsStatOpenedPlansComparison:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Plans - Opened Comparison"];
             break;
         case WPAnalyticsStatOpenedSharingManagement:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Sharing Management"];
