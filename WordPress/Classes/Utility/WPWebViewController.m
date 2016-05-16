@@ -456,7 +456,7 @@ static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
 - (NSURLRequest *)newRequestForWebsite
 {
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
+    NSString *userAgent = [WPUserAgent wordPressUserAgent];
     NSURLRequest *request;
     if (!self.needsLogin) {
         request = [WPURLRequest requestWithURL:self.url userAgent:userAgent];
