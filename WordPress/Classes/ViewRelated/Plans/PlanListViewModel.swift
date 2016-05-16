@@ -39,29 +39,18 @@ enum PlanListViewModel {
     }
 
     private var footerTitle: NSAttributedString {
-        let bodyColor = WPStyleGuide.greyDarken10().hexString()
-        let linkColor = WPStyleGuide.wordPressBlue().hexString()
-
-        let bodyStyles = "body { font-family: -apple-system; font-size: 12px; color: \(bodyColor); }"
-        let linkStyles = "a { text-decoration: none; color: \(linkColor); }"
+        let bodyColor = WPStyleGuide.greyDarken10()
+        let linkColor = WPStyleGuide.wordPressBlue()
 
         // Non-breaking space entity prevents an orphan word if the text wraps
         let tos = NSLocalizedString("By checking out, you agree to our <a>fascinating terms and&nbsp;conditions</a>.", comment: "Terms of Service link displayed when a user is making a purchase. Text inside <a> tags will be highlighted.")
-        let styledTos = "<style>" + bodyStyles + linkStyles + "</style>" + tos
 
-        let attributedTos = try! NSMutableAttributedString(
-            data: styledTos.dataUsingEncoding(NSUTF8StringEncoding)!,
-            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
-            documentAttributes: nil)
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(12),
+                                                                   NSForegroundColorAttributeName: bodyColor ],
+                                                 .ATagAttribute: [ NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleNone.rawValue,
+                                                                   NSForegroundColorAttributeName: linkColor] ]
 
-        // Apply a paragaraph style to remove extra padding at the top and bottom
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 0
-        paragraphStyle.paragraphSpacingBefore = 0
-
-        attributedTos.addAttribute(NSParagraphStyleAttributeName,
-                                   value: paragraphStyle,
-                                   range: NSMakeRange(0, attributedTos.string.characters.count - 1))
+        let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)
 
         return attributedTos
     }
