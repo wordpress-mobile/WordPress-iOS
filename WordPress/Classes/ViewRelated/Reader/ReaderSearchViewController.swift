@@ -9,9 +9,12 @@ import Gridicons
 @objc public class ReaderSearchViewController : UIViewController
 {
     @IBOutlet private weak var searchBar: UISearchBar!
-    private var streamController: ReaderStreamViewController!
+    @IBOutlet private weak var label: UILabel!
 
+    private var backgroundTapRecognizer: UITapGestureRecognizer!
+    private var streamController: ReaderStreamViewController!
     private let searchBarSearchIconSize = CGFloat(13.0)
+
 
     /// A convenience method for instantiating the controller from the storyboard.
     ///
@@ -31,13 +34,35 @@ import Gridicons
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
+
+        WPStyleGuide.configureColorsForView(view, andTableView: nil)
         setupSearchBar()
+        configureLabel()
+        configureBackgroundTapRecognizer()
+    }
+
+
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderSearchViewController.handleKeyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderSearchViewController.handleKeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+
+
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Dismiss the keyboard if it was visible.
+        endSearch()
     }
 
 
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         streamController = segue.destinationViewController as? ReaderStreamViewController
     }
+
 
 
     // MARK: - Configuration
@@ -52,6 +77,7 @@ import Gridicons
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
 
+        searchBar.autocapitalizationType = .None
         searchBar.translucent = false
         searchBar.tintColor = WPStyleGuide.grey()
         searchBar.barTintColor = WPStyleGuide.greyLighten30()
@@ -66,7 +92,28 @@ import Gridicons
     }
 
 
+    func configureLabel() {
+        let text = NSLocalizedString("What would you like to find?", comment: "A short message that is a call to action for the Reader's Search feature.")
+        let attributes = WPNUXUtility.titleAttributesWithColor(WPStyleGuide.greyDarken20()) as! [String: AnyObject]
+        label.attributedText = NSAttributedString(string: text, attributes: attributes)
+    }
+
+
+    func configureBackgroundTapRecognizer() {
+        backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
+        backgroundTapRecognizer.cancelsTouchesInView = true
+        backgroundTapRecognizer.enabled = false
+        view.addGestureRecognizer(backgroundTapRecognizer)
+    }
+
+
     // MARK: - Actions
+
+
+    func endSearch() {
+        searchBar.resignFirstResponder()
+    }
+
 
     /// Constructs a ReaderSearchTopic from the search phrase and sets the
     /// embedded stream to the topic.
@@ -81,6 +128,25 @@ import Gridicons
 
         let topic = service.searchTopicForSearchPhrase(phrase)
         streamController.readerTopic = topic
+
+        // Hide the starting label now that a topic has been set.
+        label.hidden = true
+        endSearch()
+    }
+
+
+    func handleBackgroundTap(gesture: UITapGestureRecognizer) {
+        endSearch()
+    }
+
+
+    func handleKeyboardDidShow(notification: NSNotification) {
+        backgroundTapRecognizer.enabled = true
+    }
+
+
+    func handleKeyboardWillHide(notification: NSNotification) {
+        backgroundTapRecognizer.enabled = false
     }
 }
 
@@ -92,7 +158,7 @@ extension ReaderSearchViewController : UISearchBarDelegate {
     }
 
     public func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+        endSearch()
     }
 
 }
