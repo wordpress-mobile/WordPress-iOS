@@ -2,6 +2,7 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
+#import <WordPressShared/WPDeviceIdentification.h>
 
 @import Gridicons;
 
@@ -96,6 +97,9 @@
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
+    if (![WPDeviceIdentification isRetina]) {
+        contentView.layer.borderWidth = MenusDesignStrokeWidth * 2;
+    }
     contentView.backgroundColor = [UIColor whiteColor];
     
     NSAssert(_stackView != nil, @"stackView is nil");
