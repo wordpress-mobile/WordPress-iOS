@@ -552,7 +552,7 @@ import WordPressComAnalytics
             navigationItem.rightBarButtonItems = nil
             return
         }
-        if ReaderHelpers.topicIsSearchTopic(topic) {
+        if ReaderHelpers.isTopicSearchTopic(topic) {
             navigationItem.rightBarButtonItems = nil
             return
         }
