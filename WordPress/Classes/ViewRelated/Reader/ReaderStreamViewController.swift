@@ -161,6 +161,10 @@ import WordPressComAnalytics
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Disable the view until we have a topic.  This prevents a premature
+        // pull to refresh animation.
+        view.userInteractionEnabled = readerTopic != nil
+
         setupCellsForLayout()
         setupTableView()
         setupFooterView()
@@ -494,6 +498,9 @@ import WordPressComAnalytics
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        // Enable the view now that we have a topic.
+        view.userInteractionEnabled = true
+
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let account = service.defaultWordPressComAccount()
@@ -562,6 +569,7 @@ import WordPressComAnalytics
                                      action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
         navigationItem.rightBarButtonItem = button
     }
+
 
     // MARK: - Instance Methods
 
