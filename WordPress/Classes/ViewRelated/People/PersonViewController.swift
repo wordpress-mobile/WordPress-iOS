@@ -159,10 +159,15 @@ private extension PersonViewController {
     func removeWasPressed() {
         let name = person.firstName?.nonEmptyString() ?? person.username
         let title = NSLocalizedString("Remove User", comment: "Remove User Alert Title")
-        let message = NSLocalizedString("If you remove \(name), that user will no longer be able to " +
-                                        "access this site, but any content that was created by \(name) " +
-                                        "will remain on the site.\n\nWould you still like to remove this user?",
-                                        comment: "Remove User Confirmation Message")
+        let messageFirstLine = NSLocalizedString(
+            "If you remove " + name + ", that user will no longer be able to access this site, " +
+            "but any content that was created by " + name + " will remain on the site.",
+            comment: "Remove User Warning")
+
+        let messageSecondLine = NSLocalizedString("Would you still like to remove this user?",
+            comment: "Remove User Confirmation")
+
+        let message = messageFirstLine + "\n\n" + messageSecondLine
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
