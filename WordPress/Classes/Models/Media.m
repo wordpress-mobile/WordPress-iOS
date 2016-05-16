@@ -130,7 +130,8 @@
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
 
-- (void)prepareForDeletion {
+- (void)prepareForDeletion
+{
     NSError *error = nil;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:self.absoluteLocalURL] &&
