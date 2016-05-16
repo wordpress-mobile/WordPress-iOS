@@ -676,30 +676,30 @@ static NSString * const MediaDirectory = @"Media";
 + (void)cleanUnusedMediaFileFromTmpDir
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
-        
+
         // Fetch Media URL's and return them as Dictionary Results:
         // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
-        NSString *localUrlProperty      = NSStringFromSelector(@selector(localURL));
-        NSString *localThumbUrlProperty      = NSStringFromSelector(@selector(localThumbnailURL));
+        NSString *localUrlProperty = NSStringFromSelector(@selector(localURL));
+        NSString *localThumbUrlProperty = NSStringFromSelector(@selector(localThumbnailURL));
 
-        NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
-        fetchRequest.entity             = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
-        fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"blog != NULL"];
-        
-        fetchRequest.propertiesToFetch  = @[ localUrlProperty, localThumbUrlProperty ];
-        fetchRequest.resultType         = NSDictionaryResultType;
-        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog != NULL"];
+
+        fetchRequest.propertiesToFetch = @[ localUrlProperty, localThumbUrlProperty ];
+        fetchRequest.resultType = NSDictionaryResultType;
+
         NSError *error = nil;
-        NSArray *mediaObjectsToKeep     = [context executeFetchRequest:fetchRequest error:&error];
-        
+        NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
+
         if (error) {
             DDLogError(@"Error cleaning up tmp files: %@", error.localizedDescription);
             return;
         }
-        
+
         // Get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", mediaObjectsToKeep.count);
         NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
@@ -717,7 +717,7 @@ static NSString * const MediaDirectory = @"Media";
                 [pathsToKeep addObject:absoluteThumbPath];
             }
         }
-        
+
         // Search for media extension files within the Media Folder
         NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
 
@@ -729,18 +729,15 @@ static NSString * const MediaDirectory = @"Media";
         for (NSURL *currentURL in contentsOfDir) {
             NSString *filepath = [currentURL path];
             NSString *extension = filepath.pathExtension.lowercaseString;
-            if (![mediaExtensions containsObject:extension]) {
+            if (![mediaExtensions containsObject:extension] ||
+                [pathsToKeep containsObject:filepath]) {
                 continue;
             }
-            
-            // If the file is not referenced in any post we can delete it
-            
-            if (![pathsToKeep containsObject:filepath]) {
-                NSError *nukeError = nil;
-                if ([[NSFileManager defaultManager] fileExistsAtPath:filepath] &&
-                    [[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
-                    DDLogError(@"Error [%@] while nuking unused Media at path [%@]", nukeError.localizedDescription, filepath);
-                }
+
+            NSError *nukeError = nil;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filepath] &&
+                [[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
+                DDLogError(@"Error [%@] while nuking unused Media at path [%@]", nukeError.localizedDescription, filepath);
             }
         }
     }];
