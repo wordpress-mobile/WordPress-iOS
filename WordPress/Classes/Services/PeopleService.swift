@@ -14,7 +14,7 @@ struct PeopleService {
 
     /// Designated Initializer.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - blog: Target Blog Instance
     ///
     init?(blog: Blog) {
@@ -27,9 +27,9 @@ struct PeopleService {
     }
 
 
-    /// Refreshes the team of Users associated to a blog.
+    /// Refreshes the collection of Users associated to a blog.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - completion: Closure to be executed on completion.
     ///
     func refreshUsers(completion: (Bool) -> Void) {
@@ -45,12 +45,12 @@ struct PeopleService {
 
     /// Updates a given person with the specified role.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - person: Instance of the person to be updated.
     ///     - role: New role that should be assigned
     ///     - failure: Optional closure, to be executed in case of error
     ///
-    /// -   Returns: A new Person instance, with the new Role already assigned.
+    /// - Returns: A new Person instance, with the new Role already assigned.
     ///
     func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> ())?) -> Person {
         guard let managedPerson = managedPersonWithID(person.ID) else {
@@ -86,7 +86,7 @@ struct PeopleService {
 
     /// Retrieves the collection of Roles, available for a given site
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - success: Closure to be executed in case of success. The collection of Roles will be passed on.
     ///     - failure: Closure to be executed in case of error
     ///
