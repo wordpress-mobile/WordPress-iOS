@@ -36,7 +36,7 @@ namespace :dependencies do
       lockfile = 'Podfile.lock'
       manifest = 'Pods/Manifest.lock'
       unless check_manifest(lockfile, manifest)
-        Rake::Task["dependencies:pods:install"].invoke
+        Rake::Task["dependencies:pod:install"].invoke
       end
     end
 
