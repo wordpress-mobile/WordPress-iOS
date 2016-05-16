@@ -8,6 +8,7 @@
 #import "MenuItemsVisualOrderingView.h"
 #import "ContextManager.h"
 #import "Menu+ViewDesign.h"
+#import <WordPressShared/WPDeviceIdentification.h>
 
 @interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
@@ -39,6 +40,9 @@
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
+    if (![WPDeviceIdentification isRetina]) {
+        self.view.layer.borderWidth = MenusDesignStrokeWidth * 2;
+    }
     
     _itemViews = [NSMutableSet set];
     _insertionViews = [NSMutableSet setWithCapacity:3];
