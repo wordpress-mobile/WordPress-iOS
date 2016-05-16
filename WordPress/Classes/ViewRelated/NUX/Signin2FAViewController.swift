@@ -6,8 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
-{
+@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!
@@ -92,22 +91,19 @@ import WordPressShared
         // Text: Verification Code SMS
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
-        let options = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
-        ]
 
-        let styledString = "<style>body {font-family: -apple-system, sans-serif; font-size:14px; color: #ffffff; text-align:center;}</style>" + string
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
 
-        guard let data = styledString.dataUsingEncoding(NSUTF8StringEncoding),
-            attributedCode = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil),
-            attributedCodeHighlighted = attributedCode.mutableCopy() as? NSMutableAttributedString
-            else {
-                return
-        }
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(14),
+                                                                   NSForegroundColorAttributeName: UIColor.whiteColor(),
+                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
 
+        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
+        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        if let titleLabel = sendCodeButton.titleLabel  {
+        if let titleLabel = sendCodeButton.titleLabel {
             titleLabel.lineBreakMode = .ByWordWrapping
             titleLabel.textAlignment = .Center
             titleLabel.numberOfLines = 3

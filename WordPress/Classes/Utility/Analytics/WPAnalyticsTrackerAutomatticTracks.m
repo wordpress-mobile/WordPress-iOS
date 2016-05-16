@@ -4,7 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import <Automattic_Tracks_iOS/TracksService.h>
+@import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
@@ -404,6 +404,13 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedPages:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
+            break;
+        case WPAnalyticsStatOpenedPlans:
+            eventName = @"site_menu_opened";
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
+            break;
+        case WPAnalyticsStatOpenedPlansComparison:
+            eventName = @"plans_compare";
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
