@@ -10,8 +10,9 @@ enum PlanListViewModel {
         switch self {
         case .Loading:
             return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details")
-            )
+                title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
+                accessoryView: PlansLoadingIndicatorView()
+        )
         case .Ready(_):
             return nil
         case .Error(_):
