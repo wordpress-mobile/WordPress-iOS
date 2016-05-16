@@ -448,7 +448,7 @@ static const CGFloat TitleViewHeight = 32.0;
 
     NSString *placeholderText = NSLocalizedString(@"Enter a URL or a tag to follow", @"Placeholder text prompting the user to type the name of the URL or tag they would like to follow.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setAttributedPlaceholder:attrPlacholderText];
 
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
