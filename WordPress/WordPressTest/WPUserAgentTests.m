@@ -44,4 +44,28 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     XCTAssertTrue([[self currentUserAgentFromUIWebView] isEqualToString:wordPressUA]);
 }
 
+- (void)testThatOriginalRemovalOfWPUseKeyUserAgentDoesntWork {
+    // get the original user agent
+    NSString *originalUserAgent = [self currentUserAgentFromUIWebView];
+    NSLog(@"OriginalUserAgent: %@", originalUserAgent);
+    // set a new one
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent:@"new user agent"}];
+    NSString *changedUserAgent = [self currentUserAgentFromUIWebView];
+    NSLog(@"changedUserAgent: %@", changedUserAgent);
+
+    // try to remove it using old method
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{}];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPUserAgentKeyUserAgent];
+    NSString *shouldBeOriginal = [self currentUserAgentFromUIWebView];
+    NSLog(@"shouldBeOriginal: %@", shouldBeOriginal);
+    XCTAssertNotEqualObjects(originalUserAgent, shouldBeOriginal, "This agent should be the same");
+}
+
+- (void)testThatCallingFromAnotherThreadWorks {
+    // get the original user agent
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        XCTAssertNoThrow([WPUserAgent wordPressUserAgent], @"Being called from out of main thread should work");
+    });
+}
+
 @end

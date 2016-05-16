@@ -9,15 +9,19 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     static NSString * _defaultUserAgent;
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent] != nil){
-            NSLog(@"To get the real default nothing should be already be set here");
-        }
+        NSDictionary * registrationDomain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+        NSString *storeCurrentUA = [registrationDomain objectForKey:WPUserAgentKeyUserAgent];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
+        
         if ([NSThread isMainThread]){
             _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
         } else {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
             });
+        }
+        if (storeCurrentUA) {
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
         }
     });
     NSAssert(_defaultUserAgent != nil, @"User agent shouldn't be nil");
