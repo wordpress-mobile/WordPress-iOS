@@ -92,7 +92,7 @@ struct PeopleService {
     ///     - person: The person that should be deleted
     ///     - failure: Closure to be executed on error
     ///
-    func deletePerson(person: Person, failure: (ErrorType -> Void)?) {
+    func deletePerson(person: Person, failure: (ErrorType -> Void)? = nil) {
         guard let managedPerson = managedPersonWithID(person.ID) else {
             return
         }

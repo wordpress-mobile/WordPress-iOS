@@ -92,7 +92,6 @@ final class PersonViewController : UITableViewController {
     }
 
 
-
     // MARK: - View Lifecyle Methods
 
     override func viewDidLoad() {
@@ -173,10 +172,16 @@ private extension PersonViewController {
         alert.addCancelActionWithTitle(cancelTitle)
 
         alert.addDestructiveActionWithTitle(removeTitle) { action in
-
+            self.removePerson()
         }
 
         alert.presentFromRootViewController()
+    }
+
+    func removePerson() {
+        let service = PeopleService(blog: blog)
+        service?.deletePerson(person)
+        navigationController?.popViewControllerAnimated(true)
     }
 
     func updateRole(newRole: Person.Role) {
