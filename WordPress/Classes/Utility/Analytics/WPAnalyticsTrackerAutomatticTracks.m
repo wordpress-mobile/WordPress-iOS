@@ -406,8 +406,8 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
             break;
         case WPAnalyticsStatOpenedPlans:
-            eventName = @"plans_view";
-            eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
+            eventName = @"site_menu_opened";
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
             break;
         case WPAnalyticsStatOpenedPlansComparison:
             eventName = @"plans_compare";
