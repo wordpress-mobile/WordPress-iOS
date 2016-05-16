@@ -30,23 +30,21 @@ class PeopleRemote: ServiceRemoteREST {
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
-        api.GET(path,
-            parameters: parameters,
-            success: {
-                (operation, responseObject) in
-                guard let response = responseObject as? [String: AnyObject],
-                          people = try? self.peopleFromResponse(response, siteID: siteID) else
-                {
-                    failure(Error.DecodeError)
-                    return
-                }
+        api.GET(path, parameters: parameters, success: { (operation, responseObject) in
+            guard let response = responseObject as? [String: AnyObject],
+                      people = try? self.peopleFromResponse(response, siteID: siteID) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
 
-                success(people)
-            },
-            failure: {
-                (operation, error) in
-                failure(error)
-            })
+            success(people)
+
+        }, failure: { (operation, error) in
+            failure(error)
+        })
+    }
+
     }
 
     /// Updates a given User, of the specified site, with a new Role.
