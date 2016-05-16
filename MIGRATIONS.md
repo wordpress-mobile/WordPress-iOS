@@ -8,6 +8,7 @@ data model as well as any custom migrations.
 - @jleandroperez 2016-05-13
 - `Person` updated `siteID` to Int64.
 - `Person` updated `userID` to Int64.
+- `Person` added Boolean `isFollower`.
 - @aerych 2016-05-12
 - Added `ReaderSearchTopic` entity. Represents a search in the reader.
 - @jleandroperez 2016-05-04
