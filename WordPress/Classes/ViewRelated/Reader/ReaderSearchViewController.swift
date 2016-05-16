@@ -1,6 +1,6 @@
 import Foundation
 
-/// Displays a version of the post stream with a search bar positioned above the 
+/// Displays a version of the post stream with a search bar positioned above the
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
@@ -30,7 +30,7 @@ import Foundation
 
     // MARK: - Actions
 
-    /// Constructs a ReaderSearchTopic from the search phrase and sets the 
+    /// Constructs a ReaderSearchTopic from the search phrase and sets the
     /// embedded stream to the topic.
     ///
     func performSearch() {
