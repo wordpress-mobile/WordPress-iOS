@@ -718,14 +718,14 @@ static NSString * const MediaDirectory = @"Media";
             }
         }
         
-        // Search for [JPG || JPEG || PNG || GIF] files within the Media Folder
+        // Search for media extension files within the Media Folder
+        NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
+
         NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self urlForMediaDirectory]
                                                                includingPropertiesForKeys:nil
                                                                                   options:NSDirectoryEnumerationSkipsHiddenFiles
                                                                                     error:nil];
 
-        NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
-        
         for (NSURL *currentURL in contentsOfDir) {
             NSString *filepath = [currentURL path];
             NSString *extension = filepath.pathExtension.lowercaseString;
