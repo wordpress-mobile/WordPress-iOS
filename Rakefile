@@ -98,7 +98,7 @@ end
 
 desc "Open the project in Xcode"
 task :xcode => [:dependencies] do
-  sh %w[open WordPress.xcworkspace]
+  sh "open WordPress.xcworkspace"
 end
 
 def check_manifest(file, manifest)
