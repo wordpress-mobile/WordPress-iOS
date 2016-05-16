@@ -157,6 +157,16 @@ static const NSInteger MinutesToReadThreshold = 2;
     }];
 }
 
+- (NSString *)endpointUrlForSearchPhrase:(NSString *)phrase
+{
+    NSAssert([phrase length] > 0, @"A search phrase is required.");
+
+    NSString *endpoint = [NSString stringWithFormat:@"read/search?q=%@", [phrase stringByUrlEncoding]];
+    NSString *absolutePath = [self pathForEndpoint:endpoint withVersion:ServiceRemoteRESTApiVersion_1_2];
+    NSURL *url = [NSURL URLWithString:absolutePath relativeToURL:self.api.baseURL];
+    return [url absoluteString];
+}
+
 
 #pragma mark - Private Methods
 

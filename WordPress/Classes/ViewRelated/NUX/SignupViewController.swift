@@ -309,7 +309,7 @@ import WordPressShared
 
 
     /// Because the signup form is larger than the average sign in form and has
-    /// a header, we want to tweak the vertical offset a bit rather than use 
+    /// a header, we want to tweak the vertical offset a bit rather than use
     /// the default.
     /// However, on a small screen we remove some UI elements so return the default size.
     ///
@@ -359,7 +359,7 @@ import WordPressShared
 
     /// Display a status message for the specified SignupStatus
     ///
-    /// - Paramaters: 
+    /// - Paramaters:
     ///     - status: SignupStatus
     ///
     func displayLoginMessageForStatus(status: SignupStatus) {
@@ -450,13 +450,13 @@ import WordPressShared
 
 
     // MARK: - Keyboard Notifications
-    
-    
+
+
     func handleKeyboardWillShow(notification: NSNotification) {
         keyboardWillShow(notification)
     }
-    
-    
+
+
     func handleKeyboardWillHide(notification: NSNotification) {
         keyboardWillHide(notification)
     }
@@ -483,7 +483,11 @@ extension SignupViewController: UITextFieldDelegate {
             return true
         }
 
-        let suggestedEmail = EmailCheckerHelper.suggestDomainCorrection(textField.text)
+        guard let email = textField.text else {
+            return true
+        }
+
+        let suggestedEmail = EmailTypoChecker.guessCorrection(email: email)
         if suggestedEmail != textField.text {
             textField.text = suggestedEmail
             didCorrectEmailOnce = true
@@ -497,7 +501,7 @@ extension SignupViewController: UITextFieldDelegate {
         if textField != usernameField || userDefinedSiteAddress {
             return
         }
-        // If the user has not customized the site name, then let it match the 
+        // If the user has not customized the site name, then let it match the
         // username they chose.
         loginFields.siteUrl = loginFields.username
         siteURLField.text = loginFields.username

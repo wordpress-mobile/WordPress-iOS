@@ -219,7 +219,7 @@ import WordPressShared
     }
 
 
-    /// Shows a prompt to the user regarding a reserved username. 
+    /// Shows a prompt to the user regarding a reserved username.
     ///
     /// - Parameters:
     ///     - username: The username that was entered.
