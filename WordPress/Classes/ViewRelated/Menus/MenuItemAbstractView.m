@@ -318,42 +318,42 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     CGContextSetLineWidth(context, 1.0);
     
     const CGFloat dashLength = 6.0;
-    const CGFloat dashFillPercentage = 60; // fill % of the line with dashes, rest with white space
+    const CGFloat dashFillPercentage = 60; // Fill % of the line with dashes, rest with white space.
     
     CGFloat(^spacingForLineLength)(CGFloat) = ^ CGFloat (CGFloat lineLength) {
-        // calculate the white spacing needed to fill the full line with dashes
+        // Calculate the white spacing needed to fill the full line with dashes
         const CGFloat dashFill = (lineLength * dashFillPercentage) / 100;
-        //// the white spacing is proportionate to amount of space the dashes will take
-        //// uses (dashFill - dashLength) to ensure there is one extra dash to touch the end of the line
+        //// The white spacing is proportionate to amount of space the dashes will take.
+        //// Uses (dashFill - dashLength) to ensure there is one extra dash to touch the end of the line.
         return ((lineLength - dashFill) * dashLength) / (dashFill - dashLength);
     };
     
     const CGFloat pointOffset = 0.5;
-    {
-        CGFloat dash[2] = {dashLength, spacingForLineLength(dashRect.size.width)};
-        CGContextSetLineDash(context, 0, dash, 2);
-        
-        const CGFloat leftX = dashRect.origin.x - pointOffset;
-        const CGFloat rightX = dashRect.origin.x + dashRect.size.width + pointOffset;
-        CGContextMoveToPoint(context, leftX, dashRect.origin.y);
-        CGContextAddLineToPoint(context, rightX, dashRect.origin.y);
-        CGContextMoveToPoint(context, leftX, dashRect.origin.y + dashRect.size.height);
-        CGContextAddLineToPoint(context, rightX, dashRect.origin.y + dashRect.size.height);
-        CGContextStrokePath(context);
-        
-    }
-    {
-        CGFloat dash[2] = {dashLength, spacingForLineLength(dashRect.size.height)};
-        CGContextSetLineDash(context, 0, dash, 2);
-        
-        const CGFloat topY = dashRect.origin.y - pointOffset;
-        const CGFloat bottomY = dashRect.origin.y + dashRect.size.height + pointOffset;
-        CGContextMoveToPoint(context, dashRect.origin.x, topY);
-        CGContextAddLineToPoint(context, dashRect.origin.x, bottomY);
-        CGContextMoveToPoint(context, dashRect.origin.x + dashRect.size.width, topY);
-        CGContextAddLineToPoint(context, dashRect.origin.x + dashRect.size.width, bottomY);
-        CGContextStrokePath(context);
-    }
+
+    // Draw the dashed lines.
+    // First draw the horiztonal top and bottom lines, from left to right.
+    CGFloat topBottomDashes[2] = {dashLength, spacingForLineLength(dashRect.size.width)};
+    CGContextSetLineDash(context, 0, topBottomDashes, 2);
+    
+    const CGFloat leftX = dashRect.origin.x - pointOffset;
+    const CGFloat rightX = dashRect.origin.x + dashRect.size.width + pointOffset;
+    CGContextMoveToPoint(context, leftX, dashRect.origin.y);
+    CGContextAddLineToPoint(context, rightX, dashRect.origin.y);
+    CGContextMoveToPoint(context, leftX, dashRect.origin.y + dashRect.size.height);
+    CGContextAddLineToPoint(context, rightX, dashRect.origin.y + dashRect.size.height);
+    CGContextStrokePath(context);
+
+    // Second draw the vertical left and right lines, from top to bottom.
+    CGFloat leftRightDashes[2] = {dashLength, spacingForLineLength(dashRect.size.height)};
+    CGContextSetLineDash(context, 0, leftRightDashes, 2);
+    
+    const CGFloat topY = dashRect.origin.y - pointOffset;
+    const CGFloat bottomY = dashRect.origin.y + dashRect.size.height + pointOffset;
+    CGContextMoveToPoint(context, dashRect.origin.x, topY);
+    CGContextAddLineToPoint(context, dashRect.origin.x, bottomY);
+    CGContextMoveToPoint(context, dashRect.origin.x + dashRect.size.width, topY);
+    CGContextAddLineToPoint(context, dashRect.origin.x + dashRect.size.width, bottomY);
+    CGContextStrokePath(context);
 }
 
 #pragma mark - MenuItemDrawingViewDelegate
