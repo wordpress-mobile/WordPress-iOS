@@ -502,6 +502,7 @@ import WordPressComAnalytics
         managedObjectContext().reset()
 
         configureTitleForTopic()
+        configureNavigationItemForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -544,6 +545,22 @@ import WordPressComAnalytics
         title = topic.title
     }
 
+
+    func configureNavigationItemForTopic() {
+        guard let topic = readerTopic else {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        if ReaderHelpers.topicIsSearchTopic(topic) {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        let button = UIBarButtonItem(image: UIImage(named: "icon-post-search"),
+                                     style: .Plain,
+                                     target: self,
+                                     action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
+        navigationItem.rightBarButtonItem = button
+    }
 
     // MARK: - Instance Methods
 
@@ -928,6 +945,14 @@ import WordPressComAnalytics
             return
         }
         syncHelper.syncContentWithUserInteraction(true)
+    }
+
+
+    /// Handle's the user tapping the search button.  Displays the search controller
+    ///
+    func handleSearchButtonTapped(sender: UIBarButtonItem) {
+        let controller = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
