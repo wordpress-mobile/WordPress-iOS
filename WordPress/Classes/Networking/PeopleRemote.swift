@@ -63,11 +63,11 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func updatePersonFor(siteID     : Int,
-                         personID   : Int,
-                         newRole    : Role,
-                         success    : (Person -> ())? = nil,
-                         failure    : (ErrorType -> ())? = nil)
+    func updatePersonFrom(siteID     : Int,
+                          personID   : Int,
+                          newRole    : Role,
+                          success    : (Person -> ())? = nil,
+                          failure    : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(personID)"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -90,6 +90,38 @@ class PeopleRemote: ServiceRemoteREST {
                     (operation, error) in
                     failure?(error)
                 })
+    }
+
+
+    /// Deletes or removes a user from a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated
+    ///     - personID: The ID of the person to be updated
+    ///     - reassignID: When present, all of the posts and pages that belong to `personID` will be reassigned
+    ///       to another person, with the specified ID.
+    ///     - success: Optional closure to be executed on success
+    ///     - failure: Optional closure to be executed on error.
+    ///
+    func deletePersonFrom(siteID     : Int,
+                          personID   : Int,
+                          reassignID : Int? = nil,
+                          success    : (Void -> Void)? = nil,
+                          failure    : (ErrorType -> Void)? = nil)
+    {
+        let endpoint = "sites/\(siteID)/users/\(personID)/delete"
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        var parameters = [String: AnyObject]()
+
+        if let reassignID = reassignID {
+            parameters["reassign"] = reassignID
+        }
+
+        api.POST(path, parameters: nil, success: { (operation, responseObject) in
+            success?()
+        }, failure: { (operation, error) in
+            failure?(error)
+        })
     }
 
 
