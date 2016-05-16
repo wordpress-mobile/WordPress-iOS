@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class MenusSelectionItem;
 
 @protocol MenusSelectionDetailViewDelegate;
@@ -10,7 +12,7 @@
  */
 @interface MenusSelectionDetailView : UIView
 
-@property (nonatomic, weak) id <MenusSelectionDetailViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenusSelectionDetailViewDelegate> delegate;
 
 /**
  Updates the design indicating the detailView is active, selected, or enabled.
@@ -38,3 +40,5 @@
 - (void)selectionDetailView:(MenusSelectionDetailView *)detailView tapGestureRecognized:(UITapGestureRecognizer *)tap;
 
 @end
+
+NS_ASSUME_NONNULL_END
