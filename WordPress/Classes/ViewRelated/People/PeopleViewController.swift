@@ -5,8 +5,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - Properties
 
+    /// Team's Blog
+    ///
     public var blog: Blog?
 
+    /// NoResults Helper
+    ///
+    private let noResultsView = WPNoResultsView()
+
+    /// Core Data FRC
+    ///
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID!)
@@ -18,7 +26,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return frc
     }()
 
-    private let noResultsView = WPNoResultsView()
+    /// Navigation Bar Custom Title
+    ///
+    @IBOutlet private var titleButton : NavBarTitleDropdownButton!
+
 
 
     // MARK: - UITableView Methods
@@ -60,12 +71,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
         do {
             try resultsController.performFetch()
         } catch {
             DDLogSwift.logError("Error fetching People: \(error)")
         }
 
+        navigationItem.titleView = titleButton
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
