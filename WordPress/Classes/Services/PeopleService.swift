@@ -14,8 +14,7 @@ struct PeopleService {
 
     /// Designated Initializer.
     ///
-    /// - Parameters:
-    ///     - blog: Target Blog Instance
+    /// - Parameter blog: Target Blog Instance
     ///
     init?(blog: Blog) {
         guard let api = blog.restApi() else {
@@ -29,8 +28,7 @@ struct PeopleService {
 
     /// Refreshes the collection of Users associated to a blog.
     ///
-    /// - Parameters:
-    ///     - completion: Closure to be executed on completion.
+    /// - Parameter completion: Closure to be executed on completion.
     ///
     func refreshUsers(completion: (Bool) -> Void) {
         remote.getUsersFor(siteID, success: { people in
@@ -42,6 +40,23 @@ struct PeopleService {
             completion(false)
         })
     }
+
+
+    /// Refreshes the collection of Followers associated to a blog.
+    ///
+    /// - Parameter completion: Closure to be executed on completion.
+    ///
+    func refreshFollowers(completion: (Bool -> Void)) {
+        remote.getFollowersFor(siteID, success: { people in
+            self.mergeTeam(people)
+            completion(true)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            completion(false)
+        })
+    }
+
 
     /// Updates a given person with the specified role.
     ///

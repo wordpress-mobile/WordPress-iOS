@@ -19,6 +19,7 @@ struct Person: Equatable {
     let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
+    let isFollower: Bool
 
     enum Role: Int, Comparable, Equatable, CustomStringConvertible {
         case SuperAdmin
@@ -47,6 +48,7 @@ extension Person {
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
+        isFollower = managedPerson.isFollower
     }
 
     var fullName: String {
