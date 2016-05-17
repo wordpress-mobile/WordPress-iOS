@@ -132,12 +132,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         displayModePicker()
     }
 
-    // MARK: - Private Helpers
 
-    private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
-        let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
-        let person = Person(managedPerson: managedPerson)
-        return person
     }
 
     private func displayNoResultsIfNeeded() {
@@ -151,6 +146,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private func hideNoResultsIfNeeded() {
         noResultsView.removeFromSuperview()
+    }
+
+    // MARK: - Private Helpers
+
+    private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
+        let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
+        let person = Person(managedPerson: managedPerson)
+        return person
     }
 
     private func displayModePicker() {
