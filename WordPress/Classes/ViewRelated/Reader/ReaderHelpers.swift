@@ -1,50 +1,61 @@
 import Foundation
 import WordPressComAnalytics
 
+/// A collection of helper methods used by the Reader.
+///
 @objc public class ReaderHelpers : NSObject {
 
 
     // MARK: - Topic Helpers
 
-    /**
-    Check if the specified topic is a default topic
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is a default topic
-    */
+    /// Check if the specified topic is a default topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a default topic
+    ///
     public class func isTopicDefault(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderDefaultTopic)
     }
 
-    /**
-    Check if the specified topic is a list
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is a list topic
-    */
+    /// Check if the specified topic is a list
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a list topic
+    ///
     public class func isTopicList(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderListTopic)
     }
 
-    /**
-    Check if the specified topic is a site topic
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is a site topic
-    */
+    /// Check if the specified topic is a site topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a site topic
+    ///
     public class func isTopicSite(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderSiteTopic)
     }
 
-    /**
-    Check if the specified topic is a tag
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is a tag topic
-    */
+    /// Check if the specified topic is a tag topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a tag topic
+    ///
     public class func isTopicTag(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderTagTopic)
     }
+
 
     /// Check if the specified topic is a search topic
     ///
@@ -58,45 +69,52 @@ import WordPressComAnalytics
     }
 
 
-    /**
-    Check if the specified topic is for Freshly Pressed
-
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is for Freshly Pressed
-    */
+    /// Check if the specified topic is for Freshly Pressed
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Freshly Pressed
+    ///
     public class func topicIsFreshlyPressed(topic: ReaderAbstractTopic) -> Bool {
         let path = topic.path as NSString!
         return path.hasSuffix("/freshly-pressed")
     }
 
-    /**
-     Check if the specified topic is for Discover
 
-     @param topic A ReaderAbstractTopic
-     @return True if the topic is for Discover
-     */
+    /// Check if the specified topic is for Discover
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Discover
+    ///
     public class func topicIsDiscover(topic: ReaderAbstractTopic) -> Bool {
         let path = topic.path as NSString!
         return path.containsString("/read/sites/53424024/posts")
     }
 
-    /**
-    Check if the specified topic is for Following
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is for Following
-    */
+    /// Check if the specified topic is for Following
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Following
+    ///
     public class func topicIsFollowing(topic: ReaderAbstractTopic) -> Bool {
         let path = topic.path as NSString!
         return path.hasSuffix("/read/following")
     }
 
-    /**
-    Check if the specified topic is for Posts I Like
 
-    @param topic A ReaderAbstractTopic
-    @return True if the topic is for Posts I Like
-    */
+    /// Check if the specified topic is for Posts I Like
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Posts I Like
+    ///
     public class func topicIsLiked(topic: ReaderAbstractTopic) -> Bool {
         let path = topic.path as NSString!
         return path.hasSuffix("/read/liked")
@@ -174,7 +192,7 @@ import WordPressComAnalytics
             NSString(format:"t=%d", arc4random())
         ]
 
-        let userAgent = WordPressAppDelegate.sharedInstance().userAgent.wordPressUserAgent
+        let userAgent = WPUserAgent.wordPressUserAgent()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
         let url = NSURL(string: path)
 
