@@ -50,6 +50,7 @@ public final class WordPressComRestApi: NSObject
     public init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
+        super.init()
     }
 
     deinit {
