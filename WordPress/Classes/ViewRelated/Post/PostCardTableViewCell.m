@@ -257,13 +257,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 #pragma mark - ConfigurablePostView
 
-- (void)configureWithPost:(Post *)post
+- (void)configureWithPost:(AbstractPost *)post
              withDelegate:(id<PostCardTableViewCellDelegate>)delegate
 {
     [self configureWithPost:post withDelegate:delegate forLayoutOnly:NO];
 }
 
-- (void)configureWithPost:(nonnull Post*)post
+- (void)configureWithPost:(nonnull AbstractPost *)post
              withDelegate:(nonnull id<PostCardTableViewCellDelegate>)delegate
             forLayoutOnly:(BOOL)layoutOnly
 {

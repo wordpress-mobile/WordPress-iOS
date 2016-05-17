@@ -383,7 +383,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
                 //postCell.configureCell?(post, layoutOnly: layoutOnly)
                 configurablePostView.configureWithPost(post, withDelegate: self, forLayoutOnly: layoutOnly)
-
             }
         }
     }
