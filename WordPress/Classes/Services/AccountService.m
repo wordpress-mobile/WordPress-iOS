@@ -130,7 +130,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
-    id<AccountServiceRemote> remote = [[AccountServiceRemoteREST alloc] initWithApi:[WordPressComApi anonymousApi]];
+    id<AccountServiceRemote> remote = [self remoteForAnonymous];
     [remote isEmailAvailable:email success:^(BOOL available) {
         if (success) {
             success(available);
@@ -145,7 +145,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    id<AccountServiceRemote> remote = [[AccountServiceRemoteREST alloc] initWithApi:[WordPressComApi anonymousApi]];
+    id<AccountServiceRemote> remote = [self remoteForAnonymous];
     [remote requestWPComAuthLinkForEmail:email success:^{
         if (success) {
             success();
@@ -254,13 +254,18 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }];
 }
 
+- (id<AccountServiceRemote>)remoteForAnonymous
+{
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:[AccountServiceRemoteREST anonymousWordPressComRestApi]];
+}
+
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
-    if (account.restApi == nil) {
+    if (account.wordPressComRestApi == nil) {
         return nil;
     }
 
-    return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
 - (void)updateAccount:(WPAccount *)account withUserDetails:(RemoteUser *)userDetails
