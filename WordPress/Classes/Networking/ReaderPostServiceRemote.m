@@ -91,6 +91,20 @@ static const NSInteger MinutesToReadThreshold = 2;
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
 
+- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
+                         count:(NSUInteger)count
+                        offset:(NSUInteger)offset
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
+{
+    NSDictionary *params = @{@"number": @(count),
+                             @"offset": @(offset),
+                             @"order": @"DESC",
+                             @"meta":@"site,feed"
+                             };
+    [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
+}
+
 - (void)fetchPost:(NSUInteger)postID
          fromSite:(NSUInteger)siteID
           success:(void (^)(RemoteReaderPost *post))success

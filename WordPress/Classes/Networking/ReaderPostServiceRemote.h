@@ -20,6 +20,20 @@
                        failure:(void (^)(NSError *error))failure;
 
 /**
+ Fetches the posts from the specified remote endpoint
+
+ @param count number of posts to fetch.
+ @param offset The offset of the fetch.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
+                         count:(NSUInteger)count
+                        offset:(NSUInteger)offset
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure;
+
+/**
  Fetches a specific post from the specified remote site
 
  @param postID the ID of the post to fetch
