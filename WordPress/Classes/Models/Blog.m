@@ -442,6 +442,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isHostedAtWPcom];
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
+        case BlogFeatureDomains:
+            return [self isHostedAtWPcom] && [self supportsSiteManagementServices];
     }
 }
 
