@@ -68,7 +68,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
-// TODO: Top space on restore
+
         cell.bindViewModel(viewModel)
 
         return cell
@@ -139,6 +139,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         do {
             try resultsController.performFetch()
+
+            // Failsafe:
+            // This was causing a glitch after State Restoration. Top Section padding was being initially
+            // set with an incorrect value, and subsequent reloads weren't picking up the right value.
+            //
+            if isHorizontalSizeClassUnspecified() {
+                return
+            }
+
             tableView.reloadData()
         } catch {
             DDLogSwift.logError("Error fetching People: \(error)")
