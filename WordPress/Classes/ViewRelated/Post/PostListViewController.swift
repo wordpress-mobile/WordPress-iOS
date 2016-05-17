@@ -680,21 +680,15 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         let filterType = currentPostListFilter().filterType
-        var title: String
 
         switch filterType {
         case .Scheduled:
-            title = NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
-            break
+            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
         case .Trashed:
-            title = ""
-            break
+            return ""
         default:
-            title = NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
-            break
+            return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
         }
-
-        return title
     }
 
     func noResultsTitle() -> String {
@@ -715,23 +709,16 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         let filterType = currentPostListFilter().filterType
-        var message: String
 
         switch filterType {
         case .Draft:
-            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-            break
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         case .Scheduled:
-            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-            break
+            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         case .Trashed:
-            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
-            break
+            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
         default:
-            message = NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-            break
+            return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         }
-
-        return message
     }
 }
