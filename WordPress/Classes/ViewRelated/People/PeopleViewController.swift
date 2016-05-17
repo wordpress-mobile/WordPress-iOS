@@ -9,6 +9,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     public var blog: Blog?
 
+    /// Mode: Team / Followers
+    ///
+    private var mode : Mode! {
+        didSet {
+            refreshInterface()
+            refreshTeam()
+        }
+    }
+
     /// NoResults Helper
     ///
     private let noResultsView = WPNoResultsView()
@@ -86,8 +95,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
 
-        displayNoResultsIfNeeded()
-        refresh()
+        // By default, let's display the Blog's Users
+        mode = .Team
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -182,6 +191,25 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return viewController
     }
 
+
+
+    // MARK: - Private Helpers
+
+    private enum Mode : String {
+        case Team       = "team"
+        case Followers  = "followers"
+
+        var title: String {
+            switch self {
+            case .Team:
+                return NSLocalizedString("Team", comment: "Blog Users")
+            case .Followers:
+                return NSLocalizedString("Followers", comment: "Blog Followers")
+            }
+        }
+
+        static let allModes = [Mode.Team, .Followers]
+    }
 
 
     // MARK: - Constants
