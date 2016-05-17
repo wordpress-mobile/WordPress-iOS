@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
-@property (nonatomic, weak) id<PostCardTableViewCellDelegate> delegate;
+@property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // the cell if needed.
     [self preserveStartingConstraintConstants];
     if (self.post) {
-        [self configureWithPost:self.post withDelegate:self.delegate forLayoutOnly:self.configureForLayoutOnly];
+        [self configureWithPost:self.post forLayoutOnly:self.configureForLayoutOnly];
     }
 }
 
@@ -258,17 +258,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 #pragma mark - ConfigurablePostView
 
 - (void)configureWithPost:(AbstractPost *)post
-             withDelegate:(id<PostCardTableViewCellDelegate>)delegate
 {
-    [self configureWithPost:post withDelegate:delegate forLayoutOnly:NO];
+    [self configureWithPost:post forLayoutOnly:NO];
 }
 
 - (void)configureWithPost:(nonnull AbstractPost *)post
-             withDelegate:(nonnull id<PostCardTableViewCellDelegate>)delegate
             forLayoutOnly:(BOOL)layoutOnly
 {
     self.configureForLayoutOnly = layoutOnly;
-    self.delegate = delegate;
     self.post = post;
 
     if (!self.didPreserveStartingConstraintConstants) {
@@ -285,6 +282,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self configureActionBar];
 
     [self setNeedsUpdateConstraints];
+}
+
+#pragma mark - InteractivePostView
+
+- (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
+{
+    self.delegate = delegate;
 }
 
 #pragma mark - Configuration

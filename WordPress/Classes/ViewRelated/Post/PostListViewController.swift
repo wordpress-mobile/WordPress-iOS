@@ -3,7 +3,7 @@ import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
+class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -376,15 +376,20 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        if let configurablePostView = cell as? ConfigurablePostView {
-
-            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post {
-                let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
-
-                //postCell.configureCell?(post, layoutOnly: layoutOnly)
-                configurablePostView.configureWithPost(post, withDelegate: self, forLayoutOnly: layoutOnly)
-            }
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            fatalError("Expected a post object.")
         }
+
+        guard let interactivePostView = cell as? InteractivePostView,
+            let configurablePostView = cell as? ConfigurablePostView else {
+
+            fatalError("Cell does not implement the required protocols")
+        }
+
+        interactivePostView.setInteractionDelegate(self)
+
+        let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
+        configurablePostView.configureWithPost(post, forLayoutOnly: layoutOnly)
     }
 
     private func cellIdentifierForPost(post: Post) -> String {
@@ -586,7 +591,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
-    // MARK: - PostCardTableViewCellDelegate
+    // MARK: - InteractivePostViewDelegate
 
     func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
         editPost(post)
