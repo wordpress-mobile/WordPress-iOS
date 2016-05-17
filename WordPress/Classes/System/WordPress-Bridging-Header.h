@@ -30,6 +30,9 @@
 
 #import "HelpshiftUtils.h"
 
+#import "InteractivePostView.h"
+#import "InteractivePostViewDelegate.h"
+
 #import "LoginFacade.h"
 #import "LoginFields.h"
 #import "LoginViewController.h"
@@ -60,7 +63,6 @@
 #import "PostContentProvider.h"
 #import "Post.h"
 #import "PostCardTableViewCell.h"
-#import "PostCardTableViewCellDelegate.h"
 #import "PostContentProvider.h"
 #import "PostListFilter.h"
 #import "PostListFooterView.h"

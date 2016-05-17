@@ -1,10 +1,10 @@
 #import "RestorePostTableViewCell.h"
-#import "PostCardTableViewCellDelegate.h"
+#import "InteractivePostViewDelegate.h"
 #import "WPStyleGuide+Posts.h"
 
 @interface RestorePostTableViewCell()
 
-@property (nonatomic, weak) id<PostCardTableViewCellDelegate> delegate;
+@property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) IBOutlet UIView *innerContentView;
 @property (nonatomic, strong) IBOutlet UIView *shadowView;
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
@@ -63,17 +63,21 @@
 #pragma mark - ConfigurablePostView
 
 - (void)configureWithPost:(AbstractPost *)post
-             withDelegate:(id<PostCardTableViewCellDelegate>)delegate
 {
-    self.delegate = delegate;
     self.post = post;
 }
 
 - (void)configureWithPost:(AbstractPost *)post
-             withDelegate:(id<PostCardTableViewCellDelegate>)delegate
             forLayoutOnly:(BOOL)layoutOnly
 {
-    [self configureWithPost:post withDelegate:delegate];
+    [self configureWithPost:post];
+}
+
+#pragma mark - InteractivePostView
+
+- (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
+{
+    self.delegate = delegate;
 }
 
 
