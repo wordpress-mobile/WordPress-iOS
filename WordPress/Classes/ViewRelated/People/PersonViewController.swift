@@ -92,7 +92,6 @@ final class PersonViewController : UITableViewController {
     }
 
 
-
     // MARK: - View Lifecyle Methods
 
     override func viewDidLoad() {
@@ -158,7 +157,36 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
-// TODO: JLP May.3.2016. To be implemented as part of #5288
+        let name = person.firstName?.nonEmptyString() ?? person.username
+        let title = NSLocalizedString("Remove User", comment: "Remove User Alert Title")
+        let messageFirstLine = NSLocalizedString(
+            "If you remove " + name + ", that user will no longer be able to access this site, " +
+            "but any content that was created by " + name + " will remain on the site.",
+            comment: "Remove User Warning")
+
+        let messageSecondLine = NSLocalizedString("Would you still like to remove this user?",
+            comment: "Remove User Confirmation")
+
+        let message = messageFirstLine + "\n\n" + messageSecondLine
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
+        let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+
+        alert.addCancelActionWithTitle(cancelTitle)
+
+        alert.addDestructiveActionWithTitle(removeTitle) { action in
+            self.removePerson()
+        }
+
+        alert.presentFromRootViewController()
+    }
+
+    func removePerson() {
+        let service = PeopleService(blog: blog)
+        service?.deletePerson(person)
+        navigationController?.popViewControllerAnimated(true)
     }
 
     func updateRole(newRole: Person.Role) {
@@ -308,10 +336,7 @@ private extension PersonViewController {
     }
 
     var isRemoveEnabled : Bool {
-// TODO: JLP May.3.2016. To be uncommented as part of #5288
-        return false
-
-//        // Note: YES, ListUsers. Brought from Calypso's code
-//        return blog.isUserCapableOf(.ListUsers) && isSomeoneElse
+        // Note: YES, ListUsers. Brought from Calypso's code
+        return blog.isUserCapableOf(.ListUsers) && isMyself == false
     }
 }
