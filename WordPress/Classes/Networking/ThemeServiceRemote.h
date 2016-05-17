@@ -1,4 +1,4 @@
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 @class Blog;
 @class RemoteTheme;
@@ -9,7 +9,7 @@ typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *
 typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
-@interface ThemeServiceRemote : ServiceRemoteREST
+@interface ThemeServiceRemote : ServiceRemoteWordPressComREST
 
 #pragma mark - Getting themes
 
@@ -20,9 +20,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)getActiveThemeForBlogId:(NSNumber *)blogId
+- (NSProgress *)getActiveThemeForBlogId:(NSNumber *)blogId
                                  success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                                  failure:(ThemeServiceRemoteFailureBlock)failure;
 
@@ -33,9 +33,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)getPurchasedThemesForBlogId:(NSNumber *)blogId
+- (NSProgress *)getPurchasedThemesForBlogId:(NSNumber *)blogId
                                      success:(ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)success
                                      failure:(ThemeServiceRemoteFailureBlock)failure;
 
@@ -46,9 +46,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)getThemeId:(NSString*)themeId
+- (NSProgress *)getThemeId:(NSString*)themeId
                     success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                     failure:(ThemeServiceRemoteFailureBlock)failure;
 
@@ -61,9 +61,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)getThemesPage:(NSInteger)page
+- (NSProgress *)getThemesPage:(NSInteger)page
                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                        failure:(ThemeServiceRemoteFailureBlock)failure;
 
@@ -80,9 +80,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)getThemesForBlogId:(NSNumber *)blogId
+- (NSProgress *)getThemesForBlogId:(NSNumber *)blogId
                                page:(NSInteger)page
                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                             failure:(ThemeServiceRemoteFailureBlock)failure;
@@ -97,9 +97,9 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSOperation *)activateThemeId:(NSString*)themeId
+- (NSProgress *)activateThemeId:(NSString*)themeId
                        forBlogId:(NSNumber *)blogId
                          success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure;

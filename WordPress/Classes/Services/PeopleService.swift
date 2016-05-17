@@ -63,7 +63,7 @@ struct PeopleService {
         let pristineRole = managedPerson.role
 
         // Hit the Backend
-        remote.updatePersonFor(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+        remote.updatePersonFrom(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
 
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
 
@@ -84,6 +84,34 @@ struct PeopleService {
         ContextManager.sharedInstance().saveContext(context)
 
         return Person(managedPerson: managedPerson)
+    }
+
+    /// Deletes or removes a given person.
+    ///
+    /// -   Parameters:
+    ///     - person: The person that should be deleted
+    ///     - failure: Closure to be executed on error
+    ///
+    func deletePerson(person: Person, failure: (ErrorType -> Void)? = nil) {
+        guard let managedPerson = managedPersonWithID(person.ID) else {
+            return
+        }
+
+        // Hit the Backend
+        remote.deletePersonFrom(siteID, personID: person.ID, failure: { error in
+
+            DDLogSwift.logError("### Error while deleting person \(person.ID) from blog \(self.siteID): \(error)")
+
+            // Revert the deletion
+            self.createManagedPerson(person)
+            ContextManager.sharedInstance().saveContext(self.context)
+
+            failure?(error)
+        })
+
+        // Pre-emptively nuke the entity
+        context.deleteObject(managedPerson)
+        ContextManager.sharedInstance().saveContext(context)
     }
 
     /// Retrieves the collection of Roles, available for a given site
