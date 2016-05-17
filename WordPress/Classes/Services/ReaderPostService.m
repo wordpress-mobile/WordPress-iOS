@@ -18,7 +18,10 @@
 #import "WPAppAnalytics.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
-NSUInteger const ReaderPostServiceNumberToSyncForSearch = 5; // Search endpoint is currently capped at 20. EJ 2016-05-13
+// NOTE: The search endpoint is currently capped to max results of 20 and returns
+// a 500 error if more are requested.
+// For performance reasons, request fewer results. EJ 2016-05-13
+NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
