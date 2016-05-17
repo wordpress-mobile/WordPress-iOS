@@ -186,6 +186,8 @@ private extension PersonViewController {
     func removePerson() {
         let service = PeopleService(blog: blog)
         service?.deletePerson(person)
+
+// TODO: Remove Followers
         navigationController?.popViewControllerAnimated(true)
     }
 
@@ -332,7 +334,7 @@ private extension PersonViewController {
     }
 
     var isPromoteEnabled : Bool {
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false
+        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && person.isFollower == false
     }
 
     var isRemoveEnabled : Bool {

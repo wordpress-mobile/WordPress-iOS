@@ -68,9 +68,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
-// TODO: Tap on Followers
 // TODO: Top space on restore
-// TODO: Followers Cell
         cell.bindViewModel(viewModel)
 
         return cell
