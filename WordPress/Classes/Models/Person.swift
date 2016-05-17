@@ -28,6 +28,7 @@ struct Person: Equatable {
         case Author
         case Contributor
         case Subscriber
+        case Follower
         case Unsupported
     }
 }
@@ -79,6 +80,8 @@ extension Person.Role {
             self = .SuperAdmin
         case "subscriber":
             self = .Subscriber
+        case "follower":
+            self = .Follower
         default:
             self = .Unsupported
         }
@@ -97,6 +100,8 @@ extension Person.Role {
         case .Contributor:
             return WPStyleGuide.People.contributorColor
         case .Subscriber:
+            return WPStyleGuide.People.contributorColor
+        case .Follower:
             return WPStyleGuide.People.contributorColor
         case .Unsupported:
             return WPStyleGuide.People.contributorColor
@@ -117,6 +122,8 @@ extension Person.Role {
             return NSLocalizedString("Contributor", comment: "User role badge")
         case .Subscriber:
             return NSLocalizedString("Subscriber", comment: "User role badge")
+        case .Follower:
+            return NSLocalizedString("Follower", comment: "User role badge")
         case .Unsupported:
             return NSLocalizedString("Unsupported", comment: "User role badge")
         }
@@ -136,6 +143,8 @@ extension Person.Role {
             return "contributor"
         case .Subscriber:
             return "subscriber"
+        case .Follower:
+            return "follower"
         default:
             return "unsupported"
         }
@@ -157,6 +166,7 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.linkedUserID == rhs.linkedUserID
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
+        && lhs.isFollower == rhs.isFollower
 }
 
 func ==(lhs: Person.Role, rhs: Person.Role) -> Bool {
