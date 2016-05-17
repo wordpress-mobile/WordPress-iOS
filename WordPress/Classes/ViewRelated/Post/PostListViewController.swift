@@ -376,13 +376,14 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        if let postCell = cell as? PostCardCell {
-            postCell.delegate = self
+        if let configurablePostView = cell as? ConfigurablePostView {
 
-            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
+            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post {
                 let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
 
-                postCell.configureCell?(post, layoutOnly: layoutOnly)
+                //postCell.configureCell?(post, layoutOnly: layoutOnly)
+                configurablePostView.configureWithPost(post, withDelegate: self, forLayoutOnly: layoutOnly)
+
             }
         }
     }
@@ -586,72 +587,30 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
-    // MARK: - Cell Delegate Methods
+    // MARK: - PostCardTableViewCellDelegate
 
-    func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        editPost(apost)
+    func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
+        editPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedViewActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewPost(apost)
+    func cell(cell: UITableViewCell, handleViewPost post: AbstractPost) {
+        viewPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedStatsActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewStatsForPost(apost)
+    func cell(cell: UITableViewCell, handleStatsForPost post: AbstractPost) {
+        viewStatsForPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedPublishActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        publishPost(apost)
+    func cell(cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+        publishPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedTrashActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        deletePost(apost)
+    func cell(cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+        deletePost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        restorePost(apost)
+    func cell(cell: UITableViewCell, handleRestorePost post: AbstractPost) {
+        restorePost(post)
     }
 
     // MARK: - Refreshing noResultsView
