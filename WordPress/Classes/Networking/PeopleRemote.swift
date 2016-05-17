@@ -37,7 +37,6 @@ class PeopleRemote: ServiceRemoteREST {
                 failure(Error.DecodeError)
                 return
             }
-
             success(people)
 
         }, failure: { (operation, error) in
@@ -59,13 +58,12 @@ class PeopleRemote: ServiceRemoteREST {
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
             "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL",
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
         api.GET(path, parameters: parameters, success: { (operation, responseObject) in
-
             guard let response = responseObject as? [String: AnyObject],
-                        people = try? self.peopleFromResponse(response, siteID: siteID) else
+                      people = try? self.peopleFromResponse(response, siteID: siteID, isFollower: true) else
             {
                 failure(Error.DecodeError)
                 return
@@ -158,16 +156,20 @@ private extension PeopleRemote {
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - isFollower: Boolean indicating whether the persons are Followers, or not.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    private func peopleFromResponse(response: [String: AnyObject], siteID: Int) throws -> People {
+    private func peopleFromResponse(response    : [String: AnyObject],
+                                    siteID      : Int,
+                                    isFollower  : Bool = false) throws -> People
+    {
         guard let users = response["users"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
 
         let people = try users.flatMap { (user) -> Person? in
-            return try personFromResponse(user, siteID: siteID)
+            return try personFromResponse(user, siteID: siteID, isFollower: isFollower)
         }
 
         return people
@@ -178,10 +180,14 @@ private extension PeopleRemote {
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - isFollower: Boolean indicating whether the person is a Follower, or not.
     ///
     /// - Returns: A single *Person* instance.
     ///
-    private func personFromResponse(user: [String: AnyObject], siteID: Int) throws -> Person {
+    private func personFromResponse(user        : [String: AnyObject],
+                                    siteID      : Int,
+                                    isFollower  : Bool = false) throws -> Person
+    {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
         }
@@ -217,7 +223,8 @@ private extension PeopleRemote {
                       siteID        : siteID,
                       linkedUserID  : linkedUserID,
                       avatarURL     : avatarURL,
-                      isSuperAdmin  : isSuperAdmin)
+                      isSuperAdmin  : isSuperAdmin,
+                      isFollower    : isFollower)
     }
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.

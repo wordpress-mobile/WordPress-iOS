@@ -16,5 +16,6 @@ class ManagedPerson: NSManagedObject {
         linkedUserID = Int64(person.linkedUserID)
         username = person.username
         isSuperAdmin = person.isSuperAdmin
+        isFollower = person.isFollower
     }
 }
