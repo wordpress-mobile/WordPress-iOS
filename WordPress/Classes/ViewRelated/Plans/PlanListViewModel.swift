@@ -10,8 +10,9 @@ enum PlanListViewModel {
         switch self {
         case .Loading:
             return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details")
-            )
+                title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
+                accessoryView: PlansLoadingIndicatorView()
+        )
         case .Ready(_):
             return nil
         case .Error(_):
@@ -89,6 +90,7 @@ enum PlanListViewModel {
 
     func controllerForPlanDetails(sitePricedPlans: SitePricedPlans, initialPlan: Plan, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
         return { row in
+            WPAppAnalytics.track(.OpenedPlansComparison)
             let planVC = PlanComparisonViewController(sitePricedPlans: sitePricedPlans, initialPlan: initialPlan, service: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
