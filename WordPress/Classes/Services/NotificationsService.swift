@@ -17,7 +17,7 @@ public class NotificationsService : LocalCoreDataService
     public override init(managedObjectContext context: NSManagedObjectContext) {
         super.init(managedObjectContext: context)
 
-        if let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.restApi {
+        if let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.wordPressComRestApi {
             remoteApi = restApi.hasCredentials() ? restApi : nil
         }
     }
@@ -26,11 +26,11 @@ public class NotificationsService : LocalCoreDataService
     ///
     /// - Parameters:
     ///     - managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
-    ///     - wordPressComApi: The WordPressComApi that should be used.
+    ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComApi: WordPressComApi) {
+    public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComRestApi: WordPressComRestApi) {
         self.init(managedObjectContext: context)
-        self.remoteApi = wordPressComApi
+        self.remoteApi = wordPressComRestApi
     }
 
 
@@ -253,12 +253,12 @@ public class NotificationsService : LocalCoreDataService
 
 
     // MARK: - Private Properties
-    private var remoteApi : WordPressComApi?
+    private var remoteApi : WordPressComRestApi?
 
 
     // MARK: - Private Computed Properties
     private var notificationsServiceRemote : NotificationsServiceRemote? {
-        return NotificationsServiceRemote(api: remoteApi)
+        return NotificationsServiceRemote(wordPressComRestApi: remoteApi)
     }
 
     private var blogService : BlogService {
