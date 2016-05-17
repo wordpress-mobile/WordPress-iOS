@@ -45,7 +45,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog's site be changed or deleted?
     BlogFeatureSiteManagement,
     /// Does the blog support different paid plans?
-    BlogFeaturePlans
+    BlogFeaturePlans,
+    /// Does the blog support custom domains?
+    BlogFeatureDomains
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
