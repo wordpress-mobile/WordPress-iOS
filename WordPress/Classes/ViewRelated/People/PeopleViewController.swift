@@ -131,6 +131,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - Interface Helpers
 
     private func refreshInterface() {
+        // Note:
+        // We also set the title on purpose, so that whatever VC we push, the back button spells the right title.
+        //
+        title = mode.title
         titleButton.setAttributedTitleForTitle(mode.title)
     }
 
