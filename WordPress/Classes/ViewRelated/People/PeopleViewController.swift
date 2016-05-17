@@ -114,14 +114,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
 
-    // MARK: - UIStateRestoring
-
-    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        let objectString = blog?.objectID.URIRepresentation().absoluteString
-        coder.encodeObject(objectString, forKey: RestorationKeys.blog)
-        super.encodeRestorableStateWithCoder(coder)
-    }
-
 
     // MARK: - Refresh Helpers
 
@@ -183,6 +175,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - UIViewControllerRestoration
 
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        let objectString = blog?.objectID.URIRepresentation().absoluteString
+        coder.encodeObject(objectString, forKey: RestorationKeys.blog)
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
     public class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
 
@@ -195,7 +193,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return nil
         }
 
-        return self.controllerWithBlog(blog)
+        return controllerWithBlog(blog)
     }
 
 
