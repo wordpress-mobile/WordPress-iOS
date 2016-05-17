@@ -1,7 +1,7 @@
 #import "ThemeServiceRemote.h"
 
 #import "RemoteTheme.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 
 // Service dictionary keys
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
@@ -11,7 +11,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
 #pragma mark - Getting themes
 
-- (NSOperation *)getActiveThemeForBlogId:(NSNumber *)blogId
+- (NSProgress *)getActiveThemeForBlogId:(NSNumber *)blogId
                                  success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                                  failure:(ThemeServiceRemoteFailureBlock)failure
 {
@@ -19,26 +19,26 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSOperation *operation = [self.api GET:requestUrl
-                                parameters:nil
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
-                                       if (success) {
-                                           RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
-                                           theme.active = @YES;
-                                           success(theme);
-                                       }
-                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                       if (failure) {
-                                           failure(error);
-                                       }
-                                   }];
+    NSProgress *progress = [self.wordPressComRestApi GET:requestUrl
+                                              parameters:nil
+                                                 success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
+                                                     if (success) {
+                                                         RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                                         theme.active = @YES;
+                                                         success(theme);
+                                                     }
+                                                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                                     if (failure) {
+                                                         failure(error);
+                                                     }
+                                                 }];
 
-    return operation;
+    return progress;
 }
 
-- (NSOperation *)getPurchasedThemesForBlogId:(NSNumber *)blogId
+- (NSProgress *)getPurchasedThemesForBlogId:(NSNumber *)blogId
                                      success:(ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)success
                                      failure:(ThemeServiceRemoteFailureBlock)failure
 {
@@ -46,25 +46,25 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSOperation *operation = [self.api GET:requestUrl
+    NSProgress *progress = [self.wordPressComRestApi GET:requestUrl
                                 parameters:nil
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                   success:^(NSDictionary *response, NSHTTPURLResponse *httpResponse) {
                                        if (success) {
                                            NSArray *themes = [self themeIdentifiersFromPurchasedThemesRequestResponse:response];
                                            success(themes);
                                        }
-                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                   } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                        if (failure) {
                                            failure(error);
                                        }
                                    }];
     
-    return operation;
+    return progress;
 }
 
-- (NSOperation *)getThemeId:(NSString*)themeId
+- (NSProgress *)getThemeId:(NSString*)themeId
                     success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                     failure:(ThemeServiceRemoteFailureBlock)failure
 {
@@ -72,25 +72,25 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     NSString *path = [NSString stringWithFormat:@"themes/%@", themeId];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSOperation *operation = [self.api GET:requestUrl
+    NSProgress *progress = [self.wordPressComRestApi GET:requestUrl
                                 parameters:nil
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
+                                   success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
                                        if (success) {
                                            RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
                                            success(theme);
                                        }
-                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                   } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                        if (failure) {
                                            failure(error);
                                        }
                                    }];
     
-    return operation;
+    return progress;
 }
 
-- (NSOperation *)getThemesPage:(NSInteger)page
+- (NSProgress *)getThemesPage:(NSInteger)page
                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                        failure:(ThemeServiceRemoteFailureBlock)failure
 {
@@ -98,15 +98,15 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
     static NSString* const path = @"themes";
     
-    NSOperation *operation = [self getThemesPage:page
+    NSProgress *progress = [self getThemesPage:page
                                             path:path
                                          success:success
                                          failure:failure];
     
-    return operation;
+    return progress;
 }
 
-- (NSOperation *)getThemesForBlogId:(NSNumber *)blogId
+- (NSProgress *)getThemesForBlogId:(NSNumber *)blogId
                                page:(NSInteger)page
                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                             failure:(ThemeServiceRemoteFailureBlock)failure
@@ -116,15 +116,15 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     
-    NSOperation *operation = [self getThemesPage:page
+    NSProgress *progress = [self getThemesPage:page
                                             path:path
                                          success:success
                                          failure:failure];
     
-    return operation;
+    return progress;
 }
 
-- (NSOperation *)getThemesPage:(NSInteger)page
+- (NSProgress *)getThemesPage:(NSInteger)page
                           path:(NSString *)path
                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                        failure:(ThemeServiceRemoteFailureBlock)failure
@@ -133,7 +133,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     NSParameterAssert([path isKindOfClass:[NSString class]]);
     
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     
     static NSString* const ThemeRequestTierKey = @"tier";
     static NSString* const ThemeRequestTierAllValue = @"all";
@@ -146,9 +146,9 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                  ThemeRequestPageKey: @(page),
                                  };
     
-    NSOperation *operation = [self.api GET:requestUrl
+    NSProgress *progress = [self.wordPressComRestApi GET:requestUrl
                                 parameters:parameters
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                   success:^(NSDictionary *response, NSHTTPURLResponse *httpResponse) {
                                        if (success) {
                                            NSArray<RemoteTheme *> *themes = [self themesFromMultipleThemesRequestResponse:response];
                                            NSInteger themesLoaded = (page - 1) * ThemeRequestNumberValue;
@@ -159,18 +159,18 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                            BOOL hasMore = themesLoaded < themesCount;
                                            success(themes, hasMore);
                                        }
-                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                   } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                        if (failure) {
                                            failure(error);
                                        }
                                    }];
 
-    return operation;
+    return progress;
 }
 
 #pragma mark - Activating themes
 
-- (NSOperation *)activateThemeId:(NSString *)themeId
+- (NSProgress *)activateThemeId:(NSString *)themeId
                        forBlogId:(NSNumber *)blogId
                          success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure
@@ -180,25 +180,25 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     NSString* const path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary* parameters = @{@"theme": themeId};
     
-    NSOperation *operation = [self.api POST:requestUrl
+    NSProgress *progress = [self.wordPressComRestApi POST:requestUrl
                                  parameters:parameters
-                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
+                                    success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
                                         if (success) {
                                             RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
                                             theme.active = @YES;
                                             success(theme);
                                         }
-                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                         if (failure) {
                                             failure(error);
                                         }
                                     }];
     
-    return operation;
+    return progress;
 }
 
 #pragma mark - Parsing responses

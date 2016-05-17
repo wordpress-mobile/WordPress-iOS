@@ -31,6 +31,8 @@ static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
 static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
 static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
+static NSString *const WPComReferrerURL = @"https://wordpress.com";
+
 
 #pragma mark - Private Properties
 
@@ -306,7 +308,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (IBAction)showLinkOptions
 {
-    NSString* permaLink             = [self documentPermalink];
+    NSString *permaLink             = [self documentPermalink];
     NSString *title                 = [self documentTitle];
     NSMutableArray *activityItems   = [NSMutableArray array];
     
@@ -454,18 +456,27 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (NSURLRequest *)newRequestForWebsite
 {
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
+    NSString *userAgent = [WPUserAgent wordPressUserAgent];
+    NSURLRequest *request;
     if (!self.needsLogin) {
-        return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
+        request = [WPURLRequest requestWithURL:self.url userAgent:userAgent];
+    } else {
+        NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
+        request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                    redirectURL:self.url
+                                                       username:self.username
+                                                       password:self.password
+                                                    bearerToken:self.authToken
+                                                      userAgent:userAgent];
     }
-    
-    NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
-    return [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                             redirectURL:self.url
-                                                username:self.username
-                                                password:self.password
-                                             bearerToken:self.authToken
-                                               userAgent:userAgent];
+
+    if (self.addsWPComReferrer) {
+        NSMutableURLRequest *mReq = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
+        [mReq setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
+        request = mReq;
+    }
+
+    return request;
 }
 
 - (NSURL *)authUrlFromUrl:(NSURL *)url

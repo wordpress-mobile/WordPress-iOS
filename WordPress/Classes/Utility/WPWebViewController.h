@@ -42,6 +42,11 @@
 @property (nonatomic, assign) BOOL      secureInteraction;
 
 /**
+ *  @brief  When true adds a custom referrer to NSURLRequest.
+ */
+@property (nonatomic, assign) BOOL addsWPComReferrer;
+
+/**
  *	@brief		Dismiss modal presentation
  */
 - (IBAction)dismiss;

@@ -16,8 +16,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     static private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
     static private let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
 
-    // TODO: low cap on first char!
-
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
     static private let postCardEstimatedRowHeight = CGFloat(100.0)
     static private let postCardRestoreCellRowHeight = CGFloat(54.0)
@@ -27,7 +25,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
-    // MARK: Initializers & deinitializers
+    // MARK: - GUI
+
+    private let animatedBox = WPAnimatedBox()
+
+    // MARK: - Initializers & deinitializers
 
     deinit {
         PrivateSiteURLProtocol.unregisterPrivateSiteURLProtocol()
@@ -85,6 +87,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         precondition(segue.destinationViewController is UITableViewController)
+
+        super.refreshNoResultsView = { [weak self] noResultsView in
+            self?.handleRefreshNoResultsView(noResultsView)
+        }
         super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
 
@@ -152,18 +158,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
-    override func noResultsTitleText() -> String {
-        if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        }
-
-        let filter = currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
-
-        return title ?? ""
-    }
-
     private func noResultsTitles() -> [PostListStatusFilter:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
@@ -195,55 +189,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 .Scheduled: scheduled,
                 .Trashed: trashed,
                 .Published: published]
-    }
-
-    override func noResultsMessageText() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = currentPostListFilter().filterType
-        var message: String
-
-        switch filterType {
-        case .Draft:
-            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-            break
-        case .Scheduled:
-            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-            break
-        case .Trashed:
-            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
-            break
-        default:
-            message = NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-            break
-        }
-
-        return message
-    }
-
-    override func noResultsButtonText() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
-            return nil
-        }
-
-        let filterType = currentPostListFilter().filterType
-        var title: String
-
-        switch filterType {
-        case .Scheduled:
-            title = NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
-            break
-        case .Trashed:
-            title = ""
-            break
-        default:
-            title = NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
-            break
-        }
-
-        return title
     }
 
     override func configureAuthorFilter() {
@@ -707,5 +652,73 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         restorePost(apost)
+    }
+
+    // MARK: - Refreshing noResultsView
+
+    private func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.messageText = noResultsMessage()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    // MARK: - NoResultsView Customizer helpers
+
+    private func noResultsAccessoryView() -> UIView {
+        if syncHelper.isSyncing {
+            animatedBox.animateAfterDelay(0.1)
+            return animatedBox
+        }
+
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+
+    func noResultsButtonTitle() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+
+        switch filterType {
+        case .Scheduled:
+            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
+        case .Trashed:
+            return ""
+        default:
+            return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
+        }
+    }
+
+    func noResultsTitle() -> String {
+        if syncHelper.isSyncing == true {
+            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        }
+
+        let filter = currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+
+        return title ?? ""
+    }
+
+    func noResultsMessage() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+
+        switch filterType {
+        case .Draft:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        case .Scheduled:
+            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        case .Trashed:
+            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
+        default:
+            return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        }
     }
 }
