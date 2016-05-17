@@ -430,38 +430,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return count;
 }
 
-#pragma mark - Backfill Processing Methods
-
-/**
- Retrieve the newest post for the specified topic
-
- @param topicObjectID The `NSManagedObjectID` of the ReaderAbstractTopic for the post
- @return The newest post in Core Data for the topic, or nil.
- */
-- (ReaderPost *)newestPostForTopic:(NSManagedObjectID *)topicObjectID
-{
-    NSError *error;
-    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-    if (error) {
-        DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
-    [fetchRequest setPredicate:pred];
-    fetchRequest.fetchLimit = 1;
-
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-
-    ReaderPost *post = (ReaderPost *)[self.managedObjectContext executeFetchRequest:fetchRequest error:&error].firstObject;
-    if (error) {
-        DDLogError(@"%@, error fetching newest post for topic: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-    return post;
-}
-
 
 #pragma mark - Merging and Deletion
 
