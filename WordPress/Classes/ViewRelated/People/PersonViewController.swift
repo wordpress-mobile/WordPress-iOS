@@ -186,8 +186,6 @@ private extension PersonViewController {
     func removePerson() {
         let service = PeopleService(blog: blog)
         service?.deletePerson(person)
-
-// TODO: Remove Followers
         navigationController?.popViewControllerAnimated(true)
     }
 
@@ -333,12 +331,22 @@ private extension PersonViewController {
         return blog.account!.userID == person.ID || blog.account!.userID == person.linkedUserID
     }
 
+    var isFollower : Bool {
+        return person.isFollower
+    }
+
     var isPromoteEnabled : Bool {
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && person.isFollower == false
+        // Notes:
+        //  -   Followers cannot be promoted
+        //
+        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isFollower == false
     }
 
     var isRemoveEnabled : Bool {
-        // Note: YES, ListUsers. Brought from Calypso's code
-        return blog.isUserCapableOf(.ListUsers) && isMyself == false
+        // Notes: 
+        //  -   YES, ListUsers. Brought from Calypso's code
+        //  -   Followers, for now, cannot be deleted.
+        //
+        return blog.isUserCapableOf(.ListUsers) && isMyself == false && isFollower == false
     }
 }
