@@ -40,7 +40,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     // Beware: Lazy getters below. Let's hit directly the ivar
     [_restApi.operationQueue cancelAllOperations];
     [_restApi reset];
-    [_wordPressComRestApi reset];
+    [_wordPressComRestApi invalidateAndCancelTasks];
     _wordPressComRestApi = nil;
     self.authToken = nil;
 }
