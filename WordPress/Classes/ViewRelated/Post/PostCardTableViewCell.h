@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "PostCardCell.h"
+#import "ConfigurablePostView.h"
 
-@interface PostCardTableViewCell : UITableViewCell <PostCardCell>
+@interface PostCardTableViewCell : UITableViewCell <ConfigurablePostView>
 
 @end
