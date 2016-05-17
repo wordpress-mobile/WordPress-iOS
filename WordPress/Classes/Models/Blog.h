@@ -70,6 +70,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
 @property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
