@@ -210,9 +210,15 @@ private extension PeopleRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role = roles?.map({ role -> Role in
-            return Role(string: role)
-        }).sort().first ?? .Unsupported
+        let role : Role
+
+        if isFollower {
+            role = .Follower
+        } else {
+            role = roles?.map({ role -> Role in
+                return Role(string: role)
+            }).sort().first ?? Role.Unsupported
+        }
 
         return Person(ID            : ID,
                       username      : username,
