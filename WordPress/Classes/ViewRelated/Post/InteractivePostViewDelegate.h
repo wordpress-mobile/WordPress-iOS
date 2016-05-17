@@ -2,6 +2,8 @@
 
 @class AbstractPost;
 
+/// Protocol that implements all delegate methods for InteractivePostView objects.
+///
 @protocol InteractivePostViewDelegate <NSObject>
 @optional
 - (void)cell:(nonnull UITableViewCell *)cell handleEditPost:(nonnull AbstractPost *)post;
