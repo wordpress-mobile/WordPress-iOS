@@ -17,22 +17,23 @@ struct PeopleService {
     /// - Parameter blog: Target Blog Instance
     ///
     init?(blog: Blog) {
-        guard let api = blog.restApi() else {
+        guard let api = blog.restApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
         remote = PeopleRemote(api: api)
-        siteID = blog.dotComID as! Int
+        siteID = dotComID
     }
 
+// TODO: Review Method Names. Simplify duality
 
     /// Refreshes the collection of Users associated to a blog.
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
     func refreshUsers(completion: (Bool -> Void)) {
-        remote.getUsersFor(siteID, success: { people in
-            self.mergeTeam(people)
+        remote.getUsers(siteID, success: { users in
+            self.mergeUsers(users)
             completion(true)
 
         }, failure: { error in
@@ -47,8 +48,8 @@ struct PeopleService {
     /// - Parameter completion: Closure to be executed on completion.
     ///
     func refreshFollowers(completion: (Bool -> Void)) {
-        remote.getFollowersFor(siteID, success: { people in
-            self.mergeTeam(people)
+        remote.getFollowers(siteID, success: { followers in
+            self.mergeFollowers(followers)
             completion(true)
 
         }, failure: { error in
@@ -76,7 +77,7 @@ struct PeopleService {
         let pristineRole = managedPerson.role
 
         // Hit the Backend
-        remote.updatePersonFrom(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+        remote.updateUserRole(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
 
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
 
@@ -101,7 +102,7 @@ struct PeopleService {
 
     /// Deletes or removes a given person.
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - person: The person that should be deleted
     ///     - failure: Closure to be executed on error
     ///
@@ -111,7 +112,7 @@ struct PeopleService {
         }
 
         // Hit the Backend
-        remote.deletePersonFrom(siteID, personID: person.ID, failure: { error in
+        remote.deleteUser(siteID, personID: person.ID, failure: { error in
 
             DDLogSwift.logError("### Error while deleting person \(person.ID) from blog \(self.siteID): \(error)")
 
@@ -134,8 +135,9 @@ struct PeopleService {
     ///     - failure: Closure to be executed in case of error
     ///
     func loadAvailableRoles(success: ([Role] -> Void), failure: (ErrorType -> Void)) {
-        remote.getAvailableRolesFor(siteID, success: { roles in
+        remote.getUserRoles(siteID, success: { roles in
             success(roles)
+
         }, failure: { error in
             failure(error)
         })
@@ -146,18 +148,29 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
+    ///
+    ///
+    func mergeUsers(users: People) {
+        let localUsers = loadPeople(followers: false)
+        mergePeople(users, localPeople: localUsers)
+    }
+
+    ///
+    ///
+    func mergeFollowers(followers: People) {
+        let localFollowers = loadPeople(followers: true)
+        mergePeople(followers, localPeople: localFollowers)
+    }
+
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergeTeam(people: People) {
-        let remotePeople = people
-        let localPeople = allPeople()
-
+    func mergePeople(remotePeople: People, localPeople: People) {
         let remoteIDs = Set(remotePeople.map({ $0.ID }))
         let localIDs = Set(localPeople.map({ $0.ID }))
 
         let removedIDs = localIDs.subtract(remoteIDs)
         removeManagedPeopleWithIDs(removedIDs)
-// TODO: Followers / Users
+
         // Let's try to only update objects that have changed
         let remoteChanges = remotePeople.filter {
             return !localPeople.contains($0)
@@ -176,9 +189,9 @@ private extension PeopleService {
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
-    func allPeople() -> People {
+    func loadPeople(followers isFollower: Bool) -> People {
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", NSNumber(integer: siteID))
+        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
         let results: [ManagedPerson]
         do {
             results = try context.executeFetchRequest(request) as! [ManagedPerson]
