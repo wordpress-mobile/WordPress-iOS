@@ -72,6 +72,7 @@ NSString * const CrossPostMetaCommentPrefix = @"comment-";
 
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
+static const NSUInteger ReaderPostTitleLength = 30;
 
 @implementation ReaderPostServiceRemote
 
@@ -242,7 +243,7 @@ static const NSInteger MinutesToReadThreshold = 2;
     post.blogURL = [self siteURLFromPostDictionary:dict];
     post.commentCount = [discussionDict numberForKey:PostRESTKeyCommentCount];
     post.commentsOpen = [[discussionDict numberForKey:PostRESTKeyCommentsOpen] boolValue];
-    post.content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
+    post.content = [self postContentFromPostDictionary:dict];
     post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
     post.featuredImage = [self featuredImageFromPostDictionary:dict];
     post.feedID = [dict numberForKey:PostRESTKeyFeedID];
@@ -256,14 +257,19 @@ static const NSInteger MinutesToReadThreshold = 2;
     post.likeCount = [dict numberForKey:PostRESTKeyLikeCount];
     post.permalink = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyURL]];
     post.postID = [dict numberForKey:PostRESTKeyID];
-    post.postTitle = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyTitle]];
+    post.postTitle = [self postTitleFromPostDictionary:dict];
     post.siteID = [dict numberForKey:PostRESTKeySiteID];
     post.sortDate = [self sortDateFromPostDictionary:dict];
     post.status = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyStatus]];
-    post.summary = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
+    post.summary = [self postSummaryFromPostDictionary:dict orPostContent:post.content];
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:PostRESTKeySharingEnabled] boolValue];
     post.isLikesEnabled = [[dict numberForKey:PostRESTKeyLikesEnabled] boolValue];
+
+    // Construct a title if necessary.
+    if ([post.postTitle length] == 0 && [post.summary length] > 0) {
+        post.postTitle = [self titleFromSummary:post.summary];
+    }
 
     NSDictionary *tags = [self primaryAndSecondaryTagsFromPostDictionary:dict];
     if (tags) {
@@ -648,7 +654,7 @@ static const NSInteger MinutesToReadThreshold = 2;
         siteName = editorialSiteName;
     }
 
-    return siteName;
+    return [self makePlainText:siteName];
 }
 
 /**
@@ -659,7 +665,8 @@ static const NSInteger MinutesToReadThreshold = 2;
  */
 - (NSString *)siteDescriptionFromPostDictionary:(NSDictionary *)dict
 {
-    return [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.description"]];
+    NSString *description = [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.description"]];
+    return [self makePlainText:description];
 }
 
 /**
@@ -678,6 +685,44 @@ static const NSInteger MinutesToReadThreshold = 2;
     }
 
     return siteURL;
+}
+
+/**
+ Retrives the post content from results dictionary
+
+ @param dict A dictionary representing a post object from the REST API.
+ @return The formatted post content.
+ */
+- (NSString *)postContentFromPostDictionary:(NSDictionary *)dict {
+    NSString *content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
+    return [self formatContent:content];
+}
+
+/**
+ Get the title of the post
+
+ @param dict A dictionary representing a post object from the REST API.
+ @return The title of the post or an empty string.
+ */
+- (NSString *)postTitleFromPostDictionary:(NSDictionary *)dict {
+    NSString *title = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyTitle]];
+    return [self makePlainText:title];
+}
+
+/**
+ Get the summary for the post, or crafts one from the post content.
+
+ @param dict A dictionary representing a post object from the REST API.
+ @param content The formatted post content.
+ @return The summary for the post or an empty string.
+ */
+- (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content {
+    NSString *summary = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
+    summary = [self formatSummary:summary];
+    if (!summary) {
+        summary = [self createSummaryFromContent:content];
+    }
+    return summary;
 }
 
 /**
@@ -704,5 +749,245 @@ static const NSInteger MinutesToReadThreshold = 2;
         return [dict stringForKey:PostRESTKeySlug];
     }];
 }
+
+
+
+
+
+#pragma mark - Content Formatting and Sanitization
+
+/**
+ Formats the post content.
+ Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
+
+ @param content The post content as a string.
+ @return The formatted content.
+ */
+- (NSString *)formatContent:(NSString *)content
+{
+    if ([self containsVideoPress:content]) {
+        content = [self formatVideoPress:content];
+    }
+    content = [self normalizeParagraphs:content];
+    content = [self removeInlineStyles:content];
+    content = [content stringByReplacingHTMLEmoticonsWithEmoji];
+
+    return content;
+}
+
+/**
+ Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
+ HTML is stripped and the extra bit is removed.
+
+ @param string The summary to format.
+ @return The formatted summary.
+ */
+- (NSString *)formatSummary:(NSString *)summary
+{
+    summary = [self makePlainText:summary];
+
+    NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
+    continueReading = [NSString stringWithFormat:@"%@ →", continueReading];
+
+    NSRange rng = [summary rangeOfString:continueReading options:NSCaseInsensitiveSearch];
+    if (rng.location != NSNotFound) {
+        summary = [summary substringToIndex:rng.location];
+    }
+
+    return summary;
+}
+
+/**
+ Create a summary for the post based on the post's content.
+
+ @param string The post's content string. This should be the formatted content string.
+ @return A summary for the post.
+ */
+- (NSString *)createSummaryFromContent:(NSString *)string
+{
+    return [BasePost summaryFromContent:string];
+}
+
+/**
+ Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
+
+ @param string The string to transform.
+ @return The transformed string.
+ */
+- (NSString *)makePlainText:(NSString *)string
+{
+    return [NSString makePlainText:string];
+}
+
+/**
+ Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
+
+ @param string The string to normalize.
+ @return A string with normalized paragraphs.
+ */
+- (NSString *)normalizeParagraphs:(NSString *)string
+{
+    if (!string) {
+        return @"";
+    }
+
+    static NSRegularExpression *regexDivStart;
+    static NSRegularExpression *regexDivEnd;
+    static NSRegularExpression *regexPStart;
+    static NSRegularExpression *regexPEnd;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexDivStart = [NSRegularExpression regularExpressionWithPattern:@"<div[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexDivEnd = [NSRegularExpression regularExpressionWithPattern:@"</div>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPStart = [NSRegularExpression regularExpressionWithPattern:@"<p[^>]*>\\s*<p[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPEnd = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Convert div tags to p tags
+    string = [regexDivStart stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+    string = [regexDivEnd stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+
+    // Remove duplicate p tags.
+    string = [regexPStart stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+    string = [regexPEnd stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+
+    return string;
+}
+
+/**
+ Strip inline styles from the passed HTML sting.
+
+ @param string An HTML string to sanitize.
+ @return A string with inline styles removed.
+ */
+- (NSString *)removeInlineStyles:(NSString *)string
+{
+    if (!string) {
+        return @"";
+    }
+
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Remove inline styles.
+    return [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+}
+
+/**
+ Check the specified string for occurances of videopress videos.
+
+ @param string The string to search.
+ @return YES if a match was found, else returns NO.
+ */
+
+- (BOOL)containsVideoPress:(NSString *)string
+{
+    return [string rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
+}
+
+/**
+ Replace occurances of videopress markup with video tags int he passed HTML string.
+
+ @param string An HTML string.
+ @return The HTML string with videopress markup replaced with in image tag.
+ */
+- (NSString *)formatVideoPress:(NSString *)string
+{
+    NSMutableString *mstr = [string mutableCopy];
+
+    static NSRegularExpression *regexVideoPress;
+    static NSRegularExpression *regexMp4;
+    static NSRegularExpression *regexSrc;
+    static NSRegularExpression *regexPoster;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexVideoPress = [NSRegularExpression regularExpressionWithPattern:@"<div.*class=\"video-player[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexMp4 = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexSrc = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPoster = [NSRegularExpression regularExpressionWithPattern:@"<img.*class=\"videopress-poster[\\s\\S]*?>" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Find instances of VideoPress markup.
+
+    NSArray *matches = [regexVideoPress matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        // compose videopress string
+
+        // Find the mp4 in the markup.
+        NSRange mp4Match = [regexMp4 rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        if (mp4Match.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", NSStringFromSelector(_cmd), [mstr substringWithRange:match.range]);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *mp4 = [mstr substringWithRange:mp4Match];
+
+        // Get the mp4 url.
+        NSRange srcMatch = [regexSrc rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        if (srcMatch.location == NSNotFound) {
+            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", NSStringFromSelector(_cmd), mp4);
+            [mstr replaceCharactersInRange:match.range withString:@""];
+            continue;
+        }
+        NSString *src = [mp4 substringWithRange:srcMatch];
+        src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+
+        NSString *height = @"200"; // default
+        NSString *placeholder = @"";
+        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
+        if (posterMatch.location != NSNotFound) {
+            NSString *poster = [string substringWithRange:posterMatch];
+            NSString *value = [self parseValueForAttributeNamed:@"height" inElement:poster];
+            if (value) {
+                height = value;
+            }
+
+            value = [self parseValueForAttributeNamed:@"src" inElement:poster];
+            if (value) {
+                placeholder = value;
+            }
+        }
+
+        // Compose a video tag to replace the default markup.
+        NSString *fmt = @"<video src=\"%@\" controls width=\"100%%\" height=\"%@\" poster=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, height, placeholder, src];
+
+        [mstr replaceCharactersInRange:match.range withString:vid];
+    }
+
+    return mstr;
+}
+
+- (NSString *)parseValueForAttributeNamed:(NSString *)attribute inElement:(NSString *)element
+{
+    NSString *value = @"";
+    NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
+    NSRange attrRange = [element rangeOfString:attrStr];
+    if (attrRange.location != NSNotFound) {
+        NSInteger location = attrRange.location + attrRange.length;
+        NSInteger length = [element length] - location;
+        NSRange ending = [element rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(location, length)];
+        value = [element substringWithRange:NSMakeRange(location, ending.location - location)];
+    }
+    return value;
+}
+
+/**
+ Creates a title for the post from the post's summary.
+
+ @param summary The already formatted post summary.
+ @return A title for the post that is a snippet of the summary.
+ */
+- (NSString *)titleFromSummary:(NSString *)summary
+{
+    return [summary stringByEllipsizingWithMaxLength:ReaderPostTitleLength preserveWords:YES];
+}
+
 
 @end
