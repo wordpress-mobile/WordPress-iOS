@@ -3,6 +3,7 @@
 #import "AccountServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 @interface AccountServiceRemoteRESTTests : XCTestCase
 @end
@@ -13,17 +14,17 @@
 
 - (void)testThatGetBlogsWorks
 {    
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     AccountServiceRemoteREST *service = nil;
     
     NSString* url = @"v1.1/me/sites";
     
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg isNotNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[AccountServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api]);
     
     [service getBlogsWithSuccess:^(NSArray *blogs) {}
                          failure:^(NSError *error) {}];
@@ -35,7 +36,7 @@
 {
     WPAccount* account = OCMStrictClassMock([WPAccount class]);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     AccountServiceRemoteREST *service = nil;
     
     NSString* url = @"v1.1/me";
@@ -45,7 +46,7 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[AccountServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api]);
     
     [service getDetailsForAccount:account
                           success:^(RemoteUser *remoteUser) {}
