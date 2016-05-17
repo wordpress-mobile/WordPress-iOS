@@ -14,6 +14,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private var mode : Mode! {
         didSet {
             refreshInterface()
+            refreshPredicate()
             refreshTeam()
         }
     }
@@ -114,14 +115,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
 
+    // MARK: - Action Handlers
 
-    // MARK: - Refresh Helpers
-
-    @IBAction public func refresh() {
+    @IBAction public func refreshTeam() {
         guard let blog = blog, service = PeopleService(blog: blog) else {
             return
         }
 
+        displayNoResultsIfNeeded()
+// TODO: Mode
         service.refreshUsers { [weak self] _ in
             self?.refreshControl?.endRefreshing()
             self?.hideNoResultsIfNeeded()
@@ -133,7 +135,18 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
 
+    // MARK: - Interface Helpers
+
+    private func refreshInterface() {
+        titleButton.setAttributedTitleForTitle(mode.title)
     }
+
+    private func refreshPredicate() {
+// TODO: Implement Me
+    }
+
+
+    // MARK: - No Results Helpers
 
     private func displayNoResultsIfNeeded() {
         if resultsController.fetchedObjects?.count > 0 {
@@ -145,6 +158,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func hideNoResultsIfNeeded() {
+        if noResultsView.superview == nil {
+            return
+        }
+
         noResultsView.removeFromSuperview()
     }
 
