@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "AccountServiceRemote.h"
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
-@interface AccountServiceRemoteREST : ServiceRemoteREST <AccountServiceRemote>
+@interface AccountServiceRemoteREST : ServiceRemoteWordPressComREST <AccountServiceRemote>
 
 @end
