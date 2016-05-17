@@ -134,7 +134,7 @@
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="q1N-ER-0Uo">
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
-                            <action selector="refreshTeam" destination="5ll-RY-leg" eventType="valueChanged" id="zdW-sf-TfE"/>
+                            <action selector="refresh" destination="5ll-RY-leg" eventType="valueChanged" id="G6Q-bV-RTO"/>
                         </connections>
                     </refreshControl>
                     <connections>

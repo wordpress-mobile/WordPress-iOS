@@ -30,7 +30,7 @@ struct PeopleService {
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshUsers(completion: (Bool) -> Void) {
+    func refreshUsers(completion: (Bool -> Void)) {
         remote.getUsersFor(siteID, success: { people in
             self.mergeTeam(people)
             completion(true)
@@ -129,7 +129,7 @@ private extension PeopleService {
 
         let removedIDs = localIDs.subtract(remoteIDs)
         removeManagedPeopleWithIDs(removedIDs)
-
+// TODO: Followers / Users
         // Let's try to only update objects that have changed
         let remoteChanges = remotePeople.filter {
             return !localPeople.contains($0)
