@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MenuItemCheckButtonView : UIView
 
 /**
@@ -15,7 +17,7 @@
 /**
  Event handler if the checked state changes.
  */
-@property (nonatomic, copy) void(^onChecked)();
+@property (nonatomic, copy, nullable) void(^onChecked)();
 
 /**
  Ideal layout height of the view.
@@ -23,3 +25,5 @@
 - (CGFloat)preferredHeightForLayout;
 
 @end
+
+NS_ASSUME_NONNULL_END
