@@ -9,13 +9,13 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     public var blog: Blog?
 
-    /// Mode: Team / Followers
+    /// Mode: Users / Followers
     ///
-    private var mode : Mode! {
+    private var mode = Mode.Users {
         didSet {
             refreshInterface()
-            refreshPredicate()
-            refreshTeam()
+            refreshResults()
+            refreshPeople()
         }
     }
 
@@ -23,11 +23,20 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     private let noResultsView = WPNoResultsView()
 
+    /// Filter Predicate
+    ///
+    private var predicate: NSPredicate {
+        let follower = self.mode == .Followers
+        let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
+        return predicate
+    }
+
     /// Core Data FRC
     ///
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID!)
+        request.predicate = self.predicate
+
         // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         let context = ContextManager.sharedInstance().mainContext
@@ -59,7 +68,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
-
+// TODO: Tap on Followers
+// TODO: Top space on restore
+// TODO: Followers Cell
         cell.bindViewModel(viewModel)
 
         return cell
@@ -82,22 +93,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        do {
-            try resultsController.performFetch()
-        } catch {
-            DDLogSwift.logError("Error fetching People: \(error)")
-        }
-
         navigationItem.titleView = titleButton
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        // By default, let's display the Blog's Users
+        mode = .Users
     }
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
-
-        // By default, let's display the Blog's Users
-        mode = .Team
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -116,18 +121,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
     // MARK: - Action Handlers
-
-    @IBAction public func refreshTeam() {
-        guard let blog = blog, service = PeopleService(blog: blog) else {
-            return
-        }
-
-        displayNoResultsIfNeeded()
-// TODO: Mode
-        service.refreshUsers { [weak self] _ in
-            self?.refreshControl?.endRefreshing()
-            self?.hideNoResultsIfNeeded()
-        }
+    @IBAction public func refresh() {
+        refreshPeople()
     }
 
     @IBAction public func titleWasPressed() {
@@ -141,8 +136,35 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         titleButton.setAttributedTitleForTitle(mode.title)
     }
 
-    private func refreshPredicate() {
-// TODO: Implement Me
+    private func refreshResults() {
+        resultsController.fetchRequest.predicate = predicate
+
+        do {
+            try resultsController.performFetch()
+            tableView.reloadData()
+        } catch {
+            DDLogSwift.logError("Error fetching People: \(error)")
+        }
+    }
+
+    private func refreshPeople() {
+        guard let blog = blog, service = PeopleService(blog: blog) else {
+            return
+        }
+
+        displayNoResultsIfNeeded()
+
+        let completion = { [weak self] (success: Bool) in
+            self?.refreshControl?.endRefreshing()
+            self?.hideNoResultsIfNeeded()
+        }
+
+        switch mode {
+        case .Users:
+            service.refreshUsers(completion)
+        case .Followers:
+            service.refreshFollowers(completion)
+        }
     }
 
 
@@ -236,19 +258,19 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - Private Helpers
 
     private enum Mode : String {
-        case Team       = "team"
+        case Users      = "team"
         case Followers  = "followers"
 
         var title: String {
             switch self {
-            case .Team:
+            case .Users:
                 return NSLocalizedString("Team", comment: "Blog Users")
             case .Followers:
                 return NSLocalizedString("Followers", comment: "Blog Followers")
             }
         }
 
-        static let allModes = [Mode.Team, .Followers]
+        static let allModes = [Mode.Users, .Followers]
     }
 
 
