@@ -136,6 +136,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
+    @IBAction public func titleWasPressed() {
+        displayModePicker()
+    }
 
     // MARK: - Private Helpers
 
@@ -156,6 +159,25 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private func hideNoResultsIfNeeded() {
         noResultsView.removeFromSuperview()
+    }
+
+    private func displayModePicker() {
+        let controller              = SettingsSelectionViewController(style: .Plain)
+        controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
+        controller.titles           = Mode.allModes.map { $0.title }
+        controller.values           = Mode.allModes.map { $0.rawValue }
+        controller.currentValue     = mode.rawValue
+        controller.onItemSelected   = { [weak self] selectedValue in
+            guard let rawMode = selectedValue as? String, let mode = Mode(rawValue: rawMode) else {
+                fatalError()
+            }
+
+            self?.mode = mode
+            self?.dismissViewControllerAnimated(true, completion: nil)
+        }
+
+        let navController = UINavigationController(rootViewController: controller)
+        presentViewController(navController, animated: true, completion: nil)
     }
 
 
