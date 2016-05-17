@@ -22,7 +22,7 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: An array of *Person* instances (AKA "People).
     ///
-    func getUsersFor(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
+    func getUsers(siteID: Int, success: (People -> Void), failure: (ErrorType -> Void)) {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
@@ -53,7 +53,7 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: An array of *Person* instances (AKA "People).
     ///
-    func getFollowersFor(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
+    func getFollowers(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
@@ -75,7 +75,7 @@ class PeopleRemote: ServiceRemoteREST {
         })
     }
 
-    /// Updates a given User, of the specified site, with a new Role.
+    /// Updates a specified User's Role
     ///
     /// - Parameters:
     ///     - siteID: The ID of the site associated
@@ -86,11 +86,11 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func updatePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          newRole    : Role,
-                          success    : (Person -> ())? = nil,
-                          failure    : (ErrorType -> ())? = nil)
+    func updateUserRole(siteID      : Int,
+                        personID    : Int,
+                        newRole     : Role,
+                        success     : (Person -> ())? = nil,
+                        failure     : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(personID)"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -126,11 +126,11 @@ class PeopleRemote: ServiceRemoteREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deletePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          reassignID : Int? = nil,
-                          success    : (Void -> Void)? = nil,
-                          failure    : (ErrorType -> Void)? = nil)
+    func deleteUser(siteID      : Int,
+                    personID    : Int,
+                    reassignID  : Int? = nil,
+                    success     : (Void -> Void)? = nil,
+                    failure     : (ErrorType -> Void)? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(personID)/delete"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -157,9 +157,9 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getAvailableRolesFor(siteID    : Int,
-                              success   : ([Role] -> Void),
-                              failure   : (ErrorType -> ())? = nil)
+    func getUserRoles(siteID    : Int,
+                      success   : ([Role] -> Void),
+                      failure   : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/roles"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
