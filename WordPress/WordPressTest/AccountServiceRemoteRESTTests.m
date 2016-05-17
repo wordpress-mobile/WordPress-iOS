@@ -20,7 +20,7 @@
     NSString* url = @"v1.1/me/sites";
     
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg isNotNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
