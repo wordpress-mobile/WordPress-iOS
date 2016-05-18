@@ -82,6 +82,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - NSFetchedResultsController Methods
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        hideNoResultsIfNeeded()
         tableView.reloadData()
     }
 
@@ -165,16 +166,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         displayNoResultsIfNeeded()
 
-        let completion = { [weak self] (success: Bool) in
-            self?.refreshControl?.endRefreshing()
+        service.refreshPeople { [weak self] _ in
             self?.hideNoResultsIfNeeded()
-        }
-
-        switch filter {
-        case .Users:
-            service.refreshUsers(completion)
-        case .Followers:
-            service.refreshFollowers(completion)
+            self?.refreshControl?.endRefreshing()
         }
     }
 
