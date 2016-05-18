@@ -1,5 +1,5 @@
 #import "CommentServiceRemoteREST.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "RemoteComment.h"
 #import "NSDate+WordPressJSON.h"
 #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
@@ -37,17 +37,17 @@
         [parameters addEntriesFromDictionary:options];
     }
     
-    [self.api GET:requestUrl
-       parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              if (success) {
-                  success([self remoteCommentsFromJSONArray:responseObject[@"comments"]]);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+    [self.wordPressComRestApi GET:requestUrl
+                       parameters:parameters
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (success) {
+                                  success([self remoteCommentsFromJSONArray:responseObject[@"comments"]]);
+                              }
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
 
 }
 
@@ -71,19 +71,19 @@
                                  @"content": comment.content,
                                  @"context": @"edit",
                                  };
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               // TODO: validate response
-               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
-               if (success) {
-                   success(comment);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               // TODO: validate response
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               if (success) {
+                                   success(comment);
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)updateComment:(RemoteComment *)comment
@@ -98,19 +98,19 @@
                                  @"content": comment.content,
                                  @"context": @"edit",
                                  };
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               // TODO: validate response
-               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
-               if (success) {
-                   success(comment);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               // TODO: validate response
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               if (success) {
+                                   success(comment);
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)moderateComment:(RemoteComment *)comment
@@ -125,19 +125,19 @@
                                  @"status": [self remoteStatusWithStatus:comment.status],
                                  @"context": @"edit",
                                  };
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               // TODO: validate response
-               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
-               if (success) {
-                   success(comment);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               // TODO: validate response
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               if (success) {
+                                   success(comment);
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)trashComment:(RemoteComment *)comment
@@ -148,17 +148,17 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 
@@ -174,13 +174,13 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
             success(comments);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -203,17 +203,17 @@
         @"content": content,
         @"context": @"edit",
     };
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)replyToPostWithID:(NSNumber *)postID
@@ -227,15 +227,15 @@
     
     NSDictionary *parameters = @{@"content": content};
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    NSDictionary *commentDict = (NSDictionary *)responseObject;
                    RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
                    success(comment);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -255,19 +255,19 @@
         @"content": content,
         @"context": @"edit",
     };
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   NSDictionary *commentDict = (NSDictionary *)responseObject;
-                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
-                   success(comment);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   NSDictionary *commentDict = (NSDictionary *)responseObject;
+                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                                   success(comment);
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)moderateCommentWithID:(NSNumber *)commentID
@@ -284,17 +284,17 @@
         @"context"  : @"edit",
     };
     
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)trashCommentWithID:(NSNumber *)commentID
@@ -305,17 +305,17 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)likeCommentWithID:(NSNumber *)commentID
@@ -326,17 +326,17 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)unlikeCommentWithID:(NSNumber *)commentID
@@ -347,17 +347,17 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 
