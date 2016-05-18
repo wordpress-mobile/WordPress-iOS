@@ -1,6 +1,5 @@
 #import <CoreData/CoreData.h>
 #import "AbstractPost.h"
-#import "WPPostContentViewProvider.h"
 
 extern NSString * const PostTypeDefaultIdentifier;
 
