@@ -11,7 +11,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     /// Mode: Users / Followers
     ///
-    private var mode = Mode.Users {
+    private var filter = Filter.Users {
         didSet {
             refreshInterface()
             refreshResults()
@@ -26,7 +26,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
-        let follower = self.mode == .Followers
+        let follower = self.filter == .Followers
         let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
         return predicate
     }
@@ -95,7 +95,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         // By default, let's display the Blog's Users
-        mode = .Users
+        filter = .Users
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -134,8 +134,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         // Note:
         // We also set the title on purpose, so that whatever VC we push, the back button spells the right title.
         //
-        title = mode.title
-        titleButton.setAttributedTitleForTitle(mode.title)
+        title = filter.title
+        titleButton.setAttributedTitleForTitle(filter.title)
     }
 
     private func refreshResults() {
@@ -170,7 +170,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             self?.hideNoResultsIfNeeded()
         }
 
-        switch mode {
+        switch filter {
         case .Users:
             service.refreshUsers(completion)
         case .Followers:
@@ -209,15 +209,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private func displayModePicker() {
         let controller              = SettingsSelectionViewController(style: .Plain)
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
-        controller.titles           = Mode.allModes.map { $0.title }
-        controller.values           = Mode.allModes.map { $0.rawValue }
-        controller.currentValue     = mode.rawValue
+        controller.titles           = Filter.allFilters.map { $0.title }
+        controller.values           = Filter.allFilters.map { $0.rawValue }
+        controller.currentValue     = filter.rawValue
         controller.onItemSelected   = { [weak self] selectedValue in
-            guard let rawMode = selectedValue as? String, let mode = Mode(rawValue: rawMode) else {
+            guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
                 fatalError()
             }
 
-            self?.mode = mode
+            self?.filter = filter
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
 
@@ -268,7 +268,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - Private Helpers
 
-    private enum Mode : String {
+    private enum Filter : String {
         case Users      = "team"
         case Followers  = "followers"
 
@@ -281,7 +281,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             }
         }
 
-        static let allModes = [Mode.Users, .Followers]
+        static let allFilters = [Filter.Users, .Followers]
     }
 
 
