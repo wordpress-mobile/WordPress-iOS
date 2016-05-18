@@ -343,7 +343,7 @@ private extension PersonViewController {
     }
 
     var isRemoveEnabled : Bool {
-        // Notes: 
+        // Notes:
         //  -   YES, ListUsers. Brought from Calypso's code
         //  -   Followers, for now, cannot be deleted.
         //
