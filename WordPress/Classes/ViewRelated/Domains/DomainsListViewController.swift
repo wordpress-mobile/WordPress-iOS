@@ -1,7 +1,34 @@
 import UIKit
 import WordPressShared
 
-struct DomainListRow: ImmuTableRow {
+class DomainListDomainCell: WPTableViewCell {
+    @IBOutlet weak var domainLabel: UILabel!
+    @IBOutlet weak var registeredMappedLabel: UILabel!
+    @IBOutlet weak var primaryIndicatorLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        domainLabel?.textColor = WPStyleGuide.greyDarken30()
+        registeredMappedLabel?.textColor = WPStyleGuide.greyDarken10()
+    }
+}
+
+enum DomainType {
+    case Registered
+    case Mapped
+
+    var description: String {
+        switch self {
+        case .Registered:
+            return NSLocalizedString("Registered Domain", comment: "Describes a domain that was registered with WordPress.com")
+        case .Mapped:
+            return NSLocalizedString("Mapped Domain", comment: "Describes a domain that was mapped to WordPress.com, but registered elsewhere")
+        }
+    }
+}
+
+struct DomainListStaticRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
     static var customHeight: Float?
 
@@ -15,13 +42,31 @@ struct DomainListRow: ImmuTableRow {
     }
 }
 
+struct DomainListRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(DomainListDomainCell)
+    static var customHeight: Float? = 77
+
+    let domain: String
+    let domainType: DomainType
+    let isPrimary: Bool
+    let action: ImmuTableAction?
+
+    func configureCell(cell: UITableViewCell) {
+        guard let cell = cell as? DomainListDomainCell else { return }
+
+        cell.domainLabel?.text = domain
+        cell.registeredMappedLabel?.text = domainType.description
+        cell.primaryIndicatorLabel?.hidden = !isPrimary
+    }
+}
+
 class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     private var viewModel: ImmuTable!
 
     private var fetchRequest: NSFetchRequest {
         let request = NSFetchRequest(entityName: Domain.entityName)
         request.predicate = NSPredicate(format: "%K == %@", "blog", blog)
-        request.sortDescriptors = [NSSortDescriptor(key: "domain", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "isPrimary", ascending: false), NSSortDescriptor(key: "domain", ascending: true)]
 
         return request
     }
@@ -60,7 +105,6 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        ImmuTable.registerRows([DomainListRow.self], tableView: tableView)
 
         service.refreshBlogDomains { success in
 
@@ -68,12 +112,12 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     private func updateViewModel() {
-        let searchRow = DomainListRow(title: "Find a new domain", action: nil)
-        let connectRow = DomainListRow(title: "Or connect your own domain", action: nil)
+        let searchRow = DomainListStaticRow(title: "Find a new domain", action: nil)
+        let connectRow = DomainListStaticRow(title: "Or connect your own domain", action: nil)
 
         var domainRows = [ImmuTableRow]()
         if let domains = fetchedResultsController.fetchedObjects as? [ManagedDomain] {
-            domainRows = domains.map { DomainListRow(title: $0.domain, action: nil) }
+            domainRows = domains.map { DomainListRow(domain: $0.domain, domainType: .Registered, isPrimary: $0.isPrimary, action: nil) }
         }
 
         viewModel = ImmuTable(sections: [
@@ -103,12 +147,34 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         return cell
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.sections[section].headerText
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        if let customHeight = row.dynamicType.customHeight {
+            return CGFloat(customHeight)
+        }
+        return tableView.rowHeight
     }
 
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel.sections[section].footerText
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let title = self.tableView(tableView, titleForHeaderInSection: section) where !title.isEmpty {
+            let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+            header.title = title
+            return header
+        } else {
+            return nil
+        }
+    }
+
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let headerView = self.tableView(tableView, viewForHeaderInSection: section) as? WPTableViewSectionHeaderFooterView {
+            return WPTableViewSectionHeaderFooterView.heightForHeader(headerView.title, width: CGRectGetWidth(view.bounds))
+        } else {
+            return 0
+        }
+    }
+
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.sections[section].headerText
     }
 }
 
