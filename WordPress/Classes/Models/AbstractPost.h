@@ -46,6 +46,15 @@
  */
 - (BOOL)hasRevision;
 
+#pragma mark - Conveniece Methods
+
+- (NSString *)authorNameForDisplay;
+- (NSString *)blavatarForDisplay;
+- (NSString *)dateStringForDisplay;
+- (BOOL)isMultiAuthorBlog;
+- (BOOL)isPrivate;
+- (BOOL)supportsStats;
+
 
 #pragma mark - Unsaved Changes
 

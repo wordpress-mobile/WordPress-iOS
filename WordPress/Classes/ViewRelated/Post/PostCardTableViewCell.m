@@ -417,17 +417,17 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self resetMetaButton:self.metaButtonLeft];
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([self.post numberOfComments] > 0) {
+    if ([(Post *)(self.post) numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.post numberOfComments]];
+        NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([self.post numberOfLikes] > 0) {
+    if ([(Post *)(self.post) numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.post numberOfLikes]];
+        NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfLikes]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-like"]];
     }
 }
