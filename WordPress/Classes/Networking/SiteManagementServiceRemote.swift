@@ -3,7 +3,7 @@ import AFNetworking
 
 /// SiteManagementServiceRemote handles REST API calls for managing a WordPress.com site.
 ///
-public class SiteManagementServiceRemote : ServiceRemoteREST
+public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
 {
     /// Deletes the specified WordPress.com site.
     ///
@@ -14,11 +14,11 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     ///
     public func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/delete"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
             parameters: nil,
-            success: { operation, response in
+            success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
                     failure?(SiteError.DeleteInvalidResponse.toNSError())
                     return
@@ -34,7 +34,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
 
                 success?()
             },
-            failure: { operation, error in
+            failure: { error, httpResponse in
                 failure?(error)
             })
     }
@@ -51,11 +51,11 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     ///
     public func exportContent(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/exports/start"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
             parameters: nil,
-            success: { operation, response in
+            success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
                     failure?(SiteError.ExportInvalidResponse.toNSError())
                     return
@@ -71,7 +71,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
 
                 success?()
             },
-            failure: { operation, error in
+            failure: { error, httpResponse in
                 failure?(error)
         })
     }
@@ -85,11 +85,11 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
     ///
     public func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/purchases"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: nil,
-            success: { operation, response in
+            success: { response, httpResponse in
                 guard let results = response as? [SitePurchase] else {
                     failure?(SiteError.PurchasesInvalidResponse.toNSError())
                     return
@@ -98,7 +98,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                 let actives = results.filter { $0[ResultKey.Active]?.boolValue == true }
                 success?(actives)
             },
-            failure: { operation, error in
+            failure: { error, httpResponse in
                 failure?(error)
         })
     }
