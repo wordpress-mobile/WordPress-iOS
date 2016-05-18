@@ -11,7 +11,7 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPGUIConstants.h"
 
-static CGFloat const ItemHoriztonalDragDetectionWidthRation = 0.5;
+static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;
 static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
 @interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
@@ -448,7 +448,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
         //// detect if the user is moving horizontally to the right or left to change the indentation
         
         // first check to see if we should pay attention to touches that might signal a change in indentation
-        const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > (selectedItemView.frame.size.width * ItemHoriztonalDragDetectionWidthRation); // a travel of x% should be considered for updating relationships
+        const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > (selectedItemView.frame.size.width * ItemHoriztonalDragDetectionWidthRatio); // a travel of x% should be considered for updating relationships
         
         [self.visualOrderingView updateVisualOrderingWithTouchLocation:touchPoint vector:vector];
         
