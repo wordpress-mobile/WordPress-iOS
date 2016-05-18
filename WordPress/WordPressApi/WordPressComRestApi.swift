@@ -27,13 +27,16 @@ public final class WordPressComRestApi: NSObject
 
     private static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
-    private let oAuthToken: String
+    private let oAuthToken: String?
     private var userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        var additionalHeaders = ["Authorization": "Bearer \(self.oAuthToken)"]
+        var additionalHeaders: [String : AnyObject] = [:]
+        if let oAuthToken = self.oAuthToken {
+            additionalHeaders["Authorization"] = "Bearer \(oAuthToken)"
+        }
         if let userAgent = self.userAgent {
             additionalHeaders["User-Agent"] = userAgent
         }
@@ -44,20 +47,20 @@ public final class WordPressComRestApi: NSObject
         return sessionManager
     }()
 
-    public init(oAuthToken: String, userAgent: String? = nil) {
+    public init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
+        super.init()
     }
 
     deinit {
-        sessionManager.invalidateSessionCancelingTasks(true)
+        sessionManager.invalidateSessionCancelingTasks(false)
     }
-    /**
-     Reset the API instance
 
-     Invalidates the session and cancel all pending requests
+    /**
+     Cancels all ongoing and makes the session so the object will not fullfil any more request
      */
-    public func reset() {
+    public func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
     }
 
@@ -200,6 +203,13 @@ public final class WordPressComRestApi: NSObject
         }
 
         return progress
+    }
+
+    public func hasCredentials() -> Bool {
+        guard let authToken = oAuthToken else {
+            return false
+        }
+        return !(authToken.isEmpty)
     }
 }
 
