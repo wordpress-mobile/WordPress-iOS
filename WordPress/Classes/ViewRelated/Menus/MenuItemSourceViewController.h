@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class MenuItem;
 
@@ -7,7 +9,7 @@
 
 @interface MenuItemSourceViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuItemSourceViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemSourceViewControllerDelegate> delegate;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenuItem *item;
 
@@ -46,3 +48,5 @@
 - (void)sourceViewControllerDidEndEditingWithKeyboard:(MenuItemSourceViewController *)sourceViewController;
 
 @end
+
+NS_ASSUME_NONNULL_END

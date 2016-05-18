@@ -257,7 +257,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                                [weakSelf showPlans];
                                                            }];
 
-        row.detail = [PlansBridge titleForPlanWithID:[self.blog.planID integerValue]];
+        row.detail = self.blog.planTitle;
 
         [rows addObject:row];
     }
