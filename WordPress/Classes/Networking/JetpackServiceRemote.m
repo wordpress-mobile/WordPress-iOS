@@ -13,7 +13,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
                         success:(void (^)(NSArray *blogIDs))success
                         failure:(void (^)(NSError *error))failure
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
     NSDictionary *parameters = @{
                                  @"f": @"json"
@@ -21,7 +21,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
     
     [manager GET:GetUsersBlogsApiPath
       parameters:parameters
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+         success:^(NSURLSessionDataTask *task, id responseObject) {
              NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
              DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
              NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"id = %@", siteID]];
@@ -40,11 +40,15 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
                      failure(error);
                  }
              }
-         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         } failure:^(NSURLSessionDataTask *task, NSError *error) {
              DDLogError(@"Error validating Jetpack user: %@", error);
              if (failure) {
                  NSError *jetpackError = error;
-                 if (operation.response.statusCode == 401) {
+                 NSHTTPURLResponse *httpResponse = nil;
+                 if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+                     httpResponse = (NSHTTPURLResponse *)task.response;
+                 }
+                 if (httpResponse && httpResponse.statusCode == 401) {
                      jetpackError = [NSError errorWithDomain:JetpackServiceRemoteErrorDomain
                                                         code:JetpackServiceRemoteErrorInvalidCredentials
                                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid username or password", @""), NSUnderlyingErrorKey: error}];
