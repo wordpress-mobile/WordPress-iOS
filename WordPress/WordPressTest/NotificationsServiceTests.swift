@@ -9,7 +9,7 @@ class NotificationsServiceTests : XCTestCase
 
     // MARK: - Properties
     var contextManager      : TestContextManager!
-    var remoteApi           : WordPressComApi!
+    var remoteApi           : WordPressComRestApi!
     var service             : NotificationsService!
 
     // MARK: - Constants
@@ -25,8 +25,9 @@ class NotificationsServiceTests : XCTestCase
         super.setUp()
 
         contextManager      = TestContextManager()
-        remoteApi           = WordPressComApi.anonymousApi()
-        service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
+        remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
+        service             = NotificationsService(managedObjectContext: contextManager.mainContext,
+                                                   wordPressComRestApi: remoteApi)
 
         stub({ request in
             return request.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil
