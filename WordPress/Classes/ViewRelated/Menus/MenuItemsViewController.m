@@ -9,6 +9,10 @@
 #import "ContextManager.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPDeviceIdentification.h>
+#import "WPGUIConstants.h"
+
+static CGFloat const ItemHoriztonalDragDetectionWidthRation = 0.5;
+static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
 @interface MenuItemsViewController () <MenuItemAbstractViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
@@ -224,13 +228,13 @@
     
     for (MenuItemInsertionView *insertionView in self.insertionViews) {
         insertionView.hidden = YES;
-        insertionView.alpha = 0.0;
+        insertionView.alpha = WPAlphaZero;
     }
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:WPAnimationDurationDefault animations:^{
         
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = NO;
-            insertionView.alpha = 1.0;
+            insertionView.alpha = WPAlphaFull;
         }
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
@@ -238,10 +242,7 @@
             [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
         }
         
-    } completion:^(BOOL finished) {
-        
-        
-    }];
+    } completion:nil];
 }
 
 - (void)removeItemInsertionViews
@@ -271,13 +272,12 @@
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
     updatedRect.origin.y -= MenuItemsStackableViewDefaultHeight;
     
-    [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
+    [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:0 animations:^{
         
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = YES;
-            insertionView.alpha = 0.0;
+            insertionView.alpha = WPAlphaZero;
         }
-        
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
         [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
@@ -448,7 +448,7 @@
         //// detect if the user is moving horizontally to the right or left to change the indentation
         
         // first check to see if we should pay attention to touches that might signal a change in indentation
-        const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
+        const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > (selectedItemView.frame.size.width * ItemHoriztonalDragDetectionWidthRation); // a travel of x% should be considered for updating relationships
         
         [self.visualOrderingView updateVisualOrderingWithTouchLocation:touchPoint vector:vector];
         
@@ -512,7 +512,7 @@
                     continue;
                 }
                 // detect if the touch within a padded inset of an itemView under the touchPoint
-                const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
+                const CGRect orderingDetectionRect = CGRectInset(itemView.frame, ItemOrderingTouchesDetectionInset, ItemOrderingTouchesDetectionInset);
                 if (CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
                     
                     // reorder the model if needed or available
