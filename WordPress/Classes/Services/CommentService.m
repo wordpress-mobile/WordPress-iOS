@@ -12,6 +12,7 @@
 #import "PostService.h"
 #import "AbstractPost.h"
 #import "NSDate+WordPressJSON.h"
+#import "WordPress-Swift.h"
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
@@ -993,8 +994,8 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.restApi) {
-            remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        if (blog.wordPressComRestApi) {
+            remote = [[CommentServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
     } else if (blog.api) {
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
@@ -1004,20 +1005,20 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
 
 - (CommentServiceRemoteREST *)restRemoteForSite:(NSNumber *)siteID
 {
-    return [[CommentServiceRemoteREST alloc] initWithApi:[self apiForRESTRequest] siteID:siteID];
+    return [[CommentServiceRemoteREST alloc] initWithWordPressComRestApi:[self apiForRESTRequest] siteID:siteID];
 }
 
 /**
  Get the api to use for the request.
  */
-- (WordPressComApi *)apiForRESTRequest
+- (WordPressComRestApi *)apiForRESTRequest
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WordPressComApi *api = [defaultAccount restApi];
-    if (![api hasCredentials]) {
-        api = [WordPressComApi anonymousApi];
-    }
+    WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
+//    if (![api hasCredentials]) {
+//        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]]
+//    }
     return api;
 }
 
