@@ -170,7 +170,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.innerContentView.backgroundColor = backgroundColor;
 }
 
-- (id<WPPostContentViewProvider>)providerOrRevision
+- (AbstractPost *)postOrRevision
 {
     return [self.post hasRevision] ? [self.post revision] : self.post;
 }
@@ -328,14 +328,15 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    if (![provider featuredImageURLForDisplay]) {
+    AbstractPost *post = [self postOrRevision];
+
+    if (![post featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
     }
 
-    NSURL *url = [provider featuredImageURLForDisplay];
+    NSURL *url = [post featuredImageURLForDisplay];
     // if not private create photon url
-    if (![provider isPrivate]) {
+    if (![post isPrivate]) {
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
     }
@@ -346,8 +347,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureTitle
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    NSString *str = [provider titleForDisplay] ?: [NSString string];
+    AbstractPost *post = [self postOrRevision];
+    NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
@@ -355,8 +356,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureSnippet
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    NSString *str = [provider contentPreviewForDisplay] ?: [NSString string];
+    AbstractPost *post = [self postOrRevision];
+    NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
@@ -364,8 +365,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureDate
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    self.dateLabel.text = [provider dateStringForDisplay];
+    AbstractPost *post = [self postOrRevision];
+    self.dateLabel.text = [post dateStringForDisplay];
 }
 
 - (void)configureStatusView
