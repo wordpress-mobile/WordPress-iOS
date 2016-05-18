@@ -3,6 +3,8 @@
 #import "MenuItemSourceCell.h"
 #import "MenuItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class MenuItem;
 
@@ -10,7 +12,7 @@
 
 @interface MenuItemSourceResultsViewController : UIViewController <MenuItemSourceTextBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, weak) id <MenuItemSourceResultsViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemSourceResultsViewControllerDelegate> delegate;
 
 /**
  The blog the view is sourcing data from.
@@ -31,11 +33,6 @@
  A tableView for inserting cells of data relating to the source
  */
 @property (nonatomic, strong, readonly) UITableView *tableView;
-
-/**
- Configurable fetchedResultsController for populating the tableView with source data.
- */
-@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 
 /**
  Searchbar created and implemented via insertSearchBarIfNeeded
@@ -65,12 +62,12 @@
 /**
  A searchBar text update has changed in a way that local results should be fetched to reflect the search.
  */
-- (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText;
+- (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(nullable NSString *)searchText;
 
 /**
  A searchBar text update has changed in a way that remote results should be fetched to reflect the search.
  */
-- (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText;
+- (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(nullable NSString *)searchText;
 
 /**
  Shows an animated loading indicator in the tableFooterView, if the data set is empty.
@@ -103,7 +100,7 @@
  @param itemType - The type of the source.
  @param name - The name that should be used for the source.
  */
-- (void)setItemSourceWithContentID:(NSNumber *)contentID name:(NSString *)name;
+- (void)setItemSourceWithContentID:(nullable NSNumber *)contentID name:(nullable NSString *)name;
 
 /**
  The item type the view uses as a source.
@@ -118,17 +115,22 @@
 /**
  Configurable fetchRequest within subclasses for the resultsController to initialize with.
  */
-- (NSFetchRequest *)fetchRequest;
+- (nullable NSFetchRequest *)fetchRequest;
 
 /**
  Configurable predicate for fetchRequest
  */
-- (NSPredicate *)defaultFetchRequestPredicate;
+- (nullable NSPredicate *)defaultFetchRequestPredicate;
+
+/**
+ Configurable fetchedResultsController for populating the tableView with source data.
+ */
+- (nullable NSFetchedResultsController *)resultsController;
 
 /**
  Configurable sectionName key within subclasses for the fetchRequest and resultsController to initialize with.
  */
-- (NSString *)fetechedResultsControllerSectionNameKeyPath;
+- (nullable NSString *)fetechedResultsControllerSectionNameKeyPath;
 
 /**
  Handles performing the fetchRequest on the resultsController and any errors that occur.
@@ -175,3 +177,5 @@
 - (void)sourceResultsViewControllerDidEndEditingWithKeyboard:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 
 @end
+
+NS_ASSUME_NONNULL_END
