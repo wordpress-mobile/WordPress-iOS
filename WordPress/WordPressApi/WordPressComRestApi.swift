@@ -204,6 +204,13 @@ public class WordPressComRestApi: NSObject
 
         return progress
     }
+
+    public func hasCredentials() -> Bool {
+        guard let authToken = oAuthToken else {
+            return false
+        }
+        return !(authToken.isEmpty)
+    }
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
