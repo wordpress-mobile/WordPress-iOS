@@ -6,10 +6,10 @@ import Foundation
 struct PeopleService {
     typealias Role = Person.Role
 
-    let remote: PeopleRemote
     let siteID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
+    private let remote: PeopleRemote
 
 
     /// Designated Initializer.
@@ -25,37 +25,41 @@ struct PeopleService {
         siteID = dotComID
     }
 
-// TODO: Review Method Names. Simplify duality
-
-    /// Refreshes the collection of Users associated to a blog.
+    /// Refreshes the Users + Followers associated to the current blog.
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshUsers(completion: (Bool -> Void)) {
+    func refreshPeople(completion: (Bool -> Void)) {
+        let group = dispatch_group_create()
+        var success = true
+
+        // Load Users
+        dispatch_group_enter(group)
         remote.getUsers(siteID, success: { users in
             self.mergeUsers(users)
-            completion(true)
+            dispatch_group_leave(group)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            completion(false)
+            success = false
+            dispatch_group_leave(group)
         })
-    }
 
-
-    /// Refreshes the collection of Followers associated to a blog.
-    ///
-    /// - Parameter completion: Closure to be executed on completion.
-    ///
-    func refreshFollowers(completion: (Bool -> Void)) {
+        // Load Followers
+        dispatch_group_enter(group)
         remote.getFollowers(siteID, success: { followers in
             self.mergeFollowers(followers)
-            completion(true)
+            dispatch_group_leave(group)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            completion(false)
+            success = false
+            dispatch_group_leave(group)
         })
+
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            completion(success)
+        }
     }
 
 
@@ -68,8 +72,8 @@ struct PeopleService {
     ///
     /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> ())?) -> Person {
-        guard let managedPerson = managedPersonWithID(person.ID) else {
+    func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> Void)?) -> Person {
+        guard let managedPerson = managedPersonFromPerson(person) else {
             return person
         }
 
@@ -81,7 +85,7 @@ struct PeopleService {
 
             DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
 
-            guard let managedPerson = self.managedPersonWithID(person.ID) else {
+            guard let managedPerson = self.managedPersonFromPerson(person) else {
                 DDLogSwift.logError("### Person with ID \(person.ID) deleted before update")
                 return
             }
@@ -107,7 +111,7 @@ struct PeopleService {
     ///     - failure: Closure to be executed on error
     ///
     func deletePerson(person: Person, failure: (ErrorType -> Void)? = nil) {
-        guard let managedPerson = managedPersonWithID(person.ID) else {
+        guard let managedPerson = managedPersonFromPerson(person) else {
             return
         }
 
@@ -148,14 +152,14 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
-    ///
+    /// Updates the local collection of Users, with the (fresh) remote version.
     ///
     func mergeUsers(users: People) {
         let localUsers = loadPeople(followers: false)
         mergePeople(users, localPeople: localUsers)
     }
 
-    ///
+    /// Updates the local collection of Followers, with the (fresh) remote version.
     ///
     func mergeFollowers(followers: People) {
         let localFollowers = loadPeople(followers: true)
@@ -171,12 +175,8 @@ private extension PeopleService {
         let removedIDs = localIDs.subtract(remoteIDs)
         removeManagedPeopleWithIDs(removedIDs)
 
-        // Let's try to only update objects that have changed
-        let remoteChanges = remotePeople.filter {
-            return !localPeople.contains($0)
-        }
-        for remotePerson in remoteChanges {
-            if let existingPerson = managedPersonWithID(remotePerson.ID) {
+        for remotePerson in remotePeople {
+            if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
                 DDLogSwift.logDebug("Updated person \(existingPerson)")
             } else {
@@ -205,10 +205,14 @@ private extension PeopleService {
 
     /// Retrieves a Person from Core Data, with the specifiedID.
     ///
-    func managedPersonWithID(id: Int) -> ManagedPerson? {
+    func managedPersonFromPerson(person: Person) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@", NSNumber(integer: siteID), NSNumber(integer: id))
+        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@ AND isFollower = %@",
+                                                NSNumber(integer: siteID),
+                                                NSNumber(integer: person.ID),
+                                                NSNumber(bool: person.isFollower))
         request.fetchLimit = 1
+
         let results = (try? context.executeFetchRequest(request) as! [ManagedPerson]) ?? []
         return results.first
     }
