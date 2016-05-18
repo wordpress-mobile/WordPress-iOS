@@ -25,10 +25,14 @@ static NSString * const UserDictionaryDateKey = @"date";
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+
+    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
+    NSDictionary *parameters = @{
+                                 @"locale": locale
+                                 };
     [self.wordPressComRestApi GET:requestUrl
-       parameters:nil
-          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+       parameters:parameters
+                    success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (success) {
                   success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
               }
@@ -100,7 +104,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     }];
 
     NSDictionary *parameters = @{
-                                 @"sites": sites,
+                                 @"sites": sites
                                  };
     NSString *path = [self pathForEndpoint:@"me/sites"
                                withVersion:ServiceRemoteRESTApiVersion_1_1];
@@ -215,6 +219,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
     blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
+    blog.planTitle = [jsonBlog stringForKeyPath:@"plan.product_name_short"];
     return blog;
 }
 

@@ -85,6 +85,7 @@
 #import "RotationAwareNavigationViewController.h"
 
 #import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
