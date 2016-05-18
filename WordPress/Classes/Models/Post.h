@@ -47,6 +47,11 @@ extern NSString * const PostTypeDefaultIdentifier;
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
 
+#pragma mark - Convenience methods
+
+- (NSInteger)numberOfComments;
+- (NSInteger)numberOfLikes;
+
 @end
 
 @class PostCategory;
