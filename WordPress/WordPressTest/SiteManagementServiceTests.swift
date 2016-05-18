@@ -47,9 +47,9 @@ class SiteManagementServiceTests : XCTestCase
 
     class SiteManagementServiceTester : SiteManagementService
     {
-        let mockRemoteApi = MockWordPressComApi()
+        let mockRemoteApi = MockWordPressComRestApi()
         lazy var mockRemoteService: MockSiteManagementServiceRemote = {
-            return MockSiteManagementServiceRemote(api: self.mockRemoteApi)
+            return MockSiteManagementServiceRemote(wordPressComRestApi: self.mockRemoteApi)
         }()
 
         override func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
