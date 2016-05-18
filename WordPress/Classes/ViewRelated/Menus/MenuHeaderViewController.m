@@ -1,4 +1,4 @@
-#import "MenusHeaderView.h"
+#import "MenuHeaderViewController.h"
 #import "MenusSelectionView.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
@@ -9,7 +9,7 @@
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;
 
-@interface MenusHeaderView () <MenusSelectionViewDelegate>
+@interface MenuHeaderViewController () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
@@ -18,20 +18,19 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 
 @end
 
-@implementation MenusHeaderView
+@implementation MenuHeaderViewController
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
+    
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [WPStyleGuide greyLighten30];
 
     self.stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
-    
-    self.backgroundColor = [WPStyleGuide greyLighten30];
-    
+
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
-    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
-    self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -46,6 +45,9 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
         
         [self.locationsView removeAllSelectionItems];
         [self.menusView removeAllSelectionItems];
+        
+        self.locationsView.selectionType = MenusSelectionViewTypeLocations;
+        self.menusView.selectionType = MenusSelectionViewTypeMenus;
         
         if (blog) {
             for (MenuLocation *location in blog.menuLocations) {
@@ -114,19 +116,19 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     if ([item isMenuLocation]) {
         
         MenuLocation *location = item.itemObject;
-        [self.delegate headerView:self selectedLocation:location];
+        [self.delegate headerViewController:self selectedLocation:location];
         
     } else  if ([item isMenu]) {
         
         Menu *menu = item.itemObject;
-        [self.delegate headerView:self selectedMenu:menu];
+        [self.delegate headerViewController:self selectedMenu:menu];
     }
     [self contractSelectionsIfNeeded];
 }
 
 - (void)selectionViewSelectedOptionForCreatingNewItem:(MenusSelectionView *)selectionView
 {
-    [self.delegate headerViewSelectedForCreatingNewMenu:self];
+    [self.delegate headerViewControllerSelectedForCreatingNewMenu:self];
     [self contractSelectionsIfNeeded];
 }
 
