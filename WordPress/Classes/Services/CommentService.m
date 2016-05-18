@@ -1016,9 +1016,10 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
-//    if (![api hasCredentials]) {
-//        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]]
-//    }
+    //Sergio Estevao: Do we really want to do this? If the call going to be valid if no credential is available?
+    if (![api hasCredentials]) {
+        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+    }
     return api;
 }
 
