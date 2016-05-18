@@ -80,7 +80,7 @@
 		08D345511CD7F50900358E8C /* MenusSelectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */; };
 		08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */; };
 		08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454F1CD7F50900358E8C /* MenusSelectionView.m */; };
-		08D345561CD7FBA900358E8C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenusHeaderView.m */; };
+		08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
 		08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */; };
 		08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */; };
@@ -1026,8 +1026,8 @@
 		08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionItemView.m; sourceTree = "<group>"; };
 		08D3454E1CD7F50900358E8C /* MenusSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionView.h; sourceTree = "<group>"; };
 		08D3454F1CD7F50900358E8C /* MenusSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionView.m; sourceTree = "<group>"; };
-		08D345541CD7FBA900358E8C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
-		08D345551CD7FBA900358E8C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
+		08D345541CD7FBA900358E8C /* MenuHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuHeaderViewController.h; sourceTree = "<group>"; };
+		08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuHeaderViewController.m; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
 		08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Menu+ViewDesign.h"; sourceTree = "<group>"; };
 		08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Menu+ViewDesign.m"; sourceTree = "<group>"; };
@@ -2388,10 +2388,12 @@
 		089F087F1CE25D30009909F2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				082635B91CEA69280088030C /* MenuItemsViewController.h */,
-				082635BA1CEA69280088030C /* MenuItemsViewController.m */,
 				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
 				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
+				08D345541CD7FBA900358E8C /* MenuHeaderViewController.h */,
+				08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */,
+				082635B91CEA69280088030C /* MenuItemsViewController.h */,
+				082635BA1CEA69280088030C /* MenuItemsViewController.m */,
 				08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */,
 				08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */,
 				08216FC01CDBF96000304BA7 /* MenuItemSourceViewController.h */,
@@ -2417,8 +2419,6 @@
 		089F08801CE25D43009909F2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				08D345541CD7FBA900358E8C /* MenusHeaderView.h */,
-				08D345551CD7FBA900358E8C /* MenusHeaderView.m */,
 				08D3454E1CD7F50900358E8C /* MenusSelectionView.h */,
 				08D3454F1CD7F50900358E8C /* MenusSelectionView.m */,
 				08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */,
@@ -5617,7 +5617,7 @@
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
-				08D345561CD7FBA900358E8C /* MenusHeaderView.m in Sources */,
+				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
