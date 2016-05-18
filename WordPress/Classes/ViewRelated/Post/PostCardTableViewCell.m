@@ -1,7 +1,7 @@
 #import "PostCardTableViewCell.h"
 #import <AFNetworking/UIKit+AFNetworking.h>
-#import "BasePost.h"
 #import "PhotonImageURLHelper.h"
+#import "Post.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
-@property (nonatomic, strong) AbstractPost *post;
+@property (nonatomic, strong) Post *post;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -257,12 +257,12 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 #pragma mark - ConfigurablePostView
 
-- (void)configureWithPost:(AbstractPost *)post
+- (void)configureWithPost:(Post *)post
 {
     [self configureWithPost:post forLayoutOnly:NO];
 }
 
-- (void)configureWithPost:(nonnull AbstractPost *)post
+- (void)configureWithPost:(nonnull Post *)post
             forLayoutOnly:(BOOL)layoutOnly
 {
     self.configureForLayoutOnly = layoutOnly;
@@ -417,14 +417,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self resetMetaButton:self.metaButtonLeft];
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([(Post *)(self.post) numberOfComments] > 0) {
+    if ([self.post numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([(Post *)(self.post) numberOfLikes] > 0) {
+    if ([self.post numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfLikes]];
