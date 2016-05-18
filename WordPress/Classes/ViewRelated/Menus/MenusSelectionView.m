@@ -30,6 +30,7 @@
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
+        // Increase the stroke width on non-retina screens.
         self.layer.borderWidth = MenusDesignStrokeWidth * 2;
     }
     
