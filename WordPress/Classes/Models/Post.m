@@ -174,7 +174,7 @@ NSString * const PostTypeDefaultIdentifier = @"post";
     return NO;
 }
 
-#pragma mark - WPPostContentViewProvider Methods
+#pragma mark - Convenience Methods
 
 - (NSString *)titleForDisplay
 {

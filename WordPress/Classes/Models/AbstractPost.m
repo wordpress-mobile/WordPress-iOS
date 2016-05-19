@@ -269,7 +269,7 @@
 }
 
 
-#pragma mark - WPPostContentViewProvider protocol
+#pragma mark - Convenience methods
 
 - (NSString *)authorNameForDisplay
 {
