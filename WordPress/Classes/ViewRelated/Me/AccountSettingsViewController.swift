@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import RxSwift
 import WordPressComAnalytics
 
 func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController? {
@@ -17,7 +16,7 @@ func AccountSettingsViewController(service service: AccountSettingsService) -> I
     return viewController
 }
 
-private struct AccountSettingsController: SettingsController {
+private class AccountSettingsController: SettingsController {
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {
@@ -30,26 +29,42 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Initialization
 
     let service: AccountSettingsService
-    let bag = DisposeBag()
-    var settings: AccountSettings?
-    var noticeMessage: String?
+    var settings: AccountSettings? {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+        }
+    }
+    var noticeMessage: String? {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+        }
+    }
 
     init(service: AccountSettingsService) {
+        print("AccountSettingsController.init")
         self.service = service
-        service.settings
-            .subscribeNext { settings in
-                self.settings = settings
-                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
-            }
-            .addDisposableTo(bag)
-        Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
-            return refresh ?? email
-            }
-            .subscribeNext { message in
-                self.noticeMessage = message
-                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
-            }
-            .addDisposableTo(bag)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: AccountSettingsService.Notifications.settingsChanged, object: nil)
+    }
+
+    deinit {
+        print("AccountSettingsController.deinit")
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    func refreshModel() {
+        service.refreshSettings()
+    }
+
+    @objc func loadStatus() {
+        noticeMessage = service.status.errorMessage ?? noticeForAccountSettings(service.settings)
+    }
+
+    @objc func loadSettings() {
+        settings = service.settings
+        // Status is affected by settings changes (for pending email), so let's load that as well
+        loadStatus()
     }
 
     // MARK: - ImmuTableViewController
@@ -57,21 +72,6 @@ private struct AccountSettingsController: SettingsController {
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
         return mapViewModel(settings, service: service, presenter: presenter)
     }
-
-    var refreshStatusMessage: Observable<String?> {
-        return service.refresh
-            // replace errors with .Failed status
-            .catchErrorJustReturn(.Failed)
-            // convert status to string
-            .map({ $0.errorMessage })
-    }
-
-    var emailNoticeMessage: Observable<String?> {
-        return service.settings.map {
-            return self.noticeForAccountSettings($0)
-        }
-    }
-
 
     // MARK: - Model mapping
 

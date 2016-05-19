@@ -40,6 +40,7 @@ protocol ImmuTableController {
     var immuTableRows: [ImmuTableRow.Type] { get }
     var noticeMessage: String? { get }
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable
+    func refreshModel()
 }
 
 /// Generic view controller to present ImmuTable-based tables
@@ -55,6 +56,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
+    var hasAppearedBefore = false
 
     // MARK: - Table View Controller
 
@@ -86,11 +88,19 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        loadModel()
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: #selector(ImmuTableViewController.modelChanged),
+            selector: #selector(ImmuTableViewController.loadModel),
             name: ImmuTableViewController.controllerChangedNotification,
             object: nil)
+
+        guard !hasAppearedBefore else {
+            return
+        }
+
+        controller.refreshModel()
+        hasAppearedBefore = true
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -108,13 +118,14 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    func modelChanged() {
+    func loadModel() {
         handler.viewModel = controller.tableViewModelWithPresenter(self)
         noticeMessage = controller.noticeMessage
     }
 
     var noticeMessage: String? = nil {
         didSet {
+            guard noticeMessage != oldValue else { return }
             noticeAnimator.animateMessage(noticeMessage)
         }
     }

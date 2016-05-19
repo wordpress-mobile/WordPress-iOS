@@ -1,5 +1,4 @@
 import UIKit
-import RxSwift
 import WordPressShared
 
 func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
@@ -20,7 +19,7 @@ func MyProfileViewController(service service: AccountSettingsService) -> ImmuTab
 /// MyProfileController requires the `presenter` to be set before using.
 /// To avoid problems, it's marked private and should only be initialized using the
 /// `MyProfileViewController` factory functions.
-private struct MyProfileController: SettingsController {
+private class MyProfileController: SettingsController {
     // MARK: - ImmuTableController
 
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
@@ -32,28 +31,38 @@ private struct MyProfileController: SettingsController {
     // MARK: - Initialization
 
     let service: AccountSettingsService
-    let bag = DisposeBag()
-    var settings: AccountSettings?
-    var noticeMessage: String?
+    var settings: AccountSettings? {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+        }
+    }
+    var noticeMessage: String? {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+        }
+    }
 
     init(service: AccountSettingsService) {
         self.service = service
-        service.settings
-            .subscribeNext { settings in
-                self.settings = settings
-                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
-            }
-            .addDisposableTo(bag)
-        service.refresh
-            // replace errors with .Failed status
-            .catchErrorJustReturn(.Failed)
-            // convert status to string
-            .map({ $0.errorMessage })
-            .subscribeNext { message in
-                self.noticeMessage = message
-                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
-            }
-            .addDisposableTo(bag)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: AccountSettingsService.Notifications.settingsChanged, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    func refreshModel() {
+        service.refreshSettings()
+    }
+
+    @objc func loadStatus() {
+        noticeMessage = service.status.errorMessage
+    }
+
+    @objc func loadSettings() {
+        settings = service.settings
     }
 
     // MARK: - ImmuTableViewController
