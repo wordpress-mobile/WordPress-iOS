@@ -4,7 +4,7 @@
 #import "ContextManager.h"
 #import "MenusServiceRemote.h"
 #import "TestContextManager.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "RemoteMenu.h"
 
 @interface MenusServicRemoteTests : XCTestCase
@@ -18,7 +18,7 @@
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
@@ -39,7 +39,7 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
     [service createMenuWithName:name
                            blog:blog
@@ -52,7 +52,7 @@
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
@@ -66,7 +66,7 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
 
     [service updateMenuForID:menu.menuID
                         blog:blog
@@ -82,7 +82,7 @@
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
@@ -96,7 +96,7 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
     [service deleteMenuForID:menu.menuID
                         blog:blog
@@ -109,7 +109,7 @@
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus", [blog dotComID]];
@@ -119,7 +119,7 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
     [service getMenusForBlog:blog
                      success:^(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations) {}
