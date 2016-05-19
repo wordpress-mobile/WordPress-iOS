@@ -82,7 +82,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - NSFetchedResultsController Methods
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        hideNoResultsIfNeeded()
+        refreshNoResultsView()
         tableView.reloadData()
     }
 
@@ -164,10 +164,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        displayNoResultsIfNeeded()
+        refreshNoResultsView()
 
         service.refreshPeople { [weak self] _ in
-            self?.hideNoResultsIfNeeded()
+            self?.refreshNoResultsView()
             self?.refreshControl?.endRefreshing()
         }
     }
@@ -175,22 +175,20 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - No Results Helpers
 
-    private func displayNoResultsIfNeeded() {
-        if resultsController.fetchedObjects?.count > 0 {
+    private func refreshNoResultsView() {
+        guard resultsController.fetchedObjects?.count == 0 else {
+            noResultsView.removeFromSuperview()
             return
         }
 
-        noResultsView.titleText = NSLocalizedString("Loading...", comment: "")
-        tableView.addSubviewWithFadeAnimation(noResultsView)
-    }
+        noResultsView.titleText = NSLocalizedString("No \(filter.title) Yet",
+            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
 
-    private func hideNoResultsIfNeeded() {
         if noResultsView.superview == nil {
-            return
+            tableView.addSubviewWithFadeAnimation(noResultsView)
         }
-
-        noResultsView.removeFromSuperview()
     }
+
 
     // MARK: - Private Helpers
 
@@ -269,7 +267,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         var title: String {
             switch self {
             case .Users:
-                return NSLocalizedString("Team", comment: "Blog Users")
+                return NSLocalizedString("Users", comment: "Blog Users")
             case .Followers:
                 return NSLocalizedString("Followers", comment: "Blog Followers")
             }
