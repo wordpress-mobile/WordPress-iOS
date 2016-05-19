@@ -32,6 +32,7 @@
 - (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+- (AbstractPost *)latest;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;
