@@ -2,7 +2,7 @@
 #import <XCTest/XCTest.h>
 #import "MenusService.h"
 #import "Blog.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
@@ -71,11 +71,11 @@
 
 - (void)testThatWordPressBlogSupportsMenusServices
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
@@ -90,11 +90,11 @@
 
 - (void)testThatWordPressBlogDoesNotSupportMenusServices
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(NO);
     
@@ -109,11 +109,11 @@
 
 - (void)testThatSyncMenusForBlogWorks
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
@@ -134,11 +134,11 @@
 
 - (void)testThatCreateMenuWithNameWorks
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
@@ -166,11 +166,11 @@
 
 - (void)testThatUpdateMenuWorks
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
@@ -217,11 +217,11 @@
 
 - (void)testThatDeleteMenuWithIdWorks
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
@@ -247,11 +247,11 @@
 
 - (void)testThatDeleteMenuWithoutIdWorks
 {
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
