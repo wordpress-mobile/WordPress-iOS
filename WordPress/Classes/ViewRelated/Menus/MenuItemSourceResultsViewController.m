@@ -17,8 +17,10 @@ static CGFloat const SearchBarHeight = 44.0;
  View used as the tableView.tableHeaderView container view for self.stackView.
  */
 @property (nonatomic, strong, readonly) UIView *stackedTableHeaderView;
-
 @property (nonatomic, strong, readonly) MenuItemSourceFooterView *footerView;
+
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
+
 @property (nonatomic, assign) BOOL observeUserScrollingForEndOfTableView;
 
 @end

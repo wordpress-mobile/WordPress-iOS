@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "WPPostContentViewProvider.h"
 
 @class AbstractPost;
 @class BasePageListCell;
