@@ -1,6 +1,5 @@
 #import <CoreData/CoreData.h>
 #import "AbstractPost.h"
-#import "WPPostContentViewProvider.h"
 
 extern NSString * const PostTypeDefaultIdentifier;
 
@@ -47,6 +46,11 @@ extern NSString * const PostTypeDefaultIdentifier;
  @param categoryNames a `NSArray` with the names of the categories for this post. If a given category name doesn't exist it's ignored.
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
+
+#pragma mark - Convenience methods
+
+- (NSInteger)numberOfComments;
+- (NSInteger)numberOfLikes;
 
 @end
 
