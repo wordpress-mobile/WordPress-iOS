@@ -1,12 +1,10 @@
 import Foundation
 import Reachability
-import RxCocoa
-import RxSwift
 
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
 protocol AccountSettingsRemoteInterface {
-    var settings: Observable<AccountSettings> { get }
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void)
     func updateSetting(change: AccountSettingsChange, success: () -> Void, failure: ErrorType -> Void)
 }
 
@@ -19,15 +17,30 @@ class AccountSettingsService {
         static let pollingInterval = 60.0
     }
 
+    enum Notifications {
+        static let settingsChanged = "AccountSettingsServiceSettingsChanged"
+        static let refreshStatusChanged = "AccountSettingsServiceRefreshStatusChanged"
+    }
+
     let remote: AccountSettingsRemoteInterface
     let userID: Int
 
-    private let context = ContextManager.sharedInstance().mainContext
-
-    var testScheduler: SchedulerType? = nil
-    private var scheduler: SchedulerType {
-        return testScheduler ?? MainScheduler.instance
+    var status: RefreshStatus = .Idle {
+        didSet {
+            stallTimer?.invalidate()
+            stallTimer = nil
+            NSNotificationCenter.defaultCenter().postNotificationName(Notifications.refreshStatusChanged, object: nil)
+        }
     }
+    var settings: AccountSettings? = nil {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(Notifications.settingsChanged, object: nil)
+        }
+    }
+
+    var stallTimer: NSTimer?
+
+    private let context = ContextManager.sharedInstance().mainContext
 
     convenience init(userID: Int, api: WordPressComApi) {
         let remote = AccountSettingsRemote.remoteWithApi(api)
@@ -37,75 +50,51 @@ class AccountSettingsService {
     init(userID: Int, remote: AccountSettingsRemoteInterface) {
         self.userID = userID
         self.remote = remote
+        loadSettings()
     }
 
-    /// Performs a network refresh of settings and emits values with the refresh status.
-    ///
-    /// - When it's subscribed, it requests a refresh from the server
-    /// - If a networking error happens it doesn't emit a new value and will retry the request.
-    /// - If it reaches the maximum permitted number of retries it will emit an Error.
-    /// - If an error not related to networking happens, it will emit an Error.
-    /// - When the data is refreshed, it will emit an `.Idle` value and complete.
-    private lazy var remoteSettings: Observable<RefreshStatus> = {
-        return self.remote.settings
-            .map({ settings -> RefreshStatus in
+    func getSettingsAttempt(count count: Int = 0) {
+        self.remote.getSettings(
+            success: { settings in
                 self.updateSettings(settings)
-                return .Idle
-            })
-            .retryIf({ (count, error) in
+                self.status = .Idle
+            },
+            failure: { error in
+                let error = error as NSError
                 if error.domain == NSURLErrorDomain {
                     DDLogSwift.logError("Error refreshing settings (attempt \(count)): \(error)")
                 } else {
                     DDLogSwift.logError("Error refreshing settings (unrecoverable): \(error)")
                 }
 
-                return error.domain == NSURLErrorDomain && count < Defaults.maxRetries
-            })
-    }()
+                if error.domain == NSURLErrorDomain && count < Defaults.maxRetries {
+                    self.getSettingsAttempt(count: count + 1)
+                } else {
+                    self.status = .Failed
+                }
+            }
+        )
+    }
 
-    /// Emits one `.Stalled` value after a timeout and then completes
-    private lazy var stalled: Observable<RefreshStatus> = {
-        return Observable<RefreshStatus>
-            .just(.Stalled)
-            .delaySubscription(Defaults.stallTimeout, scheduler: self.scheduler)
-    }()
+    func refreshSettings() {
+        guard status == .Idle || status == .Failed else {
+            return
+        }
+        status = .Refreshing
+        getSettingsAttempt()
+        stallTimer = NSTimer.scheduledTimerWithTimeInterval(Defaults.stallTimeout,
+                                                       target: self,
+                                                       selector: #selector(AccountSettingsService.stallTimerFired),
+                                                       userInfo: nil,
+                                                       repeats: false)
+    }
 
-    /// Performs a network refresh of settings and emits values with the refresh status.
-    ///
-    /// - When it's subscribed, it requests a refresh from the server
-    /// - If it takes more than `stallTimeout` to complete, it will emit a `.Stalled` value and continue waiting for the request to finish.
-    /// - If a networking error happens it doesn't emit a new value and will retry the request.
-    /// - If it reaches the maximum permitted number of retries it will emit an Error.
-    /// - If an error not related to networking happens, it will emit an Error.
-    /// - When the data is refreshed, it will emit an `.Idle` value and complete.
-    lazy private(set) var request: Observable<RefreshStatus> = {
-        let remoteSettings = self.remoteSettings.shareReplayLatestWhileConnected()
-        let stalledSettings = Observable.of(self.stalled, remoteSettings)
-            .merge()
-
-        return remoteSettings
-            .amb(stalledSettings)
-            .startWith(.Refreshing)
-    }()
-
-    /// Emits values when the refresh status changes.
-    ///
-    /// On subscription, this will start refreshing settings, polling each minute.
-    /// Possible values:
-    /// - `.Refreshing` when it starts getting remote data.
-    /// - `.Stalled` when it's getting remote data and hasn't succeeded before `stallTimeout`.
-    /// - `.Idle` when the request was successful and it's waiting for the polling interval.
-    /// - An error when the request couldn't complete. It will stop retrying.
-    lazy var refresh: Observable<RefreshStatus> = {
-        // Copy request to avoid capture of self in closure
-        let request = self.request
-
-        // Convert to a polling request
-        return Observable<Int>
-            .interval(Defaults.pollingInterval, scheduler: self.scheduler)
-            .startWith(0)
-            .flatMapLatest({ _ in request })
-    }()
+    @objc func stallTimerFired() {
+        guard status == .Refreshing else {
+            return
+        }
+        status = .Stalled
+    }
 
     func saveChange(change: AccountSettingsChange) {
         guard let reverse = try? applyChange(change) else {
@@ -125,27 +114,6 @@ class AccountSettingsService {
         }
     }
 
-    /// Emits a value when the settings for the associated account change.
-    var settings: Observable<AccountSettings?> {
-        // This was the simplest implementation. If performance is an issue, we could try
-        // adding `distinctUntilChanged` or `filter` on the notification userInfo and only
-        // emit if the changed objects include the observed account.
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        let notificationObserver = notificationCenter.rx_notification(NSManagedObjectContextDidSaveNotification, object: context)
-
-        // Grab an initial settings value, since the notification observer will
-        // only emit values on save.
-        // Use `deferred` since we want to call `getSettings` when the observable
-        // is subscribed, not when it's created.
-        let initial = Observable.deferred({
-            return Observable.just(self.getSettings())
-        })
-
-        // Subsequent changes after subscription are generated from the save notification.
-        let updates = notificationObserver.map(getSettings)
-        return initial.concat(updates)
-    }
-
     func primarySiteNameForSettings(settings: AccountSettings) -> String? {
         let service = BlogService(managedObjectContext: context)
         let blog = service.blogByBlogId(settings.primarySiteID)
@@ -153,8 +121,8 @@ class AccountSettingsService {
         return blog?.settings?.name
     }
 
-    private func getSettings(_: Any? = nil) -> AccountSettings? {
-        return accountSettingsWithID(self.userID)
+    private func loadSettings() {
+        settings = accountSettingsWithID(self.userID)
     }
 
     private func applyChange(change: AccountSettingsChange) throws -> AccountSettingsChange {
@@ -167,6 +135,7 @@ class AccountSettingsService {
         settings.account.applyChange(change)
 
         ContextManager.sharedInstance().saveContext(context)
+        loadSettings()
 
         return reverse
     }
@@ -179,6 +148,7 @@ class AccountSettingsService {
         }
 
         ContextManager.sharedInstance().saveContext(context)
+        loadSettings()
     }
 
     private func accountSettingsWithID(userID: Int) -> AccountSettings? {
