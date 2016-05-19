@@ -11,9 +11,9 @@ class ManagedPerson: NSManagedObject {
         firstName = person.firstName
         lastName = person.lastName
         role = String(person.role)
-        siteID = Int32(person.siteID)
-        userID = Int32(person.ID)
-        linkedUserID = Int32(person.linkedUserID)
+        siteID = Int64(person.siteID)
+        userID = Int64(person.ID)
+        linkedUserID = Int64(person.linkedUserID)
         username = person.username
         isSuperAdmin = person.isSuperAdmin
     }
