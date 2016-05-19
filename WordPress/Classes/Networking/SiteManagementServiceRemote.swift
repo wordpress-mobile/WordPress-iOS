@@ -14,7 +14,7 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/delete"
-        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         wordPressComRestApi.POST(path,
             parameters: nil,
@@ -51,7 +51,7 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func exportContent(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/exports/start"
-        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         wordPressComRestApi.POST(path,
             parameters: nil,
@@ -85,7 +85,7 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/purchases"
-        let path = self.pathForEndpoint(endpoint, withVersion: ._1_1)
+        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         wordPressComRestApi.GET(path,
             parameters: nil,
