@@ -846,7 +846,7 @@
 		FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */; };
 		FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */; };
 		FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81D1A0012E80032E723 /* ApiCredentials.m */; };
-		FFB7CFFE1CEC8A9A00143C09 /* MockWordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB7CFFD1CEC8A9A00143C09 /* MockWordPressComRestApi.swift */; };
+		FFB7D0031CEDD27400143C09 /* MockWordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB7CFFD1CEC8A9A00143C09 /* MockWordPressComRestApi.swift */; };
 		FFB8DC9C1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json in Resources */ = {isa = PBXBuildFile; fileRef = FFB8DC971CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json */; };
 		FFB8DC9D1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = FFB8DC981CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json */; };
 		FFB8DC9E1CE320C700D4D1B7 /* WordPressComRestApiFailRequestInvalidToken.json in Resources */ = {isa = PBXBuildFile; fileRef = FFB8DC991CE320C700D4D1B7 /* WordPressComRestApiFailRequestInvalidToken.json */; };
@@ -5850,6 +5850,7 @@
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				E1845F591BFF75D200B69421 /* AccountSettingsRemote.swift in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
+				FFB7D0031CEDD27400143C09 /* MockWordPressComRestApi.swift in Sources */,
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */,
@@ -6117,7 +6118,6 @@
 				E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */,
 				E12E6E381C21E75F0033C5D0 /* FeatureFlagTest.swift in Sources */,
 				E1A0BBB21CC9267500FE7256 /* TestPlans.swift in Sources */,
-				FFB7CFFE1CEC8A9A00143C09 /* MockWordPressComRestApi.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
