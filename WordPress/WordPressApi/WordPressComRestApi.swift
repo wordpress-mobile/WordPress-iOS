@@ -42,7 +42,7 @@ public class WordPressComRestApi: NSObject
         }
         sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
         let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
-        sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()        
+        sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
     }()
