@@ -244,7 +244,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     ///
     private func postAtIndexPath(indexPath: NSIndexPath) -> Post {
         guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            // Retrieveing anything other than a post object means we have an app with an invalid
+            // Retrieving anything other than a post object means we have an app with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
             //
