@@ -135,7 +135,7 @@ final class PersonViewController : UITableViewController {
         roleViewController.blog = blog
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { newRole in
-            self.updateRole(newRole)
+            self.updateUserRole(newRole)
         }
     }
 
@@ -177,25 +177,25 @@ private extension PersonViewController {
         alert.addCancelActionWithTitle(cancelTitle)
 
         alert.addDestructiveActionWithTitle(removeTitle) { action in
-            self.removePerson()
+            self.deleteUser()
         }
 
         alert.presentFromRootViewController()
     }
 
-    func removePerson() {
+    func deleteUser() {
         let service = PeopleService(blog: blog)
-        service?.deletePerson(person)
+        service?.deleteUser(person)
         navigationController?.popViewControllerAnimated(true)
     }
 
-    func updateRole(newRole: Person.Role) {
+    func updateUserRole(newRole: Person.Role) {
         guard let service = PeopleService(blog: blog) else {
             DDLogSwift.logError("Couldn't instantiate People Service")
             return
         }
 
-        let updated = service.updatePerson(person, role: newRole) { (error, reloadedPerson) in
+        let updated = service.updateUser(person, role: newRole) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
         }
@@ -213,7 +213,7 @@ private extension PersonViewController {
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.updateRole(newRole)
+            self.updateUserRole(newRole)
         }
 
         alertController.presentFromRootViewController()
