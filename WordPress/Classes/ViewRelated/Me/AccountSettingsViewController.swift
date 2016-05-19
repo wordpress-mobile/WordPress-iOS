@@ -41,7 +41,6 @@ private class AccountSettingsController: SettingsController {
     }
 
     init(service: AccountSettingsService) {
-        print("AccountSettingsController.init")
         self.service = service
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
@@ -49,7 +48,6 @@ private class AccountSettingsController: SettingsController {
     }
 
     deinit {
-        print("AccountSettingsController.deinit")
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
