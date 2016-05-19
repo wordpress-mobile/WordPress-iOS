@@ -1207,7 +1207,6 @@
 		5D2FB2841AE98C6600F1D4ED /* RestorePostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestorePostTableViewCell.h; sourceTree = "<group>"; };
 		5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestorePostTableViewCell.m; sourceTree = "<group>"; };
 		5D2FB2871AE99B0B00F1D4ED /* InteractivePostViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractivePostViewDelegate.h; sourceTree = "<group>"; };
-		5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
 		5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPCommentContentViewProvider.h; sourceTree = "<group>"; };
 		5D3D559518F88C3500782892 /* ReaderPostService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostService.h; sourceTree = "<group>"; };
 		5D3D559618F88C3500782892 /* ReaderPostService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostService.m; sourceTree = "<group>"; };
@@ -2679,7 +2678,6 @@
 				E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */,
 				46F84612185A8B7E009D0DA5 /* PostContentProvider.h */,
 				5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */,
-				5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";

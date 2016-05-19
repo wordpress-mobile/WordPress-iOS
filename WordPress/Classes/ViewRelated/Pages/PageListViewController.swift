@@ -280,12 +280,12 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         cell.selectionStyle = .None
 
         if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
-            cell.onAction = { [weak self] cell, button, provider in
-                self?.handleMenuAction(fromCell: cell, fromButton: button, forProvider: provider)
+            cell.onAction = { [weak self] cell, button, page in
+                self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
         } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
-            cell.onAction = { [weak self] cell, _, provider in
-                self?.handleRestoreAction(fromCell: cell, forProvider: provider)
+            cell.onAction = { [weak self] cell, _, page in
+                self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
         }
 
@@ -403,8 +403,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Cell Action Handling
 
-    private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forProvider contentProvider: WPPostContentViewProvider) {
-        let page = contentProvider as! Page
+    private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
         let objectID = page.objectID
 
         let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
@@ -533,10 +532,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return page
     }
 
-    private func handleRestoreAction(fromCell cell: UITableViewCell, forProvider provider: WPPostContentViewProvider) {
-        if let apost = provider as? AbstractPost {
-            restorePost(apost)
-        }
+    private func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
+        restorePost(page)
     }
 
     // MARK: - Refreshing noResultsView
