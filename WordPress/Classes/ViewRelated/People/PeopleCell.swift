@@ -5,8 +5,8 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var avatarImageView: CircularImageView!
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var roleBadge: PeopleRoleBadgeView!
-    @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeView!
+    @IBOutlet var roleBadge: PeopleRoleBadgeLabel!
+    @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
 
     override func awakeFromNib() {
         displayNameLabel.font = WPFontManager.merriweatherBoldFontOfSize(14)
