@@ -39,12 +39,6 @@ class AccountSettingsService {
         self.remote = remote
     }
 
-    var testReachability: Observable<Bool>? = nil
-    /// Emits a boolean value each time reachability changes for the internet connection.
-    private lazy var reachable: Observable<Bool> = {
-        return self.testReachability ?? Reachability.internetConnection
-    }()
-
     /// Performs a network refresh of settings and emits values with the refresh status.
     ///
     /// - When it's subscribed, it requests a refresh from the server
@@ -96,11 +90,10 @@ class AccountSettingsService {
 
     /// Emits values when the refresh status changes.
     ///
-    /// On subscription, this will start refreshing settings, polling each minute, while there's an internet connection.
+    /// On subscription, this will start refreshing settings, polling each minute.
     /// Possible values:
     /// - `.Refreshing` when it starts getting remote data.
     /// - `.Stalled` when it's getting remote data and hasn't succeeded before `stallTimeout`.
-    /// - `.Offline` when there is no internet connection.
     /// - `.Idle` when the request was successful and it's waiting for the polling interval.
     /// - An error when the request couldn't complete. It will stop retrying.
     lazy var refresh: Observable<RefreshStatus> = {
@@ -108,19 +101,10 @@ class AccountSettingsService {
         let request = self.request
 
         // Convert to a polling request
-        let polling = Observable<Int>
+        return Observable<Int>
             .interval(Defaults.pollingInterval, scheduler: self.scheduler)
             .startWith(0)
             .flatMapLatest({ _ in request })
-
-        // Enable only when reachable, otherwise emit .Offline
-        return self.reachable.flatMapLatest({ reachable -> Observable<RefreshStatus> in
-            if reachable {
-                return polling
-            } else {
-                return Observable.just(.Offline)
-            }
-        })
     }()
 
     func saveChange(change: AccountSettingsChange) {
@@ -230,7 +214,6 @@ class AccountSettingsService {
         case Refreshing
         case Stalled
         case Failed
-        case Offline
 
         var errorMessage: String? {
             switch self {
@@ -238,8 +221,6 @@ class AccountSettingsService {
                 return NSLocalizedString("We are having trouble loading data", comment: "Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed")
             case Failed:
                 return NSLocalizedString("We had trouble loading data", comment: "Error message displayed when a refresh failed")
-            case Offline:
-                return NSLocalizedString("You are currently offline", comment: "Error message displayed when the app can't connect to the API servers")
             case Idle, Refreshing:
                 return nil
             }
