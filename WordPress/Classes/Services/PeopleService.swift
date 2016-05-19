@@ -63,7 +63,9 @@ struct PeopleService {
     }
 
 
-    /// Updates a given person with the specified role.
+    /// Updates a given User with the specified role.
+    ///
+    /// - Important: *ONLY* users can be updated (isFollower = false).
     ///
     /// - Parameters:
     ///     - person: Instance of the person to be updated.
@@ -72,7 +74,7 @@ struct PeopleService {
     ///
     /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> Void)?) -> Person {
+    func updateUser(person: Person, role: Role, failure: ((ErrorType, Person) -> Void)?) -> Person {
         guard let managedPerson = managedPersonFromPerson(person) else {
             return person
         }
@@ -104,13 +106,15 @@ struct PeopleService {
         return Person(managedPerson: managedPerson)
     }
 
-    /// Deletes or removes a given person.
+    /// Deletes a given User.
+    ///
+    /// - Important: *ONLY* users can be deleted (isFollower = false).
     ///
     /// - Parameters:
     ///     - person: The person that should be deleted
     ///     - failure: Closure to be executed on error
     ///
-    func deletePerson(person: Person, failure: (ErrorType -> Void)? = nil) {
+    func deleteUser(person: Person, failure: (ErrorType -> Void)? = nil) {
         guard let managedPerson = managedPersonFromPerson(person) else {
             return
         }
@@ -154,16 +158,16 @@ struct PeopleService {
 private extension PeopleService {
     /// Updates the local collection of Users, with the (fresh) remote version.
     ///
-    func mergeUsers(users: People) {
-        let localUsers = loadPeople(followers: false)
-        mergePeople(users, localPeople: localUsers)
+    func mergeUsers(remoteUsers: People) {
+        let localUsers = loadPeople(siteID, isFollower: false)
+        mergePeople(remoteUsers, localPeople: localUsers)
     }
 
     /// Updates the local collection of Followers, with the (fresh) remote version.
     ///
-    func mergeFollowers(followers: People) {
-        let localFollowers = loadPeople(followers: true)
-        mergePeople(followers, localPeople: localFollowers)
+    func mergeFollowers(remoteFollowers: People) {
+        let localFollowers = loadPeople(siteID, isFollower: true)
+        mergePeople(remoteFollowers, localPeople: localFollowers)
     }
 
     /// Updates the Core Data collection of users, to match with the array of People received.
@@ -189,7 +193,7 @@ private extension PeopleService {
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
-    func loadPeople(followers isFollower: Bool) -> People {
+    func loadPeople(siteID: Int, isFollower: Bool) -> People {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
         let results: [ManagedPerson]

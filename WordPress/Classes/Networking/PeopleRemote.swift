@@ -244,6 +244,8 @@ private extension PeopleRemote {
 
         let role : Role
 
+        // Note: Follower entities don't really have a role. We'll inject that, locally.
+        //
         if isFollower {
             role = .Follower
         } else {
