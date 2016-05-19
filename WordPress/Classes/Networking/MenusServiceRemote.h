@@ -1,4 +1,4 @@
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,7 +29,7 @@ typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
 typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> * _Nullable menus,  NSArray<RemoteMenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 
-@interface MenusServiceRemote : ServiceRemoteREST
+@interface MenusServiceRemote : ServiceRemoteWordPressComREST
 
 #pragma mark - Remote queries: Creating and modifying menus
 
