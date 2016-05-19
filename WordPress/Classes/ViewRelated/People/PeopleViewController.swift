@@ -9,7 +9,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     public var blog: Blog?
 
-    /// Mode: Users / Followers
+    /// Mode: Users / Readers
     ///
     private var filter = Filter.Users {
         didSet {
@@ -26,7 +26,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
-        let follower = self.filter == .Followers
+        let follower = self.filter == .Readers
         let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
         return predicate
     }
@@ -264,18 +264,18 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private enum Filter : String {
         case Users      = "team"
-        case Followers  = "followers"
+        case Readers    = "readers"
 
         var title: String {
             switch self {
             case .Users:
                 return NSLocalizedString("Team", comment: "Blog Users")
-            case .Followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
+            case .Readers:
+                return NSLocalizedString("Readers", comment: "Blog Readers")
             }
         }
 
-        static let allFilters = [Filter.Users, .Followers]
+        static let allFilters = [Filter.Users, .Readers]
     }
 
 
