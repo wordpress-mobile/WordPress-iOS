@@ -148,6 +148,28 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return blog?.lastPagesSync
     }
 
+    // MARK: - Model Interaction
+
+    /// Retrieves the page object at the specified index path.
+    ///
+    /// - Parameter indexPath: the index path of the page object to retrieve.
+    ///
+    /// - Returns: the requested page.
+    ///
+    private func pageAtIndexPath(indexPath: NSIndexPath) -> Page {
+        guard let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page else {
+            // Retrieveing anything other than a post object means we have an app with an invalid
+            // state.  Ignoring this error would be counter productive as we have no idea how this
+            // can affect the App.  This controlled interruption is intentional.
+            //
+            // - Diego Rey Mendez, May 18 2016
+            //
+            fatalError("Expected a Page object.")
+        }
+
+        return page
+    }
+
     // MARK: - TableView Handler Delegate Methods
 
     override func entityName() -> String {
@@ -204,16 +226,14 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 
-        if let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page {
-            if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
-                return self.dynamicType.pageCellEstimatedRowHeight
-            }
+        let page = pageAtIndexPath(indexPath)
 
-            let width = tableView.bounds.width
-            return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-        } else {
-            return 0
+        if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
+            return self.dynamicType.pageCellEstimatedRowHeight
         }
+
+        let width = tableView.bounds.width
+        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
@@ -251,16 +271,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? AbstractPost
-            where post.remoteStatus != AbstractPostRemoteStatusPushing && post.status != PostStatusTrash else {
-            return
-        }
+        let page = pageAtIndexPath(indexPath)
 
-        editPage(post)
+        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != PostStatusTrash {
+            editPage(page)
+        }
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as! Page
+        let page = pageAtIndexPath(indexPath)
 
         let identifier = cellIdentifierForPage(page)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
@@ -289,9 +308,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             }
         }
 
-        guard let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page else {
-            preconditionFailure("Object must be a \(String(Page))")
-        }
+        let page = pageAtIndexPath(indexPath)
 
         cell.configureCell(page)
     }
