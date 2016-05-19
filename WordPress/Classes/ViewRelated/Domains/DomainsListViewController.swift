@@ -14,20 +14,6 @@ class DomainListDomainCell: WPTableViewCell {
     }
 }
 
-enum DomainType {
-    case Registered
-    case Mapped
-
-    var description: String {
-        switch self {
-        case .Registered:
-            return NSLocalizedString("Registered Domain", comment: "Describes a domain that was registered with WordPress.com")
-        case .Mapped:
-            return NSLocalizedString("Mapped Domain", comment: "Describes a domain that was mapped to WordPress.com, but registered elsewhere")
-        }
-    }
-}
-
 struct DomainListStaticRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
     static var customHeight: Float?
@@ -117,7 +103,8 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         var domainRows = [ImmuTableRow]()
         if let domains = fetchedResultsController.fetchedObjects as? [ManagedDomain] {
-            domainRows = domains.map { DomainListRow(domain: $0.domain, domainType: .Registered, isPrimary: $0.isPrimary, action: nil) }
+            domainRows = domains.map { DomainListRow(domain: $0.domain, domainType: $0.domainType, isPrimary: $0.isPrimary, action: nil)
+            }
         }
 
         viewModel = ImmuTable(sections: [

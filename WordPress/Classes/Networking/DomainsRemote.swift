@@ -39,10 +39,29 @@ private func mapDomainsResponse(response: AnyObject) throws -> [Domain] {
                 throw DomainsRemote.Error.DecodeError
         }
 
-        return Domain(domain: domainName, isPrimaryDomain: isPrimary)
+        return Domain(domain: domainName, isPrimaryDomain: isPrimary, domainType: domainTypeFromDomainJSON(domainJson))
     }
 
     return domains
+}
+
+private func domainTypeFromDomainJSON(domainJson: [String: AnyObject]) -> DomainType {
+    if let type = domainJson["type"] as? String
+        where type == "redirect" {
+        return .SiteRedirect
+    }
+
+    if let wpComDomain = domainJson["wpcom_domain"] as? Bool
+        where wpComDomain == true {
+        return .WPCom
+    }
+
+    if let hasRegistration = domainJson["has_registration"] as? Bool
+        where hasRegistration == true {
+        return .Registered
+    }
+
+    return .Mapped
 }
 
 struct DomainsService {
