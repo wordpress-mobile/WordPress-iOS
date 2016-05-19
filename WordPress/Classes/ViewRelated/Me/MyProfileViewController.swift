@@ -32,25 +32,34 @@ private struct MyProfileController: SettingsController {
     // MARK: - Initialization
 
     let service: AccountSettingsService
+    let bag = DisposeBag()
+    var settings: AccountSettings?
+    var noticeMessage: String?
 
     init(service: AccountSettingsService) {
         self.service = service
-    }
-
-    // MARK: - ImmuTableViewController
-
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        return service.settings.map({ settings in
-            self.mapViewModel(settings, presenter: presenter)
-        })
-    }
-
-    var noticeMessage: Observable<String?> {
-        return service.refresh
+        service.settings
+            .subscribeNext { settings in
+                self.settings = settings
+                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            }
+            .addDisposableTo(bag)
+        service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string
             .map({ $0.errorMessage })
+            .subscribeNext { message in
+                self.noticeMessage = message
+                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            }
+            .addDisposableTo(bag)
+    }
+
+    // MARK: - ImmuTableViewController
+
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+        return mapViewModel(settings, presenter: presenter)
     }
 
     // MARK: - Model mapping
