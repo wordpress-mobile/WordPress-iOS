@@ -1,5 +1,4 @@
 import Foundation
-import WordPress
 
 class MockWordPressComRestApi : WordPressComRestApi {
     var getMethodCalled = false
