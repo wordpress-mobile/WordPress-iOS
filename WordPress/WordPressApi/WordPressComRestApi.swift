@@ -20,7 +20,7 @@ import AFNetworking
     case Unknown
 }
 
-public final class WordPressComRestApi: NSObject
+public class WordPressComRestApi: NSObject
 {
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
