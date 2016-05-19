@@ -9,7 +9,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     public var blog: Blog?
 
-    /// Mode: Users / Readers
+    /// Mode: Users / Followers
     ///
     private var filter = Filter.Users {
         didSet {
@@ -26,7 +26,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
-        let follower = self.filter == .Readers
+        let follower = self.filter == .Followers
         let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
         return predicate
     }
@@ -201,7 +201,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func displayModePicker() {
-        let controller              = SettingsSelectionViewController(style: .Plain)
+        let controller              = SettingsSelectionViewController(style: .Grouped)
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
         controller.titles           = Filter.allFilters.map { $0.title }
         controller.values           = Filter.allFilters.map { $0.rawValue }
@@ -264,18 +264,18 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private enum Filter : String {
         case Users      = "team"
-        case Readers    = "readers"
+        case Followers  = "followers"
 
         var title: String {
             switch self {
             case .Users:
                 return NSLocalizedString("Team", comment: "Blog Users")
-            case .Readers:
-                return NSLocalizedString("Readers", comment: "Blog Readers")
+            case .Followers:
+                return NSLocalizedString("Followers", comment: "Blog Followers")
             }
         }
 
-        static let allFilters = [Filter.Users, .Readers]
+        static let allFilters = [Filter.Users, .Followers]
     }
 
 
