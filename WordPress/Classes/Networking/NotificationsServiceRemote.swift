@@ -29,7 +29,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getAllSettings(deviceId: String, success: ([RemoteNotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
-        let requestUrl = self.pathForEndpoint(path, withVersion: ._1_1)
+        let requestUrl = self.pathForEndpoint(path, withVersion: .Version_1_1)
 
         wordPressComRestApi.GET(requestUrl,
             parameters: nil,
@@ -52,7 +52,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func updateSettings(settings: [String: AnyObject], success: (() -> ())?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/")
-        let requestUrl = self.pathForEndpoint(path, withVersion: ._1_1)
+        let requestUrl = self.pathForEndpoint(path, withVersion: .Version_1_1)
 
         let parameters = settings
 
@@ -77,7 +77,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func registerDeviceForPushNotifications(token: String, success: ((deviceId: String) -> ())?, failure: (NSError -> Void)?) {
         let endpoint = "devices/new"
-        let requestUrl = pathForEndpoint(endpoint, withVersion: ._1_1)
+        let requestUrl = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         let device = UIDevice.currentDevice()
         let parameters = [
@@ -122,7 +122,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func unregisterDeviceForPushNotifications(deviceId: String, success: (() -> ())?, failure: (NSError -> Void)?) {
         let endpoint = String(format: "devices/%@/delete", deviceId)
-        let requestUrl = pathForEndpoint(endpoint, withVersion: ._1_1)
+        let requestUrl = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         wordPressComRestApi.POST(requestUrl,
             parameters: nil,
