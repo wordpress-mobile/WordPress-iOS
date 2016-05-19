@@ -53,7 +53,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
-@property (nonatomic, weak) id<WPPostContentViewProvider>contentProvider;
+@property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
+@property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -68,8 +69,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @end
 
 @implementation PostCardTableViewCell
-
-@synthesize delegate;
 
 #pragma mark - Life Cycle
 
@@ -102,8 +101,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // (thus getting a layout pass) and flag that they've been preserved. Then configure
     // the cell if needed.
     [self preserveStartingConstraintConstants];
-    if (self.contentProvider) {
-        [self configureCell:self.contentProvider layoutOnly:self.configureForLayoutOnly];
+    if (self.post) {
+        [self configureWithPost:self.post forLayoutOnly:self.configureForLayoutOnly];
     }
 }
 
@@ -171,9 +170,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.innerContentView.backgroundColor = backgroundColor;
 }
 
-- (id<WPPostContentViewProvider>)providerOrRevision
+- (AbstractPost *)postOrRevision
 {
-    return [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
+    return [self.post hasRevision] ? [self.post revision] : self.post;
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
@@ -256,15 +255,18 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.shadowView.backgroundColor = [WPStyleGuide postCardBorderColor];
 }
 
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
+#pragma mark - ConfigurablePostView
+
+- (void)configureWithPost:(AbstractPost *)post
 {
-    [self configureCell:contentProvider layoutOnly:NO];
+    [self configureWithPost:post forLayoutOnly:NO];
 }
 
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider layoutOnly:(BOOL)layoutOnly
+- (void)configureWithPost:(nonnull AbstractPost *)post
+            forLayoutOnly:(BOOL)layoutOnly
 {
     self.configureForLayoutOnly = layoutOnly;
-    self.contentProvider = contentProvider;
+    self.post = post;
 
     if (!self.didPreserveStartingConstraintConstants) {
         return;
@@ -282,9 +284,18 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self setNeedsUpdateConstraints];
 }
 
+#pragma mark - InteractivePostView
+
+- (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
+{
+    self.delegate = delegate;
+}
+
+#pragma mark - Configuration
+
 - (void)configureHeader
 {
-    if (![self.contentProvider isMultiAuthorBlog]) {
+    if (![self.post isMultiAuthorBlog]) {
         self.headerViewHeightConstraint.constant = 0;
         self.headerViewLowerConstraint.constant = 0;
         // If not visible, just return and don't bother setting the text or loading the avatar.
@@ -300,11 +311,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
-    self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
+    self.authorBlogLabel.text = [self.post blogNameForDisplay];
+    self.authorNameLabel.text = [self.post authorNameForDisplay];
     UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
 
-    [self.avatarImageView setImageWithSiteIcon:[self.contentProvider blavatarForDisplay] placeholderImage:placeholder];
+    [self.avatarImageView setImageWithSiteIcon:[self.post blavatarForDisplay] placeholderImage:placeholder];
 }
 
 - (void)configureCardImage
@@ -317,14 +328,15 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    if (![provider featuredImageURLForDisplay]) {
+    AbstractPost *post = [self postOrRevision];
+
+    if (![post featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
     }
 
-    NSURL *url = [provider featuredImageURLForDisplay];
+    NSURL *url = [post featuredImageURLForDisplay];
     // if not private create photon url
-    if (![provider isPrivate]) {
+    if (![post isPrivate]) {
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
     }
@@ -335,8 +347,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureTitle
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    NSString *str = [provider titleForDisplay] ?: [NSString string];
+    AbstractPost *post = [self postOrRevision];
+    NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
@@ -344,8 +356,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureSnippet
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    NSString *str = [provider contentPreviewForDisplay] ?: [NSString string];
+    AbstractPost *post = [self postOrRevision];
+    NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
@@ -353,13 +365,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureDate
 {
-    id<WPPostContentViewProvider>provider = [self providerOrRevision];
-    self.dateLabel.text = [provider dateStringForDisplay];
+    AbstractPost *post = [self postOrRevision];
+    self.dateLabel.text = [post dateStringForDisplay];
 }
 
 - (void)configureStatusView
 {
-    NSString *str = [self.contentProvider statusForDisplay];
+    NSString *str = [self.post statusForDisplay];
     self.statusView.hidden = ([str length] == 0);
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
@@ -371,13 +383,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     self.statusLabel.text = str;
     // Set the correct icon and text color
-    if ([[self.contentProvider status] isEqualToString:PostStatusPending]) {
+    if ([[self.post status] isEqualToString:PostStatusPending]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
         self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else if ([[self.contentProvider status] isEqualToString:PostStatusScheduled]) {
+    } else if ([[self.post status] isEqualToString:PostStatusScheduled]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
         self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
-    } else if ([[self.contentProvider status] isEqualToString:PostStatusTrash]) {
+    } else if ([[self.post status] isEqualToString:PostStatusTrash]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
         self.statusLabel.textColor = [WPStyleGuide errorRed];
     } else if (!self.statusView.hidden) {
@@ -405,17 +417,17 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self resetMetaButton:self.metaButtonLeft];
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([self.contentProvider numberOfComments] > 0) {
+    if ([(Post *)(self.post) numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfComments]];
+        NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([self.contentProvider numberOfLikes] > 0) {
+    if ([(Post *)(self.post) numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfLikes]];
+        NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfLikes]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-like"]];
     }
 }
@@ -447,7 +459,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    NSString *status = [self.contentProvider status];
+    NSString *status = [self.post status];
     if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
         [self configurePublishedActionBar];
     } else if ([status isEqualToString:PostStatusTrash]) {
@@ -487,7 +499,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
-    if ([self.contentProvider supportsStats]) {
+    if ([self.post supportsStats]) {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
                                    highlightedImage:nil];
@@ -593,43 +605,43 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)editPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedEditActionForProvider:)]) {
-        [self.delegate cell:self receivedEditActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleEditPost:)]) {
+        [self.delegate cell:self handleEditPost:self.post];
     }
 }
 
 - (void)viewPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedViewActionForProvider:)]) {
-        [self.delegate cell:self receivedViewActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleViewPost:)]) {
+        [self.delegate cell:self handleViewPost:self.post];
     }
 }
 
 - (void)publishPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedPublishActionForProvider:)]) {
-        [self.delegate cell:self receivedPublishActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handlePublishPost:)]) {
+        [self.delegate cell:self handlePublishPost:self.post];
     }
 }
 
 - (void)trashPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedTrashActionForProvider:)]) {
-        [self.delegate cell:self receivedTrashActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleTrashPost:)]) {
+        [self.delegate cell:self handleTrashPost:self.post];
     }
 }
 
 - (void)restorePostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedRestoreActionForProvider:)]) {
-        [self.delegate cell:self receivedRestoreActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleRestorePost:)]) {
+        [self.delegate cell:self handleRestorePost:self.post];
     }
 }
 
 - (void)statsPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedStatsActionForProvider:)]) {
-        [self.delegate cell:self receivedStatsActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleStatsForPost:)]) {
+        [self.delegate cell:self handleStatsForPost:self.post];
     }
 }
 

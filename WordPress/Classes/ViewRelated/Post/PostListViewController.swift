@@ -3,7 +3,7 @@ import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
+class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -376,15 +376,20 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        if let postCell = cell as? PostCardCell {
-            postCell.delegate = self
-
-            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
-                let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
-
-                postCell.configureCell?(post, layoutOnly: layoutOnly)
-            }
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            fatalError("Expected a post object.")
         }
+
+        guard let interactivePostView = cell as? InteractivePostView,
+            let configurablePostView = cell as? ConfigurablePostView else {
+
+            fatalError("Cell does not implement the required protocols")
+        }
+
+        interactivePostView.setInteractionDelegate(self)
+
+        let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
+        configurablePostView.configureWithPost(post, forLayoutOnly: layoutOnly)
     }
 
     private func cellIdentifierForPost(post: Post) -> String {
@@ -586,72 +591,30 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
-    // MARK: - Cell Delegate Methods
+    // MARK: - InteractivePostViewDelegate
 
-    func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        editPost(apost)
+    func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
+        editPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedViewActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewPost(apost)
+    func cell(cell: UITableViewCell, handleViewPost post: AbstractPost) {
+        viewPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedStatsActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewStatsForPost(apost)
+    func cell(cell: UITableViewCell, handleStatsForPost post: AbstractPost) {
+        viewStatsForPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedPublishActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        publishPost(apost)
+    func cell(cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+        publishPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedTrashActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        deletePost(apost)
+    func cell(cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+        deletePost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        restorePost(apost)
+    func cell(cell: UITableViewCell, handleRestorePost post: AbstractPost) {
+        restorePost(post)
     }
 
     // MARK: - Refreshing noResultsView
