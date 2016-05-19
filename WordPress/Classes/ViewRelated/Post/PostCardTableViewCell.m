@@ -170,11 +170,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.innerContentView.backgroundColor = backgroundColor;
 }
 
-- (AbstractPost *)postOrRevision
-{
-    return [self.post hasRevision] ? [self.post revision] : self.post;
-}
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     BOOL previouslyHighlighted = self.highlighted;
@@ -328,7 +323,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
 
     if (![post featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
@@ -347,7 +342,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureTitle
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -356,7 +351,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureSnippet
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -365,7 +360,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureDate
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     self.dateLabel.text = [post dateStringForDisplay];
 }
 
