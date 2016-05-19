@@ -1,5 +1,3 @@
-#import "WPPostContentViewProvider.h"
-
 @class AbstractPost;
 
 /// Protocol that implements all delegate methods for InteractivePostView objects.
