@@ -108,8 +108,10 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         }
 
         viewModel = ImmuTable(sections: [
-            ImmuTableSection(headerText: "Add A New Domain", rows: [ searchRow, connectRow ], footerText: nil),
-            ImmuTableSection(headerText: "Your Domains", rows: domainRows, footerText: nil) ]
+            ImmuTableSection(headerText: NSLocalizedString("Add A New Domain", comment: "Header title for new domain section of Domains."),
+                rows: [ searchRow, connectRow ], footerText: nil),
+            ImmuTableSection(headerText: NSLocalizedString("Your Domains", comment: "Header title for your domains section of Domains."),
+                rows: domainRows, footerText: nil) ]
         )
 
         if isViewLoaded() {
