@@ -1,20 +1,20 @@
 #import "RestorePostTableViewCell.h"
+#import "InteractivePostViewDelegate.h"
 #import "WPStyleGuide+Posts.h"
 
 @interface RestorePostTableViewCell()
 
+@property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) IBOutlet UIView *innerContentView;
 @property (nonatomic, strong) IBOutlet UIView *shadowView;
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
-@property (nonatomic, weak) id<WPPostContentViewProvider> contentProvider;
+@property (nonatomic, strong) AbstractPost *post;
 
 @end
 
 @implementation RestorePostTableViewCell
-
-@synthesize delegate;
 
 #pragma mark - Life Cycle
 
@@ -60,14 +60,24 @@
     [self.restoreButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
+#pragma mark - ConfigurablePostView
+
+- (void)configureWithPost:(AbstractPost *)post
 {
-    self.contentProvider = contentProvider;
+    self.post = post;
 }
 
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider layoutOnly:(BOOL)layoutOnly
+- (void)configureWithPost:(AbstractPost *)post
+            forLayoutOnly:(BOOL)layoutOnly
 {
-    [self configureCell:contentProvider];
+    [self configureWithPost:post];
+}
+
+#pragma mark - InteractivePostView
+
+- (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
+{
+    self.delegate = delegate;
 }
 
 
@@ -75,8 +85,8 @@
 
 - (IBAction)restorePostAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(cell:receivedRestoreActionForProvider:)]) {
-        [self.delegate cell:self receivedRestoreActionForProvider:self.contentProvider];
+    if ([self.delegate respondsToSelector:@selector(cell:handleRestorePost:)]) {
+        [self.delegate cell:self handleRestorePost:self.post];
     }
 }
 
