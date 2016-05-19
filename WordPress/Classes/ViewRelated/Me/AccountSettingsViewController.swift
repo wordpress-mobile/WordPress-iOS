@@ -30,17 +30,32 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Initialization
 
     let service: AccountSettingsService
+    let bag = DisposeBag()
+    var settings: AccountSettings?
+    var noticeMessage: String?
 
     init(service: AccountSettingsService) {
         self.service = service
+        service.settings
+            .subscribeNext { settings in
+                self.settings = settings
+                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            }
+            .addDisposableTo(bag)
+        Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
+            return refresh ?? email
+            }
+            .subscribeNext { message in
+                self.noticeMessage = message
+                NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            }
+            .addDisposableTo(bag)
     }
 
     // MARK: - ImmuTableViewController
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        return service.settings.map({ settings in
-            self.mapViewModel(settings, service: self.service, presenter: presenter)
-        })
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+        return mapViewModel(settings, service: service, presenter: presenter)
     }
 
     var refreshStatusMessage: Observable<String?> {
@@ -54,12 +69,6 @@ private struct AccountSettingsController: SettingsController {
     var emailNoticeMessage: Observable<String?> {
         return service.settings.map {
             return self.noticeForAccountSettings($0)
-        }
-    }
-
-    var noticeMessage: Observable<String?> {
-        return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
-            return refresh ?? email
         }
     }
 
