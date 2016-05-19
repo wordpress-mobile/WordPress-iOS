@@ -153,6 +153,11 @@
     return ([self original] == nil);
 }
 
+- (AbstractPost *)latest
+{
+    return [self hasRevision] ? [[self revision] latest] : self;
+}
+
 - (AbstractPost *)revision
 {
     return [self primitiveValueForKey:@"revision"];
