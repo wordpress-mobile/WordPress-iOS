@@ -5,6 +5,7 @@
 #import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
+#import "WPAppAnalytics.h"
 
 @import Gridicons;
 
@@ -18,6 +19,7 @@
 @property (nonatomic, strong, readonly) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong, readonly) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
+@property (nonatomic, assign) BOOL hasTrackedEditingChanges;
 
 @end
 
@@ -201,6 +203,10 @@
         textField.placeholder = self.menu.name;
     }
     [self tellDelegateMenuNameChanged];
+    if (!self.hasTrackedEditingChanges) {
+        [WPAppAnalytics track:WPAnalyticsStatMenusUpdatedMenuName withBlog:self.menu.blog];
+        self.hasTrackedEditingChanges = YES;
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -220,6 +226,7 @@
     }];
     
     [self hideTextFieldEditingState:0.3];
+    self.hasTrackedEditingChanges = NO;
 }
 
 @end
