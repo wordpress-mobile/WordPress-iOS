@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "CommentServiceRemote.h"
-#import "SiteServiceRemoteREST.h"
+#import "SiteServiceRemoteWordPressComREST.h"
 
-@interface CommentServiceRemoteREST : SiteServiceRemoteREST <CommentServiceRemote>
+@interface CommentServiceRemoteREST : SiteServiceRemoteWordPressComREST <CommentServiceRemote>
 
 /**
  Fetch a hierarchical list of comments for the specified post on the specified site.

@@ -234,6 +234,28 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
+    // MARK: - Data Model Interaction
+
+    /// Retrieves the post object at the specified index path.
+    ///
+    /// - Parameter indexPath: the index path of the post object to retrieve.
+    ///
+    /// - Returns: the requested post.
+    ///
+    private func postAtIndexPath(indexPath: NSIndexPath) -> Post {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            // Retrieving anything other than a post object means we have an App with an invalid
+            // state.  Ignoring this error would be counter productive as we have no idea how this
+            // can affect the App.  This controlled interruption is intentional.
+            //
+            // - Diego Rey Mendez, May 18 2016
+            //
+            fatalError("Expected a post object.")
+        }
+
+        return post
+    }
+
     // MARK: - TableViewHandler
 
     override func entityName() -> String {
@@ -290,12 +312,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Table View Handling
 
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return 0
-        }
+        let post = postAtIndexPath(indexPath)
 
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return self.dynamicType.postCardRestoreCellRowHeight
@@ -310,12 +327,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return 0
-        }
+        let post = postAtIndexPath(indexPath)
 
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return self.dynamicType.postCardRestoreCellRowHeight
@@ -339,12 +351,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
+        let post = postAtIndexPath(indexPath)
 
         if post.remoteStatus == AbstractPostRemoteStatusPushing {
             // Don't allow editing while pushing changes
@@ -360,10 +367,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            preconditionFailure("Expected a post object.")
-        }
 
+        let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
 
@@ -376,9 +381,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            fatalError("Expected a post object.")
-        }
+        let post = postAtIndexPath(indexPath)
 
         guard let interactivePostView = cell as? InteractivePostView,
             let configurablePostView = cell as? ConfigurablePostView else {
