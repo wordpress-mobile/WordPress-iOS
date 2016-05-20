@@ -254,7 +254,7 @@ static CGFloat BlogCellRowHeight = 54.0;
             }
         }
 
-        if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
+        if (previousIndexPath && [previousIndexPath compare:indexPath] == NSOrderedSame) {
             // User tapped the already selected item. Treat this as a cancel event
             // so the picker can be dismissed without changes.
             [self cancelButtonTapped:nil];
@@ -351,17 +351,19 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (NSPredicate *)fetchRequestPredicate
 {
-    NSString *predicate = @"(visible = YES)";
-    if (!self.displaysOnlyDefaultAccountSites) {
-        return [NSPredicate predicateWithFormat:predicate];
-    }
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
-    predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
-    return [NSPredicate predicateWithFormat:predicate, defaultAccount, defaultAccount];
+    NSManagedObject *currentBlog = [context objectWithID:self.selectedObjectID];
+    NSString *predicate = @"(visible = YES OR self = %@)";
+    if (!self.displaysOnlyDefaultAccountSites) {
+        return [NSPredicate predicateWithFormat:predicate, currentBlog];
+    } else {
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
+        return [NSPredicate predicateWithFormat:predicate, currentBlog, defaultAccount, defaultAccount];
+    }
 }
 
 - (NSArray *)sortDescriptors
