@@ -89,10 +89,10 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.GET(path,
                 parameters: parameters,
                 success: {
-                    [weak self] response, httpResponse in
+                    [weak self] responseObject, _ in
                     do {
-                        let planFeatures = try mapPlanFeaturesResponse(response)
-                        self?.cacheResponseObject(response)
+                        let planFeatures = try mapPlanFeaturesResponse(responseObject)
+                        self?.cacheResponseObject(responseObject)
                         success(planFeatures)
                     } catch {
                         failure(error)
