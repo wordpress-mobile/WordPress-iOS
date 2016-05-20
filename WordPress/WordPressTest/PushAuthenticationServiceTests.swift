@@ -1,12 +1,12 @@
 import Foundation
 import XCTest
-import WordPress
+@testable import WordPress
 
 class PushAuthenticationServiceTests : XCTestCase {
 
     var pushAuthenticationService:PushAuthenticationService?
     var mockPushAuthenticationServiceRemote:MockPushAuthenticationServiceRemote?
-    var mockRemoteApi:MockWordPressComApi?
+    var mockRemoteApi:MockWordPressComRestApi?
     let token = "token"
 
     class MockPushAuthenticationServiceRemote : PushAuthenticationServiceRemote {
@@ -24,8 +24,8 @@ class PushAuthenticationServiceTests : XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockRemoteApi = MockWordPressComApi()
-        mockPushAuthenticationServiceRemote = MockPushAuthenticationServiceRemote(api: mockRemoteApi)
+        mockRemoteApi = MockWordPressComRestApi()
+        mockPushAuthenticationServiceRemote = MockPushAuthenticationServiceRemote(wordPressComRestApi: mockRemoteApi)
         pushAuthenticationService = PushAuthenticationService(managedObjectContext: TestContextManager().mainContext)
         pushAuthenticationService?.authenticationServiceRemote = mockPushAuthenticationServiceRemote
     }
