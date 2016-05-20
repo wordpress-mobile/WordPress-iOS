@@ -1,6 +1,6 @@
 import Foundation
 
-class PlanFeaturesRemote: ServiceRemoteREST {
+class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
     enum Error: ErrorType {
         case DecodeError
@@ -82,23 +82,23 @@ class PlanFeaturesRemote: ServiceRemoteREST {
 
     private func fetchPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         let endpoint = "plans/features"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_2)
         let locale = languageDatabase.deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
                 parameters: parameters,
                 success: {
-                    [weak self] requestOperation, response in
+                    [weak self] response, httpResponse in
                     do {
                         let planFeatures = try mapPlanFeaturesResponse(response)
-                        self?.cacheResponseData(requestOperation.responseData)
+                        self?.cacheResponseObject(response)
                         success(planFeatures)
                     } catch {
                         failure(error)
                     }
             }, failure: {
-                _, error in
+                error, _ in
                 failure(error)
         })
     }
@@ -109,8 +109,9 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         return cacheDirectory.URLByAppendingPathComponent(cacheFilename)
     }
 
-    private func cacheResponseData(responseData: NSData?) {
-        guard let responseData = responseData else { return }
+    private func cacheResponseObject(responseObject: AnyObject) {
+        let data = try? NSJSONSerialization.dataWithJSONObject(responseObject, options: NSJSONWritingOptions())
+        guard let responseData = data else { return }
         guard let cacheFileURL = cacheFileURL else { return }
 
         responseData.writeToURL(cacheFileURL, atomically: true)
