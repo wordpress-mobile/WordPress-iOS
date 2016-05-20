@@ -13,6 +13,7 @@
 #import "WPNoResultsView.h"
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
+#import "WPAppAnalytics.h"
 
 @interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
 
@@ -409,11 +410,13 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     controller.onSelectedToSave = ^() {
+        [WPAppAnalytics track:WPAnalyticsStatMenusEditedItem withBlog:self.blog];
         [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:YES];
         [self.itemsViewController refreshViewWithItem:item focus:YES];
         dismiss();
     };
     controller.onSelectedToTrash = ^() {
+        [WPAppAnalytics track:WPAnalyticsStatMenusDeletedItem withBlog:self.blog];
         if (item.itemID.integerValue || item.menu.menuID.integerValue == MenuDefaultID) {
             // If the item had an ID, saving is enabled.
             // Or if the user trying to edit the default menu, saving is enabled.
@@ -432,6 +435,7 @@
 
 - (void)discardChangesBarButtonItemPressed:(id)sender
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusDiscardedChanges withBlog:self.blog];
     [self promptForDiscardingChangesByTheLeftBarButtonItem:^{
         [self discardAllChanges];
     } cancellation:nil];
@@ -497,6 +501,7 @@
                                   forBlog:weakSelf.blog
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
+                                      [WPAppAnalytics track:WPAnalyticsStatMenusSavedMenu withBlog:self.blog];
                                       [weakSelf.itemsViewController reloadItems];
                                       toggleIsSaving(NO);
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
@@ -512,6 +517,7 @@
                                          blog:self.blog
                                       success:^(NSNumber *menuID) {
                                           // Set the new menuID and continue the update.
+                                          [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
                                           menuToSave.menuID = menuID;
                                           updateMenu();
                                       }
@@ -658,6 +664,7 @@
         [weakSelf.menusService deleteMenu:menuToDelete
                                   forBlog:weakSelf.blog
                                   success:^{
+                                      [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
                                   failure:^(NSError *error) {
@@ -694,6 +701,7 @@
 
 - (void)itemsViewController:(MenuItemsViewController *)itemsViewController createdNewItemForEditing:(MenuItem *)item
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusCreatedItem withBlog:self.blog];
     MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     controller.onSelectedToCancel = controller.onSelectedToTrash;
     [self presentViewController:controller animated:YES completion:nil];
@@ -701,12 +709,14 @@
 
 - (void)itemsViewController:(MenuItemsViewController *)itemsViewController selectedItemForEditing:(MenuItem *)item
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusOpenedItemEditor withBlog:self.blog];
     MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)itemsViewController:(MenuItemsViewController *)itemsViewController didUpdateMenuItemsOrdering:(Menu *)menu
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusOrderedItems withBlog:self.blog];
     [self setNeedsSave:YES forMenu:menu significantChanges:YES];
 }
 
