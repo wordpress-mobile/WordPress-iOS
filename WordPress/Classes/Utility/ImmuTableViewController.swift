@@ -56,7 +56,6 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
-    var hasAppearedBefore = false
 
     // MARK: - Table View Controller
 
@@ -66,6 +65,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
         title = controller.title
         registerRows(controller.immuTableRows)
+        controller.refreshModel()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -94,13 +94,6 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
             selector: #selector(ImmuTableViewController.loadModel),
             name: ImmuTableViewController.modelChangedNotification,
             object: nil)
-
-        guard !hasAppearedBefore else {
-            return
-        }
-
-        controller.refreshModel()
-        hasAppearedBefore = true
     }
 
     override func viewDidDisappear(animated: Bool) {
