@@ -92,7 +92,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: #selector(ImmuTableViewController.loadModel),
-            name: ImmuTableViewController.controllerChangedNotification,
+            name: ImmuTableViewController.modelChangedNotification,
             object: nil)
 
         guard !hasAppearedBefore else {
@@ -106,7 +106,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self,
-                                                            name: ImmuTableViewController.controllerChangedNotification,
+                                                            name: ImmuTableViewController.modelChangedNotification,
                                                             object: nil)
     }
 
@@ -132,5 +132,5 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constants
 
-    static let controllerChangedNotification = "ImmuTableControllerChanged"
+    static let modelChangedNotification = "ImmuTableControllerChanged"
 }

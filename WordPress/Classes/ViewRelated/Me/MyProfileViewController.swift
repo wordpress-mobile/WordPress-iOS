@@ -33,12 +33,12 @@ private class MyProfileController: SettingsController {
     let service: AccountSettingsService
     var settings: AccountSettings? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
         }
     }
     var noticeMessage: String? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.controllerChangedNotification, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
         }
     }
 
