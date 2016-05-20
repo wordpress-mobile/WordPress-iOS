@@ -192,7 +192,7 @@ private extension PeopleRemote {
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    private func peopleFromResponse(response    : [String: AnyObject],
+    func peopleFromResponse(response    : [String: AnyObject],
                                     siteID      : Int,
                                     isFollower  : Bool = false) throws -> People
     {
@@ -216,9 +216,9 @@ private extension PeopleRemote {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    private func personFromResponse(user        : [String: AnyObject],
-                                    siteID      : Int,
-                                    isFollower  : Bool = false) throws -> Person
+    func personFromResponse(user        : [String: AnyObject],
+                            siteID      : Int,
+                            isFollower  : Bool = false) throws -> Person
     {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
@@ -269,7 +269,7 @@ private extension PeopleRemote {
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
-    private func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
+    func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
