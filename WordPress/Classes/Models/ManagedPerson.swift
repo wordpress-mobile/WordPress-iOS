@@ -21,9 +21,9 @@ class ManagedPerson: NSManagedObject {
 
     func toUnmanaged() -> Person {
         if isFollower {
-            return Follower(managedPerson: self) as Person
+            return Follower(managedPerson: self)
         }
 
-        return User(managedPerson: self) as Person
+        return User(managedPerson: self)
     }
 }
