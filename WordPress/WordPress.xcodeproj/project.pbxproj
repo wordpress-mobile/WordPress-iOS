@@ -2698,7 +2698,6 @@
 				E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */,
 				46F84612185A8B7E009D0DA5 /* PostContentProvider.h */,
 				5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */,
-				5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */,
 				173BCE781CEB780800AE8817 /* Domain.swift */,
 			);
 			path = Models;
