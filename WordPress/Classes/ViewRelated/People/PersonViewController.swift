@@ -184,18 +184,28 @@ private extension PersonViewController {
     }
 
     func deleteUser() {
+        guard let user = user else {
+            DDLogSwift.logError("Error: Only Users can be deleted")
+            return
+        }
+
         let service = PeopleService(blog: blog)
-        service?.deleteUser(person)
+        service?.deleteUser(user)
         navigationController?.popViewControllerAnimated(true)
     }
 
-    func updateUserRole(newRole: Person.Role) {
+    func updateUserRole(newRole: Role) {
+        guard let user = user else {
+            DDLogSwift.logError("Error: Only Users have Roles!")
+            return
+        }
+
         guard let service = PeopleService(blog: blog) else {
             DDLogSwift.logError("Couldn't instantiate People Service")
             return
         }
 
-        let updated = service.updateUser(person, role: newRole) { (error, reloadedPerson) in
+        let updated = service.updateUser(user, role: newRole) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
         }
@@ -331,15 +341,10 @@ private extension PersonViewController {
         return blog.account!.userID == person.ID || blog.account!.userID == person.linkedUserID
     }
 
-    var isFollower : Bool {
-        return person.isFollower
-    }
-
     var isPromoteEnabled : Bool {
-        // Notes:
-        //  -   Followers cannot be promoted
+        // Note: *Only* users can be promoted.
         //
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isFollower == false
+        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isUser == true
     }
 
     var isRemoveEnabled : Bool {
@@ -347,6 +352,14 @@ private extension PersonViewController {
         //  -   YES, ListUsers. Brought from Calypso's code
         //  -   Followers, for now, cannot be deleted.
         //
-        return blog.isUserCapableOf(.ListUsers) && isMyself == false && isFollower == false
+        return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+    }
+
+    var isUser : Bool {
+        return user != nil
+    }
+
+    var user : User? {
+        return person as? User
     }
 }
