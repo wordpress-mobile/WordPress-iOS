@@ -50,9 +50,10 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     private var viewModel: ImmuTable!
 
     private var fetchRequest: NSFetchRequest {
-        let request = NSFetchRequest(entityName: Domain.entityName)
-        request.predicate = NSPredicate(format: "%K == %@", "blog", blog)
-        request.sortDescriptors = [NSSortDescriptor(key: "isPrimary", ascending: false), NSSortDescriptor(key: "domain", ascending: true)]
+        let request = NSFetchRequest(entityName: ManagedDomain.entityName)
+        request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
+        request.sortDescriptors = [NSSortDescriptor(key: ManagedDomain.Attributes.isPrimary, ascending: false),
+                                   NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true)]
 
         return request
     }
@@ -103,7 +104,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         var domainRows = [ImmuTableRow]()
         if let domains = fetchedResultsController.fetchedObjects as? [ManagedDomain] {
-            domainRows = domains.map { DomainListRow(domain: $0.domain, domainType: $0.domainType, isPrimary: $0.isPrimary, action: nil)
+            domainRows = domains.map { DomainListRow(domain: $0.domainName, domainType: $0.domainType, isPrimary: $0.isPrimary, action: nil)
             }
         }
 

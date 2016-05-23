@@ -22,35 +22,45 @@ import CoreData
 }
 
 struct Domain {
-    let domain: String
+    let domainName: String
     let isPrimaryDomain: Bool
     let domainType: DomainType
-
-    static let entityName = "Domain"
 }
 
 extension Domain: CustomStringConvertible {
     var description: String {
-        return "\(domain) (\(domainType.description))"
+        return "\(domainName) (\(domainType.description))"
     }
 }
 
 extension Domain {
     init(managedDomain: ManagedDomain) {
-        domain = managedDomain.domain
+        domainName = managedDomain.domainName
         isPrimaryDomain = managedDomain.isPrimary
         domainType = managedDomain.domainType
     }
 }
 
 class ManagedDomain: NSManagedObject {
-    @NSManaged var domain: String
+    static let entityName = "Domain"
+
+    struct Attributes {
+        static let domainName = "domainName"
+        static let isPrimary = "isPrimary"
+        static let domainType = "domainType"
+    }
+
+    struct Relationships {
+        static let blog = "blog"
+    }
+
+    @NSManaged var domainName: String
     @NSManaged var isPrimary: Bool
     @NSManaged var domainType: DomainType
     @NSManaged var blog: Blog
 
     func updateWith(domain: Domain, blog: Blog) {
-        self.domain = domain.domain
+        self.domainName = domain.domainName
         self.isPrimary = domain.isPrimaryDomain
         self.domainType = domain.domainType
         self.blog = blog
@@ -60,7 +70,7 @@ class ManagedDomain: NSManagedObject {
 extension Domain: Equatable {}
 
 func ==(lhs: Domain, rhs: Domain) -> Bool {
-    return lhs.domain == rhs.domain &&
+    return lhs.domainName == rhs.domainName &&
     lhs.domainType == rhs.domainType &&
     lhs.isPrimaryDomain == rhs.isPrimaryDomain
 }

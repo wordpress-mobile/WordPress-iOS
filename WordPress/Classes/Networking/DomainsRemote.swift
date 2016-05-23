@@ -39,7 +39,7 @@ private func mapDomainsResponse(response: AnyObject) throws -> [Domain] {
                 throw DomainsRemote.Error.DecodeError
         }
 
-        return Domain(domain: domainName, isPrimaryDomain: isPrimary, domainType: domainTypeFromDomainJSON(domainJson))
+        return Domain(domainName: domainName, isPrimaryDomain: isPrimary, domainType: domainTypeFromDomainJSON(domainJson))
     }
 
     return domains
@@ -91,8 +91,8 @@ struct DomainsService {
         let remoteDomains = domains
         let localDomains = blogDomains()
 
-        let remoteDomainNames = Set(remoteDomains.map({ $0.domain }))
-        let localDomainNames = Set(localDomains.map({ $0.domain }))
+        let remoteDomainNames = Set(remoteDomains.map({ $0.domainName }))
+        let localDomainNames = Set(localDomains.map({ $0.domainName }))
 
         let removedDomainNames = localDomainNames.subtract(remoteDomainNames)
         removeDomains(removedDomainNames)
@@ -103,7 +103,7 @@ struct DomainsService {
         }
 
         for remoteDomain in remoteChanges {
-            if let existingDomain = managedDomainWithName(remoteDomain.domain) {
+            if let existingDomain = managedDomainWithName(remoteDomain.domainName) {
                 existingDomain.updateWith(remoteDomain, blog: blog)
                 DDLogSwift.logDebug("Updated domain \(existingDomain)")
             } else {
@@ -114,23 +114,23 @@ struct DomainsService {
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func managedDomainWithName(name: String) -> ManagedDomain? {
-        let request = NSFetchRequest(entityName: Domain.entityName)
-        request.predicate = NSPredicate(format: "blog = %@ AND domain = %@", blog, name)
+    private func managedDomainWithName(domainName: String) -> ManagedDomain? {
+        let request = NSFetchRequest(entityName: ManagedDomain.entityName)
+        request.predicate = NSPredicate(format: "%K = %@ AND %K = %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainName)
         request.fetchLimit = 1
         let results = (try? context.executeFetchRequest(request) as! [ManagedDomain]) ?? []
         return results.first
     }
 
     private func createManagedDomain(domain: Domain) {
-        let managedDomain = NSEntityDescription.insertNewObjectForEntityForName(Domain.entityName, inManagedObjectContext: context) as! ManagedDomain
+        let managedDomain = NSEntityDescription.insertNewObjectForEntityForName(ManagedDomain.entityName, inManagedObjectContext: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
         DDLogSwift.logDebug("Created domain \(managedDomain)")
     }
 
     private func blogDomains() -> [Domain] {
-        let request = NSFetchRequest(entityName: Domain.entityName)
-        request.predicate = NSPredicate(format: "%K == %@", "blog", blog)
+        let request = NSFetchRequest(entityName: ManagedDomain.entityName)
+        request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
 
         let domains: [ManagedDomain]
         do {
@@ -144,8 +144,8 @@ struct DomainsService {
     }
 
     private func removeDomains(domainNames: Set<String>) {
-        let request = NSFetchRequest(entityName: Domain.entityName)
-        request.predicate = NSPredicate(format: "blog = %@ AND domain IN %@", blog, domainNames)
+        let request = NSFetchRequest(entityName: ManagedDomain.entityName)
+        request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
         let objects = (try? context.executeFetchRequest(request) as! [NSManagedObject]) ?? []
         for object in objects {
             DDLogSwift.logDebug("Removing domain: \(object)")
