@@ -28,19 +28,27 @@ http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 ## Building
 
-### Cocoapods
+We use a few tools to help with development. To install or update the required dependencies, run `rake dependencies` from the command line.
 
-Starting with changeset 3633 version 3.2, WordPress for iOS uses Cocoapods (http://cocoapods.org/) to manage third party libraries.  Trying to build the project by itself (WordPress.xcproj) after launching will result in an error, as the resources managed by cocoapods are not included.
+### CocoaPods
 
-Run `pod install` from the command line to install dependencies for the project.
+WordPress for iOS uses CocoaPods (http://cocoapods.org/) to manage third party libraries.  Trying to build the project by itself (WordPress.xcproj) after launching will result in an error, as the resources managed by CocoaPods are not included.
 
-*The current version of CocoaPods is recommended.*
+Run `rake dependencies` from the command line to install dependencies for the project. This will ensure the current supported version of CocoaPods is used. If you have the same version installed in your system, you can also run `pod install`.
+
+### SwiftLint
+
+We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. Xcode will show a warning if you don't have it installed. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
+
+SwiftLint runs automatically when you build the project, but you can run it manually from the command line with `rake lint`
+
+If your code has any style violations, you can try to automatically correct them by running `rake lint:autocorrect`. Otherwise you have to fix them manually.
 
 ### Xcode
 
-Launch the workspace by either double clicking on WordPress.xcworkspace file, or launch Xcode and choose File > Open and browse to WordPress.xcworkspace.
+Launch the workspace by running `rake xcode` from the command line. This will ensure any dependencies are ready before launching Xcode. You can also open the project by double clicking on WordPress.xcworkspace file, or launching Xcode and choose File > Open and browse to WordPress.xcworkspace.
 
-*WordPress for iOS requires Swift 2.0 and Xcode 7.0 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+*WordPress for iOS requires Swift 2.2 and Xcode 7.3 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
 
 More information on building the project and the tools required can be found in [the handbook](https://make.wordpress.org/mobile/handbook/pathways/ios/tools-requirements/).
 

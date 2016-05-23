@@ -5439,7 +5439,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh \"$SRCROOT/../Scripts/lint.sh\"";
+			shellScript = "rake lint";
 		};
 		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
