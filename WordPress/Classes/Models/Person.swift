@@ -93,7 +93,7 @@ extension Person {
     }
 
     static var isFollower: Bool {
-        return self.dynamicType == Follower.self
+        return self == Follower.self
     }
 }
 
