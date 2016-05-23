@@ -1,5 +1,7 @@
 #import "Menu.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern CGFloat const MenusDesignStrokeWidth;
 extern CGFloat const MenusDesignDefaultCornerRadius;
 extern CGFloat const MenusDesignDefaultContentSpacing;
@@ -12,3 +14,5 @@ extern CGFloat const MenusDesignDefaultContentSpacing;
 + (UIEdgeInsets)viewDefaultDesignInsets;
 
 @end
+
+NS_ASSUME_NONNULL_END

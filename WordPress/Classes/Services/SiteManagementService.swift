@@ -94,10 +94,10 @@ public class SiteManagementService : LocalCoreDataService
     /// - Returns: Remote service for site management
     ///
     func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote? {
-        guard let api = blog.restApi() else {
+        guard let api = blog.wordPressComRestApi() else {
             return nil
         }
 
-        return SiteManagementServiceRemote(api: api)
+        return SiteManagementServiceRemote(wordPressComRestApi: api)
     }
 }

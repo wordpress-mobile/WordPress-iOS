@@ -59,13 +59,16 @@ struct PlanListRow: ImmuTableRow {
                 attributedTitle.appendAttributedString(attributedCurrentPlan)
             } else if !price.isEmpty {
                 attributedTitle.appendString(" ")
-                let attributedPrice = NSAttributedString(string: price, attributes: priceAttributes)
-                attributedTitle.appendAttributedString(attributedPrice)
 
-                attributedTitle.appendString(" ")
-                let pricePeriod = NSAttributedString(string: NSLocalizedString("per year", comment: ""), attributes: pricePeriodAttributes)
-                attributedTitle.appendAttributedString(pricePeriod)
+                let pricePeriod = String(format: NSLocalizedString("%@ <em>per year</em>", comment: "Plan yearly price"), price)
+
+                let attributes: StyledHTMLAttributes = [ .BodyAttribute: priceAttributes,
+                                                         .EmTagAttribute: pricePeriodAttributes ]
+
+                let attributedPricePeriod = NSAttributedString.attributedStringWithHTML(pricePeriod, attributes: attributes)
+                attributedTitle.appendAttributedString(attributedPricePeriod)
             }
+
             return attributedTitle
         }
     }

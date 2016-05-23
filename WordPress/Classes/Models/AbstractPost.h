@@ -1,12 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
-#import "WPPostContentViewProvider.h"
 
 @class Media;
 @class Comment;
 
-@interface AbstractPost : BasePost<WPPostContentViewProvider>
+@interface AbstractPost : BasePost
 
 // Relationships
 @property (nonatomic, strong) Blog *blog;
@@ -33,6 +32,10 @@
 - (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+
+/// Returns the latest revision of a post.
+///
+- (AbstractPost *)latest;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;
@@ -46,6 +49,15 @@
  *  @returns    YES if this post has a revision, NO otherwise.
  */
 - (BOOL)hasRevision;
+
+#pragma mark - Conveniece Methods
+
+- (NSString *)authorNameForDisplay;
+- (NSString *)blavatarForDisplay;
+- (NSString *)dateStringForDisplay;
+- (BOOL)isMultiAuthorBlog;
+- (BOOL)isPrivate;
+- (BOOL)supportsStats;
 
 
 #pragma mark - Unsaved Changes
