@@ -175,7 +175,7 @@ private extension PeopleService {
         let localIDs = Set(localPeople.map({ $0.ID }))
 
         let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs)
+        removeManagedPeopleWithIDs(removedIDs, type: T.self)
 
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
@@ -192,7 +192,7 @@ private extension PeopleService {
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
     func loadPeople<T : Person>(siteID: Int, type: T.Type) -> [T] {
-        let isFollower = type.dynamicType == Follower.self
+        let isFollower = type.isFollower
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
         let results: [ManagedPerson]
@@ -210,10 +210,11 @@ private extension PeopleService {
     ///
     func managedPersonFromPerson(person: Person) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
+        let isFollower = person.dynamicType.isFollower
         request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@ AND isFollower = %@",
                                                 NSNumber(integer: siteID),
                                                 NSNumber(integer: person.ID),
-                                                NSNumber(bool: person.isFollower))
+                                                NSNumber(bool: isFollower))
         request.fetchLimit = 1
 
         let results = (try? context.executeFetchRequest(request) as! [ManagedPerson]) ?? []
@@ -222,14 +223,19 @@ private extension PeopleService {
 
     /// Nukes the set of users, from Core Data, with the specified ID's.
     ///
-    func removeManagedPeopleWithIDs(ids: Set<Int>) {
+    func removeManagedPeopleWithIDs<T : Person>(ids: Set<Int>, type: T.Type) {
         if ids.isEmpty {
             return
         }
 
+        let follower = type.isFollower
         let numberIDs = ids.map { return NSNumber(integer: $0) }
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND userID IN %@", NSNumber(integer: siteID), numberIDs)
+        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@ AND userID IN %@",
+                                        NSNumber(integer: siteID),
+                                        NSNumber(bool: follower),
+                                        numberIDs)
+
         let objects = (try? context.executeFetchRequest(request) as! [NSManagedObject]) ?? []
         for object in objects {
             DDLogSwift.logDebug("Removing person: \(object)")
