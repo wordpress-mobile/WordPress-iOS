@@ -2,36 +2,27 @@ import Foundation
 
 struct DomainsService {
     let remote: DomainsServiceRemote
-    let blog: Blog
-    let siteID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
 
-    init(blog: Blog) {
-        precondition(blog.dotComID != nil)
-
-        remote = DomainsServiceRemote(api: blog.restApi())
-        self.blog = blog
-        siteID = Int(blog.dotComID!)
-    }
-
-    func refreshBlogDomains(completion: (Bool) -> Void) {
+    func refreshDomainsForSite(siteID: Int, completion: (Bool) -> Void) {
         remote.getDomainsForSite(siteID, success: { domains in
-            self.mergeDomains(domains)
+            self.mergeDomains(domains, forSite: siteID)
+            completion(true)
             }, failure: { error in
                 completion(false)
         })
     }
 
-    private func mergeDomains(domains: [Domain]) {
+    private func mergeDomains(domains: [Domain], forSite siteID: Int) {
         let remoteDomains = domains
-        let localDomains = blogDomains()
+        let localDomains = domainsForSite(siteID)
 
         let remoteDomainNames = Set(remoteDomains.map({ $0.domainName }))
         let localDomainNames = Set(localDomains.map({ $0.domainName }))
 
         let removedDomainNames = localDomainNames.subtract(remoteDomainNames)
-        removeDomains(removedDomainNames)
+        removeDomains(removedDomainNames, fromSite: siteID)
 
         // Let's try to only update objects that have changed
         let remoteChanges = remoteDomains.filter {
@@ -39,18 +30,34 @@ struct DomainsService {
         }
 
         for remoteDomain in remoteChanges {
-            if let existingDomain = managedDomainWithName(remoteDomain.domainName) {
+            if let existingDomain = managedDomainWithName(remoteDomain.domainName, forSite: siteID),
+                let blog = blogForSiteID(siteID) {
                 existingDomain.updateWith(remoteDomain, blog: blog)
                 DDLogSwift.logDebug("Updated domain \(existingDomain)")
             } else {
-                createManagedDomain(remoteDomain)
+                createManagedDomain(remoteDomain, forSite: siteID)
             }
         }
 
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func managedDomainWithName(domainName: String) -> ManagedDomain? {
+    private func blogForSiteID(siteID: Int) -> Blog? {
+        let service = BlogService(managedObjectContext: context)
+
+        guard let blog = service.blogByBlogId(siteID) else {
+            let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
+            assertionFailure(error)
+            DDLogSwift.logError(error)
+            return nil
+        }
+
+        return blog
+    }
+
+    private func managedDomainWithName(domainName: String, forSite siteID: Int) -> ManagedDomain? {
+        guard let blog = blogForSiteID(siteID) else { return nil }
+
         let request = NSFetchRequest(entityName: ManagedDomain.entityName)
         request.predicate = NSPredicate(format: "%K = %@ AND %K = %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainName)
         request.fetchLimit = 1
@@ -58,13 +65,17 @@ struct DomainsService {
         return results.first
     }
 
-    private func createManagedDomain(domain: Domain) {
+    private func createManagedDomain(domain: Domain, forSite siteID: Int) {
+        guard let blog = blogForSiteID(siteID) else { return }
+
         let managedDomain = NSEntityDescription.insertNewObjectForEntityForName(ManagedDomain.entityName, inManagedObjectContext: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
         DDLogSwift.logDebug("Created domain \(managedDomain)")
     }
 
-    private func blogDomains() -> [Domain] {
+    private func domainsForSite(siteID: Int) -> [Domain] {
+        guard let blog = blogForSiteID(siteID) else { return [] }
+
         let request = NSFetchRequest(entityName: ManagedDomain.entityName)
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
 
@@ -79,7 +90,9 @@ struct DomainsService {
         return domains.map { Domain(managedDomain: $0) }
     }
 
-    private func removeDomains(domainNames: Set<String>) {
+    private func removeDomains(domainNames: Set<String>, fromSite siteID: Int) {
+        guard let blog = blogForSiteID(siteID) else { return }
+
         let request = NSFetchRequest(entityName: ManagedDomain.entityName)
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
         let objects = (try? context.executeFetchRequest(request) as! [NSManagedObject]) ?? []
@@ -87,5 +100,11 @@ struct DomainsService {
             DDLogSwift.logDebug("Removing domain: \(object)")
             context.deleteObject(object)
         }
+    }
+}
+
+extension DomainsService {
+    init(account: WPAccount) {
+        self.init(remote: DomainsServiceRemote(api: account.restApi))
     }
 }
