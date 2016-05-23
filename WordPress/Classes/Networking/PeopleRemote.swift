@@ -3,10 +3,6 @@ import Foundation
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
 class PeopleRemote: ServiceRemoteREST {
-    /// Typealiases
-    ///
-    typealias Role = Person.Role
-
     /// Defines the PeopleRemote possible errors.
     ///
     enum Error: ErrorType {
