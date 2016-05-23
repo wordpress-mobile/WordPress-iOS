@@ -11,7 +11,7 @@ desc "Install required dependencies"
 task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
-  task :check => %w[bundle:check pod:check]
+  task :check => %w[bundle:check pod:check lint:check]
 
   namespace :bundle do
     lockfile = 'Gemfile.lock'
