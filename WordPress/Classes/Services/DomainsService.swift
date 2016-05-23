@@ -3,7 +3,12 @@ import Foundation
 struct DomainsService {
     let remote: DomainsServiceRemote
 
-    private let context = ContextManager.sharedInstance().mainContext
+    private let context: NSManagedObjectContext
+
+    init(managedObjectContext context: NSManagedObjectContext, remote: DomainsServiceRemote) {
+        self.context = context
+        self.remote = remote
+    }
 
     func refreshDomainsForSite(siteID: Int, completion: (Bool) -> Void) {
         remote.getDomainsForSite(siteID, success: { domains in
@@ -104,7 +109,7 @@ struct DomainsService {
 }
 
 extension DomainsService {
-    init(account: WPAccount) {
-        self.init(remote: DomainsServiceRemote(api: account.restApi))
+    init(managedObjectContext context: NSManagedObjectContext, account: WPAccount) {
+        self.init(managedObjectContext: context, remote: DomainsServiceRemote(api: account.restApi))
     }
 }

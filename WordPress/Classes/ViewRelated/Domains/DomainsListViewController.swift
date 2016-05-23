@@ -82,7 +82,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         controller.blog = blog
 
         if let account = blog.account {
-            controller.service = DomainsService(account: account)
+            controller.service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, account: account)
         }
 
         return controller
