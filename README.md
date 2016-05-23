@@ -30,11 +30,11 @@ http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 We use a few tools to help with development. To install or update the required dependencies, run `rake dependencies` from the command line.
 
-### Cocoapods
+### CocoaPods
 
-WordPress for iOS uses Cocoapods (http://cocoapods.org/) to manage third party libraries.  Trying to build the project by itself (WordPress.xcproj) after launching will result in an error, as the resources managed by cocoapods are not included.
+WordPress for iOS uses CocoaPods (http://cocoapods.org/) to manage third party libraries.  Trying to build the project by itself (WordPress.xcproj) after launching will result in an error, as the resources managed by CocoaPods are not included.
 
-Run `rake dependencies` from the command line to install dependencies for the project. This will ensure the current supported version of Cocoapods is used. If you have the same version installed in your system, you can also run `pod install`.
+Run `rake dependencies` from the command line to install dependencies for the project. This will ensure the current supported version of CocoaPods is used. If you have the same version installed in your system, you can also run `pod install`.
 
 ### SwiftLint
 
