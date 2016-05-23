@@ -204,7 +204,7 @@ private extension PersonViewController {
         self.person = updated
     }
 
-    func retryUpdatingRole(newRole: Person.Role) {
+    func retryUpdatingRole(newRole: Role) {
         let retryTitle      = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle     = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title           = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
@@ -309,11 +309,11 @@ private extension PersonViewController {
 
     private func refreshRoleCell() {
         let enabled = isPromoteEnabled
-        roleCell.detailTextLabel?.text = person.role.localizedName()
+        roleCell.detailTextLabel?.text = person.role.localizedName
         roleCell.accessoryType = enabled ? .DisclosureIndicator : .None
         roleCell.selectionStyle = enabled ? .Gray : .None
         roleCell.userInteractionEnabled = enabled
-        roleCell.detailTextLabel?.text = person.role.localizedName()
+        roleCell.detailTextLabel?.text = person.role.localizedName
     }
 
     func refreshRemoveCell() {
