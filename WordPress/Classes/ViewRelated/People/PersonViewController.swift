@@ -184,6 +184,7 @@ private extension PersonViewController {
     }
 
     func deleteUser() {
+        assert(user != nil)
         guard let user = user else {
             DDLogSwift.logError("Error: Only Users can be deleted")
             return
@@ -195,6 +196,7 @@ private extension PersonViewController {
     }
 
     func updateUserRole(newRole: Role) {
+        assert(user != nil)
         guard let user = user else {
             DDLogSwift.logError("Error: Only Users have Roles!")
             return
