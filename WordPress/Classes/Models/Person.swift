@@ -9,6 +9,8 @@ typealias People = [Person]
 // MARK: - Defines all of the peroperties a Person may have
 //
 protocol Person {
+    /// Properties
+    ///
     var ID: Int { get }
     var username: String { get }
     var firstName: String? { get }
@@ -20,7 +22,9 @@ protocol Person {
     var avatarURL: NSURL? { get }
     var isSuperAdmin: Bool { get }
     var fullName: String { get }
-    var isFollower: Bool { get }
+
+    /// Initializers
+    ///
     init(ID: Int,
          username: String,
          firstName: String?,
@@ -88,7 +92,7 @@ extension Person {
         return "\(first)\(separator)\(last)"
     }
 
-    var isFollower: Bool {
+    static var isFollower: Bool {
         return self.dynamicType == Follower.self
     }
 }
@@ -115,7 +119,7 @@ extension Follower {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = Role(string: managedPerson.role)
+        role = Role.Follower
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
