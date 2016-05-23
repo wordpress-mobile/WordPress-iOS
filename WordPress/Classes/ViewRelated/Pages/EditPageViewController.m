@@ -2,10 +2,10 @@
 #import "AbstractPost.h"
 #import "ContextManager.h"
 #import "PostService.h"
-#import "Page.h"
 #import "Blog.h"
 #import "PageSettingsViewController.h"
 #import "WPTooltip.h"
+#import "WordPress-Swift.h"
 
 @implementation EditPageViewController
 
