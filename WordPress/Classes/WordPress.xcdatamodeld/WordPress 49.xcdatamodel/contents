@@ -267,7 +267,7 @@
         <userInfo/>
     </entity>
     <entity name="Domain" representedClassName=".ManagedDomain" syncable="YES">
-        <attribute name="domain" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="domainType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isPrimary" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="domains" inverseEntity="Blog" syncable="YES"/>
