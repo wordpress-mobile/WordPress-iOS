@@ -55,12 +55,12 @@ extension PlanService {
             return nil
         }
 
-        guard let api = account.restApi else {
+        guard let api = account.wordPressComRestApi else {
             return nil
         }
 
-        self.remote = PlansRemote(api: api)
-        self.featuresRemote = PlanFeaturesRemote(api: api)
+        self.remote = PlansRemote(wordPressComRestApi: api)
+        self.featuresRemote = PlanFeaturesRemote(wordPressComRestApi: api)
     }
 }
 
@@ -86,12 +86,12 @@ struct PlanStorage {
 
 extension PlanService {
     init?(blog: Blog, store: S) {
-        guard let api = blog.restApi() else {
+        guard let api = blog.wordPressComRestApi() else {
             return nil
         }
 
-        let remote = PlansRemote(api: api)
-        let featuresRemote = PlanFeaturesRemote(api: api)
+        let remote = PlansRemote(wordPressComRestApi: api)
+        let featuresRemote = PlanFeaturesRemote(wordPressComRestApi: api)
 
         self.init(store: store, remote: remote, featuresRemote: featuresRemote)
     }

@@ -1,7 +1,7 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
@@ -22,11 +22,11 @@
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
-    OCMStub([blog restApi]).andReturn(api);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     
     TaxonomyServiceRemoteREST *service = nil;
-    XCTAssertNoThrow(service = [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID]);
     
     self.service = service;
 }
@@ -57,7 +57,7 @@
         return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:category.name]);
     };
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg checkWithBlock:parametersCheckBlock]
               success:[OCMArg isNotNil]
@@ -72,7 +72,7 @@
 {
     NSString *url = [self GETtaxonomyURLWithType:@"categories"];
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
@@ -115,7 +115,7 @@
         return YES;
     };
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
@@ -141,7 +141,7 @@
         return YES;
     };
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
@@ -164,8 +164,8 @@
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:tag.name]);
     };
-    
-    WordPressComApi *api = self.service.api;
+
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg checkWithBlock:parametersCheckBlock]
               success:[OCMArg isNotNil]
@@ -180,7 +180,7 @@
 {
     NSString *url = [self GETtaxonomyURLWithType:@"tags"];
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
@@ -223,7 +223,7 @@
         return YES;
     };
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
@@ -249,7 +249,7 @@
         return YES;
     };
     
-    WordPressComApi *api = self.service.api;
+    WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]

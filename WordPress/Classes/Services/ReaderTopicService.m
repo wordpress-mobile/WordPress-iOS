@@ -25,16 +25,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WordPressComApi *api = [WordPressComApi anonymousApi];
-
-    // If the account is not nil, and its api has credentials we'll use it.
-    if ([[defaultAccount restApi] hasCredentials]) {
-         api = [defaultAccount restApi];
-    }
 
     // Keep a reference to the NSManagedObjectID (if it exists).
     // We'll use it to verify that the account did not change while fetching topics.
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:api];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
 
         WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];
@@ -190,8 +184,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSAssert([phrase length] > 0, @"A search phrase is required.");
 
-    WordPressComApi *api = [WordPressComApi anonymousApi];
-    ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithApi:api];
+    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+    ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
     NSString *path = [remote endpointUrlForSearchPhrase:phrase];
     ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
@@ -218,7 +212,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [self setCurrentTopic:topic];
 
     NSString *topicName = [topic.title lowercaseString];
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
         // noop
     } failure:^(NSError *error) {
@@ -252,7 +246,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     NSString *slug = topic.slug;
     if (!slug) {
         // Fallback. It *shouldn't* happen, but we've had a couple of crash reports
@@ -282,7 +276,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     topicName = [[topicName lowercaseString] trim];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
@@ -301,7 +295,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
         [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
         if (success) {
@@ -372,7 +366,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchTagInfoForTagWithSlug:slug success:^(RemoteReaderTopic *remoteTopic) {
         ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -466,7 +460,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
             return;
@@ -521,13 +515,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 /**
  Get the api to use for the request.
  */
-- (WordPressComApi *)apiForRequest
+- (WordPressComRestApi *)apiForRequest
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WordPressComApi *api = [defaultAccount restApi];
+    WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
-        api = [WordPressComApi anonymousApi];
+        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
     }
     return api;
 }
