@@ -9,6 +9,7 @@
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface ReaderPostServiceRemote ()
 
@@ -93,8 +94,8 @@
  */
 - (ReaderPostServiceRemote*)service
 {
-    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-    return [[ReaderPostServiceRemote alloc] initWithApi:api];
+    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
+    return [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 }
 
 #pragma mark - ReaderPostServiceRemote tests

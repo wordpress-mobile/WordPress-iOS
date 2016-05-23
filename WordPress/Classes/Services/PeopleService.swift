@@ -19,11 +19,11 @@ struct PeopleService {
     /// - Parameter blog: Target Blog Instance
     ///
     init?(blog: Blog) {
-        guard let api = blog.restApi(), dotComID = blog.dotComID as? Int else {
+        guard let api = blog.wordPressComRestApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
-        remote = PeopleRemote(api: api)
+        remote = PeopleRemote(wordPressComRestApi: api)
         siteID = dotComID
     }
 
