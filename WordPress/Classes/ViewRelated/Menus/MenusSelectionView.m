@@ -2,6 +2,7 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusSelectionItemView.h"
 #import "Menu+ViewDesign.h"
+#import <WordPressShared/WPDeviceIdentification.h>
 
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
@@ -28,6 +29,10 @@
     self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
+    if (![WPDeviceIdentification isRetina]) {
+        // Increase the stroke width on non-retina screens.
+        self.layer.borderWidth = MenusDesignStrokeWidth * 2;
+    }
     
     _items = [NSMutableArray arrayWithCapacity:5];
     _itemViews = [NSMutableArray array];

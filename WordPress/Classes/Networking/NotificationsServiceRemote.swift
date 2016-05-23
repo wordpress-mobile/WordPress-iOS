@@ -6,15 +6,15 @@ import UIDeviceIdentifier
 /// Note that Notification Sync'ing itself is handled via Simperium, and here we'll deal mostly with the
 /// Settings / Push Notifications API.
 ///
-public class NotificationsServiceRemote : ServiceRemoteREST
+public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
 {
     /// Designated Initializer. Fails if the remoteApi is nil.
     ///
-    /// - Parameter remoteApi: A Reference to the WordPressComApi that should be used to interact with WordPress.com
+    /// - Parameter wordPressComRestApi: A Reference to the WordPressComRestApi that should be used to interact with WordPress.com
     ///
-    public override init?(api: WordPressComApi!) {
-        super.init(api: api)
-        if api == nil {
+    public override init?(wordPressComRestApi: WordPressComRestApi!) {
+        super.init(wordPressComRestApi: wordPressComRestApi)
+        if wordPressComRestApi == nil {
             return nil
         }
     }
@@ -29,15 +29,15 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     ///
     public func getAllSettings(deviceId: String, success: ([RemoteNotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
-        let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let requestUrl = self.pathForEndpoint(path, withVersion: .Version_1_1)
 
-        api.GET(requestUrl,
+        wordPressComRestApi.GET(requestUrl,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
+            success: { (response: AnyObject, httpResponse: NSHTTPURLResponse?) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
                 success?(settings)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) -> Void in
                 failure?(error)
             })
     }
@@ -52,16 +52,16 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     ///
     public func updateSettings(settings: [String: AnyObject], success: (() -> ())?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/")
-        let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let requestUrl = self.pathForEndpoint(path, withVersion: .Version_1_1)
 
-        let parameters = settings as NSDictionary
+        let parameters = settings
 
-        api.POST(requestUrl,
+        wordPressComRestApi.POST(requestUrl,
             parameters: parameters,
-            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
+            success: { (response: AnyObject, httpResponse: NSHTTPURLResponse?) -> Void in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) -> Void in
                 failure?(error)
             })
     }
@@ -77,7 +77,7 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     ///
     public func registerDeviceForPushNotifications(token: String, success: ((deviceId: String) -> ())?, failure: (NSError -> Void)?) {
         let endpoint = "devices/new"
-        let requestUrl = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let requestUrl = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
         let device = UIDevice.currentDevice()
         let parameters = [
@@ -91,9 +91,9 @@ public class NotificationsServiceRemote : ServiceRemoteREST
             "device_uuid"     : device.wordPressIdentifier()
         ]
 
-        api.POST(requestUrl,
+        wordPressComRestApi.POST(requestUrl,
             parameters: parameters,
-            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
+            success: { (response: AnyObject, httpResponse: NSHTTPURLResponse?) -> Void in
                 if let responseDict = response as? NSDictionary,
                     let rawDeviceId = responseDict.objectForKey("ID")
                 {
@@ -107,7 +107,7 @@ public class NotificationsServiceRemote : ServiceRemoteREST
                     failure?(outerError)
                 }
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) -> Void in
                 failure?(error)
             })
     }
@@ -122,15 +122,14 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     ///
     public func unregisterDeviceForPushNotifications(deviceId: String, success: (() -> ())?, failure: (NSError -> Void)?) {
         let endpoint = String(format: "devices/%@/delete", deviceId)
-        let requestUrl = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let requestUrl = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.POST(requestUrl,
+        wordPressComRestApi.POST(requestUrl,
             parameters: nil,
-            cancellable: false,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            success: { (response: AnyObject!, httpResponse: NSHTTPURLResponse?) -> Void in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) -> Void in
                 failure?(error)
             })
     }

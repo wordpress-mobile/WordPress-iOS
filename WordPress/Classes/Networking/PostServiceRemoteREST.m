@@ -1,5 +1,5 @@
 #import "PostServiceRemoteREST.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
@@ -34,17 +34,17 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", self.siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{ @"context": @"edit" };
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (success) {
                   success([self remotePostFromJSONDictionary:responseObject]);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -67,7 +67,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
@@ -80,13 +80,13 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         [mutableParameters addEntriesFromDictionary:options];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     }
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (success) {
                   success([self remotePostsFromJSONArray:responseObject[@"posts"]]);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -101,18 +101,18 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
                    success(post);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -127,18 +127,18 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", self.siteID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
                    success(post);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -153,15 +153,15 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    success();
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -176,16 +176,16 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
                    success(post);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -200,16 +200,16 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", self.siteID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
                    success(post);
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
