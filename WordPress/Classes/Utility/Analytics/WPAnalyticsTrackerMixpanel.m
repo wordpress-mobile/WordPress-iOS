@@ -964,7 +964,40 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatSharingPublicizeConnectionAvailableToAllChanged:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Publicize Connection Availablility Changed"];
             break;
-
+        case WPAnalyticsStatMenusAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menus Accessed"];
+            break;
+        case WPAnalyticsStatMenusCreatedItem:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Item Created."];
+            break;
+        case WPAnalyticsStatMenusCreatedMenu:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Created."];
+            break;
+        case WPAnalyticsStatMenusDeletedMenu:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Deleted."];
+            break;
+        case WPAnalyticsStatMenusDeletedItem:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Item Deleted."];
+            break;
+        case WPAnalyticsStatMenusDiscardedChanges:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Discarded Changes."];
+            break;
+        case WPAnalyticsStatMenusEditedItem:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Item Edited."];
+            break;
+        case WPAnalyticsStatMenusOpenedItemEditor:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Item Editor Opened."];
+            break;
+        case WPAnalyticsStatMenusOrderedItems:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Items Ordered."];
+            break;
+        case WPAnalyticsStatMenusSavedMenu:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved."];
+            break;
+        case WPAnalyticsStatMenusUpdatedMenuName:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Name Updated."];
+            break;
+            
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
         case WPAnalyticsStatLoginMagicLinkFailed:
