@@ -22,7 +22,6 @@ NSUInteger const ReaderPostServiceNumberToSync = 40;
 // a 500 error if more are requested.
 // For performance reasons, request fewer results. EJ 2016-05-13
 NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
-NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
@@ -48,7 +47,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure
 {
-
     [self fetchPostsForTopic:topic earlierThan:date deletingEarlier:NO success:success failure:failure];
 }
 
