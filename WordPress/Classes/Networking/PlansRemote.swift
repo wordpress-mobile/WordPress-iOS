@@ -1,6 +1,6 @@
 import Foundation
 
-class PlansRemote: ServiceRemoteREST {
+class PlansRemote: ServiceRemoteWordPressComREST {
     typealias SitePlans = (activePlan: Plan, availablePlans: [Plan])
     enum Error: ErrorType {
         case DecodeError
@@ -11,14 +11,14 @@ class PlansRemote: ServiceRemoteREST {
 
     func getPlansForSite(siteID: Int, success: SitePlans -> Void, failure: ErrorType -> Void) {
         let endpoint = "sites/\(siteID)/plans"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_2)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: parameters,
             success: {
-                _, response in
+                response, _ in
                 do {
                     try success(mapPlansResponse(response))
                 } catch {
@@ -28,7 +28,7 @@ class PlansRemote: ServiceRemoteREST {
                     failure(error)
                 }
             }, failure: {
-                _, error in
+                error, _ in
                 failure(error)
         })
     }

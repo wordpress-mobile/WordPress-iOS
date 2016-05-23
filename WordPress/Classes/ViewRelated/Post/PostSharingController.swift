@@ -38,7 +38,7 @@ import SVProgressHUD
         return controller
     }
 
-    func sharePost(title: String, summary: String, tags: String, link: String?, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
+    func sharePost(title: String, summary: String, tags: String?, link: String?, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
@@ -59,7 +59,7 @@ import SVProgressHUD
         }
     }
 
-    func sharePost(title: String, summary: String, tags: String, link: String?, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+    func sharePost(title: String, summary: String, tags: String?, link: String?, fromView anchorView:UIView, inViewController viewController:UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
