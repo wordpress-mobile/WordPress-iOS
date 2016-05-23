@@ -1,7 +1,7 @@
 #import "PostCardTableViewCell.h"
 #import <AFNetworking/UIKit+AFNetworking.h>
-#import "BasePost.h"
 #import "PhotonImageURLHelper.h"
+#import "Post.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
-@property (nonatomic, strong) AbstractPost *post;
+@property (nonatomic, strong) Post *post;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -170,11 +170,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.innerContentView.backgroundColor = backgroundColor;
 }
 
-- (AbstractPost *)postOrRevision
-{
-    return [self.post hasRevision] ? [self.post revision] : self.post;
-}
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     BOOL previouslyHighlighted = self.highlighted;
@@ -257,12 +252,12 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 #pragma mark - ConfigurablePostView
 
-- (void)configureWithPost:(AbstractPost *)post
+- (void)configureWithPost:(Post *)post
 {
     [self configureWithPost:post forLayoutOnly:NO];
 }
 
-- (void)configureWithPost:(nonnull AbstractPost *)post
+- (void)configureWithPost:(nonnull Post *)post
             forLayoutOnly:(BOOL)layoutOnly
 {
     self.configureForLayoutOnly = layoutOnly;
@@ -328,7 +323,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         return;
     }
 
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
 
     if (![post featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
@@ -347,7 +342,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureTitle
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -356,7 +351,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureSnippet
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -365,7 +360,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureDate
 {
-    AbstractPost *post = [self postOrRevision];
+    AbstractPost *post = [self.post latest];
     self.dateLabel.text = [post dateStringForDisplay];
 }
 
@@ -417,14 +412,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self resetMetaButton:self.metaButtonLeft];
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([(Post *)(self.post) numberOfComments] > 0) {
+    if ([self.post numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([(Post *)(self.post) numberOfLikes] > 0) {
+    if ([self.post numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [(Post *)(self.post) numberOfLikes]];
