@@ -60,5 +60,8 @@ WordPress/InfoPlist.h
 */CoverageData/*
 
 # Bundler
-vendor/bundle/
+/vendor/bundle/
 .bundle/
+
+# Dependencies
+/vendor/
