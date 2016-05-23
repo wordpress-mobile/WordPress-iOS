@@ -15,7 +15,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 static NSString * const UserDictionaryDateKey = @"date";
 
 @interface AccountServiceRemoteREST ()
-@property (nonatomic, strong) WordPressComApi *anonymousApi;
+
 @end
 
 @implementation AccountServiceRemoteREST
@@ -25,14 +25,18 @@ static NSString * const UserDictionaryDateKey = @"date";
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api GET:requestUrl
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
+    NSDictionary *parameters = @{
+                                 @"locale": locale
+                                 };
+    [self.wordPressComRestApi GET:requestUrl
+       parameters:parameters
+                    success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (success) {
                   success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -52,16 +56,16 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSString *requestUrl = [self pathForEndpoint:@"me"
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (!success) {
                   return;
               }
               RemoteUser *remoteUser = [self remoteUserFromDictionary:responseObject];
               success(remoteUser);
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -100,30 +104,21 @@ static NSString * const UserDictionaryDateKey = @"date";
     }];
 
     NSDictionary *parameters = @{
-                                 @"sites": sites,
+                                 @"sites": sites
                                  };
     NSString *path = [self pathForEndpoint:@"me/sites"
                                withVersion:ServiceRemoteRESTApiVersion_1_1];
-    [self.api POST:path
+    [self.wordPressComRestApi POST:path
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    success();
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
            }];
-}
-
-- (WordPressComApi *)anonymousApi
-{
-    if (!_anonymousApi) {
-        _anonymousApi = [WordPressComApi anonymousApi];
-    }
-
-    return _anonymousApi;
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
@@ -133,9 +128,9 @@ static NSString * const UserDictionaryDateKey = @"date";
     // Remove the special case in `WordPressComApi.assertApiVersion` once the
     // endpoint is versioned.
     NSString *path = @"https://public-api.wordpress.com/is-available/email";
-    [self.api GET:path
-       parameters:@{ @"q": email }
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:path
+       parameters:@{ @"q": email, @"format": @"json"}
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (!success) {
                   return;
               }
@@ -149,24 +144,11 @@ static NSString * const UserDictionaryDateKey = @"date";
               BOOL available = NO;
               if ([responseObject isKindOfClass:[NSDictionary class]]) {
                   NSDictionary *dict = (NSDictionary *)responseObject;
-                  NSString *errStr = [dict stringForKey:@"error"];
-                  available = ![@"taken" isEqualToString:errStr];
+                  available = [[dict numberForKey:@"available"] boolValue];
               }
-
               success(available);
 
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              // The is-available endpoint is an oddball.
-              // Rather than returning a proper JSON object it can return a simple
-              // string, which is subsequently evaluated as an error condition.
-              // A response of "true" means that the queried email address was available,
-              // which is our success case.
-              if ([operation.responseString isEqualToString:@"true"]) {
-                  if (success) {
-                      success(YES);
-                  }
-                  return;
-              }
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -180,17 +162,17 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSString *path = [self pathForEndpoint:@"auth/send-login-email"
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api POST:path
+    [self.wordPressComRestApi POST:path
         parameters:@{
                      @"email": email,
                      @"client_id": [ApiCredentials client],
                      @"client_secret": [ApiCredentials secret],
                      }
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    success();
                }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -237,6 +219,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
     blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
+    blog.planTitle = [jsonBlog stringForKeyPath:@"plan.product_name_short"];
     return blog;
 }
 

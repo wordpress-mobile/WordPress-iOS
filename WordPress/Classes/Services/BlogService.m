@@ -595,7 +595,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.visible = remoteBlog.visible;
         blog.options = remoteBlog.options;
         blog.planID = remoteBlog.planID;
-
+        blog.planTitle = remoteBlog.planTitle;
+        
         // Update 'Top Level' Settings
         BlogSettings *settings = blog.settings;
         settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
@@ -645,8 +646,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     id<BlogServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.restApi) {
-            remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        if (blog.wordPressComRestApi) {
+            remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
     } else if (blog.api) {
         remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
@@ -657,11 +658,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
-    if (account.restApi == nil) {
+    if (account.wordPressComRestApi == nil) {
         return nil;
     }
 
-    return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
 - (Blog *)blogWithPredicate:(NSPredicate *)predicate

@@ -17,6 +17,7 @@
 #import "BlogSelectorViewController.h"
 
 #import "CommentService.h"
+#import "ConfigurablePostView.h"
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
@@ -28,6 +29,9 @@
 #import "EditPageViewController.h"
 
 #import "HelpshiftUtils.h"
+
+#import "InteractivePostView.h"
+#import "InteractivePostViewDelegate.h"
 
 #import "LoginFacade.h"
 #import "LoginFields.h"
@@ -59,7 +63,6 @@
 #import "PostContentProvider.h"
 #import "Post.h"
 #import "PostCardTableViewCell.h"
-#import "PostCardTableViewCellDelegate.h"
 #import "PostContentProvider.h"
 #import "PostListFilter.h"
 #import "PostListFooterView.h"
@@ -82,6 +85,7 @@
 #import "RotationAwareNavigationViewController.h"
 
 #import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"

@@ -32,11 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
 
-    if (blog.restApi == nil) {
+    if (blog.wordPressComRestApi == nil) {
         return;
     }
 
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote getMenusForBlog:blog
                     success:^(NSArray<RemoteMenu *> * _Nullable remoteMenus, NSArray<RemoteMenuLocation *> * _Nullable remoteLocations) {
         
@@ -92,11 +92,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
-    if (blog.restApi == nil) {
+    if (blog.wordPressComRestApi == nil) {
         return;
     }
 
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote createMenuWithName:menuName
                           blog:blog
                        success:^(RemoteMenu * _Nonnull remoteMenu) {
@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
-    if (blog.restApi == nil) {
+    if (blog.wordPressComRestApi == nil) {
         return;
     }
 
@@ -137,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
         remoteItems = [self remoteItemsFromMenuItems:menu.items];
     }
     
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote updateMenuForID:menu.menuID
                        blog:blog
                    withName:menu.name
@@ -172,7 +172,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
-    if (blog.restApi == nil) {
+    if (blog.wordPressComRestApi == nil) {
         return;
     }
 
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote deleteMenuForID:menu.menuID
                        blog:blog
                     success:completeMenuDeletion

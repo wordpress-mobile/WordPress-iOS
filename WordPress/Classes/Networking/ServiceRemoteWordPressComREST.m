@@ -34,8 +34,12 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.
             result = ServiceRemoteWordPressComRESTApiVersionString_1_1;
             break;
             
-        case ServiceRemoteRESTApiVersion_1_2:
+        case ServiceRemoteWordPressComRESTApiVersion_1_2:
             result = ServiceRemoteWordPressComRESTApiVersionString_1_2;
+            break;
+
+        case ServiceRemoteWordPressComRESTApiVersion_1_3:
+            result = ServiceRemoteWordPressComRESTApiVersionString_1_3;
             break;
 
         default:
@@ -57,6 +61,13 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.
     NSString *apiVersionString = [self apiVersionStringWithEnumValue:apiVersion];
     
     return [NSString stringWithFormat:@"%@/%@", apiVersionString, resourceUrl];
+}
+
++ (WordPressComRestApi *)anonymousWordPressComRestApi {
+
+    return [[WordPressComRestApi alloc] initWithOAuthToken:nil
+                                                 userAgent:[WPUserAgent wordPressUserAgent]
+            ];
 }
 
 @end

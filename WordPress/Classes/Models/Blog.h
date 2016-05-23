@@ -95,6 +95,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
+@property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 
@@ -205,7 +206,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
  @return a WordPressComRestApi object if available
  */
-- (WordPressComRestApi *)wordPressComRestApi;
+- (nullable WordPressComRestApi *)wordPressComRestApi;
 
 @end
 

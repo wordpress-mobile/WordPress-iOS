@@ -757,6 +757,7 @@ import WordPressComAnalytics
     private func visitSiteForPost(post:ReaderPost) {
         let siteURL = NSURL(string: post.blogURL)!
         let controller = WPWebViewController(URL: siteURL)
+        controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -783,6 +784,7 @@ import WordPressComAnalytics
 
         let linkURL = NSURL(string: sourceAttribution.blogURL)
         let controller = WPWebViewController(URL: linkURL)
+        controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
     }
