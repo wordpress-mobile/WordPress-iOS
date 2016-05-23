@@ -134,8 +134,8 @@ final class PersonViewController : UITableViewController {
 
         roleViewController.blog = blog
         roleViewController.selectedRole = person.role
-        roleViewController.onChange = { newRole in
-            self.updateUserRole(newRole)
+        roleViewController.onChange = { [weak self] newRole in
+            self?.updateUserRole(newRole)
         }
     }
 
@@ -176,8 +176,8 @@ private extension PersonViewController {
 
         alert.addCancelActionWithTitle(cancelTitle)
 
-        alert.addDestructiveActionWithTitle(removeTitle) { action in
-            self.deleteUser()
+        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+            self?.deleteUser()
         }
 
         alert.presentFromRootViewController()
