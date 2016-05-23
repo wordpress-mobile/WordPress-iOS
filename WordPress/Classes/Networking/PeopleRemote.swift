@@ -83,11 +83,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: A single User instance.
     ///
-    func updateUserRole(siteID  : Int,
-                        userID  : Int,
-                        newRole : Role,
-                        success : (Person -> ())? = nil,
-                        failure : (ErrorType -> ())? = nil)
+    func updateUserRole(siteID: Int,
+                        userID: Int,
+                        newRole: Role,
+                        success: (Person -> ())? = nil,
+                        failure: (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -121,11 +121,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deleteUser(siteID      : Int,
-                    userID      : Int,
-                    reassignID  : Int? = nil,
-                    success     : (Void -> Void)? = nil,
-                    failure     : (ErrorType -> Void)? = nil)
+    func deleteUser(siteID: Int,
+                    userID: Int,
+                    reassignID: Int? = nil,
+                    success: (Void -> Void)? = nil,
+                    failure: (ErrorType -> Void)? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(userID)/delete"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -152,9 +152,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getUserRoles(siteID    : Int,
-                      success   : ([Role] -> Void),
-                      failure   : (ErrorType -> ())? = nil)
+    func getUserRoles(siteID: Int,
+                      success: ([Role] -> Void),
+                      failure: (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/roles"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -187,9 +187,9 @@ private extension PeopleRemote {
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse<T : Person>(response    : [String: AnyObject],
-                                        siteID      : Int,
-                                        type        : T.Type) throws -> [T]
+    func peopleFromResponse<T : Person>(response: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> [T]
     {
         guard let users = response["users"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
@@ -211,9 +211,9 @@ private extension PeopleRemote {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func personFromResponse<T : Person>(user   : [String: AnyObject],
-                                        siteID  : Int,
-                                        type    : T.Type) throws -> T
+    func personFromResponse<T : Person>(user: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> T
     {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
