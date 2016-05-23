@@ -16,7 +16,7 @@
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
                         before:(NSDate *)date
-                       success:(void (^)(NSArray *posts))success
+                       success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
                        failure:(void (^)(NSError *error))failure;
 
 /**
@@ -30,7 +30,7 @@
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
                         offset:(NSUInteger)offset
-                       success:(void (^)(NSArray *))success
+                       success:(void (^)(NSArray<RemoteReaderPost *> *))success
                        failure:(void (^)(NSError *))failure;
 
 /**
