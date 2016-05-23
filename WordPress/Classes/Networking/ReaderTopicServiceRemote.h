@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 extern NSString * const WordPressComReaderEndpointURL;
 
@@ -7,7 +7,7 @@ extern NSString * const WordPressComReaderEndpointURL;
 @class RemoteReaderSiteInfo;
 @class RemoteReaderTopic;
 
-@interface ReaderTopicServiceRemote : ServiceRemoteREST
+@interface ReaderTopicServiceRemote : ServiceRemoteWordPressComREST
 
 /**
  Fetches the topics for the reader's menu from the remote service.
