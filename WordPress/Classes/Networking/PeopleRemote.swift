@@ -2,7 +2,8 @@ import Foundation
 
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
-class PeopleRemote: ServiceRemoteREST {
+class PeopleRemote: ServiceRemoteWordPressComREST {
+
     /// Defines the PeopleRemote possible errors.
     ///
     enum Error: ErrorType {
@@ -20,13 +21,13 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
         let endpoint = "sites/\(siteID)/users"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = [
             "number": 50,
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
-        api.GET(path, parameters: parameters, success: { (operation, responseObject) in
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                       people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
             {
@@ -35,7 +36,7 @@ class PeopleRemote: ServiceRemoteREST {
             }
             success(people)
 
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure(error)
         })
     }
@@ -51,13 +52,13 @@ class PeopleRemote: ServiceRemoteREST {
     ///
     func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
         let endpoint = "sites/\(siteID)/follows"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = [
             "number": 50,
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
-        api.GET(path, parameters: parameters, success: { (operation, responseObject) in
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                       people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
             {
@@ -66,7 +67,7 @@ class PeopleRemote: ServiceRemoteREST {
             }
             success(people)
 
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure(error)
         })
     }
@@ -89,13 +90,12 @@ class PeopleRemote: ServiceRemoteREST {
                         failure : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(userID)"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = ["roles" : [newRole.description]]
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
                 parameters: parameters,
-                success: {
-                    (operation, responseObject) in
+                success: { (responseObject, httpResponse) in
                     guard let response = responseObject as? [String: AnyObject],
                                 person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
                     {
@@ -105,8 +105,7 @@ class PeopleRemote: ServiceRemoteREST {
 
                     success?(person)
                 },
-                failure: {
-                    (operation, error) in
+                failure: { (error, httpResponse) in
                     failure?(error)
                 })
     }
@@ -129,16 +128,16 @@ class PeopleRemote: ServiceRemoteREST {
                     failure     : (ErrorType -> Void)? = nil)
     {
         let endpoint = "sites/\(siteID)/users/\(userID)/delete"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         var parameters = [String: AnyObject]()
 
         if let reassignID = reassignID {
             parameters["reassign"] = reassignID
         }
 
-        api.POST(path, parameters: nil, success: { (operation, responseObject) in
+        wordPressComRestApi.POST(path, parameters: nil, success: { (responseObject, httpResponse) in
             success?()
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure?(error)
         })
     }
@@ -158,9 +157,9 @@ class PeopleRemote: ServiceRemoteREST {
                       failure   : (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/roles"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path, parameters: nil, success: { (operation, responseObject) in
+        wordPressComRestApi.GET(path, parameters: nil, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                     roles = try? self.rolesFromResponse(response) else
             {
@@ -169,7 +168,7 @@ class PeopleRemote: ServiceRemoteREST {
             }
 
             success(roles)
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure?(error)
         })
     }

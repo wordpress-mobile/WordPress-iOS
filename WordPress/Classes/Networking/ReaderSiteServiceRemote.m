@@ -1,6 +1,7 @@
 #import "ReaderSiteServiceRemote.h"
 #import "WordPressComApi.h"
 #import "RemoteReaderSite.h"
+#import "WordPress-Swift.h"
 
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
@@ -10,9 +11,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = @"read/following/mine?meta=site,feed";
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
-    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
             return;
         }
@@ -26,7 +27,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         }
         success(sites);
 
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -37,13 +38,13 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -54,13 +55,13 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -71,10 +72,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"read/following/mine/new?url=%@", siteURL];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
         if (!subscribed) {
@@ -88,7 +89,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -99,11 +100,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *params = @{@"url": siteURL};
     
-    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
         if (subscribed) {
@@ -117,7 +118,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -137,7 +138,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }
 
     // Define success block
-    void (^successBlock)(AFHTTPRequestOperation *operation, id responseObject) = ^void(AFHTTPRequestOperation *operation, id responseObject) {
+    void (^successBlock)(AFHTTPRequestOperation *operation, id responseObject) = ^void(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
             return;
         }
@@ -147,7 +148,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     };
 
     // Define failure block
-    void (^failureBlock)(AFHTTPRequestOperation *operation, NSError *error) = ^void(AFHTTPRequestOperation *operation, NSError *error) {
+    void (^failureBlock)(NSError *error, NSHTTPURLResponse *httpResponse) = ^void(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -155,9 +156,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
     NSString *path = [NSString stringWithFormat:@"sites/%@", host];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl parameters:nil success:successBlock failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:successBlock failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         NSString *newHost;
         if ([host hasPrefix:@"www."]) {
             // If the provided host includes a www. prefix, try again without it.
@@ -170,21 +171,21 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         }
         NSString *newPath = [NSString stringWithFormat:@"sites/%@", newHost];
         NSString *newPathRequestUrl = [self pathForEndpoint:newPath
-                                                withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                                withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
         
-        [self.api GET:newPathRequestUrl parameters:nil success:successBlock failure:failureBlock];
+        [self.wordPressComRestApi GET:newPathRequestUrl parameters:nil success:successBlock failure:failureBlock];
     }];
 }
 
 - (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     // Just ping the URL and make sure we don't get back a 40x error.
-    AFHTTPRequestOperationManager *mgr = [[AFHTTPRequestOperationManager alloc] init];
-    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation) {
+    AFHTTPSessionManager *mgr = [[AFHTTPSessionManager alloc] init];
+    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(NSURLSessionDataTask *task) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
         if (failure) {
             failure(error);
         }
@@ -195,9 +196,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine", siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
             return;
         }
@@ -205,7 +206,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         BOOL follows = [[dict numberForKey:@"is_following"] boolValue];
         success(follows);
 
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -216,21 +217,21 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = @"read/following/mine";
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
             return;
         }
 
         BOOL follows = NO;
-        NSString *responseString = [[operation responseString] stringByRemovingPercentEncoding];
+        NSString *responseString = [[responseObject description] stringByRemovingPercentEncoding];
         if ([responseString rangeOfString:[siteURL absoluteString]].location != NSNotFound) {
             follows = YES;
         }
         success(follows);
 
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -247,9 +248,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }
     
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         if (![[dict numberForKey:@"success"] boolValue]) {
             if (blocked) {
@@ -264,7 +265,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
             success();
         }
 
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
