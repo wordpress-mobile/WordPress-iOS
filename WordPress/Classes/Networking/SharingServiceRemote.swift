@@ -1,12 +1,11 @@
 import Foundation
-import AFNetworking
 import NSObject_SafeExpectations
 
 
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to
 /// publiczice services, publicize connections, and keyring connections.
 ///
-public class SharingServiceRemote : ServiceRemoteREST
+public class SharingServiceRemote : ServiceRemoteWordPressComREST
 {
 
     // MARK: - Helper methods
