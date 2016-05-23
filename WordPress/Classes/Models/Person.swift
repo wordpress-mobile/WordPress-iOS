@@ -1,10 +1,6 @@
 import Foundation
 import WordPressShared
 
-// MARK: - Typealiases
-//
-typealias People = [Person]
-
 
 // MARK: - Defines all of the peroperties a Person may have
 //
