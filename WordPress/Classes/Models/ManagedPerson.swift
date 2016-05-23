@@ -18,4 +18,12 @@ class ManagedPerson: NSManagedObject {
         isSuperAdmin = person.isSuperAdmin
         isFollower = person.isFollower
     }
+
+    func toUnmanaged() -> Person {
+        if isFollower {
+            return Follower(managedPerson: self) as Person
+        }
+
+        return User(managedPerson: self) as Person
+    }
 }

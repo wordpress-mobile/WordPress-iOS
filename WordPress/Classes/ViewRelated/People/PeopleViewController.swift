@@ -194,8 +194,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
         let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
-        let person = Person(managedPerson: managedPerson)
-        return person
+        return managedPerson.toUnmanaged()
     }
 
     private func displayModePicker() {
