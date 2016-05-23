@@ -16,9 +16,9 @@ class PeopleRemote: ServiceRemoteREST {
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
-    /// - Returns: An array of *Person* instances (AKA "People).
+    /// - Returns: An array of Users.
     ///
-    func getUsers(siteID: Int, success: (People -> Void), failure: (ErrorType -> Void)) {
+    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
@@ -28,7 +28,7 @@ class PeopleRemote: ServiceRemoteREST {
 
         api.GET(path, parameters: parameters, success: { (operation, responseObject) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID) else
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
             {
                 failure(Error.DecodeError)
                 return
@@ -40,16 +40,16 @@ class PeopleRemote: ServiceRemoteREST {
         })
     }
 
-    /// Retrieves the collection of followers associated to a site.
+    /// Retrieves the collection of Followers associated to a site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
-    /// - Returns: An array of *Person* instances (AKA "People).
+    /// - Returns: An array of Followers.
     ///
-    func getFollowers(siteID: Int, success: People -> (), failure: ErrorType -> ()) {
+    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [
@@ -59,7 +59,7 @@ class PeopleRemote: ServiceRemoteREST {
 
         api.GET(path, parameters: parameters, success: { (operation, responseObject) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID, isFollower: true) else
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
             {
                 failure(Error.DecodeError)
                 return
@@ -80,15 +80,15 @@ class PeopleRemote: ServiceRemoteREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    /// - Returns: A single *Person* instance.
+    /// - Returns: A single User instance.
     ///
-    func updateUserRole(siteID      : Int,
-                        personID    : Int,
-                        newRole     : Role,
-                        success     : (Person -> ())? = nil,
-                        failure     : (ErrorType -> ())? = nil)
+    func updateUserRole(siteID  : Int,
+                        userID  : Int,
+                        newRole : Role,
+                        success : (Person -> ())? = nil,
+                        failure : (ErrorType -> ())? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)"
+        let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = ["roles" : [newRole.description]]
 
@@ -97,7 +97,7 @@ class PeopleRemote: ServiceRemoteREST {
                 success: {
                     (operation, responseObject) in
                     guard let response = responseObject as? [String: AnyObject],
-                              person = try? self.personFromResponse(response, siteID: siteID) else
+                                person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
                     {
                         failure?(Error.DecodeError)
                         return
@@ -112,23 +112,23 @@ class PeopleRemote: ServiceRemoteREST {
     }
 
 
-    /// Deletes or removes a user from a site.
+    /// Deletes or removes a User from a site.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - personID: The ID of the person to be updated
-    ///     - reassignID: When present, all of the posts and pages that belong to `personID` will be reassigned
+    ///     - siteID: The ID of the site associated.
+    ///     - userID: The ID of the user to be deleted.
+    ///     - reassignID: When present, all of the posts and pages that belong to `userID` will be reassigned
     ///       to another person, with the specified ID.
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
     func deleteUser(siteID      : Int,
-                    personID    : Int,
+                    userID      : Int,
                     reassignID  : Int? = nil,
                     success     : (Void -> Void)? = nil,
                     failure     : (ErrorType -> Void)? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)/delete"
+        let endpoint = "sites/\(siteID)/users/\(userID)/delete"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         var parameters = [String: AnyObject]()
 
@@ -179,25 +179,25 @@ class PeopleRemote: ServiceRemoteREST {
 /// Encapsulates PeopleRemote Private Methods
 ///
 private extension PeopleRemote {
-    /// Parses a dictionary containing an array of persons, and returns an array of Person instances.
+    /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
-    ///     - isFollower: Boolean indicating whether the persons are Followers, or not.
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse(response    : [String: AnyObject],
-                                    siteID      : Int,
-                                    isFollower  : Bool = false) throws -> People
+    func peopleFromResponse<T : Person>(response    : [String: AnyObject],
+                                        siteID      : Int,
+                                        type        : T.Type) throws -> [T]
     {
         guard let users = response["users"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
 
-        let people = try users.flatMap { (user) -> Person? in
-            return try personFromResponse(user, siteID: siteID, isFollower: isFollower)
+        let people = try users.flatMap { (user) -> T? in
+            return try personFromResponse(user, siteID: siteID, type: type)
         }
 
         return people
@@ -208,13 +208,13 @@ private extension PeopleRemote {
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
-    ///     - isFollower: Boolean indicating whether the person is a Follower, or not.
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func personFromResponse(user        : [String: AnyObject],
-                            siteID      : Int,
-                            isFollower  : Bool = false) throws -> Person
+    func personFromResponse<T : Person>(user   : [String: AnyObject],
+                                        siteID  : Int,
+                                        type    : T.Type) throws -> T
     {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
@@ -240,27 +240,20 @@ private extension PeopleRemote {
 
         let role : Role
 
-        // Note: Follower entities don't really have a role. We'll inject that, locally.
-        //
-        if isFollower {
-            role = .Follower
-        } else {
-            role = roles?.map({ role -> Role in
-                return Role(string: role)
-            }).sort().first ?? Role.Unsupported
-        }
+        role = roles?.map({ role -> Role in
+            return Role(string: role)
+        }).sort().first ?? Role.Unsupported
 
-        return Person(ID            : ID,
-                      username      : username,
-                      firstName     : firstName,
-                      lastName      : lastName,
-                      displayName   : displayName,
-                      role          : role,
-                      siteID        : siteID,
-                      linkedUserID  : linkedUserID,
-                      avatarURL     : avatarURL,
-                      isSuperAdmin  : isSuperAdmin,
-                      isFollower    : isFollower)
+        return T(ID            : ID,
+                 username      : username,
+                 firstName     : firstName,
+                 lastName      : lastName,
+                 displayName   : displayName,
+                 role          : role,
+                 siteID        : siteID,
+                 linkedUserID  : linkedUserID,
+                 avatarURL     : avatarURL,
+                 isSuperAdmin  : isSuperAdmin)
     }
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
