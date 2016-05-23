@@ -257,7 +257,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                                [weakSelf showPlans];
                                                            }];
 
-        row.detail = [PlansBridge titleForPlanWithID:[self.blog.planID integerValue]];
+        row.detail = self.blog.planTitle;
 
         [rows addObject:row];
     }
@@ -504,7 +504,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 - (void)showPlans
 {
-    // TODO(@koke, 2016-01-28): add analytics
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
