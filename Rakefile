@@ -1,4 +1,7 @@
 SWIFTLINT_VERSION="0.10.0"
+XCODE_WORKSPACE="WordPress.xcworkspace"
+XCODE_SCHEME="WordPress"
+XCODE_CONFIGURATION="Debug"
 
 require 'fileutils'
 require 'tmpdir'
@@ -79,9 +82,19 @@ end
 
 CLOBBER << "vendor"
 
-desc "Build and test"
+desc "Build #{XCODE_SCHEME}"
+task :build => [:dependencies] do
+  xcodebuild(:build)
+end
+
+desc "Run test suite"
 task :test => [:dependencies] do
-  sh './Scripts/build.sh'
+  xcodebuild(:build, :test)
+end
+
+desc "Remove any temporary products"
+task :clean do
+  xcodebuild(:clean)
 end
 
 desc "Checks the source for style errors"
@@ -98,7 +111,7 @@ end
 
 desc "Open the project in Xcode"
 task :xcode => [:dependencies] do
-  sh "open WordPress.xcworkspace"
+  sh "open #{XCODE_WORKSPACE}"
 end
 
 def check_manifest(file, manifest)
@@ -139,4 +152,21 @@ def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
   installed_version = `#{swiftlint_bin} version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
+end
+
+def xcodebuild(*build_cmds)
+  cmd = "xcodebuild"
+  cmd += " -destination 'platform=iOS Simulator,name=iPhone 6s'"
+  cmd += " -sdk iphonesimulator"
+  cmd += " -workspace #{XCODE_WORKSPACE}"
+  cmd += " -scheme #{XCODE_SCHEME}"
+  cmd += " -configuration #{xcode_configuration}"
+  cmd += " "
+  cmd += build_cmds.map(&:to_s).join(" ")
+  cmd += " | xcpretty -f `xcpretty-travis-formatter`" unless ENV['verbose']
+  sh(cmd)
+end
+
+def xcode_configuration
+  ENV['XCODE_CONFIGURATION'] || XCODE_CONFIGURATION
 end
