@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "InteractivePostViewDelegate.h"
 
-@class AbstractPost;
+@class Post;
 
 /// Protocol that any view representing a post can implement.
 ///
@@ -12,7 +12,7 @@
 /// - Parameters:
 ///     - post: the post to visually represent.
 ///
-- (void)configureWithPost:(nonnull AbstractPost*)post;
+- (void)configureWithPost:(nonnull Post*)post;
 
 /// Same as `configureWithPost:` but only for the purpose of layout.
 ///
@@ -21,7 +21,7 @@
 ///     - layoutOnly: `true` if the configure call is meant for layout purposes only.
 ///             if set to `false`, this should behave exactly like `configureWithPost:`.
 ///
-- (void)configureWithPost:(nonnull AbstractPost*)post
+- (void)configureWithPost:(nonnull Post*)post
             forLayoutOnly:(BOOL)layoutOnly;
 
 @end
