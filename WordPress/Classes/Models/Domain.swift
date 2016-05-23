@@ -14,9 +14,9 @@ import CoreData
         case .Mapped:
             return NSLocalizedString("Mapped Domain", comment: "Describes a domain that was mapped to WordPress.com, but registered elsewhere")
         case .SiteRedirect:
-        return NSLocalizedString("Site Redirect", comment: "Describes a site redirect domain")
+            return NSLocalizedString("Site Redirect", comment: "Describes a site redirect domain")
         case .WPCom:
-        return NSLocalizedString("Included with Site", comment: "Describes a standard *.wordpress.com site domain")
+            return NSLocalizedString("Included with Site", comment: "Describes a standard *.wordpress.com site domain")
         }
     }
 }
