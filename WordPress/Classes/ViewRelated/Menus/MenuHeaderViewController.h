@@ -1,18 +1,20 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class MenuLocation;
 @class Menu;
 
-@protocol MenusHeaderViewDelegate;
+@protocol MenuHeaderViewControllerDelegate;
 
 /**
- A top-most view encapsulating the use of
+ A view controller encapsulating the use of
  two MenusSelectionViews to represent selection options for Menus and MenuLocations.
  */
-@interface MenusHeaderView : UIView
+@interface MenuHeaderViewController : UIViewController
 
-@property (nonatomic, weak) id <MenusHeaderViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuHeaderViewControllerDelegate> delegate;
 @property (nonatomic, strong) Blog *blog;
 
 /**
@@ -42,21 +44,23 @@
 
 @end
 
-@protocol MenusHeaderViewDelegate <NSObject>
+@protocol MenuHeaderViewControllerDelegate <NSObject>
 
 /**
  User selected a MenuLocation.
  */
-- (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location;
+- (void)headerViewController:(MenuHeaderViewController *)headerViewController selectedLocation:(MenuLocation *)location;
 
 /**
  User selected a menu.
  */
-- (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu;
+- (void)headerViewController:(MenuHeaderViewController *)headerViewController selectedMenu:(Menu *)menu;
 
 /**
  User selected the create new menu option.
  */
-- (void)headerViewSelectedForCreatingNewMenu:(MenusHeaderView *)headerView;
+- (void)headerViewControllerSelectedForCreatingNewMenu:(MenuHeaderViewController *)headerView;
 
 @end
+
+NS_ASSUME_NONNULL_END

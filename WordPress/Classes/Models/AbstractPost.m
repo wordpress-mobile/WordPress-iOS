@@ -153,6 +153,16 @@
     return ([self original] == nil);
 }
 
+- (AbstractPost *)latest
+{
+    // Even though we currently only support 1 revision per-post, we have plans to support multiple
+    // revisions in the future.  That's the reason why we call `[[self revision] latest]` below.
+    //
+    //  - Diego Rey Mendez, May 19, 2016
+    //
+    return [self hasRevision] ? [[self revision] latest] : self;
+}
+
 - (AbstractPost *)revision
 {
     return [self primitiveValueForKey:@"revision"];
@@ -269,7 +279,7 @@
 }
 
 
-#pragma mark - WPPostContentViewProvider protocol
+#pragma mark - Convenience methods
 
 - (NSString *)authorNameForDisplay
 {
