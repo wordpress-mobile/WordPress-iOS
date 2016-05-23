@@ -77,7 +77,7 @@ class RoleViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(reusableIdentifier, forIndexPath: indexPath)
         let roleForCurrentRow = roleAtIndexPath(indexPath)
 
-        cell.textLabel?.text = roleForCurrentRow.localizedName()
+        cell.textLabel?.text = roleForCurrentRow.localizedName
         cell.accessoryType = (roleForCurrentRow == selectedRole) ? .Checkmark : .None
 
         WPStyleGuide.configureTableViewCell(cell)
