@@ -4,8 +4,8 @@ import Foundation
 /// Service providing access to the People Management WordPress.com API.
 ///
 struct PeopleService {
-    typealias Role = Person.Role
-
+    /// MARK: - Public Properties
+    ///
     let siteID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
