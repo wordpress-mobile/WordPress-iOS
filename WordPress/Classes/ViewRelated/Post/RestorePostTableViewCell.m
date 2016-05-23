@@ -1,5 +1,6 @@
 #import "RestorePostTableViewCell.h"
 #import "InteractivePostViewDelegate.h"
+#import "Post.h"
 #import "WPStyleGuide+Posts.h"
 
 @interface RestorePostTableViewCell()
@@ -62,12 +63,12 @@
 
 #pragma mark - ConfigurablePostView
 
-- (void)configureWithPost:(AbstractPost *)post
+- (void)configureWithPost:(Post *)post
 {
     self.post = post;
 }
 
-- (void)configureWithPost:(AbstractPost *)post
+- (void)configureWithPost:(Post *)post
             forLayoutOnly:(BOOL)layoutOnly
 {
     [self configureWithPost:post];
