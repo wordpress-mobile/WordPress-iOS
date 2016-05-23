@@ -18,7 +18,7 @@ class AccountSettingsService {
     }
 
     enum Notifications {
-        static let settingsChanged = "AccountSettingsServiceSettingsChanged"
+        static let accountSettingsChanged = "AccountSettingsServiceSettingsChanged"
         static let refreshStatusChanged = "AccountSettingsServiceRefreshStatusChanged"
     }
 
@@ -34,7 +34,7 @@ class AccountSettingsService {
     }
     var settings: AccountSettings? = nil {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(Notifications.settingsChanged, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(Notifications.accountSettingsChanged, object: nil)
         }
     }
 

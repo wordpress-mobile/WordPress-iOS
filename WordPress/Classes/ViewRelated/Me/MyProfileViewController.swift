@@ -46,7 +46,7 @@ private class MyProfileController: SettingsController {
         self.service = service
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: AccountSettingsService.Notifications.settingsChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: AccountSettingsService.Notifications.accountSettingsChanged, object: nil)
     }
 
     deinit {
