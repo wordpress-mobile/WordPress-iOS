@@ -5,6 +5,8 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
+// WordPress Module
+
 #import "AccountService.h"
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
@@ -56,7 +58,6 @@
 
 #import "OnePasswordFacade.h"
 
-#import "Page.h"
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PhotonImageURLHelper.h"
@@ -139,6 +140,9 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 
+// Pods
+
+#import <FormatterKit/FormatterKit-umbrella.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 
 #import <WPMediaPicker/WPMediaPicker.h>
