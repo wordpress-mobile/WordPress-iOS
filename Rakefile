@@ -19,6 +19,7 @@ namespace :dependencies do
 
     task :check do
       unless check_manifest(lockfile, manifest)
+        dependency_failed("Bundler")
         Rake::Task["dependencies:bundle:install"].invoke
       end
     end
@@ -36,6 +37,7 @@ namespace :dependencies do
       lockfile = 'Podfile.lock'
       manifest = 'Pods/Manifest.lock'
       unless check_manifest(lockfile, manifest)
+        dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
       end
     end
@@ -53,6 +55,7 @@ namespace :dependencies do
 
     task :check do
       if swiftlint_needs_install
+        dependency_failed("SwiftLint")
         Rake::Task["dependencies:lint:install"].invoke
       end
     end
@@ -93,6 +96,42 @@ namespace :lint do
   desc "Automatically corrects style errors where possible"
   task :autocorrect => %w[dependencies:lint:check] do
     swiftlint %w[autocorrect]
+  end
+end
+
+desc "Install git hooks"
+task :githooks do
+  %w[pre-commit post-checkout post-merge].each do |hook|
+    target = ".git/hooks/#{hook}"
+    source = "../../Scripts/hooks/#{hook}"
+    backup = "#{target}.bak"
+
+    next if File.symlink?(target) and File.readlink(target) == source
+    next if File.file?(target) and File.identical?(target, source)
+    if File.exist?(target)
+      puts "Existing hook for #{hook}. Creating backup at #{target} -> #{backup}"
+      FileUtils.mv(target, backup, :force => true)
+    end
+    FileUtils.ln_s(source, target)
+    puts "Installed #{hook} hook"
+  end
+end
+
+namespace :git do
+  task :pre_commit => %[dependencies:lint:check] do
+    begin
+      swiftlint %w[lint --quiet --strict]
+    rescue
+      exit $?.exitstatus
+    end
+  end
+
+  task :post_merge do
+    check_dependencies_hook
+  end
+
+  task :post_checkout do
+    check_dependencies_hook
   end
 end
 
@@ -139,4 +178,25 @@ def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
   installed_version = `#{swiftlint_bin} version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
+end
+
+def dependency_failed(component)
+  msg = "#{component} dependencies missing or outdated. "
+  if ENV['DRY_RUN']
+    msg += "Run rake dependencies to install them."
+    fail msg
+  else
+    msg += "Installing..."
+    puts msg
+  end
+end
+
+def check_dependencies_hook
+  ENV['DRY_RUN'] = "1"
+  begin
+    Rake::Task['dependencies'].invoke
+  rescue Exception => e
+    puts e.message
+    exit 1
+  end
 end
