@@ -8,6 +8,8 @@ struct PeopleService {
     ///
     let siteID: Int
 
+    /// MARK: - Private Properties
+    ///
     private let context = ContextManager.sharedInstance().mainContext
     private let remote: PeopleRemote
 
@@ -65,37 +67,35 @@ struct PeopleService {
 
     /// Updates a given User with the specified role.
     ///
-    /// - Important: *ONLY* users can be updated (isFollower = false).
-    ///
     /// - Parameters:
-    ///     - person: Instance of the person to be updated.
+    ///     - user: Instance of the person to be updated.
     ///     - role: New role that should be assigned
     ///     - failure: Optional closure, to be executed in case of error
     ///
     /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updateUser(person: Person, role: Role, failure: ((ErrorType, Person) -> Void)?) -> Person {
-        guard let managedPerson = managedPersonFromPerson(person) else {
-            return person
+    func updateUser(user: User, role: Role, failure: ((ErrorType, User) -> Void)?) -> User {
+        guard let managedPerson = managedPersonFromPerson(user) else {
+            return user
         }
 
         // OP Reversal
         let pristineRole = managedPerson.role
 
         // Hit the Backend
-        remote.updateUserRole(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+        remote.updateUserRole(siteID, userID: user.ID, newRole: role, success: nil, failure: { error in
 
-            DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
+            DDLogSwift.logError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
 
-            guard let managedPerson = self.managedPersonFromPerson(person) else {
-                DDLogSwift.logError("### Person with ID \(person.ID) deleted before update")
+            guard let managedPerson = self.managedPersonFromPerson(user) else {
+                DDLogSwift.logError("### Person with ID \(user.ID) deleted before update")
                 return
             }
 
             managedPerson.role = pristineRole
             ContextManager.sharedInstance().saveContext(self.context)
 
-            let reloadedPerson = Person(managedPerson: managedPerson)
+            let reloadedPerson = User(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
         })
 
@@ -103,29 +103,27 @@ struct PeopleService {
         managedPerson.role = role.description
         ContextManager.sharedInstance().saveContext(context)
 
-        return Person(managedPerson: managedPerson)
+        return User(managedPerson: managedPerson)
     }
 
     /// Deletes a given User.
     ///
-    /// - Important: *ONLY* users can be deleted (isFollower = false).
-    ///
     /// - Parameters:
-    ///     - person: The person that should be deleted
+    ///     - user: The person that should be deleted
     ///     - failure: Closure to be executed on error
     ///
-    func deleteUser(person: Person, failure: (ErrorType -> Void)? = nil) {
-        guard let managedPerson = managedPersonFromPerson(person) else {
+    func deleteUser(user: User, failure: (ErrorType -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(user) else {
             return
         }
 
         // Hit the Backend
-        remote.deleteUser(siteID, personID: person.ID, failure: { error in
+        remote.deleteUser(siteID, userID: user.ID, failure: { error in
 
-            DDLogSwift.logError("### Error while deleting person \(person.ID) from blog \(self.siteID): \(error)")
+            DDLogSwift.logError("### Error while deleting person \(user.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
-            self.createManagedPerson(person)
+            self.createManagedPerson(user)
             ContextManager.sharedInstance().saveContext(self.context)
 
             failure?(error)
@@ -158,21 +156,21 @@ struct PeopleService {
 private extension PeopleService {
     /// Updates the local collection of Users, with the (fresh) remote version.
     ///
-    func mergeUsers(remoteUsers: People) {
-        let localUsers = loadPeople(siteID, isFollower: false)
+    func mergeUsers(remoteUsers: [User]) {
+        let localUsers = loadPeople(siteID, type: User.self)
         mergePeople(remoteUsers, localPeople: localUsers)
     }
 
     /// Updates the local collection of Followers, with the (fresh) remote version.
     ///
-    func mergeFollowers(remoteFollowers: People) {
-        let localFollowers = loadPeople(siteID, isFollower: true)
+    func mergeFollowers(remoteFollowers: [Follower]) {
+        let localFollowers = loadPeople(siteID, type: Follower.self)
         mergePeople(remoteFollowers, localPeople: localFollowers)
     }
 
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergePeople(remotePeople: People, localPeople: People) {
+    func mergePeople<T : Person>(remotePeople: [T], localPeople: [T]) {
         let remoteIDs = Set(remotePeople.map({ $0.ID }))
         let localIDs = Set(localPeople.map({ $0.ID }))
 
@@ -193,7 +191,8 @@ private extension PeopleService {
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
-    func loadPeople(siteID: Int, isFollower: Bool) -> People {
+    func loadPeople<T : Person>(siteID: Int, type: T.Type) -> [T] {
+        let isFollower = type.dynamicType == Follower.self
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
         let results: [ManagedPerson]
@@ -204,7 +203,7 @@ private extension PeopleService {
             results = []
         }
 
-        return results.map { return Person(managedPerson: $0) }
+        return results.map { return T(managedPerson: $0) }
     }
 
     /// Retrieves a Person from Core Data, with the specifiedID.
