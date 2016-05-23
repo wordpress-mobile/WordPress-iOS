@@ -1,13 +1,15 @@
 #import <UIKit/UIKit.h>
 #import "MenuItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 
 @protocol MenuItemTypeViewControllerDelegate;
 
 @interface MenuItemTypeViewController : UIViewController
 
-@property (nonatomic, weak) id <MenuItemTypeViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemTypeViewControllerDelegate> delegate;
 
 /**
  The itemType to display as selected in the UI, such as MenuItemTypePage.
@@ -44,3 +46,5 @@
 - (BOOL)itemTypeViewControllerShouldDisplayFullSizedLayout:(MenuItemTypeViewController *)itemTypeViewController;
 
 @end
+
+NS_ASSUME_NONNULL_END

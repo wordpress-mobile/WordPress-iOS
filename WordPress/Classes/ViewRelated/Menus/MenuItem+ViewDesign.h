@@ -1,6 +1,8 @@
 #import "MenuItem.h"
 #import "Menu+ViewDesign.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern CGFloat const MenusDesignItemIconSize;
 
 /**
@@ -11,3 +13,5 @@ extern CGFloat const MenusDesignItemIconSize;
 + (UIImage *)iconImageForItemType:(NSString *)itemType;
 
 @end
+
+NS_ASSUME_NONNULL_END

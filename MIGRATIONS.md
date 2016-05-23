@@ -5,12 +5,18 @@ data model as well as any custom migrations.
 
 ## WordPress 49
 
+- @jleandroperez 2016-05-13
+- `Person` updated `siteID` to Int64.
+- `Person` updated `userID` to Int64.
+- `Person` added Boolean `isFollower`.
 - @aerych 2016-05-12
 - Added `ReaderSearchTopic` entity. Represents a search in the reader.
 - @jleandroperez 2016-05-04
- - `Person` added Int32 `linkedUserID`.
+ - `Person` added Int64 `linkedUserID`.
 - @jleandroperez 2016-04-22
  - `Blog` added transformable `capabilities`.
+- @frosty 2016-05-12
+ - `Blog` added String `planTitle`.
 
 ## WordPress 48 
 

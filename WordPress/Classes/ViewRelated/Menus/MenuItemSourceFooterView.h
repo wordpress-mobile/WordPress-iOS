@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MenuItemSourceFooterView : UIView
 
 /**
@@ -10,7 +12,7 @@
 /**
  Add a message with text within the view.
  */
-- (void)toggleMessageWithText:(NSString *)text;
+- (void)toggleMessageWithText:(nullable NSString *)text;
 
 /**
  Show the animated loading indicator.
@@ -23,3 +25,5 @@
 - (void)stopLoadingIndicatorAnimation;
 
 @end
+
+NS_ASSUME_NONNULL_END

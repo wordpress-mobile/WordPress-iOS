@@ -5,7 +5,6 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
-#import "WordPressComApi.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
@@ -113,11 +112,11 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
     NSString *path = [NSString stringWithFormat:@"read/sites/%d/posts/%d/?meta=site", siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
            parameters:nil
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                   if (!success) {
                       return;
                   }
@@ -125,7 +124,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
                   RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
                   success(post);
 
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
                       failure(error);
                   }
@@ -139,13 +138,13 @@ static const NSUInteger ReaderPostTitleLength = 30;
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -159,13 +158,13 @@ static const NSUInteger ReaderPostTitleLength = 30;
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
             failure(error);
         }
@@ -177,8 +176,8 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSAssert([phrase length] > 0, @"A search phrase is required.");
 
     NSString *endpoint = [NSString stringWithFormat:@"read/search?q=%@", [phrase stringByUrlEncoding]];
-    NSString *absolutePath = [self pathForEndpoint:endpoint withVersion:ServiceRemoteRESTApiVersion_1_2];
-    NSURL *url = [NSURL URLWithString:absolutePath relativeToURL:self.api.baseURL];
+    NSString *absolutePath = [self pathForEndpoint:endpoint withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
+    NSURL *url = [NSURL URLWithString:absolutePath relativeToURL:[NSURL URLWithString:WordPressComRestApi.apiBaseURLString]];
     return [url absoluteString];
 }
 
@@ -199,9 +198,9 @@ static const NSUInteger ReaderPostTitleLength = 30;
 {
     NSString *path = [endpoint absoluteString];
     
-    [self.api GET:path
+    [self.wordPressComRestApi GET:path
            parameters:params
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                   if (!success) {
                       return;
                   }
@@ -212,7 +211,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
                   }];
                   success(posts);
 
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
                       failure(error);
                   }
