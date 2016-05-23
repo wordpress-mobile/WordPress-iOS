@@ -6,10 +6,6 @@ import WordPressShared
 ///
 class RoleViewController : UITableViewController {
 
-    /// Typealiases
-    ///
-    typealias Role = Person.Role
-
     /// Person's Blog
     ///
     var blog : Blog!
