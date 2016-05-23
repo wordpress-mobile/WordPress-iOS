@@ -2,7 +2,7 @@
 
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 
 @interface ReaderTopicServiceRemote()
 - (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended;
@@ -33,8 +33,8 @@
  */
 - (ReaderTopicServiceRemote *)service
 {
-    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-    return [[ReaderTopicServiceRemote alloc] initWithApi:api];
+    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
+    return [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:api];
 }
 
 #pragma mark - ReaderTopicServiceRemote tests
