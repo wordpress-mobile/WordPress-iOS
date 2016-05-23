@@ -80,7 +80,10 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         let controller = storyboard.instantiateInitialViewController() as! DomainsListViewController
 
         controller.blog = blog
-        controller.service = DomainsService(blog: blog)
+
+        if let account = blog.account {
+            controller.service = DomainsService(account: account)
+        }
 
         return controller
     }
@@ -93,8 +96,8 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
-        service.refreshBlogDomains { success in
-
+        if let dotComID = blog.dotComID {
+            service.refreshDomainsForSite(Int(dotComID)) { _ in }
         }
     }
 
