@@ -41,6 +41,7 @@ NSString * const PostRESTKeyName = @"name";
 NSString * const PostRESTKeyNiceName = @"nice_name";
 NSString * const PostRESTKeyPermalink = @"permalink";
 NSString * const PostRESTKeyPostCount = @"post_count";
+NSString * const PostRESTKeyScore = @"score";
 NSString * const PostRESTKeySharingEnabled = @"sharing_enabled";
 NSString * const PostRESTKeySiteID = @"site_ID";
 NSString * const PostRESTKeySiteIsPrivate = @"site_is_private";
@@ -257,8 +258,10 @@ static const NSUInteger ReaderPostTitleLength = 30;
     post.permalink = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyURL]];
     post.postID = [dict numberForKey:PostRESTKeyID];
     post.postTitle = [self postTitleFromPostDictionary:dict];
+    post.score = [dict numberForKey:PostRESTKeyScore];
     post.siteID = [dict numberForKey:PostRESTKeySiteID];
     post.sortDate = [self sortDateFromPostDictionary:dict];
+    post.sortRank = [self sortRankFromScore:post.score orSortDate:post.sortDate];
     post.status = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyStatus]];
     post.summary = [self postSummaryFromPostDictionary:dict orPostContent:post.content];
     post.tags = [self tagsFromPostDictionary:dict];
@@ -566,9 +569,9 @@ static const NSUInteger ReaderPostTitleLength = 30;
  Get the date the post should be sorted by.
 
  @param dict A dictionary representing a post object from the REST API.
- @return The date string that should be used when sorting the post.
+ @return The NSDate that should be used when sorting the post.
  */
-- (NSString *)sortDateFromPostDictionary:(NSDictionary *)dict
+- (NSDate *)sortDateFromPostDictionary:(NSDictionary *)dict
 {
     // Sort date varies depending on the endpoint we're fetching from.
     NSString *sortDate = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
@@ -585,7 +588,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
         sortDate = editorialDate;
     }
 
-    return sortDate;
+    return [DateUtils dateFromISOString:sortDate];
 }
 
 /**
@@ -722,6 +725,21 @@ static const NSUInteger ReaderPostTitleLength = 30;
         summary = [self createSummaryFromContent:content];
     }
     return summary;
+}
+
+/**
+ Derive a sort rank from either the score or the sortDate.
+ 
+ @param score The search score of a post. 
+ @param sortDate The sort date of the post.
+ @return A numeric sort rank (double) as an NSNumber.
+ */
+- (NSNumber *)sortRankFromScore:(NSNumber *)score orSortDate:(NSDate *)sortDate
+{
+    if (score > 0) {
+        return score;
+    }
+    return @(sortDate.timeIntervalSinceReferenceDate);
 }
 
 /**
