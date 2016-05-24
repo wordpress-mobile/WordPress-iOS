@@ -3,9 +3,6 @@ import Foundation
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
 class PeopleRemote: ServiceRemoteWordPressComREST {
-    /// Typealiases
-    ///
-    typealias Role = Person.Role
 
     /// Defines the PeopleRemote possible errors.
     ///
@@ -13,19 +10,16 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         case DecodeError
     }
 
-    /// Retrieves the team of users associated to a given Site.
+    /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
-    /// - Returns: An array of *Person* instances (AKA "People).
+    /// - Returns: An array of Users.
     ///
-    func getTeamFor(siteID  : Int,
-                    success : People -> (),
-                    failure : ErrorType -> ())
-    {
+    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = [
@@ -33,26 +27,52 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
-        wordPressComRestApi.GET(path,
-            parameters: parameters,
-            success: {
-                (responseObject, httpResponse) in
-                guard let response = responseObject as? [String: AnyObject],
-                          people = try? self.peopleFromResponse(response, siteID: siteID) else
-                {
-                    failure(Error.DecodeError)
-                    return
-                }
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [String: AnyObject],
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+            success(people)
 
-                success(people)
-            },
-            failure: {
-                (error, httpResponse) in
-                failure(error)
-            })
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
     }
 
-    /// Updates a given User, of the specified site, with a new Role.
+    /// Retrieves the collection of Followers associated to a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    /// - Returns: An array of Followers.
+    ///
+    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
+        let endpoint = "sites/\(siteID)/follows"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let parameters = [
+            "number": 50,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
+        ]
+
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [String: AnyObject],
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+            success(people)
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+    /// Updates a specified User's Role
     ///
     /// - Parameters:
     ///     - siteID: The ID of the site associated
@@ -61,24 +81,23 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    /// - Returns: A single *Person* instance.
+    /// - Returns: A single User instance.
     ///
-    func updatePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          newRole    : Role,
-                          success    : (Person -> ())? = nil,
-                          failure    : (ErrorType -> ())? = nil)
+    func updateUserRole(siteID: Int,
+                        userID: Int,
+                        newRole: Role,
+                        success: (Person -> ())? = nil,
+                        failure: (ErrorType -> ())? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)"
+        let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = ["roles" : [newRole.description]]
 
         wordPressComRestApi.POST(path,
                 parameters: parameters,
-                success: {
-                    (responseObject, httpResponse) in
+                success: { (responseObject, httpResponse) in
                     guard let response = responseObject as? [String: AnyObject],
-                              person = try? self.personFromResponse(response, siteID: siteID) else
+                                person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
                     {
                         failure?(Error.DecodeError)
                         return
@@ -86,30 +105,29 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
                     success?(person)
                 },
-                failure: {
-                    (error, httpResponse) in
+                failure: { (error, httpResponse) in
                     failure?(error)
                 })
     }
 
 
-    /// Deletes or removes a user from a site.
+    /// Deletes or removes a User from a site.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - personID: The ID of the person to be updated
-    ///     - reassignID: When present, all of the posts and pages that belong to `personID` will be reassigned
+    ///     - siteID: The ID of the site associated.
+    ///     - userID: The ID of the user to be deleted.
+    ///     - reassignID: When present, all of the posts and pages that belong to `userID` will be reassigned
     ///       to another person, with the specified ID.
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deletePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          reassignID : Int? = nil,
-                          success    : (Void -> Void)? = nil,
-                          failure    : (ErrorType -> Void)? = nil)
+    func deleteUser(siteID: Int,
+                    userID: Int,
+                    reassignID: Int? = nil,
+                    success: (Void -> Void)? = nil,
+                    failure: (ErrorType -> Void)? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)/delete"
+        let endpoint = "sites/\(siteID)/users/\(userID)/delete"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         var parameters = [String: AnyObject]()
 
@@ -134,9 +152,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getAvailableRolesFor(siteID    : Int,
-                              success   : ([Role] -> Void),
-                              failure   : (ErrorType -> ())? = nil)
+    func getUserRoles(siteID: Int,
+                      success: ([Role] -> Void),
+                      failure: (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/roles"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -160,21 +178,25 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 /// Encapsulates PeopleRemote Private Methods
 ///
 private extension PeopleRemote {
-    /// Parses a dictionary containing an array of persons, and returns an array of Person instances.
+    /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    private func peopleFromResponse(response: [String: AnyObject], siteID: Int) throws -> People {
+    func peopleFromResponse<T : Person>(response: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> [T]
+    {
         guard let users = response["users"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
 
-        let people = try users.flatMap { (user) -> Person? in
-            return try personFromResponse(user, siteID: siteID)
+        let people = try users.flatMap { (user) -> T? in
+            return try personFromResponse(user, siteID: siteID, type: type)
         }
 
         return people
@@ -185,10 +207,14 @@ private extension PeopleRemote {
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: A single *Person* instance.
     ///
-    private func personFromResponse(user: [String: AnyObject], siteID: Int) throws -> Person {
+    func personFromResponse<T : Person>(user: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> T
+    {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
         }
@@ -211,25 +237,27 @@ private extension PeopleRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role = roles?.map({ role -> Role in
-            return Role(string: role)
-        }).sort().first ?? .Unsupported
+        let role : Role
 
-        return Person(ID            : ID,
-                      username      : username,
-                      firstName     : firstName,
-                      lastName      : lastName,
-                      displayName   : displayName,
-                      role          : role,
-                      siteID        : siteID,
-                      linkedUserID  : linkedUserID,
-                      avatarURL     : avatarURL,
-                      isSuperAdmin  : isSuperAdmin)
+        role = roles?.map({ role -> Role in
+            return Role(string: role)
+        }).sort().first ?? Role.Unsupported
+
+        return T(ID            : ID,
+                 username      : username,
+                 firstName     : firstName,
+                 lastName      : lastName,
+                 displayName   : displayName,
+                 role          : role,
+                 siteID        : siteID,
+                 linkedUserID  : linkedUserID,
+                 avatarURL     : avatarURL,
+                 isSuperAdmin  : isSuperAdmin)
     }
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
-    private func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
+    func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
