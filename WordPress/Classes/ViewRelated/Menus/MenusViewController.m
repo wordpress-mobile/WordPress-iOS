@@ -181,7 +181,31 @@
     self.scrollView.contentSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
 }
 
-#pragma mark - local updates
+#pragma mark - Setters
+
+- (void)setSelectedMenuLocation:(MenuLocation *)selectedMenuLocation
+{
+    if (_selectedMenuLocation != selectedMenuLocation) {
+        _selectedMenuLocation = selectedMenuLocation;
+        
+        // Update the default menu option.
+        Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
+        if ([self defaultMenuEnabledForSelectedLocation]) {
+            // Is primary menu location, allow the option of the default generated Menu.
+            defaultMenu.name = [Menu defaultMenuName];
+        } else {
+            // Default menu is a "No Menu" nullable option when not using the primary location.
+            defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
+        }
+        [self.headerViewController refreshMenuViewsUsingMenu:defaultMenu];
+        
+        [self.headerViewController setSelectedLocation:selectedMenuLocation];
+        [self.headerViewController setSelectedMenu:selectedMenuLocation.menu];
+        [self setViewsWithMenu:selectedMenuLocation.menu];
+    }
+}
+
+#pragma mark - Local updates
 
 - (void)syncWithBlogMenus
 {
@@ -207,16 +231,10 @@
     
     [self.loadingView removeFromSuperview];
 
-    MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
-    Menu *selectedMenu = selectedLocation.menu;
-    self.selectedMenuLocation = selectedLocation;
-    
     self.headerViewController.blog = self.blog;
-    [self.headerViewController setSelectedLocation:selectedLocation];
-    [self.headerViewController setSelectedMenu:selectedMenu];
-    
-    [self setViewsWithMenu:selectedMenu];
-    
+    MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
+    self.selectedMenuLocation = selectedLocation;
+        
     if (!self.animatesAppearanceAfterSync) {
         self.scrollView.alpha = 1.0;
     } else {
@@ -535,33 +553,13 @@
         return;
     }
     
-    void(^selectLocation)() = ^() {
-        
-        self.selectedMenuLocation = location;
-        
-        // Update the default menu option.
-        Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
-        if ([self defaultMenuEnabledForSelectedLocation]) {
-            // Is primary menu location, allow the option of the default generated Menu.
-            defaultMenu.name = [Menu defaultMenuName];
-        } else {
-            // Default menu is a "No Menu" nullable option when not using the primary location.
-            defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
-        }
-        [self.headerViewController refreshMenuViewsUsingMenu:defaultMenu];
-        
-        [self.headerViewController setSelectedLocation:location];
-        [self.headerViewController setSelectedMenu:location.menu];
-        [self setViewsWithMenu:location.menu];
-    };
-    
     if (self.needsSave) {
         [self promptForDiscardingChangesBeforeSelectingADifferentLocation:^{
             [self discardAllChanges];
-            selectLocation();
+            self.selectedMenuLocation = location;
         } cancellation:nil];
     } else {
-        selectLocation();
+        self.selectedMenuLocation = location;
     }
 }
 
