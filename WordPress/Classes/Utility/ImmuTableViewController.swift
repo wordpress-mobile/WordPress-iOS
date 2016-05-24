@@ -1,5 +1,4 @@
 import UIKit
-import RxSwift
 import WordPressShared
 
 typealias ImmuTableRowControllerGenerator = ImmuTableRow -> UIViewController
@@ -39,8 +38,9 @@ extension ImmuTablePresenter {
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var noticeMessage: Observable<String?> { get }
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
+    var noticeMessage: String? { get }
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable
+    func refreshModel()
 }
 
 /// Generic view controller to present ImmuTable-based tables
@@ -53,33 +53,19 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    private var visibleSubject = PublishSubject<Bool>()
-
     private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
-
-    private let bag = DisposeBag()
 
     // MARK: - Table View Controller
 
     init(controller: ImmuTableController) {
         self.controller = controller
         super.init(style: .Grouped)
+
         title = controller.title
         registerRows(controller.immuTableRows)
-        controller.tableViewModelWithPresenter(self)
-            .observeOn(MainScheduler.instance)
-            .subscribeNext({ [weak self] in
-                self?.handler.viewModel = $0
-                })
-            .addDisposableTo(bag)
-        controller.noticeMessage
-            .observeOn(MainScheduler.instance)
-            .subscribeNext({ [weak self] in
-                self?.noticeMessage = $0
-                })
-            .addDisposableTo(bag)
+        controller.refreshModel()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -102,12 +88,19 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        visibleSubject.on(.Next(true))
+        loadModel()
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(ImmuTableViewController.loadModel),
+            name: ImmuTableViewController.modelChangedNotification,
+            object: nil)
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        visibleSubject.on(.Next(false))
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+                                                            name: ImmuTableViewController.modelChangedNotification,
+                                                            object: nil)
     }
 
     // MARK: - Inputs
@@ -118,16 +111,19 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
+    func loadModel() {
+        handler.viewModel = controller.tableViewModelWithPresenter(self)
+        noticeMessage = controller.noticeMessage
+    }
+
     var noticeMessage: String? = nil {
         didSet {
+            guard noticeMessage != oldValue else { return }
             noticeAnimator.animateMessage(noticeMessage)
         }
     }
 
-    // MARK: - Outputs
+    // MARK: - Constants
 
-    /// Emits a value when the view controller appears or disappears
-    var visible: Observable<Bool> {
-        return visibleSubject
-    }
+    static let modelChangedNotification = "ImmuTableControllerChanged"
 }
