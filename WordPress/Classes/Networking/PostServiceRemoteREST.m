@@ -133,7 +133,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
                    success(post);

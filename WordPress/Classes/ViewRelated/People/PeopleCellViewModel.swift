@@ -4,7 +4,7 @@ import WordPressShared
 struct PeopleCellViewModel {
     let displayName: String
     let username: String
-    let role: Person.Role
+    let role: Role
     let superAdmin: Bool
     let avatarURL: NSURL?
 
@@ -21,11 +21,11 @@ struct PeopleCellViewModel {
     }
 
     var roleBorderColor: UIColor {
-        return role.color()
+        return role.color
     }
 
     var roleBackgroundColor: UIColor {
-        return role.color()
+        return role.color
     }
 
     var roleTextColor: UIColor {
@@ -33,11 +33,11 @@ struct PeopleCellViewModel {
     }
 
     var roleText: String {
-        return role.localizedName()
+        return role.localizedName
     }
 
     var superAdminText: String {
-        return Person.Role.SuperAdmin.localizedName()
+        return Role.SuperAdmin.localizedName
     }
 
     var superAdminBorderColor: UIColor {
@@ -45,7 +45,7 @@ struct PeopleCellViewModel {
     }
 
     var superAdminBackgroundColor: UIColor {
-        return Person.Role.SuperAdmin.color()
+        return Role.SuperAdmin.color
     }
 
     var superAdminHidden: Bool {

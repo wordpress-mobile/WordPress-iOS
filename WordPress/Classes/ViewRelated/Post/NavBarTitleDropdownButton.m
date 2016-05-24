@@ -3,10 +3,24 @@
 
 @implementation NavBarTitleDropdownButton
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupStyle];
+    }
+
+    return self;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    [self setupStyle];
+}
 
+- (void)setupStyle
+{
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
