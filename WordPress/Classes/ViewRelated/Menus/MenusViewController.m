@@ -511,7 +511,7 @@
     
     toggleIsSaving(YES);
     
-    if (menuToSave.menuID.integerValue == 0 && defaultMenuEnabled) {
+    if (menuToSave.menuID.integerValue == 0) {
         // Need to create the menu first.
         [self.menusService createMenuWithName:menuToSave.name
                                          blog:self.blog
