@@ -9,6 +9,10 @@
 
 @import Gridicons;
 
+static CGFloat const TextfieldDesignIconWidth = 14.0;
+static CGFloat const TextfieldDesignIconHeight = 14.0;
+static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
+
 @interface MenuDetailsViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
@@ -90,8 +94,8 @@
     NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
     _textFieldDesignIconLeadingConstraint = leadingConstraint;
     [NSLayoutConstraint activateConstraints:@[
-                                              [imageView.widthAnchor constraintEqualToConstant:14],
-                                              [imageView.heightAnchor constraintEqualToConstant:14],
+                                              [imageView.widthAnchor constraintEqualToConstant:TextfieldDesignIconWidth],
+                                              [imageView.heightAnchor constraintEqualToConstant:TextfieldDesignIconHeight],
                                               [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
                                               leadingConstraint
                                               ]];
@@ -137,9 +141,9 @@
     [self.textFieldDesignIcon setNeedsLayout];
 }
 
-- (void)showTextFieldEditingState:(NSTimeInterval)duration
+- (void)showTextFieldEditingState
 {
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:TextfieldEditingAnimationDuration animations:^{
         
         self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
@@ -148,9 +152,9 @@
     } completion:nil];
 }
 
-- (void)hideTextFieldEditingState:(NSTimeInterval)duration
+- (void)hideTextFieldEditingState
 {
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:TextfieldEditingAnimationDuration animations:^{
         
         self.textFieldDesignView.backgroundColor = [UIColor clearColor];
         self.doneButton.alpha = 0.0;
@@ -212,7 +216,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.editingBeginningName = textField.text;
-    [self showTextFieldEditingState:0.3];
+    [self showTextFieldEditingState];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -225,7 +229,7 @@
         self.textFieldDesignIcon.hidden = NO;
     }];
     
-    [self hideTextFieldEditingState:0.3];
+    [self hideTextFieldEditingState];
     self.hasTrackedEditingChanges = NO;
 }
 
