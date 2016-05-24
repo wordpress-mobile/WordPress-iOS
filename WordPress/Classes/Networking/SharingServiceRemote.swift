@@ -12,16 +12,20 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
     /// Returns an error message to use is the API returns an unexpected result.
     ///
-    /// - Parameter operation: The AFHTTPRequestOperation that returned the unexpected result.
+    /// - Parameter operation: The NSHTTPURLResponse that returned the unexpected result.
     ///
     /// - Returns: An `NSError` object.
     ///
-    func errorForUnexpectedResponse(operation: AFHTTPRequestOperation) -> NSError {
+    func errorForUnexpectedResponse(httpResponse: NSHTTPURLResponse?) -> NSError {
         let failureReason = "The request returned an unexpected type."
         let domain = "org.wordpress.sharing-management"
         let code = 0
+        var urlString = "unknown"
+        if let unwrappedURL = httpResponse?.URL?.absoluteString {
+            urlString = unwrappedURL
+        }
         let userInfo = [
-            "requestURL": operation.request.URL!.absoluteString,
+            "requestURL": urlString,
             NSLocalizedDescriptionKey: failureReason,
             NSLocalizedFailureReasonErrorKey: failureReason
         ]
@@ -39,23 +43,22 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getPublicizeServices(success: ([RemotePublicizeService] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "meta/external-services"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        let params = NSDictionary(object: "publicize", forKey: "type")
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let params = ["type":"publicize"]
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: params,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
                 }
 
-                // For paranioa, make sure the response is the correct type.
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(operation))
+                guard let responseDict = responseObject as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(httpResponse))
                     return
                 }
 
-                let responseString = operation.responseString! as NSString
+                let responseString = responseObject.description as NSString
                 let services: NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
                 let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
@@ -83,7 +86,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
                 onSuccess(publicizeServices)
 
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
             })
     }
@@ -97,18 +100,17 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "me/keyring-connections"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
                 }
 
-                // For paranioa, make sure the response is the correct type.
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(operation))
+                guard let responseDict = responseObject as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(httpResponse))
                     return
                 }
 
@@ -136,7 +138,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                 onSuccess(keyringConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
         })
     }
@@ -173,18 +175,17 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getPublicizeConnections(siteID: NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
                 }
 
-                // For paranioa, make sure the response is the correct type.
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(operation))
+                guard let responseDict = responseObject as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(httpResponse))
                     return
                 }
 
@@ -196,7 +197,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                 onSuccess(publicizeConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
         })
     }
@@ -215,27 +216,25 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
         keyringConnectionID: NSNumber,
         externalUserID: String?,
         success: (RemotePublicizeConnection -> Void)?,
-        failure: (NSError! -> Void)?) {
+        failure: (NSError -> Void)?) {
 
             let endpoint = "sites/\(siteID)/publicize-connections/new"
-            let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-            let parameters = NSMutableDictionary()
-            parameters.setObject(keyringConnectionID, forKey: PublicizeConnectionParams.keyringConnectionID)
+            var parameters : [String : AnyObject] = [PublicizeConnectionParams.keyringConnectionID: keyringConnectionID]
             if let userID = externalUserID {
-                parameters.setObject(userID, forKey: PublicizeConnectionParams.externalUserID)
+                parameters[PublicizeConnectionParams.externalUserID] = userID
             }
 
-            api.POST(path,
-                parameters: NSDictionary(dictionary: parameters),
-                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            wordPressComRestApi.POST(path,
+                parameters: parameters,
+                success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                     guard let onSuccess = success else {
                         return
                     }
 
-                    // For paranioa, make sure the response is the correct type.
-                    guard let responseDict = response as? NSDictionary else {
-                        failure?(self.errorForUnexpectedResponse(operation))
+                    guard let responseDict = responseObject as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
 
@@ -243,7 +242,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                     onSuccess(conn)
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                     failure?(error)
             })
     }
@@ -266,23 +265,22 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
         success: (RemotePublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
-            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
             let externalUserID = (externalID == nil) ? "false" : externalID!
 
             let parameters = [
                 PublicizeConnectionParams.externalUserID : externalUserID
             ]
 
-            api.POST(path,
+            wordPressComRestApi.POST(path,
                 parameters: parameters,
-                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                     guard let onSuccess = success else {
                         return
                     }
 
-                    // For paranioa, make sure the response is the correct type.
-                    guard let responseDict = response as? NSDictionary else {
-                        failure?(self.errorForUnexpectedResponse(operation))
+                    guard let responseDict = responseObject as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
 
@@ -290,7 +288,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                     onSuccess(conn)
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                     failure?(error)
             })
     }
@@ -311,21 +309,20 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
         success: (RemotePublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
-            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
             let parameters = [
                 PublicizeConnectionParams.shared : shared
             ]
 
-            api.POST(path,
+            wordPressComRestApi.POST(path,
                 parameters: parameters,
-                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                     guard let onSuccess = success else {
                         return
                     }
 
-                    // For paranioa, make sure the response is the correct type.
-                    guard let responseDict = response as? NSDictionary else {
-                        failure?(self.errorForUnexpectedResponse(operation))
+                    guard let responseDict = responseObject as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
 
@@ -333,7 +330,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                     onSuccess(conn)
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                     failure?(error)
             })
     }
@@ -349,14 +346,14 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func deletePublicizeConnection(siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
         })
     }
@@ -404,18 +401,17 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func getSharingButtonsForSite(siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
                 }
 
-                // For paranioa, make sure the response is the correct type.
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(operation))
+                guard let responseDict = responseObject as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(httpResponse))
                     return
                 }
 
@@ -424,7 +420,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                 onSuccess(sharingButtons)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
         })
     }
@@ -440,20 +436,19 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
         let parameters = [SharingButtonsKeys.sharingButtons : buttons]
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
             parameters: parameters,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+            success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
                 }
 
-                // For paranioa, make sure the response is the correct type.
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(operation))
+                guard let responseDict = responseObject as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(httpResponse))
                     return
                 }
 
@@ -462,7 +457,7 @@ public class SharingServiceRemote : ServiceRemoteWordPressComREST
 
                 onSuccess(sharingButtons)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+            failure: { (error: NSError, httpResponse: NSHTTPURLResponse?) in
                 failure?(error)
         })
     }
