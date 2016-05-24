@@ -1174,12 +1174,12 @@ import WordPressComAnalytics
 
             service.fetchPostsForTopic(topicInContext,
                 earlierThan: earlierThan,
-                success: { (count:Int, hasMore:Bool) -> Void in
+                success: { (count:Int, hasMore:Bool) in
                     dispatch_async(dispatch_get_main_queue(), {
                         success?(hasMore: hasMore)
                     })
                 },
-                failure: { (error:NSError!) -> Void in
+                failure: { (error:NSError!) in
                     dispatch_async(dispatch_get_main_queue(), {
                         failure?(error: error)
                     })
@@ -1232,7 +1232,7 @@ import WordPressComAnalytics
 
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortDate", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
         return [sortDescriptor]
     }
 

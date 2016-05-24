@@ -63,8 +63,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                    before:date
                                   success:^(NSArray *posts) {
 
+                                      // Construct a rank from the date provided
+                                      NSNumber *rank = @([date timeIntervalSinceReferenceDate]);
                                       [self mergePosts:posts
-                                           earlierThan:date
+                                        rankedLessThan:rank
                                               forTopic:topicObjectID
                                        deletingEarlier:deleteEarlier
                                         callingSuccess:success];
@@ -441,7 +443,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  @param success block called on a successful fetch which should be performed after merging
  */
 - (void)mergePosts:(NSArray *)remotePosts
-       earlierThan:(NSDate *)date
+    rankedLessThan:(NSNumber *)rank
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
@@ -468,7 +470,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
         NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
-            [self deletePostsEarlierThan:date forTopic:readerTopic];
+            [self deletePostsRankedLessThan:rank forTopic:readerTopic];
 
         } else {
             NSArray *posts = remotePosts;
@@ -497,12 +499,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             // When refreshing, some content previously synced may have been deleted remotely.
             // Remove anything we've synced that is missing.
             // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
-            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank];
 
             // If deleting earlier, delete every post older than the last post in this batch.
             if (deleteEarlier) {
                 ReaderPost *lastPost = [newPosts lastObject];
-                [self deletePostsEarlierThan:lastPost.sortDate forTopic:readerTopic];
+                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic];
                 [self removeGapMarkerForTopic:readerTopic]; // Paranoia
 
             } else {
@@ -516,7 +518,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                     // new posts then append a gap placeholder to the end of the
                     // new posts
                     ReaderPost *lastPost = [newPosts lastObject];
-                    if ([self topic:readerTopic hasPostsOlderThan:lastPost.sortDate]) {
+                    if ([self topic:readerTopic hasPostsRankedLessThan:lastPost.sortRank]) {
                         [self insertGapMarkerBeforePost:lastPost forTopic:readerTopic];
                     }
                 }
@@ -544,11 +546,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
     if (gapMarker) {
-        NSDate *newestPostDate = ((ReaderPost *)newPosts.firstObject).sortDate;
-        NSDate *oldestPostDate = ((ReaderPost *)newPosts.lastObject).sortDate;
-        NSDate *gapDate = gapMarker.sortDate;
+        CGFloat highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
+        CGFloat lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
+        CGFloat gapRank = [gapMarker.sortRank doubleValue];
         // Confirm the overlap includes the gap marker.
-        if (gapDate == [newestPostDate earlierDate:gapDate] && gapDate == [oldestPostDate laterDate:gapDate]) {
+        if (lowestRank < gapRank && gapRank < highestRank) {
             // No need for a gap placeholder. Remove any that existed
             [self removeGapMarkerForTopic:topic];
         }
@@ -585,6 +587,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // and accurate date reference should we need it.
     marker.sortDate = [post.sortDate dateByAddingTimeInterval:-0.1];
     marker.date_created_gmt = post.sortDate;
+
+    // For compatability with posts that are sorted by score
+    marker.sortRank = @([post.sortRank doubleValue] - 0.0000001);
+    marker.score = post.score;
+
     marker.topic = topic;
 }
 
@@ -607,10 +614,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
-- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsOlderThan:(NSDate *)date
+- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsRankedLessThan:(NSNumber *)rank
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
 
     NSError *error;
     NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
@@ -657,24 +664,24 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 #pragma mark Deletion and Clean up
 
 /**
- Deletes any existing post whose sortDate is earlier than the passed date. This
+ Deletes any existing post whose sortRank is less than the passed rank. This
  is to handle situations where posts have been synced but were subsequently removed
  from the result set (deleted, unliked, etc.) rendering the result set empty.
 
- @param date The date to delete posts earlier than.
+ @param rank The sortRank to delete posts less than.
  @param topic The `ReaderAbstractTopic` to delete posts from.
  */
-- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderAbstractTopic *)topic
+- (void)deletePostsRankedLessThan:(NSNumber *)rank forTopic:(ReaderAbstractTopic *)topic
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
 
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -690,7 +697,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 }
 
 /**
- Using an array of post as a filter, deletes any existing post whose sortDate falls
+ Using an array of post as a filter, deletes any existing post whose sortRank falls
  within the range of the filter posts, but is not included in the filter posts.
 
  This let's us remove unliked posts from /read/liked, posts from blogs that are
@@ -700,21 +707,22 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  @param topic The ReaderAbstractTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
- @param startingDate The starting date of the batch of posts. May be earlier than the earliest post in the batch.
+ @param startingRank The starting rank of the batch of posts. May be less than the highest ranked post in the batch.
  */
-- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingDate:(NSDate *)startingDate
+- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingRank:(NSNumber *)startingRank
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSDate *newestDate = startingDate;
-    NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate > %@ AND sortDate < %@", topic, oldestDate, newestDate];
+    NSNumber *highestRank = startingRank;
+
+    NSNumber *lowestRank = ((ReaderPost *)[posts lastObject]).sortRank;
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortRank > %@ AND sortRank < %@", topic, lowestRank, highestRank];
 
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -747,7 +755,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
