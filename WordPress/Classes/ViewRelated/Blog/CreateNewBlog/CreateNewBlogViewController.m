@@ -490,11 +490,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             [WPAnalytics track:WPAnalyticsStatCreatedAccount];
             [operation didSucceed];
             
-            NSMutableDictionary *blogOptions = [[responseDictionary dictionaryForKey:@"blog_details"] mutableCopy];
-            if ([blogOptions objectForKey:@"blogname"]) {
-                [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
-                [blogOptions removeObjectForKey:@"blogname"];
-            }
+            NSDictionary *blogOptions = [responseDictionary dictionaryForKey:@"blog_details"];
             
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -508,7 +504,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             }
             blog.dotComID = [blogOptions numberForKey:@"blogid"];
             blog.url = blogOptions[@"url"];
-            blog.settings.name = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
+            blog.settings.name = [[blogOptions stringForKey:@"blogname"] stringByDecodingXMLCharacters];
             defaultAccount.defaultBlog = blog;
             
             [[ContextManager sharedInstance] saveContext:context];

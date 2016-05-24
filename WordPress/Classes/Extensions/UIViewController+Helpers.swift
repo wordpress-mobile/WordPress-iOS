@@ -19,6 +19,12 @@ extension UIViewController
         return traitCollection.horizontalSizeClass == .Compact
     }
 
+    /// Determines if the horizontal size class is specified or not.
+    ///
+    public func isHorizontalSizeClassUnspecified() -> Bool {
+        return traitCollection.horizontalSizeClass == .Unspecified
+    }
+
     /// Determines if the current ViewController is being presented modally
     ///
     public func isModal() -> Bool {

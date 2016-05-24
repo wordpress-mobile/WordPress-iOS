@@ -1,17 +1,16 @@
 import Foundation
 import XCTest
-import WordPress
-import AFNetworking
+@testable import WordPress
 
 class PushAuthenticationServiceRemoteTests : XCTestCase {
 
     var pushAuthenticationServiceRemote:PushAuthenticationServiceRemote?
-    var mockRemoteApi:MockWordPressComApi?
+    var mockRemoteApi:MockWordPressComRestApi?
     let token = "token"
     override func setUp() {
         super.setUp()
-        mockRemoteApi = MockWordPressComApi()
-        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(api: mockRemoteApi)
+        mockRemoteApi = MockWordPressComRestApi()
+        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(wordPressComRestApi: mockRemoteApi)
     }
 
     func testAuthorizeLoginUsesTheCorrectPath() {
@@ -36,7 +35,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: { () -> () in
            successBlockCalled = true
         }, failure: nil)
-        mockRemoteApi?.successBlockPassedIn?(AFHTTPRequestOperation(), [])
+        mockRemoteApi?.successBlockPassedIn?([], NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -47,7 +46,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: nil, failure: { () -> () in
             failureBlockCalled = true
         })
-        mockRemoteApi?.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError(domain:"UnitTest", code:0, userInfo:nil))
+        mockRemoteApi?.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")

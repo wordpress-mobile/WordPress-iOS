@@ -32,6 +32,10 @@
 - (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+
+/// Returns the latest revision of a post.
+///
+- (AbstractPost *)latest;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;

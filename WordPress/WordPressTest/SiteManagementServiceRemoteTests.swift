@@ -1,18 +1,17 @@
 import Foundation
 import XCTest
-import AFNetworking
 @testable import WordPress
 
 class SiteManagementServiceRemoteTests : XCTestCase
 {
-    let mockRemoteApi = MockWordPressComApi()
+    let mockRemoteApi = MockWordPressComRestApi()
     var siteManagementServiceRemote: SiteManagementServiceRemote?
 
     let siteID = NSNumber(integer: 999999)
 
     override func setUp() {
         super.setUp()
-        siteManagementServiceRemote = SiteManagementServiceRemote(api: mockRemoteApi)
+        siteManagementServiceRemote = SiteManagementServiceRemote(wordPressComRestApi: mockRemoteApi)
     }
 
     func testDeleteSiteUsesTheCorrectPath() {
@@ -30,7 +29,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
             })
-        mockRemoteApi.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError(domain:"UnitTest", code:0, userInfo:nil))
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), nil)
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -48,7 +47,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -67,7 +66,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -86,7 +85,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -101,7 +100,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             success: { () -> Void in
                 successBlockCalled = true
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -122,7 +121,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
         })
-        mockRemoteApi.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError(domain:"UnitTest", code:0, userInfo:nil))
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -140,7 +139,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -159,7 +158,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -178,7 +177,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -193,7 +192,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             success: { () -> Void in
                 successBlockCalled = true
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -214,7 +213,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
         })
-        mockRemoteApi.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError(domain:"UnitTest", code:0, userInfo:nil))
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -232,7 +231,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 failureBlockCalled = true
                 failureError = error
         })
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -249,7 +248,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 successBlockCalled = true
                 purchasesCount = purchases.count
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -266,7 +265,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
                 successBlockCalled = true
                 purchasesCount = purchases.count
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
+        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
