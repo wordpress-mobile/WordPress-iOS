@@ -14,6 +14,7 @@
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 @interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
 
@@ -775,26 +776,23 @@
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu location.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu location")
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (cancellationBlock) {
-                                                               cancellationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.")
-                                                         style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (confirmationBlock) {
-                                                               confirmationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
+    
+    NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.");
+    [alert addDestructiveActionWithTitle:confirmationTitle
+                                 handler:^(UIAlertAction * _Nonnull action) {
+                                     if (confirmationBlock) {
+                                         confirmationBlock();
+                                     }
+                                 }];
+    
+    NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu location");
+    [alert addCancelActionWithTitle:cancelTitle
+                            handler:^(UIAlertAction * _Nonnull action) {
+                                if (cancellationBlock) {
+                                    cancellationBlock();
+                                }
+                            }];
+    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -804,26 +802,23 @@
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu")
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (cancellationBlock) {
-                                                               cancellationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.")
-                                                         style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (confirmationBlock) {
-                                                               confirmationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
+    
+    NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.");
+    [alert addDestructiveActionWithTitle:confirmationTitle
+                                 handler:^(UIAlertAction * _Nonnull action) {
+                                     if (confirmationBlock) {
+                                         confirmationBlock();
+                                     }
+                                 }];
+    
+    NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu");
+    [alert addCancelActionWithTitle:cancelTitle
+                            handler:^(UIAlertAction * _Nonnull action) {
+                                if (cancellationBlock) {
+                                    cancellationBlock();
+                                }
+                            }];
+    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -833,26 +828,23 @@
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to create a new menu.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not createa a new menu.")
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (cancellationBlock) {
-                                                               cancellationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.")
-                                                         style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (confirmationBlock) {
-                                                               confirmationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
+    
+    NSString *confirmationTitle = NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.");
+    [alert addDestructiveActionWithTitle:confirmationTitle
+                                 handler:^(UIAlertAction * _Nonnull action) {
+                                     if (confirmationBlock) {
+                                         confirmationBlock();
+                                     }
+                                 }];
+    
+    NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not createa a new menu.");
+    [alert addCancelActionWithTitle:cancelTitle
+                            handler:^(UIAlertAction * _Nonnull action) {
+                                if (cancellationBlock) {
+                                    cancellationBlock();
+                                }
+                            }];
+    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -862,26 +854,23 @@
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.")
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (cancellationBlock) {
-                                                               cancellationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
-    {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.")
-                                                         style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           if (confirmationBlock) {
-                                                               confirmationBlock();
-                                                           }
-                                                       }];
-        [alert addAction:action];
-    }
+    
+    NSString *confirmationTitle = NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.");
+    [alert addDestructiveActionWithTitle:confirmationTitle
+                                 handler:^(UIAlertAction * _Nonnull action) {
+                                     if (confirmationBlock) {
+                                         confirmationBlock();
+                                     }
+                                 }];
+    
+    NSString *cancelTitle = NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.");
+    [alert addCancelActionWithTitle:cancelTitle
+                            handler:^(UIAlertAction * _Nonnull action) {
+                                if (cancellationBlock) {
+                                    cancellationBlock();
+                                }
+                            }];
+    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
