@@ -287,6 +287,33 @@
     [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
 }
 
+- (void)deleteMenu:(Menu *)menu
+{
+    [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    Menu *defaultMenu =[Menu defaultMenuForBlog:self.blog];
+    self.selectedMenuLocation.menu = defaultMenu;
+    [self.headerViewController setSelectedMenu:defaultMenu];
+    [self setViewsWithMenu:defaultMenu];
+    
+    [self.headerViewController removeMenu:menu];
+    
+    [self.menusService deleteMenu:menu
+                          forBlog:self.blog
+                          success:^{
+                              [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
+                          }
+                          failure:^(NSError *error) {
+                              // Add the menu back to the list.
+                              [weakSelf.headerViewController addMenu:menu];
+                              // Present the error message.
+                              NSString *errorTitle = NSLocalizedString(@"Error Deleting Menu", @"Menus error title for a menu that received an error while trying to delete it.");
+                              [WPError showNetworkingAlertWithError:error title:errorTitle];
+                          }];
+}
+
 - (void)loadDefaultMenuItemsIfNeeded
 {
     Menu *menu = self.selectedMenuLocation.menu;
@@ -638,41 +665,9 @@
 }
 
 - (void)detailsViewControllerSelectedToDeleteMenu:(MenuDetailsViewController *)detailsViewController
-{
-    [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
-    
-    Menu *menuToDelete = detailsViewController.menu;
+{    
     __weak __typeof(self) weakSelf = self;
-    
-    void(^selectDefaultMenu)() = ^() {
-        Menu *defaultMenu =[Menu defaultMenuForBlog:weakSelf.blog];
-        weakSelf.selectedMenuLocation.menu = defaultMenu;
-        [weakSelf.headerViewController setSelectedMenu:defaultMenu];
-        [weakSelf setViewsWithMenu:defaultMenu];
-    };
-    
-    void(^removeMenuFromUI)() = ^() {
-        [weakSelf.headerViewController removeMenu:menuToDelete];
-    };
-    
-    void(^restoreMenuToUI)() = ^() {
-        [weakSelf.headerViewController addMenu:menuToDelete];
-    };
-    
-    void(^deleteMenu)() = ^() {
-        [weakSelf.menusService deleteMenu:menuToDelete
-                                  forBlog:weakSelf.blog
-                                  success:^{
-                                      [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
-                                  }
-                                  failure:^(NSError *error) {
-                                      // Add the menu back to the list.
-                                      restoreMenuToUI();
-                                      // Present the error message.
-                                      NSString *errorTitle = NSLocalizedString(@"Error Deleting Menu", @"Menus error title for a menu that received an error while trying to delete it.");
-                                      [WPError showNetworkingAlertWithError:error title:errorTitle];
-                                  }];
-    };
+    Menu *menuToDelete = detailsViewController.menu;
     
     NSString *alertTitle = NSLocalizedString(@"Are you sure you want to delete the menu?", @"Menus confirmation text for confirming if a user wants to delete a menu.");
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
@@ -683,9 +678,7 @@
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:confirmTitle
                                                           style:UIAlertActionStyleDestructive
                                                         handler:^(UIAlertAction * _Nonnull action) {
-                                                            selectDefaultMenu();
-                                                            removeMenuFromUI();
-                                                            deleteMenu();
+                                                            [weakSelf deleteMenu:menuToDelete];
                                                         }];
     [alertController addAction:confirmAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelTitle
