@@ -432,6 +432,7 @@
         } else {
             [self.navigationItem setRightBarButtonItem:self.saveButtonItem animated:YES];
         }
+        self.scrollView.userInteractionEnabled = !isSaving;
     }
 }
 
@@ -561,15 +562,8 @@
     
     __weak __typeof(self) weakSelf = self;
     
-    void(^toggleIsSaving)(BOOL) = ^(BOOL saving) {
-        // Disable user interaction while we are processing the save.
-        weakSelf.scrollView.userInteractionEnabled = !saving;
-        // Toggle the detailsView button for "Saving...".
-        weakSelf.isSaving = saving;
-    };
-    
     void(^failureToSave)(NSError *) = ^(NSError *error) {
-        toggleIsSaving(NO);
+        weakSelf.isSaving = NO;
         // Present the error message.
         NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
         [WPError showNetworkingAlertWithError:error title:errorTitle];
@@ -581,13 +575,13 @@
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
                                       [weakSelf.itemsViewController reloadItems];
-                                      toggleIsSaving(NO);
+                                      weakSelf.isSaving = NO;
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
                                   failure:failureToSave];
     };
     
-    toggleIsSaving(YES);
+    self.isSaving = YES;
     
     if (menuToSave.menuID.integerValue == 0) {
         // Need to create the menu first.
