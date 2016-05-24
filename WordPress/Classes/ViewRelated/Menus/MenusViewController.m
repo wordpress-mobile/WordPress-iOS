@@ -441,6 +441,8 @@
 
 - (void)saveBarButtonItemPressed:(id)sender
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusSavedMenu withBlog:self.blog];
+
     [self.detailsViewController resignFirstResponder];
     
     // Buckle up, we gotta save this Menu!
@@ -499,7 +501,6 @@
                                   forBlog:weakSelf.blog
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
-                                      [WPAppAnalytics track:WPAnalyticsStatMenusSavedMenu withBlog:self.blog];
                                       [weakSelf.itemsViewController reloadItems];
                                       toggleIsSaving(NO);
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
@@ -515,7 +516,6 @@
                                          blog:self.blog
                                       success:^(NSNumber *menuID) {
                                           // Set the new menuID and continue the update.
-                                          [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
                                           menuToSave.menuID = menuID;
                                           updateMenu();
                                       }
@@ -606,6 +606,8 @@
 {
     void(^createMenu)() = ^() {
         
+        [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
+        
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
         newMenu.blog = self.blog;
         newMenu.name = [self generateIncrementalMenuName];
@@ -640,6 +642,8 @@
 
 - (void)detailsViewControllerSelectedToDeleteMenu:(MenuDetailsViewController *)detailsViewController
 {
+    [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
+    
     Menu *menuToDelete = detailsViewController.menu;
     __weak __typeof(self) weakSelf = self;
     
@@ -662,7 +666,6 @@
         [weakSelf.menusService deleteMenu:menuToDelete
                                   forBlog:weakSelf.blog
                                   success:^{
-                                      [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
                                   failure:^(NSError *error) {
