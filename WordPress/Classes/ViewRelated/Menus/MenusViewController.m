@@ -271,6 +271,22 @@
     [self setViewsWithMenu:self.selectedMenuLocation.menu];
 }
 
+- (void)createMenu
+{
+    [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
+    
+    Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
+    newMenu.blog = self.blog;
+    newMenu.name = [self generateIncrementalMenuName];
+    self.selectedMenuLocation.menu = newMenu;
+    
+    [self.headerViewController addMenu:newMenu];
+    [self.headerViewController setSelectedMenu:newMenu];
+    [self setViewsWithMenu:newMenu];
+    
+    [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
+}
+
 - (void)loadDefaultMenuItemsIfNeeded
 {
     Menu *menu = self.selectedMenuLocation.menu;
@@ -601,31 +617,15 @@
 
 - (void)headerViewControllerSelectedForCreatingNewMenu:(MenuHeaderViewController *)headerView
 {
-    void(^createMenu)() = ^() {
-        
-        [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
-        
-        Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
-        newMenu.blog = self.blog;
-        newMenu.name = [self generateIncrementalMenuName];
-        self.selectedMenuLocation.menu = newMenu;
-        
-        [self.headerViewController addMenu:newMenu];
-        [self.headerViewController setSelectedMenu:newMenu];
-        [self setViewsWithMenu:newMenu];
-        
-        [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
-    };
-    
     if (self.needsSave && self.hasMadeSignificantMenuChanges) {
         
         [self promptForDiscardingChangesBeforeCreatingNewMenu:^{
             [self discardAllChanges];
-            createMenu();
+            [self createMenu];
         } cancellation:nil];
         
     } else {
-        createMenu();
+        [self createMenu];
     }
 }
 
