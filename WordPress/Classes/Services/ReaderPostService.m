@@ -22,6 +22,7 @@ NSUInteger const ReaderPostServiceNumberToSync = 40;
 // a 500 error if more are requested.
 // For performance reasons, request fewer results. EJ 2016-05-13
 NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
+NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
@@ -51,6 +52,44 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 }
 
 - (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+                  atOffset:(NSUInteger)offset
+           deletingEarlier:(BOOL)deleteEarlier
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSNumber *rank = @([[NSDate date] timeIntervalSinceReferenceDate]);
+    if (offset > 0) {
+        rank = [self rankForPostAtOffset:offset - 1 forTopic:topic];
+    }
+
+    if (offset >= ReaderPostServiceMaxSearchPosts && [topic isKindOfClass:[ReaderSearchTopic class]]) {
+        // A search supports a max offset of 199. If more are requested we want to bail early.
+        success(0, NO);
+        return;
+    }
+
+    NSManagedObjectID *topicObjectID = topic.objectID;
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                    count:[self numberToSyncForTopic:topic]
+                                   offset:offset
+                                  success:^(NSArray<RemoteReaderPost *> *posts) {
+
+                                      [self mergePosts:posts
+                                        rankedLessThan:rank
+                                              forTopic:topicObjectID
+                                       deletingEarlier:deleteEarlier
+                                        callingSuccess:success];
+
+                                  }
+                                  failure:^(NSError *error) {
+                                      if (failure) {
+                                          failure(error);
+                                      }
+                                  }];
+}
+
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
            deletingEarlier:(BOOL)deleteEarlier
                    success:(void (^)(NSInteger count, BOOL hasMore))success
@@ -71,7 +110,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                        deletingEarlier:deleteEarlier
                                         callingSuccess:success];
 
-                                  } failure:^(NSError *error) {
+                                  }
+                                  failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
                                       }
@@ -418,6 +458,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceNumberToSyncForSearch : ReaderPostServiceNumberToSync;
 }
 
+- (NSUInteger)maxPostsToSaveForTopic:(ReaderAbstractTopic *)topic
+{
+    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceMaxSearchPosts : ReaderPostServiceMaxPosts;
+}
+
 - (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
@@ -428,6 +473,28 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
     return count;
+}
+
+- (NSNumber *)rankForPostAtOffset:(NSUInteger)offset forTopic:(ReaderAbstractTopic *)topic
+{
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    [fetchRequest setPredicate:predicate];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    fetchRequest.fetchOffset = offset;
+    fetchRequest.fetchLimit = 1;
+
+    ReaderPost *post = [[self.managedObjectContext executeFetchRequest:fetchRequest error:&error] firstObject];
+    if (error || !post) {
+        DDLogError(@"Error fetching post at a specific offset.", error);
+        return nil;
+    }
+
+    return post.sortRank;
 }
 
 
@@ -529,7 +596,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         [self deletePostsFromBlockedSites];
 
-        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < [self maxPostsToSaveForTopic:readerTopic]));
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             // Is called on main queue
             if (success) {
@@ -758,10 +825,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
+    NSUInteger maxPosts = [self maxPostsToSaveForTopic:topic];
+
     // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
     // Just perform the fetch and remove the excess.
     NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
-    if (count <= ReaderPostServiceMaxPosts) {
+    if (count <= maxPosts) {
         return;
     }
 
@@ -771,7 +840,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
-    NSRange range = NSMakeRange(ReaderPostServiceMaxPosts, [posts count] - ReaderPostServiceMaxPosts);
+    NSRange range = NSMakeRange(maxPosts, [posts count] - maxPosts);
     NSArray *postsToDelete = [posts subarrayWithRange:range];
     for (ReaderPost *post in postsToDelete) {
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
@@ -779,7 +848,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     // If the last remaining post is a gap marker, remove it.
-    ReaderPost *lastPost = [posts objectAtIndex:ReaderPostServiceMaxPosts - 1];
+    ReaderPost *lastPost = [posts objectAtIndex:maxPosts - 1];
     if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
         [self.managedObjectContext deleteObject:lastPost];
     }
