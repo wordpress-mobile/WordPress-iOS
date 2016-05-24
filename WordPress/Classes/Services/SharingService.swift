@@ -731,10 +731,10 @@ public class SharingService : LocalCoreDataService
     /// - Parameter blog: The blog to use for the rest api.
     ///
     private func remoteForBlog(blog: Blog) -> SharingServiceRemote? {
-        guard let api = blog.restApi() else {
+        guard let api = blog.wordPressComRestApi() else {
             return nil
         }
 
-        return SharingServiceRemote(api: api)
+        return SharingServiceRemote(wordPressComRestApi: api)
     }
 }
