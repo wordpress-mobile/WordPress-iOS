@@ -23,7 +23,6 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 @property (nonatomic, strong, readonly) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong, readonly) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
-@property (nonatomic, assign) BOOL hasTrackedEditingChanges;
 
 @end
 
@@ -207,10 +206,6 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
         textField.placeholder = self.menu.name;
     }
     [self tellDelegateMenuNameChanged];
-    if (!self.hasTrackedEditingChanges) {
-        [WPAppAnalytics track:WPAnalyticsStatMenusUpdatedMenuName withBlog:self.menu.blog];
-        self.hasTrackedEditingChanges = YES;
-    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -230,7 +225,6 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     }];
     
     [self hideTextFieldEditingState];
-    self.hasTrackedEditingChanges = NO;
 }
 
 @end
