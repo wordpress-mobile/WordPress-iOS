@@ -16,6 +16,8 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
+static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
+
 @interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
@@ -722,7 +724,6 @@
 - (void)itemsViewController:(MenuItemsViewController *)itemsViewController prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view
 {
     // adjust the scrollView offset to ensure this view is easily viewable
-    const CGFloat scrollingOffsetAdjustmentPadding = 10.0;
     CGRect viewRectWithinScrollViewWindow = [self.scrollView.window convertRect:view.frame fromView:view.superview];
     CGRect visibleContentRect = [self.scrollView.window convertRect:self.scrollView.frame fromView:self.view];
     
@@ -733,12 +734,12 @@
     
     BOOL updated = NO;
     
-    if (viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + scrollingOffsetAdjustmentPadding) {
+    if (viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + ScrollViewOffsetAdjustmentPadding) {
         
         offset.y -= viewRectWithinScrollViewWindow.size.height;
         updated = YES;
         
-    } else  if (viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - scrollingOffsetAdjustmentPadding) {
+    } else  if (viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - ScrollViewOffsetAdjustmentPadding) {
         offset.y += viewRectWithinScrollViewWindow.size.height;
         updated = YES;
     }
@@ -875,7 +876,6 @@
     CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     frame = [self.view.window convertRect:frame toView:self.view];
     
-    const CGFloat scrollViewBottomInsetPaddingForKeyboard = 10.0;
     UIEdgeInsets inset = self.scrollView.contentInset;
     UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
     
@@ -885,7 +885,7 @@
     } else  {
         inset.bottom = self.view.frame.size.height - frame.origin.y;
         scrollInset.bottom = inset.bottom;
-        inset.bottom += scrollViewBottomInsetPaddingForKeyboard;
+        inset.bottom += ScrollViewOffsetAdjustmentPadding;
     }
     self.scrollView.contentInset = inset;
     self.scrollView.scrollIndicatorInsets = scrollInset;
