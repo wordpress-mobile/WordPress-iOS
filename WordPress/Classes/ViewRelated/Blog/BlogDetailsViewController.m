@@ -331,6 +331,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                      }]];
     }
 
+    if ([Feature enabled:FeatureFlagDomains] && [self.blog supports:BlogFeatureDomains]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the domain purchase / management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypeDomains]
+                                                     callback:^{
+                                                         [weakSelf showDomains];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeCog]
                                                  callback:^{
@@ -506,6 +514,13 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showDomains
+{
+    // TODO(@frosty, 2016-04-01): add analytics
+    DomainsListViewController *controller = [DomainsListViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
