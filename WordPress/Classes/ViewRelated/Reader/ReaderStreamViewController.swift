@@ -1018,7 +1018,7 @@ import WordPressComAnalytics
 
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
-        if canSync() && interval >= refreshInterval {
+        if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
