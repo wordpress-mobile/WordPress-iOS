@@ -205,6 +205,23 @@
     }
 }
 
+- (void)setSelectedMenu:(Menu *)menu
+{
+    Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
+    if (menu == defaultMenu) {
+        /*
+         * Special case for the user selecting "Default Menu" or "No Menu" in which we need
+         * to save the previously selected menu to save it without a location.
+         */
+        [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:NO];
+    } else {
+        [self setNeedsSave:YES forMenu:menu significantChanges:NO];
+    }
+    self.selectedMenuLocation.menu = menu;
+    [self.headerViewController setSelectedMenu:menu];
+    [self setViewsWithMenu:menu];
+}
+
 #pragma mark - Local updates
 
 - (void)syncWithBlogMenus
@@ -569,34 +586,16 @@
         // Ignore, already selected this menu.
         return;
     }
-    
-    void(^selectMenu)() = ^() {
-        
-        Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
-        if (menu == defaultMenu) {
-            /*
-             * Special case for the user selecting "Default Menu" or "No Menu" in which we need
-             * to save the previously selected menu to save it without a location.
-             */
-            [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:NO];
-        } else {
-            [self setNeedsSave:YES forMenu:menu significantChanges:NO];
-        }
-        
-        self.selectedMenuLocation.menu = menu;
-        [self.headerViewController setSelectedMenu:menu];
-        [self setViewsWithMenu:menu];
-    };
-    
+
     if (self.needsSave && self.hasMadeSignificantMenuChanges) {
         
         [self promptForDiscardingChangesBeforeSelectingADifferentMenu:^{
             [self discardAllChanges];
-            selectMenu();
+            [self setSelectedMenu:menu];
         } cancellation:nil];
         
     } else {
-        selectMenu();
+        [self setSelectedMenu:menu];
     }
 }
 
