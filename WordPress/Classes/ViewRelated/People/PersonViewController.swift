@@ -134,8 +134,8 @@ final class PersonViewController : UITableViewController {
 
         roleViewController.blog = blog
         roleViewController.selectedRole = person.role
-        roleViewController.onChange = { newRole in
-            self.updateRole(newRole)
+        roleViewController.onChange = { [weak self] newRole in
+            self?.updateUserRole(newRole)
         }
     }
 
@@ -176,26 +176,38 @@ private extension PersonViewController {
 
         alert.addCancelActionWithTitle(cancelTitle)
 
-        alert.addDestructiveActionWithTitle(removeTitle) { action in
-            self.removePerson()
+        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+            self?.deleteUser()
         }
 
         alert.presentFromRootViewController()
     }
 
-    func removePerson() {
+    func deleteUser() {
+        guard let user = user else {
+            DDLogSwift.logError("Error: Only Users can be deleted")
+            assertionFailure()
+            return
+        }
+
         let service = PeopleService(blog: blog)
-        service?.deletePerson(person)
+        service?.deleteUser(user)
         navigationController?.popViewControllerAnimated(true)
     }
 
-    func updateRole(newRole: Person.Role) {
+    func updateUserRole(newRole: Role) {
+        guard let user = user else {
+            DDLogSwift.logError("Error: Only Users have Roles!")
+            assertionFailure()
+            return
+        }
+
         guard let service = PeopleService(blog: blog) else {
             DDLogSwift.logError("Couldn't instantiate People Service")
             return
         }
 
-        let updated = service.updatePerson(person, role: newRole) { (error, reloadedPerson) in
+        let updated = service.updateUser(user, role: newRole) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
         }
@@ -204,7 +216,7 @@ private extension PersonViewController {
         self.person = updated
     }
 
-    func retryUpdatingRole(newRole: Person.Role) {
+    func retryUpdatingRole(newRole: Role) {
         let retryTitle      = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle     = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title           = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
@@ -213,7 +225,7 @@ private extension PersonViewController {
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.updateRole(newRole)
+            self.updateUserRole(newRole)
         }
 
         alertController.presentFromRootViewController()
@@ -309,11 +321,11 @@ private extension PersonViewController {
 
     private func refreshRoleCell() {
         let enabled = isPromoteEnabled
-        roleCell.detailTextLabel?.text = person.role.localizedName()
+        roleCell.detailTextLabel?.text = person.role.localizedName
         roleCell.accessoryType = enabled ? .DisclosureIndicator : .None
         roleCell.selectionStyle = enabled ? .Gray : .None
         roleCell.userInteractionEnabled = enabled
-        roleCell.detailTextLabel?.text = person.role.localizedName()
+        roleCell.detailTextLabel?.text = person.role.localizedName
     }
 
     func refreshRemoveCell() {
@@ -332,11 +344,24 @@ private extension PersonViewController {
     }
 
     var isPromoteEnabled : Bool {
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false
+        // Note: *Only* users can be promoted.
+        //
+        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isUser == true
     }
 
     var isRemoveEnabled : Bool {
-        // Note: YES, ListUsers. Brought from Calypso's code
-        return blog.isUserCapableOf(.ListUsers) && isMyself == false
+        // Notes:
+        //  -   YES, ListUsers. Brought from Calypso's code
+        //  -   Followers, for now, cannot be deleted.
+        //
+        return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+    }
+
+    var isUser : Bool {
+        return user != nil
+    }
+
+    var user : User? {
+        return person as? User
     }
 }
