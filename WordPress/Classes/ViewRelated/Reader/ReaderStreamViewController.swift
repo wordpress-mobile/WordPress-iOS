@@ -1069,28 +1069,35 @@ import WordPressComAnalytics
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
+
             let objectID = topicInContext.objectID
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: NSDate(),
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
-                            strongSelf.updateLastSyncedForTopic(objectID)
+
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError?) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let error = error {
-                            failure?(error: error)
-                        }
-                    })
+                        strongSelf.updateLastSyncedForTopic(objectID)
+                    }
+                    success?(hasMore: hasMore)
                 })
+            }
+
+            let failureBlock = { (error:NSError?) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let error = error {
+                        failure?(error: error)
+                    }
+                })
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1125,26 +1132,31 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan:sortDate,
-                deletingEarlier:true,
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
+                    }
 
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
+                    success?(hasMore: hasMore)
                 })
+            }
+
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    failure?(error: error)
+                })
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                assertionFailure("Search topics should no have a gap to fill.")
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1172,19 +1184,24 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: earlierThan,
-                success: { (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
-            })
+            let successBlock = { (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    success?(hasMore: hasMore)
+                })
+            }
 
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    failure?(error: error)
+                })
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                let offset = UInt(topicInContext.posts.count)
+                service.fetchPostsForTopic(topicInContext, atOffset: offset, deletingEarlier: false, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
+            }
         }
 
         if let properties = topicPropertyForStats() {
