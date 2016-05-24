@@ -55,7 +55,7 @@ import Foundation
         }
 
         if api == nil {
-            api = WordPressComRestApi()
+            api = WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPressUserAgent())
         }
 
         return api!
