@@ -79,11 +79,9 @@
 {
     [super viewDidLoad];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
 
-    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;
