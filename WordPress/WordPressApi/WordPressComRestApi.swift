@@ -32,7 +32,7 @@ public class WordPressComRestApi: NSObject
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
-    private let oAuthToken: String?
+    public let oAuthToken: String?
     private var userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
