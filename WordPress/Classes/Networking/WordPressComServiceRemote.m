@@ -43,7 +43,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     };
     
     void (^failureBlock)(NSError *error, NSHTTPURLResponse *httpResponse) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
-        NSError *errorWithLocalizedMessage = [self processError:error];
+        NSError *errorWithLocalizedMessage = [self errorWithLocalizedMessage:error];
         failure(errorWithLocalizedMessage);
     };
     
@@ -122,7 +122,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     };
     
     void (^failureBlock)(NSError *, NSHTTPURLResponse *) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
-        NSError *errorWithLocalizedMessage = [self processError:error];
+        NSError *errorWithLocalizedMessage = [self errorWithLocalizedMessage:error];
         failure(errorWithLocalizedMessage);
     };
     
@@ -159,7 +159,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 #pragma mark - Error localization
 
-- (NSError *)processError:(NSError *)error {
+- (NSError *)errorWithLocalizedMessage:(NSError *)error {
     NSError *errorWithLocalizedMessage = error;
     if ([error.domain isEqualToString:WordPressComRestApiErrorDomain] &&
         [error.userInfo objectForKey:WordPressComRestApi.ErrorKeyErrorCode] != nil) {
