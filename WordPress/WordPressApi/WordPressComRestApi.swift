@@ -249,16 +249,15 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
     }
 
     override func responseObjectForResponse(response: NSURLResponse?, data: NSData?, error: NSErrorPointer) -> AnyObject? {
-        var optionalError: NSError?
-        let responseObject = super.responseObjectForResponse(response, data: data, error: &optionalError)
-        error.memory = optionalError
+
+        let responseObject = super.responseObjectForResponse(response, data: data, error: error)
 
         guard let httpResponse = response as? NSHTTPURLResponse where (400...500).contains(httpResponse.statusCode) else {
             return responseObject
         }
 
         var userInfo: [NSObject: AnyObject] = [:]
-        if let originalError = optionalError {
+        if let originalError = error.memory {
             userInfo = originalError.userInfo
         }
 
