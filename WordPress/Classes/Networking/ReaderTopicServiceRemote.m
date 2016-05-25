@@ -167,11 +167,11 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     if (isFeed) {
         NSString *path = [NSString stringWithFormat:@"read/feed/%@", siteID];
         requestUrl = [self pathForEndpoint:path
-                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     } else {
         NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
         requestUrl = [self pathForEndpoint:path
-                               withVersion:ServiceRemoteRESTApiVersion_1_2];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     }
     
     [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
