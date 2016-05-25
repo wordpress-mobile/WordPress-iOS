@@ -55,11 +55,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
                     }
             })
             return AnonymousDisposable() {
-                if let progress = progress {
-                    if !(progress.fractionCompleted == 1.0) {
-                        progress.cancel()
-                    }
-                }
+                progress?.cancel()
             }
         }
 
