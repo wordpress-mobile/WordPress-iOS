@@ -1,4 +1,3 @@
-import AFNetworking
 import Foundation
 import RxSwift
 
