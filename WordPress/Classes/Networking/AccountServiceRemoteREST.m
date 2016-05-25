@@ -24,7 +24,7 @@ static NSString * const UserDictionaryDateKey = @"date";
                     failure:(void (^)(NSError *))failure
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
     NSDictionary *parameters = @{
@@ -54,7 +54,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
     
     NSString *requestUrl = [self pathForEndpoint:@"me"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi GET:requestUrl
        parameters:nil
@@ -107,7 +107,7 @@ static NSString * const UserDictionaryDateKey = @"date";
                                  @"sites": sites
                                  };
     NSString *path = [self pathForEndpoint:@"me/sites"
-                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     [self.wordPressComRestApi POST:path
         parameters:parameters
            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -160,7 +160,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSAssert([email length] > 0, @"Needs an email address.");
 
     NSString *path = [self pathForEndpoint:@"auth/send-login-email"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [self.wordPressComRestApi POST:path
         parameters:@{
