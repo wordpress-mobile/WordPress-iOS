@@ -14,7 +14,23 @@ desc "Install required dependencies"
 task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
-  task :check => %w[bundle:check pod:check lint:check]
+  task :check => %w[bundler:check bundle:check pod:check lint:check]
+
+  namespace :bundler do
+    task :check do
+      unless command?("bundler")
+        Rake::Task["dependencies:bundler:install"].invoke
+      end
+    end
+
+    task :install do
+      puts "Bundler not found in PATH, installing to vendor"
+      ENV['GEM_HOME'] = File.join(PROJECT_DIR, 'vendor', 'gems')
+      ENV['PATH'] = File.join(PROJECT_DIR, 'vendor', 'gems', 'bin') + ":#{ENV['PATH']}"
+      sh "gem install bundler" unless command?("bundler")
+    end
+    CLOBBER << "vendor/gems"
+  end
 
   namespace :bundle do
     lockfile = 'Gemfile.lock'
@@ -169,4 +185,8 @@ end
 
 def xcode_configuration
   ENV['XCODE_CONFIGURATION'] || XCODE_CONFIGURATION
+end
+
+def command?(command)
+  system("which #{command} > /dev/null 2>&1")
 end
