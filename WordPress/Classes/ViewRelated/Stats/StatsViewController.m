@@ -96,7 +96,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
-        self.statsVC.oauth2Token = self.blog.restApi.authToken;
+        self.statsVC.oauth2Token = self.blog.account.authToken;
         self.statsVC.siteID = self.blog.dotComID;
         [self addStatsViewControllerToView];
 
@@ -104,10 +104,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 
     // Jetpack Legacy (WPJetpackRESTEnabled == NO)
-    BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
+    BOOL needsJetpackLogin = ![self.blog.wordPressComRestApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpack.siteID && self.blog.jetpackAccount) {
         self.statsVC.siteID = self.blog.jetpack.siteID;
-        self.statsVC.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
+        self.statsVC.oauth2Token = self.blog.jetpackAccount.authToken;
         [self addStatsViewControllerToView];
 
     } else {
