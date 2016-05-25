@@ -163,7 +163,7 @@ def xcodebuild(*build_cmds)
   cmd += " -configuration #{xcode_configuration}"
   cmd += " "
   cmd += build_cmds.map(&:to_s).join(" ")
-  cmd += " | xcpretty -f `xcpretty-travis-formatter`" unless ENV['verbose']
+  cmd += " | xcpretty -f `bundle exec xcpretty-travis-formatter`" unless ENV['verbose']
   sh(cmd)
 end
 
