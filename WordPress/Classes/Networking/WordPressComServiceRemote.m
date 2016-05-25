@@ -1,7 +1,7 @@
 #import "WordPressComServiceRemote.h"
 #import "NSString+Helpers.h"
-#import "WordPressComApi.h"
 #import "ApiCredentials.h"
+#import "WordPress-Swift.h"
 
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
@@ -38,31 +38,12 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSParameterAssert([username isKindOfClass:[NSString class]]);
     NSParameterAssert([password isKindOfClass:[NSString class]]);
     
-    void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+    void (^successBlock)(id responseObject, NSHTTPURLResponse *httpResponse) = ^(id responseObject, NSHTTPURLResponse *httpResponse) {
         success(responseObject);
     };
     
-    void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSError *errorWithLocalizedMessage;
-        // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
-        // when too many requests occur the API just spits out an html page.
-        if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
-            NSString *responseString = [operation responseString];
-            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
-                NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-                [userInfo setValue:NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"") forKey:WordPressComApiErrorMessageKey];
-                [userInfo setValue:@"too_many_requests" forKey:WordPressComApiErrorCodeKey];
-                errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
-            }
-        } else {
-            NSString *localizedErrorMessage = [self errorMessageForError:error];
-            NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-            [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
-            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
-            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
-        
+    void (^failureBlock)(NSError *error, NSHTTPURLResponse *httpResponse) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
+        NSError *errorWithLocalizedMessage = [self processError:error];
         failure(errorWithLocalizedMessage);
     };
     
@@ -76,9 +57,9 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                              };
     
     NSString *requestUrl = [self pathForEndpoint:@"users/new"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:params success:successBlock failure:failureBlock];
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
@@ -123,14 +104,16 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSParameterAssert([blogUrl isKindOfClass:[NSString class]]);
     NSParameterAssert([languageId isKindOfClass:[NSString class]]);
     
-    void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+    void (^successBlock)(id, NSHTTPURLResponse *) = ^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *response = responseObject;
         if ([response count] == 0) {
             // There was an error creating the blog as a successful call yields a dictionary back.
             NSString *localizedErrorMessage = NSLocalizedString(@"Unknown error", nil);
             NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
-            NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:0 userInfo:userInfo];
+            [userInfo setValue:localizedErrorMessage forKey:WordPressComRestApi.ErrorKeyErrorMessage];
+            NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain
+                                                                            code:WordPressComRestApiErrorUnknown
+                                                                        userInfo:userInfo];
             
             failure(errorWithLocalizedMessage);
         } else {
@@ -138,26 +121,8 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         }
     };
     
-    void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSError *errorWithLocalizedMessage;
-        
-        if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
-            NSString *responseString = [operation responseString];
-            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
-                NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-                [userInfo setValue:NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"") forKey:WordPressComApiErrorMessageKey];
-                [userInfo setValue:@"too_many_requests" forKey:WordPressComApiErrorCodeKey];
-                errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
-            }
-        }
-        else {
-            NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-            NSString *localizedErrorMessage = [self errorMessageForError:error];
-            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-            [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
-            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
-            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
+    void (^failureBlock)(NSError *, NSHTTPURLResponse *) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
+        NSError *errorWithLocalizedMessage = [self processError:error];
         failure(errorWithLocalizedMessage);
     };
     
@@ -187,17 +152,43 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     
     
     NSString *requestUrl = [self pathForEndpoint:@"sites/new"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl parameters:params success:successBlock failure:failureBlock];
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
 #pragma mark - Error localization
 
+- (NSError *)processError:(NSError *)error {
+    NSError *errorWithLocalizedMessage = error;
+    if ([error.domain isEqualToString:WordPressComRestApiErrorDomain] &&
+        [error.userInfo objectForKey:WordPressComRestApi.ErrorKeyErrorCode] != nil) {
+
+        NSString *localizedErrorMessage = [self errorMessageForError:error];
+        NSString *errorCode = [error.userInfo objectForKey:WordPressComRestApi.ErrorKeyErrorCode];
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+        [userInfo setValue:errorCode forKey:WordPressComRestApi.ErrorKeyErrorCode];
+        [userInfo setValue:localizedErrorMessage forKey:WordPressComRestApi.ErrorKeyErrorMessage];
+        errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+    } else {
+        // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
+        // when too many requests occur the API just spits out an html page.
+        NSData *data = error.userInfo[WordPressComRestApi.ErrorKeyResponseData];
+        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        if (responseString != nil &&
+            [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+            userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"");
+            userInfo[WordPressComRestApi.ErrorKeyErrorCode] = @"too_many_requests";
+            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorTooManyRequests userInfo:userInfo];
+        }
+    }
+    return errorWithLocalizedMessage;
+}
 
 - (NSString *)errorMessageForError:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo stringForKey:WordPressComApiErrorCodeKey];
+    NSString *errorCode = [error.userInfo stringForKey:WordPressComRestApi.ErrorKeyErrorCode];
     NSString *errorMessage = [[error.userInfo stringForKey:NSLocalizedDescriptionKey] stringByStrippingHTML];
     
     if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
