@@ -38,11 +38,11 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSParameterAssert([username isKindOfClass:[NSString class]]);
     NSParameterAssert([password isKindOfClass:[NSString class]]);
     
-    void (^successBlock)(id responseObject, NSHTTPURLResponse *httpResponse) = ^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    void (^successBlock)(id, NSHTTPURLResponse *) = ^(id responseObject, NSHTTPURLResponse *httpResponse) {
         success(responseObject);
     };
     
-    void (^failureBlock)(NSError *error, NSHTTPURLResponse *httpResponse) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
+    void (^failureBlock)(NSError *, NSHTTPURLResponse *) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
         NSError *errorWithLocalizedMessage = [self errorWithLocalizedMessage:error];
         failure(errorWithLocalizedMessage);
     };
