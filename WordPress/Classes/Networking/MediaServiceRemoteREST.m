@@ -15,7 +15,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", self.siteID, mediaID];
     NSString *requestUrl = [self pathForEndpoint:apiPath
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary * parameters = @{};
     
@@ -56,7 +56,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }
     
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
@@ -90,7 +90,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/media", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{ @"number" : @1 };
     
@@ -121,7 +121,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:apiPath
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
     if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
@@ -169,7 +169,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/media/%@", self.siteID, media.mediaID];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     NSDictionary *parameters = [self parametersFromRemoteMedia:media];
 
