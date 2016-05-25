@@ -2,12 +2,12 @@ import AFNetworking
 import Foundation
 import RxSwift
 
-class AccountSettingsRemote: ServiceRemoteREST {
+class AccountSettingsRemote: ServiceRemoteWordPressComREST {
     static let remotes = NSMapTable(keyOptions: .StrongMemory, valueOptions: .WeakMemory)
 
     /// Returns an AccountSettingsRemote with the given api, reusing a previous
     /// remote if it exists.
-    static func remoteWithApi(api: WordPressComApi) -> AccountSettingsRemote {
+    static func remoteWithApi(api: WordPressComRestApi) -> AccountSettingsRemote {
         // We're hashing on the authToken because we don't want duplicate api
         // objects for the same account.
         //
@@ -17,13 +17,13 @@ class AccountSettingsRemote: ServiceRemoteREST {
         //
         // However it might be possible that the account gets deallocated and
         // when it's fetched again it would create a different api object.
-        let key = api.authToken.hashValue
+        let key = (api.oAuthToken ?? "anonymous").hashValue
         // FIXME: not thread safe
         // @koke 2016-01-21
         if let remote = remotes.objectForKey(key) {
             return remote as! AccountSettingsRemote
         } else {
-            let remote = AccountSettingsRemote(api: api)
+            let remote = AccountSettingsRemote(wordPressComRestApi: api)
             remotes.setObject(remote, forKey: key)
             return remote
         }
@@ -33,15 +33,15 @@ class AccountSettingsRemote: ServiceRemoteREST {
 
     /// Creates a new AccountSettingsRemote. It is recommended that you use AccountSettingsRemote.remoteWithApi(_)
     /// instead.
-    override init(api: WordPressComApi) {
-        settings = AccountSettingsRemote.settingsWithApi(api)
-        super.init(api: api)
+    override init(wordPressComRestApi: WordPressComRestApi) {
+        settings = AccountSettingsRemote.settingsWithApi(wordPressComRestApi)
+        super.init(wordPressComRestApi: wordPressComRestApi)
     }
 
-    private static func settingsWithApi(api: WordPressComApi) -> Observable<AccountSettings> {
+    private static func settingsWithApi(api: WordPressComRestApi) -> Observable<AccountSettings> {
         let settings = Observable<AccountSettings>.create { observer in
-            let remote = AccountSettingsRemote(api: api)
-            let operation = remote.getSettings(
+            let remote = AccountSettingsRemote(wordPressComRestApi: api)
+            let progress = remote.getSettings(
                 success: { settings in
                     observer.onNext(settings)
                     observer.onCompleted()
@@ -56,9 +56,9 @@ class AccountSettingsRemote: ServiceRemoteREST {
                     }
             })
             return AnonymousDisposable() {
-                if let operation = operation {
-                    if !operation.finished {
-                        operation.cancel()
+                if let progress = progress {
+                    if !(progress.fractionCompleted == 1.0) {
+                        progress.cancel()
                     }
                 }
             }
@@ -67,15 +67,15 @@ class AccountSettingsRemote: ServiceRemoteREST {
         return settings
     }
 
-    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> NSProgress? {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        return api.GET(path,
-            parameters: parameters,
-            success: {
-                operation, responseObject in
+        return wordPressComRestApi.GET(path,
+                parameters: parameters,
+                success: {
+                    responseObject, httpResponse in
 
                 do {
                     let settings = try self.settingsFromResponse(responseObject)
@@ -84,24 +84,24 @@ class AccountSettingsRemote: ServiceRemoteREST {
                     failure(error)
                 }
             },
-            failure: { operation, error in
-                failure(error)
+                failure: { error, httpResponse in
+                    failure(error)
         })
     }
 
     func updateSetting(change: AccountSettingsChange, success: () -> Void, failure: ErrorType -> Void) {
         let endpoint = "me/settings"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = [fieldNameForChange(change): change.stringValue]
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
             parameters: parameters,
             success: {
-                operation, responseObject in
+                responseObject, httpResponse in
 
                 success()
             },
-            failure: { operation, error in
+            failure: { error, httpResponse in
                 failure(error)
         })
     }
