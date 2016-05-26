@@ -97,7 +97,17 @@ extension InvitePersonViewController {
     }
 
     func messageWasPressed() {
-// TODO: Implement Me
+        let text = invite.message
+        let hint = NSLocalizedString("Optional message to be included in the Invitation.", comment: "Invite: Message Hint")
+
+        let controller = SettingsMultiTextViewController(text: text, placeholder: nil, hint: hint, isPassword: false)
+        controller.title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
+        controller.onValueChanged = { [unowned self] value in
+            self.invite.message = value
+            self.refreshMessageCell()
+        }
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     @IBAction func cancelWasPressed() {
