@@ -167,8 +167,9 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         NSString *localizedErrorMessage = [self errorMessageForError:error];
         NSString *errorCode = [error.userInfo objectForKey:WordPressComRestApi.ErrorKeyErrorCode];
         NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-        [userInfo setValue:errorCode forKey:WordPressComRestApi.ErrorKeyErrorCode];
-        [userInfo setValue:localizedErrorMessage forKey:WordPressComRestApi.ErrorKeyErrorMessage];
+        userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode;
+        userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = localizedErrorMessage;
+        userInfo[NSLocalizedDescriptionKey] = localizedErrorMessage;
         errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
     } else {
         // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
