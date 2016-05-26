@@ -32,8 +32,8 @@ public class WordPressComRestApi: NSObject
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
-    public let oAuthToken: String?
-    private var userAgent: String?
+    private let oAuthToken: String?
+    private let userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
@@ -215,6 +215,10 @@ public class WordPressComRestApi: NSObject
             return false
         }
         return !(authToken.isEmpty)
+    }
+
+    override public var hashValue: Int {
+        return "\(oAuthToken),\(userAgent)".hashValue
     }
 }
 

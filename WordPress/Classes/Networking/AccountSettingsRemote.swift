@@ -16,7 +16,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         //
         // However it might be possible that the account gets deallocated and
         // when it's fetched again it would create a different api object.
-        let key = (api.oAuthToken ?? "anonymous").hashValue
+        let key = api.hashValue
         // FIXME: not thread safe
         // @koke 2016-01-21
         if let remote = remotes.objectForKey(key) {
