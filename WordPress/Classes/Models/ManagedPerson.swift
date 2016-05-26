@@ -16,5 +16,14 @@ class ManagedPerson: NSManagedObject {
         linkedUserID = Int64(person.linkedUserID)
         username = person.username
         isSuperAdmin = person.isSuperAdmin
+        isFollower = person.dynamicType.isFollower
+    }
+
+    func toUnmanaged() -> Person {
+        if isFollower {
+            return Follower(managedPerson: self)
+        }
+
+        return User(managedPerson: self)
     }
 }

@@ -45,7 +45,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog's site be changed or deleted?
     BlogFeatureSiteManagement,
     /// Does the blog support different paid plans?
-    BlogFeaturePlans
+    BlogFeaturePlans,
+    /// Does the blog support custom domains?
+    BlogFeatureDomains
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -68,6 +70,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
 @property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;

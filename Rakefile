@@ -1,4 +1,7 @@
 SWIFTLINT_VERSION="0.10.0"
+XCODE_WORKSPACE="WordPress.xcworkspace"
+XCODE_SCHEME="WordPress"
+XCODE_CONFIGURATION="Debug"
 
 require 'fileutils'
 require 'tmpdir'
@@ -11,7 +14,23 @@ desc "Install required dependencies"
 task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
-  task :check => %w[bundle:check pod:check lint:check]
+  task :check => %w[bundler:check bundle:check pod:check lint:check]
+
+  namespace :bundler do
+    task :check do
+      unless command?("bundler")
+        Rake::Task["dependencies:bundler:install"].invoke
+      end
+    end
+
+    task :install do
+      puts "Bundler not found in PATH, installing to vendor"
+      ENV['GEM_HOME'] = File.join(PROJECT_DIR, 'vendor', 'gems')
+      ENV['PATH'] = File.join(PROJECT_DIR, 'vendor', 'gems', 'bin') + ":#{ENV['PATH']}"
+      sh "gem install bundler" unless command?("bundler")
+    end
+    CLOBBER << "vendor/gems"
+  end
 
   namespace :bundle do
     lockfile = 'Gemfile.lock'
@@ -42,7 +61,7 @@ namespace :dependencies do
 
     task :install do
       fold("install.cocoapds") do
-        pod %w[repo update]
+        pod %w[repo update --silent]
         pod %w[install]
       end
     end
@@ -79,9 +98,19 @@ end
 
 CLOBBER << "vendor"
 
-desc "Build and test"
+desc "Build #{XCODE_SCHEME}"
+task :build => [:dependencies] do
+  xcodebuild(:build)
+end
+
+desc "Run test suite"
 task :test => [:dependencies] do
-  sh './Scripts/build.sh'
+  xcodebuild(:build, :test)
+end
+
+desc "Remove any temporary products"
+task :clean do
+  xcodebuild(:clean)
 end
 
 desc "Checks the source for style errors"
@@ -98,7 +127,7 @@ end
 
 desc "Open the project in Xcode"
 task :xcode => [:dependencies] do
-  sh "open WordPress.xcworkspace"
+  sh "open #{XCODE_WORKSPACE}"
 end
 
 def check_manifest(file, manifest)
@@ -139,4 +168,25 @@ def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
   installed_version = `#{swiftlint_bin} version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
+end
+
+def xcodebuild(*build_cmds)
+  cmd = "xcodebuild"
+  cmd += " -destination 'platform=iOS Simulator,name=iPhone 6s'"
+  cmd += " -sdk iphonesimulator"
+  cmd += " -workspace #{XCODE_WORKSPACE}"
+  cmd += " -scheme #{XCODE_SCHEME}"
+  cmd += " -configuration #{xcode_configuration}"
+  cmd += " "
+  cmd += build_cmds.map(&:to_s).join(" ")
+  cmd += " | xcpretty -f `bundle exec xcpretty-travis-formatter`" unless ENV['verbose']
+  sh(cmd)
+end
+
+def xcode_configuration
+  ENV['XCODE_CONFIGURATION'] || XCODE_CONFIGURATION
+end
+
+def command?(command)
+  system("which #{command} > /dev/null 2>&1")
 end

@@ -45,6 +45,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic tags;
 @dynamic comments;
 @dynamic connections;
+@dynamic domains;
 @dynamic themes;
 @dynamic media;
 @dynamic menus;
@@ -435,13 +436,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
-        case BlogFeatureMenus:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeatureMenus:
+            return [self supportsRestApi] && [self isAdmin];
         case BlogFeaturePrivate:
             // Private visibility is only supported by wpcom blogs
             return [self isHostedAtWPcom];
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
+        case BlogFeatureDomains:
+            return [self isHostedAtWPcom] && [self supportsSiteManagementServices];
     }
 }
 
