@@ -213,9 +213,7 @@ public class WordPressComRestApi: NSObject
     }
 
     override public var hashValue: Int {
-        override public var hashValue: Int {
-            return "\(oAuthToken),\(userAgent)".hashValue
-        }
+        return "\(oAuthToken),\(userAgent)".hashValue
     }
 }
 
