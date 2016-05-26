@@ -2,6 +2,8 @@ import Foundation
 import UIKit
 import WordPressShared
 
+
+
 /// Allows the user to Invite Followers / Users
 ///
 class InvitePersonViewController : UITableViewController {
@@ -11,6 +13,12 @@ class InvitePersonViewController : UITableViewController {
     /// Site ID
     ///
     var siteID: Int!
+
+
+    /// Invitation
+    ///
+    var invite = Invite()
+
 
     /// Person's Username
     ///
@@ -70,6 +78,40 @@ class InvitePersonViewController : UITableViewController {
             break
         }
     }
+
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == lastSectionIndex else {
+            return CGFloat.min
+        }
+
+        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+    }
+
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == lastSectionIndex else {
+            return nil
+        }
+
+        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        headerView.title = footerText
+        return headerView
+    }
+
+
+    // MARK: - Private Structs
+
+    struct Invite {
+        var username    : String?
+        var role        : Role?
+        var message     : String?
+    }
+
+
+    private var lastSectionIndex : Int {
+        return tableView.numberOfSections - 1
+    }
+
+    private let footerText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
 }
 
 
@@ -144,7 +186,7 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func setupUsernameCell() {
-        usernameCell.textLabel?.text = NSLocalizedString("Email or username...", comment: "Invite Username Placeholder")
+        usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
         WPStyleGuide.configureTableViewCell(usernameCell)
 // TODO: Implement Me
     }
@@ -157,6 +199,8 @@ private extension InvitePersonViewController {
 
     func setupMessageCell() {
 // TODO: Implement Me
+        messageCell.textLabel?.numberOfLines = 0
+        WPStyleGuide.configureTableViewCell(messageCell)
     }
 }
 
@@ -166,7 +210,7 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
-// TODO: Implement Me
+        usernameCell.detailTextLabel?.text = invite.username?.nonEmptyString()
     }
 
     func refreshRoleCell() {
@@ -174,6 +218,6 @@ private extension InvitePersonViewController {
     }
 
     func refreshMessageCell() {
-// TODO: Implement Me
+        messageCell.textLabel?.text = invite.message
     }
 }
