@@ -20,13 +20,13 @@ class AccountSettingsRemoteTests: XCTestCase {
     }
 
     func testRemoteWithApiDoesntDuplicateRemotes() {
-        let api = WordPressComApi(OAuthToken: "authtoken1")
+        let api = WordPressComRestApi(oAuthToken: "authtoken1")
         let remote1 = AccountSettingsRemote.remoteWithApi(api)
         let remote2 = AccountSettingsRemote.remoteWithApi(api)
         expect(remote1).to(beIdenticalTo(remote2))
         expect(remote1.settings).to(beIdenticalTo(remote2.settings))
 
-        let duplicatedApi = WordPressComApi(OAuthToken: "authtoken1")
+        let duplicatedApi = WordPressComRestApi(oAuthToken: "authtoken1")
         let remote3 = AccountSettingsRemote.remoteWithApi(duplicatedApi)
         expect(remote1).to(beIdenticalTo(remote3))
     }
@@ -67,8 +67,8 @@ class AccountSettingsRemoteTests: XCTestCase {
     // MARK: - Helpers
 
     func settingsObservable() -> Observable<AccountSettings> {
-        let api = WordPressComApi(OAuthToken: "authtoken")
-        let remote = AccountSettingsRemote(api: api)
+        let api = WordPressComRestApi(oAuthToken: "authtoken")
+        let remote = AccountSettingsRemote(wordPressComRestApi: api)
         return remote.settings
     }
 
