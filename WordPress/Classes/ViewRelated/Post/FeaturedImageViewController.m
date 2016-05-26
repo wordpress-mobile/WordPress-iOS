@@ -1,6 +1,5 @@
 #import "FeaturedImageViewController.h"
 
-#import "Post.h"
 #import "Media.h"
 #import "WordPress-Swift.h"
 

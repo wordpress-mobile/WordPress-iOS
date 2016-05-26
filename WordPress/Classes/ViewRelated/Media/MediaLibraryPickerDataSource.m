@@ -3,7 +3,6 @@
 #import "MediaService.h"
 #import "Blog.h"
 #import "ContextManager.h"
-#import "Post.h"
 #import "WordPress-swift.h"
 
 @interface  MediaLibraryPickerDataSource()
