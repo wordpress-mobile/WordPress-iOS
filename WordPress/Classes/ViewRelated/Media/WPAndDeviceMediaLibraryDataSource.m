@@ -1,7 +1,6 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "Blog.h"
-#import "Post.h"
 
 @interface WPAndDeviceMediaLibraryDataSource()
     @property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;

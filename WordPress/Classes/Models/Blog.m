@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"

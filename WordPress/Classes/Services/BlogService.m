@@ -5,7 +5,6 @@
 #import "ContextManager.h"
 #import "WPError.h"
 #import "Comment.h"
-#import "Post.h"
 #import "Page.h"
 #import "Media.h"
 #import "PostCategoryService.h"
