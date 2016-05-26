@@ -81,11 +81,16 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
 
-    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
-
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
+    AFHTTPSessionManager* manager = [[AFHTTPSessionManager alloc] init];
+    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (error) {
+            DDLogError(@"Error received while checking feedback enabled status: %@", error);
+            // Lets be optimistic and turn on feedback by default if this call doesn't work
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
+            [defaults synchronize];
+            return;
+        }
         DDLogVerbose(@"Feedback response received: %@", responseObject);
         NSNumber *feedbackEnabled = responseObject[@"feedback-enabled"];
         if (feedbackEnabled == nil) {
@@ -95,16 +100,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
         [defaults synchronize];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
-        [defaults synchronize];
     }];
 
-    [operation start];
+    [dataTask resume];
 }
 
 + (void)showFromTabBar
@@ -225,9 +223,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
         [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
 
-        [defaultAccount.restApi GET:@"v1.1/me"
+        [defaultAccount.wordPressComRestApi GET:@"v1.1/me"
                          parameters:nil
-                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                 [self hideLoadingSpinner];
 
                                 NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
@@ -236,7 +234,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
                                 [HelpshiftSupport setUserIdentifier:userID];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
-                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                 [self hideLoadingSpinner];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:defaultAccount.username andEmail:nil andMetadata:metaData];
                             }];
