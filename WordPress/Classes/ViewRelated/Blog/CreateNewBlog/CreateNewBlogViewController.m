@@ -427,7 +427,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
 
 - (void)displayRemoteError:(NSError *)error
 {
-    NSString *errorMessage = [error.userInfo objectForKey:WordPressComRestApi.ErrorKeyErrorMessage];
+    NSString *errorMessage = error.userInfo[NSLocalizedDescriptionKey];
     [self showError:errorMessage];
 }
 
