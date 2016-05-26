@@ -78,8 +78,18 @@ class InvitePersonViewController : UITableViewController {
 extension InvitePersonViewController {
 
     func usernameWasPressed() {
-// TODO: Implement Me
+        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
+        let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
+        let controller  = SettingsTextViewController(text: invite.username, placeholder: placeholder, hint: hint)
+        controller.title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
+        controller.mode = .Email
+        controller.onValueChanged = { [unowned self] value in
+            self.invite.username = value
+            self.refreshUsernameCell()
+        }
+// TODO: No validation
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     func roleWasPressed() {
