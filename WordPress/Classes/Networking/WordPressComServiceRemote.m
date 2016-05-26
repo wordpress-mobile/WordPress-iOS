@@ -110,7 +110,8 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
             // There was an error creating the blog as a successful call yields a dictionary back.
             NSString *localizedErrorMessage = NSLocalizedString(@"Unknown error", nil);
             NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-            [userInfo setValue:localizedErrorMessage forKey:WordPressComRestApi.ErrorKeyErrorMessage];
+            userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = localizedErrorMessage;
+            userInfo[NSLocalizedDescriptionKey] = localizedErrorMessage;
             NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain
                                                                             code:WordPressComRestApiErrorUnknown
                                                                         userInfo:userInfo];
@@ -181,7 +182,10 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
             NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
             userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"");
             userInfo[WordPressComRestApi.ErrorKeyErrorCode] = @"too_many_requests";
-            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorTooManyRequests userInfo:userInfo];
+            userInfo[NSLocalizedDescriptionKey] = userInfo[WordPressComRestApi.ErrorKeyErrorMessage];
+            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain
+                                                                   code:WordPressComRestApiErrorTooManyRequests
+                                                               userInfo:userInfo];
         }
     }
     return errorWithLocalizedMessage;
