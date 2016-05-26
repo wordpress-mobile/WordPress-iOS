@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -541,6 +541,10 @@
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
+    <entity name="ReaderSearchSuggestion" representedClassName="WordPress.ReaderSearchSuggestion" syncable="YES">
+        <attribute name="date" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="searchPhrase" attributeType="String" indexed="YES" syncable="YES"/>
+    </entity>
     <entity name="ReaderSearchTopic" representedClassName="WordPress.ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -649,5 +653,6 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
+        <element name="ReaderSearchSuggestion" positionX="27" positionY="153" width="128" height="30"/>
     </elements>
 </model>
