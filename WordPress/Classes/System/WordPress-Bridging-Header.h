@@ -139,7 +139,7 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
-
+#import "WordPressComServiceRemote.h"
 // Pods
 
 #import <FormatterKit/FormatterKit-umbrella.h>
