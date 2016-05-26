@@ -213,10 +213,8 @@ public class WordPressComRestApi: NSObject
     }
 
     override public var hashValue: Int {
-        if let validAuthToken = oAuthToken {
-            return validAuthToken.hashValue
-        } else {
-            return "anonymous".hashValue
+        override public var hashValue: Int {
+            return "\(oAuthToken),\(userAgent)".hashValue
         }
     }
 }
