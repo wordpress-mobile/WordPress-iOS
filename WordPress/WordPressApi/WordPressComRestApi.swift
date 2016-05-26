@@ -17,11 +17,16 @@ import AFNetworking
     case AuthorizationRequired
     case UploadFailed
     case RequestSerializationFailed
+    case TooManyRequests
     case Unknown
 }
 
 public class WordPressComRestApi: NSObject
 {
+    public static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
+    public static let ErrorKeyErrorCode: String = "WordPressComApiErrorCodeKey"
+    public static let ErrorKeyErrorMessage: String = "WordPressComApiErrorMessageKey"
+
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
@@ -244,10 +249,16 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
     }
 
     override func responseObjectForResponse(response: NSURLResponse?, data: NSData?, error: NSErrorPointer) -> AnyObject? {
+
         let responseObject = super.responseObjectForResponse(response, data: data, error: error)
 
         guard let httpResponse = response as? NSHTTPURLResponse where (400...500).contains(httpResponse.statusCode) else {
             return responseObject
+        }
+
+        var userInfo: [NSObject: AnyObject] = [:]
+        if let originalError = error.memory {
+            userInfo = originalError.userInfo
         }
 
         var errorObject = responseObject
@@ -270,10 +281,14 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         ]
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
+        userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode
+        userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = errorDescription
         let nserror = mappedError as NSError
+        userInfo[NSLocalizedDescriptionKey] =  errorDescription
         error.memory = NSError(domain:nserror.domain,
                                code:nserror.code,
-                               userInfo:[NSLocalizedDescriptionKey: errorDescription])
+                               userInfo:userInfo
+            )
         return responseObject
     }
 }
