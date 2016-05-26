@@ -258,7 +258,7 @@ public class SharingService : LocalCoreDataService
                 success?()
             },
             failure: { (error:NSError!) in
-                if let errorCode = error.userInfo[WordPressComApiErrorCodeKey] as? String {
+                if let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
                     if errorCode == self.SharingAPIErrorNotFound {
                         // This is a special situation. If the call to disconnect the service returns not_found then the service
                         // has probably already been disconnected and the call was made with stale data.
