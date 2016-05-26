@@ -8,6 +8,10 @@ class InvitePersonViewController : UITableViewController {
 
     // MARK: - Public Properties
 
+    /// Site ID
+    ///
+    var siteID: Int!
+
     /// Person's Username
     ///
     @IBOutlet var usernameCell : UITableViewCell! {
@@ -74,23 +78,24 @@ class InvitePersonViewController : UITableViewController {
 extension InvitePersonViewController {
 
     func usernameWasPressed() {
+// TODO: Implement Me
 
     }
 
     func roleWasPressed() {
-
+// TODO: Implement Me
     }
 
     func messageWasPressed() {
-
+// TODO: Implement Me
     }
-    
+
     @IBAction func cancelWasPressed() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBAction func sendWasPressed() {
-
+// TODO: Implement Me
     }
 }
 
@@ -119,15 +124,19 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func setupUsernameCell() {
-
+        usernameCell.textLabel?.text = NSLocalizedString("Email or username...", comment: "Invite Username Placeholder")
+        WPStyleGuide.configureTableViewCell(usernameCell)
+// TODO: Implement Me
     }
 
     func setupRoleCell() {
-
+        roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        WPStyleGuide.configureTableViewCell(roleCell)
+// TODO: Implement Me
     }
 
     func setupMessageCell() {
-
+// TODO: Implement Me
     }
 }
 
@@ -137,14 +146,14 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
-
+// TODO: Implement Me
     }
 
     func refreshRoleCell() {
-
+// TODO: Implement Me
     }
 
     func refreshMessageCell() {
-
+// TODO: Implement Me
     }
 }
