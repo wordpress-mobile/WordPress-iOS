@@ -6,6 +6,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
+#import "WordPress-Swift.h"
 
 NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNotification";
 
@@ -67,7 +68,9 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     
     __weak __typeof(self) weakSelf = self;
     
-    [[defaultAccount restApi] GET:suggestPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount wordPressComRestApi] GET:suggestPath
+                                   parameters:params
+                                      success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSArray *restSuggestions = responseObject[@"suggestions"];
         NSMutableArray *suggestions = [[NSMutableArray alloc] initWithCapacity:restSuggestions.count];
         
@@ -81,7 +84,7 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
         
         // remove siteID from the currently being requested list
         [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse){
         // remove siteID from the currently being requested list
         [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
 
