@@ -92,12 +92,12 @@ static CGFloat const SettingsMinHeight = 41.0f;
     return _hintView;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
         self.onValueChanged(self.textView.text);
     }
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
