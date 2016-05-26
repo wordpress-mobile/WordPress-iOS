@@ -282,6 +282,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
         userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode
+        userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = errorDescription
         let nserror = mappedError as NSError
         userInfo[NSLocalizedDescriptionKey] =  errorDescription
         error.memory = NSError(domain:nserror.domain,
