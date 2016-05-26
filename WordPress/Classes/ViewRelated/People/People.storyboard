@@ -429,11 +429,11 @@
                             </tableViewSection>
                             <tableViewSection id="KTt-dH-XgO">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="sdj-uY-1LY">
-                                        <rect key="frame" x="0.0" y="259" width="600" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="88" id="sdj-uY-1LY">
+                                        <rect key="frame" x="0.0" y="259" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sdj-uY-1LY" id="Y8v-KJ-xnc">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -446,6 +446,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="MO7-QW-hIa"/>
+                    <connections>
+                        <outlet property="messageCell" destination="sdj-uY-1LY" id="14D-vu-j5f"/>
+                        <outlet property="roleCell" destination="JUH-Ao-gEv" id="xIB-S2-RYP"/>
+                        <outlet property="usernameCell" destination="i2R-sD-lxa" id="wgx-nw-l50"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuT-BL-XQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
