@@ -104,7 +104,7 @@ public class SignupService : LocalCoreDataService
         let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
 
-        let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
+        let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
         remote.validateWPComBlogWithUrl(params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
@@ -129,7 +129,7 @@ public class SignupService : LocalCoreDataService
                                    failure: SignupFailureBlock) {
 
         status(status: .CreatingUser)
-        let remote = WordPressComServiceRemote(api: WordPressComApi.anonymousApi())
+        let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
         remote.createWPComAccountWithEmail(params.email,
                                             andUsername: params.username,
                                             andPassword: params.password,
@@ -200,7 +200,7 @@ public class SignupService : LocalCoreDataService
                                     success: (blog: Blog) -> Void,
                                     failure: SignupFailureBlock) {
 
-        guard let api = account.restApi else {
+        guard let api = account.wordPressComRestApi else {
             DDLogSwift.logError("Failed to get the REST API from the account.")
             assertionFailure()
 
@@ -213,7 +213,7 @@ public class SignupService : LocalCoreDataService
         let languageId = currentLanguage.stringValue
 
         status(status: .CreatingBlog)
-        let remote = WordPressComServiceRemote(api: api)
+        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
         remote.createWPComBlogWithUrl(params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
@@ -329,6 +329,9 @@ public class SignupService : LocalCoreDataService
 
     // MARK: Private Instance Methods
 
+    func anonymousApi() -> WordPressComRestApi {
+        return WordPressComRestApi(userAgent:WPUserAgent.wordPressUserAgent())
+    }
 
     /// An internal struct for conveniently sharing params between the different
     /// sign up steps.
