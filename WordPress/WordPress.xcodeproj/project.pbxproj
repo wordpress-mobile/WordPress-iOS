@@ -859,6 +859,7 @@
 		FFB8DCA91CE3248400D4D1B7 /* ServiceRemoteWordPressComREST.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB8DCA61CE3248400D4D1B7 /* ServiceRemoteWordPressComREST.m */; };
 		FFB8DCAA1CE3248400D4D1B7 /* SiteServiceRemoteWordPressComREST.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB8DCA81CE3248400D4D1B7 /* SiteServiceRemoteWordPressComREST.m */; };
 		FFB8DCAB1CE3271F00D4D1B7 /* WordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8DCA31CE320F200D4D1B7 /* WordPressComRestApi.swift */; };
+		FFC347461CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = FFC347451CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json */; };
 		FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */; };
 		FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */; };
 		FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */; };
@@ -2207,6 +2208,7 @@
 		FFB8DCA61CE3248400D4D1B7 /* ServiceRemoteWordPressComREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteWordPressComREST.m; sourceTree = "<group>"; };
 		FFB8DCA71CE3248400D4D1B7 /* SiteServiceRemoteWordPressComREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteServiceRemoteWordPressComREST.h; sourceTree = "<group>"; };
 		FFB8DCA81CE3248400D4D1B7 /* SiteServiceRemoteWordPressComREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteServiceRemoteWordPressComREST.m; sourceTree = "<group>"; };
+		FFC347451CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WordPressComRestApiMultipleErrors.json; sourceTree = "<group>"; };
 		FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
@@ -4468,6 +4470,7 @@
 			isa = PBXGroup;
 			children = (
 				FFB8DC971CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json */,
+				FFC347451CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json */,
 				FF34EEAA1CF480F100F8B38D /* WordPressComRestApiFailThrottled.json */,
 				FFB8DC981CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json */,
 				FFB8DC991CE320C700D4D1B7 /* WordPressComRestApiFailRequestInvalidToken.json */,
@@ -5163,6 +5166,7 @@
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
 				FF9839AD1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json in Resources */,
+				FFC347461CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json in Resources */,
 				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
