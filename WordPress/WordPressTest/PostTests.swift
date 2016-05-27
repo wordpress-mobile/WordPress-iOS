@@ -17,7 +17,7 @@ class PostTests: XCTestCase {
     }
 
     private func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObjectForEntityForName(PostEntityName, inManagedObjectContext: context) as! Post
+        return NSEntityDescription.insertNewObjectForEntityForName(Post.entityName, inManagedObjectContext: context) as! Post
     }
 
     private func newTestPostCategory() -> PostCategory {
@@ -58,14 +58,6 @@ class PostTests: XCTestCase {
         XCTAssert(categoriesText == "1, 2, 3")
     }
 
-    func testSetCategoriesFromNamesWithANilInputParam() {
-        let post = newTestPost()
-
-        post.setCategoriesFromNames(nil)
-
-        XCTAssert(post.categories?.count == 0)
-    }
-
     func testSetCategoriesFromNamesWithTwoCategories() {
         let blog = newTestBlog()
         let post = newTestPost()
@@ -79,7 +71,7 @@ class PostTests: XCTestCase {
         post.blog = blog
         post.setCategoriesFromNames(["One", "Three"])
 
-        let postCategories = post.categories as! Set<PostCategory>
+        let postCategories = post.categories!
         XCTAssert(postCategories.count == 2)
         XCTAssert(postCategories.contains(category1))
         XCTAssert(!postCategories.contains(category2))
