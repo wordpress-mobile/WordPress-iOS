@@ -424,7 +424,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 - (NSString *)titleForFooterInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
-        return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
+        if ([HelpshiftUtils isHelpshiftEnabled]) {
+            return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or contact us for more help.", @"Support screen footer text displayed when Helpshift is enabled.");
+        } else {
+            return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"Support screen footer text displayed when Helpshift is disabled.");
+        }
     } else if (section == SettingsSectionSettings) {
         return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }

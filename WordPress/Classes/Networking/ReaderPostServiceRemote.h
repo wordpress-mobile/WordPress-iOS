@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 @class RemoteReaderPost;
 
-@interface ReaderPostServiceRemote : ServiceRemoteREST
+@interface ReaderPostServiceRemote : ServiceRemoteWordPressComREST
 
 /**
  Fetches the posts from the specified remote endpoint
