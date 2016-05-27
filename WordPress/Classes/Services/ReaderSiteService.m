@@ -19,7 +19,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -27,7 +27,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -45,7 +45,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)followSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -53,7 +53,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
 
     // Make sure the URL provided leads to a visible site / does not 404.
     [service checkSiteExistsAtURL:siteURL success:^{
@@ -67,7 +67,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)followSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -75,7 +75,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service checkSubscribedToSiteByID:siteID success:^(BOOL follows) {
         if (follows) {
             if (failure) {
@@ -100,7 +100,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)unfollowSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -108,7 +108,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
         if (success) {
             success();
@@ -120,7 +120,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -135,7 +135,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         sanitizedURL = [NSString stringWithFormat:@"http://%@", sanitizedURL];
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service checkSubscribedToFeedByURL:[NSURL URLWithString:sanitizedURL] success:^(BOOL follows) {
         if (follows) {
             if (failure) {
@@ -159,7 +159,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -167,7 +167,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
         if (success) {
             success();
@@ -227,7 +227,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
+    WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
         if (failure) {
             failure([self errorForNotLoggedIn]);
@@ -238,7 +238,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     // Optimistically flag the posts from the site being blocked.
     [self flagPostsFromSite:siteID asBlocked:blocked];
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
         NSDictionary *properties = @{WPAppAnalyticsKeyBlogID:siteID};
         [WPAppAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
@@ -261,11 +261,11 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 /**
  Get the api to use for the request.
  */
-- (WordPressComApi *)apiForRequest
+- (WordPressComRestApi *)apiForRequest
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WordPressComApi *api = [defaultAccount restApi];
+    WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
         return nil;
     }
@@ -277,8 +277,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
  */
 - (void)followExistingSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    WordPressComApi *api = [self apiForRequest];
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
+    WordPressComRestApi *api = [self apiForRequest];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         if (siteID) {
             [self followSiteWithID:siteID success:success failure:failure];

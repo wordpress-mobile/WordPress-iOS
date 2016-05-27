@@ -17,6 +17,7 @@
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
+#import "MenusViewController.h"
 
 @import Gridicons;
 
@@ -31,7 +32,6 @@ NSString * const BlogDetailAccountHideViewAdminTimeZone = @"GMT";
 NSInteger const BlogDetailAccountHideViewAdminYear = 2015;
 NSInteger const BlogDetailAccountHideViewAdminMonth = 9;
 NSInteger const BlogDetailAccountHideViewAdminDay = 7;
-
 
 #pragma mark - Helper Classes for Blog Details view model.
 
@@ -216,8 +216,8 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     NSMutableArray *marr = [NSMutableArray array];
     [marr addObject:[self generalSectionViewModel]];
     [marr addObject:[self publishTypeSectionViewModel]];
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
-        [marr addObject:[self appearanceSectionViewModel]];
+    if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+        [marr addObject:[self personalizeSectionViewModel]];
     }
     [marr addObject:[self configurationSectionViewModel]];
 
@@ -296,16 +296,24 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
 
-- (BlogDetailsSection *)appearanceSectionViewModel
+- (BlogDetailsSection *)personalizeSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                    image:[Gridicon iconOfType:GridiconTypeThemes]
-                                                 callback:^{
-                                                     [weakSelf showThemes];
-                                                 }]];
-
+    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
+                                                        image:[Gridicon iconOfType:GridiconTypeThemes]
+                                                     callback:^{
+                                                         [weakSelf showThemes];
+                                                     }]];
+    }
+    if ([self.blog supports:BlogFeatureMenus]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
+                                                        image:[Gridicon iconOfType:GridiconTypeMenus]
+                                                     callback:^{
+                                                         [weakSelf showMenus];
+                                                     }]];
+    }
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
@@ -328,6 +336,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                         image:[Gridicon iconOfType:GridiconTypeUser]
                                                      callback:^{
                                                          [weakSelf showPeople];
+                                                     }]];
+    }
+
+    if ([Feature enabled:FeatureFlagDomains] && [self.blog supports:BlogFeatureDomains]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the domain purchase / management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypeDomains]
+                                                     callback:^{
+                                                         [weakSelf showDomains];
                                                      }]];
     }
 
@@ -509,6 +525,13 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)showDomains
+{
+    // TODO(@frosty, 2016-04-01): add analytics
+    DomainsListViewController *controller = [DomainsListViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)showSettings
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
@@ -543,6 +566,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    [self.navigationController pushViewController:viewController
+                                         animated:YES];
+}
+
+- (void)showMenus
+{
+    [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
+    MenusViewController *viewController = [[MenusViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
