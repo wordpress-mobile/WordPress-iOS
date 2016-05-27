@@ -28,6 +28,7 @@ namespace :dependencies do
         sh "cat #{manifest}"
         puts "Cache contents"
         sh "find vendor"
+        sh "bundle exec xcpretty --version"
       end
     end
 
