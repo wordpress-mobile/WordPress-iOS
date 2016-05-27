@@ -24,8 +24,10 @@ namespace :dependencies do
     end
 
     task :install do
-      sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
-      FileUtils.cp(lockfile, manifest)
+      fold("install.bundler") do
+        sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
+        FileUtils.cp(lockfile, manifest)
+      end
     end
     CLOBBER << "vendor/bundle"
     CLOBBER << ".bundle"
