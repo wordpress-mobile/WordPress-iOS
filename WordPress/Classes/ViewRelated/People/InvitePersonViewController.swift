@@ -202,9 +202,7 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func setupUsernameCell() {
-        usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
         WPStyleGuide.configureTableViewCell(usernameCell)
-// TODO: Implement Me
     }
 
     func setupRoleCell() {
@@ -226,7 +224,14 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
-        usernameCell.detailTextLabel?.text = username?.nonEmptyString()
+        guard let username = username?.nonEmptyString() else {
+            usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
+            usernameCell.textLabel?.textColor = WPStyleGuide.grey()
+            return
+        }
+
+        usernameCell.textLabel?.text = username
+        usernameCell.textLabel?.textColor = WPStyleGuide.darkGrey()
     }
 
     func refreshRoleCell() {
