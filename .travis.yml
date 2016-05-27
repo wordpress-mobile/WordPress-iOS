@@ -5,6 +5,7 @@ xcode_scheme: WordPress
 xcode_sdk: iphonesimulator
 cache:
 - cocoapods: true
+- bundler: false
 - directories:
   - vendor
 notifications:
