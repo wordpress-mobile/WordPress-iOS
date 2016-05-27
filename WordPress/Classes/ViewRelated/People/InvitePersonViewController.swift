@@ -15,37 +15,72 @@ class InvitePersonViewController : UITableViewController {
     var siteID: Int!
 
 
-    /// Invitation
+    // MARK: - Private Properties
+
+    /// Invitation Username / Email
     ///
-    var invite = Invite()
+    private var username: String? {
+        didSet {
+            refreshUsernameCell()
+        }
+    }
+
+    /// Invitation Role
+    ///
+    private var role : Role? {
+        didSet {
+            refreshRoleCell()
+        }
+    }
+
+    /// Invitation Message
+    ///
+    private var message : String? {
+        didSet {
+            refreshMessageCell()
+        }
+    }
+
+    /// Last Section Index
+    ///
+    private var lastSectionIndex : Int {
+        return tableView.numberOfSections - 1
+    }
+
+    /// Last Section Footer Text
+    ///
+    private let lastSectionFooter = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
 
 
-    /// Person's Username
+    // MARK: - Outlets
+
+    /// Username Cell
     ///
-    @IBOutlet var usernameCell : UITableViewCell! {
+    @IBOutlet private var usernameCell : UITableViewCell! {
         didSet {
             setupUsernameCell()
             refreshUsernameCell()
         }
     }
 
-    /// Person's Role
+    /// Role Cell
     ///
-    @IBOutlet var roleCell : UITableViewCell! {
+    @IBOutlet private var roleCell : UITableViewCell! {
         didSet {
             setupRoleCell()
             refreshRoleCell()
         }
     }
 
-    /// Invite Message
+    /// Message Cell
     ///
-    @IBOutlet var messageCell : UITableViewCell! {
+    @IBOutlet private var messageCell : UITableViewCell! {
         didSet {
             setupMessageCell()
             refreshMessageCell()
         }
     }
+
 
 
     // MARK: - View Lifecyle Methods
@@ -84,7 +119,7 @@ class InvitePersonViewController : UITableViewController {
             return CGFloat.min
         }
 
-        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+        return WPTableViewSectionHeaderFooterView.heightForFooter(lastSectionFooter, width: view.bounds.width)
     }
 
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -93,25 +128,9 @@ class InvitePersonViewController : UITableViewController {
         }
 
         let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title = footerText
+        headerView.title = lastSectionFooter
         return headerView
     }
-
-
-    // MARK: - Private Structs
-
-    struct Invite {
-        var username    : String?
-        var role        : Role?
-        var message     : String?
-    }
-
-
-    private var lastSectionIndex : Int {
-        return tableView.numberOfSections - 1
-    }
-
-    private let footerText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
 }
 
 
@@ -123,12 +142,11 @@ extension InvitePersonViewController {
         let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
         let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
-        let controller  = SettingsTextViewController(text: invite.username, placeholder: placeholder, hint: hint)
+        let controller  = SettingsTextViewController(text: username, placeholder: placeholder, hint: hint)
         controller.title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
         controller.mode = .Email
         controller.onValueChanged = { [unowned self] value in
-            self.invite.username = value
-            self.refreshUsernameCell()
+            self.username = value
         }
 // TODO: No validation
         navigationController?.pushViewController(controller, animated: true)
@@ -139,14 +157,12 @@ extension InvitePersonViewController {
     }
 
     func messageWasPressed() {
-        let text = invite.message
         let hint = NSLocalizedString("Optional message to be included in the Invitation.", comment: "Invite: Message Hint")
 
-        let controller = SettingsMultiTextViewController(text: text, placeholder: nil, hint: hint, isPassword: false)
+        let controller = SettingsMultiTextViewController(text: message, placeholder: nil, hint: hint, isPassword: false)
         controller.title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
         controller.onValueChanged = { [unowned self] value in
-            self.invite.message = value
-            self.refreshMessageCell()
+            self.message = value
         }
 
         navigationController?.pushViewController(controller, animated: true)
@@ -210,7 +226,7 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
-        usernameCell.detailTextLabel?.text = invite.username?.nonEmptyString()
+        usernameCell.detailTextLabel?.text = username?.nonEmptyString()
     }
 
     func refreshRoleCell() {
@@ -218,6 +234,6 @@ private extension InvitePersonViewController {
     }
 
     func refreshMessageCell() {
-        messageCell.textLabel?.text = invite.message
+        messageCell.textLabel?.text = message
     }
 }
