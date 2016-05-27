@@ -1,7 +1,6 @@
 #import "PostService.h"
 #import "Coordinate.h"
 #import "PostCategory.h"
-#import "Page.h"
 #import "PostServiceRemote.h"
 #import "PostServiceRemoteREST.h"
 #import "PostServiceRemoteXMLRPC.h"

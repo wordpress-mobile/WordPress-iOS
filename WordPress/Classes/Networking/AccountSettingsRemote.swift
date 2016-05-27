@@ -1,6 +1,5 @@
 import AFNetworking
 import Foundation
-import RxSwift
 
 class AccountSettingsRemote: ServiceRemoteREST {
     static let remotes = NSMapTable(keyOptions: .StrongMemory, valueOptions: .WeakMemory)
@@ -29,63 +28,25 @@ class AccountSettingsRemote: ServiceRemoteREST {
         }
     }
 
-    let settings: Observable<AccountSettings>
-
-    /// Creates a new AccountSettingsRemote. It is recommended that you use AccountSettingsRemote.remoteWithApi(_)
-    /// instead.
-    override init(api: WordPressComApi) {
-        settings = AccountSettingsRemote.settingsWithApi(api)
-        super.init(api: api)
-    }
-
-    private static func settingsWithApi(api: WordPressComApi) -> Observable<AccountSettings> {
-        let settings = Observable<AccountSettings>.create { observer in
-            let remote = AccountSettingsRemote(api: api)
-            let operation = remote.getSettings(
-                success: { settings in
-                    observer.onNext(settings)
-                    observer.onCompleted()
-                }, failure: { error in
-                    let nserror = error as NSError
-                    if nserror.domain == NSURLErrorDomain && nserror.code == NSURLErrorCancelled {
-                        // If we canceled the operation, don't propagate the error
-                        // This probably means the observable is being disposed
-                        DDLogSwift.logError("Canceled refreshing settings")
-                    } else {
-                        observer.onError(error)
-                    }
-            })
-            return AnonymousDisposable() {
-                if let operation = operation {
-                    if !operation.finished {
-                        operation.cancel()
-                    }
-                }
-            }
-        }
-
-        return settings
-    }
-
-    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
-        return api.GET(path,
-            parameters: parameters,
-            success: {
-                operation, responseObject in
+        api.GET(path,
+                parameters: parameters,
+                success: {
+                    operation, responseObject in
 
-                do {
-                    let settings = try self.settingsFromResponse(responseObject)
-                    success(settings)
-                } catch {
-                    failure(error)
-                }
+                    do {
+                        let settings = try self.settingsFromResponse(responseObject)
+                        success(settings)
+                    } catch {
+                        failure(error)
+                    }
             },
-            failure: { operation, error in
-                failure(error)
+                failure: { operation, error in
+                    failure(error)
         })
     }
 

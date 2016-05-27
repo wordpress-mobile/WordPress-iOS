@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceRemoteError) {
     ReaderSiteServiceRemoteInvalidHost,
@@ -10,7 +10,7 @@ typedef NS_ENUM(NSUInteger, ReaderSiteServiceRemoteError) {
 
 extern NSString * const ReaderSiteServiceRemoteErrorDomain;
 
-@interface ReaderSiteServiceRemote : ServiceRemoteREST
+@interface ReaderSiteServiceRemote : ServiceRemoteWordPressComREST
 
 /**
  Get a list of the sites the user follows.
