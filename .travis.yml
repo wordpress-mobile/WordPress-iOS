@@ -8,6 +8,7 @@ cache:
 - bundler: false
 - directories:
   - vendor
+  - .bundle
 notifications:
   email: true
 install:

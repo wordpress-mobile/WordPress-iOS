@@ -18,7 +18,7 @@ namespace :dependencies do
     manifest = 'vendor/bundle/Manifest.lock'
 
     task :check do
-      unless check_manifest(lockfile, manifest)
+      unless check_manifest(lockfile, manifest) and File.exist?('.bundle/config')
         Rake::Task["dependencies:bundle:install"].invoke
       else
         sh "bundle env"
