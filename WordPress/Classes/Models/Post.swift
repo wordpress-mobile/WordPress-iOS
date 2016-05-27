@@ -4,6 +4,7 @@ import CoreData
 @objc(Post)
 class Post: AbstractPost {
 
+    static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
     // MARK: - Properties
@@ -73,11 +74,15 @@ class Post: AbstractPost {
     ///
     func categoriesText() -> String {
 
-        guard let allStrings = categories?.map({ return $0.categoryName }) as? [String] else {
+        guard let allStrings = categories?.map({ return $0.categoryName as String }) else {
             return ""
         }
 
-        return allStrings.joinWithSeparator(", ")
+        let orderedStrings = allStrings.sort { (categoryName1, categoryName2) -> Bool in
+            return categoryName1.localizedCaseInsensitiveCompare(categoryName2) == .OrderedAscending
+        }
+
+        return orderedStrings.joinWithSeparator(", ")
     }
 
 
