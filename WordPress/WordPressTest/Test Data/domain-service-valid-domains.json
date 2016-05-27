@@ -1,0 +1,58 @@
+{
+  "domains": [
+    {
+      "primary_domain": true,
+      "blog_id": 12345,
+      "domain": "example.com",
+      "expiry": "2016-11-30T00:00:00+00:00",
+      "expiry_soon": false,
+      "expired": false,
+      "new_registration": false,
+      "auto_renewing": 1,
+      "pending_registration": false,
+      "pending_registration_time": "",
+      "has_registration": true,
+      "private_domain": true,
+      "partner_domain": false,
+      "wpcom_domain": false,
+      "has_zone": true,
+      "type": "mapping",
+      "registration_date": "November 30, 2015",
+      "auto_renewal_date": "October 30, 2016",
+      "google_apps_subscription": {
+        "status": "no_subscription"
+      },
+      "has_private_registration": true,
+      "is_pending_icann_verification": false,
+      "manual_transfer_required": false,
+      "can_set_as_primary": true
+    },
+    {
+      "primary_domain": false,
+      "blog_id": 12345,
+      "domain": "example2.com",
+      "expiry": false,
+      "expiry_soon": false,
+      "expired": false,
+      "new_registration": false,
+      "auto_renewing": false,
+      "pending_registration": false,
+      "pending_registration_time": "",
+      "has_registration": false,
+      "private_domain": false,
+      "partner_domain": false,
+      "wpcom_domain": true,
+      "has_zone": false,
+      "type": "wpcom",
+      "registration_date": "",
+      "auto_renewal_date": "",
+      "google_apps_subscription": {
+        "status": "no_subscription"
+      },
+      "has_private_registration": false,
+      "is_pending_icann_verification": false,
+      "manual_transfer_required": false,
+      "can_set_as_primary": true
+    }
+  ]
+}

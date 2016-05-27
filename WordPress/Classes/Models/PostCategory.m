@@ -1,5 +1,7 @@
 #import "PostCategory.h"
 
+NSString * const PostCategoryEntityName = @"Category";
+NSString * const PostCategoryNameKey = @"categoryName";
 const NSInteger PostCategoryUncategorized = 1;
 
 @implementation PostCategory

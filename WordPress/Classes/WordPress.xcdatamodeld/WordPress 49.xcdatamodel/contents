@@ -141,6 +141,7 @@
             <userInfo/>
         </relationship>
         <relationship name="connections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PublicizeConnection" inverseName="blog" inverseEntity="PublicizeConnection" syncable="YES"/>
+        <relationship name="domains" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Domain" inverseName="blog" inverseEntity="Domain" syncable="YES"/>
         <relationship name="jetpackAccount" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="jetpackBlogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
             <userInfo/>
@@ -264,6 +265,12 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
         <userInfo/>
+    </entity>
+    <entity name="Domain" representedClassName=".ManagedDomain" syncable="YES">
+        <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="domainType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isPrimary" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="domains" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Media" representedClassName="Media">
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
@@ -621,6 +628,7 @@
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="390"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="240"/>
