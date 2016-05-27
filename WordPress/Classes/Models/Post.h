@@ -3,6 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const PostEntityName;
 extern NSString * const PostTypeDefaultIdentifier;
 
 @class Coordinate;
