@@ -58,14 +58,6 @@ class PostTests: XCTestCase {
         XCTAssert(categoriesText == "1, 2, 3")
     }
 
-    func testSetCategoriesFromNamesWithANilInputParam() {
-        let post = newTestPost()
-
-        post.setCategoriesFromNames(nil)
-
-        XCTAssert(post.categories?.count == 0)
-    }
-
     func testSetCategoriesFromNamesWithTwoCategories() {
         let blog = newTestBlog()
         let post = newTestPost()

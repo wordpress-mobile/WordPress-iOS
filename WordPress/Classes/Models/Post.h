@@ -48,7 +48,7 @@ extern NSString * const PostTypeDefaultIdentifier;
  
  @param categoryNames a `NSArray` with the names of the categories for this post. If a given category name doesn't exist it's ignored.
  */
-- (void)setCategoriesFromNames:(nullable NSArray *)categoryNames;
+- (void)setCategoriesFromNames:(nonnull NSArray *)categoryNames;
 
 #pragma mark - Convenience methods
 
