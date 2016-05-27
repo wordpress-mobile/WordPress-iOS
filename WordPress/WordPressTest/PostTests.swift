@@ -51,7 +51,7 @@ class PostTests: XCTestCase {
 
         let post = newTestPost()
 
-        post.categories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
+        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
 
         let categoriesText = post.categoriesText()
 
@@ -66,7 +66,7 @@ class PostTests: XCTestCase {
         let category2 = newTestPostCategory("Two")
         let category3 = newTestPostCategory("Three")
 
-        blog.categories = Set<PostCategory>(arrayLiteral: category1, category2, category3)
+        blog.categories = [category1, category2, category3]
 
         post.blog = blog
         post.setCategoriesFromNames(["One", "Three"])
@@ -112,7 +112,7 @@ class PostTests: XCTestCase {
 
     func testThatAddCategoriesWorks() {
         let post = newTestPost()
-        let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
+        let testCategories = Set([newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")])
 
         post.addCategories(testCategories)
 
