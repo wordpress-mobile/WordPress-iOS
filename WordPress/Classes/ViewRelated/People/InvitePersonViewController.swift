@@ -19,7 +19,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Username / Email
     ///
-    private var username: String? {
+    private var usernameOrEmail: String? {
         didSet {
             refreshUsernameCell()
         }
@@ -142,11 +142,11 @@ extension InvitePersonViewController {
         let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
         let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
-        let controller  = SettingsTextViewController(text: username, placeholder: placeholder, hint: hint)
+        let controller  = SettingsTextViewController(text: usernameOrEmail, placeholder: placeholder, hint: hint)
         controller.title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
         controller.mode = .Email
         controller.onValueChanged = { [unowned self] value in
-            self.username = value
+            self.usernameOrEmail = value
         }
 // TODO: No validation
         navigationController?.pushViewController(controller, animated: true)
@@ -224,13 +224,13 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
-        guard let username = username?.nonEmptyString() else {
+        guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
             usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
             usernameCell.textLabel?.textColor = WPStyleGuide.grey()
             return
         }
 
-        usernameCell.textLabel?.text = username
+        usernameCell.textLabel?.text = usernameOrEmail
         usernameCell.textLabel?.textColor = WPStyleGuide.darkGrey()
     }
 
