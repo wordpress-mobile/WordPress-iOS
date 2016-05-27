@@ -11,16 +11,6 @@ static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpr
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 
-#ifdef DEBUG
-NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore.dev";
-#else
-#ifdef INTERNAL_BUILD
-NSString *const WordPressComApiPushAppId = @"org.wordpress.internal";
-#else
-NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
-#endif
-#endif
-
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
 
 // AFJSONRequestOperation requires that a URI end with .json in order to match

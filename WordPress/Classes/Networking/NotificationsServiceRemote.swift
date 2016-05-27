@@ -8,6 +8,16 @@ import UIDeviceIdentifier
 ///
 public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
 {
+    #if DEBUG
+        static let WordPressComApiPushAppId = "org.wordpress.appstore.dev"
+    #else
+    #if INTERNAL_BUILD
+        static let  WordPressComApiPushAppId = "org.wordpress.internal"
+    #else
+        static let WordPressComApiPushAppId = "org.wordpress.appstore"
+    #endif
+    #endif
+
     /// Designated Initializer. Fails if the remoteApi is nil.
     ///
     /// - Parameter wordPressComRestApi: A Reference to the WordPressComRestApi that should be used to interact with WordPress.com
@@ -83,7 +93,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
         let parameters = [
             "device_token"    : token,
             "device_family"   : "apple",
-            "app_secret_key"  : WordPressComApiPushAppId,
+            "app_secret_key"  : NotificationsServiceRemote.WordPressComApiPushAppId,
             "device_name"     : device.name,
             "device_model"    : UIDeviceHardware.platform(),
             "os_version"      : device.systemVersion,
