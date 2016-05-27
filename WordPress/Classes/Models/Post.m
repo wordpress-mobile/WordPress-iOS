@@ -8,6 +8,7 @@
 #import "ContextManager.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 
+NSString * const PostEntityName = @"Post";
 NSString * const PostTypeDefaultIdentifier = @"post";
 
 @interface Post()
@@ -70,7 +71,11 @@ NSString * const PostTypeDefaultIdentifier = @"post";
 
 - (NSString *)categoriesText
 {
-    return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:PostCategoryNameKey ascending:true];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    NSArray *sortedCategories = [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+
+    return [[sortedCategories valueForKey:PostCategoryNameKey] componentsJoinedByString:@", "];
 }
 
 - (NSString *)postFormatText
@@ -96,7 +101,7 @@ NSString * const PostTypeDefaultIdentifier = @"post";
     NSMutableSet *categories = nil;
 
     for (NSString *categoryName in categoryNames) {
-        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
+        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K = %@", PostCategoryNameKey, categoryName]];
         if (results && (results.count > 0)) {
             if (categories == nil) {
                 categories = [NSMutableSet setWithSet:results];
