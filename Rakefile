@@ -21,6 +21,7 @@ namespace :dependencies do
       unless check_manifest(lockfile, manifest)
         Rake::Task["dependencies:bundle:install"].invoke
       else
+        sh "bundle env"
         puts "lockfile: #{lockfile}"
         sh "cat #{lockfile}"
         puts "manifest: #{manifest}"
