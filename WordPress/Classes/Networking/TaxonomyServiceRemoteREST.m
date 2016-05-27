@@ -1,5 +1,5 @@
 #import "TaxonomyServiceRemoteREST.h"
-#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
@@ -143,16 +143,16 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
                if (![responseObject isKindOfClass:[NSDictionary class]]) {
                    NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
                    [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
                    return;
                }
                success(responseObject);
-           } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -168,16 +168,16 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+          success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
               if (![responseObject isKindOfClass:[NSDictionary class]]) {
                   NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
                   return;
               }
               success(responseObject);
-          } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+          } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
