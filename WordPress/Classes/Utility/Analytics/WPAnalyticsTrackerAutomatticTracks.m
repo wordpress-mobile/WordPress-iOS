@@ -336,6 +336,39 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
+        case WPAnalyticsStatMenusAccessed:
+            eventName = @"menus_accessed";
+            break;
+        case WPAnalyticsStatMenusCreatedItem:
+            eventName = @"menus_created_item";
+            break;
+        case WPAnalyticsStatMenusCreatedMenu:
+            eventName = @"menus_created_menu";
+            break;
+        case WPAnalyticsStatMenusDeletedMenu:
+            eventName = @"menus_deleted_menu";
+            break;
+        case WPAnalyticsStatMenusDeletedItem:
+            eventName = @"menus_deleted_item";
+            break;
+        case WPAnalyticsStatMenusDiscardedChanges:
+            eventName = @"menus_discarded_changes";
+            break;
+        case WPAnalyticsStatMenusEditedItem:
+            eventName = @"menus_edited_item";
+            break;
+        case WPAnalyticsStatMenusOpenedItemEditor:
+            eventName = @"menus_opened_item_editor";
+            break;
+        case WPAnalyticsStatMenusOrderedItems:
+            eventName = @"menus_ordered_items";
+            break;
+        case WPAnalyticsStatMenusSavedMenu:
+            eventName = @"menus_saved_menu";
+            break;
+        case WPAnalyticsStatMenusUpdatedMenuName:
+            eventName = @"menus_updated_menu_name";
+            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -405,6 +438,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
             break;
+        case WPAnalyticsStatOpenedPeople:
+            eventName = @"people_management_list_opened";
+            break;
+        case WPAnalyticsStatOpenedPerson:
+            eventName = @"people_management_details_opened";
+            break;
         case WPAnalyticsStatOpenedPlans:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
@@ -435,6 +474,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
+            break;
+        case WPAnalyticsStatPersonRemoved:
+            eventName = @"people_management_person_removed";
+            break;
+        case WPAnalyticsStatPersonUpdated:
+            eventName = @"people_management_person_updated";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";
@@ -790,11 +835,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
             // to be implemented
-        case WPAnalyticsStatOpenedPeople:
-        case WPAnalyticsStatOpenedPerson:
-        case WPAnalyticsStatPersonRemoved:
-        case WPAnalyticsStatPersonUpdated:
-
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:

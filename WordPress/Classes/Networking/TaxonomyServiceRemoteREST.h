@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "TaxonomyServiceRemote.h"
-#import "SiteServiceRemoteREST.h"
+#import "SiteServiceRemoteWordPressComREST.h"
 
-@interface TaxonomyServiceRemoteREST : SiteServiceRemoteREST <TaxonomyServiceRemote>
+@interface TaxonomyServiceRemoteREST : SiteServiceRemoteWordPressComREST <TaxonomyServiceRemote>
 
 @end
