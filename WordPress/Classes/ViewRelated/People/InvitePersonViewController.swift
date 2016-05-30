@@ -153,7 +153,9 @@ class InvitePersonViewController : UITableViewController {
         textViewController.onValueChanged = { [unowned self] value in
             self.usernameOrEmail = value
         }
-// TODO: No validation
+
+        // Note: Let's disable validation, since the we need to allow Username OR Email
+        textViewController.validatesInput = false
     }
 
     private func setupRoleSegue(segue: UIStoryboardSegue) {
