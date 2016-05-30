@@ -92,27 +92,13 @@ class InvitePersonViewController : UITableViewController {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+
 
     // MARK: - UITableView Methods
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectSelectedRowWithAnimation(true)
-
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
-            return
-        }
-
-        switch cell {
-        case usernameCell:
-            usernameWasPressed()
-        case roleCell:
-            roleWasPressed()
-        case messageCell:
-            messageWasPressed()
-        default:
-            break
-        }
-    }
 
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section == lastSectionIndex else {
@@ -136,6 +122,41 @@ class InvitePersonViewController : UITableViewController {
     // MARK: - Storyboard Methods
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let rawIdentifier = segue.identifier, identifier = SegueIdentifier(rawValue: rawIdentifier) else {
+            return
+        }
+
+        switch identifier {
+        case .Username:
+            setupUsernameSegue(segue)
+        case .Role:
+            setupRoleSegue(segue)
+        case .Message:
+            setupMessageSegue(segue)
+        }
+    }
+
+    private func setupUsernameSegue(segue: UIStoryboardSegue) {
+        guard let textViewController = segue.destinationViewController as? SettingsTextViewController else {
+            return
+        }
+
+        let title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
+        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
+        let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
+
+        textViewController.title = title
+        textViewController.text = usernameOrEmail
+        textViewController.placeholder = placeholder
+        textViewController.hint = hint
+        textViewController.mode = .Email
+        textViewController.onValueChanged = { [unowned self] value in
+            self.usernameOrEmail = value
+        }
+// TODO: No validation
+    }
+
+    private func setupRoleSegue(segue: UIStoryboardSegue) {
         guard let roleViewController = segue.destinationViewController as? RoleViewController else {
             return
         }
@@ -147,9 +168,30 @@ class InvitePersonViewController : UITableViewController {
         }
     }
 
+    private func setupMessageSegue(segue: UIStoryboardSegue) {
+        guard let textViewController = segue.destinationViewController as? SettingsMultiTextViewController else {
+            return
+        }
 
-    private enum SegueIdentifiers {
-        static let editPersonRole = "editPersonRole"
+        let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
+        let hint = NSLocalizedString("Optional message to be included in the Invitation.", comment: "Invite: Message Hint")
+
+        textViewController.title = title
+        textViewController.text = message
+        textViewController.hint = hint
+        textViewController.isPassword = false
+        textViewController.onValueChanged = { [unowned self] value in
+            self.message = value
+        }
+    }
+
+
+    // MARK: - Private Enums
+
+    private enum SegueIdentifier: String {
+        case Username   = "username"
+        case Role       = "role"
+        case Message    = "message"
     }
 }
 
@@ -157,36 +199,6 @@ class InvitePersonViewController : UITableViewController {
 // MARK: - Helpers: Actions
 //
 extension InvitePersonViewController {
-
-    func usernameWasPressed() {
-        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
-        let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
-
-        let controller  = SettingsTextViewController(text: usernameOrEmail, placeholder: placeholder, hint: hint)
-        controller.title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
-        controller.mode = .Email
-        controller.onValueChanged = { [unowned self] value in
-            self.usernameOrEmail = value
-        }
-// TODO: No validation
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func roleWasPressed() {
-        performSegueWithIdentifier(SegueIdentifiers.editPersonRole, sender: nil)
-    }
-
-    func messageWasPressed() {
-        let hint = NSLocalizedString("Optional message to be included in the Invitation.", comment: "Invite: Message Hint")
-
-        let controller = SettingsMultiTextViewController(text: message, placeholder: nil, hint: hint, isPassword: false)
-        controller.title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        controller.onValueChanged = { [unowned self] value in
-            self.message = value
-        }
-
-        navigationController?.pushViewController(controller, animated: true)
-    }
 
     @IBAction func cancelWasPressed() {
         dismissViewControllerAnimated(true, completion: nil)
