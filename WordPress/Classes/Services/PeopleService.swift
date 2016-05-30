@@ -148,6 +148,19 @@ struct PeopleService {
             failure(error)
         })
     }
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
+    ///       was successful, or not.
+    ///
+    func validateInvitation(usernameOrEmail: String, role: Role, completion: (Bool -> Void)) {
+        remote.validateInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, completion: completion)
+    }
+
 }
 
 
