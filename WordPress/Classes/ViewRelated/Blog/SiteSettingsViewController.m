@@ -660,9 +660,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     if (row != SiteSettingsAccountPassword) {
         return;
     }
-    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.password
-                                                                                               placeholder:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")
-                                                                                                      hint:@""];
+
+    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+    siteTitleViewController.text = self.blog.password;
+    siteTitleViewController.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password");
+    siteTitleViewController.hint = @"";
     siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
     siteTitleViewController.mode = SettingsTextModesPassword;
     siteTitleViewController.onValueChanged = ^(id value) {
@@ -680,9 +683,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         return;
     }
 
-    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
-                                                                                               placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
-                                                                                                      hint:@""];
+    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+    siteTitleViewController.text = self.blog.settings.name;
+    siteTitleViewController.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+    siteTitleViewController.hint = @"";
     siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
     siteTitleViewController.onValueChanged = ^(NSString *value) {
         self.siteTitleCell.detailTextLabel.text = value;
