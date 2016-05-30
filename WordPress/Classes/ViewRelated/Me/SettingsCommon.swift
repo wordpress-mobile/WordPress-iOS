@@ -66,18 +66,17 @@ extension SettingsController {
                                    hint: String? = nil,
                                    service: AccountSettingsService) -> SettingsMultiTextViewController
     {
-        let title = row.title
-        let value = row.value
+        let controller = SettingsMultiTextViewController(style: .Grouped)
 
-        let controller = SettingsMultiTextViewController(text: value, placeholder: "\(title)...", hint: hint, isPassword: false)
-
-        controller.title = title
-        controller.onValueChanged = {
-            value in
+        controller.title = row.title
+        controller.text = row.value
+        controller.placeholder = "\(title)..."
+        controller.hint = hint
+        controller.onValueChanged = { value in
 
             let change = changeType(value)
             service.saveChange(change)
-            DDLogSwift.logDebug("\(title) changed: \(value)")
+            DDLogSwift.logDebug("\(row.title) changed: \(value)")
         }
 
         return controller
