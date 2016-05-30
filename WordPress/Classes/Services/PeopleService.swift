@@ -161,6 +161,19 @@ struct PeopleService {
         remote.validateInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, completion: completion)
     }
 
+
+    /// Sends an Invitation to a specified recipient, to access a Blog.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the users.
+    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
+    ///       was successful, or not.
+    ///
+    func sendInvitation(usernameOrEmail: String, role: Role, message: String, completion: (Bool -> Void)) {
+        remote.sendInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, message: message, completion: completion)
+    }
 }
 
 
