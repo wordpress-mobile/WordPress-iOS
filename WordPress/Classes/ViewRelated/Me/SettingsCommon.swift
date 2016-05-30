@@ -45,18 +45,17 @@ extension SettingsController {
                                    hint: String? = nil,
                                    service: AccountSettingsService) -> SettingsTextViewController
     {
-        let title = row.title
-        let value = row.value
+        let controller = SettingsTextViewController(style: .Grouped)
 
-        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
-
-        controller.title = title
-        controller.onValueChanged = {
-            value in
+        controller.title = row.title
+        controller.text = row.value
+        controller.placeholder = "\(title)..."
+        controller.hint = hint
+        controller.onValueChanged = { value in
 
             let change = changeType(value)
             service.saveChange(change)
-            DDLogSwift.logDebug("\(title) changed: \(value)")
+            DDLogSwift.logDebug("\(row.title) changed: \(value)")
         }
 
         return controller
