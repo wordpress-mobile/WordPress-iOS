@@ -10,9 +10,9 @@ class InvitePersonViewController : UITableViewController {
 
     // MARK: - Public Properties
 
-    /// Site ID
+    /// Target Blog
     ///
-    var siteID: Int!
+    var blog: Blog!
 
 
     // MARK: - Private Properties
