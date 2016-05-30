@@ -631,6 +631,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedPages:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Pages"];
             break;
+        case WPAnalyticsStatOpenedPeople:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Accessed List"];
+            break;
+        case WPAnalyticsStatOpenedPerson:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Accessed Details"];
+            break;
         case WPAnalyticsStatOpenedComments:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Comments"];
             break;
@@ -764,6 +770,12 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatNotificationsSettingsUpdated:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Updated"];
+            break;
+        case WPAnalyticsStatPersonRemoved:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Removed Person"];
+            break;
+        case WPAnalyticsStatPersonUpdated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Updated Person"];
             break;
         case WPAnalyticsStatPushAuthenticationApproved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Approved"];
@@ -1006,11 +1018,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
             // To be implemented
-        case WPAnalyticsStatOpenedPeople:
-        case WPAnalyticsStatOpenedPerson:
-        case WPAnalyticsStatPersonRemoved:
-        case WPAnalyticsStatPersonUpdated:
-
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:
