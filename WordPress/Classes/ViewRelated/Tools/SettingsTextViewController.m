@@ -68,6 +68,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)configureInstance
 {
+    self.autocorrectionType = UITextAutocorrectionTypeDefault;
     self.shouldNotifyValue = YES;
     self.validatesInput = YES;
 }
@@ -211,7 +212,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _textField.keyboardType = UIKeyboardTypeDefault;
     _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _textField.delegate = self;
-
+    _textField.autocorrectionType = self.autocorrectionType;
+    
     return _textField;
 }
 
