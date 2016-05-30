@@ -121,10 +121,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
-        } else if let inviteViewController = segue.destinationViewController as? InvitePersonViewController,
-                    let siteID = blog?.dotComID as? Int
+        } else if let navController = segue.destinationViewController as? UINavigationController,
+            let inviteViewController = navController.topViewController as? InvitePersonViewController,
+            let blog = blog
         {
-            inviteViewController.siteID = siteID
+            inviteViewController.blog = blog
         }
     }
 
