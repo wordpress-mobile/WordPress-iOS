@@ -41,10 +41,6 @@ class Post: AbstractPost {
     // MARK: - Format
 
     func postFormatText() -> String? {
-        guard let postFormat = postFormat else {
-            return nil
-        }
-
         return blog.postFormatTextFromSlug(postFormat)
     }
 
