@@ -168,7 +168,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="roleCell" id="uAe-CK-SUe" customClass="WPTableViewCell">
-                                <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uAe-CK-SUe" id="vI7-cS-zeY">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -482,6 +482,7 @@
                         <outlet property="messageCell" destination="sdj-uY-1LY" id="14D-vu-j5f"/>
                         <outlet property="roleCell" destination="JUH-Ao-gEv" id="xIB-S2-RYP"/>
                         <outlet property="usernameCell" destination="i2R-sD-lxa" id="wgx-nw-l50"/>
+                        <segue destination="TOR-rB-bMi" kind="show" identifier="editPersonRole" id="OVM-Y9-13R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuT-BL-XQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -509,4 +510,7 @@
         <image name="gravatar" width="85" height="85"/>
         <image name="icon-nav-chevron" width="14" height="8"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="OVM-Y9-13R"/>
+    </inferredMetricsTieBreakers>
 </document>
