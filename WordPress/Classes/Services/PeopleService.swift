@@ -171,8 +171,9 @@ struct PeopleService {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func sendInvitation(usernameOrEmail: String, role: Role, message: String, completion: (Bool -> Void)) {
-        remote.sendInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, message: message, completion: completion)
+    func sendInvitation(usernameOrEmail: String, role: Role, message: String?, completion: (Bool -> Void)) {
+        let unwrappedMessage = message ?? String()
+        remote.sendInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, message: unwrappedMessage, completion: completion)
     }
 }
 
