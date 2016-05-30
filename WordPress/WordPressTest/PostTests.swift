@@ -44,18 +44,18 @@ class PostTests: XCTestCase {
         let post = newTestPost()
         let categoriesText = post.categoriesText()
 
-        XCTAssert(categoriesText == "")
+        XCTAssertEqual(categoriesText, "")
     }
 
     func testThatSomeCategoriesReturnAListWhenCallingCategoriesText() {
 
         let post = newTestPost()
 
-        post.categories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
+        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
 
         let categoriesText = post.categoriesText()
 
-        XCTAssert(categoriesText == "1, 2, 3")
+        XCTAssertEqual(categoriesText, "1, 2, 3")
     }
 
     func testSetCategoriesFromNamesWithTwoCategories() {
@@ -66,16 +66,17 @@ class PostTests: XCTestCase {
         let category2 = newTestPostCategory("Two")
         let category3 = newTestPostCategory("Three")
 
-        blog.categories = Set<PostCategory>(arrayLiteral: category1, category2, category3)
+        blog.categories = [category1, category2, category3]
 
         post.blog = blog
         post.setCategoriesFromNames(["One", "Three"])
 
         let postCategories = post.categories!
-        XCTAssert(postCategories.count == 2)
-        XCTAssert(postCategories.contains(category1))
-        XCTAssert(!postCategories.contains(category2))
-        XCTAssert(postCategories.contains(category3))
+        //let postCategories = post.categories as! Set<PostCategory>
+        XCTAssertEqual(postCategories.count, 2)
+        XCTAssertTrue(postCategories.contains(category1))
+        XCTAssertFalse(postCategories.contains(category2))
+        XCTAssertTrue(postCategories.contains(category3))
     }
 
     func testThatSettingNilLikeCountReturnsZeroNumberOfLikes() {
@@ -83,7 +84,7 @@ class PostTests: XCTestCase {
 
         post.likeCount = nil
 
-        XCTAssert(post.numberOfLikes() == 0)
+        XCTAssertEqual(post.numberOfLikes(), 0)
     }
 
     func testThatSettingLikeCountAffectsNumberOfLikes() {
@@ -91,7 +92,7 @@ class PostTests: XCTestCase {
 
         post.likeCount = 2
 
-        XCTAssert(post.numberOfLikes() == 2)
+        XCTAssertEqual(post.numberOfLikes(), 2)
     }
 
     func testThatSettingNilCommentCountReturnsZeroNumberOfComments() {
@@ -99,7 +100,7 @@ class PostTests: XCTestCase {
 
         post.commentCount = nil
 
-        XCTAssert(post.numberOfComments() == 0)
+        XCTAssertEqual(post.numberOfComments(), 0)
     }
 
     func testThatSettingCommentCountAffectsNumberOfComments() {
@@ -107,12 +108,12 @@ class PostTests: XCTestCase {
 
         post.commentCount = 2
 
-        XCTAssert(post.numberOfComments() == 2)
+        XCTAssertEqual(post.numberOfComments(), 2)
     }
 
     func testThatAddCategoriesWorks() {
         let post = newTestPost()
-        let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
+        let testCategories = Set([newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")])
 
         post.addCategories(testCategories)
 
@@ -124,7 +125,7 @@ class PostTests: XCTestCase {
         XCTAssert(postCategories.count == testCategories.count)
 
         for testCategory in testCategories {
-            XCTAssert(postCategories.contains(testCategory))
+            XCTAssertTrue(postCategories.contains(testCategory))
         }
     }
 
@@ -139,8 +140,8 @@ class PostTests: XCTestCase {
             return
         }
 
-        XCTAssert(postCategories.count == 1)
-        XCTAssert(postCategories.contains(testCategory))
+        XCTAssertEqual(postCategories.count, 1)
+        XCTAssertTrue(postCategories.contains(testCategory))
     }
 
     func testThatRemoveCategoriesWorks() {
@@ -148,10 +149,11 @@ class PostTests: XCTestCase {
         let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
 
         post.categories = testCategories
-        XCTAssert(post.categories?.count != 0 && post.categories?.count == testCategories.count)
+        XCTAssertNotEqual(post.categories?.count, 0)
+        XCTAssertEqual(post.categories?.count, testCategories.count)
 
         post.removeCategories(testCategories)
-        XCTAssert(post.categories?.count == 0)
+        XCTAssertEqual(post.categories?.count, 0)
     }
 
     func testThatRemoveCategoriesObjectWorks() {
@@ -159,10 +161,164 @@ class PostTests: XCTestCase {
         let testCategory = newTestPostCategory("1")
 
         post.categories = Set<PostCategory>(arrayLiteral: testCategory)
-        XCTAssert(post.categories?.count == 1)
+        XCTAssertEqual(post.categories?.count, 1)
 
         post.removeCategoriesObject(testCategory)
-        XCTAssert(post.categories?.count == 0)
+        XCTAssertEqual(post.categories?.count, 0)
     }
 
+    func testThatPostFormatTextReturnsDefault() {
+        let defaultPostFormat = (key: "standard", value: "Default")
+
+        let post = newTestPost()
+        let blog = newTestBlog()
+
+        blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value]
+        post.blog = blog
+
+        let postFormatText = post.postFormatText()!
+        XCTAssertEqual(postFormatText, defaultPostFormat.value)
+    }
+
+    func testThatPostFormatTextReturnsSelected() {
+        let defaultPostFormat = (key: "standard", value: "Default")
+        let secondaryPostFormat = (key: "secondary", value: "Secondary")
+
+        let post = newTestPost()
+        let blog = newTestBlog()
+
+        blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value,
+                            secondaryPostFormat.key: secondaryPostFormat.value]
+        post.blog = blog
+        post.postFormat = secondaryPostFormat.key
+
+        let postFormatText = post.postFormatText()!
+        XCTAssertEqual(postFormatText, secondaryPostFormat.value)
+    }
+
+    func testThatSetPostFormatTextWorks() {
+        let defaultPostFormat = (key: "standard", value: "Default")
+        let secondaryPostFormat = (key: "secondary", value: "Secondary")
+
+        let post = newTestPost()
+        let blog = newTestBlog()
+
+        blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value,
+                            secondaryPostFormat.key: secondaryPostFormat.value]
+        post.blog = blog
+        post.setPostFormatText(secondaryPostFormat.value)
+
+        XCTAssertEqual(post.postFormat, secondaryPostFormat.key)
+    }
+
+    func testThatHasCategoriesWorks() {
+        let post = newTestPost()
+
+        XCTAssertFalse(post.hasCategories())
+        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
+        XCTAssertTrue(post.hasCategories())
+        post.categories = nil
+        XCTAssertFalse(post.hasCategories())
+    }
+
+    func testThatHasTagsWorks() {
+        let post = newTestPost()
+
+        XCTAssertFalse(post.hasTags())
+        post.tags = "a b c"
+        XCTAssertTrue(post.hasTags())
+        post.tags = nil
+        XCTAssertFalse(post.hasTags())
+    }
+
+    func testThatTitleForDisplayWorks() {
+        let post = newTestPost()
+
+        XCTAssertEqual(post.titleForDisplay(), "(no title)")
+
+        post.postTitle = "hello world"
+        XCTAssertEqual(post.titleForDisplay(), "hello world")
+
+        post.postTitle = "    "
+        XCTAssertEqual(post.titleForDisplay(), "(no title)")
+    }
+
+    func testThatContentPreviewForDisplayWorks() {
+        let post = newTestPost()
+
+        post.content = "<HTML>some contents&nbsp;go here</HTML>"
+        XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
+    }
+
+    func testThatContentPreviewForDisplayWorksWithExcerpt() {
+        let post = newTestPost()
+
+        post.mt_excerpt = "<HTML>some contents&nbsp;go here</HTML>"
+        post.content = "blah blah"
+        XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
+    }
+
+    func testThatStatusForDisplayWorksForOriginalPost() {
+        let post = newTestPost()
+
+        post.status = PostStatusDraft
+        XCTAssertNil(post.statusForDisplay())
+
+        post.status = PostStatusPending
+        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusPending))
+
+        post.status = PostStatusPrivate
+        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusPrivate))
+
+        post.status = PostStatusPublish
+        XCTAssertNil(post.statusForDisplay())
+
+        post.status = PostStatusScheduled
+        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusScheduled))
+
+        post.status = PostStatusTrash
+        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusTrash))
+
+        post.status = PostStatusDeleted
+        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusDeleted))
+    }
+
+    func testThatStatusForDisplayWorksForRevisionPost() {
+        let original = newTestPost()
+        let revision = original.createRevision()
+
+        revision.status = PostStatusDraft
+        XCTAssertEqual(revision.statusForDisplay(), "Local")
+
+        revision.status = PostStatusPending
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusPending)), Local")
+
+        revision.status = PostStatusPrivate
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusPrivate)), Local")
+
+        revision.status = PostStatusPublish
+        XCTAssertEqual(revision.statusForDisplay(), "Local")
+
+        revision.status = PostStatusScheduled
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusScheduled)), Local")
+
+        revision.status = PostStatusTrash
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusTrash)), Local")
+
+        revision.status = PostStatusDeleted
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusDeleted)), Local")
+    }
+
+    func testThatHasLocalChangesWorks() {
+        let original = newTestPost()
+        let revision = original.createRevision() as! Post
+
+        XCTAssertFalse(original.hasLocalChanges())
+
+        revision.tags = "Ahoi"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.tags = original.tags
+        XCTAssertFalse(revision.hasLocalChanges())
+    }
 }
