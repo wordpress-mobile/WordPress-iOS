@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressComAnalytics
 
 /// Displays a Blog's User Details
 ///
@@ -104,6 +105,10 @@ final class PersonViewController : UITableViewController {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        WPAnalytics.track(.OpenedPerson)
+    }
 
     // MARK: - UITableView Methods
 
@@ -193,6 +198,8 @@ private extension PersonViewController {
         let service = PeopleService(blog: blog)
         service?.deleteUser(user)
         navigationController?.popViewControllerAnimated(true)
+
+        WPAnalytics.track(.PersonRemoved)
     }
 
     func updateUserRole(newRole: Role) {
@@ -214,6 +221,8 @@ private extension PersonViewController {
 
         // Optimistically refresh the UI
         self.person = updated
+
+        WPAnalytics.track(.PersonUpdated)
     }
 
     func retryUpdatingRole(newRole: Role) {

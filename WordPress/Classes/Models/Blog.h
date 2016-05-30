@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressComRestApi;
 @class WPXMLRPCClient;
 
+extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
 
 typedef NS_ENUM(NSUInteger, BlogFeature) {

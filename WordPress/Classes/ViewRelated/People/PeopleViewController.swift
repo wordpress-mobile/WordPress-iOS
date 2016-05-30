@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressComAnalytics
 
 public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate, UIViewControllerRestoration {
 
@@ -105,6 +106,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
+        WPAnalytics.track(.OpenedPeople)
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
