@@ -206,7 +206,10 @@ public class WordPressComRestApi: NSObject
         progress?.cancellationHandler = {
             task.cancel()
         }
-
+        if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
+           let size = Int64(sizeString) {
+            progress?.totalUnitCount = size
+        }
         return progress
     }
 
