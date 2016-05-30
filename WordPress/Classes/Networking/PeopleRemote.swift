@@ -146,8 +146,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - success: Optional closure to be executed on success
+    ///     - siteID: The ID of the site associated.
+    ///     - success: Optional closure to be executed on success.
     ///     - failure: Optional closure to be executed on error.
     ///
     /// - Returns: An array of Person.Role entities.
@@ -170,6 +170,43 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             success(roles)
         }, failure: { (error, httpResponse) in
             failure?(error)
+        })
+    }
+
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated.
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP 
+    ///       was successful, or not.
+    ///
+    func validateInvitation(siteID: Int, usernameOrEmail: String, role: Role, completion: (Bool -> ()))
+    {
+        let endpoint = "sites/\(siteID)/invites/validate"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.rawValue
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject],
+                    let validRecipients = responseDict["success"] as? [String] else
+            {
+                completion(false)
+                return
+            }
+
+
+            let success = validRecipients.contains(usernameOrEmail)
+            completion(success)
+
+        }, failure: { (error, httpResponse) in
+            completion(false)
         })
     }
 }
