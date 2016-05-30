@@ -180,7 +180,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - siteID: The ID of the site associated.
     ///     - usernameOrEmail: Recipient that should be validated.
     ///     - role: Role that would be granted to the recipient.
-    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP 
+    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
     func validateInvitation(siteID: Int, usernameOrEmail: String, role: Role, completion: (Bool -> ()))
@@ -200,7 +200,6 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 completion(false)
                 return
             }
-
 
             let success = validRecipients.contains(usernameOrEmail)
             completion(success)
