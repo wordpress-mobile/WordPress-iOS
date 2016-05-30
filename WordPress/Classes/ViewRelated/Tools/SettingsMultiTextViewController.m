@@ -10,10 +10,6 @@ static CGFloat const HorizontalMargin = 10.0f;
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *hintView;
-@property (nonatomic, strong) NSString *hint;
-@property (nonatomic, assign) BOOL isPassword;
-@property (nonatomic, strong) NSString *placeholder;
-@property (nonatomic, strong) NSString *text;
 
 @end
 
