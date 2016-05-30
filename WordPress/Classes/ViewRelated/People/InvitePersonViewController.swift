@@ -22,6 +22,7 @@ class InvitePersonViewController : UITableViewController {
     private var usernameOrEmail: String? {
         didSet {
             refreshUsernameCell()
+            validateUsername()
         }
     }
 
@@ -87,7 +88,6 @@ class InvitePersonViewController : UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupNavigationBar()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -156,6 +156,7 @@ class InvitePersonViewController : UITableViewController {
 
         // Note: Let's disable validation, since the we need to allow Username OR Email
         textViewController.validatesInput = false
+        textViewController.autocorrectionType = .No
     }
 
     private func setupRoleSegue(segue: UIStoryboardSegue) {
@@ -207,26 +208,45 @@ extension InvitePersonViewController {
     }
 
     @IBAction func sendWasPressed() {
-// TODO: Implement Me
+        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
+            return
+        }
+// TODO: UI
+        service.sendInvitation(usernameOrEmail, role: role, message: message) { success in
+
+        }
     }
 }
 
 
-// MARK: - Private Helpers: Initializing Interface
+// MARK: - Helpers: Validation
 //
-private extension InvitePersonViewController {
+extension InvitePersonViewController {
 
-    func setupNavigationBar() {
-        title = NSLocalizedString("Add a Person", comment: "Invite People Title")
+    func validateUsername() {
+        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
+            sendActionEnabled = false
+            return
+        }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel,
-                                                           target: self,
-                                                           action: #selector(cancelWasPressed))
+        service.validateInvitation(usernameOrEmail, role: role) { [weak self] isValid in
+            // Dismiss if the username changed in the meantime (OR if the VC was dismissed)
+            guard let strongSelf = self where strongSelf.usernameOrEmail == usernameOrEmail else {
+                return
+            }
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Invite", comment: "Send Person Invite"),
-                                                            style: .Plain,
-                                                            target: self,
-                                                            action: #selector(sendWasPressed))
+            strongSelf.sendActionEnabled = isValid
+// TODO: UI Feedback
+        }
+    }
+
+    var sendActionEnabled : Bool {
+        get {
+            return navigationItem.rightBarButtonItem?.enabled ?? false
+        }
+        set {
+            navigationItem.rightBarButtonItem?.enabled = newValue
+        }
     }
 }
 
@@ -250,6 +270,22 @@ private extension InvitePersonViewController {
 // TODO: Fix Vertical Alignment
         messageCell.textLabel?.numberOfLines = 0
         WPStyleGuide.configureTableViewCell(messageCell)
+    }
+
+    func setupNavigationBar() {
+        title = NSLocalizedString("Add a Person", comment: "Invite People Title")
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel,
+                                                           target: self,
+                                                           action: #selector(cancelWasPressed))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Invite", comment: "Send Person Invite"),
+                                                            style: .Plain,
+                                                            target: self,
+                                                            action: #selector(sendWasPressed))
+
+        // By default, Send is disabled
+        navigationItem.rightBarButtonItem?.enabled = false
     }
 }
 
