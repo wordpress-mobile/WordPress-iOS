@@ -428,6 +428,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="7bM-Qc-hri" kind="show" identifier="username" id="Y1X-AT-BCX"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -456,6 +459,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="TOR-rB-bMi" kind="show" identifier="role" id="e6P-Kc-Mxa"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -468,6 +474,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="OAN-Wl-zn9" kind="show" identifier="message" id="2uC-SA-yzk"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -482,12 +491,47 @@
                         <outlet property="messageCell" destination="sdj-uY-1LY" id="14D-vu-j5f"/>
                         <outlet property="roleCell" destination="JUH-Ao-gEv" id="xIB-S2-RYP"/>
                         <outlet property="usernameCell" destination="i2R-sD-lxa" id="wgx-nw-l50"/>
-                        <segue destination="TOR-rB-bMi" kind="show" identifier="editPersonRole" id="OVM-Y9-13R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuT-BL-XQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2706" y="1503"/>
+            <point key="canvasLocation" x="1994" y="1519"/>
+        </scene>
+        <!--Username TextViewController-->
+        <scene sceneID="tMT-sn-IIW">
+            <objects>
+                <tableViewController title="Username TextViewController" id="7bM-Qc-hri" customClass="SettingsTextViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="U01-Fw-ZiF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="7bM-Qc-hri" id="vdJ-54-Tvk"/>
+                            <outlet property="delegate" destination="7bM-Qc-hri" id="MUH-xN-W5Q"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I4t-Rd-555" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2706" y="1519"/>
+        </scene>
+        <!--Message ViewController-->
+        <scene sceneID="B3z-fY-Ctb">
+            <objects>
+                <tableViewController title="Message ViewController" id="OAN-Wl-zn9" customClass="SettingsMultiTextViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ibd-2Q-Phm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="OAN-Wl-zn9" id="DqT-Mq-i56"/>
+                            <outlet property="delegate" destination="OAN-Wl-zn9" id="Ixm-UX-ILF"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nBK-jR-nzS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2706" y="2301"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xhN-wi-i0u">
@@ -503,7 +547,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEC-zi-aXh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1994" y="1503"/>
+            <point key="canvasLocation" x="1282" y="1519"/>
         </scene>
     </scenes>
     <resources>
@@ -511,6 +555,6 @@
         <image name="icon-nav-chevron" width="14" height="8"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OVM-Y9-13R"/>
+        <segue reference="e6P-Kc-Mxa"/>
     </inferredMetricsTieBreakers>
 </document>
