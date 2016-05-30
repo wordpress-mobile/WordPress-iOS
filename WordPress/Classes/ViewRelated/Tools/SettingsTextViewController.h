@@ -55,15 +55,4 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///
 @property (nonatomic, assign) SettingsTextModes mode;
 
-/// Required initializer.
-///
-/// Parameters:
-///  - text: The raw string (current value) to edit.
-///  - placeholder: Placeholder string to be displayed, in case the text is empty.
-///  - hint: String to be displayed at the bottom.
-///
-- (nonnull instancetype)initWithText:(NSString * __nullable)text
-                         placeholder:(NSString * __nullable)placeholder
-                                hint:(NSString * __nullable)hint;
-
 @end

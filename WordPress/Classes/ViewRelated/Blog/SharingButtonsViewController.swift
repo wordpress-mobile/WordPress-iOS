@@ -687,10 +687,13 @@ import WordPressShared
         let text = blog.settings!.sharingLabel
         let placeholder = NSLocalizedString("Type a label", comment: "A placeholder for the sharing label.")
         let hint = NSLocalizedString("Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button.", comment: "Instructions for editing the sharing label.")
-        let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
+        let controller = SettingsTextViewController(style: .Grouped)
         controller.title = labelTitle
-        controller.onValueChanged = {[unowned self] (value) in
+        controller.text = text
+        controller.placeholder = placeholder
+        controller.hint = hint
+        controller.onValueChanged = {[unowned self] value in
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
@@ -746,9 +749,13 @@ import WordPressShared
         let text = blog.settings!.sharingTwitterName
         let placeholder = NSLocalizedString("Username", comment: "A placeholder for the twitter username")
         let hint = NSLocalizedString("This will be included in tweets when people share using the Twitter button.", comment: "Information about the twitter sharing feature.")
-        let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
+
+        let controller = SettingsTextViewController(style: .Grouped)
 
         controller.title = twitterUsernameTitle
+        controller.text = text
+        controller.placeholder = placeholder
+        controller.hint = hint
         controller.onValueChanged = {[unowned self] (value) in
             if value == self.blog.settings!.sharingTwitterName {
                 return
