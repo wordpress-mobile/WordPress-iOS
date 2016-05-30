@@ -131,6 +131,26 @@ class InvitePersonViewController : UITableViewController {
         headerView.title = lastSectionFooter
         return headerView
     }
+
+
+    // MARK: - Storyboard Methods
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let roleViewController = segue.destinationViewController as? RoleViewController else {
+            return
+        }
+
+        roleViewController.mode = .Static(roles: Role.inviteRoles)
+        roleViewController.selectedRole = role
+        roleViewController.onChange = { [unowned self] newRole in
+            self.role = newRole
+        }
+    }
+
+
+    private enum SegueIdentifiers {
+        static let editPersonRole = "editPersonRole"
+    }
 }
 
 
@@ -153,8 +173,7 @@ extension InvitePersonViewController {
     }
 
     func roleWasPressed() {
-// TODO: Push Role Picker
-// TODO: Valid Roles
+        performSegueWithIdentifier(SegueIdentifiers.editPersonRole, sender: nil)
     }
 
     func messageWasPressed() {
