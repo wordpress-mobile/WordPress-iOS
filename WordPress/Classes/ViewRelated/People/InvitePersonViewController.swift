@@ -27,7 +27,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Role
     ///
-    private var role : Role? {
+    private var role : Role = .Follower {
         didSet {
             refreshRoleCell()
         }
@@ -153,7 +153,8 @@ extension InvitePersonViewController {
     }
 
     func roleWasPressed() {
-// TODO: Implement Me
+// TODO: Push Role Picker
+// TODO: Valid Roles
     }
 
     func messageWasPressed() {
@@ -202,17 +203,18 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func setupUsernameCell() {
+        usernameCell.accessoryType = .DisclosureIndicator
         WPStyleGuide.configureTableViewCell(usernameCell)
     }
 
     func setupRoleCell() {
         roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        roleCell.accessoryType = .DisclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
-// TODO: Implement Me
     }
 
     func setupMessageCell() {
-// TODO: Implement Me
+// TODO: Fix Vertical Alignment
         messageCell.textLabel?.numberOfLines = 0
         WPStyleGuide.configureTableViewCell(messageCell)
     }
@@ -235,7 +237,7 @@ private extension InvitePersonViewController {
     }
 
     func refreshRoleCell() {
-// TODO: Implement Me
+        roleCell.detailTextLabel?.text = role.localizedName
     }
 
     func refreshMessageCell() {
