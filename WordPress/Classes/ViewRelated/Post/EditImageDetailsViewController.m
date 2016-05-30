@@ -205,20 +205,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (void)handleCloseButtonTapped:(id)sender
 {
-    if ([UIDevice isOS8]) {
-        // Update the delegate immediately for iOS 8 and later. This allows for a
-        // better user experience as any changes should already be in place when the
-        // editor reappears.
-        [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        // Update the delegate in the completion block. Avoids a race condition
-        // on iOS7 that could lead to a crash in WebCore due to invalid geometry,
-        // apparently caused by changes to the DOM during vc transition animation.
-        [self dismissViewControllerAnimated:YES completion:^{
-            [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
-        }];
-    }
+    [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)handleTapInView:(UITapGestureRecognizer *)gestureRecognizer
@@ -409,6 +397,37 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     cell.textLabel.text = [url lastPathComponent];
 
     return cell;
+}
+
+- (SettingTableViewCell *)siteTitleCell
+{
+    if (_siteTitleCell) {
+        return _siteTitleCell;
+    }
+    _siteTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Site Title", @"Label for site title blog setting")
+                                                        editable:self.blog.isAdmin
+                                                 reuseIdentifier:nil];
+    return _siteTitleCell;
+}
+
+- (void)showEditSiteTitleController
+{
+    if (!self.blog.isAdmin) {
+        return;
+    }
+
+    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
+                                                                                               placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
+                                                                                                      hint:@""];
+    siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
+    siteTitleViewController.onValueChanged = ^(NSString *value) {
+        self.siteTitleCell.detailTextLabel.text = value;
+        if (![value isEqualToString:self.blog.settings.name]){
+            self.blog.settings.name = value;
+            [self saveSettings];
+        }
+    };
+    [self.navigationController pushViewController:siteTitleViewController animated:YES];
 }
 
 - (UITableViewCell *)detailCellForIndexPath:(NSIndexPath *)indexPath
