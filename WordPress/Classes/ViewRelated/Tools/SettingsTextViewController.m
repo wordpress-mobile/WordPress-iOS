@@ -50,9 +50,28 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
+
+        [self configureInstance];
     }
     return self;
 }
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self configureInstance];
+    }
+
+    return self;
+}
+
+- (void)configureInstance
+{
+    self.shouldNotifyValue = YES;
+    self.validatesInput = YES;
+}
+
 
 
 #pragma mark - View Lifecycle
@@ -60,9 +79,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.shouldNotifyValue = YES;
-
     [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -135,7 +151,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (BOOL)textPassesValidation
 {
     BOOL isEmail = (self.mode == SettingsTextModesEmail);
-    return (isEmail == false || (isEmail && self.textField.text.isValidEmail));
+    return (self.validatesInput == false || isEmail == false || (isEmail && self.textField.text.isValidEmail));
 }
 
 - (void)validateTextInput:(id)sender
