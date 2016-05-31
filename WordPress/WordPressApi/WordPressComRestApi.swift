@@ -33,7 +33,7 @@ public class WordPressComRestApi: NSObject
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
     private let oAuthToken: String?
-    private var userAgent: String?
+    private let userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
@@ -63,7 +63,7 @@ public class WordPressComRestApi: NSObject
     }
 
     /**
-     Cancels all ongoing and makes the session so the object will not fullfil any more request
+     Cancels all ongoing taks and makes the session invalid so the object will not fullfil any more request
      */
     public func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
@@ -206,7 +206,10 @@ public class WordPressComRestApi: NSObject
         progress?.cancellationHandler = {
             task.cancel()
         }
-
+        if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
+           let size = Int64(sizeString) {
+            progress?.totalUnitCount = size
+        }
         return progress
     }
 
@@ -293,5 +296,13 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
                                userInfo:userInfo
             )
         return responseObject
+    }
+}
+
+extension WordPressComRestApi
+{
+    /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
+    class public func anonymousApi() -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPressUserAgent())
     }
 }
