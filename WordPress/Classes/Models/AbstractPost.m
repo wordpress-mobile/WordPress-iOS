@@ -9,7 +9,6 @@
 @dynamic blog;
 @dynamic media;
 @dynamic metaIsLocal;
-@dynamic metaPublishImmediately;
 @dynamic comments;
 
 @synthesize restorableStatus;
@@ -20,10 +19,7 @@
     if ([key isEqualToString:@"metaIsLocal"]) {
         keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"remoteStatusNumber"]];
 
-    } else if ([key isEqualToString:@"metaPublishImmediately"]) {
-        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"date_created_gmt"]];
     }
-
     return keyPaths;
 }
 
@@ -49,15 +45,6 @@
     [self willChangeValueForKey:key];
     self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
     [self setPrimitiveValue:remoteStatusNumber forKey:key];
-    [self didChangeValueForKey:key];
-}
-
-- (void)setDate_created_gmt:(NSDate *)date_created_gmt
-{
-    NSString *key = @"date_created_gmt";
-    [self willChangeValueForKey:key];
-    self.metaPublishImmediately = (date_created_gmt == nil);
-    [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
 
