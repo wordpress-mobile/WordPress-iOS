@@ -50,7 +50,8 @@
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
-
+- (void)publishImmediately;
+- (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
 - (NSString *)dateStringForDisplay;
