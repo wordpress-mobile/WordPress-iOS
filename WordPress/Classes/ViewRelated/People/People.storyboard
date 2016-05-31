@@ -139,7 +139,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="titleButton" destination="qYY-lN-fuq" id="Nre-fZ-kXG"/>
-                        <segue destination="Hu7-FD-rJZ" kind="presentation" identifier="invite" id="sCY-hm-WIa"/>
+                        <segue destination="Hu7-FD-rJZ" kind="presentation" identifier="invite" modalPresentationStyle="formSheet" id="sCY-hm-WIa"/>
                     </connections>
                 </tableViewController>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qYY-lN-fuq" customClass="NavBarTitleDropdownButton">
@@ -168,7 +168,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="roleCell" id="uAe-CK-SUe" customClass="WPTableViewCell">
-                                <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="93.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uAe-CK-SUe" id="vI7-cS-zeY">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -406,7 +406,7 @@
                             <tableViewSection id="TSO-dY-4Cz">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="RII-cM-wkT" detailTextLabel="igf-wZ-skT" style="IBUITableViewCellStyleValue1" id="i2R-sD-lxa">
-                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="79" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i2R-sD-lxa" id="wJl-zz-akk">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -437,7 +437,7 @@
                             <tableViewSection id="UIx-0o-NSH">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="zZ5-1U-KBD" detailTextLabel="w3p-Ei-KVz" style="IBUITableViewCellStyleValue1" id="JUH-Ao-gEv">
-                                        <rect key="frame" x="0.0" y="179" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="159" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JUH-Ao-gEv" id="TzL-Fg-C5x">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -468,7 +468,7 @@
                             <tableViewSection id="KTt-dH-XgO">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="88" id="sdj-uY-1LY">
-                                        <rect key="frame" x="0.0" y="259" width="600" height="88"/>
+                                        <rect key="frame" x="0.0" y="239" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sdj-uY-1LY" id="Y8v-KJ-xnc">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
@@ -480,7 +480,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="72" id="ARy-hL-nFx"/>
                                                     </constraints>
-                                                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <variation key="default">
