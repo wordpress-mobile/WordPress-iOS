@@ -8,6 +8,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     enum Error: ErrorType {
         case DecodeError
+        case RemoteError(message: String)
     }
 
     /// Retrieves the collection of users associated to a given Site.
@@ -183,7 +184,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func validateInvitation(siteID: Int, usernameOrEmail: String, role: Role, completion: (Bool -> ()))
+    func validateInvitation(siteID: Int,
+                            usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
     {
         let endpoint = "sites/\(siteID)/invites/validate"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -194,18 +199,24 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
-            guard let responseDict = responseObject as? [String: AnyObject],
-                    let validRecipients = responseDict["success"] as? [String] else
-            {
-                completion(false)
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
                 return
             }
 
-            let success = validRecipients.contains(usernameOrEmail)
-            completion(success)
+            if let errors = responseDict["errors"] as? [String: AnyObject],
+                let errorForValidation = errors[usernameOrEmail] as? [String: String],
+                let errorMessage = errorForValidation["message"]
+            {
+                let error = Error.RemoteError(message: errorMessage)
+                failure(error)
+                return
+            }
+
+            success()
 
         }, failure: { (error, httpResponse) in
-            completion(false)
+            failure(error)
         })
     }
 
@@ -220,7 +231,12 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func sendInvitation(siteID: Int, usernameOrEmail: String, role: Role, message: String, completion: (Bool -> ()))
+    func sendInvitation(siteID: Int,
+                        usernameOrEmail: String,
+                        role: Role,
+                        message: String,
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
     {
         let endpoint = "sites/\(siteID)/invites/new"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -232,18 +248,24 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
-            guard let responseDict = responseObject as? [String: AnyObject],
-                let validRecipients = responseDict["sent"] as? [String] else
-            {
-                completion(false)
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
                 return
             }
 
-            let success = validRecipients.contains(usernameOrEmail)
-            completion(success)
+            if let errors = responseDict["errors"] as? [String: AnyObject],
+                let errorForInvite = errors[usernameOrEmail] as? [String: String],
+                let errorMessage = errorForInvite["message"]
+            {
+                let error = Error.RemoteError(message: errorMessage)
+                failure(error)
+                return
+            }
+
+            success()
 
         }, failure: { (error, httpResponse) in
-            completion(false)
+            failure(error)
         })
     }
 }
