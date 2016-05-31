@@ -577,6 +577,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     RemotePost *remotePost = [RemotePost new];
     remotePost.postID = post.postID;
     remotePost.date = post.date_created_gmt;
+    remotePost.dateModified = post.dateModified;
     remotePost.title = post.postTitle ?: @"";
     remotePost.content = post.content;
     remotePost.status = post.status;

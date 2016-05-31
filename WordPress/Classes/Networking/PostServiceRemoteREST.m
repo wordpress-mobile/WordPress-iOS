@@ -369,9 +369,13 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     parameters[@"password"] = post.password ? post.password : @"";
     parameters[@"type"] = post.type;
 
-    if (post.date) {
+    if ([post.date isEqualToDate:post.dateModified]) {
+        // publish immediately when date created matches date modified
+        parameters[@"date"] = [[NSDate date] WordPressComJSONString];
+    } else if (post.date) {
         parameters[@"date"] = [post.date WordPressComJSONString];
     } else if (existingPost) {
+        // safety net. An existing post with no create date should publish immediately
         parameters[@"date"] = [[NSDate date] WordPressComJSONString];
     }
     if (post.excerpt) {
