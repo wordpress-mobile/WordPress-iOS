@@ -211,6 +211,12 @@ public class WordPressComRestApi: NSObject
         }
         return !(authToken.isEmpty)
     }
+
+
+    override public var hashValue: Int {
+        return "\(oAuthToken),\(userAgent)".hashValue
+    }
+
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request

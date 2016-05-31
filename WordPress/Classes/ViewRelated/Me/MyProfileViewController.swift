@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.restApi else {
+    guard let api = account.wordPressComRestApi else {
         return nil
     }
 
