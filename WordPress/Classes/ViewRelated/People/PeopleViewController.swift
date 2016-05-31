@@ -104,6 +104,30 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
         WPAnalytics.track(.OpenedPeople)
+
+        guard let theBlog = blog else {
+            return
+        }
+
+        let service = PeopleService(blog: theBlog)
+        service?.validateInvitation("invalid-email-sarasa", role: .Follower, success: {
+            NSLog("Success")
+        }, failure: { error in
+            NSLog("Failure \(error)")
+        })
+
+
+        service?.validateInvitation("lanteanar", role: .Admin, success: {
+            NSLog("Success")
+        }, failure: { error in
+            NSLog("Failure \(error)")
+        })
+
+        service?.validateInvitation("jleandropereztest29", role: .Follower, success: {
+            NSLog("Success")
+        }, failure: { error in
+            NSLog("Failure \(error)")
+        })
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
