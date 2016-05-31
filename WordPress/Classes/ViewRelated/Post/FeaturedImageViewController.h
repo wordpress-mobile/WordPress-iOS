@@ -1,5 +1,6 @@
 #import "WPImageViewController.h"
-#import "Post.h"
+
+@class AbstractPost;
 
 @interface FeaturedImageViewController : WPImageViewController
 
