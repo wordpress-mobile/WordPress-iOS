@@ -38,7 +38,10 @@ class InvitePersonViewController : UITableViewController {
     ///
     private var message : String? {
         didSet {
-            refreshMessageCell()
+            refreshMessageTextView()
+
+            // Note: This is a workaround. For some reason, the textView's properties are getting reset
+            setupMessageTextView()
         }
     }
 
@@ -75,10 +78,10 @@ class InvitePersonViewController : UITableViewController {
 
     /// Message Cell
     ///
-    @IBOutlet private var messageCell : UITableViewCell! {
+    @IBOutlet private var messageTextView : UITextView! {
         didSet {
-            setupMessageCell()
-            refreshMessageCell()
+            setupMessageTextView()
+            refreshMessageTextView()
         }
     }
 
@@ -150,7 +153,7 @@ class InvitePersonViewController : UITableViewController {
         textViewController.placeholder = placeholder
         textViewController.hint = hint
         textViewController.onValueChanged = { [unowned self] value in
-            self.usernameOrEmail = value
+            self.usernameOrEmail = value.nonEmptyString()
         }
 
         // Note: Let's disable validation, since the we need to allow Username OR Email
@@ -304,10 +307,9 @@ private extension InvitePersonViewController {
         WPStyleGuide.configureTableViewCell(roleCell)
     }
 
-    func setupMessageCell() {
-// TODO: Fix Vertical Alignment
-        messageCell.textLabel?.numberOfLines = 0
-        WPStyleGuide.configureTableViewCell(messageCell)
+    func setupMessageTextView() {
+        messageTextView.font = WPStyleGuide.tableviewTextFont()
+        messageTextView.textColor = WPStyleGuide.darkGrey()
     }
 
     func setupNavigationBar() {
@@ -347,7 +349,7 @@ private extension InvitePersonViewController {
         roleCell.detailTextLabel?.text = role.localizedName
     }
 
-    func refreshMessageCell() {
-        messageCell.textLabel?.text = message
+    func refreshMessageTextView() {
+        messageTextView.text = message
     }
 }

@@ -473,6 +473,29 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sdj-uY-1LY" id="Y8v-KJ-xnc">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nh9-39-Mdw">
+                                                    <rect key="frame" x="11" y="4" width="581" height="79.5"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="72" id="ARy-hL-nFx"/>
+                                                    </constraints>
+                                                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="ARy-hL-nFx"/>
+                                                        </mask>
+                                                    </variation>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="nh9-39-Mdw" secondAttribute="trailing" constant="8" id="06N-1n-lgP"/>
+                                                <constraint firstAttribute="bottom" secondItem="nh9-39-Mdw" secondAttribute="bottom" constant="4" id="Avz-ZP-kHa"/>
+                                                <constraint firstItem="nh9-39-Mdw" firstAttribute="top" secondItem="Y8v-KJ-xnc" secondAttribute="top" constant="4" id="HlP-n4-smH"/>
+                                                <constraint firstItem="nh9-39-Mdw" firstAttribute="leading" secondItem="Y8v-KJ-xnc" secondAttribute="leading" constant="11" id="Sq4-Av-m3J"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="OAN-Wl-zn9" kind="show" identifier="message" id="2uC-SA-yzk"/>
@@ -488,7 +511,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Add a Person" id="MO7-QW-hIa"/>
                     <connections>
-                        <outlet property="messageCell" destination="sdj-uY-1LY" id="14D-vu-j5f"/>
+                        <outlet property="messageTextView" destination="nh9-39-Mdw" id="EvO-0d-MLp"/>
                         <outlet property="roleCell" destination="JUH-Ao-gEv" id="xIB-S2-RYP"/>
                         <outlet property="usernameCell" destination="i2R-sD-lxa" id="wgx-nw-l50"/>
                     </connections>
