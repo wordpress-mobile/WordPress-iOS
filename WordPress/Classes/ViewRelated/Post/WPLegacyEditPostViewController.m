@@ -305,6 +305,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
+            newPost.dateModified = oldPost.dateModified;
 
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;

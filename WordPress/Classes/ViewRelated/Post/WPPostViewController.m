@@ -716,7 +716,8 @@ EditImageDetailsViewControllerDelegate
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
-            
+            newPost.dateModified = oldPost.dateModified;
+
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
@@ -1513,13 +1514,6 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditView:YES];
 }
 
-- (BOOL)shouldPublishImmediately
-{
-    return !self.post.hasFuturePublishDate &&
-        [self.post.original.status isEqualToString:PostStatusDraft] &&
-        [self.post.status isEqualToString:PostStatusPublish];
-}
-
 /**
  *  @brief      Saves the post being edited and uploads it.
  *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
@@ -1531,10 +1525,6 @@ EditImageDetailsViewControllerDelegate
     [self logSavePostStats];
 
     [self.view endEditing:YES];
-    
-    if ([self shouldPublishImmediately]) {
-        self.post.dateCreated = [NSDate date];
-    }
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;

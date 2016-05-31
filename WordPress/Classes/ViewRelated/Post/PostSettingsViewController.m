@@ -316,10 +316,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.tableView reloadData];
 }
 
-- (void)datePickerChanged:(NSDate *)date
-{
-    self.apost.dateCreated = date;
-}
 
 #pragma mark - TextField Delegate Methods
 
@@ -1186,7 +1182,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     if (value == nil) {
         // Publish Immediately
-        [self datePickerChanged:nil];
+        [self.apost publishImmediately];
     } else {
         // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
         NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
@@ -1195,7 +1191,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         if (fabs(interval) < 1.0) {
             return;
         }
-        [self datePickerChanged:selectedDate];
+        self.apost.dateCreated = selectedDate;
     }
 }
 
