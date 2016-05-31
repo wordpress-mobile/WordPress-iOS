@@ -53,10 +53,12 @@ class PeopleServiceTests : XCTestCase
         let expectation = expectationWithDescription("Send Invite")
 
         stubRemoteResponse("invites/validate", filename: validationFailureMockFilename)
-        remote.validateInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower) { success in
-            NSLog("Success: \(success)")
+        remote.validateInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, success: {
+            XCTAssert(false, "This callback shouldn't get called")
             expectation.fulfill()
-        }
+        }, failure: { error in
+            expectation.fulfill()
+        })
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
@@ -65,10 +67,12 @@ class PeopleServiceTests : XCTestCase
         let expectation = expectationWithDescription("Send Invite")
 
         stubRemoteResponse("invites/validate", filename: validationSuccessMockFilename)
-        remote.validateInvitation(321, usernameOrEmail: "someValidUser", role: .Follower) { success in
-            NSLog("Success: \(success)")
+        remote.validateInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, success: {
             expectation.fulfill()
-        }
+        }, failure: { error in
+            XCTAssert(false, "This callback shouldn't get called")
+            expectation.fulfill()
+        })
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
@@ -77,10 +81,12 @@ class PeopleServiceTests : XCTestCase
         let expectation = expectationWithDescription("Validate Invite")
 
         stubRemoteResponse("invites/new", filename: sendFailureMockFilename)
-        remote.sendInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, message: "") { success in
-            XCTAssertFalse(success)
+        remote.sendInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, message: "", success: {
+            XCTAssert(false, "This callback shouldn't get called")
             expectation.fulfill()
-        }
+        }, failure: { error in
+            expectation.fulfill()
+        })
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
@@ -89,10 +95,12 @@ class PeopleServiceTests : XCTestCase
         let expectation = expectationWithDescription("Validate Invite")
 
         stubRemoteResponse("invites/new", filename: sendSuccessMockFilename)
-        remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "") { success in
-            XCTAssertTrue(success)
+        remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "", success: {
             expectation.fulfill()
-        }
+        }, failure: { error in
+            XCTAssert(false, "This callback shouldn't get called")
+            expectation.fulfill()
+        })
 
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
