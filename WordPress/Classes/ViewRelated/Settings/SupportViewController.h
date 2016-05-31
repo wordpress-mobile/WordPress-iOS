@@ -1,9 +1,7 @@
 #import <UIKit/UIKit.h>
-#import <MessageUI/MessageUI.h>
 
-@interface SupportViewController : UITableViewController <MFMailComposeViewControllerDelegate>
+@interface SupportViewController : UITableViewController
 
-+ (void)checkIfFeedbackShouldBeEnabled;
 + (void)showFromTabBar;
 
 @end
