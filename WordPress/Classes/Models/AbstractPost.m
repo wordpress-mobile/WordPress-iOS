@@ -268,6 +268,17 @@
 
 #pragma mark - Convenience methods
 
+- (void)publishImmediately
+{
+    self.dateModified = [NSDate date];
+    [self setDateCreated:self.dateModified];
+}
+
+- (BOOL)shouldPublishImmediately
+{
+    return [self.date_created_gmt isEqualToDate:self.dateModified];
+}
+
 - (NSString *)authorNameForDisplay
 {
     return self.author;
