@@ -154,8 +154,8 @@ struct PeopleService {
     /// - Parameters:
     ///     - usernameOrEmail: Recipient that should be validated.
     ///     - role: Role that would be granted to the recipient.
-    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
-    ///       was successful, or not.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
     ///
     func validateInvitation(usernameOrEmail: String,
                             role: Role,
@@ -176,8 +176,8 @@ struct PeopleService {
     ///     - usernameOrEmail: Recipient that should be validated.
     ///     - role: Role that would be granted to the recipient.
     ///     - message: String that should be sent to the users.
-    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
-    ///       was successful, or not.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
     ///
     func sendInvitation(usernameOrEmail: String,
                         role: Role,
