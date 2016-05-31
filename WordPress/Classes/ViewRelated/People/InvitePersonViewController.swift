@@ -217,8 +217,16 @@ extension InvitePersonViewController {
             return
         }
 
-        sendInvitation(blog, recipient: recipient, role: role, message: message ?? "")
-        dismissViewControllerAnimated(true, completion: nil)
+        // Notes: 
+        //  -   We'll hit the actual send call once the dismiss is wrapped up.
+        //  -   If, for networking reasons, the call fails instantly, UIAlertViewController presentation will
+        //      fail, because it'll get attached to a VC that's getting dismissed.
+        //
+        // Thank you Apple . I love you too.
+        //
+        dismissViewControllerAnimated(true) {
+            self.sendInvitation(self.blog, recipient: recipient, role: self.role, message: self.message ?? "")
+        }
     }
 
     func sendInvitation(blog: Blog, recipient: String, role: Role, message: String) {
