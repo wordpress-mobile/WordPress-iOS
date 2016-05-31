@@ -128,21 +128,54 @@ namespace :lint do
   end
 end
 
-desc "Install git hooks"
-task :githooks do
-  %w[pre-commit post-checkout post-merge].each do |hook|
-    target = ".git/hooks/#{hook}"
-    source = "../../Scripts/hooks/#{hook}"
-    backup = "#{target}.bak"
+namespace :git do
+  hooks = %w[pre-commit post-checkout post-merge]
 
-    next if File.symlink?(target) and File.readlink(target) == source
-    next if File.file?(target) and File.identical?(target, source)
-    if File.exist?(target)
-      puts "Existing hook for #{hook}. Creating backup at #{target} -> #{backup}"
-      FileUtils.mv(target, backup, :force => true)
+  desc "Install git hooks"
+  task :instal_hooks do
+    hooks.each do |hook|
+      target = hook_target(hook)
+      source = hook_source(hook)
+      backup = hook_backup(hook)
+
+      next if File.symlink?(target) and File.readlink(target) == source
+      next if File.file?(target) and File.identical?(target, source)
+      if File.exist?(target)
+        puts "Existing hook for #{hook}. Creating backup at #{target} -> #{backup}"
+        FileUtils.mv(target, backup, :force => true)
+      end
+      FileUtils.ln_s(source, target)
+      puts "Installed #{hook} hook"
     end
-    FileUtils.ln_s(source, target)
-    puts "Installed #{hook} hook"
+  end
+
+  desc "Uninstall git hooks"
+  task :uninstall_hooks do
+    hooks.each do |hook|
+      target = hook_target(hook)
+      source = hook_source(hook)
+      backup = hook_backup(hook)
+
+      next unless File.symlink?(target) and File.readlink(target) == source
+      puts "Removing hook for #{hook}"
+      File.unlink(target)
+      if File.exist?(backup)
+        puts "Restoring hook for #{hook} from backup"
+        FileUtils.mv(backup, target)
+      end
+    end
+  end
+
+  def hook_target(hook)
+    ".git/hooks/#{hook}"
+  end
+
+  def hook_source(hook)
+    "../../Scripts/hooks/#{hook}"
+  end
+
+  def hook_backup(hook)
+    "#{hook_target(hook)}.bak"
   end
 end
 
