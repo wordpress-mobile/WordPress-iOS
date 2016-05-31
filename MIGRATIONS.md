@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 50
+
+- @aerych 2016-05-31
+- Added `dateModified` property to `BasePost` model.
+
 ## WordPress 49
 
 - @frosty 2016-05-17

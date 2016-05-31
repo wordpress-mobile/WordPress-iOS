@@ -28,6 +28,7 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong, nullable) NSString * author;
 @property (nonatomic, strong, nullable) NSString * authorAvatarURL;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
+@property (nonatomic, strong, nullable) NSDate * dateModified;
 @property (nonatomic, strong, nullable) NSString * postTitle;
 @property (nonatomic, strong, nullable) NSString * content;
 @property (nonatomic, strong, nullable) NSString * status;
