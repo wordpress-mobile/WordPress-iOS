@@ -72,7 +72,6 @@ class PostTests: XCTestCase {
         post.setCategoriesFromNames(["One", "Three"])
 
         let postCategories = post.categories!
-        //let postCategories = post.categories as! Set<PostCategory>
         XCTAssertEqual(postCategories.count, 2)
         XCTAssertTrue(postCategories.contains(category1))
         XCTAssertFalse(postCategories.contains(category2))
