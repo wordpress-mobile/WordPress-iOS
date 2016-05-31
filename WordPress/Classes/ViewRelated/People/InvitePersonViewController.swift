@@ -149,7 +149,6 @@ class InvitePersonViewController : UITableViewController {
         textViewController.text = usernameOrEmail
         textViewController.placeholder = placeholder
         textViewController.hint = hint
-        textViewController.mode = .Email
         textViewController.onValueChanged = { [unowned self] value in
             self.usernameOrEmail = value
         }
@@ -157,6 +156,7 @@ class InvitePersonViewController : UITableViewController {
         // Note: Let's disable validation, since the we need to allow Username OR Email
         textViewController.validatesInput = false
         textViewController.autocorrectionType = .No
+        textViewController.mode = .Email
     }
 
     private func setupRoleSegue(segue: UIStoryboardSegue) {
@@ -212,16 +212,19 @@ extension InvitePersonViewController {
             return
         }
 // TODO: UI
-        service.sendInvitation(usernameOrEmail, role: role, message: message) { success in
+        let unwrappedMessage = message ?? ""
+        service.sendInvitation(usernameOrEmail, role: role, message: unwrappedMessage, success: {
 
-        }
+        }, failure: { error in
+
+        })
     }
 }
 
 
 // MARK: - Helpers: Validation
 //
-extension InvitePersonViewController {
+private extension InvitePersonViewController {
 
     func validateUsername() {
         guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
@@ -229,15 +232,50 @@ extension InvitePersonViewController {
             return
         }
 
-        service.validateInvitation(usernameOrEmail, role: role) { [weak self] isValid in
-            // Dismiss if the username changed in the meantime (OR if the VC was dismissed)
-            guard let strongSelf = self where strongSelf.usernameOrEmail == usernameOrEmail else {
+        service.validateInvitation(usernameOrEmail, role: role, success: { [weak self] in
+            guard self?.shouldHandleValidationResponse(usernameOrEmail) == true else {
                 return
             }
 
-            strongSelf.sendActionEnabled = isValid
-// TODO: UI Feedback
+            self?.sendActionEnabled = true
+
+        }, failure: { [weak self] error in
+            guard self?.shouldHandleValidationResponse(usernameOrEmail) == true else {
+                return
+            }
+
+            self?.sendActionEnabled = false
+            self?.handleValidationError(error)
+        })
+    }
+
+    func shouldHandleValidationResponse(requestUsernameOrEmail: String) -> Bool {
+        // Handle only whenever the recipient didn't change
+        let recipient = usernameOrEmail ?? String()
+        return recipient == requestUsernameOrEmail
+    }
+
+    func handleValidationError(error: ErrorType) {
+        guard let error = error as? PeopleRemote.Error else {
+            return
         }
+
+        let messageMap : [PeopleRemote.Error: String] = [
+            .InvalidInputError       : NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
+                                                            comment: "People: Invitation Error"),
+            .UserAlreadyHasRoleError : NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
+                                                            comment: "People: Invitation Error"),
+            .UnknownError            : NSLocalizedString("Unknown error has occurred",
+                                                            comment: "People: Invitation Error")
+        ]
+
+        let message = messageMap[error] ?? messageMap[.UnknownError]!
+        let title = NSLocalizedString("Sorry!", comment: "Invite Validation Alert")
+        let accept = NSLocalizedString("Accept", comment: "Invite Accept Button")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+
+        alert.addDefaultActionWithTitle(accept)
+        presentViewController(alert, animated: true, completion: nil)
     }
 
     var sendActionEnabled : Bool {
