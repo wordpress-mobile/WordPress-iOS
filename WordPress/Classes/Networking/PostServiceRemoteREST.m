@@ -298,6 +298,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.authorURL = jsonPost[@"author"][@"URL"];
     post.authorID = [jsonPost numberForKeyPath:@"author.ID"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
+    post.dateModified = [NSDate dateWithWordPressComJSONString:jsonPost[@"modified"]];
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
     post.shortURL = [NSURL URLWithString:jsonPost[@"short_URL"]];
