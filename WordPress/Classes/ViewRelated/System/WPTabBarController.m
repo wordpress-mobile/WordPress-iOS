@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "Post.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
