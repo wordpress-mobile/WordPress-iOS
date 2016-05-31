@@ -183,8 +183,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - siteID: The ID of the site associated.
     ///     - usernameOrEmail: Recipient that should be validated.
     ///     - role: Role that would be granted to the recipient.
-    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
-    ///       was successful, or not.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
     func validateInvitation(siteID: Int,
                             usernameOrEmail: String,
@@ -222,12 +222,12 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     /// Sends an Invitation to the specified recipient.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated.
+    ///     - siteID: The ID of the associated site.
     ///     - usernameOrEmail: Recipient that should receive the invite.
     ///     - role: Role that would be granted to the recipient.
     ///     - message: String that should be sent to the recipient.
-    ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
-    ///       was successful, or not.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
     func sendInvitation(siteID: Int,
                         usernameOrEmail: String,
@@ -347,6 +347,10 @@ private extension PeopleRemote {
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
+    /// - Parameter roles: Raw backend dictionary
+    ///
+    /// - Returns: Collection of the remote roles.
+    ///
     func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
@@ -364,7 +368,13 @@ private extension PeopleRemote {
         return filtered.sort()
     }
 
-    /// Parses a
+    /// Parses a remote Invitation Error into a PeopleRemote.Error.
+    ///
+    /// - Parameters:
+    ///     - response: Raw backend dictionary
+    ///     - usernameOrEmail: Recipient that was used to either validate, or effectively send an invite.
+    ///
+    /// - Returns: The remote error, if any.
     ///
     func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
         guard let errors = response["errors"] as? [String: AnyObject],
