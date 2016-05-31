@@ -9,6 +9,7 @@
 @property (nonatomic, strong) NSString *authorURL;
 @property (nonatomic, strong) NSNumber *authorID;
 @property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSDate *dateModified;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSURL *URL;
 @property (nonatomic, strong) NSURL *shortURL;
