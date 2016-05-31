@@ -324,6 +324,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                      }]];
     }
 
+    if ([Feature enabled:FeatureFlagDomains] && [self.blog supports:BlogFeatureDomains]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the domain purchase / management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypeDomains]
+                                                     callback:^{
+                                                         [weakSelf showDomains];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeCog]
                                                  callback:^{
