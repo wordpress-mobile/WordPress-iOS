@@ -15,7 +15,7 @@ import Foundation
     ///
     public required override init(managedObjectContext: NSManagedObjectContext) {
         super.init(managedObjectContext: managedObjectContext)
-        self.authenticationServiceRemote = PushAuthenticationServiceRemote(api: apiForRequest())
+        self.authenticationServiceRemote = PushAuthenticationServiceRemote(wordPressComRestApi: apiForRequest())
     }
 
     /// Authorizes a WordPress.com Login Attempt (2FA Protected Accounts)
@@ -41,21 +41,21 @@ import Foundation
 
     /// Helper method to get the WordPress.com REST Api, if any
     ///
-    /// - Returns: WordPressComApi instance.  It can be an anonymous API instance if there are no credentials.
+    /// - Returns: WordPressComRestApi instance.  It can be an anonymous API instance if there are no credentials.
     ///
-    private func apiForRequest() -> WordPressComApi {
+    private func apiForRequest() -> WordPressComRestApi {
 
-        var api : WordPressComApi? = nil
+        var api : WordPressComRestApi? = nil
 
         let accountService = AccountService(managedObjectContext: managedObjectContext)
-        if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.restApi {
+        if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
             if unwrappedRestApi.hasCredentials() {
                 api = unwrappedRestApi
             }
         }
 
         if api == nil {
-            api = WordPressComApi.anonymousApi()
+            api = WordPressComRestApi.anonymousApi()
         }
 
         return api!
