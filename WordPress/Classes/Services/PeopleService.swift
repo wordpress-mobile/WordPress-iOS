@@ -157,8 +157,16 @@ struct PeopleService {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func validateInvitation(usernameOrEmail: String, role: Role, completion: (Bool -> Void)) {
-        remote.validateInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, completion: completion)
+    func validateInvitation(usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        remote.validateInvitation(siteID,
+                                  usernameOrEmail: usernameOrEmail,
+                                  role: role,
+                                  success: success,
+                                  failure: failure)
     }
 
 
@@ -171,9 +179,18 @@ struct PeopleService {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func sendInvitation(usernameOrEmail: String, role: Role, message: String?, completion: (Bool -> Void)) {
-        let unwrappedMessage = message ?? String()
-        remote.sendInvitation(siteID, usernameOrEmail: usernameOrEmail, role: role, message: unwrappedMessage, completion: completion)
+    func sendInvitation(usernameOrEmail: String,
+                        role: Role,
+                        message: String = "",
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        remote.sendInvitation(siteID,
+                              usernameOrEmail: usernameOrEmail,
+                              role: role,
+                              message: message,
+                              success: success,
+                              failure: failure)
     }
 }
 

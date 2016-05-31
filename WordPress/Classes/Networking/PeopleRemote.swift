@@ -8,6 +8,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     enum Error: ErrorType {
         case DecodeError
+        case InvalidInputError
+        case UserAlreadyHasRoleError
+        case UnknownError
     }
 
     /// Retrieves the collection of users associated to a given Site.
@@ -183,7 +186,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func validateInvitation(siteID: Int, usernameOrEmail: String, role: Role, completion: (Bool -> ()))
+    func validateInvitation(siteID: Int,
+                            usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
     {
         let endpoint = "sites/\(siteID)/invites/validate"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -194,18 +201,20 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
-            guard let responseDict = responseObject as? [String: AnyObject],
-                    let validRecipients = responseDict["success"] as? [String] else
-            {
-                completion(false)
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
                 return
             }
 
-            let success = validRecipients.contains(usernameOrEmail)
-            completion(success)
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
 
         }, failure: { (error, httpResponse) in
-            completion(false)
+            failure(error)
         })
     }
 
@@ -220,7 +229,12 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - completion: Closure to be executed on completion. The boolean will indicate whether the OP
     ///       was successful, or not.
     ///
-    func sendInvitation(siteID: Int, usernameOrEmail: String, role: Role, message: String, completion: (Bool -> ()))
+    func sendInvitation(siteID: Int,
+                        usernameOrEmail: String,
+                        role: Role,
+                        message: String,
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
     {
         let endpoint = "sites/\(siteID)/invites/new"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
@@ -232,18 +246,20 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
-            guard let responseDict = responseObject as? [String: AnyObject],
-                let validRecipients = responseDict["sent"] as? [String] else
-            {
-                completion(false)
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
                 return
             }
 
-            let success = validRecipients.contains(usernameOrEmail)
-            completion(success)
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
 
         }, failure: { (error, httpResponse) in
-            completion(false)
+            failure(error)
         })
     }
 }
@@ -346,5 +362,27 @@ private extension PeopleRemote {
 
         let filtered = parsed.filter { $0 != .Unsupported }
         return filtered.sort()
+    }
+
+    /// Parses a
+    ///
+    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+        guard let errors = response["errors"] as? [String: AnyObject],
+            let theError = errors[usernameOrEmail] as? [String: String],
+            let code = theError["code"] else
+        {
+            return nil
+        }
+
+        switch code {
+        case "invalid_input":
+            return Error.InvalidInputError
+        case "invalid_input_has_role":
+            return Error.UserAlreadyHasRoleError
+        case "invalid_input_following":
+            return Error.UserAlreadyHasRoleError
+        default:
+            return Error.UnknownError
+        }
     }
 }
