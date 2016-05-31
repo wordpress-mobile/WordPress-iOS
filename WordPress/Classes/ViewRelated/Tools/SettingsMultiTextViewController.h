@@ -33,4 +33,9 @@ typedef void (^SettingsMultiTextChanged)(NSString * _Nonnull);
 ///
 @property (nullable, nonatomic, copy) SettingsMultiTextAction onCancel;
 
+- (nonnull instancetype)initWithText:(NSString * __nullable)text
+                         placeholder:(NSString * __nullable)placeholder
+                                hint:(NSString * __nullable)hint
+                          isPassword:(BOOL)isPassword;
+
 @end
