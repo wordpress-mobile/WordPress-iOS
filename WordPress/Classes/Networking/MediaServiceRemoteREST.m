@@ -128,7 +128,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }
     NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
     FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:url filename:filename mimeType:type];
-    NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
+    __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
@@ -153,6 +153,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         }
         
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        localProgress.totalUnitCount = 0;
+        localProgress.completedUnitCount = 0;
         DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
         if (failure) {
             failure(error);
