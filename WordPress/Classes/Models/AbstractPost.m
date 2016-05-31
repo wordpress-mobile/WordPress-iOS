@@ -276,7 +276,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self.date_created_gmt isEqualToDate:self.dateModified];
+    return !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified];
 }
 
 - (NSString *)authorNameForDisplay
@@ -316,11 +316,10 @@
 
 - (NSString *)dateStringForDisplay
 {
-    NSDate *date = [self dateCreated];
-    if (!date) {
+    if ([self shouldPublishImmediately]) {
         return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
     }
-    return [date shortString];
+    return [[self dateCreated] shortString];
 }
 
 - (BOOL)supportsStats
