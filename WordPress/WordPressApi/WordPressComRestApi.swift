@@ -17,18 +17,23 @@ import AFNetworking
     case AuthorizationRequired
     case UploadFailed
     case RequestSerializationFailed
+    case TooManyRequests
     case Unknown
 }
 
 public class WordPressComRestApi: NSObject
 {
+    public static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
+    public static let ErrorKeyErrorCode: String = "WordPressComApiErrorCodeKey"
+    public static let ErrorKeyErrorMessage: String = "WordPressComApiErrorMessageKey"
+
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
     private let oAuthToken: String?
-    private var userAgent: String?
+    private let userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
@@ -211,6 +216,10 @@ public class WordPressComRestApi: NSObject
         }
         return !(authToken.isEmpty)
     }
+
+    override public var hashValue: Int {
+        return "\(oAuthToken),\(userAgent)".hashValue
+    }
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
@@ -244,10 +253,17 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
     }
 
     override func responseObjectForResponse(response: NSURLResponse?, data: NSData?, error: NSErrorPointer) -> AnyObject? {
-        let responseObject = super.responseObjectForResponse(response, data: data, error: error)
+        var optionalError: NSError?
+        let responseObject = super.responseObjectForResponse(response, data: data, error: &optionalError)
+        error.memory = optionalError
 
         guard let httpResponse = response as? NSHTTPURLResponse where (400...500).contains(httpResponse.statusCode) else {
             return responseObject
+        }
+
+        var userInfo: [NSObject: AnyObject] = [:]
+        if let originalError = optionalError {
+            userInfo = originalError.userInfo
         }
 
         var errorObject = responseObject
@@ -270,10 +286,13 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         ]
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
+        userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode
         let nserror = mappedError as NSError
+        userInfo[NSLocalizedDescriptionKey] =  errorDescription
         error.memory = NSError(domain:nserror.domain,
                                code:nserror.code,
-                               userInfo:[NSLocalizedDescriptionKey: errorDescription])
+                               userInfo:userInfo
+            )
         return responseObject
     }
 }
