@@ -56,7 +56,7 @@
 {
     NSString *key = @"date_created_gmt";
     [self willChangeValueForKey:key];
-    self.metaPublishImmediately = (date_created_gmt == nil);
+    self.metaPublishImmediately = [self shouldPublishImmediately];
     [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
