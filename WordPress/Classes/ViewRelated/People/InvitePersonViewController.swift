@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import SVProgressHUD
 
 
 
@@ -22,7 +23,7 @@ class InvitePersonViewController : UITableViewController {
     private var usernameOrEmail: String? {
         didSet {
             refreshUsernameCell()
-            validateUsername()
+            validateInvitation()
         }
     }
 
@@ -31,6 +32,7 @@ class InvitePersonViewController : UITableViewController {
     private var role : Role = .Follower {
         didSet {
             refreshRoleCell()
+            validateInvitation()
         }
     }
 
@@ -211,16 +213,44 @@ extension InvitePersonViewController {
     }
 
     @IBAction func sendWasPressed() {
-        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
+        guard let recipient = usernameOrEmail else {
             return
         }
-// TODO: UI
-        let unwrappedMessage = message ?? ""
-        service.sendInvitation(usernameOrEmail, role: role, message: unwrappedMessage, success: {
+
+        sendInvitation(blog, recipient: recipient, role: role, message: message ?? "")
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func sendInvitation(blog: Blog, recipient: String, role: Role, message: String) {
+        guard let service = PeopleService(blog: blog) else {
+            return
+        }
+
+        service.sendInvitation(recipient, role: role, message: message, success: {
+            let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
+            SVProgressHUD.showSuccessWithStatus(success)
 
         }, failure: { error in
-
+            self.handleSendError() {
+                self.sendInvitation(blog, recipient: recipient, role: role, message: message)
+            }
         })
+    }
+
+    func handleSendError(onRetry: (Void -> Void)) {
+        let message = NSLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
+        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let retryText = NSLocalizedString("Try Again", comment: "Retries an Action")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+
+        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addDefaultActionWithTitle(retryText) { action in
+            onRetry()
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
     }
 }
 
@@ -229,7 +259,7 @@ extension InvitePersonViewController {
 //
 private extension InvitePersonViewController {
 
-    func validateUsername() {
+    func validateInvitation() {
         guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
             sendActionEnabled = false
             return
