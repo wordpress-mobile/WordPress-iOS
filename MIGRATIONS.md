@@ -7,6 +7,7 @@ data model as well as any custom migrations.
 
 - @aerych 2016-05-31
 - Added `dateModified` property to `BasePost` model.
+- Removed `metaPublishImmediately` property from `AbstractPost` model.
 
 ## WordPress 49
 
