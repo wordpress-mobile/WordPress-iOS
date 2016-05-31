@@ -177,7 +177,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @return a string with the post format description and if no description was found the postFormatCode sent.
  */
-- (nullable NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
+- (nullable NSString *)postFormatTextFromSlug:(nullable NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  
