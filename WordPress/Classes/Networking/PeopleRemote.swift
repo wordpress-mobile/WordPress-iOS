@@ -8,7 +8,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     enum Error: ErrorType {
         case DecodeError
-        case RemoteError(message: String)
+        case InvalidInputError
+        case UserAlreadyHasRoleError
+        case UnknownError
     }
 
     /// Retrieves the collection of users associated to a given Site.
@@ -204,11 +206,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            if let errors = responseDict["errors"] as? [String: AnyObject],
-                let errorForValidation = errors[usernameOrEmail] as? [String: String],
-                let errorMessage = errorForValidation["message"]
-            {
-                let error = Error.RemoteError(message: errorMessage)
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
                 failure(error)
                 return
             }
@@ -253,11 +251,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            if let errors = responseDict["errors"] as? [String: AnyObject],
-                let errorForInvite = errors[usernameOrEmail] as? [String: String],
-                let errorMessage = errorForInvite["message"]
-            {
-                let error = Error.RemoteError(message: errorMessage)
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
                 failure(error)
                 return
             }
@@ -368,5 +362,27 @@ private extension PeopleRemote {
 
         let filtered = parsed.filter { $0 != .Unsupported }
         return filtered.sort()
+    }
+
+    /// Parses a
+    ///
+    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+        guard let errors = response["errors"] as? [String: AnyObject],
+            let theError = errors[usernameOrEmail] as? [String: String],
+            let code = theError["code"] else
+        {
+            return nil
+        }
+
+        switch code {
+        case "invalid_input":
+            return Error.InvalidInputError
+        case "invalid_input_has_role":
+            return Error.UserAlreadyHasRoleError
+        case "invalid_input_following":
+            return Error.UserAlreadyHasRoleError
+        default:
+            return Error.UnknownError
+        }
     }
 }
