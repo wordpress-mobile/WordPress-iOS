@@ -518,6 +518,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.author = remotePost.authorDisplayName;
     post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
+    post.dateModified = remotePost.dateModified;
     post.postTitle = remotePost.title;
     post.permaLink = [remotePost.URL absoluteString];
     post.content = remotePost.content;
