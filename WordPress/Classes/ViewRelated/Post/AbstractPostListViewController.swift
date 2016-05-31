@@ -657,7 +657,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListPublishAction, withProperties: propertiesForAnalytics())
 
         apost.status = PostStatusPublish
-        apost.setDateCreated(NSDate())
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
