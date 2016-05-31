@@ -79,30 +79,16 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     UISearchBar *searchBar = self.searchController.searchBar;
     [self.searchWrapperView addSubview:searchBar];
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{@"searchbarWidth":@(SearchBariPadWidth)};
     if ([UIDevice isPad]) {
-        [self.searchWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.searchWrapperView
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                          multiplier:1.0
-                                                                            constant:0.0]];
-        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchbarWidth)]"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
+        [searchBar.centerXAnchor constraintEqualToAnchor:self.searchWrapperView.centerXAnchor].active = YES;
+        NSLayoutConstraint *sizeConstraint = [searchBar.widthAnchor constraintEqualToConstant:SearchBariPadWidth];
+        sizeConstraint.priority = UILayoutPriorityDefaultLow;
+        sizeConstraint.active = YES;
+        [searchBar.widthAnchor constraintLessThanOrEqualToAnchor:self.searchWrapperView.widthAnchor multiplier:1].active = YES;
     } else {
-        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchBar]|"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
+        [searchBar.widthAnchor constraintEqualToAnchor:self.searchWrapperView.widthAnchor multiplier:1].active = YES;
     }
-    [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[searchBar]|"
-                                                                                   options:0
-                                                                                   metrics:metrics
-                                                                                     views:views]];
+    [searchBar.bottomAnchor constraintEqualToAnchor:self.searchWrapperView.bottomAnchor].active = YES;
 }
 
 - (void)configureSearchWrapper
