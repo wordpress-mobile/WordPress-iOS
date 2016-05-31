@@ -1,7 +1,6 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WordPress-Swift.h"
 
-const CGFloat SearchBarWidth = 280.0;
 const CGFloat SearchBariPadWidth = 600.0;
 const CGFloat SearchWrapperViewMinHeight = 44.0;
 const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
