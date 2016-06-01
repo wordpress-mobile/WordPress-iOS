@@ -3,6 +3,7 @@
 #import "ContextManager.h"
 #import "NSDate+StringFormatting.h"
 #import "WordPress-Swift.h"
+#import "BasePost.h"
 
 @implementation AbstractPost
 
@@ -289,7 +290,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified];
+    return [self.status isEqualToString:PostStatusDraft] && ( !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified] );
 }
 
 - (NSString *)authorNameForDisplay
