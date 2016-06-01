@@ -217,7 +217,7 @@ extension InvitePersonViewController {
             return
         }
 
-        // Notes: 
+        // Notes:
         //  -   We'll hit the actual send call once the dismiss is wrapped up.
         //  -   If, for networking reasons, the call fails instantly, UIAlertViewController presentation will
         //      fail, because it'll get attached to a VC that's getting dismissed.
