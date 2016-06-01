@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -432,8 +431,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureReblog:
         case BlogFeatureMentions:
         case BlogFeatureOAuth2Login:
-        case BlogFeaturePlans:
-            return [self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
