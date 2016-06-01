@@ -63,7 +63,7 @@ public class SettingsListEditorViewController : UITableViewController
 
     // MARK: - Button Handlers
     @IBAction func addItemPressed(sender: AnyObject?) {
-        let settingsViewController = SettingsTextViewController(style: .Grouped)
+        let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil)
         settingsViewController.title = insertTitle
         settingsViewController.onValueChanged = { (updatedValue : String!) in
             self.insertString(updatedValue)
@@ -131,11 +131,9 @@ public class SettingsListEditorViewController : UITableViewController
         // Edit!
         let oldText = stringAtIndexPath(indexPath)
 
-        let settingsViewController = SettingsTextViewController(style: .Grouped)
-
-        settingsViewController.text = oldText
+        let settingsViewController = SettingsTextViewController(text: oldText, placeholder: nil, hint: nil)
         settingsViewController.title = editTitle
-        settingsViewController.onValueChanged = { newText in
+        settingsViewController.onValueChanged = { (newText : String!) in
             self.replaceString(oldText, newText: newText)
             self.notifyDidChange()
             self.tableView.reloadData()
