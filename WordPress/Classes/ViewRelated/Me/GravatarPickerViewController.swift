@@ -75,6 +75,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
         pickerViewController.showMostRecentFirst = true
         pickerViewController.allowMultipleSelection = false
         pickerViewController.filter = .Image
+        pickerViewController.preferFrontCamera = true
 
         return pickerViewController
     }
