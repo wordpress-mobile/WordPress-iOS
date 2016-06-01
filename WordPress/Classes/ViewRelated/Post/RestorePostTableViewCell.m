@@ -1,6 +1,6 @@
 #import "RestorePostTableViewCell.h"
 #import "InteractivePostViewDelegate.h"
-#import "Post.h"
+#import "WordPress-Swift.h"
 #import "WPStyleGuide+Posts.h"
 
 @interface RestorePostTableViewCell()

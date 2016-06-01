@@ -444,13 +444,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedPerson:
             eventName = @"people_management_details_opened";
             break;
-        case WPAnalyticsStatOpenedPlans:
-            eventName = @"site_menu_opened";
-            eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
-            break;
-        case WPAnalyticsStatOpenedPlansComparison:
-            eventName = @"plans_compare";
-            break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
@@ -839,6 +832,8 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatOpenedPlans:
+        case WPAnalyticsStatOpenedPlansComparison:
             return nil;
     }
 

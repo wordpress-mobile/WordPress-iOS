@@ -131,7 +131,6 @@ int ddLogLevel = DDLogLevelInfo;
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
-    [self setupStoreKit];
 
     return YES;
 }
@@ -167,11 +166,6 @@ int ddLogLevel = DDLogLevelInfo;
     if ([ApiCredentials appbotXAPIKey].length > 0) {
         [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
     }
-}
-
-- (void)setupStoreKit
-{
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -382,10 +376,6 @@ int ddLogLevel = DDLogLevelInfo;
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-
-    // Notifications
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

@@ -1,6 +1,5 @@
 #import "WPAddPostCategoryViewController.h"
 #import "Blog.h"
-#import "Post.h"
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
 #import "Constants.h"
