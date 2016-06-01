@@ -22,6 +22,7 @@
 @import Gridicons;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
+static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -161,6 +162,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -246,6 +248,19 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                  callback:^{
                                                      [weakSelf showStats];
                                                  }]];
+
+    if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+                                                         identifier:BlogDetailsPlanCellIdentifier
+                                                              image:[Gridicon iconOfType:GridiconTypeClipboard]
+                                                           callback:^{
+                                                               [weakSelf showPlans];
+                                                           }];
+
+        row.detail = self.blog.planTitle;
+
+        [rows addObject:row];
+    }
     
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
@@ -500,6 +515,13 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPlans
+{
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
+    PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
