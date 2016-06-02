@@ -176,7 +176,7 @@ import WordPressShared.WPStyleGuide
     private let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
     private let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
     private let approveNormalHint       = NSLocalizedString("Approves the comment",  comment: "Approves a comment. Spoken Hint.")
-    private let approveSelectedHint     = NSLocalizedString("Disapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
+    private let approveSelectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
 
     // MARK: - IBOutlets
     @IBOutlet private var actionsView   : UIStackView!
