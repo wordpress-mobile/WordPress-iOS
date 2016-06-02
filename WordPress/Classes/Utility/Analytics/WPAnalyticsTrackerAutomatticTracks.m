@@ -366,9 +366,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            eventName = @"menus_updated_menu_name";
-            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
