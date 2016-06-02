@@ -263,15 +263,13 @@
         switch (error.code) {
             case 500:{
                 errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
-                errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
             } break;
             case 401:{
-                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
-                errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");                
             } break;
         }
         userInfo[NSLocalizedDescriptionKey] = errorMessage;
-        newError = [[NSError alloc] initWithDomain:WordPressComRestApiErrorDomain code:errorCode userInfo:userInfo];
+        newError = [[NSError alloc] initWithDomain:WPXMLRPCFaultErrorDomain code:errorCode userInfo:userInfo];
     }
     return newError;
 }
