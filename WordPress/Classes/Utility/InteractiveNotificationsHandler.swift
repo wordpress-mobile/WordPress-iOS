@@ -28,7 +28,7 @@ final public class InteractiveNotificationsHandler : NSObject
     /// Registers the device for User Notifications.
     ///
     public func registerForUserNotifications() {
-        if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
+        if sharedApplication.isRunningSimulator() || build(.Alpha) {
             return
         }
 
