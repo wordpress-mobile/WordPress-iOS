@@ -72,6 +72,9 @@ import WordPressComAnalytics
     private var tagSlug:String? {
         didSet {
             if tagSlug != nil {
+                // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
+                title = tagSlug
+
                 fetchTagTopic()
             }
         }
