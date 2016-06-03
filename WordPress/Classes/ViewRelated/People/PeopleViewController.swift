@@ -36,6 +36,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
+    /// Number of pending-rows that trigger the LoadMore call
+    ///
+    private let refreshRowPadding = 4
+
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
@@ -97,6 +101,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return hasHorizontallyCompactView() ? CGFloat.min : 0
+    }
+
+    public override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // Refresh only when we reach the last 3 rows in the last section!
+        let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        guard shouldLoadMore == true && (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
+            return
+        }
+
+        loadMorePeople()
     }
 
 
@@ -209,6 +223,23 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             service.refreshFollowers(completion)
         case .Users:
             service.refreshUsers(completion)
+        }
+    }
+
+    private func loadMorePeople() {
+        guard let blog = blog, service = PeopleService(blog: blog) else {
+            return
+        }
+
+        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+            self?.shouldLoadMore = shouldLoadMore
+        }
+
+        switch filter {
+        case .Followers:
+            service.loadMoreFollowers(completion)
+        case .Users:
+            service.loadMoreUsers(completion)
         }
     }
 
