@@ -1000,9 +1000,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Name Updated"];
-            break;
             
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:

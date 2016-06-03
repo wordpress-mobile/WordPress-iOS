@@ -94,6 +94,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         super.viewDidLoad()
 
         navigationItem.titleView = titleButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add,
+                                                            target: self,
+                                                            action: #selector(invitePersonWasPressed))
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         // By default, let's display the Blog's Users
@@ -117,6 +120,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         {
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
+
+        } else if let navController = segue.destinationViewController as? UINavigationController,
+            let inviteViewController = navController.topViewController as? InvitePersonViewController,
+            let blog = blog
+        {
+            inviteViewController.blog = blog
         }
     }
 
@@ -128,6 +137,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     @IBAction public func titleWasPressed() {
         displayModePicker()
+    }
+
+    @IBAction public func invitePersonWasPressed() {
+        performSegueWithIdentifier(Storyboard.inviteSegueIdentifier, sender: self)
     }
 
 
@@ -280,7 +293,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     // MARK: - Constants
 
-    private struct RestorationKeys {
+    private enum RestorationKeys {
         static let blog = "peopleBlogRestorationKey"
+    }
+
+    private enum Storyboard {
+        static let inviteSegueIdentifier = "invite"
     }
 }
