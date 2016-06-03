@@ -21,7 +21,6 @@
 
 // Categories & extensions
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 
