@@ -31,9 +31,10 @@ struct PeopleService {
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshUsers(completion: (Bool -> Void)) {
+    func refreshUsers(completion: ((shouldLoadMore: Bool) -> Void)) {
         remote.getUsers(siteID, success: { users, hasMore in
             self.mergeUsers(users)
+            completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
@@ -45,9 +46,10 @@ struct PeopleService {
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshFollowers(completion: (Bool -> Void)) {
+    func refreshFollowers(completion: ((shouldLoadMore: Bool) -> Void)) {
         remote.getFollowers(siteID, success: { followers, hasMore in
             self.mergeFollowers(followers)
+            completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))

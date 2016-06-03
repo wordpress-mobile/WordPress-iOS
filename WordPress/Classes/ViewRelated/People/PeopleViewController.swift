@@ -24,6 +24,18 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     private let noResultsView = WPNoResultsView()
 
+    /// Indicates whether there are more results that can be retrieved, or not.
+    ///
+    private var shouldLoadMore = false {
+        didSet {
+            if shouldLoadMore {
+                footerActivityIndicator.startAnimating()
+            } else {
+                footerActivityIndicator.stopAnimating()
+            }
+        }
+    }
+
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
@@ -58,7 +70,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     @IBOutlet private var footerActivityIndicator: UIActivityIndicatorView!
 
-    
+
 
     // MARK: - UITableView Methods
 
@@ -187,7 +199,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        let completion = { [weak self] (success: Bool) -> Void in
+        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+            self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
 
