@@ -60,7 +60,7 @@ import Foundation
     ///
     func deleteSuggestion(suggestion: ReaderSearchSuggestion) {
         managedObjectContext.deleteObject(suggestion)
-        ContextManager.sharedInstance().saveContext(managedObjectContext)
+        ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
     }
 
 
