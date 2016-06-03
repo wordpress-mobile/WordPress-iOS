@@ -32,8 +32,6 @@ abstract_target 'WordPress_Base' do
     pod 'Optimizely-iOS-SDK', '~> 1.4.2'
     pod 'Reachability',	'3.2'
     pod 'ReactiveCocoa', '~> 2.4.7'
-    pod 'RxCocoa', '~> 2.3.1'
-    pod 'RxSwift', '~> 2.3.1'
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
@@ -50,10 +48,10 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
-    pod 'WPMediaPicker', '~> 0.9.1'
+    pod 'WPMediaPicker', '~> 0.9.2'
     pod 'WordPress-iOS-Editor', '1.6.1'
     pod 'WordPressApi', '0.4.0'
-    pod 'WordPressCom-Analytics-iOS', '0.1.11'
+    pod 'WordPressCom-Analytics-iOS', '0.1.14'
     pod 'WordPressCom-Stats-iOS', '0.7.0'
     pod 'wpxmlrpc', '~> 0.8'
     
@@ -64,10 +62,8 @@ abstract_target 'WordPress_Base' do
       pod 'OHHTTPStubs/Swift', '~> 4.6.0'
       pod 'OCMock', '3.1.2'
       pod 'Specta', '1.0.5'
-      pod 'Expecta', '0.3.2'
+      pod 'Expecta', '1.0.5'
       pod 'Nimble', '~> 4.0.0'
-      pod 'RxSwift', '~> 2.3.1'
-      pod 'RxTests', '~> 2.3.1'
     end
   end
 

@@ -23,6 +23,18 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///
 @property (nullable, nonatomic, copy) SettingsTextAction onActionPress;
 
+/// String to be displayed at the bottom.
+///
+@property (nullable, nonatomic, strong) NSString *hint;
+
+/// Placeholder string to be displayed, in case the text is empty.
+///
+@property (nullable, nonatomic, strong) NSString *placeholder;
+
+/// The raw string (current value) to edit.
+///
+@property (nullable, nonatomic, strong) NSString *text;
+
 /// Specifies the Notice Message that should be displayed on top of the table.
 ///
 @property (nullable, nonatomic, copy) NSString *notice;
@@ -34,6 +46,14 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 /// Indicates whether an action button should be displayed at the bottom, or not.
 ///
 @property (nonatomic, assign) BOOL displaysActionButton;
+
+/// Indicates whether input should be validated or not. Defaults to YES.
+///
+@property (nonatomic, assign) BOOL validatesInput;
+
+/// Textfield Autocorrection
+///
+@property (nonatomic, assign) UITextAutocorrectionType autocorrectionType;
 
 /// Sets the Text Input Mode:
 ///

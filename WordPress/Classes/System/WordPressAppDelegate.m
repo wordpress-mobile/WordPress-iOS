@@ -75,7 +75,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
-@property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
@@ -132,7 +131,6 @@ int ddLogLevel = DDLogLevelInfo;
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
-    [self setupStoreKit];
 
     return YES;
 }
@@ -168,11 +166,6 @@ int ddLogLevel = DDLogLevelInfo;
     if ([ApiCredentials appbotXAPIKey].length > 0) {
         [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
     }
-}
-
-- (void)setupStoreKit
-{
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -366,15 +359,11 @@ int ddLogLevel = DDLogLevelInfo;
     [KeychainTools processKeychainDebugArguments];
 #endif
 
-    // Stats and feedback
-    [SupportViewController checkIfFeedbackShouldBeEnabled];
-    
     [HelpshiftUtils setup];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    self.userAgent = [[WPUserAgent alloc] init];
-    [self.userAgent useWordPressUserAgentInUIWebViews];
+    [WPUserAgent useWordPressUserAgentInUIWebViews];
     [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
@@ -384,10 +373,6 @@ int ddLogLevel = DDLogLevelInfo;
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-
-    // Notifications
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -565,15 +550,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)customizeAppearance
 {
-    UIColor *defaultTintColor = self.window.tintColor;
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.window.tintColor = [WPStyleGuide wordPressBlue];
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setTintColor:defaultTintColor];
 
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)]];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];

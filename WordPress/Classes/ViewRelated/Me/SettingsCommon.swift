@@ -1,4 +1,4 @@
-import RxSwift
+import UIKit
 
 protocol SettingsController: ImmuTableController {}
 

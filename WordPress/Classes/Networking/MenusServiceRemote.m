@@ -4,7 +4,7 @@
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
-#import "WordPressRestApi.h"
+#import "WordPress-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,11 +40,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/menus/new", blogId];
     NSString *requestURL = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api POST:requestURL
+    [self.wordPressComRestApi POST:requestURL
         parameters:@{MenusRemoteKeyName: menuName}
-           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
                void(^responseFailure)() = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred creating the Menu.", @"An error description explaining that a Menu could not be created.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
@@ -60,7 +60,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                    menu.name = menuName;
                    success(menu);
                }
-           } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -81,7 +81,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuID];
     NSString *requestURL = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:2];
     if (updatedName.length) {
@@ -98,9 +98,9 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     // Brent Coursey - 10/1/2015
     [params setObject:menuID forKey:MenusRemoteKeyID];
     
-    [self.api POST:requestURL
+    [self.wordPressComRestApi POST:requestURL
         parameters:params
-           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
                void(^responseFailure)() = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred updating the Menu.", @"An error description explaining that a Menu could not be updated.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
@@ -117,7 +117,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                if (success) {
                    success(menu);
                }
-           } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -135,10 +135,10 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menuID];
     NSString *requestURL = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    [self.api POST:requestURL
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    [self.wordPressComRestApi POST:requestURL
         parameters:nil
-           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
                void(^responseFailure)() = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred deleting the Menu.", @"An error description explaining that a Menu could not be deleted.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
@@ -155,7 +155,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                } else {
                    responseFailure();
                }
-           } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
@@ -173,11 +173,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/menus", blogId];
     NSString *requestURL = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    [self.api GET:requestURL
+    [self.wordPressComRestApi GET:requestURL
        parameters:nil
-          success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+          success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
               if (![responseObject isKindOfClass:[NSDictionary class]]) {
                   NSString *message = NSLocalizedString(@"An error occurred fetching the Menus.", @"An error description explaining that Menus could not be fetched.");
                   [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
@@ -189,7 +189,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                   success(menus, locations);
               }
               
-          } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+          } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }

@@ -3,7 +3,7 @@ import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, PostCardTableViewCellDelegate {
+class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -16,8 +16,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     static private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
     static private let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
 
-    // TODO: low cap on first char!
-
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
     static private let postCardEstimatedRowHeight = CGFloat(100.0)
     static private let postCardRestoreCellRowHeight = CGFloat(54.0)
@@ -27,7 +25,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
-    // MARK: Initializers & deinitializers
+    // MARK: - GUI
+
+    private let animatedBox = WPAnimatedBox()
+
+    // MARK: - Initializers & deinitializers
 
     deinit {
         PrivateSiteURLProtocol.unregisterPrivateSiteURLProtocol()
@@ -85,6 +87,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         precondition(segue.destinationViewController is UITableViewController)
+
+        super.refreshNoResultsView = { [weak self] noResultsView in
+            self?.handleRefreshNoResultsView(noResultsView)
+        }
         super.tableViewController = (segue.destinationViewController as! UITableViewController)
     }
 
@@ -152,18 +158,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
-    override func noResultsTitleText() -> String {
-        if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        }
-
-        let filter = currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
-
-        return title ?? ""
-    }
-
     private func noResultsTitles() -> [PostListStatusFilter:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
@@ -195,55 +189,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 .Scheduled: scheduled,
                 .Trashed: trashed,
                 .Published: published]
-    }
-
-    override func noResultsMessageText() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = currentPostListFilter().filterType
-        var message: String
-
-        switch filterType {
-        case .Draft:
-            message = NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-            break
-        case .Scheduled:
-            message = NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-            break
-        case .Trashed:
-            message = NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
-            break
-        default:
-            message = NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-            break
-        }
-
-        return message
-    }
-
-    override func noResultsButtonText() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
-            return nil
-        }
-
-        let filterType = currentPostListFilter().filterType
-        var title: String
-
-        switch filterType {
-        case .Scheduled:
-            title = NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
-            break
-        case .Trashed:
-            title = ""
-            break
-        default:
-            title = NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
-            break
-        }
-
-        return title
     }
 
     override func configureAuthorFilter() {
@@ -287,6 +232,28 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         } else {
             setCurrentPostAuthorFilter(.Everyone)
         }
+    }
+
+    // MARK: - Data Model Interaction
+
+    /// Retrieves the post object at the specified index path.
+    ///
+    /// - Parameter indexPath: the index path of the post object to retrieve.
+    ///
+    /// - Returns: the requested post.
+    ///
+    private func postAtIndexPath(indexPath: NSIndexPath) -> Post {
+        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
+            // Retrieving anything other than a post object means we have an App with an invalid
+            // state.  Ignoring this error would be counter productive as we have no idea how this
+            // can affect the App.  This controlled interruption is intentional.
+            //
+            // - Diego Rey Mendez, May 18 2016
+            //
+            fatalError("Expected a post object.")
+        }
+
+        return post
     }
 
     // MARK: - TableViewHandler
@@ -345,12 +312,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Table View Handling
 
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return 0
-        }
+        let post = postAtIndexPath(indexPath)
 
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return self.dynamicType.postCardRestoreCellRowHeight
@@ -365,12 +327,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return 0
-        }
+        let post = postAtIndexPath(indexPath)
 
         if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
             return self.dynamicType.postCardRestoreCellRowHeight
@@ -394,12 +351,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
+        let post = postAtIndexPath(indexPath)
 
         if post.remoteStatus == AbstractPostRemoteStatusPushing {
             // Don't allow editing while pushing changes
@@ -415,10 +367,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
-            preconditionFailure("Expected a post object.")
-        }
 
+        let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
 
@@ -431,15 +381,18 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         cell.accessoryType = .None
         cell.selectionStyle = .None
 
-        if let postCell = cell as? PostCardCell {
-            postCell.delegate = self
+        let post = postAtIndexPath(indexPath)
 
-            if let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? WPPostContentViewProvider {
-                let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
+        guard let interactivePostView = cell as? InteractivePostView,
+            let configurablePostView = cell as? ConfigurablePostView else {
 
-                postCell.configureCell?(post, layoutOnly: layoutOnly)
-            }
+            fatalError("Cell does not implement the required protocols")
         }
+
+        interactivePostView.setInteractionDelegate(self)
+
+        let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
+        configurablePostView.configureWithPost(post, forLayoutOnly: layoutOnly)
     }
 
     private func cellIdentifierForPost(post: Post) -> String {
@@ -641,71 +594,97 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return self.dynamicType.currentPostListStatusFilterKey
     }
 
-    // MARK: - Cell Delegate Methods
+    // MARK: - InteractivePostViewDelegate
 
-    func cell(cell: UITableViewCell!, receivedEditActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        editPost(apost)
+    func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
+        editPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedViewActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewPost(apost)
+    func cell(cell: UITableViewCell, handleViewPost post: AbstractPost) {
+        viewPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedStatsActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        viewStatsForPost(apost)
+    func cell(cell: UITableViewCell, handleStatsForPost post: AbstractPost) {
+        viewStatsForPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedPublishActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        publishPost(apost)
+    func cell(cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+        publishPost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedTrashActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        deletePost(apost)
+    func cell(cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+        deletePost(post)
     }
 
-    func cell(cell: UITableViewCell!, receivedRestoreActionForProvider contentProvider: WPPostContentViewProvider!) {
-        guard let apost = contentProvider as? AbstractPost else {
-            let message = "Expected a post object."
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
+    func cell(cell: UITableViewCell, handleRestorePost post: AbstractPost) {
+        restorePost(post)
+    }
+
+    // MARK: - Refreshing noResultsView
+
+    private func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.messageText = noResultsMessage()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    // MARK: - NoResultsView Customizer helpers
+
+    private func noResultsAccessoryView() -> UIView {
+        if syncHelper.isSyncing {
+            animatedBox.animateAfterDelay(0.1)
+            return animatedBox
         }
 
-        restorePost(apost)
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+
+    func noResultsButtonTitle() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+
+        switch filterType {
+        case .Scheduled:
+            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
+        case .Trashed:
+            return ""
+        default:
+            return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
+        }
+    }
+
+    func noResultsTitle() -> String {
+        if syncHelper.isSyncing == true {
+            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        }
+
+        let filter = currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+
+        return title ?? ""
+    }
+
+    func noResultsMessage() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = currentPostListFilter().filterType
+
+        switch filterType {
+        case .Draft:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        case .Scheduled:
+            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        case .Trashed:
+            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
+        default:
+            return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        }
     }
 }

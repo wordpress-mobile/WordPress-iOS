@@ -50,13 +50,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         handler = ImmuTableViewHandler(takeOver: self)
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        _ = service.defaultAccountChanged
-            .takeUntil(rx_deallocated)
-            .subscribeNext({ [unowned self] _ in
-                self.reloadViewModel()
-                })
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.reloadViewModel), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
 
         refreshAccountDetails()
 
@@ -70,7 +64,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         animateDeselectionInteractively()
     }
 
-    private func reloadViewModel() {
+    @objc private func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
         let badgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0

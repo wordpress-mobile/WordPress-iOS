@@ -1,6 +1,5 @@
 #import "BlogServiceRemoteREST.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 #import "RemoteBlogOptionsHelper.h"
 #import "RemotePostType.h"
@@ -36,17 +35,17 @@ static NSString * const RemoteBlogRelatedPostsEnabledKey                    = @"
 static NSString * const RemoteBlogRelatedPostsShowHeadlineKey               = @"jetpack_relatedposts_show_headline";
 static NSString * const RemoteBlogRelatedPostsShowThumbnailsKey             = @"jetpack_relatedposts_show_thumbnails";
 
-static NSString * const RemoteBlogSharingButtonStyle = @"sharing_button_style";
-static NSString * const RemoteBlogSharingLabel = @"sharing_label";
-static NSString * const RemoteBlogSharingTwitterName = @"twitter_via";
-static NSString * const RemoteBlogSharingCommentLikesEnabled = @"jetpack_comment_likes_enabled";
-static NSString * const RemoteBlogSharingDisabledLikes = @"disabled_likes";
-static NSString * const RemoteBlogSharingDisabledReblogs = @"disabled_reblogs";
+static NSString * const RemoteBlogSharingButtonStyle                        = @"sharing_button_style";
+static NSString * const RemoteBlogSharingLabel                              = @"sharing_label";
+static NSString * const RemoteBlogSharingTwitterName                        = @"twitter_via";
+static NSString * const RemoteBlogSharingCommentLikesEnabled                = @"jetpack_comment_likes_enabled";
+static NSString * const RemoteBlogSharingDisabledLikes                      = @"disabled_likes";
+static NSString * const RemoteBlogSharingDisabledReblogs                    = @"disabled_reblogs";
 
-static NSString * const RemotePostTypesKey = @"post_types";
-static NSString * const RemotePostTypeNameKey = @"name";
-static NSString * const RemotePostTypeLabelKey = @"label";
-static NSString * const RemotePostTypeQueryableKey = @"api_queryable";
+static NSString * const RemotePostTypesKey                                  = @"post_types";
+static NSString * const RemotePostTypeNameKey                               = @"name";
+static NSString * const RemotePostTypeLabelKey                              = @"label";
+static NSString * const RemotePostTypeQueryableKey                          = @"api_queryable";
 
 #pragma mark - Keys used for Update Calls
 // Note: Only god knows why these don't match the "Parsing Keys"
@@ -70,15 +69,15 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (success) {
                   NSDictionary *response = (NSDictionary *)responseObject;
                   BOOL isMultiAuthor = [[response arrayForKey:@"users"] count] > 1;
                   success(isMultiAuthor);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -92,15 +91,15 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSDictionary *response = (NSDictionary *)responseObject;
-              NSDictionary *options = [RemoteBlogOptionsHelper mapOptionsFromResponse:response];
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+              NSDictionary *responseDict = (NSDictionary *)responseObject;
+              NSDictionary *options = [RemoteBlogOptionsHelper mapOptionsFromResponse:responseDict];
               if (success) {
                   success(options);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -114,9 +113,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     NSDictionary *parameters = @{@"context": @"edit"};
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+          success:^(NSDictionary *responseObject, NSHTTPURLResponse *httpResponse) {
              
               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
               NSArray <RemotePostType *> *postTypes = [[responseObject arrayForKey:RemotePostTypesKey] wp_map:^id(NSDictionary *json) {
@@ -130,7 +129,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
               if (success) {
                   success(postTypes);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -144,14 +143,14 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               NSDictionary *formats = [self mapPostFormatsFromResponse:responseObject[@"formats"]];
               if (success) {
                   success(formats);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -164,9 +163,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *path = [self pathForSettings];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api GET:requestUrl
+    [self.wordPressComRestApi GET:requestUrl
        parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               if (![responseObject isKindOfClass:[NSDictionary class]]){
                   if (failure) {
                       failure(nil);
@@ -177,7 +176,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
               if (success) {
                   success(remoteSettings);
               }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
                   failure(error);
               }
@@ -194,9 +193,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
-    [self.api POST:requestUrl
+    [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDict) {
+           success:^(NSDictionary *responseDict, NSHTTPURLResponse *httpResponse) {
                if (![responseDict isKindOfClass:[NSDictionary class]]) {
                    if (failure) {
                        failure(nil);
@@ -211,7 +210,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
                    success();
                }
            }
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                if (failure) {
                    failure(error);
                }
