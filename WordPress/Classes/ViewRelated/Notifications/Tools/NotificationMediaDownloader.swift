@@ -143,7 +143,7 @@ import AFNetworking
                 if retryCount < self.maximumRetryCount {
                     self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
 
-                    // Otherwise, we just failed!
+                // Otherwise, we just failed!
                 } else {
                     completion(error, nil)
                     self.urlsBeingDownloaded.remove(url)
@@ -231,7 +231,7 @@ import AFNetworking
 
     // MARK: - Private Properties
     private let responseSerializer  = AFImageResponseSerializer()
-    private lazy var downloadSession:AFURLSessionManager = {
+    private lazy var downloadSession: AFURLSessionManager = {
         let sessionManager = AFURLSessionManager()
         sessionManager.responseSerializer = self.responseSerializer
         return sessionManager
