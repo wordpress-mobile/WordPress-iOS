@@ -37,9 +37,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters: [String: AnyObject] = [
-            "number": pageSize,
-            "offset": offset,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
+            "number"    : pageSize,
+            "offset"    : offset,
+            "order_by"  : "display_name",
+            "order"     : "ASC",
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -50,7 +52,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            let hasMore = self.morePeopleFoundFromResponse(response)
+            let hasMore = self.peopleFoundFromResponse(response) > offset
             success(users: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
@@ -75,10 +77,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let pageNumber = (offset / pageSize + 1)
         let parameters: [String: AnyObject] = [
-            "number": pageSize,
-            "offset": offset,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
+            "number"    : pageSize,
+            "page"      : pageNumber,
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -89,7 +92,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            let hasMore = self.morePeopleFoundFromResponse(response)
+            let hasMore = self.peopleFoundFromResponse(response) > pageNumber * self.pageSize
             success(followers: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
@@ -367,15 +370,12 @@ private extension PeopleRemote {
                  isSuperAdmin  : isSuperAdmin)
     }
 
-    /// Checks if there are more Persons that could be retrieved from the backend.
+    /// Returns the count of persons that can be retrieved from the backend.
     ///
     /// - Parameters response: Raw backend dictionary
     ///
-    /// - Returns: True if there are more entities that haven't been retrieved.
-    ///
-    func morePeopleFoundFromResponse(response: [String: AnyObject]) -> Bool {
-        let found = response["found"] as? Int ?? 0
-        return found > pageSize
+    func peopleFoundFromResponse(response: [String: AnyObject]) -> Int {
+        return response["found"] as? Int ?? 0
     }
 
 
