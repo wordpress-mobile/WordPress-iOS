@@ -106,6 +106,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
+        refreshNoResultsView()
         WPAnalytics.track(.OpenedPeople)
     }
 
@@ -178,10 +179,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        refreshNoResultsView()
-
         service.refreshPeople { [weak self] _ in
-            self?.refreshNoResultsView()
             self?.refreshControl?.endRefreshing()
         }
     }
