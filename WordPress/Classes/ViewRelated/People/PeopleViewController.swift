@@ -15,7 +15,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private var filter = Filter.Users {
         didSet {
             refreshInterface()
-            refreshResults()
+            refreshResultsController()
             refreshPeople()
         }
     }
@@ -154,7 +154,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         titleButton.setAttributedTitleForTitle(filter.title)
     }
 
-    private func refreshResults() {
+    private func refreshResultsController() {
         resultsController.fetchRequest.predicate = predicate
 
         do {
@@ -179,8 +179,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        service.refreshPeople { [weak self] _ in
+        let completion = { [weak self] (success: Bool) -> Void in
             self?.refreshControl?.endRefreshing()
+        }
+
+        switch filter {
+        case .Followers:
+            service.refreshFollowers(completion)
+        case .Users:
+            service.refreshUsers(completion)
         }
     }
 

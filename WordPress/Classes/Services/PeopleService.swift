@@ -27,43 +27,33 @@ struct PeopleService {
         siteID = dotComID
     }
 
-    /// Refreshes the Users + Followers associated to the current blog.
+    /// Refreshes the Users associated to the current blog.
     ///
     /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshPeople(completion: (Bool -> Void)) {
-        let group = dispatch_group_create()
-        var success = true
-
-        // Load Users
-        dispatch_group_enter(group)
+    func refreshUsers(completion: (Bool -> Void)) {
         remote.getUsers(siteID, success: { users, hasMore in
             self.mergeUsers(users)
-            dispatch_group_leave(group)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
         })
-
-        // Load Followers
-        dispatch_group_enter(group)
-        remote.getFollowers(siteID, success: { followers, hasMore in
-            self.mergeFollowers(followers)
-            dispatch_group_leave(group)
-
-        }, failure: { error in
-            DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
-        })
-
-        dispatch_group_notify(group, dispatch_get_main_queue()) {
-            completion(success)
-        }
     }
 
+
+    /// Refreshes the Followers associated to the current blog.
+    ///
+    /// - Parameter completion: Closure to be executed on completion.
+    ///
+    func refreshFollowers(completion: (Bool -> Void)) {
+        remote.getFollowers(siteID, success: { followers, hasMore in
+            self.mergeFollowers(followers)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+        })
+
+    }
 
     /// Updates a given User with the specified role.
     ///
