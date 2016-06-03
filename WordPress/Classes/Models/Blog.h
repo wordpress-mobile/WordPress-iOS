@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressComApi;
 @class WordPressComRestApi;
 @class WPXMLRPCClient;
+@class WordPressOrgXMLRPCApi;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -126,6 +127,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
 @property (nonatomic, strong,  readonly, nullable) WPXMLRPCClient *api;
+@property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlRpcApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
