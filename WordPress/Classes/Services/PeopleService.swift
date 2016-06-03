@@ -41,7 +41,6 @@ struct PeopleService {
         })
     }
 
-
     /// Refreshes the Followers associated to the current blog.
     ///
     /// - Parameter completion: Closure to be executed on completion.
@@ -54,8 +53,40 @@ struct PeopleService {
         }, failure: { error in
             DDLogSwift.logError(String(error))
         })
-
     }
+
+    /// Attempts to retrieve more users from the backend.
+    ///
+    /// - Parameter completion: Closure to be executed on completion.
+    ///
+    func loadMoreUsers(completion: ((shouldLoadMore: Bool) -> Void)) {
+        let users = loadPeople(siteID, type: User.self)
+
+        remote.getUsers(siteID, offset: users.count, success: { (users, hasMore) in
+            self.mergeUsers(users)
+            completion(shouldLoadMore: hasMore)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+        })
+    }
+
+    /// Attempts to retrieve more followers from the backend.
+    ///
+    /// - Parameter completion: Closure to be executed on completion.
+    ///
+    func loadMoreFollowers(completion: ((shouldLoadMore: Bool) -> Void)) {
+        let followers = loadPeople(siteID, type: Follower.self)
+
+        remote.getFollowers(siteID, offset: followers.count, success: { (followers, hasMore) in
+            self.mergeFollowers(followers)
+            completion(shouldLoadMore: hasMore)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+        })
+    }
+
 
     /// Updates a given User with the specified role.
     ///
