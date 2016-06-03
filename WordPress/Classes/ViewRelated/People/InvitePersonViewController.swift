@@ -55,7 +55,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Last Section Footer Text
     ///
-    private let lastSectionFooter = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
+    private let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
 
 
     // MARK: - Outlets
@@ -110,7 +110,7 @@ class InvitePersonViewController : UITableViewController {
             return CGFloat.min
         }
 
-        return WPTableViewSectionHeaderFooterView.heightForFooter(lastSectionFooter, width: view.bounds.width)
+        return WPTableViewSectionHeaderFooterView.heightForFooter(lastSectionFooterText, width: view.bounds.width)
     }
 
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -119,7 +119,7 @@ class InvitePersonViewController : UITableViewController {
         }
 
         let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title = lastSectionFooter
+        headerView.title = lastSectionFooterText
         return headerView
     }
 
@@ -158,7 +158,7 @@ class InvitePersonViewController : UITableViewController {
             self.usernameOrEmail = value.nonEmptyString()
         }
 
-        // Note: Let's disable validation, since the we need to allow Username OR Email
+        // Note: Let's disable validation, since we need to allow Username OR Email
         textViewController.validatesInput = false
         textViewController.autocorrectionType = .No
         textViewController.mode = .Email
@@ -182,7 +182,7 @@ class InvitePersonViewController : UITableViewController {
         }
 
         let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        let hint = NSLocalizedString("Optional message to be included in the Invitation.", comment: "Invite: Message Hint")
+        let hint = NSLocalizedString("Optional message to be included in the invitation.", comment: "Invite: Message Hint")
 
         textViewController.title = title
         textViewController.text = message
