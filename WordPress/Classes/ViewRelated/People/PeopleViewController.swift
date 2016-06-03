@@ -122,8 +122,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
         } else if let navController = segue.destinationViewController as? UINavigationController,
-            let inviteViewController = navController.topViewController as? InvitePersonViewController,
-            let blog = blog
+            let inviteViewController = navController.topViewController as? InvitePersonViewController
         {
             inviteViewController.blog = blog
         }
