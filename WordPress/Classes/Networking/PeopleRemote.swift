@@ -13,20 +13,32 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         case UnknownError
     }
 
+
+    /// Specifies the number of entities to be retrieved on each query.
+    ///
+    private let pageSize = 50
+
+
     /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
+    ///     - offset: The first N users to be skipped in the returned array.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Users.
     ///
-    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
+    func getUsers(siteID: Int,
+                  offset: Int = 0,
+                  success: ((users: [User], hasMore: Bool) -> Void),
+                  failure: (ErrorType -> Void))
+    {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
+        let parameters: [String: AnyObject] = [
+            "number": pageSize,
+            "offset": offset,
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
@@ -37,7 +49,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.morePeopleFoundFromResponse(response)
+            success(users: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -48,16 +62,22 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
+    ///     - offset: The first N followers to be skipped in the returned array.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Followers.
     ///
-    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
+    func getFollowers(siteID: Int,
+                      offset: Int = 0,
+                      success: ((followers: [Follower], hasMore: Bool) -> Void),
+                      failure: ErrorType -> ())
+    {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
+        let parameters: [String: AnyObject] = [
+            "number": pageSize,
+            "offset": offset,
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
@@ -68,7 +88,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.morePeopleFoundFromResponse(response)
+            success(followers: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -344,6 +366,18 @@ private extension PeopleRemote {
                  avatarURL     : avatarURL,
                  isSuperAdmin  : isSuperAdmin)
     }
+
+    /// Checks if there are more Persons that could be retrieved from the backend.
+    ///
+    /// - Parameters response: Raw backend dictionary
+    ///
+    /// - Returns: True if there are more entities that haven't been retrieved.
+    ///
+    func morePeopleFoundFromResponse(response: [String: AnyObject]) -> Bool {
+        let found = response["found"] as? Int ?? 0
+        return found > pageSize
+    }
+
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
