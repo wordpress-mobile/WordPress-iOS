@@ -1,6 +1,5 @@
 #import "WPLegacyEditPostViewController.h"
 #import "ContextManager.h"
-#import "Post.h"
 #import "Coordinate.h"
 #import "Media.h"
 #import "WPTableViewCell.h"

@@ -6,7 +6,6 @@
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
-#import "Post.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
 #import "PostGeolocationCell.h"
@@ -24,6 +23,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <Photos/Photos.h>
+#import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 

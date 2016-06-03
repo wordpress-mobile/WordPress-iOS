@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Object for configuring infrequent updates on a textField's text changes.
  */
 @interface MenuItemSourceTextBarFieldObserver : NSObject
 
 @property (nonatomic, assign) NSTimeInterval interval;
-@property (nonatomic, copy) void(^onTextChange)(NSString *text);
+@property (nonatomic, copy, nullable) void(^onTextChange)(NSString *text);
 
 @end
 
@@ -14,7 +16,7 @@
 
 @interface MenuItemSourceTextBar : UIView
 
-@property (nonatomic, weak) id <MenuItemSourceTextBarDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MenuItemSourceTextBarDelegate> delegate;
 
 /**
  Icon imagView to the left of the textField.
@@ -42,6 +44,8 @@
 
 - (void)sourceTextBarDidBeginEditing:(MenuItemSourceTextBar *)textBar;
 - (void)sourceTextBarDidEndEditing:(MenuItemSourceTextBar *)textBar;
-- (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text;
+- (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(nullable NSString *)text;
 
 @end
+
+NS_ASSUME_NONNULL_END

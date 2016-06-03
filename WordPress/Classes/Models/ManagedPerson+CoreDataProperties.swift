@@ -9,10 +9,10 @@ extension ManagedPerson {
     @NSManaged var firstName: String?
     @NSManaged var lastName: String?
     @NSManaged var role: String
-    @NSManaged var siteID: Int32
-    @NSManaged var userID: Int32
-    @NSManaged var linkedUserID: Int32
+    @NSManaged var siteID: Int64
+    @NSManaged var userID: Int64
+    @NSManaged var linkedUserID: Int64
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
-    @NSManaged var blog: Blog
+    @NSManaged var isFollower: Bool
 }
