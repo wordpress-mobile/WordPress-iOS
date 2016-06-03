@@ -8,6 +8,7 @@
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
+#import "WPUserAgent.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -27,6 +28,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
+@property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlRpcApi;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
 
 @end
@@ -80,6 +82,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize jetpack = _jetpack;
+@synthesize xmlRpcApi = _xmlRpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -584,6 +587,15 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return _api;
+}
+
+- (WordPressOrgXMLRPCApi *)xmlRpcApi
+{
+    if (_xmlRpcApi == nil) {
+        _xmlRpcApi = [[WordPressOrgXMLRPCApi alloc] initWithApiBaseURLString:self.xmlrpc
+                                                                   userAgent:[WPUserAgent wordPressUserAgent]];
+    }
+    return _xmlRpcApi;
 }
 
 - (WordPressComApi *)restApi
