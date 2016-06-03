@@ -700,10 +700,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         return;
     }
 
-    SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.settings.tagline
+    SettingsTextViewController *siteTaglineViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.tagline
                                                                                                            placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
-                                                                                                                  hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
-                                                                                                            isPassword:NO];
+                                                                                                        hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")];
     siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
     siteTaglineViewController.onValueChanged = ^(NSString *value) {
         NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

@@ -47,6 +47,14 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///
 @property (nonatomic, assign) BOOL displaysActionButton;
 
+/// Indicates whether input should be validated or not. Defaults to YES.
+///
+@property (nonatomic, assign) BOOL validatesInput;
+
+/// Textfield Autocorrection
+///
+@property (nonatomic, assign) UITextAutocorrectionType autocorrectionType;
+
 /// Sets the Text Input Mode:
 ///
 /// - SettingsTextModesText: Default mode
