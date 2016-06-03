@@ -48,9 +48,17 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     /// Navigation Bar Custom Title
     ///
-    @IBOutlet private var titleButton : NavBarTitleDropdownButton!
+    @IBOutlet private var titleButton: NavBarTitleDropdownButton!
 
+    /// TableView Footer
+    ///
+    @IBOutlet private var footerView: UIView!
 
+    /// TableView Footer Activity Indicator
+    ///
+    @IBOutlet private var footerActivityIndicator: UIActivityIndicatorView!
+
+    
 
     // MARK: - UITableView Methods
 
