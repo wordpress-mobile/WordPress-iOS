@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "Post.h"
 #import "PostCategory.h"
 
 typedef enum {

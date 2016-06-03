@@ -48,7 +48,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.10):
     - DTFoundation/Core
-  - Expecta (0.3.2)
+  - Expecta (1.0.5)
   - Fabric (1.6.7)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
@@ -147,11 +147,6 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - RxCocoa (2.3.1):
-    - RxSwift (~> 2.3.1)
-  - RxSwift (2.3.1)
-  - RxTests (2.3.1):
-    - RxSwift (~> 2.3.1)
   - Simperium (0.8.15):
     - Simperium/DiffMatchPach (= 0.8.15)
     - Simperium/JRSwizzle (= 0.8.15)
@@ -176,7 +171,7 @@ PODS:
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressCom-Analytics-iOS (0.1.11)
+  - WordPressCom-Analytics-iOS (0.1.14)
   - WordPressCom-Stats-iOS (0.7.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -200,7 +195,7 @@ PODS:
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.1):
     - Alamofire (~> 3.0)
-  - WPMediaPicker (0.9.1)
+  - WPMediaPicker (0.9.2)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -211,7 +206,7 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
   - DTCoreText (= 1.6.16)
-  - Expecta (= 0.3.2)
+  - Expecta (= 1.0.5)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.2)
   - Helpshift (~> 5.5.1)
@@ -228,9 +223,6 @@ DEPENDENCIES:
   - Optimizely-iOS-SDK (~> 1.4.2)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
-  - RxCocoa (~> 2.3.1)
-  - RxSwift (~> 2.3.1)
-  - RxTests (~> 2.3.1)
   - Simperium (= 0.8.15)
   - Specta (= 1.0.5)
   - SVProgressHUD (~> 1.1.3)
@@ -239,11 +231,11 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.6.1)
   - WordPress-iOS-Shared (= 0.5.9)
   - WordPressApi (= 0.4.0)
-  - WordPressCom-Analytics-iOS (= 0.1.11)
+  - WordPressCom-Analytics-iOS (= 0.1.14)
   - WordPressCom-Stats-iOS (= 0.7.0)
   - WordPressCom-Stats-iOS/Services (= 0.7.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.1`)
-  - WPMediaPicker (~> 0.9.1)
+  - WPMediaPicker (~> 0.9.2)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -278,7 +270,7 @@ SPEC CHECKSUMS:
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
@@ -296,9 +288,6 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  RxCocoa: a2baaf3462b989559a51dce59d78fbebb8fe0afa
-  RxSwift: 829b2843e9eddc77a02cb3f5117f0d55f8f646f1
-  RxTests: 86e059f7257a92be9baf124975c71297555daf53
   Simperium: 8871e8fb7b49bc17eecb8778622482e8cee7277a
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
@@ -307,12 +296,12 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 9daa51cb32ee0c2821045c1035e925eb3c6633ed
   WordPress-iOS-Shared: 50a7bd7056b8721e86c3cbe167eab49ef85ec07b
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
-  WordPressCom-Analytics-iOS: a844ac791b2627dbb64ba62090654f43dd2abc1c
+  WordPressCom-Analytics-iOS: add1bee7ca8411d666a6d8b8340efde80a3adab8
   WordPressCom-Stats-iOS: d1996675fadd5a2c8548344a40663834898114f3
   WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
-  WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
+  WPMediaPicker: 98356dbf35bfaba0f51aff16d88563babadf24c7
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 3be528f1f8db6da2934fb5a3442bc44e15558671
+PODFILE CHECKSUM: 642a064ca9c1c758cd3dbff81d26c074775bed86
 
 COCOAPODS: 1.0.0

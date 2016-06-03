@@ -34,6 +34,9 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     self = [super initWithFrame:frame];
     if (self) {
         _overlayMode = WPWalkthroughGrayOverlayViewOverlayModePrimaryButton;
+
+        self.accessibilityViewIsModal = YES;
+
         [self configureBackgroundColor];
         [self addViewElements];
         [self addGestureRecognizer];
@@ -172,6 +175,15 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
     NSArray *viewsToCenter = @[_logo, _title, _description];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_description forHeight:(_viewHeight-heightFromBottomLabel)];
+}
+
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+
+    if (UIAccessibilityIsVoiceOverRunning()) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _title);
+    }
 }
 
 - (void)dismiss

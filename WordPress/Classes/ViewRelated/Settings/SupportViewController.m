@@ -24,18 +24,12 @@
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
-static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
-static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/feedback-check/1.0/";
-
 @interface SupportViewController () <UIViewControllerRestoration>
-
-@property (nonatomic, assign) BOOL feedbackEnabled;
-
 @end
 
 @implementation SupportViewController
@@ -43,7 +37,6 @@ static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/
 typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     SettingsSectionFAQForums,
-    SettingsSectionFeedback,
     SettingsSectionSettings,
     SettingsSectionCount
 };
@@ -64,47 +57,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     SettingsSectionSettingsRowCount
 };
 
-typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
-{
-    SettingsSectionFeedbackRowEmailSupport,
-    SettingsSectionFeedbackRowCount
-};
-
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
     return [[self alloc] init];
-}
-
-+ (void)checkIfFeedbackShouldBeEnabled
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
-    NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-
-    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
-
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
-        DDLogVerbose(@"Feedback response received: %@", responseObject);
-        NSNumber *feedbackEnabled = responseObject[@"feedback-enabled"];
-        if (feedbackEnabled == nil) {
-            feedbackEnabled = @YES;
-        }
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:feedbackEnabled.boolValue forKey:UserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error received while checking feedback enabled status: %@", error);
-
-        // Lets be optimistic and turn on feedback by default if this call doesn't work
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:UserDefaultsFeedbackEnabled];
-        [defaults synchronize];
-    }];
-
-    [operation start];
 }
 
 + (void)showFromTabBar
@@ -132,8 +87,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         self.title = NSLocalizedString(@"Support", @"");
         self.restorationIdentifier = WPSupportRestorationID;
         self.restorationClass = [self class];
-
-        _feedbackEnabled = YES;
     }
 
     return self;
@@ -149,9 +102,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
         self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
     }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
@@ -202,6 +152,10 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+    
+    // Notifications
+    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -274,10 +228,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
     if (section == SettingsSectionSettings) {
         return SettingsSectionSettingsRowCount;
-    }
-
-    if (section == SettingsSectionFeedback) {
-        return self.feedbackEnabled ? SettingsSectionFeedbackRowCount : 0;
     }
 
     return 0;
@@ -356,11 +306,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
                 [WPStyleGuide configureTableViewActionCell:cell];
             }
         }
-    } else if (indexPath.section == SettingsSectionFeedback) {
-        cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [WPStyleGuide configureTableViewActionCell:cell];
     } else if (indexPath.section == SettingsSectionSettings) {
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
@@ -424,7 +369,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 - (NSString *)titleForFooterInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
-        return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
+        if ([HelpshiftUtils isHelpshiftEnabled]) {
+            return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or contact us for more help.", @"Support screen footer text displayed when Helpshift is enabled.");
+        } else {
+            return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"Support screen footer text displayed when Helpshift is disabled.");
+        }
     } else if (section == SettingsSectionSettings) {
         return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }
@@ -452,13 +401,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"]];
             }
         }
-    } else if (indexPath.section == SettingsSectionFeedback) {
-        if ([MFMailComposeViewController canSendMail]) {
-            MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];
-            [self presentViewController:mailComposeViewController animated:YES completion:nil];
-        } else {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
-        }
     } else if (indexPath.section == SettingsSectionSettings) {
         if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
@@ -482,62 +424,8 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     }
 }
 
-- (MFMailComposeViewController *)feedbackMailViewController
-{
-    NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
-    NSString *device = [UIDeviceHardware platformString];
-    NSString *locale = [[NSLocale currentLocale] localeIdentifier];
-    NSString *iosVersion = [[UIDevice currentDevice] systemVersion];
-
-    NSMutableString *messageBody = [NSMutableString string];
-    [messageBody appendFormat:@"\n\n==========\n%@\n\n", NSLocalizedString(@"Please leave your comments above this line.", @"")];
-    [messageBody appendFormat:@"Device: %@\n", device];
-    [messageBody appendFormat:@"App Version: %@\n", appVersion];
-    [messageBody appendFormat:@"Locale: %@\n", locale];
-    [messageBody appendFormat:@"OS Version: %@\n", iosVersion];
-
-    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    DDFileLogger *fileLogger = delegate.logger.fileLogger;
-    NSArray *logFiles = fileLogger.logFileManager.sortedLogFileInfos;
-
-    MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
-    mailComposeViewController.mailComposeDelegate = self;
-
-    [mailComposeViewController setMessageBody:messageBody isHTML:NO];
-    [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
-    [mailComposeViewController setToRecipients:@[@"mobile-support@automattic.com"]];
-
-    if (logFiles.count > 0) {
-        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[0];
-        NSData *logData = [NSData dataWithContentsOfFile:logFileInfo.filePath];
-
-        [mailComposeViewController addAttachmentData:logData mimeType:@"text/plain" fileName:@"current_log.txt"];
-    }
-
-    mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
-
-    return mailComposeViewController;
-}
-
 - (void)dismiss
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - MFMailComposeViewControllerDelegate methods
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    switch (result) {
-        case MFMailComposeResultCancelled:
-            break;
-        case MFMailComposeResultFailed:
-            break;
-        case MFMailComposeResultSaved:
-        case MFMailComposeResultSent:
-            break;
-    }
-
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

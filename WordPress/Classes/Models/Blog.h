@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressComRestApi;
 @class WPXMLRPCClient;
 
+extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
 
 typedef NS_ENUM(NSUInteger, BlogFeature) {
@@ -44,8 +45,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePeople,
     /// Can the blog's site be changed or deleted?
     BlogFeatureSiteManagement,
-    /// Does the blog support different paid plans?
-    BlogFeaturePlans
+    /// Does the blog support custom domains?
+    BlogFeatureDomains
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -68,6 +69,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
 @property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
@@ -95,6 +97,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
+@property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 
@@ -174,7 +177,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @return a string with the post format description and if no description was found the postFormatCode sent.
  */
-- (nullable NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
+- (nullable NSString *)postFormatTextFromSlug:(nullable NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  
@@ -205,7 +208,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
  @return a WordPressComRestApi object if available
  */
-- (WordPressComRestApi *)wordPressComRestApi;
+- (nullable WordPressComRestApi *)wordPressComRestApi;
 
 @end
 
