@@ -37,7 +37,7 @@ struct PeopleService {
 
         // Load Users
         dispatch_group_enter(group)
-        remote.getUsers(siteID, success: { users in
+        remote.getUsers(siteID, success: { users, hasMore in
             self.mergeUsers(users)
             dispatch_group_leave(group)
 
@@ -49,7 +49,7 @@ struct PeopleService {
 
         // Load Followers
         dispatch_group_enter(group)
-        remote.getFollowers(siteID, success: { followers in
+        remote.getFollowers(siteID, success: { followers, hasMore in
             self.mergeFollowers(followers)
             dispatch_group_leave(group)
 
