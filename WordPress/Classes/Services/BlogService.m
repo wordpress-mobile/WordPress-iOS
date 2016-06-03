@@ -648,7 +648,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
     } else if (blog.api) {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlRpcApi username:blog.username password:blog.password];
     }
 
     return remote;
