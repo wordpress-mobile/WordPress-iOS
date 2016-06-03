@@ -143,6 +143,7 @@
 
 // Pods
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 
