@@ -68,9 +68,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)configureInstance
 {
-    self.autocorrectionType = UITextAutocorrectionTypeDefault;
-    self.shouldNotifyValue = YES;
-    self.validatesInput = YES;
+    _autocorrectionType = UITextAutocorrectionTypeDefault;
+    _shouldNotifyValue = YES;
+    _validatesInput = YES;
 }
 
 
