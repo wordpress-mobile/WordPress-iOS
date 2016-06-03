@@ -199,6 +199,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.showInMenu = NO;
     topic.following = NO;
 
+    // Save / update the search phrase to use it as a suggestion later.
+    ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [suggestionService createOrUpdateSuggestionForPhrase:phrase];
+
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return topic;
