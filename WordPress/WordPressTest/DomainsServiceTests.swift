@@ -17,8 +17,8 @@ class DomainsServiceTests : XCTestCase
     override func setUp() {
         super.setUp()
 
-        let api = WordPressComApi(OAuthToken: "")
-        remote = DomainsServiceRemote(api: api)
+        let api = WordPressComRestApi(oAuthToken: "")
+        remote = DomainsServiceRemote(wordPressComRestApi: api)
         context = TestContextManager().mainContext
         testBlog = makeTestBlog()
     }
