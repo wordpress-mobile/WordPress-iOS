@@ -52,7 +52,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            let hasMore = self.peopleFoundFromResponse(response) > offset
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
             success(users: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
@@ -92,7 +92,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 return
             }
 
-            let hasMore = self.peopleFoundFromResponse(response) > pageNumber * self.pageSize
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
             success(followers: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
