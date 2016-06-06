@@ -16,7 +16,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
     /// Specifies the number of entities to be retrieved on each query.
     ///
-    private let pageSize = 50
+    private let pageSize = 20
 
 
     /// Retrieves the collection of users associated to a given Site.
