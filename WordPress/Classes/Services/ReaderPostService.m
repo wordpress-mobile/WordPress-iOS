@@ -12,7 +12,6 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "SourcePostAttribution.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
