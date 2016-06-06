@@ -29,7 +29,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let expectation = self.expectationWithDescription("One callback should be invoked")
         let api = WordPressOrgXMLRPCApi(endpoint:NSURL(string:xmlrpcEndpoint)!)
-        api.callMethod("", parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+        api.callMethod("wp.getPost", parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
             expectation.fulfill()
             XCTAssert(responseObject is [String:AnyObject], "The response should be a dictionary")
             }, failure: { (error, httpResponse) in
