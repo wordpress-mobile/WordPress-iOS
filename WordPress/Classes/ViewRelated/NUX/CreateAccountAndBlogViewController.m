@@ -660,7 +660,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
 - (void)displayRemoteError:(NSError *)error
 {
-    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
+    NSString *errorMessage = error.userInfo[NSLocalizedDescriptionKey];
     [self showError:errorMessage];
 }
 
@@ -759,6 +759,10 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     [_createAccountButton showActivityIndicator:authenticating];
 }
 
+- (WordPressComRestApi *)anonymousApi {
+    return [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+}
+
 - (void)createUserAndSite
 {
     if (_authenticating) {
@@ -782,8 +786,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
         NSString *languageId = [_currentLanguageId stringValue];
         
-        WordPressComApi *api = [WordPressComApi anonymousApi];
-        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        WordPressComRestApi *api = [self anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithWordPressComRestApi:api];
         
         [service validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                              andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
@@ -804,8 +808,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
         
-        WordPressComApi *api = [WordPressComApi anonymousApi];
-        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        WordPressComRestApi *api = [self anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithWordPressComRestApi:api];
         
         [service createWPComAccountWithEmail:_emailField.text
                                  andUsername:_usernameField.text
@@ -883,8 +887,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
         NSString *languageId = [_currentLanguageId stringValue];
         
-        WordPressComApi *api = [_account restApi];
-        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        WordPressComRestApi *api = [_account wordPressComRestApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithWordPressComRestApi:api];
         
         [service createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                            andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
