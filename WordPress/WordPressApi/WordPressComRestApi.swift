@@ -264,13 +264,16 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
             userInfo = originalError.userInfo
         }
 
-        var errorObject = responseObject
-        if let errorArray = responseObject as? [AnyObject] where errorArray.count > 0 {
-            errorObject = errorArray.first
+        guard let responseDictionary = responseObject as? [String:AnyObject] else {
+            return responseObject
         }
-        guard let responseDictionary = errorObject as? [String:AnyObject],
-            let errorCode = responseDictionary["error"] as? String,
-            let errorDescription = responseDictionary["message"] as? String
+        var errorDictionary:AnyObject? = responseDictionary
+        if let errorArray = responseDictionary["errors"] as? [AnyObject] where errorArray.count > 0 {
+            errorDictionary = errorArray.first
+        }
+        guard let errorEntry = errorDictionary as? [String:AnyObject],
+            let errorCode = errorEntry["error"] as? String,
+            let errorDescription = errorEntry["message"] as? String
             else {
                 return responseObject
         }

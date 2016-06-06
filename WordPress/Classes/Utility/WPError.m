@@ -1,12 +1,12 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "SupportViewController.h"
 #import "WordPress-Swift.h"
 #import <WPXMLRPC/WPXMLRPC.h>
+#import "WordPressComApi.h"
 
 NSInteger const SupportButtonIndex = 0;
 NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
@@ -39,7 +39,9 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     NSString *message = nil;
     NSString *customTitle = nil;
 
-    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
+    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] ||
+        [error.domain isEqual:AFURLResponseSerializationErrorDomain])
+    {
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:AFNetworkingOperationFailingURLResponseErrorKey];
         switch (error.code) {
             case NSURLErrorBadServerResponse:
@@ -85,6 +87,13 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
+            [SigninHelpers showSigninForWPComFixingAuthToken];
+            return;
+        }
+    } else if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
+        DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
+                   [error localizedDescription]);
+        if (error.code == WordPressComRestApiErrorInvalidToken || error.code == WordPressComRestApiErrorAuthorizationRequired) {
             [SigninHelpers showSigninForWPComFixingAuthToken];
             return;
         }
