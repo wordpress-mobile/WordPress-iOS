@@ -140,7 +140,7 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
-
+#import "WordPressComServiceRemote.h"
 // Pods
 
 #import <SVProgressHUD/SVProgressHUD.h>
