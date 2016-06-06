@@ -591,9 +591,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (WordPressOrgXMLRPCApi *)xmlRpcApi
 {
+    NSURL *xmlRPCEndpoint = [NSURL URLWithString:self.xmlrpc];
     if (_xmlRpcApi == nil) {
-        _xmlRpcApi = [[WordPressOrgXMLRPCApi alloc] initWithApiBaseURLString:self.xmlrpc
+        if (xmlRPCEndpoint != nil) {
+        _xmlRpcApi = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRPCEndpoint
                                                                    userAgent:[WPUserAgent wordPressUserAgent]];
+        }
     }
     return _xmlRpcApi;
 }
