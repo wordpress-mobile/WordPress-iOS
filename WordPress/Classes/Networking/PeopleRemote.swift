@@ -8,6 +8,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     enum Error: ErrorType {
         case DecodeError
+        case InvalidInputError
+        case UserAlreadyHasRoleError
+        case UnknownError
     }
 
     /// Retrieves the collection of users associated to a given Site.
@@ -146,8 +149,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - success: Optional closure to be executed on success
+    ///     - siteID: The ID of the site associated.
+    ///     - success: Optional closure to be executed on success.
     ///     - failure: Optional closure to be executed on error.
     ///
     /// - Returns: An array of Person.Role entities.
@@ -170,6 +173,93 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             success(roles)
         }, failure: { (error, httpResponse) in
             failure?(error)
+        })
+    }
+
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated.
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func validateInvitation(siteID: Int,
+                            usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/validate"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.rawValue
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+
+    /// Sends an Invitation to the specified recipient.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the associated site.
+    ///     - usernameOrEmail: Recipient that should receive the invite.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func sendInvitation(siteID: Int,
+                        usernameOrEmail: String,
+                        role: Role,
+                        message: String,
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/new"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.rawValue,
+            "message"   : message
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
         })
     }
 }
@@ -257,6 +347,10 @@ private extension PeopleRemote {
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
+    /// - Parameter roles: Raw backend dictionary
+    ///
+    /// - Returns: Collection of the remote roles.
+    ///
     func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
@@ -272,5 +366,33 @@ private extension PeopleRemote {
 
         let filtered = parsed.filter { $0 != .Unsupported }
         return filtered.sort()
+    }
+
+    /// Parses a remote Invitation Error into a PeopleRemote.Error.
+    ///
+    /// - Parameters:
+    ///     - response: Raw backend dictionary
+    ///     - usernameOrEmail: Recipient that was used to either validate, or effectively send an invite.
+    ///
+    /// - Returns: The remote error, if any.
+    ///
+    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+        guard let errors = response["errors"] as? [String: AnyObject],
+            let theError = errors[usernameOrEmail] as? [String: String],
+            let code = theError["code"] else
+        {
+            return nil
+        }
+
+        switch code {
+        case "invalid_input":
+            return Error.InvalidInputError
+        case "invalid_input_has_role":
+            return Error.UserAlreadyHasRoleError
+        case "invalid_input_following":
+            return Error.UserAlreadyHasRoleError
+        default:
+            return Error.UnknownError
+        }
     }
 }
