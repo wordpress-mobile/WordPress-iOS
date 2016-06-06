@@ -33,7 +33,11 @@ struct PeopleService {
     ///
     func refreshUsers(completion: ((shouldLoadMore: Bool) -> Void)) {
         remote.getUsers(siteID, success: { users, hasMore in
-            self.mergeUsers(users)
+            // Note:
+            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
+            //
+            self.mergePeople(users)
+            self.purgePeople(users)
             completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -47,7 +51,11 @@ struct PeopleService {
     ///
     func refreshFollowers(completion: ((shouldLoadMore: Bool) -> Void)) {
         remote.getFollowers(siteID, success: { followers, hasMore in
-            self.mergeFollowers(followers)
+            // Note:
+            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
+            //
+            self.mergePeople(followers)
+            self.purgePeople(followers)
             completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -63,7 +71,7 @@ struct PeopleService {
         let users = loadPeople(siteID, type: User.self)
 
         remote.getUsers(siteID, offset: users.count, success: { (users, hasMore) in
-            self.mergeUsers(users)
+            self.mergePeople(users)
             completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -79,7 +87,7 @@ struct PeopleService {
         let followers = loadPeople(siteID, type: Follower.self)
 
         remote.getFollowers(siteID, offset: followers.count, success: { (followers, hasMore) in
-            self.mergeFollowers(followers)
+            self.mergePeople(followers)
             completion(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -221,29 +229,9 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
-    /// Updates the local collection of Users, with the (fresh) remote version.
-    ///
-    func mergeUsers(remoteUsers: [User]) {
-        let localUsers = loadPeople(siteID, type: User.self)
-        mergePeople(remoteUsers, localPeople: localUsers)
-    }
-
-    /// Updates the local collection of Followers, with the (fresh) remote version.
-    ///
-    func mergeFollowers(remoteFollowers: [Follower]) {
-        let localFollowers = loadPeople(siteID, type: Follower.self)
-        mergePeople(remoteFollowers, localPeople: localFollowers)
-    }
-
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergePeople<T : Person>(remotePeople: [T], localPeople: [T]) {
-        let remoteIDs = Set(remotePeople.map({ $0.ID }))
-        let localIDs = Set(localPeople.map({ $0.ID }))
-
-        let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs, type: T.self)
-
+    func mergePeople<T : Person>(remotePeople: [T]) {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
@@ -254,6 +242,18 @@ private extension PeopleService {
         }
 
         ContextManager.sharedInstance().saveContext(context)
+    }
+
+    /// Purges the local entities that do not have a remote counterpart.
+    ///
+    func purgePeople<T : Person>(remotePeople: [T]) {
+        let localPeople = loadPeople(siteID, type: T.self)
+
+        let remoteIDs = Set(remotePeople.map({ $0.ID }))
+        let localIDs = Set(localPeople.map({ $0.ID }))
+
+        let removedIDs = localIDs.subtract(remoteIDs)
+        removeManagedPeopleWithIDs(removedIDs, type: T.self)
     }
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
