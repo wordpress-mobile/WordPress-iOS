@@ -48,6 +48,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return predicate
     }
 
+    /// Core Data Context
+    ///
+    private lazy var context: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().newMainContextChildContext()
+    }()
+
     /// Core Data FRC
     ///
     private lazy var resultsController: NSFetchedResultsController = {
@@ -56,8 +62,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        let context = ContextManager.sharedInstance().mainContext
-        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
         frc.delegate = self
         return frc
     }()
@@ -153,6 +158,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         if let personViewController = segue.destinationViewController as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow
         {
+            personViewController.context = context
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
@@ -209,7 +215,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func refreshPeople() {
-        guard let blog = blog, service = PeopleService(blog: blog) else {
+        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
             return
         }
 
@@ -227,7 +233,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func loadMorePeople() {
-        guard let blog = blog, service = PeopleService(blog: blog) else {
+        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
             return
         }
 

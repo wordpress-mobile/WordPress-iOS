@@ -10,21 +10,24 @@ struct PeopleService {
 
     /// MARK: - Private Properties
     ///
-    private let context = ContextManager.sharedInstance().mainContext
+    private let context: NSManagedObjectContext
     private let remote: PeopleRemote
 
 
     /// Designated Initializer.
     ///
-    /// - Parameter blog: Target Blog Instance
+    /// - Parameters:
+    ///     - blog: Target Blog Instance
+    ///     - context: CoreData context to be used.
     ///
-    init?(blog: Blog) {
+    init?(blog: Blog, context: NSManagedObjectContext) {
         guard let api = blog.wordPressComRestApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
-        remote = PeopleRemote(wordPressComRestApi: api)
-        siteID = dotComID
+        self.remote = PeopleRemote(wordPressComRestApi: api)
+        self.siteID = dotComID
+        self.context = context
     }
 
     /// Refreshes the Users associated to the current blog.
@@ -39,7 +42,6 @@ struct PeopleService {
             // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
             //
             self.mergePeople(users)
-            self.purgePeople(users)
             success(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -60,7 +62,6 @@ struct PeopleService {
             // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
             //
             self.mergePeople(followers)
-            self.purgePeople(followers)
             success(shouldLoadMore: hasMore)
 
         }, failure: { error in
@@ -136,7 +137,6 @@ struct PeopleService {
             }
 
             managedPerson.role = pristineRole
-            ContextManager.sharedInstance().saveContext(self.context)
 
             let reloadedPerson = User(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
@@ -144,7 +144,6 @@ struct PeopleService {
 
         // Pre-emptively update the role
         managedPerson.role = role.description
-        ContextManager.sharedInstance().saveContext(context)
 
         return User(managedPerson: managedPerson)
     }
@@ -167,14 +166,12 @@ struct PeopleService {
 
             // Revert the deletion
             self.createManagedPerson(user)
-            ContextManager.sharedInstance().saveContext(self.context)
 
             failure?(error)
         })
 
         // Pre-emptively nuke the entity
         context.deleteObject(managedPerson)
-        ContextManager.sharedInstance().saveContext(context)
     }
 
     /// Retrieves the collection of Roles, available for a given site
@@ -252,20 +249,6 @@ private extension PeopleService {
                 createManagedPerson(remotePerson)
             }
         }
-
-        ContextManager.sharedInstance().saveContext(context)
-    }
-
-    /// Purges the local entities that do not have a remote counterpart.
-    ///
-    func purgePeople<T : Person>(remotePeople: [T]) {
-        let localPeople = loadPeople(siteID, type: T.self)
-
-        let remoteIDs = Set(remotePeople.map({ $0.ID }))
-        let localIDs = Set(localPeople.map({ $0.ID }))
-
-        let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs, type: T.self)
     }
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
