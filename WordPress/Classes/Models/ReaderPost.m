@@ -6,7 +6,6 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WPAvatarSource.h"
 #import "WordPress-Swift.h"
