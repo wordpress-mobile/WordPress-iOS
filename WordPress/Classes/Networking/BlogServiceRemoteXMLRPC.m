@@ -61,7 +61,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
                          return [self remotePostTypeFromXMLRPCDictionary:json];
                      }];
                      if (!postTypes.count) {
-                         DDLogError(@"Response to %@ did not include post types for site.", @"wp.getPostTypes");
+                         DDLogError(@"Response to wp.getPostTypes did not include post types for site.");
                          failure(nil);
                          return;
                      }
