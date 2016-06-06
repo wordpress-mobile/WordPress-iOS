@@ -1,0 +1,11 @@
+{
+    "errors" : {
+        "someInvalidUser" : {
+            "code" : "invalid_input",
+            "message" : "User not found"
+        }
+    },
+    "sent" : [
+
+    ]
+}

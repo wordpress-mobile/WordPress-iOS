@@ -104,7 +104,11 @@ class SigninErrorViewController : UIViewController
     func presentFromController(controller: UIViewController) {
         controller.providesPresentationContextTransitionStyle = true
         controller.definesPresentationContext = true
-        controller.presentViewController(self, animated: false, completion: nil)
+        controller.presentViewController(self, animated: false, completion: {
+            if (UIAccessibilityIsVoiceOverRunning()) {
+                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleLabel)
+            }
+        })
     }
 
 

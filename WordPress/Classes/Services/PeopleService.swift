@@ -148,6 +148,50 @@ struct PeopleService {
             failure(error)
         })
     }
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func validateInvitation(usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        remote.validateInvitation(siteID,
+                                  usernameOrEmail: usernameOrEmail,
+                                  role: role,
+                                  success: success,
+                                  failure: failure)
+    }
+
+
+    /// Sends an Invitation to a specified recipient, to access a Blog.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the users.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func sendInvitation(usernameOrEmail: String,
+                        role: Role,
+                        message: String = "",
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        remote.sendInvitation(siteID,
+                              usernameOrEmail: usernameOrEmail,
+                              role: role,
+                              message: message,
+                              success: success,
+                              failure: failure)
+    }
 }
 
 
