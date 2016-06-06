@@ -4,7 +4,6 @@
 #import <MapKit/MapKit.h>
 
 #import "LocationService.h"
-#import "Post.h"
 #import "PostAnnotation.h"
 #import "PostGeolocationView.h"
 #import "WPTableViewCell.h"

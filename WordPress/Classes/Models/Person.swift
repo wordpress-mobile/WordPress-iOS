@@ -153,6 +153,11 @@ extension Role {
         return localized
     }
 
+
+    // MARK: - Static Properties
+    //
+    static let inviteRoles = [Role.Follower, .Admin, .Editor, .Author, .Contributor]
+
     // MARK: - Private Properties
     //
     private static let colorsMap = [

@@ -137,7 +137,7 @@ final class PersonViewController : UITableViewController {
             return
         }
 
-        roleViewController.blog = blog
+        roleViewController.mode = .Dynamic(blog: blog)
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
