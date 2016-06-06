@@ -7,25 +7,24 @@ public class WordPressOrgXMLRPCApi: NSObject
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
-    private let apiBaseURLString: String
+    private let endpoint: NSURL
     private let userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
-        let baseURL = NSURL(string:self.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate"]
         if let userAgent = self.userAgent {
             additionalHeaders["User-Agent"] = userAgent
         }
         sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
-        let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
+        let sessionManager = AFHTTPSessionManager(baseURL:self.endpoint, sessionConfiguration:sessionConfiguration)
         sessionManager.responseSerializer = WordPressOrgXMLRPCResponseSerializer()
         sessionManager.requestSerializer = WordPressOrgXMLRPCRequestSerializer()
         return sessionManager
     }()
 
-    public init(apiBaseURLString: String, userAgent: String? = nil) {
-        self.apiBaseURLString = apiBaseURLString
+    public init(endpoint: NSURL, userAgent: String? = nil) {
+        self.endpoint = endpoint
         self.userAgent = userAgent
         super.init()
     }
@@ -63,7 +62,7 @@ public class WordPressOrgXMLRPCApi: NSObject
         let progress = NSProgress()
         progress.totalUnitCount = 1
         let xmlRPCParameters = XMLRPCCallParameters(method: method, parameters: parameters)
-        let task = sessionManager.POST(apiBaseURLString, parameters: xmlRPCParameters, success: { (dataTask, result) in
+        let task = sessionManager.POST(endpoint.absoluteString, parameters: xmlRPCParameters, success: { (dataTask, result) in
             success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
             progress.completedUnitCount = 1
             }, failure: { (dataTask, error) in
@@ -161,7 +160,7 @@ final class WordPressOrgXMLRPCRequestSerializer: AFHTTPRequestSerializer
             return nil
         }
         let mutableRequest: NSMutableURLRequest = request.mutableCopy() as! NSMutableURLRequest
-
+        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
         for (field,value) in HTTPRequestHeaders {
             if request.valueForHTTPHeaderField(field as! String) == nil {
                 mutableRequest.setValue(value as? String, forHTTPHeaderField: field as! String)
