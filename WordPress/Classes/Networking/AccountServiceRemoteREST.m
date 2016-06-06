@@ -1,5 +1,4 @@
 #import "AccountServiceRemoteREST.h"
-#import "WordPressComApi.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
 #import "Constants.h"

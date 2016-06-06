@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import "WordPressComApi.h"
-
 @class Blog;
 @class ManagedAccountSettings;
 @class WordPressComRestApi;
@@ -35,11 +33,6 @@
 ///------------------
 /// @name API Helpers
 ///------------------
-
-/**
- A WordPressComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
- */
-@property (nonatomic, readonly) WordPressComApi *restApi;
 
 /**
  A WordPressRestComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
