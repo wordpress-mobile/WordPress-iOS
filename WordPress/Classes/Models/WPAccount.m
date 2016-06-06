@@ -50,6 +50,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     [super didTurnIntoFault];
     
     self.restApi = nil;
+    self.wordPressComRestApi = nil;
 }
 
 #pragma mark - Custom accessors
@@ -113,6 +114,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     
     // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
     _restApi = nil;
+    _wordPressComRestApi = nil;
 }
 
 - (NSArray *)visibleBlogs
