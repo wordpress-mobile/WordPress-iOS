@@ -20,6 +20,30 @@ public class WordPressOrgXMLRPCApi: NSObject
         let sessionManager = AFHTTPSessionManager(baseURL:self.endpoint, sessionConfiguration:sessionConfiguration)
         sessionManager.responseSerializer = WordPressOrgXMLRPCResponseSerializer()
         sessionManager.requestSerializer = WordPressOrgXMLRPCRequestSerializer()
+        sessionManager.setTaskDidReceiveAuthenticationChallengeBlock({ (session, task, authenticationChallenge, urlCredential) -> NSURLSessionAuthChallengeDisposition in
+            switch authenticationChallenge.protectionSpace.authenticationMethod {
+            case NSURLAuthenticationMethodServerTrust:
+                var result = SecTrustResultType(kSecTrustResultInvalid)
+                if let serverTrust = authenticationChallenge.protectionSpace.serverTrust {
+                    let certificateStatus = SecTrustEvaluate(serverTrust, &result)
+                    if certificateStatus == 0 && result == SecTrustResultType(kSecTrustResultRecoverableTrustFailure) {
+                        //                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        //                        [WPHTTPAuthenticationAlertController presentWithChallenge:challenge];
+                        //                        });
+                    } else {
+                        return .UseCredential
+                        //[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+                    }
+                }
+            case NSURLAuthenticationMethodClientCertificate:
+                return .UseCredential
+            case NSURLAuthenticationMethodHTTPBasic:
+                return .PerformDefaultHandling
+            default:
+                return .PerformDefaultHandling
+            }
+            return .PerformDefaultHandling
+        })
         return sessionManager
     }()
 
