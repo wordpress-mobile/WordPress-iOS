@@ -71,7 +71,6 @@ import Gridicons
     }
 
 
-
     // MARK: - Configuration
 
 
@@ -137,6 +136,7 @@ import Gridicons
 
         let topic = service.searchTopicForSearchPhrase(phrase)
         streamController.readerTopic = topic
+        WPAppAnalytics.track(.ReaderSearchLoaded)
 
         // Hide the starting label now that a topic has been set.
         label.hidden = true
