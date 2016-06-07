@@ -224,39 +224,30 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func refreshPeople() {
-        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
-            return
-        }
-
-        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+        loadPeople() { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
-
-        switch filter {
-        case .Followers:
-            service.loadFollowers(success: success)
-        case .Users:
-            service.loadUsers(success: success)
-        }
     }
 
     private func loadMorePeople() {
-        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
-            return
-        }
-
         guard isLoadingMore == false else {
             return
         }
 
         isLoadingMore = true
 
-        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+        loadPeople(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
+        }
+    }
+
+    private func loadPeople(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
+        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
+            return
         }
 
         switch filter {
