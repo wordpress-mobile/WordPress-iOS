@@ -1073,7 +1073,7 @@ import WordPressComAnalytics
             let objectID = topicInContext.objectID
 
             let successBlock = { [weak self] (count:Int, hasMore:Bool) in
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(dispatch_get_main_queue()) {
                     if let strongSelf = self {
                         if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                             strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
@@ -1082,15 +1082,15 @@ import WordPressComAnalytics
                         strongSelf.updateLastSyncedForTopic(objectID)
                     }
                     success?(hasMore: hasMore)
-                })
+                }
             }
 
             let failureBlock = { (error:NSError?) in
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(dispatch_get_main_queue()) {
                     if let error = error {
                         failure?(error: error)
                     }
-                })
+                }
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
@@ -1133,7 +1133,7 @@ import WordPressComAnalytics
             }
 
             let successBlock = { [weak self] (count:Int, hasMore:Bool) in
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(dispatch_get_main_queue()) {
                     if let strongSelf = self {
                         if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                             strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
@@ -1142,13 +1142,13 @@ import WordPressComAnalytics
                     }
 
                     success?(hasMore: hasMore)
-                })
+                }
             }
 
             let failureBlock = { (error:NSError!) in
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(dispatch_get_main_queue()) {
                     failure?(error: error)
-                })
+                }
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
