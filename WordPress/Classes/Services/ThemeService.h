@@ -45,11 +45,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)getActiveThemeForBlog:(Blog *)blog
-                               success:(ThemeServiceThemeRequestSuccessBlock)success
-                               failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)getActiveThemeForBlog:(Blog *)blog
+                              success:(ThemeServiceThemeRequestSuccessBlock)success
+                              failure:(ThemeServiceFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of purchased themes for a blog.
@@ -58,11 +58,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)getPurchasedThemesForBlog:(Blog *)blog
-                                   success:(ThemeServiceThemesRequestSuccessBlock)success
-                                   failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)getPurchasedThemesForBlog:(Blog *)blog
+                                  success:(ThemeServiceThemesRequestSuccessBlock)success
+                                  failure:(ThemeServiceFailureBlock)failure;
 
 
 /**
@@ -73,12 +73,12 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)getThemeId:(NSString*)themeId
-                 forAccount:(WPAccount *)account
-                    success:(ThemeServiceThemeRequestSuccessBlock)success
-                    failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)getThemeId:(NSString*)themeId
+                forAccount:(WPAccount *)account
+                   success:(ThemeServiceThemeRequestSuccessBlock)success
+                   failure:(ThemeServiceFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of WP.com available themes.
@@ -90,12 +90,12 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)getThemesForAccount:(WPAccount *)account
-                                page:(NSInteger)page
-                             success:(ThemeServiceThemesRequestSuccessBlock)success
-                             failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)getThemesForAccount:(WPAccount *)account
+                               page:(NSInteger)page
+                            success:(ThemeServiceThemesRequestSuccessBlock)success
+                            failure:(ThemeServiceFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of available themes for a blog.
@@ -111,13 +111,13 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)getThemesForBlog:(Blog *)blog
-                             page:(NSInteger)page
-                             sync:(BOOL)sync
-                          success:(ThemeServiceThemesRequestSuccessBlock)success
-                          failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)getThemesForBlog:(Blog *)blog
+                            page:(NSInteger)page
+                            sync:(BOOL)sync
+                         success:(ThemeServiceThemesRequestSuccessBlock)success
+                         failure:(ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Activating themes
 
@@ -129,11 +129,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
- *  @returns    The asynch operation triggered by this call.
+ *  @returns    The progress object.
  */
-- (NSOperation *)activateTheme:(Theme *)theme
-                       forBlog:(Blog *)blog
-                       success:(ThemeServiceThemeRequestSuccessBlock)success
-                       failure:(ThemeServiceFailureBlock)failure;
+- (NSProgress *)activateTheme:(Theme *)theme
+                      forBlog:(Blog *)blog
+                      success:(ThemeServiceThemeRequestSuccessBlock)success
+                      failure:(ThemeServiceFailureBlock)failure;
 
 @end
