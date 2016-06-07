@@ -28,6 +28,11 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong, nullable) NSString * author;
 @property (nonatomic, strong, nullable) NSString * authorAvatarURL;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
+/**
+ The dateModified field is used in tandem with date_created_gmt to determine if
+ a draft post should be published immediately. A draft post will "publish immediately"
+ when the date_created_gmt and the modified date match.
+ */
 @property (nonatomic, strong, nullable) NSDate * dateModified;
 @property (nonatomic, strong, nullable) NSString * postTitle;
 @property (nonatomic, strong, nullable) NSString * content;
