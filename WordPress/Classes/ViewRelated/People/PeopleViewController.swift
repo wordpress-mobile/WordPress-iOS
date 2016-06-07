@@ -36,6 +36,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
+    /// Indicates whether there is a loadMore call in progress, or not.
+    ///
+    private var isLoadingMore = false
+
+    /// Number of records to skip in the next request
+    ///
+    private var nextRequestOffset = 0
+
     /// Number of pending-rows that trigger the LoadMore call
     ///
     private let refreshRowPadding = 4
@@ -192,6 +200,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         //
         title = filter.title
         titleButton.setAttributedTitleForTitle(filter.title)
+        shouldLoadMore = false
     }
 
     private func refreshResultsController() {
@@ -219,16 +228,17 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
 
         switch filter {
         case .Followers:
-            service.refreshFollowers(completion)
+            service.loadFollowers(success: success)
         case .Users:
-            service.refreshUsers(completion)
+            service.loadUsers(success: success)
         }
     }
 
@@ -237,15 +247,23 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+        guard isLoadingMore == false else {
+            return
+        }
+
+        isLoadingMore = true
+
+        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
+            self?.isLoadingMore = false
         }
 
         switch filter {
         case .Followers:
-            service.loadMoreFollowers(completion)
+            service.loadFollowers(nextRequestOffset, success: success)
         case .Users:
-            service.loadMoreUsers(completion)
+            service.loadFollowers(nextRequestOffset, success: success)
         }
     }
 
