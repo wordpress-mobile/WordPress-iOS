@@ -36,6 +36,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
+    /// Indicates whether there is a loadMore call in progress, or not.
+    ///
+    private var isLoadingMore = false
+
     /// Number of pending-rows that trigger the LoadMore call
     ///
     private let refreshRowPadding = 4
@@ -231,8 +235,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
+        guard isLoadingMore == false else {
+            return
+        }
+
+        isLoadingMore = true
+
         let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
             self?.shouldLoadMore = shouldLoadMore
+            self?.isLoadingMore = false
         }
 
         switch filter {
