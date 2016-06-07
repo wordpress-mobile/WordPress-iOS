@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Reader-->
@@ -353,14 +352,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="vSH-j9-J3c" firstAttribute="top" secondItem="IqL-oc-D5S" secondAttribute="bottom" id="0kh-J4-2MF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LMp-cd-vT3" secondAttribute="trailing" constant="-20" id="6HB-Xk-Gvh"/>
-                            <constraint firstItem="LMp-cd-vT3" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-20" id="RdT-zM-42d"/>
+                            <constraint firstAttribute="trailing" secondItem="LMp-cd-vT3" secondAttribute="trailing" id="6HB-Xk-Gvh"/>
+                            <constraint firstItem="LMp-cd-vT3" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leading" id="RdT-zM-42d"/>
                             <constraint firstItem="zkd-Io-waS" firstAttribute="top" secondItem="vSH-j9-J3c" secondAttribute="bottom" id="Vka-Mb-bVI"/>
                             <constraint firstAttribute="trailing" secondItem="IqL-oc-D5S" secondAttribute="trailing" id="YpN-IP-X1v"/>
                             <constraint firstItem="IqL-oc-D5S" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leading" id="Zrs-wq-f4H"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="vSH-j9-J3c" secondAttribute="trailing" constant="-20" id="b2V-TS-HZt"/>
+                            <constraint firstAttribute="trailing" secondItem="vSH-j9-J3c" secondAttribute="trailing" id="b2V-TS-HZt"/>
                             <constraint firstItem="IqL-oc-D5S" firstAttribute="top" secondItem="hvd-Zh-euc" secondAttribute="bottom" id="gzN-vf-lg1"/>
-                            <constraint firstItem="vSH-j9-J3c" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-20" id="nJ2-D6-1HV"/>
+                            <constraint firstItem="vSH-j9-J3c" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leading" id="nJ2-D6-1HV"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
