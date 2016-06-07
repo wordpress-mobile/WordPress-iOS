@@ -1,4 +1,5 @@
 #import "MenusService.h"
+#import "BasePost.h"
 #import "Blog.h"
 #import "MenusServiceRemote.h"
 #import "Menu.h"
@@ -9,7 +10,7 @@
 #import "RemoteMenuLocation.h"
 #import "ContextManager.h"
 #import "PostService.h"
-#import "Page.h"
+#import "WordPress-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

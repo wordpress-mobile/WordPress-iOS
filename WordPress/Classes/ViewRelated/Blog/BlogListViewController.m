@@ -799,14 +799,15 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         return [self fetchRequestPredicateForSearch];
     }
 
-    return [NSPredicate predicateWithFormat:@"visible = YES"];
+    return [self fetchRequestPredicateForVisibleBlogs];
 }
 
 - (NSPredicate *)fetchRequestPredicateForSearch
 {
     NSString *searchText = self.searchController.searchBar.text;
     if ([searchText isEmpty]) {
-        return [self fetchRequestPredicateForHideableBlogs];
+         // Don't filter – show all sites
+        return [self fetchRequestPredicateForAllBlogs];
     }
     
     return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
@@ -823,6 +824,16 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return [NSPredicate predicateWithFormat:@"account != NULL AND account = %@", defaultAccount];
+}
+
+- (NSPredicate *)fetchRequestPredicateForVisibleBlogs
+{
+    return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+- (NSPredicate *)fetchRequestPredicateForAllBlogs
+{
+    return [NSPredicate predicateWithValue:YES];
 }
 
 - (void)updateFetchRequest

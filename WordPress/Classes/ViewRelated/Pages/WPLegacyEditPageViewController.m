@@ -3,8 +3,8 @@
 #import "PageSettingsViewController.h"
 #import "PostService.h"
 #import "BlogService.h"
-#import "Page.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 
 @implementation WPLegacyEditPageViewController
 

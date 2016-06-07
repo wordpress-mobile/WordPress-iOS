@@ -4,78 +4,98 @@ import Foundation
 /// Service providing access to the People Management WordPress.com API.
 ///
 struct PeopleService {
-    typealias Role = Person.Role
-
-    let remote: PeopleRemote
+    /// MARK: - Public Properties
+    ///
     let siteID: Int
 
+    /// MARK: - Private Properties
+    ///
     private let context = ContextManager.sharedInstance().mainContext
+    private let remote: PeopleRemote
 
 
     /// Designated Initializer.
     ///
-    /// -   Parameters:
-    ///     - blog: Target Blog Instance
+    /// - Parameter blog: Target Blog Instance
     ///
     init?(blog: Blog) {
-        guard let api = blog.restApi() else {
+        guard let api = blog.wordPressComRestApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
-        remote = PeopleRemote(api: api)
-        siteID = blog.dotComID as! Int
+        remote = PeopleRemote(wordPressComRestApi: api)
+        siteID = dotComID
     }
 
-
-    /// Refreshes the team of Users associated to a blog.
+    /// Refreshes the Users + Followers associated to the current blog.
     ///
-    /// -   Parameters:
-    ///     - completion: Closure to be executed on completion.
+    /// - Parameter completion: Closure to be executed on completion.
     ///
-    func refreshTeam(completion: (Bool) -> Void) {
-        remote.getTeamFor(siteID,
-            success: { people in
+    func refreshPeople(completion: (Bool -> Void)) {
+        let group = dispatch_group_create()
+        var success = true
 
-                self.mergeTeam(people)
-                completion(true)
-            },
-            failure: { error in
-                DDLogSwift.logError(String(error))
-                completion(false)
+        // Load Users
+        dispatch_group_enter(group)
+        remote.getUsers(siteID, success: { users in
+            self.mergeUsers(users)
+            dispatch_group_leave(group)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            success = false
+            dispatch_group_leave(group)
         })
+
+        // Load Followers
+        dispatch_group_enter(group)
+        remote.getFollowers(siteID, success: { followers in
+            self.mergeFollowers(followers)
+            dispatch_group_leave(group)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            success = false
+            dispatch_group_leave(group)
+        })
+
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            completion(success)
+        }
     }
 
-    /// Updates a given person with the specified role.
+
+    /// Updates a given User with the specified role.
     ///
-    /// -   Parameters:
-    ///     - person: Instance of the person to be updated.
+    /// - Parameters:
+    ///     - user: Instance of the person to be updated.
     ///     - role: New role that should be assigned
     ///     - failure: Optional closure, to be executed in case of error
     ///
-    /// -   Returns: A new Person instance, with the new Role already assigned.
+    /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updatePerson(person: Person, role: Role, failure: ((ErrorType, Person) -> ())?) -> Person {
-        guard let managedPerson = managedPersonWithID(person.ID) else {
-            return person
+    func updateUser(user: User, role: Role, failure: ((ErrorType, User) -> Void)?) -> User {
+        guard let managedPerson = managedPersonFromPerson(user) else {
+            return user
         }
 
         // OP Reversal
         let pristineRole = managedPerson.role
 
         // Hit the Backend
-        remote.updatePersonFrom(siteID, personID: person.ID, newRole: role, success: nil, failure: { error in
+        remote.updateUserRole(siteID, userID: user.ID, newRole: role, success: nil, failure: { error in
 
-            DDLogSwift.logError("### Error while updating person \(person.ID) in blog \(self.siteID): \(error)")
+            DDLogSwift.logError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
 
-            guard let managedPerson = self.managedPersonWithID(person.ID) else {
-                DDLogSwift.logError("### Person with ID \(person.ID) deleted before update")
+            guard let managedPerson = self.managedPersonFromPerson(user) else {
+                DDLogSwift.logError("### Person with ID \(user.ID) deleted before update")
                 return
             }
 
             managedPerson.role = pristineRole
             ContextManager.sharedInstance().saveContext(self.context)
 
-            let reloadedPerson = Person(managedPerson: managedPerson)
+            let reloadedPerson = User(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
         })
 
@@ -83,27 +103,27 @@ struct PeopleService {
         managedPerson.role = role.description
         ContextManager.sharedInstance().saveContext(context)
 
-        return Person(managedPerson: managedPerson)
+        return User(managedPerson: managedPerson)
     }
 
-    /// Deletes or removes a given person.
+    /// Deletes a given User.
     ///
-    /// -   Parameters:
-    ///     - person: The person that should be deleted
+    /// - Parameters:
+    ///     - user: The person that should be deleted
     ///     - failure: Closure to be executed on error
     ///
-    func deletePerson(person: Person, failure: (ErrorType -> Void)? = nil) {
-        guard let managedPerson = managedPersonWithID(person.ID) else {
+    func deleteUser(user: User, failure: (ErrorType -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(user) else {
             return
         }
 
         // Hit the Backend
-        remote.deletePersonFrom(siteID, personID: person.ID, failure: { error in
+        remote.deleteUser(siteID, userID: user.ID, failure: { error in
 
-            DDLogSwift.logError("### Error while deleting person \(person.ID) from blog \(self.siteID): \(error)")
+            DDLogSwift.logError("### Error while deleting person \(user.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
-            self.createManagedPerson(person)
+            self.createManagedPerson(user)
             ContextManager.sharedInstance().saveContext(self.context)
 
             failure?(error)
@@ -116,16 +136,61 @@ struct PeopleService {
 
     /// Retrieves the collection of Roles, available for a given site
     ///
-    /// -   Parameters:
+    /// - Parameters:
     ///     - success: Closure to be executed in case of success. The collection of Roles will be passed on.
     ///     - failure: Closure to be executed in case of error
     ///
     func loadAvailableRoles(success: ([Role] -> Void), failure: (ErrorType -> Void)) {
-        remote.getAvailableRolesFor(siteID, success: { roles in
+        remote.getUserRoles(siteID, success: { roles in
             success(roles)
+
         }, failure: { error in
             failure(error)
         })
+    }
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func validateInvitation(usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        remote.validateInvitation(siteID,
+                                  usernameOrEmail: usernameOrEmail,
+                                  role: role,
+                                  success: success,
+                                  failure: failure)
+    }
+
+
+    /// Sends an Invitation to a specified recipient, to access a Blog.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the users.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func sendInvitation(usernameOrEmail: String,
+                        role: Role,
+                        message: String = "",
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        remote.sendInvitation(siteID,
+                              usernameOrEmail: usernameOrEmail,
+                              role: role,
+                              message: message,
+                              success: success,
+                              failure: failure)
     }
 }
 
@@ -133,24 +198,31 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
+    /// Updates the local collection of Users, with the (fresh) remote version.
+    ///
+    func mergeUsers(remoteUsers: [User]) {
+        let localUsers = loadPeople(siteID, type: User.self)
+        mergePeople(remoteUsers, localPeople: localUsers)
+    }
+
+    /// Updates the local collection of Followers, with the (fresh) remote version.
+    ///
+    func mergeFollowers(remoteFollowers: [Follower]) {
+        let localFollowers = loadPeople(siteID, type: Follower.self)
+        mergePeople(remoteFollowers, localPeople: localFollowers)
+    }
+
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergeTeam(people: People) {
-        let remotePeople = people
-        let localPeople = allPeople()
-
+    func mergePeople<T : Person>(remotePeople: [T], localPeople: [T]) {
         let remoteIDs = Set(remotePeople.map({ $0.ID }))
         let localIDs = Set(localPeople.map({ $0.ID }))
 
         let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs)
+        removeManagedPeopleWithIDs(removedIDs, type: T.self)
 
-        // Let's try to only update objects that have changed
-        let remoteChanges = remotePeople.filter {
-            return !localPeople.contains($0)
-        }
-        for remotePerson in remoteChanges {
-            if let existingPerson = managedPersonWithID(remotePerson.ID) {
+        for remotePerson in remotePeople {
+            if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
                 DDLogSwift.logDebug("Updated person \(existingPerson)")
             } else {
@@ -163,9 +235,10 @@ private extension PeopleService {
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
-    func allPeople() -> People {
+    func loadPeople<T : Person>(siteID: Int, type: T.Type) -> [T] {
+        let isFollower = type.isFollower
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", NSNumber(integer: siteID))
+        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
         let results: [ManagedPerson]
         do {
             results = try context.executeFetchRequest(request) as! [ManagedPerson]
@@ -174,29 +247,39 @@ private extension PeopleService {
             results = []
         }
 
-        return results.map { return Person(managedPerson: $0) }
+        return results.map { return T(managedPerson: $0) }
     }
 
     /// Retrieves a Person from Core Data, with the specifiedID.
     ///
-    func managedPersonWithID(id: Int) -> ManagedPerson? {
+    func managedPersonFromPerson(person: Person) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@", NSNumber(integer: siteID), NSNumber(integer: id))
+        let isFollower = person.dynamicType.isFollower
+        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@ AND isFollower = %@",
+                                                NSNumber(integer: siteID),
+                                                NSNumber(integer: person.ID),
+                                                NSNumber(bool: isFollower))
         request.fetchLimit = 1
+
         let results = (try? context.executeFetchRequest(request) as! [ManagedPerson]) ?? []
         return results.first
     }
 
     /// Nukes the set of users, from Core Data, with the specified ID's.
     ///
-    func removeManagedPeopleWithIDs(ids: Set<Int>) {
+    func removeManagedPeopleWithIDs<T : Person>(ids: Set<Int>, type: T.Type) {
         if ids.isEmpty {
             return
         }
 
+        let follower = type.isFollower
         let numberIDs = ids.map { return NSNumber(integer: $0) }
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND userID IN %@", NSNumber(integer: siteID), numberIDs)
+        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@ AND userID IN %@",
+                                        NSNumber(integer: siteID),
+                                        NSNumber(bool: follower),
+                                        numberIDs)
+
         let objects = (try? context.executeFetchRequest(request) as! [NSManagedObject]) ?? []
         for object in objects {
             DDLogSwift.logDebug("Removing person: \(object)")
