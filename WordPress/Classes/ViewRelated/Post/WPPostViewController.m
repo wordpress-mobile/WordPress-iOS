@@ -59,18 +59,10 @@ NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled"
 NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
 NSString* const FormatBarOnboardingWasShown = @"FormatBarOnboardingWasShown";
 
-const CGRect NavigationBarButtonRect = {
-    .origin.x = 0.0f,
-    .origin.y = 0.0f,
-    .size.width = 30.0f,
-    .size.height = 30.0f
-};
-
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
-static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static CGFloat const CompactTitleButtonWidth = 125.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
@@ -639,13 +631,13 @@ EditImageDetailsViewControllerDelegate
 - (void)showEditButtonOnboarding
 {
     if (!self.wasEditButtonOnboardingShown) {
-        CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+        CGFloat xValue = CGRectGetMaxX(self.view.frame) - [WPStyleGuide navigationBarButtonRect].size.width;
         if (IS_IPAD) {
             xValue -= 20.0;
         } else {
             xValue -= 10.0;
         }
-        CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+        CGRect targetFrame = CGRectMake(xValue, 0.0, [WPStyleGuide navigationBarButtonRect].size.width, 0.0);
         NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
         
         
@@ -1174,7 +1166,7 @@ EditImageDetailsViewControllerDelegate
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:NavigationBarButtonRect
+                                                                   frame:[WPStyleGuide navigationBarButtonRect]
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
@@ -1195,7 +1187,7 @@ EditImageDetailsViewControllerDelegate
     
     UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:NavigationBarButtonRect
+                                                                   frame:[WPStyleGuide navigationBarButtonRect]
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
@@ -1233,14 +1225,14 @@ EditImageDetailsViewControllerDelegate
 	if (!_optionsBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
         WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+                                                                 frame:[WPStyleGuide navigationBarButtonRect]
                                                                 target:self
                                                               selector:@selector(showSettings)];
         
         button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
         button.accessibilityLabel = optionsTitle;
         button.accessibilityIdentifier = @"Options";
@@ -1255,14 +1247,14 @@ EditImageDetailsViewControllerDelegate
 	if (!_previewBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
         WPButtonForNavigationBar* button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+                                                                 frame:[WPStyleGuide navigationBarButtonRect]
                                                                 target:self
                                                               selector:@selector(showPreview)];
         
         button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
@@ -1294,14 +1286,14 @@ EditImageDetailsViewControllerDelegate
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
         WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+                                                                 frame:[WPStyleGuide navigationBarButtonRect]
                                                                 target:self
                                                               selector:@selector(sharePost)];
 
         button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         button.accessibilityLabel = title;
         button.accessibilityIdentifier = @"Share";

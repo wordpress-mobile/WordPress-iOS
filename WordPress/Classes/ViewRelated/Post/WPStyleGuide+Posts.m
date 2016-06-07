@@ -158,6 +158,16 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager systemRegularFontOfSize:fontSize]};
 }
 
++ (CGRect)navigationBarButtonRect
+{
+    return CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+};
+
++ (CGFloat)spacingBetweeenNavbarButtons
+{
+    return 40.0f;
+}
+
 
 #pragma mark - Page Cell Styles
 
