@@ -43,6 +43,11 @@
 + (NSDictionary *)postCardStatusAttributes;
 
 
++ (CGRect)navigationBarButtonRect;
+
++ (CGFloat)spacingBetweeenNavbarButtons;
+
+
 #pragma mark - Pages
 
 + (void)applyPageTitleStyle:(UILabel *)label;
