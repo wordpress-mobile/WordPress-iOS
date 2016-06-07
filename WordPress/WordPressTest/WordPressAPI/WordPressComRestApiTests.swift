@@ -121,5 +121,22 @@ class WordPressComRestApiTests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
+    func testMultipleErrorsFailedCall() {
+        stub(isRestAPIMediaNewRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiMultipleErrors.json", self.dynamicType)
+            return fixture(stubPath!, status:403, headers: ["Content-Type":"application/json"])
+        }
+        let expectation = self.expectationWithDescription("One callback should be invoked")
+        let api = WordPressComRestApi(oAuthToken:"fakeToken")
+        api.POST(wordPressMediaNewEndpoint, parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+            expectation.fulfill()
+            XCTFail("This call should fail")
+            }, failure: { (error, httpResponse) in
+                expectation.fulfill()
+                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+                XCTAssert(error.code == Int(WordPressComRestApiError.UploadFailed.rawValue), "The error code should be AuthorizationRequired")
+        })
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
 }

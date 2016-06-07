@@ -179,9 +179,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 
         [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
 
-        [defaultAccount.restApi GET:@"v1.1/me"
+        [defaultAccount.wordPressComRestApi GET:@"v1.1/me"
                          parameters:nil
-                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                 [self hideLoadingSpinner];
 
                                 NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 
                                 [HelpshiftSupport setUserIdentifier:userID];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
-                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                 [self hideLoadingSpinner];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:defaultAccount.username andEmail:nil andMetadata:metaData];
                             }];
