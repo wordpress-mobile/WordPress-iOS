@@ -77,7 +77,7 @@ import Gridicons
 
     func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
-        let placeholderText = NSLocalizedString("Search on WordPress.com", comment: "Placeholder text for the Reader search feature.")
+        let placeholderText = NSLocalizedString("Search WordPress.com", comment: "Placeholder text for the Reader search feature.")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
