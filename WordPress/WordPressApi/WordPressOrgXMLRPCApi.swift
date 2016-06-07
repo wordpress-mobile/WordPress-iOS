@@ -161,12 +161,6 @@ final class WordPressOrgXMLRPCRequestSerializer: AFHTTPRequestSerializer
         }
         let mutableRequest: NSMutableURLRequest = request.mutableCopy() as! NSMutableURLRequest
         mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
-        for (field,value) in HTTPRequestHeaders {
-            if request.valueForHTTPHeaderField(field as! String) == nil {
-                mutableRequest.setValue(value as? String, forHTTPHeaderField: field as! String)
-            }
-        }
-
         let encoder = WPXMLRPCEncoder(method:xmlRPCCallParameters.method, andParameters:xmlRPCCallParameters.parameters)
         do {
             mutableRequest.HTTPBody = try encoder.dataEncoded()
