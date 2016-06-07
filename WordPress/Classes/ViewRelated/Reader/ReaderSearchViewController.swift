@@ -28,6 +28,10 @@ import Gridicons
     }
 
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     // MARK: Lifecycle methods
 
 
@@ -56,6 +60,9 @@ import Gridicons
 
         // Dismiss the keyboard if it was visible.
         endSearch()
+
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
 
 
@@ -119,6 +126,8 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     func performSearch() {
+        assert(streamController != nil)
+
         guard let phrase = searchBar.text else {
             return
         }
