@@ -273,7 +273,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchHelper.resetConfiguration()
         searchHelper.configureRemoteSearchWithCompletion { [weak self] in
             DDLogSwift.logDebug("Starting remote search with text: \(self?.searchHelper.searchText!)")
-            self?.searchPostsRemotelyForCurrentSearchText()
+            self?.syncPostsMatchingSearchText()
         }
     }
 
@@ -465,33 +465,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     @IBAction func didTapFilterButton(sender: AnyObject) {
         displayFilters()
-    }
-
-    // MARK: - Remote Search
-
-    func searchPostsRemotelyForCurrentSearchText() {
-
-        let filter = currentPostListFilter()
-        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
-
-        let postService = PostService(managedObjectContext: managedObjectContext())
-
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses
-        options.authorID = author
-        options.number = 20
-        options.purgesLocalSync = false
-        options.search = searchController.searchBar.text
-
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
-            success: {posts in
-                // Do something with a success.
-            }, failure: {(error: NSError?) -> () in
-                // Do something with a failure.
-            })
     }
 
     // MARK: - Synching
@@ -861,6 +834,33 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return searchController.searchBar.text
     }
 
+    // MARK: - Remote Searching
+
+    func syncPostsMatchingSearchText() {
+
+        let filter = currentPostListFilter()
+        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+
+        let postService = PostService(managedObjectContext: managedObjectContext())
+
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses
+        options.authorID = author
+        options.number = 20
+        options.purgesLocalSync = false
+        options.search = searchController.searchBar.text
+
+        postService.syncPostsOfType(
+            postTypeToSync(),
+            withOptions: options,
+            forBlog: blog,
+            success: { [weak self] posts in
+                self?.refreshResults()
+            }, failure: { [weak self] (error: NSError?) -> () in
+                self?.refreshResults()
+        })
+    }
+
     // MARK: - Data Sources
 
     /// Retrieves the userID for the user of the current blog.
@@ -1052,8 +1052,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             self?.view.layoutIfNeeded()
         }
 
+        searchHelper.searchCanceled()
         searchController.searchBar.text = nil
-        searchHelper.searchingCanceled()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
@@ -1061,6 +1061,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func updateSearchResultsForSearchController(searchController: WPSearchController!) {
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
-        searchHelper.searchingUpdatedWithSearchText(searchController.searchBar.text!)
+        searchHelper.searchUpdatedWithText(searchController.searchBar.text)
     }
 }
