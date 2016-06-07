@@ -33,14 +33,14 @@ struct PeopleService {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func refreshUsers(success: ((shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+    func refreshUsers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
         remote.getUsers(siteID, success: { users, hasMore in
             // Note:
             // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
             //
             self.mergePeople(users)
             self.purgePeople(users)
-            success(shouldLoadMore: hasMore)
+            success(retrieved: users.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
@@ -54,14 +54,14 @@ struct PeopleService {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func refreshFollowers(success: ((shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+    func refreshFollowers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
         remote.getFollowers(siteID, success: { followers, hasMore in
             // Note:
             // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
             //
             self.mergePeople(followers)
             self.purgePeople(followers)
-            success(shouldLoadMore: hasMore)
+            success(retrieved: followers.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
@@ -72,15 +72,14 @@ struct PeopleService {
     /// Attempts to retrieve more users from the backend.
     ///
     /// - Parameters:
+    ///     - offset: Number of records to skip
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func loadMoreUsers(success: ((shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        let users = loadPeople(siteID, type: User.self)
-
-        remote.getUsers(siteID, offset: users.count, success: { (users, hasMore) in
+    func loadMoreUsers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, offset: offset, success: { (users, hasMore) in
             self.mergePeople(users)
-            success(shouldLoadMore: hasMore)
+            success(retrieved: users.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
@@ -91,15 +90,14 @@ struct PeopleService {
     /// Attempts to retrieve more followers from the backend.
     ///
     /// - Parameters:
+    ///     - offset: Number of records to skip
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func loadMoreFollowers(success: ((shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        let followers = loadPeople(siteID, type: Follower.self)
-
-        remote.getFollowers(siteID, offset: followers.count, success: { (followers, hasMore) in
+    func loadMoreFollowers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, offset: offset, success: { (followers, hasMore) in
             self.mergePeople(followers)
-            success(shouldLoadMore: hasMore)
+            success(retrieved: followers.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
