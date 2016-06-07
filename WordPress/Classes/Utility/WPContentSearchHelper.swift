@@ -9,15 +9,21 @@ class WPContentSearchHelper: NSObject {
     /// The current searchText set on the helper.
     var searchText:String? = nil
 
-    /// Helper flag for when a remote search is processing.
-    var isSearchingRemotely:Bool = false
-
     // MARK: - Methods for configuring the timing of search callbacks.
 
-    private var observers:Array = [WPContentSearchObserver]()
-    private let defaultRemoteObservationInterval = 0.30
+    private var observers = [WPContentSearchObserver]()
+    private let defaultLocalObservationInterval = NSTimeInterval(0.05)
+    private let defaultRemoteObservationInterval = NSTimeInterval(0.30)
 
-    /// Add a search callback configured as a common remote search.
+    /// Add a search callback configured as a common local search.
+    func configureLocalSearchWithCompletion(completion: ()->Void = {}) {
+        let observer = WPContentSearchObserver()
+        observer.interval = defaultLocalObservationInterval
+        observer.completion = completion
+        observers.append(observer)
+    }
+
+    /// Add a search callback configured as a delayed remote search.
     func configureRemoteSearchWithCompletion(completion: ()->Void = {}) {
         let observer = WPContentSearchObserver()
         observer.interval = defaultRemoteObservationInterval
@@ -25,7 +31,7 @@ class WPContentSearchHelper: NSObject {
         observers.append(observer)
     }
 
-    /// Remove any current configuration, such as local and search callbacks.
+    /// Remove any current configuration, such as local and remote search callbacks.
     func resetConfiguration() {
         stopAllObservers()
         observers.removeAll()
@@ -34,7 +40,7 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Methods for updating the search.
 
     /// Update the current search text, ideally in real-time along with user input.
-    func searchingUpdatedWithSearchText(text:String?) {
+    func searchUpdatedWithText(text: String?) {
         stopAllObservers()
         searchText = text ?? ""
         guard let updatedText = text where !updatedText.isEmpty else {
@@ -46,7 +52,7 @@ class WPContentSearchHelper: NSObject {
     }
 
     /// Cancel the current search and any pending callbacks.
-    func searchingCanceled() {
+    func searchCanceled() {
         stopAllObservers()
     }
 
@@ -66,7 +72,7 @@ class WPContentSearchHelper: NSObject {
 /// Object encapsulating the callback and timing information.
 private class WPContentSearchObserver: NSObject {
 
-    var interval:NSTimeInterval = 0.10
+    var interval = NSTimeInterval(0.0)
     var timer:NSTimer? = nil
     var completion:()->Void = {}
 
