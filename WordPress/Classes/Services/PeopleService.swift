@@ -30,7 +30,7 @@ struct PeopleService {
         self.context = context
     }
 
-    /// Refreshes the Users associated to the current blog.
+    /// Loads a page of Users associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
     ///     - offset: Number of records to skip
@@ -48,9 +48,10 @@ struct PeopleService {
         })
     }
 
-    /// Refreshes the Followers associated to the current blog.
+    /// Loads a page of Followers associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
+    ///     - offset: Number of records to skip
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
