@@ -1142,20 +1142,6 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Custom UI elements
 
-- (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
-                                             frame:(CGRect)frame
-                                            target:(id)target
-                                          selector:(SEL)selector
-{
-    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
-    
-    button.tintColor = [UIColor whiteColor];
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    
-    return button;
-}
-
 - (UIBarButtonItem*)cancelChevronButton
 {
     if (_cancelChevronButton) {
@@ -1165,12 +1151,11 @@ EditImageDetailsViewControllerDelegate
     UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:[WPStyleGuide navigationBarButtonRect]
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;
-    cancelButton.removeDefaultRightSpacing = YES;
+
+    cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
@@ -1186,12 +1171,11 @@ EditImageDetailsViewControllerDelegate
     }
     
     UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:[WPStyleGuide navigationBarButtonRect]
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;
-    cancelButton.removeDefaultRightSpacing = YES;
+
+    cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
@@ -1224,15 +1208,10 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_optionsBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
-        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:[WPStyleGuide navigationBarButtonRect]
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(showSettings)];
         
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
         button.accessibilityLabel = optionsTitle;
         button.accessibilityIdentifier = @"Options";
@@ -1246,15 +1225,10 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_previewBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
-        WPButtonForNavigationBar* button = [self buttonForBarWithImage:image
-                                                                 frame:[WPStyleGuide navigationBarButtonRect]
+        WPButtonForNavigationBar* button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(showPreview)];
         
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
@@ -1285,15 +1259,10 @@ EditImageDetailsViewControllerDelegate
 {
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:[WPStyleGuide navigationBarButtonRect]
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(sharePost)];
 
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = [WPStyleGuide spacingBetweeenNavbarButtons] / 2.0f;
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         button.accessibilityLabel = title;
         button.accessibilityIdentifier = @"Share";
