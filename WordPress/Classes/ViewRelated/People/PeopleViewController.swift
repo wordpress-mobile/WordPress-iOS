@@ -263,7 +263,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         case .Followers:
             service.loadFollowers(nextRequestOffset, success: success)
         case .Users:
-            service.loadFollowers(nextRequestOffset, success: success)
+            service.loadUsers(nextRequestOffset, success: success)
         }
     }
 
