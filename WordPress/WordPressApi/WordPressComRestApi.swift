@@ -90,12 +90,12 @@ public class WordPressComRestApi: NSObject
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
-        let task = sessionManager.GET(URLString, parameters: parameters, success: { (dataTask, result) in
+        let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
-            }, failure: { (dataTask, error) in
+                progress?.completedUnitCount = 1
+            }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
+                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -127,12 +127,12 @@ public class WordPressComRestApi: NSObject
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
-        let task = sessionManager.POST(URLString, parameters: parameters, success: { (dataTask, result) in
+        let task = sessionManager.POST(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
-            }, failure: { (dataTask, error) in
+                progress?.completedUnitCount = 1
+            }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
+                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
