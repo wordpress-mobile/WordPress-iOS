@@ -1,0 +1,11 @@
+#!/bin/sh
+
+rake git:pre_commit
+
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo '[POLICY] Commit aborted, failed pre-commit checks'
+  exit $RESULT
+else
+  exit 0
+fi

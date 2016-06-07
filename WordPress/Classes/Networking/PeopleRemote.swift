@@ -2,57 +2,80 @@ import Foundation
 
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
-class PeopleRemote: ServiceRemoteREST {
-    /// Typealiases
-    ///
-    typealias Role = Person.Role
+class PeopleRemote: ServiceRemoteWordPressComREST {
 
     /// Defines the PeopleRemote possible errors.
     ///
     enum Error: ErrorType {
         case DecodeError
+        case InvalidInputError
+        case UserAlreadyHasRoleError
+        case UnknownError
     }
 
-    /// Retrieves the team of users associated to a given Site.
+    /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
-    /// - Returns: An array of *Person* instances (AKA "People).
+    /// - Returns: An array of Users.
     ///
-    func getTeamFor(siteID  : Int,
-                    success : People -> (),
-                    failure : ErrorType -> ())
-    {
+    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
         let endpoint = "sites/\(siteID)/users"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = [
             "number": 50,
             "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
-        api.GET(path,
-            parameters: parameters,
-            success: {
-                (operation, responseObject) in
-                guard let response = responseObject as? [String: AnyObject],
-                          people = try? self.peopleFromResponse(response, siteID: siteID) else
-                {
-                    failure(Error.DecodeError)
-                    return
-                }
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [String: AnyObject],
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+            success(people)
 
-                success(people)
-            },
-            failure: {
-                (operation, error) in
-                failure(error)
-            })
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
     }
 
-    /// Updates a given User, of the specified site, with a new Role.
+    /// Retrieves the collection of Followers associated to a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    /// - Returns: An array of Followers.
+    ///
+    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
+        let endpoint = "sites/\(siteID)/follows"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let parameters = [
+            "number": 50,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
+        ]
+
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [String: AnyObject],
+                      people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+            success(people)
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+    /// Updates a specified User's Role
     ///
     /// - Parameters:
     ///     - siteID: The ID of the site associated
@@ -61,24 +84,23 @@ class PeopleRemote: ServiceRemoteREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    /// - Returns: A single *Person* instance.
+    /// - Returns: A single User instance.
     ///
-    func updatePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          newRole    : Role,
-                          success    : (Person -> ())? = nil,
-                          failure    : (ErrorType -> ())? = nil)
+    func updateUserRole(siteID: Int,
+                        userID: Int,
+                        newRole: Role,
+                        success: (Person -> ())? = nil,
+                        failure: (ErrorType -> ())? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let endpoint = "sites/\(siteID)/users/\(userID)"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters = ["roles" : [newRole.description]]
 
-        api.POST(path,
+        wordPressComRestApi.POST(path,
                 parameters: parameters,
-                success: {
-                    (operation, responseObject) in
+                success: { (responseObject, httpResponse) in
                     guard let response = responseObject as? [String: AnyObject],
-                              person = try? self.personFromResponse(response, siteID: siteID) else
+                                person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
                     {
                         failure?(Error.DecodeError)
                         return
@@ -86,40 +108,39 @@ class PeopleRemote: ServiceRemoteREST {
 
                     success?(person)
                 },
-                failure: {
-                    (operation, error) in
+                failure: { (error, httpResponse) in
                     failure?(error)
                 })
     }
 
 
-    /// Deletes or removes a user from a site.
+    /// Deletes or removes a User from a site.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - personID: The ID of the person to be updated
-    ///     - reassignID: When present, all of the posts and pages that belong to `personID` will be reassigned
+    ///     - siteID: The ID of the site associated.
+    ///     - userID: The ID of the user to be deleted.
+    ///     - reassignID: When present, all of the posts and pages that belong to `userID` will be reassigned
     ///       to another person, with the specified ID.
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deletePersonFrom(siteID     : Int,
-                          personID   : Int,
-                          reassignID : Int? = nil,
-                          success    : (Void -> Void)? = nil,
-                          failure    : (ErrorType -> Void)? = nil)
+    func deleteUser(siteID: Int,
+                    userID: Int,
+                    reassignID: Int? = nil,
+                    success: (Void -> Void)? = nil,
+                    failure: (ErrorType -> Void)? = nil)
     {
-        let endpoint = "sites/\(siteID)/users/\(personID)/delete"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let endpoint = "sites/\(siteID)/users/\(userID)/delete"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         var parameters = [String: AnyObject]()
 
         if let reassignID = reassignID {
             parameters["reassign"] = reassignID
         }
 
-        api.POST(path, parameters: nil, success: { (operation, responseObject) in
+        wordPressComRestApi.POST(path, parameters: nil, success: { (responseObject, httpResponse) in
             success?()
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure?(error)
         })
     }
@@ -128,20 +149,20 @@ class PeopleRemote: ServiceRemoteREST {
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - success: Optional closure to be executed on success
+    ///     - siteID: The ID of the site associated.
+    ///     - success: Optional closure to be executed on success.
     ///     - failure: Optional closure to be executed on error.
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getAvailableRolesFor(siteID    : Int,
-                              success   : ([Role] -> Void),
-                              failure   : (ErrorType -> ())? = nil)
+    func getUserRoles(siteID: Int,
+                      success: ([Role] -> Void),
+                      failure: (ErrorType -> ())? = nil)
     {
         let endpoint = "sites/\(siteID)/roles"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path, parameters: nil, success: { (operation, responseObject) in
+        wordPressComRestApi.GET(path, parameters: nil, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                     roles = try? self.rolesFromResponse(response) else
             {
@@ -150,8 +171,95 @@ class PeopleRemote: ServiceRemoteREST {
             }
 
             success(roles)
-        }, failure: { (operation, error) in
+        }, failure: { (error, httpResponse) in
             failure?(error)
+        })
+    }
+
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated.
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func validateInvitation(siteID: Int,
+                            usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/validate"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.rawValue
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+
+    /// Sends an Invitation to the specified recipient.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the associated site.
+    ///     - usernameOrEmail: Recipient that should receive the invite.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func sendInvitation(siteID: Int,
+                        usernameOrEmail: String,
+                        role: Role,
+                        message: String,
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/new"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.rawValue,
+            "message"   : message
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
         })
     }
 }
@@ -160,21 +268,25 @@ class PeopleRemote: ServiceRemoteREST {
 /// Encapsulates PeopleRemote Private Methods
 ///
 private extension PeopleRemote {
-    /// Parses a dictionary containing an array of persons, and returns an array of Person instances.
+    /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    private func peopleFromResponse(response: [String: AnyObject], siteID: Int) throws -> People {
+    func peopleFromResponse<T : Person>(response: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> [T]
+    {
         guard let users = response["users"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
 
-        let people = try users.flatMap { (user) -> Person? in
-            return try personFromResponse(user, siteID: siteID)
+        let people = try users.flatMap { (user) -> T? in
+            return try personFromResponse(user, siteID: siteID, type: type)
         }
 
         return people
@@ -185,10 +297,14 @@ private extension PeopleRemote {
     /// - Parameters:
     ///     - response: Raw backend dictionary
     ///     - siteID: the ID of the site associated
+    ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: A single *Person* instance.
     ///
-    private func personFromResponse(user: [String: AnyObject], siteID: Int) throws -> Person {
+    func personFromResponse<T : Person>(user: [String: AnyObject],
+                                        siteID: Int,
+                                        type: T.Type) throws -> T
+    {
         guard let ID = user["ID"] as? Int else {
             throw Error.DecodeError
         }
@@ -211,25 +327,31 @@ private extension PeopleRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role = roles?.map({ role -> Role in
-            return Role(string: role)
-        }).sort().first ?? .Unsupported
+        let role : Role
 
-        return Person(ID            : ID,
-                      username      : username,
-                      firstName     : firstName,
-                      lastName      : lastName,
-                      displayName   : displayName,
-                      role          : role,
-                      siteID        : siteID,
-                      linkedUserID  : linkedUserID,
-                      avatarURL     : avatarURL,
-                      isSuperAdmin  : isSuperAdmin)
+        role = roles?.map({ role -> Role in
+            return Role(string: role)
+        }).sort().first ?? Role.Unsupported
+
+        return T(ID            : ID,
+                 username      : username,
+                 firstName     : firstName,
+                 lastName      : lastName,
+                 displayName   : displayName,
+                 role          : role,
+                 siteID        : siteID,
+                 linkedUserID  : linkedUserID,
+                 avatarURL     : avatarURL,
+                 isSuperAdmin  : isSuperAdmin)
     }
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
-    private func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
+    /// - Parameter roles: Raw backend dictionary
+    ///
+    /// - Returns: Collection of the remote roles.
+    ///
+    func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw Error.DecodeError
         }
@@ -244,5 +366,33 @@ private extension PeopleRemote {
 
         let filtered = parsed.filter { $0 != .Unsupported }
         return filtered.sort()
+    }
+
+    /// Parses a remote Invitation Error into a PeopleRemote.Error.
+    ///
+    /// - Parameters:
+    ///     - response: Raw backend dictionary
+    ///     - usernameOrEmail: Recipient that was used to either validate, or effectively send an invite.
+    ///
+    /// - Returns: The remote error, if any.
+    ///
+    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+        guard let errors = response["errors"] as? [String: AnyObject],
+            let theError = errors[usernameOrEmail] as? [String: String],
+            let code = theError["code"] else
+        {
+            return nil
+        }
+
+        switch code {
+        case "invalid_input":
+            return Error.InvalidInputError
+        case "invalid_input_has_role":
+            return Error.UserAlreadyHasRoleError
+        case "invalid_input_following":
+            return Error.UserAlreadyHasRoleError
+        default:
+            return Error.UnknownError
+        }
     }
 }
