@@ -18,7 +18,6 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
-extern NSString *const WordPressComApiPushAppId;
 
 @interface WordPressComApi : AFHTTPRequestOperationManager
 @property (nonatomic, readonly, strong) NSString *username;

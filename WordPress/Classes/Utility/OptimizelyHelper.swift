@@ -27,6 +27,7 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
     ///
     class func setupOptimizelyWithLaunchOptions(launchOptions: [NSObject: AnyObject]) {
         Optimizely.disableSwizzle() // Disable's the Optimizely visual editor.
+        Optimizely.sharedInstance().disableGesture = true
         preregisterOptimizelyKeys()
         Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions)
         Optimizely.refreshExperiments()
