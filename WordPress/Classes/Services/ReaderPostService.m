@@ -613,9 +613,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
     if (gapMarker) {
-        CGFloat highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
-        CGFloat lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
-        CGFloat gapRank = [gapMarker.sortRank doubleValue];
+        double highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
+        double lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
+        double gapRank = [gapMarker.sortRank doubleValue];
         // Confirm the overlap includes the gap marker.
         if (lowestRank < gapRank && gapRank < highestRank) {
             // No need for a gap placeholder. Remove any that existed
@@ -656,7 +656,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     marker.date_created_gmt = post.sortDate;
 
     // For compatability with posts that are sorted by score
-    marker.sortRank = @([post.sortRank doubleValue] - 0.0000001);
+    marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
     marker.score = post.score;
 
     marker.topic = topic;
