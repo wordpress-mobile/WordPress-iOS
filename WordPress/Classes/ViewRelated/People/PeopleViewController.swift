@@ -40,6 +40,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     private var isLoadingMore = false
 
+    /// Number of records to skip in the next request
+    ///
+    private var nextRequestOffset = 0
+
     /// Number of pending-rows that trigger the LoadMore call
     ///
     private let refreshRowPadding = 4
@@ -190,6 +194,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         //
         title = filter.title
         titleButton.setAttributedTitleForTitle(filter.title)
+        shouldLoadMore = false
     }
 
     private func refreshResultsController() {
@@ -217,7 +222,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+        let completion = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
@@ -241,16 +247,17 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         isLoadingMore = true
 
-        let completion = { [weak self] (shouldLoadMore: Bool) -> Void in
+        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
         }
 
         switch filter {
         case .Followers:
-            service.loadMoreFollowers(completion)
+            service.loadMoreFollowers(nextRequestOffset, success: success)
         case .Users:
-            service.loadMoreUsers(completion)
+            service.loadMoreUsers(nextRequestOffset, success: success)
         }
     }
 
