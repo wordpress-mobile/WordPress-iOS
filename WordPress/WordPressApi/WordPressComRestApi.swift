@@ -95,8 +95,6 @@ public class WordPressComRestApi: NSObject
         let progress = NSProgress()
         progress.totalUnitCount = 1
 
-        NSLog("url: \(URLString)")
-
         let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
