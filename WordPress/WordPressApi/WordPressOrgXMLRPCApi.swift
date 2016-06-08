@@ -66,34 +66,14 @@ public class WordPressOrgXMLRPCApi: NSObject
         }
 
         // Create task
-        let task = session.dataTaskWithRequest(request) { (data, urlResponse, optionalError) in
-            guard let data = data,
-                let httpResponse = urlResponse as? NSHTTPURLResponse,
-                let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
-                where optionalError == nil else {
-                    if let error = optionalError {
-                        failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
-                    } else {
-                        failure(error: WordPressOrgXMLRPCApiError.Unknown as NSError, httpResponse: urlResponse as? NSHTTPURLResponse)
-                    }
-                    return
-            }
-
-            if ["application/xml", "text/xml"].filter({ (type) -> Bool in return contentType.hasPrefix(type)}).count == 0 {
-                failure(error: WordPressOrgXMLRPCApiError.ResponseSerializationFailed as NSError, httpResponse: httpResponse)
+        let task = session.dataTaskWithRequest(request) { (data, urlResponse, error) in
+            do {
+                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
+                success(responseObject: responseObject, httpResponse: urlResponse as? NSHTTPURLResponse)
+            } catch let error as NSError {
+                failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
                 return
             }
-
-            let decoder = WPXMLRPCDecoder(data: data)
-
-            guard !decoder.isFault(),
-                let responseXML = decoder.object() else {
-                    let decoderError = decoder.error()
-                    failure(error: decoderError,  httpResponse: httpResponse)
-                    return
-            }
-
-            success(responseObject: responseXML, httpResponse: httpResponse)
         }
 
         // Progress report
@@ -114,6 +94,33 @@ public class WordPressOrgXMLRPCApi: NSObject
         mutableRequest.HTTPBody = try encoder.dataEncoded()
 
         return mutableRequest
+    }
+
+    private func handleResponseWithData(data: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
+        guard let data = data,
+            let httpResponse = urlResponse as? NSHTTPURLResponse,
+            let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
+            where error == nil else {
+                if let unwrappedError = error {
+                    throw unwrappedError
+                } else {
+                    throw WordPressOrgXMLRPCApiError.Unknown
+                }
+        }
+
+        if ["application/xml", "text/xml"].filter({ (type) -> Bool in return contentType.hasPrefix(type)}).count == 0 {
+            throw WordPressOrgXMLRPCApiError.ResponseSerializationFailed
+        }
+
+        let decoder = WPXMLRPCDecoder(data: data)
+
+        guard !decoder.isFault(),
+            let responseXML = decoder.object() else {
+                let decoderError = decoder.error()
+                throw decoderError
+        }
+
+        return responseXML
     }
 }
 
