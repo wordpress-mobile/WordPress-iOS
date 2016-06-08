@@ -44,10 +44,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     private var nextRequestOffset = 0
 
-    /// Number of pending-rows that trigger the LoadMore call
-    ///
-    private let refreshRowPadding = 4
-
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
@@ -179,6 +175,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
     // MARK: - Action Handlers
+
     @IBAction public func refresh() {
         refreshPeople()
     }
@@ -223,8 +220,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
+
+    // MARK: - Sync Helpers
+
     private func refreshPeople() {
-        retrievePeoplePage() { [weak self] (retrieved, shouldLoadMore) in
+        loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
@@ -238,14 +238,14 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         isLoadingMore = true
 
-        retrievePeoplePage(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
+        loadPeoplePage(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
         }
     }
 
-    private func retrievePeoplePage(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
+    private func loadPeoplePage(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
         guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
             return
         }
@@ -343,7 +343,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
 
-    // MARK: - Private Helpers
+    // MARK: - Private Structs
 
     private enum Filter : String {
         case Users      = "team"
@@ -371,4 +371,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private enum Storyboard {
         static let inviteSegueIdentifier = "invite"
     }
+
+    private let refreshRowPadding = 4
 }
