@@ -1,7 +1,7 @@
 import Foundation
 import wpxmlrpc
 
-public class WordPressOrgXMLRPCApi: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate
+public class WordPressOrgXMLRPCApi: NSObject
 {
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
@@ -16,7 +16,7 @@ public class WordPressOrgXMLRPCApi: NSObject, NSURLSessionDelegate, NSURLSession
             additionalHeaders["User-Agent"] = userAgent
         }
         sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
-        let session = NSURLSession(configuration: sessionConfiguration)
+        let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         return session
     }()
 
@@ -117,7 +117,7 @@ public class WordPressOrgXMLRPCApi: NSObject, NSURLSessionDelegate, NSURLSession
     }
 }
 
-extension NSURLSession: NSURLSessionDelegate {
+extension WordPressOrgXMLRPCApi: NSURLSessionDelegate {
 
     public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
             switch challenge.protectionSpace.authenticationMethod {
@@ -144,7 +144,7 @@ extension NSURLSession: NSURLSessionDelegate {
     }
 }
 
-extension NSURLSession: NSURLSessionTaskDelegate {
+extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate {
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
         completionHandler(.PerformDefaultHandling, nil)
     }
