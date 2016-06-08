@@ -57,7 +57,7 @@ public class WordPressOrgXMLRPCApi: NSObject
                            failure: FailureReponseBlock) -> NSProgress?
     {
         //Encode request
-        var request: NSURLRequest? = nil
+        let request: NSURLRequest
         do {
             request = try requestWithMethod(method, parameters: parameters)
         } catch let encodingError as NSError {
@@ -66,7 +66,7 @@ public class WordPressOrgXMLRPCApi: NSObject
         }
 
         // Create task
-        let task = session.dataTaskWithRequest(request!) { (data, urlResponse, optionalError) in
+        let task = session.dataTaskWithRequest(request) { (data, urlResponse, optionalError) in
             guard let data = data,
                 let httpResponse = urlResponse as? NSHTTPURLResponse,
                 let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
