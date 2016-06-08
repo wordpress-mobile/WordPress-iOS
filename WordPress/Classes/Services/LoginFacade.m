@@ -64,8 +64,6 @@
             [self.delegate needsMultifactorCode];
         }
     } failure:^(NSError *error) {
-        NSDictionary *properties = @{ @"multifactor" : @(loginFields.shouldDisplayMultifactor) };
-        [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
             [self.delegate displayRemoteError:error];

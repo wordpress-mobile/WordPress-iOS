@@ -23,6 +23,7 @@
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
+#import "Coordinate.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "CustomHighlightButton.h"
 
@@ -62,7 +63,6 @@
 #import "PageListTableViewCell.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
-#import "Post.h"
 #import "PostCardTableViewCell.h"
 #import "PostCategory.h"
 #import "PostContentProvider.h"
@@ -81,8 +81,10 @@
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
+#import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderPost.h"
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
@@ -140,9 +142,10 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
-
+#import "WordPressComServiceRemote.h"
 // Pods
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 

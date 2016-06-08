@@ -187,7 +187,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
     ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
-    NSString *path = [remote endpointUrlForSearchPhrase:phrase];
+    NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
     ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
     if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
@@ -198,6 +198,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = path;
     topic.showInMenu = NO;
     topic.following = NO;
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return topic;
 }

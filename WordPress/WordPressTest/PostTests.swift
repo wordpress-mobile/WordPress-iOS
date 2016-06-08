@@ -17,7 +17,7 @@ class PostTests: XCTestCase {
     }
 
     private func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObjectForEntityForName(PostEntityName, inManagedObjectContext: context) as! Post
+        return NSEntityDescription.insertNewObjectForEntityForName(Post.entityName, inManagedObjectContext: context) as! Post
     }
 
     private func newTestPostCategory() -> PostCategory {
@@ -71,7 +71,7 @@ class PostTests: XCTestCase {
         post.blog = blog
         post.setCategoriesFromNames(["One", "Three"])
 
-        let postCategories = post.categories as! Set<PostCategory>
+        let postCategories = post.categories!
         XCTAssertEqual(postCategories.count, 2)
         XCTAssertTrue(postCategories.contains(category1))
         XCTAssertFalse(postCategories.contains(category2))
@@ -175,7 +175,8 @@ class PostTests: XCTestCase {
         blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value]
         post.blog = blog
 
-        XCTAssertEqual(post.postFormatText, defaultPostFormat.value)
+        let postFormatText = post.postFormatText()!
+        XCTAssertEqual(postFormatText, defaultPostFormat.value)
     }
 
     func testThatPostFormatTextReturnsSelected() {
@@ -190,7 +191,8 @@ class PostTests: XCTestCase {
         post.blog = blog
         post.postFormat = secondaryPostFormat.key
 
-        XCTAssertEqual(post.postFormatText, secondaryPostFormat.value)
+        let postFormatText = post.postFormatText()!
+        XCTAssertEqual(postFormatText, secondaryPostFormat.value)
     }
 
     func testThatSetPostFormatTextWorks() {
@@ -203,7 +205,7 @@ class PostTests: XCTestCase {
         blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value,
                             secondaryPostFormat.key: secondaryPostFormat.value]
         post.blog = blog
-        post.postFormatText = secondaryPostFormat.value
+        post.setPostFormatText(secondaryPostFormat.value)
 
         XCTAssertEqual(post.postFormat, secondaryPostFormat.key)
     }

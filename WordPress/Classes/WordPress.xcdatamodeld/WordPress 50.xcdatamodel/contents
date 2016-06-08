@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -49,7 +49,6 @@
         <attribute name="date_created_gmt" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="mt_excerpt" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -142,7 +141,6 @@
             <userInfo/>
         </relationship>
         <relationship name="connections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PublicizeConnection" inverseName="blog" inverseEntity="PublicizeConnection" syncable="YES"/>
-        <relationship name="domains" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Domain" inverseName="blog" inverseEntity="Domain" syncable="YES"/>
         <relationship name="jetpackAccount" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="jetpackBlogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
             <userInfo/>
@@ -266,12 +264,6 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
         <userInfo/>
-    </entity>
-    <entity name="Domain" representedClassName=".ManagedDomain" syncable="YES">
-        <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="domainType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isPrimary" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="domains" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Media" representedClassName="Media">
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
@@ -537,9 +529,11 @@
         <attribute name="primaryTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="readingTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="siteIconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sortDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" indexed="YES" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -624,12 +618,11 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="630"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="390"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="240"/>
@@ -648,7 +641,7 @@
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="630"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>

@@ -366,9 +366,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            eventName = @"menus_updated_menu_name";
-            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -443,13 +440,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatOpenedPerson:
             eventName = @"people_management_details_opened";
-            break;
-        case WPAnalyticsStatOpenedPlans:
-            eventName = @"site_menu_opened";
-            eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
-            break;
-        case WPAnalyticsStatOpenedPlansComparison:
-            eventName = @"plans_compare";
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
@@ -587,6 +577,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatReaderListUnfollowed:
             eventName = @"reader_list_unfollowed";
+            break;
+        case WPAnalyticsStatReaderSearchLoaded:
+            eventName = @"reader_search_loaded";
             break;
         case WPAnalyticsStatReaderSiteBlocked:
             eventName = @"reader_blog_blocked";
@@ -839,6 +832,8 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatOpenedPlans:
+        case WPAnalyticsStatOpenedPlansComparison:
             return nil;
     }
 
