@@ -81,5 +81,5 @@ public class HTTPAuthenticationAlertController {
         controller.addAction(loginAction)
         return controller
     }
-    
+
 }
