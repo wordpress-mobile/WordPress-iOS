@@ -148,4 +148,26 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
         delegate?.searchSuggestionsController(self, selectedItem: suggestion.searchPhrase)
     }
 
+
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+
+    func tableView(tableView: UITableView!, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.Delete
+    }
+
+
+    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+        let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
+        let suggestion = suggestions[indexPath.row]
+        managedObjectContext().deleteObject(suggestion)
+        ContextManager.sharedInstance().saveContext(managedObjectContext())
+    }
+
+
+    func tableView(tableView: UITableView!, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath!) -> String! {
+        return NSLocalizedString("Delete", comment: "Title of a delete button")
+    }
 }
