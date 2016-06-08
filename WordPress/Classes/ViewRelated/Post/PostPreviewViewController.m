@@ -62,7 +62,7 @@
 {
     [super viewWillAppear:animated];
     [self refreshWebView];
-    if ([self.post isKindOfClass:[Post class]]) {
+    if ([self.apost isKindOfClass:[Post class]]) {
         [self.navigationItem setRightBarButtonItems:@[[self shareBarButtonItem]] animated:YES];
     }
 }
@@ -325,6 +325,7 @@
                                                                         target:self
                                                                       selector:@selector(sharePost)];
         
+        button.rightSpacing = 0.0;
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         button.accessibilityLabel = title;
         button.accessibilityIdentifier = @"Share";
@@ -336,8 +337,8 @@
 
 - (void)sharePost
 {
-    if ([self.post isKindOfClass:[Post class]]) {
-        Post *post = (Post *)self.post;
+    if ([self.apost isKindOfClass:[Post class]]) {
+        Post *post = (Post *)self.apost;
         
         PostSharingController *sharingController = [[PostSharingController alloc] init];
         
