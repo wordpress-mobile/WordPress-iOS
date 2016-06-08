@@ -421,7 +421,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
              */
             return [self accountIsDefaultAccount];
         case BlogFeaturePeople:
-            return [self restApi] != nil && self.isListingUsersAllowed;
+            return [self supportsRestApi] && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureStats:
             return [self supportsRestApi];
@@ -584,16 +584,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return _api;
-}
-
-- (WordPressComApi *)restApi
-{
-    if (self.account) {
-        return self.account.restApi;
-    } else if ([self jetpackRESTSupported]) {
-        return self.jetpackAccount.restApi;
-    }
-    return nil;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi
