@@ -382,12 +382,12 @@ final public class ReaderDetailViewController : UIViewController
 
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
-        let ratio = image.size.width / image.size.height
+        let ratio = image.size.height / image.size.width
         let constraint = NSLayoutConstraint(item: featuredImageView,
-            attribute: .Width,
+            attribute: .Height,
             relatedBy: .Equal,
             toItem: featuredImageView,
-            attribute: .Height,
+            attribute: .Width,
             multiplier: ratio,
             constant: 0)
         constraint.priority = UILayoutPriorityDefaultHigh
