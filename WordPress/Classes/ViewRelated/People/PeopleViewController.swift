@@ -15,7 +15,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private var filter = Filter.Users {
         didSet {
             refreshInterface()
-            refreshResults()
+            refreshResultsController()
             refreshPeople()
         }
     }
@@ -23,6 +23,30 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// NoResults Helper
     ///
     private let noResultsView = WPNoResultsView()
+
+    /// Indicates whether there are more results that can be retrieved, or not.
+    ///
+    private var shouldLoadMore = false {
+        didSet {
+            if shouldLoadMore {
+                footerActivityIndicator.startAnimating()
+            } else {
+                footerActivityIndicator.stopAnimating()
+            }
+        }
+    }
+
+    /// Indicates whether there is a loadMore call in progress, or not.
+    ///
+    private var isLoadingMore = false
+
+    /// Number of records to skip in the next request
+    ///
+    private var nextRequestOffset = 0
+
+    /// Number of pending-rows that trigger the LoadMore call
+    ///
+    private let refreshRowPadding = 4
 
     /// Filter Predicate
     ///
@@ -48,7 +72,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     /// Navigation Bar Custom Title
     ///
-    @IBOutlet private var titleButton : NavBarTitleDropdownButton!
+    @IBOutlet private var titleButton: NavBarTitleDropdownButton!
+
+    /// TableView Footer
+    ///
+    @IBOutlet private var footerView: UIView!
+
+    /// TableView Footer Activity Indicator
+    ///
+    @IBOutlet private var footerActivityIndicator: UIActivityIndicatorView!
 
 
 
@@ -79,6 +111,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return hasHorizontallyCompactView() ? CGFloat.min : 0
     }
 
+    public override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // Refresh only when we reach the last 3 rows in the last section!
+        let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        guard shouldLoadMore == true && (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
+            return
+        }
+
+        loadMorePeople()
+    }
+
 
     // MARK: - NSFetchedResultsController Methods
 
@@ -106,6 +148,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
+        refreshNoResultsView()
         WPAnalytics.track(.OpenedPeople)
     }
 
@@ -122,8 +165,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
         } else if let navController = segue.destinationViewController as? UINavigationController,
-            let inviteViewController = navController.topViewController as? InvitePersonViewController,
-            let blog = blog
+            let inviteViewController = navController.topViewController as? InvitePersonViewController
         {
             inviteViewController.blog = blog
         }
@@ -152,9 +194,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         //
         title = filter.title
         titleButton.setAttributedTitleForTitle(filter.title)
+        shouldLoadMore = false
     }
 
-    private func refreshResults() {
+    private func refreshResultsController() {
         resultsController.fetchRequest.predicate = predicate
 
         do {
@@ -179,11 +222,42 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             return
         }
 
-        refreshNoResultsView()
-
-        service.refreshPeople { [weak self] _ in
-            self?.refreshNoResultsView()
+        let completion = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset = retrieved
+            self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
+        }
+
+        switch filter {
+        case .Followers:
+            service.refreshFollowers(completion)
+        case .Users:
+            service.refreshUsers(completion)
+        }
+    }
+
+    private func loadMorePeople() {
+        guard let blog = blog, service = PeopleService(blog: blog) else {
+            return
+        }
+
+        guard isLoadingMore == false else {
+            return
+        }
+
+        isLoadingMore = true
+
+        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+            self?.nextRequestOffset += retrieved
+            self?.shouldLoadMore = shouldLoadMore
+            self?.isLoadingMore = false
+        }
+
+        switch filter {
+        case .Followers:
+            service.loadMoreFollowers(nextRequestOffset, success: success)
+        case .Users:
+            service.loadMoreUsers(nextRequestOffset, success: success)
         }
     }
 
