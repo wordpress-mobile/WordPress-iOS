@@ -48,6 +48,21 @@ extern NSString * const ReaderPostServiceErrorDomain;
                    failure:(void (^)(NSError *error))failure;
 
 /**
+ Fetches and saves the posts for the specified topic
+
+ @param topic The Topic for which to request posts.
+ @param offset The offset of the posts to fetch.
+ @param deletingEarlier Deletes any cached posts earlier than the earliers post returned.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+                  atOffset:(NSUInteger)offset
+           deletingEarlier:(BOOL)deleteEarlier
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
  Fetches a specific post from the specified remote site
 
  @param postID The ID of the post to fetch.

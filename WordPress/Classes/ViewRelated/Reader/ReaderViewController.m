@@ -99,7 +99,22 @@
                                                               action:@selector(topicsAction:)];
     [button setAccessibilityLabel:NSLocalizedString(@"Menu", @"Accessibility label for the menu button. The user does not see this text but it can be spoken by a screen reader.")];
     navigationItem.leftBarButtonItem = button;
+
+
+    button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                              style:UIBarButtonItemStylePlain
+                                             target:self
+                                             action:@selector(searchAction:)];
+    navigationItem.rightBarButtonItem = button;
 }
+
+
+- (void)searchAction:(id)sender
+{
+    ReaderSearchViewController *controller = [ReaderSearchViewController controller];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 
 - (void)configurePostsViewController
 {

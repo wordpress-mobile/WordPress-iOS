@@ -18,7 +18,11 @@
 #import "WPAppAnalytics.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
-NSUInteger const ReaderPostServiceTitleLength = 30;
+// NOTE: The search endpoint is currently capped to max results of 20 and returns
+// a 500 error if more are requested.
+// For performance reasons, request fewer results. EJ 2016-05-13
+NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
+NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
@@ -44,8 +48,45 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure
 {
-
     [self fetchPostsForTopic:topic earlierThan:date deletingEarlier:NO success:success failure:failure];
+}
+
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+                  atOffset:(NSUInteger)offset
+           deletingEarlier:(BOOL)deleteEarlier
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSNumber *rank = @([[NSDate date] timeIntervalSinceReferenceDate]);
+    if (offset > 0) {
+        rank = [self rankForPostAtOffset:offset - 1 forTopic:topic];
+    }
+
+    if (offset >= ReaderPostServiceMaxSearchPosts && [topic isKindOfClass:[ReaderSearchTopic class]]) {
+        // A search supports a max offset of 199. If more are requested we want to bail early.
+        success(0, NO);
+        return;
+    }
+
+    NSManagedObjectID *topicObjectID = topic.objectID;
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                    count:[self numberToSyncForTopic:topic]
+                                   offset:offset
+                                  success:^(NSArray<RemoteReaderPost *> *posts) {
+
+                                      [self mergePosts:posts
+                                        rankedLessThan:rank
+                                              forTopic:topicObjectID
+                                       deletingEarlier:deleteEarlier
+                                        callingSuccess:success];
+
+                                  }
+                                  failure:^(NSError *error) {
+                                      if (failure) {
+                                          failure(error);
+                                      }
+                                  }];
 }
 
 - (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
@@ -57,17 +98,20 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
-                                    count:ReaderPostServiceNumberToSync
+                                    count:[self numberToSyncForTopic:topic]
                                    before:date
                                   success:^(NSArray *posts) {
 
+                                      // Construct a rank from the date provided
+                                      NSNumber *rank = @([date timeIntervalSinceReferenceDate]);
                                       [self mergePosts:posts
-                                           earlierThan:date
+                                        rankedLessThan:rank
                                               forTopic:topicObjectID
                                        deletingEarlier:deleteEarlier
                                         callingSuccess:success];
 
-                                  } failure:^(NSError *error) {
+                                  }
+                                  failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
                                       }
@@ -409,6 +453,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return api;
 }
 
+- (NSUInteger)numberToSyncForTopic:(ReaderAbstractTopic *)topic
+{
+    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceNumberToSyncForSearch : ReaderPostServiceNumberToSync;
+}
+
+- (NSUInteger)maxPostsToSaveForTopic:(ReaderAbstractTopic *)topic
+{
+    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceMaxSearchPosts : ReaderPostServiceMaxPosts;
+}
+
 - (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
@@ -421,36 +475,26 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return count;
 }
 
-#pragma mark - Backfill Processing Methods
-
-/**
- Retrieve the newest post for the specified topic
-
- @param topicObjectID The `NSManagedObjectID` of the ReaderAbstractTopic for the post
- @return The newest post in Core Data for the topic, or nil.
- */
-- (ReaderPost *)newestPostForTopic:(NSManagedObjectID *)topicObjectID
+- (NSNumber *)rankForPostAtOffset:(NSUInteger)offset forTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
-    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-    if (error) {
-        DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
-    [fetchRequest setPredicate:pred];
-    fetchRequest.fetchLimit = 1;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    [fetchRequest setPredicate:predicate];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
-    ReaderPost *post = (ReaderPost *)[self.managedObjectContext executeFetchRequest:fetchRequest error:&error].firstObject;
-    if (error) {
-        DDLogError(@"%@, error fetching newest post for topic: %@", NSStringFromSelector(_cmd), error);
+    fetchRequest.fetchOffset = offset;
+    fetchRequest.fetchLimit = 1;
+
+    ReaderPost *post = [[self.managedObjectContext executeFetchRequest:fetchRequest error:&error] firstObject];
+    if (error || !post) {
+        DDLogError(@"Error fetching post at a specific offset.", error);
         return nil;
     }
-    return post;
+
+    return post.sortRank;
 }
 
 
@@ -466,7 +510,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  @param success block called on a successful fetch which should be performed after merging
  */
 - (void)mergePosts:(NSArray *)remotePosts
-       earlierThan:(NSDate *)date
+    rankedLessThan:(NSNumber *)rank
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
@@ -493,7 +537,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
         NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
-            [self deletePostsEarlierThan:date forTopic:readerTopic];
+            [self deletePostsRankedLessThan:rank forTopic:readerTopic];
 
         } else {
             NSArray *posts = remotePosts;
@@ -510,7 +554,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 // one extra post. Only remove the extra post if we received a
                 // full set of results. A partial set means we've reached
                 // the end of syncable content.
-                if ([posts count] == ReaderPostServiceNumberToSync) {
+                if ([posts count] == [self numberToSyncForTopic:readerTopic]) {
                     posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
                     postsCount = [posts count];
                 }
@@ -522,12 +566,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             // When refreshing, some content previously synced may have been deleted remotely.
             // Remove anything we've synced that is missing.
             // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
-            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank];
 
             // If deleting earlier, delete every post older than the last post in this batch.
             if (deleteEarlier) {
                 ReaderPost *lastPost = [newPosts lastObject];
-                [self deletePostsEarlierThan:lastPost.sortDate forTopic:readerTopic];
+                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic];
                 [self removeGapMarkerForTopic:readerTopic]; // Paranoia
 
             } else {
@@ -541,7 +585,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                     // new posts then append a gap placeholder to the end of the
                     // new posts
                     ReaderPost *lastPost = [newPosts lastObject];
-                    if ([self topic:readerTopic hasPostsOlderThan:lastPost.sortDate]) {
+                    if ([self topic:readerTopic hasPostsRankedLessThan:lastPost.sortRank]) {
                         [self insertGapMarkerBeforePost:lastPost forTopic:readerTopic];
                     }
                 }
@@ -552,7 +596,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         [self deletePostsFromBlockedSites];
 
-        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < [self maxPostsToSaveForTopic:readerTopic]));
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             // Is called on main queue
             if (success) {
@@ -569,11 +613,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
     if (gapMarker) {
-        NSDate *newestPostDate = ((ReaderPost *)newPosts.firstObject).sortDate;
-        NSDate *oldestPostDate = ((ReaderPost *)newPosts.lastObject).sortDate;
-        NSDate *gapDate = gapMarker.sortDate;
+        double highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
+        double lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
+        double gapRank = [gapMarker.sortRank doubleValue];
         // Confirm the overlap includes the gap marker.
-        if (gapDate == [newestPostDate earlierDate:gapDate] && gapDate == [oldestPostDate laterDate:gapDate]) {
+        if (lowestRank < gapRank && gapRank < highestRank) {
             // No need for a gap placeholder. Remove any that existed
             [self removeGapMarkerForTopic:topic];
         }
@@ -610,6 +654,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // and accurate date reference should we need it.
     marker.sortDate = [post.sortDate dateByAddingTimeInterval:-0.1];
     marker.date_created_gmt = post.sortDate;
+
+    // For compatability with posts that are sorted by score
+    marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
+    marker.score = post.score;
+
     marker.topic = topic;
 }
 
@@ -632,10 +681,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
-- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsOlderThan:(NSDate *)date
+- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsRankedLessThan:(NSNumber *)rank
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
 
     NSError *error;
     NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
@@ -682,24 +731,24 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 #pragma mark Deletion and Clean up
 
 /**
- Deletes any existing post whose sortDate is earlier than the passed date. This
+ Deletes any existing post whose sortRank is less than the passed rank. This
  is to handle situations where posts have been synced but were subsequently removed
  from the result set (deleted, unliked, etc.) rendering the result set empty.
 
- @param date The date to delete posts earlier than.
+ @param rank The sortRank to delete posts less than.
  @param topic The `ReaderAbstractTopic` to delete posts from.
  */
-- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderAbstractTopic *)topic
+- (void)deletePostsRankedLessThan:(NSNumber *)rank forTopic:(ReaderAbstractTopic *)topic
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
 
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -715,7 +764,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 }
 
 /**
- Using an array of post as a filter, deletes any existing post whose sortDate falls
+ Using an array of post as a filter, deletes any existing post whose sortRank falls
  within the range of the filter posts, but is not included in the filter posts.
 
  This let's us remove unliked posts from /read/liked, posts from blogs that are
@@ -725,21 +774,22 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  @param topic The ReaderAbstractTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
- @param startingDate The starting date of the batch of posts. May be earlier than the earliest post in the batch.
+ @param startingRank The starting rank of the batch of posts. May be less than the highest ranked post in the batch.
  */
-- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingDate:(NSDate *)startingDate
+- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingRank:(NSNumber *)startingRank
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSDate *newestDate = startingDate;
-    NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate > %@ AND sortDate < %@", topic, oldestDate, newestDate];
+    NSNumber *highestRank = startingRank;
+
+    NSNumber *lowestRank = ((ReaderPost *)[posts lastObject]).sortRank;
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortRank > %@ AND sortRank < %@", topic, lowestRank, highestRank];
 
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -772,13 +822,15 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    NSUInteger maxPosts = [self maxPostsToSaveForTopic:topic];
 
     // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
     // Just perform the fetch and remove the excess.
     NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
-    if (count <= ReaderPostServiceMaxPosts) {
+    if (count <= maxPosts) {
         return;
     }
 
@@ -788,7 +840,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
-    NSRange range = NSMakeRange(ReaderPostServiceMaxPosts, [posts count] - ReaderPostServiceMaxPosts);
+    NSRange range = NSMakeRange(maxPosts, [posts count] - maxPosts);
     NSArray *postsToDelete = [posts subarrayWithRange:range];
     for (ReaderPost *post in postsToDelete) {
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
@@ -796,7 +848,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     // If the last remaining post is a gap marker, remove it.
-    ReaderPost *lastPost = [posts objectAtIndex:ReaderPostServiceMaxPosts - 1];
+    ReaderPost *lastPost = [posts objectAtIndex:maxPosts - 1];
     if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
         [self.managedObjectContext deleteObject:lastPost];
     }
@@ -884,12 +936,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
     post.siteIconURL = remotePost.siteIconURL;
-    post.blogName = [self makePlainText:remotePost.blogName];
-    post.blogDescription = [self makePlainText:remotePost.blogDescription];
+    post.blogName = remotePost.blogName;
+    post.blogDescription = remotePost.blogDescription;
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
-    post.content = [self formatContent:remotePost.content];
+    post.content = remotePost.content;
     post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
     post.featuredImage = remotePost.featuredImage;
     post.feedID = remotePost.feedID;
@@ -903,10 +955,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.likeCount = remotePost.likeCount;
     post.permaLink = remotePost.permalink;
     post.postID = remotePost.postID;
-    post.postTitle = [self makePlainText:remotePost.postTitle];
+    post.postTitle = remotePost.postTitle;
+    post.score = remotePost.score;
     post.siteID = remotePost.siteID;
-    post.sortDate = [DateUtils dateFromISOString:remotePost.sortDate];
+    post.sortDate = remotePost.sortDate;
+    post.sortRank = remotePost.sortRank;
     post.status = remotePost.status;
+    post.summary = remotePost.summary;
     post.tags = remotePost.tags;
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
@@ -948,18 +1003,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
     } else {
         post.sourceAttribution = nil;
-    }
-
-    // Construct a summary if necessary.
-    NSString *summary = [self formatSummary:remotePost.summary];
-    if (!summary) {
-        summary = [self createSummaryFromContent:post.content];
-    }
-    post.summary = summary;
-
-    // Construct a title if necessary.
-    if ([post.postTitle length] == 0 && [post.summary length] > 0) {
-        post.postTitle = [self titleFromSummary:post.summary];
     }
 
     // assign the topic last.
@@ -1004,242 +1047,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     return nil;
-}
-
-
-#pragma mark - Content Formatting and Sanitization
-
-/**
- Formats the post content.
- Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
-
- @param content The post content as a string.
- @return The formatted content.
- */
-- (NSString *)formatContent:(NSString *)content
-{
-    if ([self containsVideoPress:content]) {
-        content = [self formatVideoPress:content];
-    }
-    content = [self normalizeParagraphs:content];
-    content = [self removeInlineStyles:content];
-    content = [content stringByReplacingHTMLEmoticonsWithEmoji];
-
-    return content;
-}
-
-/**
- Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
- HTML is stripped and the extra bit is removed.
-
- @param string The summary to format.
- @return The formatted summary.
- */
-- (NSString *)formatSummary:(NSString *)summary
-{
-    summary = [self makePlainText:summary];
-
-    NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
-    continueReading = [NSString stringWithFormat:@"%@ →", continueReading];
-
-    NSRange rng = [summary rangeOfString:continueReading options:NSCaseInsensitiveSearch];
-    if (rng.location != NSNotFound) {
-        summary = [summary substringToIndex:rng.location];
-    }
-
-    return summary;
-}
-
-/**
- Create a summary for the post based on the post's content.
-
- @param string The post's content string. This should be the formatted content string.
- @return A summary for the post.
- */
-- (NSString *)createSummaryFromContent:(NSString *)string
-{
-    return [BasePost summaryFromContent:string];
-}
-
-/**
- Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
-
- @param string The string to transform.
- @return The transformed string.
- */
-- (NSString *)makePlainText:(NSString *)string
-{
-    return [NSString makePlainText:string];
-}
-
-/**
- Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
-
- @param string The string to normalize.
- @return A string with normalized paragraphs.
- */
-- (NSString *)normalizeParagraphs:(NSString *)string
-{
-    if (!string) {
-        return @"";
-    }
-
-    static NSRegularExpression *regexDivStart;
-    static NSRegularExpression *regexDivEnd;
-    static NSRegularExpression *regexPStart;
-    static NSRegularExpression *regexPEnd;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSError *error;
-        regexDivStart = [NSRegularExpression regularExpressionWithPattern:@"<div[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexDivEnd = [NSRegularExpression regularExpressionWithPattern:@"</div>" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexPStart = [NSRegularExpression regularExpressionWithPattern:@"<p[^>]*>\\s*<p[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexPEnd = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
-    });
-
-    // Convert div tags to p tags
-    string = [regexDivStart stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
-    string = [regexDivEnd stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
-
-    // Remove duplicate p tags.
-    string = [regexPStart stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
-    string = [regexPEnd stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
-
-    return string;
-}
-
-/**
- Strip inline styles from the passed HTML sting.
-
- @param string An HTML string to sanitize.
- @return A string with inline styles removed.
- */
-- (NSString *)removeInlineStyles:(NSString *)string
-{
-    if (!string) {
-        return @"";
-    }
-
-    static NSRegularExpression *regex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSError *error;
-        regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:&error];
-    });
-
-    // Remove inline styles.
-    return [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
-}
-
-/**
- Check the specified string for occurances of videopress videos.
-
- @param string The string to search.
- @return YES if a match was found, else returns NO.
- */
-
-- (BOOL)containsVideoPress:(NSString *)string
-{
-    return [string rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
-}
-
-/**
- Replace occurances of videopress markup with video tags int he passed HTML string.
-
- @param string An HTML string.
- @return The HTML string with videopress markup replaced with in image tag.
- */
-- (NSString *)formatVideoPress:(NSString *)string
-{
-    NSMutableString *mstr = [string mutableCopy];
-
-    static NSRegularExpression *regexVideoPress;
-    static NSRegularExpression *regexMp4;
-    static NSRegularExpression *regexSrc;
-    static NSRegularExpression *regexPoster;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSError *error;
-        regexVideoPress = [NSRegularExpression regularExpressionWithPattern:@"<div.*class=\"video-player[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexMp4 = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexSrc = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexPoster = [NSRegularExpression regularExpressionWithPattern:@"<img.*class=\"videopress-poster[\\s\\S]*?>" options:NSRegularExpressionCaseInsensitive error:&error];
-    });
-
-    // Find instances of VideoPress markup.
-
-    NSArray *matches = [regexVideoPress matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
-    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
-        // compose videopress string
-
-        // Find the mp4 in the markup.
-        NSRange mp4Match = [regexMp4 rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        if (mp4Match.location == NSNotFound) {
-            DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", NSStringFromSelector(_cmd), [mstr substringWithRange:match.range]);
-            [mstr replaceCharactersInRange:match.range withString:@""];
-            continue;
-        }
-        NSString *mp4 = [mstr substringWithRange:mp4Match];
-
-        // Get the mp4 url.
-        NSRange srcMatch = [regexSrc rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
-        if (srcMatch.location == NSNotFound) {
-            DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", NSStringFromSelector(_cmd), mp4);
-            [mstr replaceCharactersInRange:match.range withString:@""];
-            continue;
-        }
-        NSString *src = [mp4 substringWithRange:srcMatch];
-        src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
-
-        NSString *height = @"200"; // default
-        NSString *placeholder = @"";
-        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
-        if (posterMatch.location != NSNotFound) {
-            NSString *poster = [string substringWithRange:posterMatch];
-            NSString *value = [self parseValueForAttributeNamed:@"height" inElement:poster];
-            if (value) {
-                height = value;
-            }
-
-            value = [self parseValueForAttributeNamed:@"src" inElement:poster];
-            if (value) {
-                placeholder = value;
-            }
-        }
-
-        // Compose a video tag to replace the default markup.
-        NSString *fmt = @"<video src=\"%@\" controls width=\"100%%\" height=\"%@\" poster=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
-        NSString *vid = [NSString stringWithFormat:fmt, src, height, placeholder, src];
-
-        [mstr replaceCharactersInRange:match.range withString:vid];
-    }
-
-    return mstr;
-}
-
-- (NSString *)parseValueForAttributeNamed:(NSString *)attribute inElement:(NSString *)element
-{
-    NSString *value = @"";
-    NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
-    NSRange attrRange = [element rangeOfString:attrStr];
-    if (attrRange.location != NSNotFound) {
-        NSInteger location = attrRange.location + attrRange.length;
-        NSInteger length = [element length] - location;
-        NSRange ending = [element rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(location, length)];
-        value = [element substringWithRange:NSMakeRange(location, ending.location - location)];
-    }
-    return value;
-}
-
-/**
- Creates a title for the post from the post's summary.
-
- @param summary The already formatted post summary.
- @return A title for the post that is a snippet of the summary.
- */
-- (NSString *)titleFromSummary:(NSString *)summary
-{
-    return [summary stringByEllipsizingWithMaxLength:ReaderPostServiceTitleLength preserveWords:YES];
 }
 
 @end
