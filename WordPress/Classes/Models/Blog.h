@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BlogSettings;
 @class WPAccount;
-@class WordPressComApi;
 @class WordPressComRestApi;
 @class WPXMLRPCClient;
 
