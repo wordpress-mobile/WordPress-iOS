@@ -282,6 +282,16 @@
 
 #pragma mark - Convenience methods
 
+- (BOOL)isDraft
+{
+    if ([self.status isEqualToString:PostStatusDraft]) {
+        return YES;
+    } else if (self.isRevision && [self.original.status isEqualToString:PostStatusDraft]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)publishImmediately
 {
     self.dateModified = [NSDate date];
@@ -290,7 +300,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self.status isEqualToString:PostStatusDraft] && ( !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified] );
+    return [self isDraft] && ( !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified] );
 }
 
 - (NSString *)authorNameForDisplay
