@@ -27,41 +27,82 @@ struct PeopleService {
         siteID = dotComID
     }
 
-    /// Refreshes the Users + Followers associated to the current blog.
+    /// Refreshes the Users associated to the current blog.
     ///
-    /// - Parameter completion: Closure to be executed on completion.
+    /// - Parameters:
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
     ///
-    func refreshPeople(completion: (Bool -> Void)) {
-        let group = dispatch_group_create()
-        var success = true
-
-        // Load Users
-        dispatch_group_enter(group)
-        remote.getUsers(siteID, success: { users in
-            self.mergeUsers(users)
-            dispatch_group_leave(group)
+    func refreshUsers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, success: { users, hasMore in
+            // Note:
+            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
+            //
+            self.mergePeople(users)
+            self.purgePeople(users)
+            success(retrieved: users.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
+            failure?(error)
         })
+    }
 
-        // Load Followers
-        dispatch_group_enter(group)
-        remote.getFollowers(siteID, success: { followers in
-            self.mergeFollowers(followers)
-            dispatch_group_leave(group)
+    /// Refreshes the Followers associated to the current blog.
+    ///
+    /// - Parameters:
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func refreshFollowers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, success: { followers, hasMore in
+            // Note:
+            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
+            //
+            self.mergePeople(followers)
+            self.purgePeople(followers)
+            success(retrieved: followers.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
+            failure?(error)
         })
+    }
 
-        dispatch_group_notify(group, dispatch_get_main_queue()) {
-            completion(success)
-        }
+    /// Attempts to retrieve more users from the backend.
+    ///
+    /// - Parameters:
+    ///     - offset: Number of records to skip
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func loadMoreUsers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, offset: offset, success: { (users, hasMore) in
+            self.mergePeople(users)
+            success(retrieved: users.count, shouldLoadMore: hasMore)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            failure?(error)
+        })
+    }
+
+    /// Attempts to retrieve more followers from the backend.
+    ///
+    /// - Parameters:
+    ///     - offset: Number of records to skip
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func loadMoreFollowers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, offset: offset, success: { (followers, hasMore) in
+            self.mergePeople(followers)
+            success(retrieved: followers.count, shouldLoadMore: hasMore)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            failure?(error)
+        })
     }
 
 
@@ -148,35 +189,59 @@ struct PeopleService {
             failure(error)
         })
     }
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func validateInvitation(usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        remote.validateInvitation(siteID,
+                                  usernameOrEmail: usernameOrEmail,
+                                  role: role,
+                                  success: success,
+                                  failure: failure)
+    }
+
+
+    /// Sends an Invitation to a specified recipient, to access a Blog.
+    ///
+    /// - Parameters:
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the users.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    func sendInvitation(usernameOrEmail: String,
+                        role: Role,
+                        message: String = "",
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        remote.sendInvitation(siteID,
+                              usernameOrEmail: usernameOrEmail,
+                              role: role,
+                              message: message,
+                              success: success,
+                              failure: failure)
+    }
 }
 
 
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
-    /// Updates the local collection of Users, with the (fresh) remote version.
-    ///
-    func mergeUsers(remoteUsers: [User]) {
-        let localUsers = loadPeople(siteID, type: User.self)
-        mergePeople(remoteUsers, localPeople: localUsers)
-    }
-
-    /// Updates the local collection of Followers, with the (fresh) remote version.
-    ///
-    func mergeFollowers(remoteFollowers: [Follower]) {
-        let localFollowers = loadPeople(siteID, type: Follower.self)
-        mergePeople(remoteFollowers, localPeople: localFollowers)
-    }
-
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergePeople<T : Person>(remotePeople: [T], localPeople: [T]) {
-        let remoteIDs = Set(remotePeople.map({ $0.ID }))
-        let localIDs = Set(localPeople.map({ $0.ID }))
-
-        let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs, type: T.self)
-
+    func mergePeople<T : Person>(remotePeople: [T]) {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
@@ -187,6 +252,18 @@ private extension PeopleService {
         }
 
         ContextManager.sharedInstance().saveContext(context)
+    }
+
+    /// Purges the local entities that do not have a remote counterpart.
+    ///
+    func purgePeople<T : Person>(remotePeople: [T]) {
+        let localPeople = loadPeople(siteID, type: T.self)
+
+        let remoteIDs = Set(remotePeople.map({ $0.ID }))
+        let localIDs = Set(localPeople.map({ $0.ID }))
+
+        let removedIDs = localIDs.subtract(remoteIDs)
+        removeManagedPeopleWithIDs(removedIDs, type: T.self)
     }
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.

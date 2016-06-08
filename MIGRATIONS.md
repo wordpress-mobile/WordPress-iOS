@@ -7,6 +7,9 @@ data model as well as any custom migrations.
 
 - @aerych 2016-05-31
 - Added `dateModified` property to `BasePost` model.
+- @aerych 2016-05-23
+- `ReaderPost` added `score`.
+- `ReaderPost` added `sortRank`. It is not optional so the default of 0 is enforced.
 
 ## WordPress 49
 

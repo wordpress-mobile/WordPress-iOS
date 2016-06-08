@@ -89,6 +89,7 @@ import WordPressShared
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
+        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
 
