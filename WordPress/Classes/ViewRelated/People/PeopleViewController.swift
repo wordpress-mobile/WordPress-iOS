@@ -119,11 +119,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Refresh only when we reach the last 3 rows in the last section!
         let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        guard shouldLoadMore == true && (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
+        guard (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
             return
         }
 
-        loadMorePeople()
+        loadMorePeopleIfNeeded()
     }
 
 
@@ -224,37 +224,37 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func refreshPeople() {
-        loadPeople() { [weak self] (retrieved, shouldLoadMore) in
+        retrievePeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
     }
 
-    private func loadMorePeople() {
-        guard isLoadingMore == false else {
+    private func loadMorePeopleIfNeeded() {
+        guard shouldLoadMore == true && isLoadingMore == false else {
             return
         }
 
         isLoadingMore = true
 
-        loadPeople(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
+        retrievePeoplePage(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
         }
     }
 
-    private func loadPeople(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
+    private func retrievePeoplePage(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
         guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
             return
         }
 
         switch filter {
         case .Followers:
-            service.loadFollowers(nextRequestOffset, success: success)
+            service.loadFollowersPage(nextRequestOffset, success: success)
         case .Users:
-            service.loadUsers(nextRequestOffset, success: success)
+            service.loadUsersPage(nextRequestOffset, success: success)
         }
     }
 

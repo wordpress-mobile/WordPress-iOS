@@ -33,12 +33,13 @@ struct PeopleService {
     /// Loads a page of Users associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
-    ///     - offset: Number of records to skip
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func loadUsers(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getUsers(siteID, offset: offset, success: { users, hasMore in
+    func loadUsersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, offset: offset, count: count, success: { users, hasMore in
             self.mergePeople(users)
             success(retrieved: users.count, shouldLoadMore: hasMore)
 
@@ -51,12 +52,13 @@ struct PeopleService {
     /// Loads a page of Followers associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
-    ///     - offset: Number of records to skip
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func loadFollowers(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getFollowers(siteID, offset: offset, success: { followers, hasMore in
+    func loadFollowersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
             self.mergePeople(followers)
             success(retrieved: followers.count, shouldLoadMore: hasMore)
 
