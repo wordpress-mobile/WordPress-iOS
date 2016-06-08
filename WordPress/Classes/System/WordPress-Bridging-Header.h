@@ -88,7 +88,6 @@
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
-#import "ServiceRemoteREST.h"
 #import "ServiceRemoteWordPressComREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -111,7 +110,6 @@
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WordPressComServiceRemote.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
