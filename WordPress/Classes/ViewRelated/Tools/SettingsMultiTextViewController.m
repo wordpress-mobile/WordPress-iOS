@@ -130,9 +130,12 @@ static CGFloat const HorizontalMargin = 10.0f;
 
 - (void)adjustCellSize
 {
-    CGFloat widthAvailable = self.textViewCell.contentView.bounds.size.width - ( 2 * HorizontalMargin);
+    CGFloat widthInUse = CGRectGetWidth(self.textView.frame);
+    CGFloat widthAvailable = CGRectGetWidth(self.textViewCell.contentView.bounds) - (2 * SettingsTextPadding.dx);
     CGSize size = [self.textView sizeThatFits:CGSizeMake(widthAvailable, CGFLOAT_MAX)];
-    if (fabs(self.tableView.rowHeight - size.height) > (self.textView.font.lineHeight/2))
+    CGFloat height = size.height;
+
+    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f) || widthInUse != widthAvailable)
     {
         [self.tableView beginUpdates];
         self.textView.frame = CGRectMake(HorizontalMargin, 0, widthAvailable, size.height);
