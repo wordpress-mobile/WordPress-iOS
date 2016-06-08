@@ -81,8 +81,10 @@
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
+#import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderPost.h"
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 

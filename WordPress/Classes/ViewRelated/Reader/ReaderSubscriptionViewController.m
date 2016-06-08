@@ -446,11 +446,9 @@ static const CGFloat TitleViewHeight = 32.0;
         return _searchBar;
     }
 
-    // To style the search bar's placeholder, update the appearance proxy using
-    // as specific a view hierarchy as possible to avoid collisions.
     NSString *placeholderText = NSLocalizedString(@"Enter a URL or a tag to follow", @"Placeholder text prompting the user to type the name of the URL or tag they would like to follow.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [self.view class], [UISearchBar class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [self class]]] setAttributedPlaceholder:attrPlacholderText];
 
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
