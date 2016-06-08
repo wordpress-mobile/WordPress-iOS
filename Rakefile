@@ -1,4 +1,7 @@
 SWIFTLINT_VERSION="0.10.0"
+XCODE_WORKSPACE="WordPress.xcworkspace"
+XCODE_SCHEME="WordPress"
+XCODE_CONFIGURATION="Debug"
 
 require 'fileutils'
 require 'tmpdir'
@@ -11,21 +14,40 @@ desc "Install required dependencies"
 task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
-  task :check => %w[bundle:check pod:check lint:check]
+  task :check => %w[bundler:check bundle:check pod:check lint:check]
+
+  namespace :bundler do
+    task :check do
+      unless command?("bundler")
+        Rake::Task["dependencies:bundler:install"].invoke
+      end
+    end
+
+    task :install do
+      puts "Bundler not found in PATH, installing to vendor"
+      ENV['GEM_HOME'] = File.join(PROJECT_DIR, 'vendor', 'gems')
+      ENV['PATH'] = File.join(PROJECT_DIR, 'vendor', 'gems', 'bin') + ":#{ENV['PATH']}"
+      sh "gem install bundler" unless command?("bundler")
+    end
+    CLOBBER << "vendor/gems"
+  end
 
   namespace :bundle do
     lockfile = 'Gemfile.lock'
     manifest = 'vendor/bundle/Manifest.lock'
 
     task :check do
-      unless check_manifest(lockfile, manifest)
+      unless check_manifest(lockfile, manifest) and File.exist?('.bundle/config')
+        dependency_failed("Bundler")
         Rake::Task["dependencies:bundle:install"].invoke
       end
     end
 
     task :install do
-      sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
-      FileUtils.cp(lockfile, manifest)
+      fold("install.bundler") do
+        sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
+        FileUtils.cp(lockfile, manifest)
+      end
     end
     CLOBBER << "vendor/bundle"
     CLOBBER << ".bundle"
@@ -36,13 +58,14 @@ namespace :dependencies do
       lockfile = 'Podfile.lock'
       manifest = 'Pods/Manifest.lock'
       unless check_manifest(lockfile, manifest)
+        dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
       end
     end
 
     task :install do
       fold("install.cocoapds") do
-        pod %w[repo update]
+        pod %w[repo update --silent]
         pod %w[install]
       end
     end
@@ -53,6 +76,7 @@ namespace :dependencies do
 
     task :check do
       if swiftlint_needs_install
+        dependency_failed("SwiftLint")
         Rake::Task["dependencies:lint:install"].invoke
       end
     end
@@ -79,9 +103,19 @@ end
 
 CLOBBER << "vendor"
 
-desc "Build and test"
+desc "Build #{XCODE_SCHEME}"
+task :build => [:dependencies] do
+  xcodebuild(:build)
+end
+
+desc "Run test suite"
 task :test => [:dependencies] do
-  sh './Scripts/build.sh'
+  xcodebuild(:build, :test)
+end
+
+desc "Remove any temporary products"
+task :clean do
+  xcodebuild(:clean)
 end
 
 desc "Checks the source for style errors"
@@ -96,9 +130,78 @@ namespace :lint do
   end
 end
 
+namespace :git do
+  hooks = %w[pre-commit post-checkout post-merge]
+
+  desc "Install git hooks"
+  task :instal_hooks do
+    hooks.each do |hook|
+      target = hook_target(hook)
+      source = hook_source(hook)
+      backup = hook_backup(hook)
+
+      next if File.symlink?(target) and File.readlink(target) == source
+      next if File.file?(target) and File.identical?(target, source)
+      if File.exist?(target)
+        puts "Existing hook for #{hook}. Creating backup at #{target} -> #{backup}"
+        FileUtils.mv(target, backup, :force => true)
+      end
+      FileUtils.ln_s(source, target)
+      puts "Installed #{hook} hook"
+    end
+  end
+
+  desc "Uninstall git hooks"
+  task :uninstall_hooks do
+    hooks.each do |hook|
+      target = hook_target(hook)
+      source = hook_source(hook)
+      backup = hook_backup(hook)
+
+      next unless File.symlink?(target) and File.readlink(target) == source
+      puts "Removing hook for #{hook}"
+      File.unlink(target)
+      if File.exist?(backup)
+        puts "Restoring hook for #{hook} from backup"
+        FileUtils.mv(backup, target)
+      end
+    end
+  end
+
+  def hook_target(hook)
+    ".git/hooks/#{hook}"
+  end
+
+  def hook_source(hook)
+    "../../Scripts/hooks/#{hook}"
+  end
+
+  def hook_backup(hook)
+    "#{hook_target(hook)}.bak"
+  end
+end
+
+namespace :git do
+  task :pre_commit => %[dependencies:lint:check] do
+    begin
+      swiftlint %w[lint --quiet --strict]
+    rescue
+      exit $?.exitstatus
+    end
+  end
+
+  task :post_merge do
+    check_dependencies_hook
+  end
+
+  task :post_checkout do
+    check_dependencies_hook
+  end
+end
+
 desc "Open the project in Xcode"
 task :xcode => [:dependencies] do
-  sh "open WordPress.xcworkspace"
+  sh "open #{XCODE_WORKSPACE}"
 end
 
 def check_manifest(file, manifest)
@@ -139,4 +242,45 @@ def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
   installed_version = `#{swiftlint_bin} version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
+end
+
+def xcodebuild(*build_cmds)
+  cmd = "xcodebuild"
+  cmd += " -destination 'platform=iOS Simulator,name=iPhone 6s'"
+  cmd += " -sdk iphonesimulator"
+  cmd += " -workspace #{XCODE_WORKSPACE}"
+  cmd += " -scheme #{XCODE_SCHEME}"
+  cmd += " -configuration #{xcode_configuration}"
+  cmd += " "
+  cmd += build_cmds.map(&:to_s).join(" ")
+  cmd += " | bundle exec xcpretty -f `bundle exec xcpretty-travis-formatter`" unless ENV['verbose']
+  sh(cmd)
+end
+
+def xcode_configuration
+  ENV['XCODE_CONFIGURATION'] || XCODE_CONFIGURATION
+end
+
+def command?(command)
+  system("which #{command} > /dev/null 2>&1")
+end
+def dependency_failed(component)
+  msg = "#{component} dependencies missing or outdated. "
+  if ENV['DRY_RUN']
+    msg += "Run rake dependencies to install them."
+    fail msg
+  else
+    msg += "Installing..."
+    puts msg
+  end
+end
+
+def check_dependencies_hook
+  ENV['DRY_RUN'] = "1"
+  begin
+    Rake::Task['dependencies'].invoke
+  rescue Exception => e
+    puts e.message
+    exit 1
+  end
 end

@@ -9,7 +9,6 @@
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
-#import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 #import "WPAccount.h"
 #import <WordPressApi/WordPressApi.h>

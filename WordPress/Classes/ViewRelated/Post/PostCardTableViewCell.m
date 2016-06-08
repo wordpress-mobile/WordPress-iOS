@@ -1,7 +1,6 @@
 #import "PostCardTableViewCell.h"
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "PhotonImageURLHelper.h"
-#import "Post.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"

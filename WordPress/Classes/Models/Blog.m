@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -17,6 +16,7 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
+NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
 NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
@@ -45,6 +45,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic tags;
 @dynamic comments;
 @dynamic connections;
+@dynamic domains;
 @dynamic themes;
 @dynamic media;
 @dynamic menus;
@@ -420,7 +421,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
              */
             return [self accountIsDefaultAccount];
         case BlogFeaturePeople:
-            return [self restApi] != nil && self.isListingUsersAllowed;
+            return [self supportsRestApi] && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureStats:
             return [self supportsRestApi];
@@ -430,18 +431,19 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureReblog:
         case BlogFeatureMentions:
         case BlogFeatureOAuth2Login:
-        case BlogFeaturePlans:
-            return [self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
-        case BlogFeatureMenus:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeatureMenus:
+            return [self supportsRestApi] && [self isAdmin];
         case BlogFeaturePrivate:
             // Private visibility is only supported by wpcom blogs
             return [self isHostedAtWPcom];
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
+        case BlogFeatureDomains:
+            return [self isHostedAtWPcom] && [self supportsSiteManagementServices];
     }
 }
 
@@ -582,16 +584,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return _api;
-}
-
-- (WordPressComApi *)restApi
-{
-    if (self.account) {
-        return self.account.restApi;
-    } else if ([self jetpackRESTSupported]) {
-        return self.jetpackAccount.restApi;
-    }
-    return nil;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi

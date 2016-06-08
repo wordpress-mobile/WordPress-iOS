@@ -12,18 +12,21 @@ data model as well as any custom migrations.
 
 ## WordPress 49
 
+- @frosty 2016-05-17
+- Added `Domain` entity. Represents a domain belonging to a site.
+- `Blog` added new relationship `domains`. An unordered set of `Domain`s for the blog.
 - @jleandroperez 2016-05-13
 - `Person` updated `siteID` to Int64.
 - `Person` updated `userID` to Int64.
 - `Person` added Boolean `isFollower`.
+- @frosty 2016-05-12
+- `Blog` added String `planTitle`.
 - @aerych 2016-05-12
 - Added `ReaderSearchTopic` entity. Represents a search in the reader.
 - @jleandroperez 2016-05-04
  - `Person` added Int64 `linkedUserID`.
 - @jleandroperez 2016-04-22
  - `Blog` added transformable `capabilities`.
-- @frosty 2016-05-12
- - `Blog` added String `planTitle`.
 
 ## WordPress 48 
 

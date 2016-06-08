@@ -15,5 +15,4 @@ extension ManagedPerson {
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
     @NSManaged var isFollower: Bool
-    @NSManaged var blog: Blog
 }

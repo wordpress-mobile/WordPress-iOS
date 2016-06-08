@@ -12,7 +12,6 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "SourcePostAttribution.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
@@ -613,9 +612,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
     if (gapMarker) {
-        CGFloat highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
-        CGFloat lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
-        CGFloat gapRank = [gapMarker.sortRank doubleValue];
+        double highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
+        double lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
+        double gapRank = [gapMarker.sortRank doubleValue];
         // Confirm the overlap includes the gap marker.
         if (lowestRank < gapRank && gapRank < highestRank) {
             // No need for a gap placeholder. Remove any that existed
@@ -656,7 +655,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     marker.date_created_gmt = post.sortDate;
 
     // For compatability with posts that are sorted by score
-    marker.sortRank = @([post.sortRank doubleValue] - 0.0000001);
+    marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
     marker.score = post.score;
 
     marker.topic = topic;
@@ -956,8 +955,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.permaLink = remotePost.permalink;
     post.postID = remotePost.postID;
     post.postTitle = remotePost.postTitle;
+    post.score = remotePost.score;
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;
+    post.sortRank = remotePost.sortRank;
     post.status = remotePost.status;
     post.summary = remotePost.summary;
     post.tags = remotePost.tags;

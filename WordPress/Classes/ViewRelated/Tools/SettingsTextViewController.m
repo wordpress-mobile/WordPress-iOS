@@ -24,9 +24,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
-@property (nonatomic, strong) NSString          *hint;
-@property (nonatomic, strong) NSString          *placeholder;
-@property (nonatomic, strong) NSString          *text;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
@@ -53,10 +50,29 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
-        _shouldNotifyValue = YES;
+
+        [self configureInstance];
     }
     return self;
 }
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self configureInstance];
+    }
+
+    return self;
+}
+
+- (void)configureInstance
+{
+    _autocorrectionType = UITextAutocorrectionTypeDefault;
+    _shouldNotifyValue = YES;
+    _validatesInput = YES;
+}
+
 
 
 #pragma mark - View Lifecycle
@@ -64,6 +80,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.shouldNotifyValue = YES;
+
     [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -136,7 +155,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (BOOL)textPassesValidation
 {
     BOOL isEmail = (self.mode == SettingsTextModesEmail);
-    return (isEmail == false || (isEmail && self.textField.text.isValidEmail));
+    return (self.validatesInput == false || isEmail == false || (isEmail && self.textField.text.isValidEmail));
 }
 
 - (void)validateTextInput:(id)sender
@@ -196,7 +215,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _textField.keyboardType = UIKeyboardTypeDefault;
     _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _textField.delegate = self;
-
+    _textField.autocorrectionType = self.autocorrectionType;
+    
     return _textField;
 }
 
@@ -254,7 +274,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)dismissViewController
 {
-    if (self.isModal) {
+    if (self.isModal && self.navigationController.viewControllers.count == 1) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

@@ -1,4 +1,4 @@
-#import "ServiceRemoteREST.h"
+#import "ServiceRemoteWordPressComREST.h"
 
 typedef NS_ENUM(NSUInteger, WordPressComServiceBlogVisibility) {
     WordPressComServiceBlogVisibilityPublic = 0,
@@ -13,7 +13,7 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  *  @class      WordPressComServiceRemote
  *  @brief      Encapsulates exclusive WordPress.com services.
  */
-@interface WordPressComServiceRemote : ServiceRemoteREST
+@interface WordPressComServiceRemote : ServiceRemoteWordPressComREST
 
 /**
  *  @brief      Creates a WordPress.com account with the specified parameters.
