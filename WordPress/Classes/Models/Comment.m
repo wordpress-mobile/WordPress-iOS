@@ -11,7 +11,7 @@ NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
 
 NSString * const CommentStatusPending = @"hold";
 NSString * const CommentStatusApproved = @"approve";
-NSString * const CommentStatusDisapproved = @"trash";
+NSString * const CommentStatusUnapproved = @"trash";
 NSString * const CommentStatusSpam = @"spam";
 
 // draft is used for comments that have been composed but not succesfully uploaded yet

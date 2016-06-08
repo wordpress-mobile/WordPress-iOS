@@ -13,7 +13,7 @@ public class GravatarService
     ///
     public init?(context: NSManagedObjectContext) {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
-        accountToken    = mainAccount?.restApi.authToken
+        accountToken    = mainAccount?.authToken
         accountEmail    = mainAccount?.email
 
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {

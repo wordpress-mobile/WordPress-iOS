@@ -12,7 +12,7 @@ import AFNetworking
     // MARK: - Public Methods
 
     deinit {
-        downloadQueue.cancelAllOperations()
+        downloadSession.invalidateSessionCancelingTasks(true)
     }
 
     /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
@@ -133,14 +133,24 @@ import AFNetworking
     ///     - success: A closure to be executed, on success.
     ///
     private func downloadImage(url: NSURL, retryCount: Int = 0, completion: ((NSError?, UIImage?) -> ())) {
-        let request                     = NSMutableURLRequest(URL: url)
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
-        let operation                   = AFHTTPRequestOperation(request: request)
-        operation.responseSerializer    = responseSerializer
-        operation.setCompletionBlockWithSuccess({
-            (operation, responseObject) -> Void in
+        let dataTask = downloadSession.dataTaskWithRequest(request, completionHandler: { (response, responseObject, error) in
+            if let error = error {
+                // If possible, retry
+                if retryCount < self.maximumRetryCount {
+                    self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
+
+                // Otherwise, we just failed!
+                } else {
+                    completion(error, nil)
+                    self.urlsBeingDownloaded.remove(url)
+                    self.urlsFailed.insert(url)
+                }
+                return
+            }
 
             if let unwrappedImage = responseObject as? UIImage {
                 completion(nil, unwrappedImage)
@@ -150,22 +160,8 @@ import AFNetworking
             }
 
             self.urlsBeingDownloaded.remove(url)
-        }, failure: {
-            (operation, error) -> Void in
-
-            // If possible, retry
-            if retryCount < self.maximumRetryCount {
-                self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
-
-            // Otherwise, we just failed!
-            } else {
-                completion(error, nil)
-                self.urlsBeingDownloaded.remove(url)
-                self.urlsFailed.insert(url)
-            }
         })
-
-        downloadQueue.addOperation(operation)
+        dataTask.resume()
         urlsBeingDownloaded.insert(url)
     }
 
@@ -235,7 +231,11 @@ import AFNetworking
 
     // MARK: - Private Properties
     private let responseSerializer  = AFImageResponseSerializer()
-    private let downloadQueue       = NSOperationQueue()
+    private lazy var downloadSession: AFURLSessionManager = {
+        let sessionManager = AFURLSessionManager()
+        sessionManager.responseSerializer = self.responseSerializer
+        return sessionManager
+    }()
     private let resizeQueue         = dispatch_queue_create("notifications.media.resize", DISPATCH_QUEUE_CONCURRENT)
     private var originalImagesMap   = [NSURL: UIImage]()
     private var resizedImagesMap    = [NSURL: UIImage]()

@@ -29,6 +29,10 @@ import Gridicons
     }
 
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     // MARK: Lifecycle methods
 
 
@@ -49,6 +53,9 @@ import Gridicons
 
         // Dismiss the keyboard if it was visible.
         endSearch()
+
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
 
 
@@ -57,13 +64,12 @@ import Gridicons
     }
 
 
-
     // MARK: - Configuration
 
 
     func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
-        let placeholderText = NSLocalizedString("Search on WordPress.com", comment: "Placeholder text for the Reader search feature.")
+        let placeholderText = NSLocalizedString("Search WordPress.com", comment: "Placeholder text for the Reader search feature.")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
@@ -113,6 +119,8 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     func performSearch() {
+        assert(streamController != nil)
+
         guard let phrase = searchBar.text else {
             return
         }
@@ -122,6 +130,7 @@ import Gridicons
 
         let topic = service.searchTopicForSearchPhrase(phrase)
         streamController.readerTopic = topic
+        WPAppAnalytics.track(.ReaderSearchLoaded)
 
         // Hide the starting label now that a topic has been set.
         label.hidden = true
