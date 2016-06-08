@@ -818,11 +818,6 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showSettings
 {
-    if ([self isMediaUploading]) {
-        [self showMediaUploadingAlert];
-        return;
-    }
-    
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
