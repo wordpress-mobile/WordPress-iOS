@@ -247,9 +247,7 @@ public class WordPressComRestApi: NSObject
         if !appendsLocale || path.isEmpty || path.containsString("\(WordPressComRestApiLocaleKey)=") {
             return path
         }
-        guard let preferredLanguageIdentifier = NSLocale.preferredLanguages().first where !preferredLanguageIdentifier.isEmpty else {
-            return path
-        }
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
         let separator = path.containsString("?") ? "&" : "?"
         return "\(path)\(separator)\(WordPressComRestApiLocaleKey)=\(preferredLanguageIdentifier)"
     }
