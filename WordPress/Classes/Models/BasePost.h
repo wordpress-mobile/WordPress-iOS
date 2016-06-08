@@ -107,6 +107,12 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)hasFuturePublishDate;
 
 /**
+ Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal. 
+ Used when determining if a post should publish immediately.
+ */
+- (BOOL)dateCreatedIsNilOrEqualToDateModified;
+
+/**
  *  Whether there was any attempt ever to upload this post, either successful or failed.
  *
  *  @returns    YES if there ever was an attempt to upload this post, NO otherwise.
