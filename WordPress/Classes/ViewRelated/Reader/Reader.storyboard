@@ -513,7 +513,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KYy-mm-uEx">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="270"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="255"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="ZNR-Yp-I4L" id="q3l-TF-Fx0"/>
@@ -521,12 +521,21 @@
                                         </connections>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQ8-sg-BBr">
-                                        <rect key="frame" x="0.0" y="270" width="600" height="30"/>
+                                        <rect key="frame" x="0.0" y="255" width="600" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="44" id="QH2-kg-tnA"/>
+                                        </constraints>
                                         <state key="normal" title="Clear"/>
                                         <connections>
                                             <action selector="handleClearButtonTapped:" destination="ZNR-Yp-I4L" eventType="touchUpInside" id="fxa-2F-rsa"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BRl-AK-mht">
+                                        <rect key="frame" x="0.0" y="299" width="600" height="1"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="1" id="3FK-3W-zXI"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="68b-aj-vUX"/>
@@ -547,7 +556,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="300"/>
                     <connections>
+                        <outlet property="borderImageView" destination="BRl-AK-mht" id="q9h-81-Xkm"/>
                         <outlet property="clearButton" destination="oQ8-sg-BBr" id="dmf-HN-h6n"/>
+                        <outlet property="stackView" destination="8qs-pi-Iqk" id="CwT-RB-kp5"/>
                         <outlet property="stackViewHeightConstraint" destination="68b-aj-vUX" id="clA-Ha-90U"/>
                         <outlet property="tableView" destination="KYy-mm-uEx" id="832-VZ-H3s"/>
                     </connections>

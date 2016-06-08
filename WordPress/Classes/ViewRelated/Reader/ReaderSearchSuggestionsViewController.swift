@@ -14,9 +14,10 @@ protocol ReaderSearchSuggestionsDelegate
 ///
 class ReaderSearchSuggestionsViewController : UIViewController
 {
-
+    @IBOutlet var stackView: UIStackView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var clearButton: UIButton!
+    @IBOutlet var borderImageView: UIImageView!
     @IBOutlet var stackViewHeightConstraint: NSLayoutConstraint!
 
     var phrase = "" {
@@ -61,6 +62,8 @@ class ReaderSearchSuggestionsViewController : UIViewController
 
         let buttonTitle = NSLocalizedString("Clear search suggestions", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, forState: .Normal)
+
+        borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
         updateHeightConstraint()
     }
@@ -130,6 +133,12 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
         let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
+        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+    }
+
+
+    func tableViewDidChangeContent(tableView: UITableView!) {
+        updateHeightConstraint()
     }
 
 
