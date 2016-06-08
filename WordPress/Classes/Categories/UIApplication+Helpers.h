@@ -10,11 +10,4 @@
  */
 - (BOOL)isRunningSimulator;
 
-
-/**
- *  @details    Returns *true* when the target used to build the app, contains the *ALPHA_BUILD* flag.
- *              Same as the *isRunningSimulator*, this helper is meant for Swift consumption, primary.
- */
-- (BOOL)isAlphaBuild;
-
 @end

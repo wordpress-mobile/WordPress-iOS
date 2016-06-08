@@ -17,18 +17,23 @@ import AFNetworking
     case AuthorizationRequired
     case UploadFailed
     case RequestSerializationFailed
+    case TooManyRequests
     case Unknown
 }
 
 public class WordPressComRestApi: NSObject
 {
+    public static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
+    public static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
+    public static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
+
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
     private let oAuthToken: String?
-    private var userAgent: String?
+    private let userAgent: String?
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
@@ -58,7 +63,7 @@ public class WordPressComRestApi: NSObject
     }
 
     /**
-     Cancels all ongoing and makes the session so the object will not fullfil any more request
+     Cancels all ongoing taks and makes the session invalid so the object will not fullfil any more request
      */
     public func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
@@ -85,12 +90,12 @@ public class WordPressComRestApi: NSObject
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
-        let task = sessionManager.GET(URLString, parameters: parameters, success: { (dataTask, result) in
+        let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
-            }, failure: { (dataTask, error) in
+                progress?.completedUnitCount = 1
+            }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
+                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -122,12 +127,12 @@ public class WordPressComRestApi: NSObject
     {
         let progress = NSProgress()
         progress.totalUnitCount = 1
-        let task = sessionManager.POST(URLString, parameters: parameters, success: { (dataTask, result) in
+        let task = sessionManager.POST(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
-            }, failure: { (dataTask, error) in
+                progress?.completedUnitCount = 1
+            }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress.completedUnitCount = 1
+                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -201,7 +206,10 @@ public class WordPressComRestApi: NSObject
         progress?.cancellationHandler = {
             task.cancel()
         }
-
+        if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
+           let size = Int64(sizeString) {
+            progress?.totalUnitCount = size
+        }
         return progress
     }
 
@@ -211,6 +219,12 @@ public class WordPressComRestApi: NSObject
         }
         return !(authToken.isEmpty)
     }
+
+
+    override public var hashValue: Int {
+        return "\(oAuthToken),\(userAgent)".hashValue
+    }
+
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
@@ -244,19 +258,28 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
     }
 
     override func responseObjectForResponse(response: NSURLResponse?, data: NSData?, error: NSErrorPointer) -> AnyObject? {
+
         let responseObject = super.responseObjectForResponse(response, data: data, error: error)
 
         guard let httpResponse = response as? NSHTTPURLResponse where (400...500).contains(httpResponse.statusCode) else {
             return responseObject
         }
 
-        var errorObject = responseObject
-        if let errorArray = responseObject as? [AnyObject] where errorArray.count > 0 {
-            errorObject = errorArray.first
+        var userInfo: [NSObject: AnyObject] = [:]
+        if let originalError = error.memory {
+            userInfo = originalError.userInfo
         }
-        guard let responseDictionary = errorObject as? [String:AnyObject],
-            let errorCode = responseDictionary["error"] as? String,
-            let errorDescription = responseDictionary["message"] as? String
+
+        guard let responseDictionary = responseObject as? [String:AnyObject] else {
+            return responseObject
+        }
+        var errorDictionary:AnyObject? = responseDictionary
+        if let errorArray = responseDictionary["errors"] as? [AnyObject] where errorArray.count > 0 {
+            errorDictionary = errorArray.first
+        }
+        guard let errorEntry = errorDictionary as? [String:AnyObject],
+            let errorCode = errorEntry["error"] as? String,
+            let errorDescription = errorEntry["message"] as? String
             else {
                 return responseObject
         }
@@ -270,10 +293,22 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         ]
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
+        userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode
+        userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = errorDescription
         let nserror = mappedError as NSError
+        userInfo[NSLocalizedDescriptionKey] =  errorDescription
         error.memory = NSError(domain:nserror.domain,
                                code:nserror.code,
-                               userInfo:[NSLocalizedDescriptionKey: errorDescription])
+                               userInfo:userInfo
+            )
         return responseObject
+    }
+}
+
+extension WordPressComRestApi
+{
+    /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
+    class public func anonymousApi() -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPressUserAgent())
     }
 }

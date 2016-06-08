@@ -1,27 +1,27 @@
 #import <XCTest/XCTest.h>
-#import "ServiceRemoteREST.h"
-#import "WordPressComApi.h"
+#import "ServiceRemoteWordPressComREST.h"
+#import "WordPress-Swift.h"
 
-@interface ServiceRemoteRESTTests : XCTestCase
+@interface ServiceRemoteWordPressComRESTTests : XCTestCase
 @end
 
-@implementation ServiceRemoteRESTTests
+@implementation ServiceRemoteWordPressComRESTTests
 
 #pragma mark - Initialization tests
 
 - (void)testThatInitThrowsAssertionFailureWithoutApi
 {
-    XCTAssertThrows([[ServiceRemoteREST alloc] initWithApi:nil]);
+    XCTAssertThrows([[ServiceRemoteWordPressComREST alloc] initWithWordPressComRestApi:nil]);
 }
 
 - (void)testRegularInitialization
 {
-    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-    ServiceRemoteREST *service = nil;
+    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
+    ServiceRemoteWordPressComREST *service = nil;
     
-    XCTAssertNoThrow(service = [[ServiceRemoteREST alloc] initWithApi:api]);
-    XCTAssertTrue([service isKindOfClass:[ServiceRemoteREST class]]);
-    XCTAssertTrue(service.api == api);
+    XCTAssertNoThrow(service = [[ServiceRemoteWordPressComREST alloc] initWithWordPressComRestApi:api]);
+    XCTAssertTrue([service isKindOfClass:[ServiceRemoteWordPressComREST class]]);
+    XCTAssertTrue(service.wordPressComRestApi == api);
 }
 
 @end

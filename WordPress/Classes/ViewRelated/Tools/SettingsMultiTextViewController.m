@@ -3,17 +3,14 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 
-static CGFloat const HorizontalMargin = 10.0f;
+static CGVector const SettingsTextPadding = {11.0f, 3.0f};
+static CGFloat const SettingsMinHeight = 41.0f;
 
 @interface SettingsMultiTextViewController() <UITextViewDelegate>
 
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *hintView;
-@property (nonatomic, strong) NSString *hint;
-@property (nonatomic, assign) BOOL isPassword;
-@property (nonatomic, strong) NSString *placeholder;
-@property (nonatomic, strong) NSString *text;
 
 @end
 
@@ -66,7 +63,7 @@ static CGFloat const HorizontalMargin = 10.0f;
     }
     _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _textViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, HorizontalMargin, 0)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, SettingsTextPadding.dx, SettingsTextPadding.dy)];
     self.textView.text = self.text;
     self.textView.returnKeyType = UIReturnKeyDefault;
     self.textView.keyboardType = UIKeyboardTypeDefault;
@@ -91,12 +88,12 @@ static CGFloat const HorizontalMargin = 10.0f;
     return _hintView;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
         self.onValueChanged(self.textView.text);
     }
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -130,13 +127,15 @@ static CGFloat const HorizontalMargin = 10.0f;
 
 - (void)adjustCellSize
 {
-    CGFloat widthAvailable = self.textViewCell.contentView.bounds.size.width - ( 2 * HorizontalMargin);
+    CGFloat widthAvailable = CGRectGetWidth(self.textViewCell.contentView.bounds) - (2 * SettingsTextPadding.dx);
     CGSize size = [self.textView sizeThatFits:CGSizeMake(widthAvailable, CGFLOAT_MAX)];
-    if (fabs(self.tableView.rowHeight - size.height) > (self.textView.font.lineHeight/2))
+    CGFloat height = size.height;
+
+    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f))
     {
         [self.tableView beginUpdates];
-        self.textView.frame = CGRectMake(HorizontalMargin, 0, widthAvailable, size.height);
-        self.tableView.rowHeight = size.height;
+        self.textView.frame = CGRectMake(SettingsTextPadding.dx, SettingsTextPadding.dy, widthAvailable, height);
+        self.tableView.rowHeight = MAX(height, SettingsMinHeight) + SettingsTextPadding.dy;
         [self.tableView endUpdates];
     }
 }

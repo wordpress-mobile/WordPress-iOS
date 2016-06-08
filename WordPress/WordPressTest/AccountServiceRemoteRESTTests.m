@@ -1,7 +1,6 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "AccountServiceRemoteREST.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 

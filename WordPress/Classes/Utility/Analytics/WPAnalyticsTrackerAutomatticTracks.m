@@ -366,9 +366,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            eventName = @"menus_updated_menu_name";
-            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -438,12 +435,11 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
             break;
-        case WPAnalyticsStatOpenedPlans:
-            eventName = @"site_menu_opened";
-            eventProperties = @{ TracksEventPropertyMenuItemKey : @"plans" };
+        case WPAnalyticsStatOpenedPeople:
+            eventName = @"people_management_list_opened";
             break;
-        case WPAnalyticsStatOpenedPlansComparison:
-            eventName = @"plans_compare";
+        case WPAnalyticsStatOpenedPerson:
+            eventName = @"people_management_details_opened";
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
@@ -468,6 +464,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
+            break;
+        case WPAnalyticsStatPersonRemoved:
+            eventName = @"people_management_person_removed";
+            break;
+        case WPAnalyticsStatPersonUpdated:
+            eventName = @"people_management_person_updated";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";
@@ -575,6 +577,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatReaderListUnfollowed:
             eventName = @"reader_list_unfollowed";
+            break;
+        case WPAnalyticsStatReaderSearchLoaded:
+            eventName = @"reader_search_loaded";
             break;
         case WPAnalyticsStatReaderSiteBlocked:
             eventName = @"reader_blog_blocked";
@@ -823,15 +828,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginMagicLinkSucceeded:
 
             // to be implemented
-        case WPAnalyticsStatOpenedPeople:
-        case WPAnalyticsStatOpenedPerson:
-        case WPAnalyticsStatPersonRemoved:
-        case WPAnalyticsStatPersonUpdated:
-
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatOpenedPlans:
+        case WPAnalyticsStatOpenedPlansComparison:
             return nil;
     }
 
