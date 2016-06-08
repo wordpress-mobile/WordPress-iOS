@@ -13,21 +13,35 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         case UnknownError
     }
 
+
+    /// Specifies the number of entities to be retrieved on each query.
+    ///
+    private let pageSize = 20
+
+
     /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
+    ///     - offset: The first N users to be skipped in the returned array.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Users.
     ///
-    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
+    func getUsers(siteID: Int,
+                  offset: Int = 0,
+                  success: ((users: [User], hasMore: Bool) -> Void),
+                  failure: (ErrorType -> Void))
+    {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
+        let parameters: [String: AnyObject] = [
+            "number"    : pageSize,
+            "offset"    : offset,
+            "order_by"  : "display_name",
+            "order"     : "ASC",
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -37,7 +51,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(users: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -48,17 +64,24 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
+    ///     - offset: The first N followers to be skipped in the returned array.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Followers.
     ///
-    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
+    func getFollowers(siteID: Int,
+                      offset: Int = 0,
+                      success: ((followers: [Follower], hasMore: Bool) -> Void),
+                      failure: ErrorType -> ())
+    {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
+        let pageNumber = (offset / pageSize + 1)
+        let parameters: [String: AnyObject] = [
+            "number"    : pageSize,
+            "page"      : pageNumber,
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -68,7 +91,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(followers: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -344,6 +369,15 @@ private extension PeopleRemote {
                  avatarURL     : avatarURL,
                  isSuperAdmin  : isSuperAdmin)
     }
+
+    /// Returns the count of persons that can be retrieved from the backend.
+    ///
+    /// - Parameters response: Raw backend dictionary
+    ///
+    func peopleFoundFromResponse(response: [String: AnyObject]) -> Int {
+        return response["found"] as? Int ?? 0
+    }
+
 
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
     ///
