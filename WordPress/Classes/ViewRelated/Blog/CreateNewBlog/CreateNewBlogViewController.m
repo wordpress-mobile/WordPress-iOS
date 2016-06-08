@@ -427,7 +427,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
 
 - (void)displayRemoteError:(NSError *)error
 {
-    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
+    NSString *errorMessage = error.userInfo[NSLocalizedDescriptionKey];
     [self showError:errorMessage];
 }
 
@@ -529,8 +529,8 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         
-        WordPressComApi *api = [[accountService defaultWordPressComAccount] restApi];
-        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        WordPressComRestApi *api = [[accountService defaultWordPressComAccount] wordPressComRestApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithWordPressComRestApi:api];
         
         [service createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                            andBlogTitle:_siteTitleField.text
