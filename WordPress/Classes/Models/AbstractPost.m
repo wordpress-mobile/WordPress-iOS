@@ -300,7 +300,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self isDraft] && ( !self.date_created_gmt || [self.date_created_gmt isEqualToDate:self.dateModified] );
+    return [self isDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
 - (NSString *)authorNameForDisplay
