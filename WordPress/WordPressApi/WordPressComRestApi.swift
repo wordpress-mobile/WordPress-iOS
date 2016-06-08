@@ -32,6 +32,9 @@ public class WordPressComRestApi: NSObject
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
+    /**
+     Configure whether or not the user's preferred language locale should be appended. Defaults to true.
+     */
     public var appendsLocale = true
     private let WordPressComRestApiLocaleKey = "locale"
 
