@@ -561,7 +561,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (indexPath.row == 0 && !self.datePicker) {
         // Publish date
         cell = [self getWPTableViewCell];
-        if (self.apost.dateCreated) {
+        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
             if ([self.apost hasFuturePublishDate]) {
                 cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
             } else {
