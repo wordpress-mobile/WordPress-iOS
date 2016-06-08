@@ -32,6 +32,9 @@ public class WordPressComRestApi: NSObject
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
+    public var appendsLocale = true
+    private let WordPressComRestApiLocaleKey = "locale"
+
     private let oAuthToken: String?
     private let userAgent: String?
 
@@ -88,8 +91,12 @@ public class WordPressComRestApi: NSObject
                      success: SuccessResponseBlock,
                      failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleParameterToURLPathIfNeeded(URLString)
         let progress = NSProgress()
         progress.totalUnitCount = 1
+
+        NSLog("url: \(URLString)")
+
         let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
@@ -125,6 +132,7 @@ public class WordPressComRestApi: NSObject
                      success: SuccessResponseBlock,
                      failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleParameterToURLPathIfNeeded(URLString)
         let progress = NSProgress()
         progress.totalUnitCount = 1
         let task = sessionManager.POST(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
@@ -165,6 +173,7 @@ public class WordPressComRestApi: NSObject
                               success: SuccessResponseBlock,
                               failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleParameterToURLPathIfNeeded(URLString)
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
             let requestURLString = NSURL(string:URLString,
                                      relativeToURL:baseURL)?.absoluteString else {
@@ -225,6 +234,24 @@ public class WordPressComRestApi: NSObject
         return "\(oAuthToken),\(userAgent)".hashValue
     }
 
+    /// Append the locale query param to a URL string.
+    /// If the locale already exists the original path is returned.
+    ///
+    /// - Parameters:
+    ///     - path: A URL string. Can be an absolute or relative URL string.
+    ///
+    /// - Returns: The path with the locale appended, or the original path if it already had a locale param.
+    ///
+    private func appendLocaleParameterToURLPathIfNeeded(path: String) -> String {
+        if !appendsLocale || path.isEmpty || path.containsString("\(WordPressComRestApiLocaleKey)=") {
+            return path
+        }
+        guard let preferredLanguageIdentifier = NSLocale.preferredLanguages().first where !preferredLanguageIdentifier.isEmpty else {
+            return path
+        }
+        let separator = path.containsString("?") ? "&" : "?"
+        return "\(path)\(separator)\(WordPressComRestApiLocaleKey)=\(preferredLanguageIdentifier)"
+    }
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
