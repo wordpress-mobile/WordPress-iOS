@@ -24,8 +24,8 @@ import AFNetworking
 public class WordPressComRestApi: NSObject
 {
     public static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
-    public static let ErrorKeyErrorCode: String = "WordPressComApiErrorCodeKey"
-    public static let ErrorKeyErrorMessage: String = "WordPressComApiErrorMessageKey"
+    public static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
+    public static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
 
     public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
