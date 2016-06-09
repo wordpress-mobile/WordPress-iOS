@@ -21,14 +21,8 @@ public class HTTPAuthenticationAlertController {
         } else {
             controller = controllerForUserAuthenticationChallenge(challenge)
         }
-        guard var presentingController = UIApplication.sharedApplication().keyWindow?.rootViewController else {
-            return
-        }
-        if presentingController.presentedViewController != nil {
-            presentingController = presentingController.presentedViewController!
-        }
 
-        presentingController.presentViewController(controller, animated:true, completion:nil)
+        controller.presentFromRootViewController()
     }
 
     static func executeHandlerForChallenge(challenge: NSURLAuthenticationChallenge, disposition: NSURLSessionAuthChallengeDisposition, credential: NSURLCredential?) {
