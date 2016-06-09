@@ -280,6 +280,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     post.postID = [xmlrpcDictionary numberForKey:@"post_id"];
     post.date = xmlrpcDictionary[@"post_date_gmt"];
+    post.dateModified = xmlrpcDictionary[@"post_modified_gmt"];
     if (xmlrpcDictionary[@"link"]) {
         post.URL = [NSURL URLWithString:xmlrpcDictionary[@"link"]];
     }
