@@ -33,7 +33,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
     var delegate: ReaderSearchSuggestionsDelegate?
     var cellIdentifier = "CellIdentifier"
     let MaxTableViewRows = 5
-    let ButtonHeight = CGFloat(44.0)
+    let RowAndButtonHeight = CGFloat(44.0)
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -58,7 +58,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
         tableViewHandler.delegate = self
 
         tableView.tableFooterView = UIView()
-        tableView.rowHeight = 44.0
+        tableView.rowHeight = RowAndButtonHeight
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -75,7 +75,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
         let count = suggestionsCount()
         let numVisibleRows = min(count, MaxTableViewRows)
         var height = CGFloat(numVisibleRows) * tableView.rowHeight
-        height += ButtonHeight
+        height += RowAndButtonHeight
         stackViewHeightConstraint.constant = height
     }
 
@@ -153,9 +153,9 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-
-        let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
-        let suggestion = suggestions[indexPath.row]
+        guard let suggestion = tableViewHandler.resultsController.objectOfType(ReaderSearchSuggestion.self, atIndexPath: indexPath) else {
+            return
+        }
         delegate?.searchSuggestionsController(self, selectedItem: suggestion.searchPhrase)
     }
 
@@ -171,8 +171,9 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 
 
     func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-        let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
-        let suggestion = suggestions[indexPath.row]
+        guard let suggestion = tableViewHandler.resultsController.objectOfType(ReaderSearchSuggestion.self, atIndexPath: indexPath) else {
+            return
+        }
         managedObjectContext().deleteObject(suggestion)
         ContextManager.sharedInstance().saveContext(managedObjectContext())
     }
