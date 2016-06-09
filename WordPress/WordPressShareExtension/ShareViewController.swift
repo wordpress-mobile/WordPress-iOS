@@ -169,19 +169,18 @@ private extension ShareViewController
 }
 
 
+
 /// ShareViewController Extension: Encapsulates private helpers
 ///
 private extension ShareViewController
 {
     private func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
-            dispatch_async(dispatch_get_main_queue()) {
-                let current = self.contentText ?? String()
-                let source  = url?.absoluteString ?? String()
-                let spacing = current.isEmpty ? String() : "\n\n"
+            let current = self.contentText ?? String()
+            let source  = url?.absoluteString ?? String()
+            let spacing = current.isEmpty ? String() : "\n\n"
 
-                self.textView.text = "\(current)\(spacing)\(source)"
-            }
+            self.textView.text = "\(current)\(spacing)\(source)"
         }
     }
 }
