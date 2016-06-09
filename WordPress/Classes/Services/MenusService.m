@@ -403,6 +403,7 @@ NS_ASSUME_NONNULL_BEGIN
     remoteItem.urlStr = item.urlStr;
     
     if (item.children.count) {
+        // Find the children of the item and them to remoteItem.children.
         NSMutableArray *children = [NSMutableArray arrayWithCapacity:item.children.count];
         for (MenuItem *anItem in items) {
             if (!anItem.parent) {
