@@ -1775,7 +1775,6 @@ EditImageDetailsViewControllerDelegate
 - (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
@@ -1814,7 +1813,7 @@ EditImageDetailsViewControllerDelegate
     [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
     [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress resignCurrent];
+    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId

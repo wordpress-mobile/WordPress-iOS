@@ -8,6 +8,7 @@ public class WordPressOrgXMLRPCApi: NSObject
 
     private let endpoint: NSURL
     private let userAgent: String?
+    private var ongoingProgress = [NSURLSessionTask:NSProgress]()
 
     private lazy var session: NSURLSession = {
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -75,16 +76,52 @@ public class WordPressOrgXMLRPCApi: NSObject
                 return
             }
         }
-
-        // Progress report
-        let progress = NSProgress()
-        progress.totalUnitCount = 1
-        progress.cancellationHandler = {
-            task.cancel()
-        }
         task.resume()
-        return progress
+        return createProgresForTask(task)
     }
+
+    /**
+     Executes a XMLRPC call for the method specificied with the arguments provided.
+
+     - parameter method:  the xmlrpc method to be invoked
+     - parameter parameters: the parameters to be encoded on the request
+     - parameter success:    callback to be called on successful request
+     - parameter failure:    callback to be called on failed request
+
+     - returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
+     returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
+     will be invoked with the error specificing the serialization issues.
+     */
+    public func callStreamingMethod(method: String,
+                           parameters: [AnyObject]?,
+                           usingFileURLForCache fileURL: NSURL,
+                           success: SuccessResponseBlock,
+                           failure: FailureReponseBlock) -> NSProgress?
+    {
+        //Encode request
+        let request: NSURLRequest
+        do {
+            request = try streamingRequestWithMethod(method, parameters: parameters, usingFileURLForCache: fileURL)
+        } catch let encodingError as NSError {
+            failure(error: encodingError, httpResponse: nil)
+            return nil
+        }
+
+        // Create task
+        let task = session.uploadTaskWithRequest(request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
+            do {
+                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
+                success(responseObject: responseObject, httpResponse: urlResponse as? NSHTTPURLResponse)
+            } catch let error as NSError {
+                failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
+            }
+        })
+        task.resume()
+
+        return createProgresForTask(task)
+    }
+
+    //MARK: - Request Building
 
     private func requestWithMethod(method: String, parameters: [AnyObject]?) throws -> NSURLRequest {
         let mutableRequest = NSMutableURLRequest(URL: endpoint)
@@ -95,6 +132,41 @@ public class WordPressOrgXMLRPCApi: NSObject
 
         return mutableRequest
     }
+
+    private func streamingRequestWithMethod(method: String, parameters: [AnyObject]?, usingFileURLForCache fileURL: NSURL) throws -> NSURLRequest {
+        let mutableRequest = NSMutableURLRequest(URL: endpoint)
+        mutableRequest.HTTPMethod = "POST"
+        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
+        let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
+        try encoder.encodeToFile(fileURL.path)
+        var optionalFileSize: AnyObject?
+        try fileURL.getResourceValue(&optionalFileSize, forKey: NSURLFileSizeKey)
+        if let fileSize = optionalFileSize as? NSNumber {
+            mutableRequest.setValue(fileSize.stringValue, forHTTPHeaderField:"Content-Length")
+        }
+
+        return mutableRequest
+    }
+
+    //MARK: - Progress reporting
+
+    private func createProgresForTask(task: NSURLSessionTask) -> NSProgress {
+        // Progress report
+        let progress = NSProgress(parent: NSProgress.currentProgress(), userInfo: nil)
+        progress.totalUnitCount = 1
+        if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
+            let contentLength = Int64(contentLengthString) {
+            progress.totalUnitCount = contentLength
+        }
+        progress.cancellationHandler = {
+            task.cancel()
+        }
+        ongoingProgress[task] = progress
+
+        return progress
+    }
+
+    //MARK: - Handling of data
 
     private func handleResponseWithData(data: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
         guard let data = data,
@@ -125,6 +197,17 @@ public class WordPressOrgXMLRPCApi: NSObject
 }
 
 extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate {
+
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        guard let progress = ongoingProgress[task] else {
+            return
+        }
+        //progress.totalUnitCount = totalBytesExpectedToSend
+        progress.completedUnitCount = totalBytesSent
+        if (totalBytesSent == totalBytesExpectedToSend) {
+            ongoingProgress.removeValueForKey(task)
+        }
+    }
 
     public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
         switch challenge.protectionSpace.authenticationMethod {

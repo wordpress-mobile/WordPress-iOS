@@ -1,6 +1,6 @@
 #import "MediaServiceRemoteXMLRPC.h"
 #import "RemoteMedia.h"
-#import <WordPressApi/WPXMLRPCClient.h>
+#import "WordPress-Swift.h"
 
 @implementation MediaServiceRemoteXMLRPC
 
@@ -11,13 +11,13 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:mediaID];
     [self.api callMethod:@"wp.getMediaItem"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if (success) {
                         NSDictionary * xmlRPCDictionary = (NSDictionary *)responseObject;
                         RemoteMedia * remoteMedia = [self remoteMediaFromXMLRPCDictionary:xmlRPCDictionary];
                         success(remoteMedia);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                         failure(error);
                      }
@@ -30,13 +30,13 @@
     NSArray *parameters = [self defaultXMLRPCArguments];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          success([self remoteMediaFromXMLRPCArray:responseObject]);
                      }
                  }
-                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -49,13 +49,13 @@
     NSArray *parameters = [self defaultXMLRPCArguments];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          success([responseObject count]);
                      }
                  }
-                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -109,9 +109,6 @@
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSProgress *localProgress = [NSProgress progressWithTotalUnitCount:2];
-    //The enconding of the request uses a NSData that has a progress
-    [localProgress becomeCurrentWithPendingUnitCount:1];
     NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
@@ -130,15 +127,12 @@
     NSString *directory = [paths objectAtIndex:0];
     NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
     NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
+    NSURL *streamingCacheFileURL = [NSURL fileURLWithPath:streamingCacheFilePath];
     
-    NSMutableURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
-    
-    [self addBasicAuthCredentialsIfAvailableToRequest:request];
-    
-    [localProgress resignCurrent];
-
-    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
-      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSProgress *localProgress = [self.api callStreamingMethod:@"wp.uploadFile"
+                                                   parameters:parameters
+                                         usingFileURLForCache:streamingCacheFileURL
+                                                      success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
           NSDictionary *response = (NSDictionary *)responseObject;
           [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
           if (![response isKindOfClass:[NSDictionary class]]) {
@@ -155,7 +149,7 @@
                   success(remoteMedia);
               }
           }
-      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
           localProgress.completedUnitCount=0;
           localProgress.totalUnitCount=0;
           [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
@@ -163,25 +157,11 @@
               failure(error);
           }
       }];
-    
-    // Setup progress object
-    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        localProgress.completedUnitCount+=bytesWritten;
-    }];
-    unsigned long long size = [[request valueForHTTPHeaderField:@"Content-Length"] longLongValue];
-    // Adding some extra time because after the upload is done the backend takes some time to process the data sent
-    localProgress.totalUnitCount = size+1;
-    localProgress.cancellable = YES;
-    localProgress.pausable = NO;
-    localProgress.cancellationHandler = ^(){
-        [operation cancel];
-    };
+
     
     if (progress) {
         *progress = localProgress;
     }
-    
-    [self.api.operationQueue addOperation:operation];
 }
 
 - (void)updateMedia:(RemoteMedia *)media
