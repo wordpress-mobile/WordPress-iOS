@@ -81,10 +81,12 @@ public class WordPressOrgXMLRPCApi: NSObject
     }
 
     /**
-     Executes a XMLRPC call for the method specificied with the arguments provided.
+     Executes a XMLRPC call for the method specificied with the arguments provided, by streaming the request from a file.
+     The locaiton of the file used to stream the request is the one provided in usingFileURLForCache parameter.
 
      - parameter method:  the xmlrpc method to be invoked
      - parameter parameters: the parameters to be encoded on the request
+     - parameter usingFileURLForCache: the file URL where to store the request data to sent to the server
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
@@ -201,8 +203,7 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         guard let progress = ongoingProgress[task] else {
             return
-        }
-        //progress.totalUnitCount = totalBytesExpectedToSend
+        }        
         progress.completedUnitCount = totalBytesSent
         if (totalBytesSent == totalBytesExpectedToSend) {
             ongoingProgress.removeValueForKey(task)
