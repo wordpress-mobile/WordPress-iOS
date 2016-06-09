@@ -73,7 +73,8 @@ class NoticeAnimator: Animator {
 
     // MARK: - Public Methods
     func layout() {
-        var targetFrame = targetView.bounds
+        var targetFrame = noticeLabel.frame
+        targetFrame.size.width = targetView.bounds.width
         targetFrame.size.height = heightForMessage(message)
         noticeLabel.frame = targetFrame
     }
