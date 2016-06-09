@@ -367,23 +367,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (Menu *)findMenuWithId:(NSString *)menuId
-{
-    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Menu entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:@"menuId == %@", menuId];
-    
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Fetch request for Menu failed: %@", error);
-    }
-    
-    Menu *menu = [results firstObject];
-    return menu;
-}
-
 #pragma mark - RemoteMenu objects from Menu objects
 
 - (NSArray *)remoteItemsFromMenuItems:(NSOrderedSet<MenuItem *> *)menuItems
