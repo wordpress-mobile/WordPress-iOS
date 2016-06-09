@@ -3,6 +3,7 @@
 #import "ContextManager.h"
 #import "NSDate+StringFormatting.h"
 #import "WordPress-Swift.h"
+#import "BasePost.h"
 
 @implementation AbstractPost
 
@@ -56,7 +57,7 @@
 {
     NSString *key = @"date_created_gmt";
     [self willChangeValueForKey:key];
-    self.metaPublishImmediately = (date_created_gmt == nil);
+    self.metaPublishImmediately = [self shouldPublishImmediately];
     [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -281,6 +282,27 @@
 
 #pragma mark - Convenience methods
 
+- (BOOL)isDraft
+{
+    if ([self.status isEqualToString:PostStatusDraft]) {
+        return YES;
+    } else if (self.isRevision && [self.original.status isEqualToString:PostStatusDraft]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)publishImmediately
+{
+    self.dateModified = [NSDate date];
+    [self setDateCreated:self.dateModified];
+}
+
+- (BOOL)shouldPublishImmediately
+{
+    return [self isDraft] && [self dateCreatedIsNilOrEqualToDateModified];
+}
+
 - (NSString *)authorNameForDisplay
 {
     return self.author;
@@ -318,11 +340,10 @@
 
 - (NSString *)dateStringForDisplay
 {
-    NSDate *date = [self dateCreated];
-    if (!date) {
+    if ([self shouldPublishImmediately]) {
         return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
     }
-    return [date shortString];
+    return [[self dateCreated] shortString];
 }
 
 - (BOOL)supportsStats
