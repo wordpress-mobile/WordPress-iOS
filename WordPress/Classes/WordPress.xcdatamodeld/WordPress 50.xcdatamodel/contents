@@ -49,6 +49,7 @@
         <attribute name="date_created_gmt" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
+        <attribute name="dateModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="mt_excerpt" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -622,7 +623,7 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="315"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="630"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
