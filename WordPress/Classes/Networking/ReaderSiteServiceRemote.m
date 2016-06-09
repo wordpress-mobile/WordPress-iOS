@@ -1,5 +1,4 @@
 #import "ReaderSiteServiceRemote.h"
-#import "WordPressComApi.h"
 #import "RemoteReaderSite.h"
 #import "WordPress-Swift.h"
 

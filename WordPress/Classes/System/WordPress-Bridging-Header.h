@@ -81,12 +81,13 @@
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
+#import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderPost.h"
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
-#import "ServiceRemoteREST.h"
 #import "ServiceRemoteWordPressComREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -109,7 +110,6 @@
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WordPressComServiceRemote.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
@@ -140,7 +140,7 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
-
+#import "WordPressComServiceRemote.h"
 // Pods
 
 #import <SVProgressHUD/SVProgressHUD.h>
