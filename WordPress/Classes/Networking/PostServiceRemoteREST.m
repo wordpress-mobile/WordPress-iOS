@@ -292,10 +292,13 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
     post.siteID = jsonPost[@"site_ID"];
-    post.authorAvatarURL = jsonPost[@"author"][@"avatar_URL"];
-    post.authorDisplayName = jsonPost[@"author"][@"name"];
-    post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
-    post.authorURL = jsonPost[@"author"][@"URL"];
+    NSDictionary *authorDictionary = jsonPost[@"author"];
+    if (authorDictionary != [NSNull null]) {
+        post.authorAvatarURL = authorDictionary[@"avatar_URL"];
+        post.authorDisplayName = authorDictionary[@"name"];
+        post.authorEmail = [authorDictionary stringForKey:@"email"];
+        post.authorURL = authorDictionary[@"URL"];
+    }
     post.authorID = [jsonPost numberForKeyPath:@"author.ID"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
     post.title = jsonPost[@"title"];
