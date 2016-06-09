@@ -1,11 +1,15 @@
 import Foundation
 
-///
+/// Provides functionality for fetching, saving, and deleting search phrases
+/// used to search for content in the reader.
 ///
 @objc class ReaderSearchSuggestionService : LocalCoreDataService
 {
 
+    /// Creates or updates an existing record for the specified search phrase.
     ///
+    /// - Parameters:
+    ///     - phrase: The search phrase in question.
     ///
     func createOrUpdateSuggestionForPhrase(phrase: String) {
         var suggestion = findSuggestionForPhrase(phrase)
@@ -19,7 +23,12 @@ import Foundation
     }
 
 
+    /// Find and return the ReaderSearchSuggestion matching the specified search phrase.
     ///
+    /// - Parameters:
+    ///     - phrase: The search phrase in question.
+    ///
+    /// - Returns: A matching search phrase or nil.
     ///
     func findSuggestionForPhrase(phrase: String) -> ReaderSearchSuggestion? {
         let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
@@ -36,7 +45,12 @@ import Foundation
     }
 
 
+    /// Finds and returns all ReaderSearchSuggestion starting with the specified search phrase.
     ///
+    /// - Parameters:
+    ///     - phrase: The search phrase in question.
+    ///
+    /// - Returns: An array of matching `ReaderSearchSuggestion`s.
     ///
     func fetchSuggestionsLikePhrase(phrase: String) -> [ReaderSearchSuggestion] {
         let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
@@ -56,7 +70,10 @@ import Foundation
     }
 
 
+    /// Deletes the specified search suggestion.
     ///
+    /// - Parameters:
+    ///     - suggestion: The `ReaderSearchSuggestion` to delete.
     ///
     func deleteSuggestion(suggestion: ReaderSearchSuggestion) {
         managedObjectContext.deleteObject(suggestion)
@@ -64,7 +81,7 @@ import Foundation
     }
 
 
-    ///
+    /// Deletes all saved search suggestions.
     ///
     func deleteAllSuggestions() {
         let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
