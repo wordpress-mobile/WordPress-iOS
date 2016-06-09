@@ -375,7 +375,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.itemsViewController.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
-    if ([menu.menuID integerValue] == MenuDefaultID) {
+    if ([menu isDefaultMenu]) {
         if ([self defaultMenuEnabledForSelectedLocation]) {
             // Set up as the default menu of page items.
             [self loadDefaultMenuItemsIfNeeded];
@@ -497,7 +497,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     };
     controller.onSelectedToTrash = ^() {
         [WPAppAnalytics track:WPAnalyticsStatMenusDeletedItem withBlog:self.blog];
-        if (item.itemID.integerValue || item.menu.menuID.integerValue == MenuDefaultID) {
+        if (item.itemID.integerValue || [item.menu isDefaultMenu]) {
             // If the item had an ID, saving is enabled.
             // Or if the user trying to edit the default menu, saving is enabled.
             // Otherwise the item was never created remotely, so no need to save this deletion.
@@ -533,7 +533,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
     
     // Check if user is trying to save the Default Menu and made changes to it.
-    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
+    if ([menuToSave isDefaultMenu] && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
