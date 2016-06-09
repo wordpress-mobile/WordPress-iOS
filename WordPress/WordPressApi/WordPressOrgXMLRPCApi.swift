@@ -124,12 +124,9 @@ public class WordPressOrgXMLRPCApi: NSObject
     }
 }
 
-extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate {
+extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate {
 
-    public func URLSession(session: NSURLSession,
-                           task: NSURLSessionTask,
-                           didReceiveChallenge challenge: NSURLAuthenticationChallenge,
-                                       completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
         switch challenge.protectionSpace.authenticationMethod {
         case NSURLAuthenticationMethodServerTrust:
             if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(challenge.protectionSpace)
@@ -148,8 +145,16 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate {
                     completionHandler(.PerformDefaultHandling, nil)
                 }
             }
-        case NSURLAuthenticationMethodClientCertificate:
+        default:
             completionHandler(.PerformDefaultHandling, nil)
+        }
+    }
+
+    public func URLSession(session: NSURLSession,
+                           task: NSURLSessionTask,
+                           didReceiveChallenge challenge: NSURLAuthenticationChallenge,
+                                       completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+        switch challenge.protectionSpace.authenticationMethod {
         case NSURLAuthenticationMethodHTTPBasic:
             if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(challenge.protectionSpace)
                 where challenge.previousFailureCount == 0 {
