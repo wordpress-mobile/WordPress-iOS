@@ -3,10 +3,6 @@
 #import "ApiCredentials.h"
 #import "WordPress-Swift.h"
 
-NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
-NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
-NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
-
 @implementation WordPressComServiceRemote
 
 - (void)createWPComAccountWithEmail:(NSString *)email

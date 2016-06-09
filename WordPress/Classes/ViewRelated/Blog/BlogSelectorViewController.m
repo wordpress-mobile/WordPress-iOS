@@ -1,6 +1,5 @@
 #import "BlogSelectorViewController.h"
 #import "UIImageView+Gravatar.h"
-#import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
 #import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
