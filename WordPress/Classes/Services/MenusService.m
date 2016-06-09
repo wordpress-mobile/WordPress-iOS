@@ -283,7 +283,6 @@ NS_ASSUME_NONNULL_BEGIN
     item.menu = menu;
     
     if (remoteMenuItem.children) {
-        
         for (RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
             MenuItem *childItem = [self addMenuItemFromRemoteMenuItem:childRemoteItem forMenu:menu];
             childItem.parent = item;
@@ -366,14 +365,14 @@ NS_ASSUME_NONNULL_BEGIN
             continue;
         }
         // Children of item will be added as remoteItem.children.
-        RemoteMenuItem *remoteItem = [self remoteItemFromItem:item];
+        RemoteMenuItem *remoteItem = [self remoteItemFromItem:item withItems:menuItems];
         [remoteItems addObject:remoteItem];
     }
     
     return [NSArray arrayWithArray:remoteItems];
 }
 
-- (RemoteMenuItem *)remoteItemFromItem:(MenuItem *)item
+- (RemoteMenuItem *)remoteItemFromItem:(MenuItem *)item withItems:(NSOrderedSet<MenuItem *> *)items
 {
     RemoteMenuItem *remoteItem = [[RemoteMenuItem alloc] init];
     remoteItem.itemID = item.itemID;
@@ -404,11 +403,16 @@ NS_ASSUME_NONNULL_BEGIN
     remoteItem.urlStr = item.urlStr;
     
     if (item.children.count) {
-        NSMutableArray *childRemoteItems = [NSMutableArray arrayWithCapacity:item.children.count];
-        for (MenuItem *childItem in item.children) {
-            [childRemoteItems addObject:[self remoteItemFromItem:childItem]];
+        NSMutableArray *children = [NSMutableArray arrayWithCapacity:item.children.count];
+        for (MenuItem *anItem in items) {
+            if (!anItem.parent) {
+                continue;
+            }
+            if (anItem.parent == item) {
+                [children addObject:[self remoteItemFromItem:anItem withItems:items]];
+            }
+            remoteItem.children = children;
         }
-        remoteItem.children = childRemoteItems;
     }
     
     return remoteItem;
