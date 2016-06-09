@@ -27,10 +27,6 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
-NSString * const BlogDetailAccountHideViewAdminTimeZone = @"GMT";
-NSInteger const BlogDetailAccountHideViewAdminYear = 2015;
-NSInteger const BlogDetailAccountHideViewAdminMonth = 9;
-NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 #pragma mark - Helper Classes for Blog Details view model.
 
@@ -208,6 +204,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 #pragma mark - Data Model setup
 
+- (NSString *)adminRowTitle
+{
+    if (self.blog.isHostedAtWPcom) {
+        return NSLocalizedString(@"Dashboard", @"Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.");
+    } else {
+        return NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.");
+    }
+}
 
 - (void)configureTableViewData
 {
@@ -233,13 +237,11 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
                                                      [weakSelf showViewSite];
                                                  }]];
 
-    if ([self shouldShowWPAdminRow]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-                                                        image:[Gridicon iconOfType:GridiconTypeMySites]
-                                                     callback:^{
-                                                         [weakSelf showViewAdmin];
-                                                     }]];
-    }
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
+                                                    image:[Gridicon iconOfType:GridiconTypeMySites]
+                                                 callback:^{
+                                                     [weakSelf showViewAdmin];
+                                                 }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
@@ -579,34 +581,13 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlog:self.blog];
 
-    NSString *dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+    NSString *dashboardUrl;
+    if (self.blog.isHostedAtWPcom) {
+        dashboardUrl = [NSString stringWithFormat:@"https://wordpress.com/stats/insights/%@", self.blog.hostname];
+    } else {
+        dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+    }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
-}
-
-- (BOOL)shouldShowWPAdminRow
-{
-    return !self.blog.isHostedAtWPcom || [self wasAccountCreateBeforeHideViewAdminDate];
-}
-
-- (BOOL)wasAccountCreateBeforeHideViewAdminDate
-{
-    NSDate *hideViewAdminDate = [self hideViewAdminDate];
-    WPAccount *account = self.blog.account;
-    
-    return [account.dateCreated compare:hideViewAdminDate] == NSOrderedAscending;
-}
-
-- (NSDate *)hideViewAdminDate
-{
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    calendar.timeZone = [NSTimeZone timeZoneWithName:BlogDetailAccountHideViewAdminTimeZone];
-    
-    NSDateComponents *hideAdminDateComponents = [NSDateComponents new];
-    hideAdminDateComponents.year = BlogDetailAccountHideViewAdminYear;
-    hideAdminDateComponents.month = BlogDetailAccountHideViewAdminMonth;
-    hideAdminDateComponents.day = BlogDetailAccountHideViewAdminDay;
-    
-    return [calendar dateFromComponents:hideAdminDateComponents];
 }
 
 
