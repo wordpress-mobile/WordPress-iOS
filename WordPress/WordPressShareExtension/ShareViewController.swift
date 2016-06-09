@@ -79,7 +79,7 @@ class ShareViewController: SLComposeServiceViewController {
 
         let service = PostService(configuration: configuration)
         let linkified = contentText.stringWithAnchoredLinks()
-        let (subject, body) = splitContentTextIntoSubjectAndBody(linkified)
+        let (subject, body) = linkified.splitContentTextIntoSubjectAndBody()
 
         service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
             (post, error) in
@@ -169,13 +169,4 @@ class ShareViewController: SLComposeServiceViewController {
     private let postStatuses = [
         "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
-
-    private func splitContentTextIntoSubjectAndBody(contentText: String) -> (subject: String, body: String) {
-        let fullText = contentText
-        let indexOfFirstNewline = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
-        let firstLineOfText = indexOfFirstNewline != nil ? fullText.substringToIndex(indexOfFirstNewline!.startIndex) : fullText
-        let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
-
-        return (firstLineOfText, restOfText)
-    }
 }
