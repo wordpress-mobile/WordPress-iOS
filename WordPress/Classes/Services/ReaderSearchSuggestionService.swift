@@ -91,9 +91,9 @@ import Foundation
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching search suggestion : \(error.localizedDescription)")
         }
-        _ = suggestions.map({ (suggestion) in
+        for suggestion in suggestions {
             managedObjectContext.deleteObject(suggestion)
-        })
+        }
         ContextManager.sharedInstance().saveContext(managedObjectContext)
     }
 
