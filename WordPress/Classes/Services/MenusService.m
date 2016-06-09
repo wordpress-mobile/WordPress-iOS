@@ -85,83 +85,39 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Creating and updating menus
 
-- (void)createMenuWithName:(NSString *)menuName
-                      blog:(Blog *)blog
-                   success:(nullable MenusServiceCreateMenuRequestSuccessBlock)success
+- (void)createOrUpdateMenu:(Menu *)menu
+                   forBlog:(Blog *)blog
+                   success:(nullable MenusServiceCreateOrUpdateMenuRequestSuccessBlock)success
                    failure:(nullable MenusServiceFailureBlock)failure
-{
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
-    
-    if (blog.wordPressComRestApi == nil) {
-        return;
-    }
-
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
-    [remote createMenuWithName:menuName
-                          blog:blog
-                       success:^(RemoteMenu * _Nonnull remoteMenu) {
-                           [self.managedObjectContext performBlock:^{
-                               if (success) {
-                                   success(remoteMenu.menuID);
-                               }
-                           }];
-                       }
-                       failure:failure];
-}
-
-- (void)updateMenu:(Menu *)menu
-           forBlog:(Blog *)blog
-           success:(nullable MenusServiceUpdateMenuRequestSuccessBlock)success
-           failure:(nullable MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
     if (blog.wordPressComRestApi == nil) {
-        return;
+        return;   
     }
 
-    NSMutableArray *locationNames = nil;
-    if (menu.locations.count) {
-        locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
-        for (MenuLocation *location in menu.locations) {
-            if (location.name.length) {
-                [locationNames addObject:location.name];
-            }
-        }
+    __weak __typeof(self) weakSelf = self;
+    if (menu.menuID.integerValue == 0) {
+        // Need to create the menu first.
+        [self createMenuWithName:menu.name
+                            blog:blog
+                         success:^(NSNumber *menuID) {
+                             // Set the new menuID and continue the update.
+                             menu.menuID = menuID;
+                             [weakSelf updateMenu:menu
+                                          forBlog:blog
+                                          success:success
+                                          failure:failure];
+                         }
+                         failure:failure];
+    } else {
+        [self updateMenu:menu
+                 forBlog:blog
+                 success:success
+                 failure:failure];
     }
-    
-    NSArray *remoteItems = nil;
-    if (menu.items.count) {
-        remoteItems = [self remoteItemsFromMenuItems:menu.items];
-    }
-    
-    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
-    [remote updateMenuForID:menu.menuID
-                       blog:blog
-                   withName:menu.name
-              withLocations:locationNames
-                  withItems:remoteItems
-                    success:^(RemoteMenu * _Nonnull remoteMenu) {
-                        [self.managedObjectContext performBlock:^{
-                            /*
-                             Update the local menu with the fresh MenuItems from remote.
-                             We need to replace the MenuItems as it's difficult to keep track of
-                             which items are equal to one another, especially when a menuID is unknown.
-                             */
-                            menu.items = nil;
-                            for (RemoteMenuItem *remoteItem in remoteMenu.items) {
-                                [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
-                            }
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            if (success) {
-                                success();
-                            }
-                        }];
-                    }
-                    failure:failure];
 }
 
 - (void)deleteMenu:(Menu *)menu
@@ -242,6 +198,79 @@ NS_ASSUME_NONNULL_BEGIN
                              }];
                          }
                          failure:failure];
+}
+
+#pragma mark - private
+
+- (void)createMenuWithName:(NSString *)menuName
+                      blog:(Blog *)blog
+                   success:(nullable void(^)(NSNumber *menuID))success
+                   failure:(nullable MenusServiceFailureBlock)failure
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
+    
+    if (blog.wordPressComRestApi == nil) {
+        return;
+    }
+    
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+    [remote createMenuWithName:menuName
+                          blog:blog
+                       success:^(RemoteMenu * _Nonnull remoteMenu) {
+                           [self.managedObjectContext performBlock:^{
+                               if (success) {
+                                   success(remoteMenu.menuID);
+                               }
+                           }];
+                       }
+                       failure:failure];
+}
+
+- (void)updateMenu:(Menu *)menu
+           forBlog:(Blog *)blog
+           success:(nullable void(^)())success
+           failure:(nullable MenusServiceFailureBlock)failure
+{
+    NSMutableArray *locationNames = nil;
+    if (menu.locations.count) {
+        locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
+        for (MenuLocation *location in menu.locations) {
+            if (location.name.length) {
+                [locationNames addObject:location.name];
+            }
+        }
+    }
+    
+    NSArray *remoteItems = nil;
+    if (menu.items.count) {
+        remoteItems = [self remoteItemsFromMenuItems:menu.items];
+    }
+    
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+    [remote updateMenuForID:menu.menuID
+                       blog:blog
+                   withName:menu.name
+              withLocations:locationNames
+                  withItems:remoteItems
+                    success:^(RemoteMenu * _Nonnull remoteMenu) {
+                        [self.managedObjectContext performBlock:^{
+                            /*
+                             Update the local menu with the fresh MenuItems from remote.
+                             We need to replace the MenuItems as it's difficult to keep track of
+                             which items are equal to one another, especially when a menuID is unknown.
+                             */
+                            menu.items = nil;
+                            for (RemoteMenuItem *remoteItem in remoteMenu.items) {
+                                [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
+                            }
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            if (success) {
+                                success();
+                            }
+                        }];
+                    }
+                    failure:failure];
 }
 
 #pragma mark - Menu managed objects from RemoteMenu objects
