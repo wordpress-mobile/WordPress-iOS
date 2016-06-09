@@ -37,7 +37,7 @@ extension NSExtensionContext {
         case PublicImage    = "public.image"
     }
 
-    /// Loads the First Item with the specified identifier, and returns its value asynchronously.
+    /// Loads the First Item with the specified identifier, and returns its value asynchronously on the main thread.
     ///
     private func loadItemOfType<T>(type: T.Type, identifier: Identifier, completion: (T? -> Void)) {
         guard let itemProvider = firstItemProviderConformingToTypeIdentifier(identifier) else {
@@ -46,8 +46,10 @@ extension NSExtensionContext {
         }
 
         itemProvider.loadItemForTypeIdentifier(identifier.rawValue, options: nil) { (item, error) in
-            let targetItem = item as? T
-            completion(targetItem)
+            dispatch_async(dispatch_get_main_queue()) {
+                let targetItem = item as? T
+                completion(targetItem)
+            }
         }
     }
 
