@@ -124,36 +124,39 @@ public class WordPressOrgXMLRPCApi: NSObject
     }
 }
 
-extension WordPressOrgXMLRPCApi: NSURLSessionDelegate {
-
-    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
-            switch challenge.protectionSpace.authenticationMethod {
-            case NSURLAuthenticationMethodServerTrust:
-                var result = SecTrustResultType(kSecTrustResultInvalid)
-                if let serverTrust = challenge.protectionSpace.serverTrust {
-                    let certificateStatus = SecTrustEvaluate(serverTrust, &result)
-                    if certificateStatus == 0 && result == SecTrustResultType(kSecTrustResultRecoverableTrustFailure) {
-                        //                    dispatch_async(dispatch_get_main_queue(), ^(void) {
-                        //                        [WPHTTPAuthenticationAlertController presentWithChallenge:challenge];
-                        //                        });
-                    } else {
-                        completionHandler(.PerformDefaultHandling, nil)
-                        //[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-                    }
-                }
-            case NSURLAuthenticationMethodClientCertificate:
-                completionHandler(.PerformDefaultHandling, nil)
-            case NSURLAuthenticationMethodHTTPBasic:
-                completionHandler(.PerformDefaultHandling, nil)
-            default:
-                completionHandler(.PerformDefaultHandling, nil)
-            }
-    }
-}
-
 extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate {
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
-        completionHandler(.PerformDefaultHandling, nil)
+
+    public func URLSession(session: NSURLSession,
+                           task: NSURLSessionTask,
+                           didReceiveChallenge challenge: NSURLAuthenticationChallenge,
+                                       completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+        switch challenge.protectionSpace.authenticationMethod {
+        case NSURLAuthenticationMethodServerTrust:
+            var result = SecTrustResultType(kSecTrustResultInvalid)
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                let certificateStatus = SecTrustEvaluate(serverTrust, &result)
+                if certificateStatus == 0 && result == SecTrustResultType(kSecTrustResultRecoverableTrustFailure) {
+                    dispatch_async(dispatch_get_main_queue(), { () in
+                        HTTPAuthenticationAlertController.presentWithChallenge(challenge, handler: completionHandler)
+                    })
+                } else {
+                    completionHandler(.PerformDefaultHandling, nil)
+                }
+            }
+        case NSURLAuthenticationMethodClientCertificate:
+            completionHandler(.PerformDefaultHandling, nil)
+        case NSURLAuthenticationMethodHTTPBasic:
+            if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(challenge.protectionSpace)
+                where challenge.previousFailureCount == 0 {
+                completionHandler(.UseCredential, credential)
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () in
+                    HTTPAuthenticationAlertController.presentWithChallenge(challenge, handler: completionHandler)
+                })
+            }
+        default:
+            completionHandler(.PerformDefaultHandling, nil)
+        }
     }
 }
 
