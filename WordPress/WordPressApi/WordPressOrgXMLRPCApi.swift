@@ -132,6 +132,11 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate {
                                        completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
         switch challenge.protectionSpace.authenticationMethod {
         case NSURLAuthenticationMethodServerTrust:
+            if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(challenge.protectionSpace)
+                where challenge.previousFailureCount == 0 {
+                completionHandler(.UseCredential, credential)
+                return
+            }
             var result = SecTrustResultType(kSecTrustResultInvalid)
             if let serverTrust = challenge.protectionSpace.serverTrust {
                 let certificateStatus = SecTrustEvaluate(serverTrust, &result)
