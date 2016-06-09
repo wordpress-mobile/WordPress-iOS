@@ -164,6 +164,10 @@ import WordPressComAnalytics
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Disable the view until we have a topic.  This prevents a premature
+        // pull to refresh animation.
+        view.userInteractionEnabled = readerTopic != nil
+
         setupCellsForLayout()
         setupTableView()
         setupFooterView()
@@ -393,6 +397,7 @@ import WordPressComAnalytics
         frame.size.height = heightForFooterView
         footerView.frame = frame
         tableView.tableFooterView = footerView
+        footerView.hidden = true
     }
 
 
@@ -496,6 +501,9 @@ import WordPressComAnalytics
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        // Enable the view now that we have a topic.
+        view.userInteractionEnabled = true
+
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let account = service.defaultWordPressComAccount()
@@ -505,6 +513,7 @@ import WordPressComAnalytics
         managedObjectContext().reset()
 
         configureTitleForTopic()
+        configureNavigationItemForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -545,6 +554,23 @@ import WordPressComAnalytics
         }
 
         title = topic.title
+    }
+
+
+    func configureNavigationItemForTopic() {
+        guard let topic = readerTopic else {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        if ReaderHelpers.isTopicSearchTopic(topic) {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        let button = UIBarButtonItem(image: UIImage(named: "icon-post-search"),
+                                     style: .Plain,
+                                     target: self,
+                                     action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
+        navigationItem.rightBarButtonItem = button
     }
 
 
@@ -936,6 +962,14 @@ import WordPressComAnalytics
     }
 
 
+    /// Handle's the user tapping the search button.  Displays the search controller
+    ///
+    func handleSearchButtonTapped(sender: UIBarButtonItem) {
+        let controller = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+
     // MARK: - Sync Methods
 
 
@@ -987,7 +1021,7 @@ import WordPressComAnalytics
 
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
-        if canSync() && interval >= refreshInterval {
+        if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
@@ -1038,28 +1072,35 @@ import WordPressComAnalytics
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
+
             let objectID = topicInContext.objectID
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: NSDate(),
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
-                            strongSelf.updateLastSyncedForTopic(objectID)
+
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError?) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let error = error {
-                            failure?(error: error)
-                        }
-                    })
-                })
+                        strongSelf.updateLastSyncedForTopic(objectID)
+                    }
+                    success?(hasMore: hasMore)
+                }
+            }
+
+            let failureBlock = { (error:NSError?) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let error = error {
+                        failure?(error: error)
+                    }
+                }
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1094,26 +1135,31 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan:sortDate,
-                deletingEarlier:true,
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
+                    }
 
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
-                })
+                    success?(hasMore: hasMore)
+                }
+            }
+
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    failure?(error: error)
+                }
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                assertionFailure("Search topics should no have a gap to fill.")
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1141,19 +1187,24 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: earlierThan,
-                success: { (count:Int, hasMore:Bool) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
-            })
+            let successBlock = { (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    success?(hasMore: hasMore)
+                })
+            }
 
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    failure?(error: error)
+                })
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                let offset = UInt(topicInContext.posts.count)
+                service.fetchPostsForTopic(topicInContext, atOffset: offset, deletingEarlier: false, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
+            }
         }
 
         if let properties = topicPropertyForStats() {
@@ -1201,7 +1252,7 @@ import WordPressComAnalytics
 
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortDate", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
         return [sortDescriptor]
     }
 

@@ -100,6 +100,14 @@ extension ReaderStreamViewController
             )
         }
 
+        // if search topic
+        if ReaderHelpers.isTopicSearchTopic(topic) {
+            return NoResultsResponse(
+                title: NSLocalizedString("No results", comment:"A message title"),
+                message: NSLocalizedString("No results matching your search found for your language.", comment:"Message shown when the reader finds no posts for the specified search phrase")
+            )
+        }
+
         // Default message
         return NoResultsResponse(
             title: NSLocalizedString("No recent posts", comment:"A message title"),

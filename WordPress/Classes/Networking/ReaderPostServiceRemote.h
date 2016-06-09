@@ -16,8 +16,22 @@
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
                         before:(NSDate *)date
-                       success:(void (^)(NSArray *posts))success
+                       success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
                        failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetches the posts from the specified remote endpoint
+
+ @param count number of posts to fetch.
+ @param offset The offset of the fetch.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
+                         count:(NSUInteger)count
+                        offset:(NSUInteger)offset
+                       success:(void (^)(NSArray<RemoteReaderPost *> *))success
+                       failure:(void (^)(NSError *))failure;
 
 /**
  Fetches a specific post from the specified remote site

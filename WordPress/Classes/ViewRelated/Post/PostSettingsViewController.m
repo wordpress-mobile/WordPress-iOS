@@ -823,8 +823,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         frame.size.width = WPTableViewFixedWidth;
     } else {
         frame.size.width = CGRectGetWidth(self.tableView.bounds);
-        self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
+    self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.datePicker.frame = frame;
 
     NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
