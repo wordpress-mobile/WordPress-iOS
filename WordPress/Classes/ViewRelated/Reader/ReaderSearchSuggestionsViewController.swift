@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions
-/// and for responding to a selected suggestion. 
+/// and for responding to a selected suggestion.
 ///
 protocol ReaderSearchSuggestionsDelegate
 {
@@ -32,8 +32,8 @@ class ReaderSearchSuggestionsViewController : UIViewController
     var tableViewHandler: WPTableViewHandler!
     var delegate: ReaderSearchSuggestionsDelegate?
     var cellIdentifier = "CellIdentifier"
-    let MaxTableViewRows = 5
-    let RowAndButtonHeight = CGFloat(44.0)
+    let maxTableViewRows = 5
+    let rowAndButtonHeight = CGFloat(44.0)
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -58,7 +58,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
         tableViewHandler.delegate = self
 
         tableView.tableFooterView = UIView()
-        tableView.rowHeight = RowAndButtonHeight
+        tableView.rowHeight = rowAndButtonHeight
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -73,9 +73,9 @@ class ReaderSearchSuggestionsViewController : UIViewController
 
     func updateHeightConstraint() {
         let count = suggestionsCount()
-        let numVisibleRows = min(count, MaxTableViewRows)
+        let numVisibleRows = min(count, maxTableViewRows)
         var height = CGFloat(numVisibleRows) * tableView.rowHeight
-        height += RowAndButtonHeight
+        height += rowAndButtonHeight
         stackViewHeightConstraint.constant = height
     }
 
