@@ -146,7 +146,7 @@ import Gridicons
     // MARK: - Autocomplete
 
 
-    ///
+    /// Display the search suggestions view
     ///
     func presentAutoCompleteView() {
         let controller = ReaderSearchSuggestionsViewController.controller()
@@ -189,7 +189,7 @@ import Gridicons
     }
 
 
-    ///
+    /// Remove the search suggestions view.
     ///
     func dismissAutoCompleteView() {
         guard let controller = suggestionsController else {
