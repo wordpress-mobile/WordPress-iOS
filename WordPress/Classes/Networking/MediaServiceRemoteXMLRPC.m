@@ -124,9 +124,9 @@
 
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
 
-    NSProgress *localProgress = [self.api callStreamingMethod:@"wp.uploadFile"
-                                                   parameters:parameters
-                                                      success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    __block NSProgress *localProgress = [self.api streamCallMethod:@"wp.uploadFile"
+                                                parameters:parameters
+                                                   success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
           NSDictionary *response = (NSDictionary *)responseObject;
           if (![response isKindOfClass:[NSDictionary class]]) {
               localProgress.completedUnitCount=0;
