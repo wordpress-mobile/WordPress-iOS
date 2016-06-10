@@ -581,6 +581,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = currentPostListFilter().filterType
 
         switch filterType {
+        case .Scheduled:
+            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft page to publish.")
         case .Trashed:
             return ""
         default:
