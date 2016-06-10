@@ -585,7 +585,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     if (self.blog.isHostedAtWPcom) {
         dashboardUrl = [NSString stringWithFormat:@"https://wordpress.com/stats/insights/%@", self.blog.hostname];
     } else {
-        dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+        dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
