@@ -18,7 +18,7 @@
 - (NSString *)siteURLFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)siteNameFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict;
-- (NSString *)sortDateFromPostDictionary:(NSDictionary *)dict;
+- (NSDate *)sortDateFromPostDictionary:(NSDictionary *)dict;
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict;
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img;
@@ -187,22 +187,21 @@
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
 
-    NSString *dateStr = @"foo";
+    NSDate *now = [NSDate dateWithTimeIntervalSince1970:0];
+    NSString *dateStr = [DateUtils isoStringFromDate:now];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:dateStr forKey:@"date"];
 
-    NSString *str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
+    NSDate *date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 
-    dateStr = @"bar";
     [dict setObject:dateStr forKey:@"date_liked"];
-    str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
+    date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 
-    dateStr = @"baz";
     [dict setObject:@{@"displayed_on":dateStr} forKey:@"editorial"];
-    str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
+    date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 }
 
 - (void)testIsWPComFromDictionary {
