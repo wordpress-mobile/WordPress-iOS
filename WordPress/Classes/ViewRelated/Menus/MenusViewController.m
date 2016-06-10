@@ -375,7 +375,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.itemsViewController.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
-    if ([menu.menuID integerValue] == MenuDefaultID) {
+    if ([menu isDefaultMenu]) {
         if ([self defaultMenuEnabledForSelectedLocation]) {
             // Set up as the default menu of page items.
             [self loadDefaultMenuItemsIfNeeded];
@@ -497,7 +497,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     };
     controller.onSelectedToTrash = ^() {
         [WPAppAnalytics track:WPAnalyticsStatMenusDeletedItem withBlog:self.blog];
-        if (item.itemID.integerValue || item.menu.menuID.integerValue == MenuDefaultID) {
+        if (item.itemID.integerValue || [item.menu isDefaultMenu]) {
             // If the item had an ID, saving is enabled.
             // Or if the user trying to edit the default menu, saving is enabled.
             // Otherwise the item was never created remotely, so no need to save this deletion.
@@ -533,7 +533,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
     
     // Check if user is trying to save the Default Menu and made changes to it.
-    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
+    if ([menuToSave isDefaultMenu] && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
@@ -562,17 +562,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         [self setViewsWithMenu:menuToSave];
     }
     
+    self.isSaving = YES;
+
     __weak __typeof(self) weakSelf = self;
-    
-    void(^failureToSave)(NSError *) = ^(NSError *error) {
-        weakSelf.isSaving = NO;
-        // Present the error message.
-        NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
-        [WPError showNetworkingAlertWithError:error title:errorTitle];
-    };
-    
-    void(^updateMenu)() = ^() {
-        [weakSelf.menusService updateMenu:menuToSave
+    [self.menusService createOrUpdateMenu:menuToSave
                                   forBlog:weakSelf.blog
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
@@ -580,25 +573,12 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                       weakSelf.isSaving = NO;
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
-                                  failure:failureToSave];
-    };
-    
-    self.isSaving = YES;
-    
-    if (menuToSave.menuID.integerValue == 0) {
-        // Need to create the menu first.
-        [self.menusService createMenuWithName:menuToSave.name
-                                         blog:self.blog
-                                      success:^(NSNumber *menuID) {
-                                          // Set the new menuID and continue the update.
-                                          menuToSave.menuID = menuID;
-                                          updateMenu();
-                                      }
-                                      failure:failureToSave];
-    } else {
-        // Update the menu.
-        updateMenu();
-    }
+                                  failure:^(NSError * _Nonnull error) {
+                                      weakSelf.isSaving = NO;
+                                      // Present the error message.
+                                      NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
+                                      [WPError showNetworkingAlertWithError:error title:errorTitle];
+                                  }];
 }
 
 #pragma mark - MenuHeaderViewControllerDelegate
