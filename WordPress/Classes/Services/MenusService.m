@@ -218,13 +218,6 @@ NS_ASSUME_NONNULL_BEGIN
                    success:(nullable void(^)(NSNumber *menuID))success
                    failure:(nullable MenusServiceFailureBlock)failure
 {
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
-    
-    if (blog.wordPressComRestApi == nil) {
-        return;
-    }
-    
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote createMenuWithName:menuName
                           blog:blog
