@@ -23,6 +23,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 @dynamic authorAvatarURL;
 @dynamic content;
 @dynamic date_created_gmt;
+@dynamic dateModified;
 @dynamic postID;
 @dynamic postTitle;
 @dynamic status;
@@ -171,6 +172,11 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return self.date_created_gmt;
 }
 
+- (BOOL)dateCreatedIsNilOrEqualToDateModified
+{
+    return self.date_created_gmt == nil || [self.date_created_gmt isEqualToDate:self.dateModified];
+}
+
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
@@ -181,7 +187,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
      If the date is now or in the past, and the status is scheduled, set the status
      to published.
      */
-    if (self.date_created_gmt == nil) {
+    if ([self dateCreatedIsNilOrEqualToDateModified]) {
         // A nil date means publish immediately.
         self.status = PostStatusPublish;
 
@@ -199,6 +205,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 - (void)findComments
 {
 }
+
 
 #pragma mark - PostContentProvider protocol
 
