@@ -440,12 +440,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
         WPAnalytics.track(.PostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
 
-        if currentPostListFilter().filterType == .Scheduled {
-            let index = indexForFilterWithType(.Draft)
-            setCurrentFilterIndex(index)
-            return
-        }
-
         createPost()
     }
 
