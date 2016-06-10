@@ -96,10 +96,10 @@ public class WordPressOrgXMLRPCApi: NSObject
      */
     public func callStreamingMethod(method: String,
                            parameters: [AnyObject]?,
-                           usingFileURLForCache fileURL: NSURL,
                            success: SuccessResponseBlock,
                            failure: FailureReponseBlock) -> NSProgress?
     {
+        let fileURL = URLForTemporaryFile()
         //Encode request
         let request: NSURLRequest
         do {
@@ -111,6 +111,7 @@ public class WordPressOrgXMLRPCApi: NSObject
 
         // Create task
         let task = session.uploadTaskWithRequest(request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
+            let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
                 success(responseObject: responseObject, httpResponse: urlResponse as? NSHTTPURLResponse)
@@ -148,6 +149,12 @@ public class WordPressOrgXMLRPCApi: NSObject
         }
 
         return mutableRequest
+    }
+
+    private func URLForTemporaryFile() -> NSURL {
+        let fileName = "\(NSProcessInfo.processInfo().globallyUniqueString)_file.xmlrpc"
+        let fileURL = NSURL.fileURLWithPath(NSTemporaryDirectory()).URLByAppendingPathComponent(fileName)
+        return fileURL
     }
 
     //MARK: - Progress reporting
@@ -203,7 +210,7 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         guard let progress = ongoingProgress[task] else {
             return
-        }        
+        }
         progress.completedUnitCount = totalBytesSent
         if (totalBytesSent == totalBytesExpectedToSend) {
             ongoingProgress.removeValueForKey(task)

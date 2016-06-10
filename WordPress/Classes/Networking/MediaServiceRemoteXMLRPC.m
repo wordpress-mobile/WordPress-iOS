@@ -123,18 +123,11 @@
     }
 
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *directory = [paths objectAtIndex:0];
-    NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
-    NSURL *streamingCacheFileURL = [NSURL fileURLWithPath:streamingCacheFilePath];
-    
+
     NSProgress *localProgress = [self.api callStreamingMethod:@"wp.uploadFile"
                                                    parameters:parameters
-                                         usingFileURLForCache:streamingCacheFileURL
                                                       success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
           NSDictionary *response = (NSDictionary *)responseObject;
-          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
           if (![response isKindOfClass:[NSDictionary class]]) {
               localProgress.completedUnitCount=0;
               localProgress.totalUnitCount=0;
@@ -151,8 +144,7 @@
           }
       } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
           localProgress.completedUnitCount=0;
-          localProgress.totalUnitCount=0;
-          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
+          localProgress.totalUnitCount=0;          
           if (failure) {
               failure(error);
           }
