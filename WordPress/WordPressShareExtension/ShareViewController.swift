@@ -31,6 +31,11 @@ class ShareViewController: SLComposeServiceViewController {
 
     private lazy var postStatus = "publish"
 
+    private lazy var sessionConfiguration: NSURLSessionConfiguration = {
+        NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+    }()
+
+
     // TODO: This should eventually be moved into WordPressComKit
     private let postStatuses = [
         "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
@@ -58,6 +63,7 @@ class ShareViewController: SLComposeServiceViewController {
 
         tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
+        setupBearerToken()
     }
 
 
@@ -82,17 +88,11 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func didSelectPost() {
-        guard let oauth2Token = oauth2Token, selectedSiteID = selectedSiteID else {
+        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
-        RequestRouter.bearerToken = oauth2Token
-
-        let identifier = WPAppGroupName + "." + NSUUID().UUIDString
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-        configuration.sharedContainerIdentifier = WPAppGroupName
-
-        let service = PostService(configuration: configuration)
+        let service = PostService(configuration: sessionConfiguration)
         let linkified = contentText.stringWithAnchoredLinks()
         let (subject, body) = linkified.splitContentTextIntoSubjectAndBody()
 
@@ -179,6 +179,14 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
+    func setupBearerToken() {
+        guard let bearerToken = oauth2Token else {
+            return
+        }
+
+        RequestRouter.bearerToken = bearerToken
+    }
+
     func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
             let current = self.contentText ?? String()
