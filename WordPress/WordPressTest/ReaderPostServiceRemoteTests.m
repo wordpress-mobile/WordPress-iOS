@@ -24,6 +24,9 @@
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img;
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict;
 - (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount;
+- (NSString *)removeInlineStyles:(NSString *)string;
+- (NSString *)postTitleFromPostDictionary:(NSDictionary *)dict;
+- (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content;
 
 @end
 
@@ -99,6 +102,38 @@
 }
 
 #pragma mark - ReaderPostServiceRemote tests
+
+- (void)testTitleIsPlainText {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *strWithHTML = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+    NSString *str = @"Sample text & sample text";
+    NSDictionary *dict = @{@"title": strWithHTML};
+    NSString *sanatizedStr = [remoteService postTitleFromPostDictionary:dict];
+    XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post title was not plain text.");
+}
+
+- (void)testSummaryIsPlainText {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+    NSString *strWithHTML = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+    NSString *str = @"Sample text & sample text";
+    NSDictionary *dict = @{@"excerpt": strWithHTML};
+    NSString *sanatizedStr = [remoteService postSummaryFromPostDictionary:dict orPostContent:strWithHTML];
+    XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post summary was not plain text.");
+}
+
+- (void)testRemoveInlineStyleTags {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *str = @"<p >test</p><p >test</p>";
+    NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
+    NSString *sanitizedStr = [remoteService removeInlineStyles:styleStr];
+    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
+    
+}
 
 - (void)testSiteIsPrivate {
     ReaderPostServiceRemote *remoteService = nil;
