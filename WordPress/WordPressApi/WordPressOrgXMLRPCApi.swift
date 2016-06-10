@@ -82,11 +82,10 @@ public class WordPressOrgXMLRPCApi: NSObject
 
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided, by streaming the request from a file.
-     The locaiton of the file used to stream the request is the one provided in usingFileURLForCache parameter.
+     This allows to do requests that can use a lot of memory, like media uploads.
 
      - parameter method:  the xmlrpc method to be invoked
      - parameter parameters: the parameters to be encoded on the request
-     - parameter usingFileURLForCache: the file URL where to store the request data to sent to the server
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
@@ -94,10 +93,10 @@ public class WordPressOrgXMLRPCApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    public func callStreamingMethod(method: String,
-                           parameters: [AnyObject]?,
-                           success: SuccessResponseBlock,
-                           failure: FailureReponseBlock) -> NSProgress?
+    public func streamCallMethod(method: String,
+                                 parameters: [AnyObject]?,
+                                 success: SuccessResponseBlock,
+                                 failure: FailureReponseBlock) -> NSProgress?
     {
         let fileURL = URLForTemporaryFile()
         //Encode request
