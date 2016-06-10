@@ -142,21 +142,21 @@
     NSString *name = @"foo";
     NSDictionary *dict = @{@"site_name": name};
     NSString *siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     dict = [self metaDictionaryWithKey:@"name" value:name];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     dict = [self editorialDictionaryWithKey:@"blog_name" value:name];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     // Make sure editorial trumps other content.
     NSMutableDictionary *mDict = [dict mutableCopy];
     [mDict setObject:@"bar" forKey:@"site_name"];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
 }
 
@@ -192,17 +192,17 @@
     [dict setObject:dateStr forKey:@"date"];
 
     NSString *str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
 
     dateStr = @"bar";
     [dict setObject:dateStr forKey:@"date_liked"];
     str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
 
     dateStr = @"baz";
     [dict setObject:@{@"displayed_on":dateStr} forKey:@"editorial"];
     str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    XCTAssertEqualObjects(dateStr, str, @"Failed to retrieve the correct date.");
 }
 
 - (void)testIsWPComFromDictionary {
