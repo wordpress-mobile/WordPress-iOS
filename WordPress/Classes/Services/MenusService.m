@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
 
     if (blog.wordPressComRestApi == nil) {
+        if (failure) {
+            failure([self unknownErrorForInvalidApiFailure]);
+        }
         return;
     }
 
@@ -96,7 +99,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
     if (blog.wordPressComRestApi == nil) {
-        return;   
+        if (failure) {
+            failure([self unknownErrorForInvalidApiFailure]);
+        }
+        return;
     }
 
     __weak __typeof(self) weakSelf = self;
@@ -131,6 +137,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
     if (blog.wordPressComRestApi == nil) {
+        if (failure) {
+            failure([self unknownErrorForInvalidApiFailure]);
+        }
         return;
     }
 
@@ -275,6 +284,11 @@ NS_ASSUME_NONNULL_BEGIN
                         }];
                     }
                     failure:failure];
+}
+
+- (NSError *)unknownErrorForInvalidApiFailure
+{
+    return [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUnknown userInfo:nil];
 }
 
 #pragma mark - Menu managed objects from RemoteMenu objects
