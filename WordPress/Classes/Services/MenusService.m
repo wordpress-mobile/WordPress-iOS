@@ -73,11 +73,12 @@ NS_ASSUME_NONNULL_BEGIN
                             blog.menuLocations = [NSOrderedSet orderedSetWithArray:locations];
                             blog.menus = [NSOrderedSet orderedSetWithArray:menus];
                             
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            
-                            if (success) {
-                                success();
-                            }
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                                     withCompletionBlock:^{
+                                                         if (success) {
+                                                             success();
+                                                         }
+                                                     }];
                         }];
                     }
                     failure:failure];
@@ -190,11 +191,12 @@ NS_ASSUME_NONNULL_BEGIN
                                      [items addObject:pageItem];
                                  }
                                  
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-                                 if (success) {
-                                     success(items);
-                                 }
+                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                                          withCompletionBlock:^{
+                                                              if (success) {
+                                                                  success(items);
+                                                              }
+                                                          }];
                              }];
                          }
                          failure:failure];
@@ -264,10 +266,12 @@ NS_ASSUME_NONNULL_BEGIN
                             for (RemoteMenuItem *remoteItem in remoteMenu.items) {
                                 [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
                             }
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            if (success) {
-                                success();
-                            }
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                                     withCompletionBlock:^{
+                                                         if (success) {
+                                                             success();
+                                                         }
+                                                     }];
                         }];
                     }
                     failure:failure];
