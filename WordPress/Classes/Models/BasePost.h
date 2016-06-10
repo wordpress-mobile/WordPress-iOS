@@ -28,6 +28,12 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong, nullable) NSString * author;
 @property (nonatomic, strong, nullable) NSString * authorAvatarURL;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
+/**
+ The dateModified field is used in tandem with date_created_gmt to determine if
+ a draft post should be published immediately. A draft post will "publish immediately"
+ when the date_created_gmt and the modified date match.
+ */
+@property (nonatomic, strong, nullable) NSDate * dateModified;
 @property (nonatomic, strong, nullable) NSString * postTitle;
 @property (nonatomic, strong, nullable) NSString * content;
 @property (nonatomic, strong, nullable) NSString * status;
@@ -99,6 +105,12 @@ extern NSString * const PostStatusDeleted;
  trashed status can also have a date_created_gmt with a future value.
  */
 - (BOOL)hasFuturePublishDate;
+
+/**
+ Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal. 
+ Used when determining if a post should publish immediately.
+ */
+- (BOOL)dateCreatedIsNilOrEqualToDateModified;
 
 /**
  *  Whether there was any attempt ever to upload this post, either successful or failed.
