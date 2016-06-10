@@ -23,6 +23,8 @@ class ShareViewController: SLComposeServiceViewController {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
+    private lazy var previewImageView = UIImageView()
+
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
@@ -46,6 +48,9 @@ class ShareViewController: SLComposeServiceViewController {
 
         // TextView
         loadTextViewContent()
+
+        // ImageView
+        loadImageViewContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -61,7 +66,7 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func loadPreviewView() -> UIView! {
         // Hides Composer Thumbnail Preview.
-        return UIView()
+        return previewImageView
     }
 
     override func isContentValid() -> Bool {
@@ -174,7 +179,7 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    private func loadTextViewContent() {
+    func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
             let current = self.contentText ?? String()
             let source  = url?.absoluteString ?? String()
@@ -182,5 +187,22 @@ private extension ShareViewController
 
             self.textView.text = "\(current)\(spacing)\(source)"
         }
+    }
+
+    func loadImageViewContent() {
+        extensionContext?.loadImageAttachment { image in
+            guard let image = image else {
+                return
+            }
+
+            self.previewImageView.image = image
+            self.previewImageView.translatesAutoresizingMaskIntoConstraints = false
+            self.previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
+            self.previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
+        }
+    }
+
+    enum Constants {
+        static let imageSize = CGSizeMake(90, 90)
     }
 }
