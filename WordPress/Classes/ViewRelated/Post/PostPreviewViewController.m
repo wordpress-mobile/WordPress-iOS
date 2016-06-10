@@ -5,7 +5,6 @@
 #import "PostCategory.h"
 #import "WPUserAgent.h"
 #import "WPStyleGuide+Posts.h"
-#import "WPButtonForNavigationBar.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
