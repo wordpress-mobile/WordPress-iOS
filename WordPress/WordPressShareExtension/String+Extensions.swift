@@ -5,6 +5,8 @@ import Social
 ///
 extension String
 {
+    /// Returns a String with <A>nchored links
+    ///
     func stringWithAnchoredLinks() -> String {
         guard let output = (self as NSString).mutableCopy() as? NSMutableString,
                 let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue) else
@@ -29,5 +31,16 @@ extension String
         }
 
         return output as String
+    }
+
+
+    /// Returns a tuple containing the First Line + Body of the text
+    ///
+    func splitContentTextIntoSubjectAndBody() -> (subject: String, body: String) {
+        let indexOfFirstNewline = rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
+        let firstLineOfText = indexOfFirstNewline != nil ? substringToIndex(indexOfFirstNewline!.startIndex) : self
+        let restOfText = indexOfFirstNewline != nil ? substringFromIndex(indexOfFirstNewline!.endIndex) : ""
+
+        return (firstLineOfText, restOfText)
     }
 }
