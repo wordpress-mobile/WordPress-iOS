@@ -50,6 +50,7 @@ static NSInteger const WPTabBarIconOffset = 5;
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) ReaderViewController *readerViewController;
+@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
@@ -198,7 +199,14 @@ static NSInteger const WPTabBarIconOffset = 5;
     }
 
     self.readerViewController = [[ReaderViewController alloc] init];
-    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
+    self.readerMenuViewController = [[ReaderMenuViewController alloc] init];
+
+    if ([Feature enabled: FeatureFlagReaderMenu]) {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+    } else {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
+    }
+
     _readerNavigationController.navigationBar.translucent = NO;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
