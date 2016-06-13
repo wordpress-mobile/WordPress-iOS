@@ -151,10 +151,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             let width = view.frame.width
 
             tableViewHandler.refreshCachedRowHeightsForWidth(width)
-
-            if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
-                tableView.reloadRowsAtIndexPaths(indexPathsForVisibleRows, withRowAnimation: .None)
-            }
+            tableView.reloadData()
         }
     }
 
