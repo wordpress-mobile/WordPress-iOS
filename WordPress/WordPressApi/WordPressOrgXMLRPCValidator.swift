@@ -20,7 +20,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                                       failure: (error: NSError) -> ()) {
         let xmlrpcURL: NSURL
         do {
-            xmlrpcURL = try urlForXMLRPCFromUrlString(site, addXMLRPC: false)
+            xmlrpcURL = try urlForXMLRPCFromUrlString(site, addXMLRPC: true)
         } catch let error as NSError {
             failure(error: error)
             return
@@ -53,20 +53,17 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         guard scheme == "http" || scheme == "https" else {
             throw WordPressOrgXMLRPCValidatorError.InvalidScheme
         }
-//
-//    // ------------------------------------------------------------------------
-//    // Assume the given url is the home page and XML-RPC sits at /xmlrpc.php
-//    // ------------------------------------------------------------------------
-//    [self logExtraInfo: @"Assume the given url is the home page and XML-RPC sits at /xmlrpc.php" ];
-//    if ([[baseURL lastPathComponent] isEqualToString:@"xmlrpc.php"] || !addXMLRPC) {
-//    xmlrpc = url;
-//    } else {
-//    xmlrpc = [NSString stringWithFormat:@"%@/xmlrpc.php", url];
-//    }
-//    return [NSURL URLWithString:xmlrpc];;
-        guard let url = NSURL(string: urlString) else {
+
+        if baseURL.lastPathComponent != "xmlrpc.php" && addXMLRPC {
+            // Assume the given url is the home page and XML-RPC sits at /xmlrpc.php
+            DDLogSwift.logInfo("Assume the given url is the home page and XML-RPC sits at /xmlrpc.php")
+            resultURLString = "\(resultURLString)/xmlrpc.php"
+        }
+
+        guard let url = NSURL(string: resultURLString) else {
             throw WordPressOrgXMLRPCValidatorError.Invalid
         }
+
         return url
     }
 }

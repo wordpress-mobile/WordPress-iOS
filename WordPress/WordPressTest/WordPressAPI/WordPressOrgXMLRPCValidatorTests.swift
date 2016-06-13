@@ -78,4 +78,36 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
             XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidScheme.rawValue, "Expected to get an WordPressXMLRPCApiEmptyURL error")
         }
     }
+
+    func testGuessXMLRPCURLForSiteForAdditionOfXMLRPC() {
+        stub(isXmlRpcAPIRequest()) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+        }
+
+        let urls = ["http://mywordpresssite.com",
+                    "https://mywordpresssite.com",
+                    "mywordpresssite.com",
+                    "mywordpresssite.com/blog1",
+                    "mywordpresssite.com/xmlrpc.php",
+                    "mywordpresssite.com/xmlrpc.php?test=test"
+        ]
+
+        let validator = WordPressOrgXMLRPCValidator()
+        for url in urls {
+            let expectation = self.expectationWithDescription("Callback should be successful")
+            validator.guessXMLRPCURLForSite(url , success:{ (xmlrpcURL) in
+                expectation.fulfill()
+                XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
+                XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
+                    if xmlrpcURL.query != nil {
+                        XCTAssertEqual(xmlrpcURL.query, "test=test", "Resolved query components doens't match original url: \(url)")
+                    }
+                }, failure:{ (error) in
+                    expectation.fulfill()
+                    XCTFail("This call should succeed")
+            })
+            self.waitForExpectationsWithTimeout(2, handler:nil)
+        }
+    }
 }
