@@ -4806,6 +4806,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
+				F8E9D6D1B6C4AC81C13A19EC /* [CP] Check Pods Manifest.lock */,
 				360A4DA1C76BF72FCC725734 /* [CP] Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
@@ -4818,6 +4819,8 @@
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
 				2F10F29417416E4D8CFE9A58 /* [CP] Embed Pods Frameworks */,
 				9867B4878E9B37ACD2FE0296 /* [CP] Copy Pods Resources */,
+				D33BCB5D36FB24E2E0C25BC4 /* 📦 Embed Pods Frameworks */,
+				4AA17972A78DE9083A3F50C7 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4854,6 +4857,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 932225B71C7CE50400443B02 /* Build configuration list for PBXNativeTarget "WordPressShareExtension" */;
 			buildPhases = (
+				0CB29149E664C8A1C088C69C /* [CP] Check Pods Manifest.lock */,
 				2840707CDEFC8F850A124A68 /* [CP] Check Pods Manifest.lock */,
 				932225A31C7CE50300443B02 /* Sources */,
 				932225A41C7CE50300443B02 /* Frameworks */,
@@ -4861,6 +4865,8 @@
 				F944A302E99C9FB8240D2322 /* [CP] Embed Pods Frameworks */,
 				3A3896BC6381025BE8811D74 /* [CP] Copy Pods Resources */,
 				931B86C51CC1517200A5CA2B /* Delete Frameworks folder (temporary fix for CocoaPods) */,
+				42EA9B701CCF1778F7880C70 /* 📦 Embed Pods Frameworks */,
+				352E89ED29946A6824D3A8EE /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4875,6 +4881,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93E5284D19A7741A003A1A9C /* Build configuration list for PBXNativeTarget "WordPressTodayWidget" */;
 			buildPhases = (
+				41060EB467466C8ED69F5334 /* [CP] Check Pods Manifest.lock */,
 				E314E4D056FBB6E1F6B80D77 /* [CP] Check Pods Manifest.lock */,
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
@@ -4882,6 +4889,8 @@
 				DB903294967AE3CBEC428695 /* [CP] Embed Pods Frameworks */,
 				7575FCC4B042EF86E4B1A17C /* [CP] Copy Pods Resources */,
 				932A1BA81CB2EDB500DAAF48 /* Delete Frameworks folder (temporary fix for CocoaPods) */,
+				F8558EA1D4F07865CF80BAD9 /* 📦 Embed Pods Frameworks */,
+				8FC560A686C99A41F372A14D /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4896,12 +4905,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E16AB93D14D978240047A2E5 /* Build configuration list for PBXNativeTarget "WordPressTest" */;
 			buildPhases = (
+				B7565F78597DC277AB9ED896 /* [CP] Check Pods Manifest.lock */,
 				0815B185BC649893ABE1577D /* [CP] Check Pods Manifest.lock */,
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
 				D5C2A5DCE7DCA5B748019E24 /* [CP] Embed Pods Frameworks */,
 				058455E3701646D47D8A9F72 /* [CP] Copy Pods Resources */,
+				D45ED4D15930897F6A6390B3 /* 📦 Embed Pods Frameworks */,
+				EF67644C5B596E9A2769A48A /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -5232,6 +5244,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		0CB29149E664C8A1C088C69C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		2840707CDEFC8F850A124A68 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5260,6 +5287,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		352E89ED29946A6824D3A8EE /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		360A4DA1C76BF72FCC725734 /* [CP] Check Pods Manifest.lock */ = {
@@ -5292,6 +5334,51 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		41060EB467466C8ED69F5334 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		42EA9B701CCF1778F7880C70 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4AA17972A78DE9083A3F50C7 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7575FCC4B042EF86E4B1A17C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5320,6 +5407,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nconvertPath=`which convert`\necho ${convertPath}\nif [[ ! -f ${convertPath} || -z ${convertPath} ]]; then\necho \"warning: Skipping Icon versioning, you need to install ImageMagick and ghostscript (fonts) first, you can use brew to simplify process:\nbrew install imagemagick\nbrew install ghostscript\"\nexit 0;\nfi\n\ncommit=`git rev-parse --short HEAD`\nbranch=`git rev-parse --abbrev-ref HEAD`\nversion=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_FILE}\"`\nbuild_num=`/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\"`\n\nshopt -s extglob\nshopt -u extglob\ncaption=\"${version}\\n${commit}\"\necho $caption\n\nfunction abspath() { pushd . > /dev/null; if [ -d \"$1\" ]; then cd \"$1\"; dirs -l +0; else cd \"`dirname \\\"$1\\\"`\"; cur_dir=`dirs -l +0`; if [ \"$cur_dir\" == \"/\" ]; then echo \"$cur_dir`basename \\\"$1\\\"`\"; else echo \"$cur_dir/`basename \\\"$1\\\"`\"; fi; fi; popd > /dev/null; }\n\nfunction processIcon() {\n    base_file=$1\n    \n    cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\n    base_path=`find . -name ${base_file}`\n    \n    real_path=$( abspath \"${base_path}\" )\n    echo \"base path ${real_path}\"\n    \n    if [[ ! -f ${base_path} || -z ${base_path} ]]; then\n    return;\n    fi\n    \n    # TODO: if they are the same we need to fix it by introducing temp\n    target_file=`basename $base_path`\n    target_path=\"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${target_file}\"\n    \n    base_tmp_normalizedFileName=\"${base_file%.*}-normalized.${base_file##*.}\"\n    base_tmp_path=`dirname $base_path`\n    base_tmp_normalizedFilePath=\"${base_tmp_path}/${base_tmp_normalizedFileName}\"\n    \n    stored_original_file=\"${base_tmp_normalizedFilePath}-tmp\"\n    if [[ -f ${stored_original_file} ]]; then\n    echo \"found previous file at path ${stored_original_file}, using it as base\"\n    mv \"${stored_original_file}\" \"${base_path}\"\n    fi\n    \n    if [ $CONFIGURATION = \"Release\" ]; then\n    cp \"${base_path}\" \"$target_path\"\n    return 0;\n    fi\n    \n    echo \"Reverting optimized PNG to normal\"\n    # Normalize\n    echo \"xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q ${base_path} ${base_tmp_normalizedFilePath}\"\n    xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q \"${base_path}\" \"${base_tmp_normalizedFilePath}\"\n    \n    # move original pngcrush png to tmp file\n    echo \"moving pngcrushed png file at ${base_path} to ${stored_original_file}\"\n    #rm \"$base_path\"\n    mv \"$base_path\" \"${stored_original_file}\"\n    \n    # Rename normalized png's filename to original one\n    echo \"Moving normalized png file to original one ${base_tmp_normalizedFilePath} to ${base_path}\"\n    mv \"${base_tmp_normalizedFilePath}\" \"${base_path}\"\n    \n    width=`identify -format %w ${base_path}`\n    height=`identify -format %h ${base_path}`\n    band_height=$((($height * 33) / 100))\n    band_position=$(($height - $band_height))\n    text_position=$(($band_position - 3))\n    point_size=$(((13 * $width) / 100))\n    \n    echo \"Image dimensions ($width x $height) - band height $band_height @ $band_position - point size $point_size\"\n    \n    #\n    # blur band and text\n    #\n    convert ${base_path} -blur 10x8 /tmp/blurred.png\n    convert /tmp/blurred.png -gamma 0 -fill white -draw \"rectangle 0,$band_position,$width,$height\" /tmp/mask.png\n    convert -size ${width}x${band_height} xc:none -fill 'rgba(0,0,0,0.2)' -draw \"rectangle 0,0,$width,$band_height\" /tmp/labels-base.png\n    convert -background none -size ${width}x${band_height} -pointsize $point_size -fill white -gravity center -gravity South caption:\"$caption\" /tmp/labels.png\n    \n    convert ${base_path} /tmp/blurred.png /tmp/mask.png -composite /tmp/temp.png\n    \n    rm /tmp/blurred.png\n    rm /tmp/mask.png\n    \n    #\n    # compose final image\n    #\n    filename=New${base_file}\n    convert /tmp/temp.png /tmp/labels-base.png -geometry +0+$band_position -composite /tmp/labels.png -geometry +0+$text_position -geometry +${w}-${h} -composite \"${target_path}\"\n    \n    # clean up\n    rm /tmp/temp.png\n    rm /tmp/labels-base.png\n    rm /tmp/labels.png\n    rm $stored_original_file\n    \n    echo \"Overlayed ${target_path}\"\n}\n\nicon_count=`/usr/libexec/PlistBuddy -c \"Print CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles\" \"${CONFIGURATION_BUILD_DIR}/${INFOPLIST_PATH}\" | wc -l`\nlast_icon_index=$((${icon_count} - 2))\n\ni=0\nwhile [  $i -lt $last_icon_index ]; do\nicon=`/usr/libexec/PlistBuddy -c \"Print CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:$i\" \"${CONFIGURATION_BUILD_DIR}/${INFOPLIST_PATH}\"`\n\nif [[ $icon == *.png ]] || [[ $icon == *.PNG ]]\nthen\nprocessIcon $icon\nelse\nprocessIcon \"${icon}.png\"\nprocessIcon \"${icon}~ipad.png\"\nprocessIcon \"${icon}@2x.png\"\nprocessIcon \"${icon}@2x~ipad.png\"\nprocessIcon \"${icon}@3x.png\"\nprocessIcon \"${icon}-167.png\"\nfi\nlet i=i+1\ndone\n\n# Workaround to fix issue#16 to use wildcard * to actually find the file\n# Only 72x72 and 76x76 that we need for ipad app icons\nprocessIcon \"AppIcon72x72~ipad*\"\nprocessIcon \"AppIcon72x72@2x~ipad*\"\nprocessIcon \"AppIcon76x76~ipad*\"\nprocessIcon \"AppIcon76x76@2x~ipad*\"\nprocessIcon \"AppIcon83.5x83.5@2x~ipad*\"\nprocessIcon \"AppIcon-Internal72x72~ipad*\"\nprocessIcon \"AppIcon-Internal72x72@2x~ipad*\"\nprocessIcon \"AppIcon-Internal76x76~ipad*\"\nprocessIcon \"AppIcon-Internal76x76@2x~ipad*\"\nprocessIcon \"AppIcon-Internal83.5x83.5@2x~ipad*\"";
+		};
+		8FC560A686C99A41F372A14D /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressTodayWidget/Pods-WordPress_Base-WordPressTodayWidget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		931B86C51CC1517200A5CA2B /* Delete Frameworks folder (temporary fix for CocoaPods) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5376,6 +5478,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
+			showEnvVarsInLog = 0;
+		};
+		B7565F78597DC277AB9ED896 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D33BCB5D36FB24E2E0C25BC4 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D45ED4D15930897F6A6390B3 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5C2A5DCE7DCA5B748019E24 /* [CP] Embed Pods Frameworks */ = {
@@ -5455,6 +5602,51 @@
 			showEnvVarsInLog = 0;
 		};
 		E314E4D056FBB6E1F6B80D77 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EF67644C5B596E9A2769A48A /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8558EA1D4F07865CF80BAD9 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressTodayWidget/Pods-WordPress_Base-WordPressTodayWidget-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8E9D6D1B6C4AC81C13A19EC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
