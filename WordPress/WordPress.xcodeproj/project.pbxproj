@@ -821,6 +821,7 @@
 		FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */; };
 		FF492DD91D0EC8A3003C6D1E /* WordPressOrgXMLRPCValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF492DD81D0EC8A3003C6D1E /* WordPressOrgXMLRPCValidator.swift */; };
 		FF492DDB1D0ECA7D003C6D1E /* WordPressOrgXMLRPCValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF492DDA1D0ECA7D003C6D1E /* WordPressOrgXMLRPCValidatorTests.swift */; };
+		FF492DDD1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml in Resources */ = {isa = PBXBuildFile; fileRef = FF492DDC1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml */; };
 		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
@@ -2147,6 +2148,7 @@
 		FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelatedPostsSettingsViewController.m; sourceTree = "<group>"; };
 		FF492DD81D0EC8A3003C6D1E /* WordPressOrgXMLRPCValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPCValidator.swift; sourceTree = "<group>"; };
 		FF492DDA1D0ECA7D003C6D1E /* WordPressOrgXMLRPCValidatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordPressOrgXMLRPCValidatorTests.swift; path = WordPressAPI/WordPressOrgXMLRPCValidatorTests.swift; sourceTree = "<group>"; };
+		FF492DDC1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-system-listmethods.xml"; sourceTree = "<group>"; };
 		FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Formatting.swift"; sourceTree = "<group>"; };
 		FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 38.xcdatamodel"; sourceTree = "<group>"; };
 		FF75933A1BE2423800814D3B /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -4451,6 +4453,7 @@
 				FF9839AC1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json */,
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
+				FF492DDC1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml */,
 			);
 			name = "Mock Data";
 			path = "Test Data";
@@ -5106,6 +5109,7 @@
 			files = (
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
+				FF492DDD1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
