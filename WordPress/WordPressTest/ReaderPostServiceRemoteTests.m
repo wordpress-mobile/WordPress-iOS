@@ -18,12 +18,15 @@
 - (NSString *)siteURLFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)siteNameFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict;
-- (NSString *)sortDateFromPostDictionary:(NSDictionary *)dict;
+- (NSDate *)sortDateFromPostDictionary:(NSDictionary *)dict;
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict;
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img;
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict;
 - (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount;
+- (NSString *)removeInlineStyles:(NSString *)string;
+- (NSString *)postTitleFromPostDictionary:(NSDictionary *)dict;
+- (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content;
 
 @end
 
@@ -100,6 +103,38 @@
 
 #pragma mark - ReaderPostServiceRemote tests
 
+- (void)testTitleIsPlainText {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *strWithHTML = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+    NSString *str = @"Sample text & sample text";
+    NSDictionary *dict = @{@"title": strWithHTML};
+    NSString *sanatizedStr = [remoteService postTitleFromPostDictionary:dict];
+    XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post title was not plain text.");
+}
+
+- (void)testSummaryIsPlainText {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+    NSString *strWithHTML = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+    NSString *str = @"Sample text & sample text";
+    NSDictionary *dict = @{@"excerpt": strWithHTML};
+    NSString *sanatizedStr = [remoteService postSummaryFromPostDictionary:dict orPostContent:strWithHTML];
+    XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post summary was not plain text.");
+}
+
+- (void)testRemoveInlineStyleTags {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *str = @"<p >test</p><p >test</p>";
+    NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
+    NSString *sanitizedStr = [remoteService removeInlineStyles:styleStr];
+    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
+    
+}
+
 - (void)testSiteIsPrivate {
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
@@ -142,21 +177,21 @@
     NSString *name = @"foo";
     NSDictionary *dict = @{@"site_name": name};
     NSString *siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     dict = [self metaDictionaryWithKey:@"name" value:name];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     dict = [self editorialDictionaryWithKey:@"blog_name" value:name];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
     // Make sure editorial trumps other content.
     NSMutableDictionary *mDict = [dict mutableCopy];
     [mDict setObject:@"bar" forKey:@"site_name"];
     siteName = [remoteService siteNameFromPostDictionary:dict];
-    XCTAssertEqual(siteName, name, @"The returned site name did not match what was expected.");
+    XCTAssertEqualObjects(siteName, name, @"The returned site name did not match what was expected.");
 
 }
 
@@ -187,22 +222,21 @@
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
 
-    NSString *dateStr = @"foo";
+    NSDate *now = [NSDate dateWithTimeIntervalSince1970:0];
+    NSString *dateStr = [DateUtils isoStringFromDate:now];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:dateStr forKey:@"date"];
 
-    NSString *str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    NSDate *date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 
-    dateStr = @"bar";
     [dict setObject:dateStr forKey:@"date_liked"];
-    str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 
-    dateStr = @"baz";
     [dict setObject:@{@"displayed_on":dateStr} forKey:@"editorial"];
-    str = [remoteService sortDateFromPostDictionary:dict];
-    XCTAssertEqual(dateStr, str, @"Failed to retrieve the correct date.");
+    date = [remoteService sortDateFromPostDictionary:dict];
+    XCTAssertEqualObjects(date, now, @"Failed to retrieve the correct date.");
 }
 
 - (void)testIsWPComFromDictionary {
