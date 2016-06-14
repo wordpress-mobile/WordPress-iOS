@@ -586,7 +586,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         recentlyTrashedPostObjectIDs.removeAll()
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
         syncItemsWithUserInteraction(false)
     }
 

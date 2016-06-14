@@ -12,22 +12,20 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Methods for configuring the timing of search callbacks.
 
     private var observers = [WPContentSearchObserver]()
-    private let defaultLocalObservationInterval = NSTimeInterval(0.05)
-    private let defaultRemoteObservationInterval = NSTimeInterval(0.30)
+    private let defaultDeferredSearchObservationInterval = NSTimeInterval(0.30)
 
-    /// Add a search callback configured as a common local search.
-    func configureLocalSearchWithCompletion(completion: ()->Void = {}) {
+    func configureImmediateSearch(handler: ()->Void) {
         let observer = WPContentSearchObserver()
-        observer.interval = defaultLocalObservationInterval
-        observer.completion = completion
+        observer.interval = 0.0
+        observer.completion = handler
         observers.append(observer)
     }
 
-    /// Add a search callback configured as a delayed remote search.
-    func configureRemoteSearchWithCompletion(completion: ()->Void = {}) {
+    /// Add a search callback configured as a common deferred search.
+    func configureDeferredSearch(handler: ()->Void) {
         let observer = WPContentSearchObserver()
-        observer.interval = defaultRemoteObservationInterval
-        observer.completion = completion
+        observer.interval = defaultDeferredSearchObservationInterval
+        observer.completion = handler
         observers.append(observer)
     }
 
@@ -40,7 +38,7 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Methods for updating the search.
 
     /// Update the current search text, ideally in real-time along with user input.
-    func searchUpdatedWithText(text: String?) {
+    func searchUpdated(text: String?) {
         stopAllObservers()
         searchText = text ?? ""
         guard let updatedText = text where !updatedText.isEmpty else {
