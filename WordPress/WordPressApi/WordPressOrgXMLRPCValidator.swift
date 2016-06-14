@@ -106,7 +106,11 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                         failure(error:WordPressOrgXMLRPCValidatorError.NotWordPressError.convertToNSError())
                         return
                 }
-                success(xmlrpcURL: url)
+                if let finalURL = httpResponse?.URL {
+                    success(xmlrpcURL: finalURL)
+                } else {
+                    failure(error:WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                }
             }, failure: { (error, httpResponse) in
                 failure(error: error)
             })
