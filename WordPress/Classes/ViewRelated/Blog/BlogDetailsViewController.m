@@ -27,6 +27,12 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
+// NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
+// stats/insights. Per @mtias, if the dashboard should change at some point the
+// redirect will be updated to point to new content, eventhough the path is still
+// "stats/".
+// aerych, 2016-06-14
+NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Helper Classes for Blog Details view model.
 
@@ -583,7 +589,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
     NSString *dashboardUrl;
     if (self.blog.isHostedAtWPcom) {
-        dashboardUrl = [NSString stringWithFormat:@"https://wordpress.com/stats/insights/%@", self.blog.hostname];
+        dashboardUrl = [NSString stringWithFormat:@"%@%@", WPCalypsoDashboardPath, self.blog.hostname];
     } else {
         dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
