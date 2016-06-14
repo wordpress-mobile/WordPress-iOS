@@ -13,17 +13,17 @@ import Foundation
         let message: String
         switch (self) {
         case .EmptyURL:
-            message = NSLocalizedString("Empty URL", comment:"")
+            message = NSLocalizedString("Empty URL", comment:"Message to show to user when he tries to add a self-hosted site that is an empty URL.")
         case .InvalidURL:
-            message = NSLocalizedString("Empty URL", comment:"")
+            message = NSLocalizedString("Invalid URL, please check if you wrote a valid site address.", comment:"Message to show to user when he tries to add a self-hosted site that isn't a valid URL.")
         case .InvalidScheme:
-            message = NSLocalizedString("Empty URL", comment:"")
+            message = NSLocalizedString("Invalid URL scheme inserted, only HTTP and HTTPS are supported.", comment:"Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS.")
         case .NotWordPressError:
-            message = NSLocalizedString("That doesn't look like a WordPress site", comment: "User message when he tries to add a self-hosted site that isn't WordPress")
+            message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
         case .MobilePluginRedirectedError:
-            message = NSLocalizedString("Empty URL", comment:"")
+            message = NSLocalizedString("You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", comment:"")
         case .Invalid:
-            message = NSLocalizedString("Empty URL", comment:"")
+            message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
         }
         let finalError = NSError(domain: castedError.domain,
                                  code: castedError.code,
@@ -45,6 +45,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         do {
             xmlrpcURL = try urlForXMLRPCFromUrlString(site, addXMLRPC: true)
         } catch let error as NSError {
+            DDLogSwift.logError(error.localizedDescription)
             failure(error: error)
             return
         }
@@ -56,14 +57,14 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         // Is an empty url? Sorry, no psychic powers yet
         resultURLString = urlString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         if resultURLString.isEmpty {
-            throw WordPressOrgXMLRPCValidatorError.EmptyURL
+            throw WordPressOrgXMLRPCValidatorError.EmptyURL.convertToNSError()
         }
 
         // Check if it's a valid URL
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
         guard let baseURL = NSURL(string:resultURLString) else {
-            throw WordPressOrgXMLRPCValidatorError.InvalidURL
+            throw WordPressOrgXMLRPCValidatorError.InvalidURL.convertToNSError()
         }
 
         // Let's see if a scheme is provided and it's HTTP or HTTPS
@@ -74,7 +75,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         guard scheme == "http" || scheme == "https" else {
-            throw WordPressOrgXMLRPCValidatorError.InvalidScheme
+            throw WordPressOrgXMLRPCValidatorError.InvalidScheme.convertToNSError()
         }
 
         if baseURL.lastPathComponent != "xmlrpc.php" && addXMLRPC {
@@ -84,7 +85,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         guard let url = NSURL(string: resultURLString) else {
-            throw WordPressOrgXMLRPCValidatorError.Invalid
+            throw WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError()
         }
 
         return url
@@ -100,7 +101,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                         failure(error:WordPressOrgXMLRPCValidatorError.NotWordPressError.convertToNSError())
                         return
                 }
-            success(xmlrpcURL: url)
+                success(xmlrpcURL: url)
             }, failure: { (error, httpResponse) in
                 failure(error: error)
             })
