@@ -42,6 +42,10 @@ class ShareViewController: SLComposeServiceViewController {
         "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
     ]
 
+    private enum Constants {
+        static let imageSize = CGSizeMake(90, 90)
+    }
+
 
 
     // MARK: - UIViewController Methods
@@ -51,14 +55,15 @@ class ShareViewController: SLComposeServiceViewController {
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
 
-        // Authentication
+        // Initialization
         setupBearerToken()
+        setupPreviewImageConstraints()
 
         // TextView
         loadTextViewContent()
 
         // ImageView
-        loadImageViewContent()
+        loadPreviewImage()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -90,22 +95,8 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func didSelectPost() {
-        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
-            fatalError("The view should have been dismissed on viewDidAppear!")
-        }
-
-        let service = PostService(configuration: sessionConfiguration)
-        let linkified = contentText.stringWithAnchoredLinks()
-        let (subject, body) = linkified.splitContentTextIntoSubjectAndBody()
-
-        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
-            (post, error) in
-            print("Post \(post) Error \(error)")
-        }
-
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
-
         tracks.trackExtensionPosted(postStatus)
+        uploadPostContent(contentText)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -189,6 +180,12 @@ private extension ShareViewController
         RequestRouter.bearerToken = bearerToken
     }
 
+    func setupPreviewImageConstraints() {
+        previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
+        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
+    }
+
     func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
             let current = self.contentText ?? String()
@@ -199,40 +196,51 @@ private extension ShareViewController
         }
     }
 
-    func loadImageViewContent() {
+    func loadPreviewImage() {
         extensionContext?.loadImageUrl { url in
             guard let imageURL = url else {
                 return
             }
 
-            self.loadPreviewImage(imageURL)
+// TODO: Maybe resize?
+            self.previewImageView.image = UIImage(contentsOfURL: imageURL)
             self.uploadPostImage(imageURL)
         }
     }
+}
 
-    func loadPreviewImage(imageURL: NSURL) {
-        guard let rawImage = NSData(contentsOfURL: imageURL), let image = UIImage(data: rawImage) else {
-            return
+
+
+/// ShareViewController Extension: Backend Interaction
+///
+private extension ShareViewController
+{
+    func uploadPostContent(content: String) {
+        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
         }
-// TODO: Maybe resize?
-        previewImageView.image = image
-        previewImageView.translatesAutoresizingMaskIntoConstraints = false
-        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
-        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
+
+        let service = PostService(configuration: sessionConfiguration)
+        let (subject, body) = content.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
+
+        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) { (post, error) in
+            print("Post \(post) Error \(error)")
+        }
+
+        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 
     func uploadPostImage(imageURL: NSURL) {
         guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
-
+// TODO: Spinner?
+// TODO: Unlock when uploaded?
+// TODO: Post + Link to the image?
+// TODO: Handle retry?
         let service = MediaService(configuration: sessionConfiguration)
         service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
-            NSLog("Result: \(media) error: \(error)")
+            NSLog("Media: \(media) Error: \(error)")
         }
-    }
-
-    enum Constants {
-        static let imageSize = CGSizeMake(90, 90)
     }
 }
