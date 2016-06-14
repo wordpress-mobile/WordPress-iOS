@@ -44,10 +44,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     ///
     private var nextRequestOffset = 0
 
-    /// Number of pending-rows that trigger the LoadMore call
-    ///
-    private let refreshRowPadding = 4
-
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
@@ -55,6 +51,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
         return predicate
     }
+
+    /// Core Data Context
+    ///
+    private lazy var context: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().newMainContextChildContext()
+    }()
 
     /// Core Data FRC
     ///
@@ -64,8 +66,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        let context = ContextManager.sharedInstance().mainContext
-        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
         frc.delegate = self
         return frc
     }()
@@ -114,11 +115,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     public override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Refresh only when we reach the last 3 rows in the last section!
         let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        guard shouldLoadMore == true && (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
+        guard (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
             return
         }
 
-        loadMorePeople()
+        loadMorePeopleIfNeeded()
     }
 
 
@@ -161,6 +162,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         if let personViewController = segue.destinationViewController as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow
         {
+            personViewController.context = context
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
@@ -173,6 +175,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
     // MARK: - Action Handlers
+
     @IBAction public func refresh() {
         refreshPeople()
     }
@@ -217,47 +220,41 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
-    private func refreshPeople() {
-        guard let blog = blog, service = PeopleService(blog: blog) else {
-            return
-        }
 
-        let completion = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+    // MARK: - Sync Helpers
+
+    private func refreshPeople() {
+        loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
-
-        switch filter {
-        case .Followers:
-            service.refreshFollowers(completion)
-        case .Users:
-            service.refreshUsers(completion)
-        }
     }
 
-    private func loadMorePeople() {
-        guard let blog = blog, service = PeopleService(blog: blog) else {
-            return
-        }
-
-        guard isLoadingMore == false else {
+    private func loadMorePeopleIfNeeded() {
+        guard shouldLoadMore == true && isLoadingMore == false else {
             return
         }
 
         isLoadingMore = true
 
-        let success = { [weak self] (retrieved: Int, shouldLoadMore: Bool) -> Void in
+        loadPeoplePage(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
             self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
         }
+    }
+
+    private func loadPeoplePage(offset: Int = 0, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void)) {
+        guard let blog = blog, service = PeopleService(blog: blog, context: context) else {
+            return
+        }
 
         switch filter {
         case .Followers:
-            service.loadMoreFollowers(nextRequestOffset, success: success)
+            service.loadFollowersPage(nextRequestOffset, success: success)
         case .Users:
-            service.loadMoreUsers(nextRequestOffset, success: success)
+            service.loadUsersPage(nextRequestOffset, success: success)
         }
     }
 
@@ -346,7 +343,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
 
-    // MARK: - Private Helpers
+    // MARK: - Private Structs
 
     private enum Filter : String {
         case Users      = "team"
@@ -374,4 +371,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private enum Storyboard {
         static let inviteSegueIdentifier = "invite"
     }
+
+    private let refreshRowPadding = 4
 }

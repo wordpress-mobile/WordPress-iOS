@@ -6,6 +6,7 @@ import WordPressComKit
 class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
+
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
@@ -28,8 +29,16 @@ class ShareViewController: SLComposeServiceViewController {
 
     private lazy var postStatus = "publish"
 
+    // TODO: This should eventually be moved into WordPressComKit
+    private let postStatuses = [
+        "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
+    ]
+
+
 
     // MARK: - UIViewController Methods
+
     override func viewDidLoad() {
         // Tracker
         tracks.wpcomUsername = wpcomUsername
@@ -48,7 +57,8 @@ class ShareViewController: SLComposeServiceViewController {
 
 
 
-    // MARK: - Overriden Methods
+    // MARK: - SLComposeService Overriden Methods
+
     override func loadPreviewView() -> UIView! {
         // Hides Composer Thumbnail Preview.
         return UIView()
@@ -79,7 +89,7 @@ class ShareViewController: SLComposeServiceViewController {
 
         let service = PostService(configuration: configuration)
         let linkified = contentText.stringWithAnchoredLinks()
-        let (subject, body) = splitContentTextIntoSubjectAndBody(linkified)
+        let (subject, body) = linkified.splitContentTextIntoSubjectAndBody()
 
         service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
             (post, error) in
@@ -108,11 +118,16 @@ class ShareViewController: SLComposeServiceViewController {
 
         return [blogPickerItem, statusPickerItem]
     }
+}
 
 
 
-    // MARK: - Private Helpers
-    private func dismissIfNeeded() {
+
+/// ShareViewController Extension: Encapsulates all of the Action Helpers.
+///
+private extension ShareViewController
+{
+    func dismissIfNeeded() {
         guard oauth2Token == nil else {
             return
         }
@@ -130,7 +145,7 @@ class ShareViewController: SLComposeServiceViewController {
         presentViewController(alertController, animated: true, completion: nil)
     }
 
-    private func displaySitePicker() {
+    func displaySitePicker() {
         let pickerViewController = SitePickerViewController()
         pickerViewController.onChange = { (siteId, description) in
             self.selectedSiteID = siteId
@@ -142,7 +157,7 @@ class ShareViewController: SLComposeServiceViewController {
         pushConfigurationViewController(pickerViewController)
     }
 
-    private func displayStatusPicker() {
+    func displayStatusPicker() {
         let pickerViewController = PostStatusPickerViewController(statuses: postStatuses)
         pickerViewController.onChange = { (status, description) in
             self.postStatus = status
@@ -151,31 +166,21 @@ class ShareViewController: SLComposeServiceViewController {
 
         pushConfigurationViewController(pickerViewController)
     }
+}
 
+
+
+/// ShareViewController Extension: Encapsulates private helpers
+///
+private extension ShareViewController
+{
     private func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
-            dispatch_async(dispatch_get_main_queue()) {
-                let current = self.contentText ?? String()
-                let source  = url?.absoluteString ?? String()
-                let spacing = current.isEmpty ? String() : "\n\n"
+            let current = self.contentText ?? String()
+            let source  = url?.absoluteString ?? String()
+            let spacing = current.isEmpty ? String() : "\n\n"
 
-                self.textView.text = "\(current)\(spacing)\(source)"
-            }
+            self.textView.text = "\(current)\(spacing)\(source)"
         }
-    }
-
-
-    // TODO: This should eventually be moved into WordPressComKit
-    private let postStatuses = [
-        "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
-        "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
-
-    private func splitContentTextIntoSubjectAndBody(contentText: String) -> (subject: String, body: String) {
-        let fullText = contentText
-        let indexOfFirstNewline = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
-        let firstLineOfText = indexOfFirstNewline != nil ? fullText.substringToIndex(indexOfFirstNewline!.startIndex) : fullText
-        let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
-
-        return (firstLineOfText, restOfText)
     }
 }
