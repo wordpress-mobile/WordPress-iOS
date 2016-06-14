@@ -7,6 +7,29 @@ import Foundation
     case NotWordPressError // That's a XML-RPC endpoint but doesn't look like WordPress
     case MobilePluginRedirectedError // There's some "mobile" plugin redirecting everything to their site
     case Invalid // Doesn't look to be valid XMLRPC Endpoint.
+
+    func convertToNSError() -> NSError {
+        let castedError = self as NSError
+        let message: String
+        switch (self) {
+        case .EmptyURL:
+            message = NSLocalizedString("Empty URL", comment:"")
+        case .InvalidURL:
+            message = NSLocalizedString("Empty URL", comment:"")
+        case .InvalidScheme:
+            message = NSLocalizedString("Empty URL", comment:"")
+        case .NotWordPressError:
+            message = NSLocalizedString("That doesn't look like a WordPress site", comment: "User message when he tries to add a self-hosted site that isn't WordPress")
+        case .MobilePluginRedirectedError:
+            message = NSLocalizedString("Empty URL", comment:"")
+        case .Invalid:
+            message = NSLocalizedString("Empty URL", comment:"")
+        }
+        let finalError = NSError(domain: castedError.domain,
+                                 code: castedError.code,
+                                 userInfo: [NSLocalizedDescriptionKey: message])
+        return finalError
+    }
 }
 
 public class WordPressOrgXMLRPCValidator: NSObject {
@@ -28,7 +51,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         success(xmlrpcURL: xmlrpcURL)
     }
 
-    public func urlForXMLRPCFromUrlString(urlString: String, addXMLRPC: Bool) throws -> NSURL {
+    private func urlForXMLRPCFromUrlString(urlString: String, addXMLRPC: Bool) throws -> NSURL {
         var resultURLString = urlString
         // Is an empty url? Sorry, no psychic powers yet
         resultURLString = urlString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
@@ -65,5 +88,21 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         return url
+    }
+
+    private func validateXMLRPCUrl(url:NSURL,
+                                   success: (xmlrpcURL: NSURL) -> (),
+                                   failure: (error: NSError) -> ()) {
+        let api = WordPressOrgXMLRPCApi(endpoint: url)
+        api.callMethod("system.listMethods", parameters: nil, success: { (responseObject, httpResponse) in
+                guard let methods = responseObject as? [String]
+                      where methods.contains("wp.getUsersBlogs") else {
+                        failure(error:WordPressOrgXMLRPCValidatorError.NotWordPressError.convertToNSError())
+                        return
+                }
+            success(xmlrpcURL: url)
+            }, failure: { (error, httpResponse) in
+                failure(error: error)
+            })
     }
 }
