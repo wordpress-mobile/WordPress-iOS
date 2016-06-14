@@ -88,6 +88,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
+    private var searchesSyncing = Int()
 
     // MARK: - Lifecycle
 
@@ -271,10 +272,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func configureSearchHelper() {
         searchHelper.resetConfiguration()
-        searchHelper.configureRemoteSearchWithCompletion { [weak self] in
-            DDLogSwift.logDebug("Starting remote search with text: \(self?.searchHelper.searchText!)")
+        searchHelper.configureImmediateSearch({ [weak self] in
+            self?.updateForLocalPostsMatchingSearchText()
+        })
+        searchHelper.configureDeferredSearch({ [weak self] in
             self?.syncPostsMatchingSearchText()
-        }
+        })
     }
 
     func propertiesForAnalytics() -> [String:AnyObject] {
@@ -384,12 +387,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
     }
 
-    func updateAndPerformFetchRequestRefreshingCachedRowHeights() {
-        updateAndPerformFetchRequest()
-
+    func refreshCachedRowHeightsForTableViewWidth() {
         let width = CGRectGetWidth(tableView.bounds)
         tableViewHandler.refreshCachedRowHeightsForWidth(width)
+    }
 
+    func updateAndPerformFetchRequestRefreshingResults() {
+        updateAndPerformFetchRequest()
+        refreshCachedRowHeightsForTableViewWidth()
         tableView.reloadData()
         refreshResults()
     }
@@ -510,7 +515,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         filter.oldestPostDate = oldestPost.dateCreated()
         filter.hasMore = posts.count >= options.number.integerValue
 
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func numberOfPostsPerSync() -> UInt {
@@ -532,7 +537,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         if recentlyTrashedPostObjectIDs.count > 0 {
             recentlyTrashedPostObjectIDs.removeAll()
-            updateAndPerformFetchRequestRefreshingCachedRowHeights()
+            updateAndPerformFetchRequestRefreshingResults()
         }
 
         let filter = currentPostListFilter()
@@ -836,15 +841,45 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return searchController.searchBar.text
     }
 
-    // MARK: - Remote Searching
+    func updateForLocalPostsMatchingSearchText() {
+        resetTableViewContentOffset()
+        updateAndPerformFetchRequest()
+        refreshCachedRowHeightsForTableViewWidth()
+        tableView.reloadData()
+
+        postsSyncWithSearchWillBegin()
+    }
+
+    func isSyncingPostsWithSearch() -> Bool {
+        return searchesSyncing > 0
+    }
+
+    func postsSyncWithSearchWillBegin() {
+        // Prepare the UI for a state in which a remote search will begin.
+        // Otherwise waiting for the search to begin will result in a delayed UI activity.
+        hideNoResultsView()
+        postListFooterView.showSpinner(true)
+    }
+
+    func postsSyncWithSearchDidBegin() {
+        searchesSyncing += 1
+    }
+
+    func postsSyncWithSearchEnded() {
+        searchesSyncing -= 1
+        if !isSyncingPostsWithSearch() {
+            refreshResults()
+            postListFooterView.showSpinner(false)
+        }
+    }
 
     func syncPostsMatchingSearchText() {
 
+        postsSyncWithSearchDidBegin()
+
         let filter = currentPostListFilter()
         let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
-
         let postService = PostService(managedObjectContext: managedObjectContext())
-
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses
         options.authorID = author
@@ -857,9 +892,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             withOptions: options,
             forBlog: blog,
             success: { [weak self] posts in
-                self?.refreshResults()
+                self?.postsSyncWithSearchEnded()
             }, failure: { [weak self] (error: NSError?) -> () in
-                self?.refreshResults()
+                self?.postsSyncWithSearchEnded()
         })
     }
 
@@ -976,7 +1011,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         recentlyTrashedPostObjectIDs.removeAll()
         updateFilterTitle()
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func updateFilterTitle() {
@@ -1057,12 +1092,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchHelper.searchCanceled()
         searchController.searchBar.text = nil
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func updateSearchResultsForSearchController(searchController: WPSearchController!) {
-        resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
-        searchHelper.searchUpdatedWithText(searchController.searchBar.text)
+        searchHelper.searchUpdated(searchController.searchBar.text)
     }
 }
