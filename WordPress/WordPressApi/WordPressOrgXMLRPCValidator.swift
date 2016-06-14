@@ -53,6 +53,19 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                 success(xmlrpcURL: xmlrpcURL)
             }, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
+                if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication {
+                    failure(error: error)
+                    return
+                }
+                // Try the original given url as an XML-RPC endpoint
+                let  originalXmlrpcURL = try! self.urlForXMLRPCFromUrlString(site, addXMLRPC:false)
+                DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXmlrpcURL)")
+                self.validateXMLRPCUrl(originalXmlrpcURL , success: { (xmlrpcURL) in
+                        success(xmlrpcURL: xmlrpcURL)
+                    }, failure: { (error) in
+                        DDLogSwift.logError(error.localizedDescription)
+                        failure(error: error)
+                })
                 failure(error: error)
             })
     }

@@ -167,4 +167,31 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
+
+    public func testGuessXMLRPCURLForSiteForFallbackToOriginalURL() {
+        let originalURL = "http://mywordpresssite.com/rpc"
+        let appendedURL = "\(originalURL)/xmlrpc.php"
+
+        // Fail url with appended xmlrpc.php request with 403
+        stub(isAbsoluteURLString(appendedURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
+            return fixture(stubPath!, status:403, headers: ["Content-Type":"application/html"])
+        }
+
+        stub(isAbsoluteURLString(originalURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+        }
+
+        let validator = WordPressOrgXMLRPCValidator()
+        let expectation = self.expectationWithDescription("Call should be successful")
+        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+            expectation.fulfill()
+            XCTAssertEqual(xmlrpcURL.absoluteString, originalURL, "Resolved host doens't match the original url: \(originalURL)")
+            }, failure:{ (error) in
+                expectation.fulfill()
+                XCTFail("This call should succeed")
+        })
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+    }
 }
