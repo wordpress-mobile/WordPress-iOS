@@ -49,7 +49,12 @@ public class WordPressOrgXMLRPCValidator: NSObject {
             failure(error: error)
             return
         }
-        success(xmlrpcURL: xmlrpcURL)
+        validateXMLRPCUrl(xmlrpcURL, success: { (xmlrpcURL) in
+                success(xmlrpcURL: xmlrpcURL)
+            }, failure: { (error) in
+                DDLogSwift.logError(error.localizedDescription)
+                failure(error: error)
+            })
     }
 
     private func urlForXMLRPCFromUrlString(urlString: String, addXMLRPC: Bool) throws -> NSURL {
