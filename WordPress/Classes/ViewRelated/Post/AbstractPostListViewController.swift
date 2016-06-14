@@ -440,12 +440,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
         WPAnalytics.track(.PostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
 
-        if currentPostListFilter().filterType == .Scheduled {
-            let index = indexForFilterWithType(.Draft)
-            setCurrentFilterIndex(index)
-            return
-        }
-
         createPost()
     }
 
@@ -657,7 +651,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListPublishAction, withProperties: propertiesForAnalytics())
 
         apost.status = PostStatusPublish
-        apost.setDateCreated(NSDate())
+        if let date = apost.dateCreated() where date == NSDate().laterDate(date) {
+            apost.setDateCreated(NSDate())
+        }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 

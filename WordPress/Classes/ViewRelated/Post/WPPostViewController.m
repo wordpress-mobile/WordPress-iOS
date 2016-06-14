@@ -58,18 +58,10 @@ NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled"
 NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
 NSString* const FormatBarOnboardingWasShown = @"FormatBarOnboardingWasShown";
 
-const CGRect NavigationBarButtonRect = {
-    .origin.x = 0.0f,
-    .origin.y = 0.0f,
-    .size.width = 30.0f,
-    .size.height = 30.0f
-};
-
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
-static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static CGFloat const CompactTitleButtonWidth = 125.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
@@ -210,6 +202,8 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initWithPost:(AbstractPost *)post
                         mode:(WPPostViewControllerMode)mode
 {
+    NSParameterAssert([post isKindOfClass:[Post class]]);
+
     BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
     
@@ -638,13 +632,13 @@ EditImageDetailsViewControllerDelegate
 - (void)showEditButtonOnboarding
 {
     if (!self.wasEditButtonOnboardingShown) {
-        CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+        CGFloat xValue = CGRectGetMaxX(self.view.frame) - [WPStyleGuide navigationBarButtonRect].size.width;
         if (IS_IPAD) {
             xValue -= 20.0;
         } else {
             xValue -= 10.0;
         }
-        CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+        CGRect targetFrame = CGRectMake(xValue, 0.0, [WPStyleGuide navigationBarButtonRect].size.width, 0.0);
         NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
         
         
@@ -715,7 +709,8 @@ EditImageDetailsViewControllerDelegate
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
-            
+            newPost.dateModified = oldPost.dateModified;
+
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
@@ -818,11 +813,6 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showSettings
 {
-    if ([self isMediaUploading]) {
-        [self showMediaUploadingAlert];
-        return;
-    }
-    
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
@@ -1149,20 +1139,6 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Custom UI elements
 
-- (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
-                                             frame:(CGRect)frame
-                                            target:(id)target
-                                          selector:(SEL)selector
-{
-    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
-    
-    button.tintColor = [UIColor whiteColor];
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    
-    return button;
-}
-
 - (UIBarButtonItem*)cancelChevronButton
 {
     if (_cancelChevronButton) {
@@ -1172,12 +1148,11 @@ EditImageDetailsViewControllerDelegate
     UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:NavigationBarButtonRect
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;
-    cancelButton.removeDefaultRightSpacing = YES;
+
+    cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
@@ -1193,12 +1168,11 @@ EditImageDetailsViewControllerDelegate
     }
     
     UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
-                                                                   frame:NavigationBarButtonRect
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
                                                                   target:self
                                                                 selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;
-    cancelButton.removeDefaultRightSpacing = YES;
+
+    cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
@@ -1231,15 +1205,10 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_optionsBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
-        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(showSettings)];
         
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
         button.accessibilityLabel = optionsTitle;
         button.accessibilityIdentifier = @"Options";
@@ -1253,15 +1222,10 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_previewBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
-        WPButtonForNavigationBar* button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+        WPButtonForNavigationBar* button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(showPreview)];
         
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
@@ -1292,15 +1256,10 @@ EditImageDetailsViewControllerDelegate
 {
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
-                                                                 frame:NavigationBarButtonRect
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
                                                                 target:self
                                                               selector:@selector(sharePost)];
 
-        button.removeDefaultRightSpacing = YES;
-        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
-        button.removeDefaultLeftSpacing = YES;
-        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         button.accessibilityLabel = title;
         button.accessibilityIdentifier = @"Share";
@@ -1431,6 +1390,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)discardChanges
 {
+    NSAssert([_post isKindOfClass:[Post class]],
+             @"The post should exist here.");
+
     NSManagedObjectContext* context = self.post.managedObjectContext;
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
@@ -1512,13 +1474,6 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditView:YES];
 }
 
-- (BOOL)shouldPublishImmediately
-{
-    return !self.post.hasFuturePublishDate &&
-        [self.post.original.status isEqualToString:PostStatusDraft] &&
-        [self.post.status isEqualToString:PostStatusPublish];
-}
-
 /**
  *  @brief      Saves the post being edited and uploads it.
  *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
@@ -1530,10 +1485,6 @@ EditImageDetailsViewControllerDelegate
     [self logSavePostStats];
 
     [self.view endEditing:YES];
-    
-    if ([self shouldPublishImmediately]) {
-        self.post.dateCreated = [NSDate date];
-    }
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1775,7 +1726,6 @@ EditImageDetailsViewControllerDelegate
 - (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
@@ -1814,7 +1764,7 @@ EditImageDetailsViewControllerDelegate
     [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
     [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress resignCurrent];
+    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
