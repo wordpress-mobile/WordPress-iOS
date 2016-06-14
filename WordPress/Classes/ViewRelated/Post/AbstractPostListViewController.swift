@@ -665,57 +665,57 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         presentViewController(navController, animated: true, completion: nil)
     }
-    
+
     // MARK: - Searching
-    
+
     func toggleSearch() {
         searchController.active = !searchController.active
     }
-    
+
     func heightForSearchWrapperView() -> Float {
-        
+
         guard let navigationController = navigationController else {
             return Float(SearchWrapperViewMinHeight)
         }
-        
+
         let navBar = navigationController.navigationBar
         let height = navBar.frame.height + self.topLayoutGuide.length
-        
+
         return max(Float(height), Float(SearchWrapperViewMinHeight))
     }
-    
+
     func isSearching() -> Bool {
         return searchController.active && currentSearchTerm()?.characters.count > 0
     }
-    
+
     func currentSearchTerm() -> String? {
         return searchController.searchBar.text
     }
-    
+
     func updateForLocalPostsMatchingSearchText() {
         resetTableViewContentOffset()
         updateAndPerformFetchRequest()
         refreshCachedRowHeightsForTableViewWidth()
         tableView.reloadData()
-        
+
         postsSyncWithSearchWillBegin()
     }
-    
+
     func isSyncingPostsWithSearch() -> Bool {
         return searchesSyncing > 0
     }
-    
+
     func postsSyncWithSearchWillBegin() {
         // Prepare the UI for a state in which a remote search will begin.
         // Otherwise waiting for the search to begin will result in a delayed UI activity.
         hideNoResultsView()
         postListFooterView.showSpinner(true)
     }
-    
+
     func postsSyncWithSearchDidBegin() {
         searchesSyncing += 1
     }
-    
+
     func postsSyncWithSearchEnded() {
         searchesSyncing -= 1
         if !isSyncingPostsWithSearch() {
@@ -723,11 +723,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postListFooterView.showSpinner(false)
         }
     }
-    
+
     func syncPostsMatchingSearchText() {
-        
+
         postsSyncWithSearchDidBegin()
-        
+
         let filter = currentPostListFilter()
         let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
         let postService = PostService(managedObjectContext: managedObjectContext())
@@ -737,7 +737,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = 20
         options.purgesLocalSync = false
         options.search = searchController.searchBar.text
-        
+
         postService.syncPostsOfType(
             postTypeToSync(),
             withOptions: options,
