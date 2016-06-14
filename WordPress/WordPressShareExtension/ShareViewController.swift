@@ -198,15 +198,35 @@ private extension ShareViewController
     }
 
     func loadImageViewContent() {
-        extensionContext?.loadImageAttachment { image in
-            guard let image = image else {
+        extensionContext?.loadImageUrl { url in
+            guard let imageURL = url else {
                 return
             }
 
-            self.previewImageView.image = image
-            self.previewImageView.translatesAutoresizingMaskIntoConstraints = false
-            self.previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
-            self.previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
+            self.loadPreviewImage(imageURL)
+            self.uploadPostImage(imageURL)
+        }
+    }
+
+    func loadPreviewImage(imageURL: NSURL) {
+        guard let rawImage = NSData(contentsOfURL: imageURL), let image = UIImage(data: rawImage) else {
+            return
+        }
+// TODO: Maybe resize?
+        previewImageView.image = image
+        previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
+        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
+    }
+
+    func uploadPostImage(imageURL: NSURL) {
+        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
+        }
+
+        let service = MediaService(configuration: sessionConfiguration)
+        service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
+            NSLog("Result: \(media) error: \(error)")
         }
     }
 
