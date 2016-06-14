@@ -344,8 +344,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
         let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
+        if currentPostListFilter().filterType == .Draft {
+            return [sortDescriptorLocal, NSSortDescriptor(key: "dateModified", ascending: ascending)]
+        }
         let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
-
         return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
     }
 
@@ -458,12 +460,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
         WPAnalytics.track(.PostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
-
-        if currentPostListFilter().filterType == .Scheduled {
-            let index = indexForFilterWithType(.Draft)
-            setCurrentFilterIndex(index)
-            return
-        }
 
         createPost()
     }
