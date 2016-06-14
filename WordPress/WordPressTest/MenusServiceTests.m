@@ -144,6 +144,10 @@
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", [blog dotComID]];
     NSString *name = @"SomeName";
+    Menu *menu = OCMStrictClassMock([MenuForStubbing class]);
+    OCMStub([menu name]).andReturn(name);
+    OCMStub([menu menuID]).andReturn(@(0));
+
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         return ([parameters isKindOfClass:[NSDictionary class]]
                 && [[parameters objectForKey:@"name"] isEqualToString:name]);
@@ -158,8 +162,8 @@
     
     MenusService *service = nil;
     XCTAssertNoThrow(service = [[MenusService alloc] initWithManagedObjectContext:context]);
-    XCTAssertNoThrow([service createMenuWithName:name
-                                            blog:blog
+    XCTAssertNoThrow([service createOrUpdateMenu:menu
+                                            forBlog:blog
                                          success:^(NSNumber *menuID) {}
                                          failure:^(NSError *error) {}]);
 }
@@ -209,7 +213,7 @@
     
     MenusService *service = nil;
     XCTAssertNoThrow(service = [[MenusService alloc] initWithManagedObjectContext:context]);
-    XCTAssertNoThrow([service updateMenu:menu
+    XCTAssertNoThrow([service createOrUpdateMenu:menu
                                  forBlog:blog
                                  success:^(){}
                                  failure:^(NSError *error) {}]);
