@@ -1,13 +1,8 @@
-<?xml version='1.0'?>
 <methodResponse>
     <params>
         <param>
             <value>
-                <array>
-                    <data>
-                        <value><string>wp.getUsersBlogs</string></value>
-                    </data>
-                </array>
+                <string>123</string>
             </value>
         </param>
     </params>

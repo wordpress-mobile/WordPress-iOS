@@ -21,6 +21,10 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         }
     }
 
+    private func isAbsoluteURLString(urlString: String) -> OHHTTPStubsTestBlock {
+        return { req in req.URL?.absoluteString == urlString }
+    }
+
     public func testGuessXMLRPCURLForSiteForEmptyURLs() {
         var errorToCheck: NSError?
         let validator = WordPressOrgXMLRPCValidator()
@@ -135,5 +139,32 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
             })
             self.waitForExpectationsWithTimeout(2, handler:nil)
         }
+    }
+
+    func testGuessXMLRPCURLForSiteForSucessfulRedirects() {
+        let originalURL = "http://mywordpresssite.com/xmlrpc.php"
+        let redirectedURL = "https://mywordpresssite.com/xmlrpc.php"
+
+        // Fail first request with 301
+        stub(isAbsoluteURLString(originalURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
+            return fixture(stubPath!, status:301, headers: ["Content-Type":"application/html", "Location":redirectedURL])
+        }
+
+        stub(isAbsoluteURLString(redirectedURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+        }
+
+        let validator = WordPressOrgXMLRPCValidator()
+        let expectation = self.expectationWithDescription("Call should be successful")
+        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+            expectation.fulfill()
+            XCTAssertEqual(xmlrpcURL.absoluteString, redirectedURL, "Resolved host doens't match the redirected url: \(redirectedURL)")
+            }, failure:{ (error) in
+                expectation.fulfill()
+                XCTFail("This call should succeed")
+        })
+        self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 }
