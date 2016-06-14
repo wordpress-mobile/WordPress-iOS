@@ -4,7 +4,7 @@ import OHHTTPStubs
 
 public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
-    let xmlrpcEndpoint = "http://wordpress.org/xmlrpc.php"
+    let xmlrpcEndpoint = "http://mywordpresssite.com/xmlrpc.php"
 
     public override func setUp() {
         super.setUp()
@@ -17,7 +17,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
     private func isXmlRpcAPIRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.xmlrpcEndpoint
+            return request.URL?.host == "mywordpresssite.com"
         }
     }
 
@@ -76,6 +76,32 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
             self.waitForExpectationsWithTimeout(2, handler:nil)
             XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressXMLRPCApiErrorDomain error")
             XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidScheme.rawValue, "Expected to get an WordPressXMLRPCApiEmptyURL error")
+        }
+    }
+
+    public func testGuessXMLRPCURLForSiteForCorrectSchemes() {
+
+        stub(isXmlRpcAPIRequest()) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+        }
+
+        let validSchemes = ["http://mywordpresssite.com/xmlrpc.php",
+                            "https://mywordpresssite.com/xmlrpc.php",
+                            "mywordpresssite.com/xmlrpc.php"
+        ]
+        let validator = WordPressOrgXMLRPCValidator()
+        for url in validSchemes {
+            let expectation = self.expectationWithDescription("Callback should be successful")
+            validator.guessXMLRPCURLForSite(url , success:{ (xmlrpcURL) in
+                expectation.fulfill()
+                XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
+                XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
+                }, failure:{ (error) in
+                    expectation.fulfill()
+                    XCTFail("This call should succeed")
+            })
+            self.waitForExpectationsWithTimeout(2, handler:nil)
         }
     }
 
