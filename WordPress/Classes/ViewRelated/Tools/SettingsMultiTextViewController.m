@@ -3,6 +3,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 
+static CGVector const SettingsTextPadding = {11.0f, 3.0f};
 static CGFloat const HorizontalMargin = 10.0f;
 
 @interface SettingsMultiTextViewController() <UITextViewDelegate>
