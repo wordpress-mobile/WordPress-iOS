@@ -51,6 +51,9 @@ class ShareViewController: SLComposeServiceViewController {
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
 
+        // Authentication
+        setupBearerToken()
+
         // TextView
         loadTextViewContent()
 
@@ -63,7 +66,6 @@ class ShareViewController: SLComposeServiceViewController {
 
         tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
-        setupBearerToken()
     }
 
 
