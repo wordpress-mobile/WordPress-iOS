@@ -202,6 +202,8 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initWithPost:(AbstractPost *)post
                         mode:(WPPostViewControllerMode)mode
 {
+    NSParameterAssert([post isKindOfClass:[Post class]]);
+
     BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
     
@@ -1388,6 +1390,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)discardChanges
 {
+    NSAssert([_post isKindOfClass:[Post class]],
+             @"The post should exist here.");
+
     NSManagedObjectContext* context = self.post.managedObjectContext;
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
