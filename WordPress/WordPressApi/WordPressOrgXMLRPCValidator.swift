@@ -66,7 +66,6 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                         DDLogSwift.logError(error.localizedDescription)
                         failure(error: error)
                 })
-                failure(error: error)
             })
     }
 
@@ -127,5 +126,53 @@ public class WordPressOrgXMLRPCValidator: NSObject {
             }, failure: { (error, httpResponse) in
                 failure(error: error)
             })
+    }
+
+    private func guessXMLRPCURLFromHTMLURL(htmlURL: NSURL,
+                                           success: (xmlrpcURL: NSURL) -> (),
+                                           failure: (error: NSError) -> ()) {
+        DDLogSwift.logInfo("Fetch the original url and look for the RSD link by using RegExp")
+        let session = NSURLSession()
+        let dataTask = session.dataTaskWithURL(htmlURL) { (data, response, error) in
+            if let error = error {
+                failure(error: error)
+                return
+            }
+            guard let data = data,
+                  let responseString = NSString(data: data, encoding: NSUTF8StringEncoding),
+                  let rsdURLRegExp = try? NSRegularExpression(pattern:"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>", options: [.CaseInsensitive])
+            else {
+                    failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                return
+            }
+
+            let matches = rsdURLRegExp.matchesInString(responseString as String, options:NSMatchingOptions(), range:NSMakeRange(0, responseString.length))
+            if matches.count <= 0 {
+                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                return
+            }
+            let rsdURLRange = matches[0].rangeAtIndex(1)
+            if rsdURLRange.location == NSNotFound {
+                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                return
+            }
+            let rsdURL = responseString.substringWithRange(rsdURLRange)
+            // Try removing "?rsd" from the url, it should point to the XML-RPC endpoint
+            let xmlrpc = rsdURL.stringByReplacingOccurrencesOfString("?rsd", withString:"")
+            if xmlrpc != rsdURL {
+                guard let newURL = NSURL(string: xmlrpc) else {
+                    failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                    return
+                }
+                self.validateXMLRPCUrl(newURL, success: success, failure: { (error) in
+                    //Try to validate by using the RSD file directly
+                    failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                })
+            } else {
+                //Try to validate by using the RSD file directly
+                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+            }
+        }
+        dataTask.resume()
     }
 }
