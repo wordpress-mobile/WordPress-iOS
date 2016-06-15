@@ -14,30 +14,27 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     }
 
 
-    /// Specifies the number of entities to be retrieved on each query.
-    ///
-    private let pageSize = 20
-
-
     /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
     ///     - offset: The first N users to be skipped in the returned array.
-    ///     - success: Closure to be executed on success
+    ///     - count: Number of objects to retrieve.
+    ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Users.
     ///
     func getUsers(siteID: Int,
                   offset: Int = 0,
+                  count: Int,
                   success: ((users: [User], hasMore: Bool) -> Void),
                   failure: (ErrorType -> Void))
     {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
         let parameters: [String: AnyObject] = [
-            "number"    : pageSize,
+            "number"    : count,
             "offset"    : offset,
             "order_by"  : "display_name",
             "order"     : "ASC",
@@ -64,7 +61,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
-    ///     - offset: The first N followers to be skipped in the returned array.
+    ///     - count: The first N followers to be skipped in the returned array.
+    ///     - size: Number of objects to retrieve.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
@@ -72,14 +70,15 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     func getFollowers(siteID: Int,
                       offset: Int = 0,
+                      count: Int,
                       success: ((followers: [Follower], hasMore: Bool) -> Void),
                       failure: ErrorType -> ())
     {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let pageNumber = (offset / pageSize + 1)
+        let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
-            "number"    : pageSize,
+            "number"    : count,
             "page"      : pageNumber,
             "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
