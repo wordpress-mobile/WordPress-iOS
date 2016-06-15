@@ -27,10 +27,6 @@ class ShareViewController: SLComposeServiceViewController {
         MediaView()
     }()
 
-    private lazy var sessionConfiguration: NSURLSessionConfiguration = {
-        NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-    }()
-
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
@@ -90,8 +86,25 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func didSelectPost() {
+        guard let _ = oauth2Token, siteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
+        }
+
+        // Upload Media, if any
+        uploadImageIfNeeded(mediaView.mediaURL, siteID: siteID) { media in
+            // Proceed uploading the actual post
+            var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
+
+            if let mediaURL = media?.remoteURL {
+                body = body.stringByPrependingMediaURL(mediaURL)
+            }
+            self.uploadPostWithSubject(subject, body: body, status: self.postStatus, siteID: siteID)
+
+// TODO: Handle retry?
+        }
+
         tracks.trackExtensionPosted(postStatus)
-        uploadPostWithContent(contentText)
+        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -198,32 +211,25 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func uploadMediaWithURL(imageURL: NSURL) {
-        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
-            fatalError("The view should have been dismissed on viewDidAppear!")
+    func uploadImageIfNeeded(imageURL: NSURL?, siteID: Int, completion: Media? -> ()) {
+        guard let imageURL = imageURL else {
+            completion(nil)
+            return
         }
 
-// TODO: Post + Link to the image?
-// TODO: Handle retry?
-
-        let service = MediaService(configuration: sessionConfiguration)
-        service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+        let service = MediaService(configuration: configuration)
+        service.createMedia(imageURL, siteID: siteID) { (media, error) in
             NSLog("Media: \(media) Error: \(error)")
+            completion(media)
         }
     }
 
-    func uploadPostWithContent(content: String) {
-        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
-            fatalError("The view should have been dismissed on viewDidAppear!")
-        }
-
-        let service = PostService(configuration: sessionConfiguration)
-        let (subject, body) = content.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
-
-        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) { (post, error) in
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int) {
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+        let service = PostService(configuration: configuration)
+        service.createPost(siteID: siteID, status: status, title: subject, body: body) { (post, error) in
             print("Post \(post) Error \(error)")
         }
-
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 }
