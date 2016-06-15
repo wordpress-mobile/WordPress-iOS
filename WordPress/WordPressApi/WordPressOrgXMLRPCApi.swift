@@ -176,20 +176,20 @@ public class WordPressOrgXMLRPCApi: NSObject
 
     //MARK: - Handling of data
 
-    private func handleResponseWithData(data: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
-        guard let data = data,
+    private func handleResponseWithData(originalData: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
+        guard let data = originalData,
             let httpResponse = urlResponse as? NSHTTPURLResponse,
             let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
             where error == nil else {
                 if let unwrappedError = error {
-                    throw unwrappedError
+                    throw convertError(unwrappedError, data: originalData)
                 } else {
-                    throw WordPressOrgXMLRPCApiError.Unknown
+                    throw convertError(WordPressOrgXMLRPCApiError.Unknown as NSError, data: originalData)
                 }
         }
 
         if ["application/xml", "text/xml"].filter({ (type) -> Bool in return contentType.hasPrefix(type)}).count == 0 {
-            throw WordPressOrgXMLRPCApiError.ResponseSerializationFailed
+            throw convertError(WordPressOrgXMLRPCApiError.ResponseSerializationFailed as NSError, data: originalData)
         }
 
         let decoder = WPXMLRPCDecoder(data: data)
@@ -197,10 +197,21 @@ public class WordPressOrgXMLRPCApi: NSObject
         guard !decoder.isFault(),
             let responseXML = decoder.object() else {
                 let decoderError = decoder.error()
-                throw decoderError
+                throw convertError(decoderError, data: data)
         }
 
         return responseXML
+    }
+
+    public static let WordPressOrgXMLRPCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
+
+    private func convertError(error: NSError, data: NSData?) -> NSError {
+        if let data = data {
+            var userInfo:[NSObject:AnyObject] = error.userInfo ?? [:]
+            userInfo[self.dynamicType.WordPressOrgXMLRPCApiErrorKeyData] = data
+            return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+        }
+        return error
     }
 }
 
@@ -258,6 +269,8 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate 
             completionHandler(.PerformDefaultHandling, nil)
         }
     }
+
+
 }
 
 /**
