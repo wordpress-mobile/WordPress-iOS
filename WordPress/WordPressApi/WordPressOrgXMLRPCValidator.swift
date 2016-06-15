@@ -64,7 +64,8 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                         success(xmlrpcURL: xmlrpcURL)
                     }, failure: { (error) in
                         DDLogSwift.logError(error.localizedDescription)
-                        failure(error: error)
+                        // Fetch the original url and look for the RSD link
+                        self.guessXMLRPCURLFromHTMLURL(originalXmlrpcURL, success: success, failure: failure)
                 })
             })
     }
@@ -132,7 +133,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                                            success: (xmlrpcURL: NSURL) -> (),
                                            failure: (error: NSError) -> ()) {
         DDLogSwift.logInfo("Fetch the original url and look for the RSD link by using RegExp")
-        let session = NSURLSession()
+        let session = NSURLSession(configuration:NSURLSessionConfiguration.ephemeralSessionConfiguration())
         let dataTask = session.dataTaskWithURL(htmlURL) { (data, response, error) in
             if let error = error {
                 failure(error: error)
