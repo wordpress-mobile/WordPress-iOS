@@ -50,4 +50,9 @@ NSInteger const MenuDefaultID = -1;
     return NSLocalizedString(@"Default Menu", @"Menu name for the defaut menu that is automatically generated.");
 }
 
+- (BOOL)isDefaultMenu
+{
+    return self.menuID.integerValue == MenuDefaultID;
+}
+
 @end

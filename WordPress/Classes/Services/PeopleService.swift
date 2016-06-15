@@ -10,74 +10,36 @@ struct PeopleService {
 
     /// MARK: - Private Properties
     ///
-    private let context = ContextManager.sharedInstance().mainContext
+    private let context: NSManagedObjectContext
     private let remote: PeopleRemote
 
 
     /// Designated Initializer.
     ///
-    /// - Parameter blog: Target Blog Instance
+    /// - Parameters:
+    ///     - blog: Target Blog Instance
+    ///     - context: CoreData context to be used.
     ///
-    init?(blog: Blog) {
+    init?(blog: Blog, context: NSManagedObjectContext) {
         guard let api = blog.wordPressComRestApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
-        remote = PeopleRemote(wordPressComRestApi: api)
-        siteID = dotComID
+        self.remote = PeopleRemote(wordPressComRestApi: api)
+        self.siteID = dotComID
+        self.context = context
     }
 
-    /// Refreshes the Users associated to the current blog.
+    /// Loads a page of Users associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func refreshUsers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getUsers(siteID, success: { users, hasMore in
-            // Note:
-            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
-            //
-            self.mergePeople(users)
-            self.purgePeople(users)
-            success(retrieved: users.count, shouldLoadMore: hasMore)
-
-        }, failure: { error in
-            DDLogSwift.logError(String(error))
-            failure?(error)
-        })
-    }
-
-    /// Refreshes the Followers associated to the current blog.
-    ///
-    /// - Parameters:
-    ///     - success: Closure to be executed on success.
-    ///     - failure: Closure to be executed on failure.
-    ///
-    func refreshFollowers(success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getFollowers(siteID, success: { followers, hasMore in
-            // Note:
-            // Since we support Infinite Scrolling, on refresh, always purgue and just keep the top N results.
-            //
-            self.mergePeople(followers)
-            self.purgePeople(followers)
-            success(retrieved: followers.count, shouldLoadMore: hasMore)
-
-        }, failure: { error in
-            DDLogSwift.logError(String(error))
-            failure?(error)
-        })
-    }
-
-    /// Attempts to retrieve more users from the backend.
-    ///
-    /// - Parameters:
-    ///     - offset: Number of records to skip
-    ///     - success: Closure to be executed on success.
-    ///     - failure: Closure to be executed on failure.
-    ///
-    func loadMoreUsers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getUsers(siteID, offset: offset, success: { (users, hasMore) in
+    func loadUsersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, offset: offset, count: count, success: { users, hasMore in
             self.mergePeople(users)
             success(retrieved: users.count, shouldLoadMore: hasMore)
 
@@ -87,15 +49,16 @@ struct PeopleService {
         })
     }
 
-    /// Attempts to retrieve more followers from the backend.
+    /// Loads a page of Followers associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
-    ///     - offset: Number of records to skip
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure.
     ///
-    func loadMoreFollowers(offset: Int, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
-        remote.getFollowers(siteID, offset: offset, success: { (followers, hasMore) in
+    func loadFollowersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
             self.mergePeople(followers)
             success(retrieved: followers.count, shouldLoadMore: hasMore)
 
@@ -104,7 +67,6 @@ struct PeopleService {
             failure?(error)
         })
     }
-
 
     /// Updates a given User with the specified role.
     ///
@@ -134,7 +96,6 @@ struct PeopleService {
             }
 
             managedPerson.role = pristineRole
-            ContextManager.sharedInstance().saveContext(self.context)
 
             let reloadedPerson = User(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
@@ -142,7 +103,6 @@ struct PeopleService {
 
         // Pre-emptively update the role
         managedPerson.role = role.description
-        ContextManager.sharedInstance().saveContext(context)
 
         return User(managedPerson: managedPerson)
     }
@@ -165,14 +125,12 @@ struct PeopleService {
 
             // Revert the deletion
             self.createManagedPerson(user)
-            ContextManager.sharedInstance().saveContext(self.context)
 
             failure?(error)
         })
 
         // Pre-emptively nuke the entity
         context.deleteObject(managedPerson)
-        ContextManager.sharedInstance().saveContext(context)
     }
 
     /// Retrieves the collection of Roles, available for a given site
@@ -250,20 +208,6 @@ private extension PeopleService {
                 createManagedPerson(remotePerson)
             }
         }
-
-        ContextManager.sharedInstance().saveContext(context)
-    }
-
-    /// Purges the local entities that do not have a remote counterpart.
-    ///
-    func purgePeople<T : Person>(remotePeople: [T]) {
-        let localPeople = loadPeople(siteID, type: T.self)
-
-        let remoteIDs = Set(remotePeople.map({ $0.ID }))
-        let localIDs = Set(localPeople.map({ $0.ID }))
-
-        let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs, type: T.self)
     }
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.

@@ -87,7 +87,8 @@ class RoleViewController : UITableViewController {
 
         activityIndicator.startAnimating()
 
-        let service = PeopleService(blog: blog)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PeopleService(blog: blog, context: context)
         service?.loadAvailableRoles({ roles in
             self.roles = roles
             self.tableView.reloadData()
