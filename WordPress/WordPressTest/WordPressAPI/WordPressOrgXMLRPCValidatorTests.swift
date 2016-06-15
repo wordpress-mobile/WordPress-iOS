@@ -194,4 +194,46 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
+
+    public func testGuessXMLRPCURLForSiteForFallbackToStandardRSD() {
+        let baseURL = "http://mywordpresssite.com"
+        let htmlURL = baseURL.stringByAppendingString("wp-login")
+        let appendedURL = htmlURL.stringByAppendingString("/xmlrpc.php")
+        let xmlRPCURL = baseURL.stringByAppendingString("/xmlrpc.php")
+        let rsdURL = xmlRPCURL.stringByAppendingString("?rsd")
+
+        // Fail url with appended xmlrpc.php request with 403
+        stub(isAbsoluteURLString(appendedURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)!
+            return fixture(stubPath, status:403, headers: ["Content-Type":"application/html"])
+        }
+
+        // Return html page for original url
+        stub(isAbsoluteURLString(htmlURL)) { request in
+            let stubPath = OHPathForFile("html_page_with_link_to_rsd.html", self.dynamicType)!
+            return fixture(stubPath, status:200, headers: ["Content-Type":"application/html"])
+        }
+
+        // Return rsd xml
+        stub(isAbsoluteURLString(rsdURL)) { request in
+            let stubPath = OHPathForFile("rsd.xml", self.dynamicType)!
+            return fixture(stubPath, status:200, headers: nil)
+        }
+
+        stub(isAbsoluteURLString(xmlRPCURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)!
+            return fixture(stubPath, headers: ["Content-Type":"application/xml"])
+        }
+
+        let validator = WordPressOrgXMLRPCValidator()
+        let expectation = self.expectationWithDescription("Call should be successful")
+        validator.guessXMLRPCURLForSite(htmlURL , success:{ (xmlrpcURL) in
+            expectation.fulfill()
+            XCTAssertEqual(xmlrpcURL.absoluteString, xmlRPCURL, "Resolved host doens't match the xml rpc url: \(xmlRPCURL)")
+            }, failure:{ (error) in
+                expectation.fulfill()
+                XCTFail("This call should succeed")
+        })
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+    }
 }
