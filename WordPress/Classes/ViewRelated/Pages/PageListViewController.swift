@@ -610,7 +610,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         case .Draft:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         case .Scheduled:
-            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled pages in the oages list and there are no pages")
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
         case .Trashed:
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
         default:
