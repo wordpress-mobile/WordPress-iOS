@@ -278,4 +278,24 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
+
+    public func testGuessXMLRPCURLForSiteForFaultAnswers() {
+        let originalURL = "http://originalURL/xmlrpc.php"
+        stub(isAbsoluteURLString(originalURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-fault.xml", self.dynamicType)!
+            return fixture(stubPath, status:200, headers: ["Content-Type":"application/xml"])
+        }
+
+        let validator = WordPressOrgXMLRPCValidator()
+        let expectation = self.expectationWithDescription("Call should fail gracefull")
+        validator.guessXMLRPCURLForSite(originalURL,
+            success:{ (xmlrpcURL) in
+                expectation.fulfill()
+                XCTFail("Call to faul responseshould not enter success block.")
+            }, failure:{ (error) in
+                expectation.fulfill()
+                XCTAssertTrue(!error.domain.isEmpty, "Check if we are getting an error message")
+        })
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }
