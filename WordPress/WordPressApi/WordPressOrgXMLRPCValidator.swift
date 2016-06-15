@@ -171,8 +171,38 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                 })
             } else {
                 //Try to validate by using the RSD file directly
-                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                self.guessXMLRPCURLFromRSD(rsdURL, success: success, failure: failure)
             }
+        }
+        dataTask.resume()
+    }
+
+    private func guessXMLRPCURLFromRSD(rsd: String,
+                                       success: (xmlrpcURL: NSURL) -> (),
+                                       failure: (error: NSError) -> ()) {
+        DDLogSwift.logInfo("Parse the RSD document at the following URL: \(rsd)")
+        guard let rsdURL = NSURL(string: rsd) else {
+            failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+            return
+        }
+        let session = NSURLSession(configuration:NSURLSessionConfiguration.ephemeralSessionConfiguration())
+        let dataTask = session.dataTaskWithURL(rsdURL) { (data, response, error) in
+            if let error = error {
+                failure(error: error)
+                return
+            }
+            guard let data = data,
+                let responseString = String(data: data, encoding: NSUTF8StringEncoding),
+                let parser = WordPressRSDParser(xmlString: responseString),
+                let endpoint = (try? parser.parsedEndpoint()),
+                let xmlrpc = endpoint,
+                let xmlrpcURL = NSURL(string: xmlrpc)
+                else {
+                    failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
+                    return
+            }
+            DDLogSwift.logInfo("Bingo! We found the WordPress XML-RPC element: \(xmlrpcURL)")
+            self.validateXMLRPCUrl(xmlrpcURL, success: success, failure: failure)
         }
         dataTask.resume()
     }
