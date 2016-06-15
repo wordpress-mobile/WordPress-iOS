@@ -57,9 +57,9 @@ class ShareViewController: SLComposeServiceViewController {
         // Initialization
         setupBearerToken()
 
-        // Load: TextView + ImageView
+        // Load TextView + PreviewImage
         loadTextViewContent()
-        loadPreviewImage()
+        loadPreviewImageAndUploadIfNeeded()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -91,7 +91,7 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func didSelectPost() {
         tracks.trackExtensionPosted(postStatus)
-        uploadPostContent(contentText)
+        uploadPostWithContent(contentText)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -185,15 +185,29 @@ private extension ShareViewController
         }
     }
 
-    func loadPreviewImage() {
+    func loadPreviewImageAndUploadIfNeeded() {
         extensionContext?.loadImageUrl { url in
             guard let imageURL = url else {
                 return
             }
 
-// TODO: Maybe resize?
-            self.mediaView.image = UIImage(contentsOfURL: imageURL)
-            self.uploadPostImage(imageURL)
+            self.displayPreviewImage(imageURL)
+            self.uploadMediaWithURL(imageURL)
+        }
+    }
+
+
+    func displayPreviewImage(imageURL: NSURL) {
+        let maximumSize = self.mediaView.maximumSize
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            let image = UIImage(contentsOfURL: imageURL)?.resizedImageWithContentMode(.ScaleAspectFit,
+                bounds: maximumSize,
+                interpolationQuality: .High)
+
+            dispatch_async(dispatch_get_main_queue()) {
+                self.mediaView.image = image
+            }
         }
     }
 }
@@ -204,7 +218,7 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func uploadPostContent(content: String) {
+    func uploadPostWithContent(content: String) {
         guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
@@ -219,7 +233,7 @@ private extension ShareViewController
         extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 
-    func uploadPostImage(imageURL: NSURL) {
+    func uploadMediaWithURL(imageURL: NSURL) {
         guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
@@ -227,11 +241,9 @@ private extension ShareViewController
 // TODO: Unlock when uploaded?
 // TODO: Post + Link to the image?
 // TODO: Handle retry?
-        let service = MediaService(configuration: sessionConfiguration)
-
-
         mediaView.startSpinner()
-
+        
+        let service = MediaService(configuration: sessionConfiguration)
         service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
             NSLog("Media: \(media) Error: \(error)")
 
