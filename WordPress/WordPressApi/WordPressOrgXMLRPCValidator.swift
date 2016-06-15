@@ -49,9 +49,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
             failure(error: error)
             return
         }
-        validateXMLRPCUrl(xmlrpcURL, success: { (xmlrpcURL) in
-                success(xmlrpcURL: xmlrpcURL)
-            }, failure: { (error) in
+        validateXMLRPCUrl(xmlrpcURL, success: success, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
                 if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
                    error.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.rawValue
@@ -62,9 +60,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                 // Try the original given url as an XML-RPC endpoint
                 let  originalXmlrpcURL = try! self.urlForXMLRPCFromUrlString(site, addXMLRPC:false)
                 DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXmlrpcURL)")
-                self.validateXMLRPCUrl(originalXmlrpcURL , success: { (xmlrpcURL) in
-                        success(xmlrpcURL: xmlrpcURL)
-                    }, failure: { (error) in
+                self.validateXMLRPCUrl(originalXmlrpcURL , success: success, failure: { (error) in
                         DDLogSwift.logError(error.localizedDescription)
                         // Fetch the original url and look for the RSD link
                         self.guessXMLRPCURLFromHTMLURL(originalXmlrpcURL, success: success, failure: failure)
