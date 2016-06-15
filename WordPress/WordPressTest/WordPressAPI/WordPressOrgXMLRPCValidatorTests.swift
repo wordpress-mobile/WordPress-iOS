@@ -298,4 +298,31 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
+
+    public func testGuessXMLRPCURLForSiteForFailedPluginRedirects() {
+        let originalURL = "http://mywordpresssite.com/xmlrpc.php"
+        let redirectedURL = "https://mywordpresssite.com/xmlrpc.php"
+        // Fail first request with 301
+        stub(isAbsoluteURLString(originalURL)) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
+            return fixture(stubPath!, status:301, headers: ["Content-Type":"application/html", "Location":redirectedURL])
+        }
+
+        stub(isAbsoluteURLString(redirectedURL)) { request in
+            let stubPath = OHPathForFile("plugin_redirect.html", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/html"])
+        }
+
+        let validator = WordPressOrgXMLRPCValidator()
+        let expectation = self.expectationWithDescription("Call should be successful")
+        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+            expectation.fulfill()
+            XCTFail("Call that has a plugin redirect should fail")
+            }, failure:{ (error) in
+                expectation.fulfill()
+                XCTAssertTrue(error.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCValidatorError error")
+                XCTAssertTrue(error.code == WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.rawValue, "Expected to get an .MobilePluginRedirectedError error code")
+        })
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }
