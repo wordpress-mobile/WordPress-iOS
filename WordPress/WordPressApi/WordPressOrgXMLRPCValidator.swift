@@ -53,7 +53,9 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                 success(xmlrpcURL: xmlrpcURL)
             }, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
-                if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication {
+                if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
+                   error.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.rawValue
+                {
                     failure(error: error)
                     return
                 }
@@ -125,6 +127,15 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                     failure(error:WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
                 }
             }, failure: { (error, httpResponse) in
+                if httpResponse?.URL != url {
+                    // we where redirected, let's check the answer content
+                    if let data = error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData] as? NSData,
+                        let responseString = String(data:data, encoding: NSUTF8StringEncoding)
+                        where responseString.rangeOfString("<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
+                            || responseString.rangeOfString("dm404Container") != nil {
+                        failure(error: WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.convertToNSError())
+                    }
+                }
                 failure(error: error)
             })
     }
