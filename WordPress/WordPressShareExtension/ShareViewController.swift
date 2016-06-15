@@ -23,7 +23,13 @@ class ShareViewController: SLComposeServiceViewController {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
-    private lazy var previewImageView = UIImageView()
+    private lazy var mediaView: MediaView = {
+        MediaView()
+    }()
+
+    private lazy var sessionConfiguration: NSURLSessionConfiguration = {
+        NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+    }()
 
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
@@ -31,9 +37,6 @@ class ShareViewController: SLComposeServiceViewController {
 
     private lazy var postStatus = "publish"
 
-    private lazy var sessionConfiguration: NSURLSessionConfiguration = {
-        NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-    }()
 
 
     // TODO: This should eventually be moved into WordPressComKit
@@ -41,10 +44,6 @@ class ShareViewController: SLComposeServiceViewController {
         "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
     ]
-
-    private enum Constants {
-        static let imageSize = CGSizeMake(90, 90)
-    }
 
 
 
@@ -58,10 +57,8 @@ class ShareViewController: SLComposeServiceViewController {
         // Initialization
         setupBearerToken()
 
-        // TextView
+        // Load: TextView + ImageView
         loadTextViewContent()
-
-        // ImageView
         loadPreviewImage()
     }
 
@@ -77,8 +74,7 @@ class ShareViewController: SLComposeServiceViewController {
     // MARK: - SLComposeService Overriden Methods
 
     override func loadPreviewView() -> UIView! {
-        // Hides Composer Thumbnail Preview.
-        return previewImageView
+        return mediaView
     }
 
     override func isContentValid() -> Bool {
@@ -195,18 +191,10 @@ private extension ShareViewController
                 return
             }
 
-            self.loadImageFromURL(imageURL)
+// TODO: Maybe resize?
+            self.mediaView.image = UIImage(contentsOfURL: imageURL)
             self.uploadPostImage(imageURL)
         }
-    }
-
-    func loadImageFromURL(imageURL: NSURL) {
-
-// TODO: Maybe resize?
-        previewImageView.image = UIImage(contentsOfURL: imageURL)
-        previewImageView.translatesAutoresizingMaskIntoConstraints = false
-        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
-        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
     }
 }
 
@@ -235,13 +223,19 @@ private extension ShareViewController
         guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
-// TODO: Spinner?
+
 // TODO: Unlock when uploaded?
 // TODO: Post + Link to the image?
 // TODO: Handle retry?
         let service = MediaService(configuration: sessionConfiguration)
+
+
+        mediaView.startSpinner()
+
         service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
             NSLog("Media: \(media) Error: \(error)")
+
+            self.mediaView.stopSpinner()
         }
     }
 }
