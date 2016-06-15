@@ -41,6 +41,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic, copy) void (^callback)();
 
@@ -243,11 +244,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showViewSite];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
-                                                    image:[Gridicon iconOfType:GridiconTypeMySites]
-                                                 callback:^{
-                                                     [weakSelf showViewAdmin];
-                                                 }]];
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
+                                                          image:[Gridicon iconOfType:GridiconTypeMySites]
+                                                       callback:^{
+                                                           [weakSelf showViewAdmin];
+                                                       }];
+    UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(17.0, 17.0)];
+    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
+    accessoryView.tintColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:205.0 / 255.0 alpha:1.0]; // Match disclosure icon color.
+    row.accessoryView = accessoryView;
+    [rows addObject:row];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
@@ -426,6 +432,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     cell.textLabel.text = row.title;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
+    if (row.accessoryView) {
+        cell.accessoryView = row.accessoryView;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -434,6 +443,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     [WPStyleGuide configureTableViewCell:cell];
