@@ -151,24 +151,13 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                 return
             }
             guard let data = data,
-                  let responseString = NSString(data: data, encoding: NSUTF8StringEncoding),
-                  let rsdURLRegExp = try? NSRegularExpression(pattern:"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>", options: [.CaseInsensitive])
+                  let responseString = String(data: data, encoding: NSUTF8StringEncoding),
+                  let rsdURL = self.extractRSDURLFromHTML(responseString)
             else {
                     failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
                 return
             }
 
-            let matches = rsdURLRegExp.matchesInString(responseString as String, options:NSMatchingOptions(), range:NSMakeRange(0, responseString.length))
-            if matches.count <= 0 {
-                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
-                return
-            }
-            let rsdURLRange = matches[0].rangeAtIndex(1)
-            if rsdURLRange.location == NSNotFound {
-                failure(error: WordPressOrgXMLRPCValidatorError.Invalid.convertToNSError())
-                return
-            }
-            let rsdURL = responseString.substringWithRange(rsdURLRange)
             // Try removing "?rsd" from the url, it should point to the XML-RPC endpoint
             let xmlrpc = rsdURL.stringByReplacingOccurrencesOfString("?rsd", withString:"")
             if xmlrpc != rsdURL {
@@ -186,6 +175,27 @@ public class WordPressOrgXMLRPCValidator: NSObject {
             }
         }
         dataTask.resume()
+    }
+
+    private func extractRSDURLFromHTML(html: String) -> String? {
+        guard let rsdURLRegExp = try? NSRegularExpression(pattern:"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>",
+                                                          options: [.CaseInsensitive])
+            else {
+                return nil
+        }
+
+        let matches = rsdURLRegExp.matchesInString(html,
+                                                   options:NSMatchingOptions(),
+                                                   range:NSMakeRange(0, html.characters.count))
+        if matches.count <= 0 {
+            return nil
+        }
+        let rsdURLRange = matches[0].rangeAtIndex(1)
+        if rsdURLRange.location == NSNotFound {
+            return nil
+        }
+        let rsdURL = (html as NSString).substringWithRange(rsdURLRange)
+        return rsdURL
     }
 
     private func guessXMLRPCURLFromRSD(rsd: String,
