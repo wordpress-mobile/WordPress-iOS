@@ -35,7 +35,7 @@ class ShareViewController: SLComposeServiceViewController {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
-    private lazy var postStatus = "publish"
+    private var postStatus = "publish"
 
 
 
@@ -59,7 +59,7 @@ class ShareViewController: SLComposeServiceViewController {
 
         // Load TextView + PreviewImage
         loadTextViewContent()
-        loadPreviewImageAndUploadIfNeeded()
+        loadMediaViewContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -185,29 +185,9 @@ private extension ShareViewController
         }
     }
 
-    func loadPreviewImageAndUploadIfNeeded() {
+    func loadMediaViewContent() {
         extensionContext?.loadImageUrl { url in
-            guard let imageURL = url else {
-                return
-            }
-
-            self.displayPreviewImage(imageURL)
-            self.uploadMediaWithURL(imageURL)
-        }
-    }
-
-
-    func displayPreviewImage(imageURL: NSURL) {
-        let maximumSize = self.mediaView.maximumSize
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-            let image = UIImage(contentsOfURL: imageURL)?.resizedImageWithContentMode(.ScaleAspectFit,
-                bounds: maximumSize,
-                interpolationQuality: .High)
-
-            dispatch_async(dispatch_get_main_queue()) {
-                self.mediaView.image = image
-            }
+            self.mediaView.mediaURL = url
         }
     }
 }
@@ -218,6 +198,20 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
+    func uploadMediaWithURL(imageURL: NSURL) {
+        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
+        }
+
+// TODO: Post + Link to the image?
+// TODO: Handle retry?
+
+        let service = MediaService(configuration: sessionConfiguration)
+        service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
+            NSLog("Media: \(media) Error: \(error)")
+        }
+    }
+
     func uploadPostWithContent(content: String) {
         guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
@@ -231,23 +225,5 @@ private extension ShareViewController
         }
 
         extensionContext?.completeRequestReturningItems([], completionHandler: nil)
-    }
-
-    func uploadMediaWithURL(imageURL: NSURL) {
-        guard let _ = oauth2Token, selectedSiteID = selectedSiteID else {
-            fatalError("The view should have been dismissed on viewDidAppear!")
-        }
-
-// TODO: Unlock when uploaded?
-// TODO: Post + Link to the image?
-// TODO: Handle retry?
-        mediaView.startSpinner()
-        
-        let service = MediaService(configuration: sessionConfiguration)
-        service.createMedia(imageURL, siteID: selectedSiteID) { (media, error) in
-            NSLog("Media: \(media) Error: \(error)")
-
-            self.mediaView.stopSpinner()
-        }
     }
 }
