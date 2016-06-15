@@ -40,8 +40,8 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
                     errorToCheck = error
             })
             self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressXMLRPCApiErrorDomain error")
-            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.EmptyURL.rawValue, "Expected to get an WordPressXMLRPCApiEmptyURL error")
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.EmptyURL.rawValue, "Expected to get an WordPressOrfXMLRPCApiEmptyURL error")
         }
     }
 
@@ -59,8 +59,8 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
                 errorToCheck = error
             })
             self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressXMLRPCApiErrorDomain error")
-            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidURL.rawValue, "Expected to get an WordPressXMLRPCApiEmptyURL error")
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidURL.rawValue, "Expected to get an WordPressOrgXMLRPCApiEmptyURL error")
         }
     }
 
@@ -78,8 +78,8 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
                     errorToCheck = error
             })
             self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressXMLRPCApiErrorDomain error")
-            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidScheme.rawValue, "Expected to get an WordPressXMLRPCApiEmptyURL error")
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidScheme.rawValue, "Expected to get an WordPressOrgXMLRPCApiEmptyURL error")
         }
     }
 
