@@ -826,6 +826,8 @@
 		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
+		FF935B3D1D116DBF008D559D /* html_page_with_link_to_rsd_non_standard.html in Resources */ = {isa = PBXBuildFile; fileRef = FF935B3C1D116DBF008D559D /* html_page_with_link_to_rsd_non_standard.html */; };
+		FF935B3F1D1170F8008D559D /* WordPressRSDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF935B3E1D1170F8008D559D /* WordPressRSDParser.swift */; };
 		FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */; };
 		FF9839A91CD3963200E85258 /* WordPressComOAuthClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9839A81CD3963200E85258 /* WordPressComOAuthClientTests.swift */; };
 		FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9839AA1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json */; };
@@ -2159,6 +2161,8 @@
 		FF7EACDD1B6CE6E100AB6AB9 /* WordPress 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 37.xcdatamodel"; sourceTree = "<group>"; };
 		FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
 		FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
+		FF935B3C1D116DBF008D559D /* html_page_with_link_to_rsd_non_standard.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd_non_standard.html; sourceTree = "<group>"; };
+		FF935B3E1D1170F8008D559D /* WordPressRSDParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressRSDParser.swift; sourceTree = "<group>"; };
 		FF945F6E1B28242300FB8AC4 /* MediaLibraryPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaLibraryPickerDataSource.h; sourceTree = "<group>"; };
 		FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryPickerDataSource.m; sourceTree = "<group>"; };
 		FF947A8C1BBE89A100B27B6A /* WordPress 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 39.xcdatamodel"; sourceTree = "<group>"; };
@@ -4266,6 +4270,7 @@
 				FF3EAE9A1D0036E300CC4939 /* WordPressOrgXMLRPCApi.swift */,
 				FF3F1E721D085AA7009AB440 /* HTTPAuthenticationAlertController.swift */,
 				FF492DD81D0EC8A3003C6D1E /* WordPressOrgXMLRPCValidator.swift */,
+				FF935B3E1D1170F8008D559D /* WordPressRSDParser.swift */,
 			);
 			path = WordPressApi;
 			sourceTree = "<group>";
@@ -4462,6 +4467,7 @@
 				FF492DDC1D0EF0D2003C6D1E /* xmlrpc-response-system-listmethods.xml */,
 				FF142C7A1D1012DF00868D91 /* xmlrpc-response-redirect.html */,
 				FFFEC2AA1D1167B100CD96F5 /* html_page_with_link_to_rsd.html */,
+				FF935B3C1D116DBF008D559D /* html_page_with_link_to_rsd_non_standard.html */,
 				FFFEC2AC1D1167FF00CD96F5 /* rsd.xml */,
 			);
 			name = "Mock Data";
@@ -5158,6 +5164,7 @@
 				FFB8DC9D1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json in Resources */,
 				E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
+				FF935B3D1D116DBF008D559D /* html_page_with_link_to_rsd_non_standard.html in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */,
 			);
@@ -5974,6 +5981,7 @@
 				E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */,
 				B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
+				FF935B3F1D1170F8008D559D /* WordPressRSDParser.swift in Sources */,
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
 				B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */,
 				08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */,
