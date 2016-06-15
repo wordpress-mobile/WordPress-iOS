@@ -238,6 +238,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                                    image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                 callback:^{
+                                                     [weakSelf showStats];
+                                                 }]];
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
                                                     image:[Gridicon iconOfType:GridiconTypeHouse]
                                                  callback:^{
@@ -255,12 +261,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     row.accessoryView = accessoryView;
     [rows addObject:row];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypeStatsAlt]
-                                                 callback:^{
-                                                     [weakSelf showStats];
-                                                 }]];
-    
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
 
