@@ -16,9 +16,21 @@ class MediaView : UIView
         }
     }
 
+    /// The URL of the image that should be displayed
+    ///
+    var mediaURL: NSURL? {
+        didSet {
+            guard let mediaURL = mediaURL else {
+                return
+            }
+
+            loadImageAndResizeIfNeeded(mediaURL)
+        }
+    }
+
     /// The image that should be displayed
     ///
-    var image: UIImage? {
+    private var image: UIImage? {
         get {
             return imageView.image
         }
@@ -69,7 +81,6 @@ class MediaView : UIView
     }
 
 
-
     // MARK: - Private Helpers
 
     private func setupSubviews() {
@@ -92,6 +103,23 @@ class MediaView : UIView
         let targetSize = (image != nil) ? maximumSize : CGSizeZero
         widthAnchor.constraintEqualToConstant(targetSize.width).active = true
         heightAnchor.constraintEqualToConstant(targetSize.height).active = true
+    }
+
+    private func loadImageAndResizeIfNeeded(url: NSURL) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            let scale = UIScreen.mainScreen().scale
+            var targetSize = self.maximumSize
+            targetSize.width *= scale
+            targetSize.height *= scale
+
+            let image = UIImage(contentsOfURL: url)?.resizedImageWithContentMode(.ScaleAspectFit,
+                                                                                 bounds: targetSize,
+                                                                                 interpolationQuality: .High)
+
+            dispatch_async(dispatch_get_main_queue()) {
+                self.image = image
+            }
+        }
     }
 
 
