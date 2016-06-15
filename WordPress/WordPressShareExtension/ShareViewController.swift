@@ -57,7 +57,6 @@ class ShareViewController: SLComposeServiceViewController {
 
         // Initialization
         setupBearerToken()
-        setupPreviewImageConstraints()
 
         // TextView
         loadTextViewContent()
@@ -180,12 +179,6 @@ private extension ShareViewController
         RequestRouter.bearerToken = bearerToken
     }
 
-    func setupPreviewImageConstraints() {
-        previewImageView.translatesAutoresizingMaskIntoConstraints = false
-        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
-        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
-    }
-
     func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
             let current = self.contentText ?? String()
@@ -202,10 +195,18 @@ private extension ShareViewController
                 return
             }
 
-// TODO: Maybe resize?
-            self.previewImageView.image = UIImage(contentsOfURL: imageURL)
+            self.loadImageFromURL(imageURL)
             self.uploadPostImage(imageURL)
         }
+    }
+
+    func loadImageFromURL(imageURL: NSURL) {
+
+// TODO: Maybe resize?
+        previewImageView.image = UIImage(contentsOfURL: imageURL)
+        previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        previewImageView.widthAnchor.constraintEqualToConstant(Constants.imageSize.width).active = true
+        previewImageView.heightAnchor.constraintEqualToConstant(Constants.imageSize.height).active = true
     }
 }
 
