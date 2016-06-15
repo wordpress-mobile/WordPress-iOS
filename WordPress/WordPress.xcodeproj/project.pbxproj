@@ -425,6 +425,7 @@
 		B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */; };
 		B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */; };
 		B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */; };
+		B542DEBC1D119E1F004CA6AE /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542DEB91D11967E004CA6AE /* MediaView.swift */; };
 		B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54346951C6A707D0010B3AD /* LanguageViewController.swift */; };
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */; };
@@ -1622,6 +1623,7 @@
 		B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationsManagerTests.m; sourceTree = "<group>"; };
 		B5416CFF1C17693B00006DD8 /* UIApplication+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Helpers.h"; sourceTree = "<group>"; };
 		B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Helpers.m"; sourceTree = "<group>"; };
+		B542DEB91D11967E004CA6AE /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaView.swift; path = WordPressShareExtension/MediaView.swift; sourceTree = SOURCE_ROOT; };
 		B54346951C6A707D0010B3AD /* LanguageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
 		B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 28.xcdatamodel"; sourceTree = "<group>"; };
 		B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -3412,6 +3414,7 @@
 			isa = PBXGroup;
 			children = (
 				B5FA22851C99F63B0016CA7C /* Extensions */,
+				B542DEBB1D119683004CA6AE /* Tools */,
 				B5FA22841C99F6340016CA7C /* Tracks */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
 				B50248C51C96FFE800AFBDED /* MainInterface.storyboard */,
@@ -3693,6 +3696,14 @@
 				B5744A1D1C3D8FA700A3B8DC /* InteractiveNotificationsHandlerTests.m */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		B542DEBB1D119683004CA6AE /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				B542DEB91D11967E004CA6AE /* MediaView.swift */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 		B545186718E9E08000AC3A54 /* Notifications */ = {
@@ -6035,6 +6046,7 @@
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
+				B542DEBC1D119E1F004CA6AE /* MediaView.swift in Sources */,
 				B5D7A0ED1CCFD1FF003C375D /* UIImage+Resize.m in Sources */,
 				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
 			);
