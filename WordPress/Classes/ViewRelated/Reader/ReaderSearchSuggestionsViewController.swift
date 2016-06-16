@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions
@@ -62,8 +62,10 @@ class ReaderSearchSuggestionsViewController : UIViewController
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
-        let buttonTitle = NSLocalizedString("Clear search suggestions", comment: "Title of a button.")
+        let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, forState: .Normal)
+        let buttonBackgroundImage = UIImage(color: WPStyleGuide.lightGrey())
+        clearButton.setBackgroundImage(buttonBackgroundImage, forState:.Normal)
 
         borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
