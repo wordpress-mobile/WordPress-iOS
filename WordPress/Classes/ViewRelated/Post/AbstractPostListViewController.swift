@@ -401,11 +401,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         refreshResults()
     }
 
-    func resetTableViewContentOffset() {
+    func resetTableViewContentOffset(animated: Bool = false) {
         // Reset the tableView contentOffset to the top before we make any dataSource changes.
         var tableOffset = tableView.contentOffset
         tableOffset.y = -tableView.contentInset.top
-        tableView.contentOffset = tableOffset
+        tableView.setContentOffset(tableOffset, animated: animated)
     }
 
     func predicateForFetchRequest() -> NSPredicate {
@@ -1074,6 +1074,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Search Controller Delegate Methods
 
+    func willPresentSearchController(searchController: WPSearchController!) {
+        resetTableViewContentOffset()
+    }
+
     func presentSearchController(searchController: WPSearchController!) {
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
 
@@ -1096,8 +1100,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             self?.view.layoutIfNeeded()
         }
 
-        searchHelper.searchCanceled()
         searchController.searchBar.text = nil
+        searchHelper.searchCanceled()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
     }
