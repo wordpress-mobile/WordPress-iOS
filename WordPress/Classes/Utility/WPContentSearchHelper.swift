@@ -68,8 +68,8 @@ class WPContentSearchHelper: NSObject {
 private class WPContentSearchObserver: NSObject {
 
     var interval = NSTimeInterval(0.0)
-    var timer:NSTimer? = nil
-    var completion:()->Void = {}
+    var timer:NSTimer?
+    var completion = {}
 
     @objc func timerFired() {
         completion()
