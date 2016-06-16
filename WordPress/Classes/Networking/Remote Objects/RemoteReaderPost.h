@@ -26,8 +26,10 @@
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
+@property (nonatomic, strong) NSNumber *score;
 @property (nonatomic, strong) NSNumber *siteID;
-@property (nonatomic, strong) NSString *sortDate;
+@property (nonatomic, strong) NSDate *sortDate;
+@property (nonatomic, strong) NSNumber *sortRank;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic) BOOL isLikesEnabled;

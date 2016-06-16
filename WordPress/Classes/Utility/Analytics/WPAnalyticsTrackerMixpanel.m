@@ -10,6 +10,7 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "AccountServiceRemoteREST.h"
 #import "WPPostViewController.h"
+#import "WordPress-Swift.h"
 
 
 @interface WPAnalyticsTrackerMixpanel ()
@@ -175,7 +176,7 @@ NSString *const SessionCount = @"session_count";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    return [[defaultAccount restApi] hasCredentials];
+    return [[defaultAccount wordPressComRestApi] hasCredentials];
 }
 
 - (void)trackMixpanelDataForInstructions:(WPAnalyticsTrackerMixpanelInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
@@ -368,6 +369,11 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Unfollowed List"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_list"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_unfollowed_list"];
+            break;
+        case WPAnalyticsStatReaderSearchLoaded:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Search"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_search_loaded"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reader_search_loaded"];
             break;
         case WPAnalyticsStatReaderSiteBlocked:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Blocked Blog"];

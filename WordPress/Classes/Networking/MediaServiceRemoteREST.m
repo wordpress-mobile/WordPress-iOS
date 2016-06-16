@@ -1,5 +1,4 @@
 #import "MediaServiceRemoteREST.h"
-#import "WordPressComApi.h"
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
 #import <WordPressApi/WordPressApi.h>

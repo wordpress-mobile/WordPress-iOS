@@ -14,14 +14,23 @@
         <scene sceneID="0Jd-lB-cu0">
             <objects>
                 <tableViewController storyboardIdentifier="PeopleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5ll-RY-leg" customClass="PeopleViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="86" sectionHeaderHeight="18" sectionFooterHeight="18" id="HU2-1s-xgj">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="86" sectionHeaderHeight="18" sectionFooterHeight="1" id="HU2-1s-xgj">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="GlF-16-ak3">
-                            <rect key="frame" x="0.0" y="173.5" width="600" height="0.0"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="1wT-dA-R90" userLabel="FooterView">
+                            <rect key="frame" x="0.0" y="136.5" width="600" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <subviews>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="L1Z-xm-37g">
+                                    <rect key="frame" x="110" y="5" width="20" height="20"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="L1Z-xm-37g" firstAttribute="centerY" secondItem="1wT-dA-R90" secondAttribute="centerY" id="FiN-Ec-31A"/>
+                                <constraint firstItem="L1Z-xm-37g" firstAttribute="centerX" secondItem="1wT-dA-R90" secondAttribute="centerX" id="Pjq-i7-5rC"/>
+                            </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PeopleCell" rowHeight="86" id="kMD-3K-Yok" customClass="PeopleCell" customModule="WordPress" customModuleProvider="target">
@@ -138,6 +147,8 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="footerActivityIndicator" destination="L1Z-xm-37g" id="0Hk-Vq-YkI"/>
+                        <outlet property="footerView" destination="1wT-dA-R90" id="hb4-2d-bqw"/>
                         <outlet property="titleButton" destination="qYY-lN-fuq" id="Nre-fZ-kXG"/>
                         <segue destination="Hu7-FD-rJZ" kind="presentation" identifier="invite" modalPresentationStyle="formSheet" id="sCY-hm-WIa"/>
                     </connections>

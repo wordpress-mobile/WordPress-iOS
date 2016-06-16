@@ -429,7 +429,7 @@
         
         if (isPrivate) {
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-            NSString *authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+            NSString *authToken = [[accountService defaultWordPressComAccount] authToken];
             [imageSource downloadImageForURL:remoteURL
                                    authToken:authToken
                                  withSuccess:successBlock
@@ -561,13 +561,12 @@ static NSString * const MediaDirectory = @"Media";
 {
     id <MediaServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.restApi) {
+        if (blog.wordPressComRestApi) {
             remote = [[MediaServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi
                                                                           siteID:blog.dotComID];
         }
-    } else if (blog.api) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
+    } else if (blog.xmlrpcApi) {
+        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return remote;
 }
