@@ -77,10 +77,14 @@ class ReaderSearchSuggestionsViewController : UIViewController
 
 
     func updateHeightConstraint() {
+        clearButton.hidden = suggestionsCount() == 0 || !phrase.isEmpty
+
         let count = suggestionsCount()
         let numVisibleRows = min(count, maxTableViewRows)
         var height = CGFloat(numVisibleRows) * tableView.rowHeight
-        height += rowAndButtonHeight
+        if !clearButton.hidden {
+            height += rowAndButtonHeight
+        }
         stackViewHeightConstraint.constant = height
     }
 
