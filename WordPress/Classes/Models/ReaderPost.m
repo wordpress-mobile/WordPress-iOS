@@ -6,7 +6,6 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WPAvatarSource.h"
 #import "WordPress-Swift.h"
@@ -35,7 +34,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isReblogged;
 @dynamic isWPCom;
 @dynamic likeCount;
+@dynamic score;
 @dynamic siteID;
+@dynamic sortRank;
 @dynamic sortDate;
 @dynamic summary;
 @dynamic comments;

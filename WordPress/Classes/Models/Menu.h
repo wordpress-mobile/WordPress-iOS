@@ -34,6 +34,8 @@ extern NSInteger const MenuDefaultID;
 + (Menu *)newDefaultMenu:(NSManagedObjectContext *)managedObjectContext;
 + (NSString *)defaultMenuName;
 
+- (BOOL)isDefaultMenu;
+
 @end
 
 @interface Menu (CoreDataGeneratedAccessors)

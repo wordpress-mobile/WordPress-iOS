@@ -3,7 +3,7 @@
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
 #import <WordPressShared/NSString+Util.h>
-#import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -151,14 +151,14 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     
     [self.api callMethod:@"wp.newTerm"
               parameters:xmlrpcParameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if (![responseObject respondsToSelector:@selector(numericValue)]) {
                          NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
                          [self handleResponseErrorWithMessage:message method:@"wp.newTerm" failure:failure];
                          return;
                      }
                      success(responseObject);
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -178,14 +178,14 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     }
     [self.api callMethod:@"wp.getTerms"
               parameters:xmlrpcParameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if (![responseObject isKindOfClass:[NSArray class]]) {
                          NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
                          [self handleResponseErrorWithMessage:message method:@"wp.getTerms" failure:failure];
                          return;
                      }
                      success(responseObject);
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }

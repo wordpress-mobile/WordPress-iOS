@@ -10,60 +10,63 @@ struct PeopleService {
 
     /// MARK: - Private Properties
     ///
-    private let context = ContextManager.sharedInstance().mainContext
+    private let context: NSManagedObjectContext
     private let remote: PeopleRemote
 
 
     /// Designated Initializer.
     ///
-    /// - Parameter blog: Target Blog Instance
+    /// - Parameters:
+    ///     - blog: Target Blog Instance
+    ///     - context: CoreData context to be used.
     ///
-    init?(blog: Blog) {
+    init?(blog: Blog, context: NSManagedObjectContext) {
         guard let api = blog.wordPressComRestApi(), dotComID = blog.dotComID as? Int else {
             return nil
         }
 
-        remote = PeopleRemote(wordPressComRestApi: api)
-        siteID = dotComID
+        self.remote = PeopleRemote(wordPressComRestApi: api)
+        self.siteID = dotComID
+        self.context = context
     }
 
-    /// Refreshes the Users + Followers associated to the current blog.
+    /// Loads a page of Users associated to the current blog, starting at the specified offset.
     ///
-    /// - Parameter completion: Closure to be executed on completion.
+    /// - Parameters:
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
     ///
-    func refreshPeople(completion: (Bool -> Void)) {
-        let group = dispatch_group_create()
-        var success = true
-
-        // Load Users
-        dispatch_group_enter(group)
-        remote.getUsers(siteID, success: { users in
-            self.mergeUsers(users)
-            dispatch_group_leave(group)
+    func loadUsersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getUsers(siteID, offset: offset, count: count, success: { users, hasMore in
+            self.mergePeople(users)
+            success(retrieved: users.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
+            failure?(error)
         })
+    }
 
-        // Load Followers
-        dispatch_group_enter(group)
-        remote.getFollowers(siteID, success: { followers in
-            self.mergeFollowers(followers)
-            dispatch_group_leave(group)
+    /// Loads a page of Followers associated to the current blog, starting at the specified offset.
+    ///
+    /// - Parameters:
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func loadFollowersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
+            self.mergePeople(followers)
+            success(retrieved: followers.count, shouldLoadMore: hasMore)
 
         }, failure: { error in
             DDLogSwift.logError(String(error))
-            success = false
-            dispatch_group_leave(group)
+            failure?(error)
         })
-
-        dispatch_group_notify(group, dispatch_get_main_queue()) {
-            completion(success)
-        }
     }
-
 
     /// Updates a given User with the specified role.
     ///
@@ -93,7 +96,6 @@ struct PeopleService {
             }
 
             managedPerson.role = pristineRole
-            ContextManager.sharedInstance().saveContext(self.context)
 
             let reloadedPerson = User(managedPerson: managedPerson)
             failure?(error, reloadedPerson)
@@ -101,7 +103,6 @@ struct PeopleService {
 
         // Pre-emptively update the role
         managedPerson.role = role.description
-        ContextManager.sharedInstance().saveContext(context)
 
         return User(managedPerson: managedPerson)
     }
@@ -124,14 +125,12 @@ struct PeopleService {
 
             // Revert the deletion
             self.createManagedPerson(user)
-            ContextManager.sharedInstance().saveContext(self.context)
 
             failure?(error)
         })
 
         // Pre-emptively nuke the entity
         context.deleteObject(managedPerson)
-        ContextManager.sharedInstance().saveContext(context)
     }
 
     /// Retrieves the collection of Roles, available for a given site
@@ -198,29 +197,9 @@ struct PeopleService {
 /// Encapsulates all of the PeopleService Private Methods.
 ///
 private extension PeopleService {
-    /// Updates the local collection of Users, with the (fresh) remote version.
-    ///
-    func mergeUsers(remoteUsers: [User]) {
-        let localUsers = loadPeople(siteID, type: User.self)
-        mergePeople(remoteUsers, localPeople: localUsers)
-    }
-
-    /// Updates the local collection of Followers, with the (fresh) remote version.
-    ///
-    func mergeFollowers(remoteFollowers: [Follower]) {
-        let localFollowers = loadPeople(siteID, type: Follower.self)
-        mergePeople(remoteFollowers, localPeople: localFollowers)
-    }
-
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergePeople<T : Person>(remotePeople: [T], localPeople: [T]) {
-        let remoteIDs = Set(remotePeople.map({ $0.ID }))
-        let localIDs = Set(localPeople.map({ $0.ID }))
-
-        let removedIDs = localIDs.subtract(remoteIDs)
-        removeManagedPeopleWithIDs(removedIDs, type: T.self)
-
+    func mergePeople<T : Person>(remotePeople: [T]) {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
@@ -229,8 +208,6 @@ private extension PeopleService {
                 createManagedPerson(remotePerson)
             }
         }
-
-        ContextManager.sharedInstance().saveContext(context)
     }
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
