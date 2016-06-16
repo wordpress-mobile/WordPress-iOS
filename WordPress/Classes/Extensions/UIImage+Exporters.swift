@@ -1,5 +1,6 @@
 import Foundation
 import ImageIO
+import MobileCoreServices
 
 extension UIImage {
     // MARK: - Error Handling

@@ -7,9 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BlogSettings;
 @class WPAccount;
-@class WordPressComApi;
 @class WordPressComRestApi;
 @class WPXMLRPCClient;
+@class WordPressOrgXMLRPCApi;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -126,6 +126,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
 @property (nonatomic, strong,  readonly, nullable) WPXMLRPCClient *api;
+@property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
@@ -185,18 +186,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  useful for support.
  */
 - (NSString *)logDescription;
-
-/**
- Returns a REST API client if available
- 
- If the blog is a WordPress.com one or it has Jetpack it will return a REST API
- client. Otherwise, the XML-RPC API should be used.
- 
- @warning this method doesn't know if a Jetpack blog has the JSON API disabled
- 
- @return a WordPressComApi object if available
- */
-- (nullable WordPressComApi *)restApi;
 
 /**
  Returns a REST API client if available

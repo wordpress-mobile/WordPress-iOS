@@ -5,6 +5,10 @@
 #import "PostCategory.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"
+#import "WPStyleGuide+Posts.h"
+#import "WordPress-Swift.h"
+
+@import Gridicons;
 
 @interface PostPreviewViewController ()
 
@@ -13,6 +17,7 @@
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
+@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 
 @end
 
@@ -57,6 +62,9 @@
 {
     [super viewWillAppear:animated];
     [self refreshWebView];
+    if ([self.apost isKindOfClass:[Post class]]) {
+        [self.navigationItem setRightBarButtonItems:@[[self shareBarButtonItem]] animated:YES];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -305,6 +313,37 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark - Custom UI elements
+
+- (UIBarButtonItem *)shareBarButtonItem
+{
+    if (!_shareBarButtonItem) {
+        UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
+                                                                        target:self
+                                                                      selector:@selector(sharePost)];
+        
+        button.rightSpacing = 0.0;
+        NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
+        button.accessibilityLabel = title;
+        button.accessibilityIdentifier = @"Share";
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+    return _shareBarButtonItem;
+}
+
+- (void)sharePost
+{
+    if ([self.apost isKindOfClass:[Post class]]) {
+        Post *post = (Post *)self.apost;
+        
+        PostSharingController *sharingController = [[PostSharingController alloc] init];
+        
+        [sharingController sharePost:post fromView:[self shareBarButtonItem].customView inViewController:self];
+    }
 }
 
 #pragma mark -

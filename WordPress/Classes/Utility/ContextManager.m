@@ -1,6 +1,5 @@
 #import "ContextManager.h"
 #import "ContextManager-Internals.h"
-#import "WordPressComApi.h"
 #import "ALIterativeMigrator.h"
 
 static ContextManager *_instance;

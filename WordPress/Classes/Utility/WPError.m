@@ -6,7 +6,6 @@
 #import "SupportViewController.h"
 #import "WordPress-Swift.h"
 #import <WPXMLRPC/WPXMLRPC.h>
-#import "WordPressComApi.h"
 
 NSInteger const SupportButtonIndex = 0;
 NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
@@ -83,12 +82,6 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
 
             default:
                 break;
-        }
-    } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
-        DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
-        if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            [SigninHelpers showSigninForWPComFixingAuthToken];
-            return;
         }
     } else if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],

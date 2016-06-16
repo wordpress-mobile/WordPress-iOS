@@ -14,7 +14,6 @@
 @interface ReaderPostService()
 
 - (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic;
-- (NSString *)removeInlineStyles:(NSString *)string;
 
 @end
 
@@ -34,37 +33,6 @@
     remotePost.summary = str;
 
     return remotePost;
-}
-
-- (void)testTitleIsPlainText {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    NSString *str = @"Sample text & sample text";
-    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    XCTAssertTrue([str isEqualToString:post.postTitle], @"The post title was not plain text.");
-}
-
-- (void)testSummaryIsPlainText {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    NSString *str = @"Sample text & sample text";
-    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    XCTAssertTrue([str isEqualToString:post.summary], @"The post summary was not plain text.");
-}
-
-- (void)testRemoveInlineStyleTags {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    NSString *str = @"<p >test</p><p >test</p>";
-    NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
-    NSString *sanitizedStr = [service removeInlineStyles:styleStr];
-    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
-
 }
 
 - (void)testDeletePostsWithoutATopic {
