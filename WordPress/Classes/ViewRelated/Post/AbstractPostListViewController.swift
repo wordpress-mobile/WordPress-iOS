@@ -706,7 +706,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postListFooterView.hidden = true
         } else {
             refreshResults()
-            postListFooterView.hidden = false
         }
     }
 
