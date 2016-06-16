@@ -88,7 +88,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
-    private var searchesSyncing = Int()
+    private var searchesSyncing = 0
 
     // MARK: - Lifecycle
 
@@ -138,7 +138,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             }
 
             if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
-                strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
+                strongSelf.searchWrapperViewHeightConstraint.constant = strongSelf.heightForSearchWrapperView()
             }
         }, completion: nil)
     }
@@ -672,16 +672,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchController.active = !searchController.active
     }
 
-    func heightForSearchWrapperView() -> Float {
+    func heightForSearchWrapperView() -> CGFloat {
 
         guard let navigationController = navigationController else {
-            return Float(SearchWrapperViewMinHeight)
+            return SearchWrapperViewMinHeight
         }
 
         let navBar = navigationController.navigationBar
         let height = navBar.frame.height + self.topLayoutGuide.length
 
-        return max(Float(height), Float(SearchWrapperViewMinHeight))
+        return max(height, SearchWrapperViewMinHeight)
     }
 
     func isSearching() -> Bool {
@@ -754,7 +754,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             forBlog: blog,
             success: { [weak self] posts in
                 self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error: NSError?) -> () in
+            }, failure: { [weak self] (error: NSError?) in
                 self?.postsSyncWithSearchEnded()
             }
         )
@@ -1078,7 +1078,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
 
         navigationController?.setNavigationBarHidden(true, animated: true) // Remove this line when switching to UISearchController.
-        searchWrapperViewHeightConstraint.constant = CGFloat(heightForSearchWrapperView())
+        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
 
         UIView.animateWithDuration(SearchBarAnimationDuration, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { [weak self] in
             self?.view.layoutIfNeeded()
