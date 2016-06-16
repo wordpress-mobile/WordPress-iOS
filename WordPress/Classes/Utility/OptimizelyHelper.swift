@@ -29,8 +29,22 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
         Optimizely.disableSwizzle() // Disable's the Optimizely visual editor.
         Optimizely.sharedInstance().disableGesture = true
         preregisterOptimizelyKeys()
-        Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions)
-        Optimizely.refreshExperiments()
+
+        // Check for a signed in account, or at least one blog added to the app.
+        // Load Optimizely asych in these cases as we won't be showing the sign-in
+        // screen right away.
+        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        blogService.blogCountForAllAccounts()
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if accountService.defaultWordPressComAccount() != nil || blogService.blogCountForAllAccounts() > 0 {
+            Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions, experimentsLoadedCallback: { (success, error) in
+                Optimizely.refreshExperiments()
+            })
+        } else {
+            Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions)
+            Optimizely.refreshExperiments()
+        }
+
 
         NSNotificationCenter.defaultCenter().addObserver(self.sharedInstance, selector: #selector(self.optimizelyExperimentVisitedHandler), name: OptimizelyExperimentVisitedNotification, object: nil)
     }
