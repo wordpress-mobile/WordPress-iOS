@@ -9,6 +9,10 @@
 
 @implementation EditPageViewController
 
++ (Class)supportedPostClass {
+    return [Page class];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
