@@ -721,6 +721,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func postsSyncWithSearchEnded() {
         searchesSyncing -= 1
+        assert(searchesSyncing >= 0, "Expected Int searchesSyncing to be 0 or greater while searching.")
         if !isSyncingPostsWithSearch() {
             postListFooterView.showSpinner(false)
             refreshResults()
