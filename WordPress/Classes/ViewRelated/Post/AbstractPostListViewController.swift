@@ -695,7 +695,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func updateForLocalPostsMatchingSearchText() {
         resetTableViewContentOffset()
         updateAndPerformFetchRequest()
-        refreshCachedRowHeightsForTableViewWidth()
+        tableViewHandler.clearCachedRowHeights()
         tableView.reloadData()
 
         let filter = currentPostListFilter()
