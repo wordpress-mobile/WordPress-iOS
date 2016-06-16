@@ -698,37 +698,47 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         refreshCachedRowHeightsForTableViewWidth()
         tableView.reloadData()
 
-        postsSyncWithSearchWillBegin()
+        let filter = currentPostListFilter()
+        if filter.hasMore && tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            // If the filter detects there are more posts, but there are none that match the current search
+            // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
+            hideNoResultsView()
+            postListFooterView.hidden = true
+        } else {
+            refreshResults()
+            postListFooterView.hidden = false
+        }
     }
 
     func isSyncingPostsWithSearch() -> Bool {
         return searchesSyncing > 0
     }
 
-    func postsSyncWithSearchWillBegin() {
-        // Prepare the UI for a state in which a remote search will begin.
-        // Otherwise waiting for the search to begin will result in a delayed UI activity.
-        hideNoResultsView()
-        postListFooterView.showSpinner(true)
-    }
-
     func postsSyncWithSearchDidBegin() {
         searchesSyncing += 1
+        postListFooterView.showSpinner(true)
+        postListFooterView.hidden = false
     }
 
     func postsSyncWithSearchEnded() {
         searchesSyncing -= 1
         if !isSyncingPostsWithSearch() {
-            refreshResults()
             postListFooterView.showSpinner(false)
+            refreshResults()
         }
     }
 
     func syncPostsMatchingSearchText() {
+        guard let searchText = searchController.searchBar.text where !searchText.isEmpty() else {
+            return
+        }
+        let filter = currentPostListFilter()
+        guard filter.hasMore else {
+            return
+        }
 
         postsSyncWithSearchDidBegin()
 
-        let filter = currentPostListFilter()
         let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
         let postService = PostService(managedObjectContext: managedObjectContext())
         let options = PostServiceSyncOptions()
@@ -736,7 +746,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.authorID = author
         options.number = 20
         options.purgesLocalSync = false
-        options.search = searchController.searchBar.text
+        options.search = searchText
 
         postService.syncPostsOfType(
             postTypeToSync(),
@@ -746,7 +756,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 self?.postsSyncWithSearchEnded()
             }, failure: { [weak self] (error: NSError?) -> () in
                 self?.postsSyncWithSearchEnded()
-            })
+            }
+        )
     }
 
     // MARK: - Actions

@@ -40,10 +40,7 @@ class WPContentSearchHelper: NSObject {
     /// Update the current search text, ideally in real-time along with user input.
     func searchUpdated(text: String?) {
         stopAllObservers()
-        searchText = text ?? ""
-        guard let updatedText = text where !updatedText.isEmpty else {
-            return
-        }
+        searchText = text
         for observer in observers {
             observer.timer = NSTimer.scheduledTimerWithTimeInterval(observer.interval, target: observer, selector: #selector(WPContentSearchObserver.timerFired), userInfo: nil, repeats: false)
         }
