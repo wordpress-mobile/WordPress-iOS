@@ -73,6 +73,9 @@ class ReaderSearchSuggestionsViewController : UIViewController
     }
 
 
+    // MARK: -  Instance Methods
+
+
     func updateHeightConstraint() {
         let count = suggestionsCount()
         let numVisibleRows = min(count, maxTableViewRows)
@@ -106,14 +109,28 @@ class ReaderSearchSuggestionsViewController : UIViewController
     }
 
 
-    // MARK: - Actions
-
-
-    @IBAction func handleClearButtonTapped(sender: UIButton) {
+    func clearSearchHistory() {
         let service = ReaderSearchSuggestionService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.deleteAllSuggestions()
         tableView.reloadData()
         updateHeightConstraint()
+    }
+
+
+    // MARK: - Actions
+
+
+    @IBAction func handleClearButtonTapped(sender: UIButton) {
+        let alert = UIAlertController(title: NSLocalizedString("Clear Search History", comment: "Title of an alert prompt."),
+                                      message: NSLocalizedString("Would you like to clear your search history?", comment: "Asks the user if they would like to clear their search history."),
+                                      preferredStyle: .Alert)
+
+        alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button title. Cancels a pending action."))
+        alert.addDefaultActionWithTitle(NSLocalizedString("Yes", comment: "Button title. Confirms that the user wants to proceed with a pending action.")) { (action) in
+            self.clearSearchHistory()
+        }
+
+        alert.presentFromRootViewController()
     }
 }
 
