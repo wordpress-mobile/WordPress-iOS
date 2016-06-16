@@ -629,7 +629,12 @@ static NSInteger const WPTabBarIconOffset = 5;
     // In this method, we determine the UITabBarController's last button frame.
     // It's proven to be effective in *all* of the available devices to date, even in multitasking mode.
     // Even better, we don't even need one constant per device.
-    // *If* this ever breaks, worst case scenario, we'll notice the assertion below (and of course, we'll fix it!).
+    //
+    // On iOS 10, the first time this viewcontroller's view is laid out the tab bar buttons have
+    // a zero origin, so this method can't choose a frame. On subsequent layout passes, the
+    // buttons seem to have a correct frame, so this method still works for now.
+    // (When this viewcontroller's view is first created, `viewDidLayoutSubviews` is called twice -
+    // The second time has the correct frame).
     //
     CGRect lastButtonRect = CGRectZero;
     
@@ -641,7 +646,6 @@ static NSInteger const WPTabBarIconOffset = 5;
         }
     }
     
-    NSAssert(!CGRectEqualToRect(lastButtonRect, CGRectZero), @"Couldn't determine the last TabBarButton Frame");
     return lastButtonRect;
 }
 
