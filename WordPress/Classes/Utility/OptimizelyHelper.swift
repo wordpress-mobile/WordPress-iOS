@@ -34,9 +34,8 @@ internal var optimizelyEnableNewSigninFlowKey: OptimizelyVariableKey = Optimizel
         // Load Optimizely asych in these cases as we won't be showing the sign-in
         // screen right away.
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        blogService.blogCountForAllAccounts()
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if accountService.defaultWordPressComAccount() != nil || blogService.blogCountForAllAccounts() > 0 {
+        if blogService.blogCountForAllAccounts() > 0 || accountService.defaultWordPressComAccount() != nil {
             Optimizely.startOptimizelyWithAPIToken(ApiCredentials.optimizelyAPIKey(), launchOptions: launchOptions, experimentsLoadedCallback: { (success, error) in
                 Optimizely.refreshExperiments()
             })
