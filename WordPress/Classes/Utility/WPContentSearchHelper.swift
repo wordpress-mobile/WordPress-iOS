@@ -42,7 +42,12 @@ class WPContentSearchHelper: NSObject {
         stopAllObservers()
         searchText = text
         for observer in observers {
-            observer.timer = NSTimer.scheduledTimerWithTimeInterval(observer.interval, target: observer, selector: #selector(WPContentSearchObserver.timerFired), userInfo: nil, repeats: false)
+            let timer = NSTimer.init(timeInterval: observer.interval,
+                                     target: observer,
+                                     selector: #selector(WPContentSearchObserver.timerFired),
+                                     userInfo: nil,
+                                     repeats: false)
+            NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
         }
     }
 
