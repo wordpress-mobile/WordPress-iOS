@@ -232,8 +232,8 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.5.9)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.13)
-  - WordPressCom-Stats-iOS (= 0.7.0)
-  - WordPressCom-Stats-iOS/Services (= 0.7.0)
+  - WordPressCom-Stats-iOS (from `../WordPressCom-Stats-iOS/`)
+  - WordPressCom-Stats-iOS/Services (from `../WordPressCom-Stats-iOS/`)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.1`)
   - WPMediaPicker (~> 0.9.1)
   - wpxmlrpc (~> 0.8)
@@ -245,6 +245,8 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Stats-iOS:
+    :path: ../WordPressCom-Stats-iOS/
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -302,6 +304,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 3e41f82908d0b57147e96194f07b15501ab25a40
+PODFILE CHECKSUM: 097258dca21ff29821ea068c0d98a8a387e62dbc
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1

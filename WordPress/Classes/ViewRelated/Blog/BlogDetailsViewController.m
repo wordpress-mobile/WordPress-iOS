@@ -100,6 +100,8 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray *tableSections;
+@property (nonatomic, strong) WPStatsService *statsService;
+@property (nonatomic, strong) BlogService *blogService;
 
 @end
 
@@ -166,8 +168,8 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog completionHandler:^() {
+    self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [self.blogService syncBlog:_blog completionHandler:^() {
         [weakSelf configureTableViewData];
         [weakSelf.tableView reloadData];
     }];
@@ -184,6 +186,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -196,6 +199,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
     [self.tableView reloadData];
+    [self preloadStats];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -489,6 +493,18 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 #pragma mark - Private methods
 
+- (void)preloadStats
+{
+    NSString *oauthToken = self.blog.authToken;
+    if (true && oauthToken) // check for wifi
+    {
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
+        NSLog(@"%@ in BlogDetailsView", self.statsService);
+        [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
+    }
+    
+}
+
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
@@ -559,6 +575,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
+    statsView.statsService = self.statsService;
     [self.navigationController pushViewController:statsView animated:YES];
 }
 
