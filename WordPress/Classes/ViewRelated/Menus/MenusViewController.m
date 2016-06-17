@@ -47,35 +47,36 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 @implementation MenusViewController
 
++ (MenusViewController *)controllerWithBlog:(Blog *)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
+    MenusViewController *controller = [storyboard instantiateInitialViewController];
+    [controller setupWithBlog:blog];
+    return controller;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithBlog:(Blog *)blog
+- (void)setupWithBlog:(Blog *)blog
 {
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
-    self = [storyboard instantiateInitialViewController];
-    if (self) {
-        
-        // using a new child context to keep local changes disacardable
-        // using main queue as we still want processing done on the main thread
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        context.parentContext = blog.managedObjectContext;
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        
-        // set local blog from local context
-        _blog = [context objectWithID:blog.objectID];
-        
-        // set up the undomanager
-        context.undoManager = [[NSUndoManager alloc] init];
+    // using a new child context to keep local changes disacardable
+    // using main queue as we still want processing done on the main thread
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.parentContext = blog.managedObjectContext;
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-        MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
-        _menusService = service;
-    }
-    
-    return self;
+    // set local blog from local context
+    _blog = [context objectWithID:blog.objectID];
+
+    // set up the undomanager
+    context.undoManager = [[NSUndoManager alloc] init];
+
+    MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
+    _menusService = service;
 }
 
 - (void)viewDidLoad
@@ -485,7 +486,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item
 {
-    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
+    MenuItemEditingViewController *controller = [MenuItemEditingViewController itemEditingViewControllerWithItem:item
+                                                                                                            blog:self.blog];
     void(^dismiss)() = ^() {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
