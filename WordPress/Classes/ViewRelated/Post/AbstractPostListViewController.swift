@@ -562,6 +562,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 }
 
                 success?(hasMore: filter.hasMore)
+
+                if strongSelf.isSearching() {
+                    // If we're currently searching, go ahead and request a sync with the searchText since
+                    // an action was triggered to syncContent.
+                    strongSelf.syncPostsMatchingSearchText()
+                }
+
             }, failure: {[weak self] (error: NSError?) -> () in
 
                 guard let strongSelf = self,
