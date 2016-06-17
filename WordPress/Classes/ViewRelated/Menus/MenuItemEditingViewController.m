@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 @property (nonatomic, strong, readonly) MenuItem *item;
 @property (nonatomic, strong, readonly) Blog *blog;
 
-@property (nonatomic, strong) NSManagedObjectContext *scratchObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *scratchObjectContext;
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet UIView *contentView;
@@ -54,37 +54,40 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 @implementation MenuItemEditingViewController
 
++ (MenuItemEditingViewController *)itemEditingViewControllerWithItem:(MenuItem *)item blog:(Blog *)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSParameterAssert([item isKindOfClass:[MenuItem class]]);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MenuItemEditing" bundle:nil];
+    MenuItemEditingViewController *controller = [storyboard instantiateInitialViewController];
+    [controller setupWithItem:item blog:blog];
+    return controller;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithItem:(MenuItem *)item blog:(Blog *)blog
+- (void)setupWithItem:(MenuItem *)item blog:(Blog *)blog
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MenuItemEditing" bundle:nil];
-    self = [storyboard instantiateInitialViewController];
-    if (self) {
-        
-        _blog = blog;
-        
-        // Keep track of changes to the item on a scratch contect and scratch item.
-        NSManagedObjectID *itemObjectID = item.objectID;
-        NSManagedObjectContext *scratchContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        scratchContext.parentContext = blog.managedObjectContext;
-        scratchContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        _scratchObjectContext = scratchContext;
-        
-        [scratchContext performBlockAndWait:^{
-            NSError *error;
-            MenuItem *itemInContext = [scratchContext existingObjectWithID:itemObjectID error:&error];
-            if (error) {
-                DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
-            }
-            _item = itemInContext;
-        }];
-    }
-    
-    return self;
+    _blog = blog;
+
+    // Keep track of changes to the item on a scratch contect and scratch item.
+    NSManagedObjectID *itemObjectID = item.objectID;
+    NSManagedObjectContext *scratchContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    scratchContext.parentContext = blog.managedObjectContext;
+    scratchContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    _scratchObjectContext = scratchContext;
+
+    [scratchContext performBlockAndWait:^{
+        NSError *error;
+        MenuItem *itemInContext = [scratchContext existingObjectWithID:itemObjectID error:&error];
+        if (error) {
+            DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
+        }
+        _item = itemInContext;
+    }];
 }
 
 - (void)viewDidLoad

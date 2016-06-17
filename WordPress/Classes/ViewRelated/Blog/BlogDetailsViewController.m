@@ -551,7 +551,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
-    MenusViewController *viewController = [[MenusViewController alloc] initWithBlog:self.blog];
+    MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
