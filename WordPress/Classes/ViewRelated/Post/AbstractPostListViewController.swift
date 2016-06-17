@@ -693,7 +693,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func updateForLocalPostsMatchingSearchText() {
-        resetTableViewContentOffset()
         updateAndPerformFetchRequest()
         tableViewHandler.clearCachedRowHeights()
         tableView.reloadData()
@@ -1074,10 +1073,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Search Controller Delegate Methods
 
-    func willPresentSearchController(searchController: WPSearchController!) {
-        resetTableViewContentOffset()
-    }
-
     func presentSearchController(searchController: WPSearchController!) {
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
 
@@ -1102,11 +1097,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
-        resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func updateSearchResultsForSearchController(searchController: WPSearchController!) {
+        resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
     }
 }
