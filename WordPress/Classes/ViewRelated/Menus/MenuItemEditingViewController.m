@@ -414,14 +414,12 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     frame = [self.view.window convertRect:frame toView:self.view];
     
-    CGFloat constraintConstant = self.stackViewBottomConstraint.constant;
-    
+    CGFloat constraintConstant;
     if (frame.origin.y > self.view.frame.size.height) {
         constraintConstant = 0.0;
     } else  {
         constraintConstant = self.view.frame.size.height - frame.origin.y;
     }
-    
     [self.view layoutIfNeeded];
     self.stackViewBottomConstraint.constant = constraintConstant;
     
