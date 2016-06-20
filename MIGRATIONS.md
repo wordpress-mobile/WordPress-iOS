@@ -5,6 +5,8 @@ data model as well as any custom migrations.
 
 ## WordPress 50
 
+- @aerych 2016-05-26
+- Added `ReaderSearchSuggestion` entity. Represents a search in the reader.
 - @aerych 2016-05-31
 - Added `dateModified` property to `BasePost` model.
 - @aerych 2016-05-23
