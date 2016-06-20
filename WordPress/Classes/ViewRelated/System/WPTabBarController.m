@@ -199,7 +199,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     }
 
     self.readerViewController = [[ReaderViewController alloc] init];
-    self.readerMenuViewController = [[ReaderMenuViewController alloc] init];
+    self.readerMenuViewController = [ReaderMenuViewController controller];
 
     if ([Feature enabled: FeatureFlagReaderMenu]) {
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
