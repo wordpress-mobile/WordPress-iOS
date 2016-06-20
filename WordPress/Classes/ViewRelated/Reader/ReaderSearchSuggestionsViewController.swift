@@ -31,7 +31,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
 
     var tableViewHandler: WPTableViewHandler!
     var delegate: ReaderSearchSuggestionsDelegate?
-    var cellIdentifier = "CellIdentifier"
+    let cellIdentifier = "CellIdentifier"
     let maxTableViewRows = 5
     let rowAndButtonHeight = CGFloat(44.0)
 
