@@ -334,7 +334,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         guard let topic = listsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
             return nil
         }
-        return ReaderMenuItem(title: topic.title, type: .Topic)
+        return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
     }
 
 
@@ -392,7 +392,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
             return nil
         }
-        return ReaderMenuItem(title: topic.title, type: .Topic)
+        return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
     }
 
 
