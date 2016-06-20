@@ -586,7 +586,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         recentlyTrashedPostObjectIDs.removeAll()
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
         syncItemsWithUserInteraction(false)
     }
 
@@ -648,8 +648,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = currentPostListFilter().filterType
 
         switch filterType {
-        case .Scheduled:
-            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
         case .Trashed:
             return ""
         default:
@@ -680,7 +678,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         case .Draft:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         case .Scheduled:
-            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         case .Trashed:
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
         default:
