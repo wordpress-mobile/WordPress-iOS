@@ -24,7 +24,7 @@ extern NSString * const MenuItemEditingTypeSelectionChangedNotification;
  */
 @property (nonatomic, copy, nullable) void(^onSelectedToCancel)();
 
-- (id)initWithItem:(MenuItem *)item blog:(Blog *)blog;
++ (MenuItemEditingViewController *)itemEditingViewControllerWithItem:(MenuItem *)item blog:(Blog *)blog;
 
 @end
 
