@@ -32,12 +32,23 @@ import Foundation
     }
 }
 
+/// An WordPressOrgXMLRPCValidator is able to validate and check if user provided site urls are
+/// WordPress XMLRPC sites.
 public class WordPressOrgXMLRPCValidator: NSObject {
 
     override public init() {
         super.init()
     }
 
+    /**
+     Validates and check if user provided site urls are WordPress XMLRPC sites and returns the API endpoint.
+
+     - parameter site:    the user provided site URL
+     - parameter success: completion handler that is invoked when the site is considered valid,
+     the xmlrpcURL argument is the endpoint
+     - parameter failure: completion handler that is invoked when the site is considered invalid,
+     the error object provides details why the endpoint is invalid
+     */
     public func guessXMLRPCURLForSite(site: String,
                                       success: (xmlrpcURL: NSURL) -> (),
                                       failure: (error: NSError) -> ()) {

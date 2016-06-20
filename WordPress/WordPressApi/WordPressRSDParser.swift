@@ -1,5 +1,6 @@
 import Foundation
 
+/// An WordPressRSDParser is able to parse an RSD file and search for the XMLRPC WordPress url.
 public class WordPressRSDParser: NSObject, NSXMLParserDelegate {
 
     private let parser: NSXMLParser
