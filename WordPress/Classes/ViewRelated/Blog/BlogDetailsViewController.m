@@ -18,6 +18,7 @@
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
+#import <Reachability/Reachability.h>
 
 @import Gridicons;
 
@@ -496,10 +497,12 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 - (void)preloadStats
 {
     NSString *oauthToken = self.blog.authToken;
-    if (true && oauthToken) // check for wifi
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
+    
+    if (isOnWifi && oauthToken) // check for wifi
     {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
-        NSLog(@"%@ in BlogDetailsView", self.statsService);
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }
     
