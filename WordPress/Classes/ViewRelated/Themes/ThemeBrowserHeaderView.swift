@@ -22,7 +22,6 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
     @IBOutlet weak var supportButton: UIButton!
     @IBOutlet var searchBarBorders: [UIView]!
     @IBOutlet weak var searchBar: UIView!
-    @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var searchTypeButton: UIButton!
 
     // MARK: - Properties
@@ -45,7 +44,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
                 if ThemeType.mayPurchase {
                     searchType = presenter.searchType
                 } else {
-                    searchTypeButton.hidden = true
+                    searchBar.hidden = true
                 }
             }
         }
@@ -56,7 +55,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
     override public func awakeFromNib() {
         super.awakeFromNib()
 
-        let buttons = [customizeButton, detailsButton, supportButton, searchButton, searchTypeButton]
+        let buttons = [customizeButton, detailsButton, supportButton, searchTypeButton]
         buttons.forEach { $0.exclusiveTouch = true }
 
         applyStyles()

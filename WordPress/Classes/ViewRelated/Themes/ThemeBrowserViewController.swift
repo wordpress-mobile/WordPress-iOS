@@ -76,6 +76,8 @@ public protocol ThemePresenter: class
     @IBOutlet weak var searchWrapperView: UIView!
     @IBOutlet weak var searchWrapperViewHeightConstraint: NSLayoutConstraint!
 
+    private var searchButton: UIBarButtonItem!
+
     /**
      *  @brief      The FRC this VC will use to display filtered content.
      */
@@ -216,9 +218,18 @@ public protocol ThemePresenter: class
         sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
 
         configureSearchController()
+        configureSearchButton()
 
         updateActiveTheme()
         setupSyncHelper()
+    }
+
+    private func configureSearchButton() {
+        searchButton = UIBarButtonItem(image: UIImage.init(named: "icon-post-search"),
+                                       style: .Plain,
+                                       target: self,
+                                       action: #selector(didTapSearchButton))
+        navigationItem.rightBarButtonItem = searchButton
     }
 
     private func configureSearchController() {
@@ -508,7 +519,7 @@ public protocol ThemePresenter: class
             return CGSize.zero
         }
         let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
-        let height = Styles.headerHeight(horizontallyCompact)
+        let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
 
         return CGSize(width: 0, height: height)
     }
@@ -538,7 +549,7 @@ public protocol ThemePresenter: class
 
     // MARK: - Search support
 
-    @IBAction func didTapSearchButton(sender: UIButton) {
+    @objc func didTapSearchButton(sender: UIButton) {
         WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
         beginSearchFor("", animated: true)
     }
