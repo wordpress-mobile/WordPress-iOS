@@ -340,11 +340,11 @@
                                         <outlet property="currentThemeName" destination="QqI-lf-7WU" id="qGX-CK-8ey"/>
                                         <outlet property="customizeButton" destination="u2z-nw-Vyc" id="1gk-tM-uLp"/>
                                         <outlet property="detailsButton" destination="6BA-aY-mOt" id="LAT-yo-MX8"/>
-                                        <outlet property="searchBar" destination="QcA-Am-6I5" id="erh-Ff-XFp"/>
-                                        <outlet property="searchTypeButton" destination="gVo-ti-m3S" id="ubO-fe-9XS"/>
+                                        <outlet property="filterBar" destination="QcA-Am-6I5" id="ULL-Kt-Bh8"/>
+                                        <outlet property="filterTypeButton" destination="gVo-ti-m3S" id="1et-xB-Gzn"/>
                                         <outlet property="supportButton" destination="iix-Pu-kKG" id="0Sd-aS-Nyg"/>
-                                        <outletCollection property="searchBarBorders" destination="mCK-BA-lBb" collectionClass="NSMutableArray" id="tib-Ny-Vrf"/>
-                                        <outletCollection property="searchBarBorders" destination="vOP-ZF-qi0" collectionClass="NSMutableArray" id="pzf-Gb-tmO"/>
+                                        <outletCollection property="filterBarBorders" destination="vOP-ZF-qi0" collectionClass="NSMutableArray" id="eHA-ty-vDq"/>
+                                        <outletCollection property="filterBarBorders" destination="mCK-BA-lBb" collectionClass="NSMutableArray" id="iF8-KI-IhN"/>
                                     </connections>
                                 </collectionReusableView>
                                 <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserFooterView" id="Mhx-tS-Lea" userLabel="ThemeBrowserFooterView">
