@@ -27,6 +27,8 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
+CGFloat const BLogDetailGridiconAccessorySize = 17.0;
+
 // NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
 // stats/insights. Per @mtias, if the dashboard should change at some point the
 // redirect will be updated to point to new content, eventhough the path is still
@@ -255,9 +257,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        callback:^{
                                                            [weakSelf showViewAdmin];
                                                        }];
-    UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(17.0, 17.0)];
+    UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)];
     UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
-    accessoryView.tintColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:205.0 / 255.0 alpha:1.0]; // Match disclosure icon color.
+    accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
     row.accessoryView = accessoryView;
     [rows addObject:row];
 
