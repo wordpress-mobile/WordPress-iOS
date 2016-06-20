@@ -32,8 +32,15 @@ public class WordPressComRestApi: NSObject
 
     public static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
 
+    private static let localeKey = "locale"
+
     private let oAuthToken: String?
     private let userAgent: String?
+
+    /**
+     Configure whether or not the user's preferred language locale should be appended. Defaults to true.
+     */
+    public var appendsPreferredLanguageLocale = true
 
     private lazy var sessionManager: AFHTTPSessionManager = {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
@@ -88,8 +95,10 @@ public class WordPressComRestApi: NSObject
                      success: SuccessResponseBlock,
                      failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleIfNeeded(URLString)
         let progress = NSProgress()
         progress.totalUnitCount = 1
+
         let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
                 success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
@@ -125,6 +134,7 @@ public class WordPressComRestApi: NSObject
                      success: SuccessResponseBlock,
                      failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleIfNeeded(URLString)
         let progress = NSProgress()
         progress.totalUnitCount = 1
         let task = sessionManager.POST(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
@@ -165,6 +175,7 @@ public class WordPressComRestApi: NSObject
                               success: SuccessResponseBlock,
                               failure: FailureReponseBlock) -> NSProgress?
     {
+        let URLString = appendLocaleIfNeeded(URLString)
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
             let requestURLString = NSURL(string:URLString,
                                      relativeToURL:baseURL)?.absoluteString else {
@@ -220,11 +231,16 @@ public class WordPressComRestApi: NSObject
         return !(authToken.isEmpty)
     }
 
-
     override public var hashValue: Int {
         return "\(oAuthToken),\(userAgent)".hashValue
     }
 
+    private func appendLocaleIfNeeded(path: String) -> String {
+        guard appendsPreferredLanguageLocale else {
+            return path
+        }
+        return WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
+    }
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
@@ -310,5 +326,23 @@ extension WordPressComRestApi
     /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
     class public func anonymousApi() -> WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPressUserAgent())
+    }
+
+    /// Append the user's preferred device locale as a query param to the URL path.
+    /// If the locale already exists the original path is returned.
+    ///
+    /// - Parameters:
+    ///     - path: A URL string. Can be an absolute or relative URL string.
+    ///
+    /// - Returns: The path with the locale appended, or the original path if it already had a locale param.
+    ///
+    class public func pathByAppendingPreferredLanguageLocale(path: String) -> String {
+        let localeKey = WordPressComRestApi.localeKey
+        if path.isEmpty || path.containsString("\(localeKey)=") {
+            return path
+        }
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let separator = path.containsString("?") ? "&" : "?"
+        return "\(path)\(separator)\(localeKey)=\(preferredLanguageIdentifier)"
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import DTCoreText
 import WordPressShared
 import WordPressComAnalytics
 
@@ -456,6 +457,12 @@ final public class ReaderDetailViewController : UIViewController
 
     private func configureRichText() {
         richTextView.delegate = self
+        let fontSize = WPStyleGuide.Detail.contentFontSize
+        let lineHeight = WPStyleGuide.Detail.contentLineHeight
+        var textOptions = richTextView.textOptions
+        textOptions[DTDefaultFontSize] = WPStyleGuide.Cards.contentFontSize
+        textOptions[DTDefaultLineHeightMultiplier] = lineHeight / fontSize
+        richTextView.textOptions = textOptions
         richTextView.content = post!.contentForDisplay()
         richTextView.privateContent = post!.isPrivate()
     }
