@@ -409,7 +409,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (remoteItem.type) {
         // Override the type_family param based on the type.
         // This is a weird behavior of the API and is not documented.
-        NSString *typeFamily = item.typeFamily;
+        NSString *typeFamily;
         if ([remoteItem.type isEqualToString:MenuItemTypeCustom]) {
             typeFamily = @"custom";
         } else if ([remoteItem.type isEqualToString:MenuItemTypeTag] || [remoteItem.type isEqualToString:MenuItemTypeCategory]){
