@@ -127,8 +127,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     }
 
 
-    ///
-    ///
     func listenForWordPressAccountChanged() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderMenuViewModel.handleWordPressComAccountChanged(_:)), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
     }
