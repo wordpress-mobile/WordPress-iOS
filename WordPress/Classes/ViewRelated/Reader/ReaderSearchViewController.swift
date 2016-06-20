@@ -121,7 +121,7 @@ import Gridicons
     func performSearch() {
         assert(streamController != nil)
 
-        guard let phrase = searchBar.text else {
+        guard let phrase = searchBar.text?.trim() else {
             return
         }
 
@@ -227,7 +227,7 @@ extension ReaderSearchViewController : UISearchBarDelegate {
 
     public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         // update the autocomplete suggestions
-        suggestionsController?.phrase = searchText
+        suggestionsController?.phrase = searchText.trim()
     }
 
 
