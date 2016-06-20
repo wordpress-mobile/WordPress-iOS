@@ -63,7 +63,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (void)setupWithBlog:(Blog *)blog
 {
-    // using a new child context to keep local changes disacardable
+    // using a new child context to keep local changes discardable
     // using main queue as we still want processing done on the main thread
     NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     context.parentContext = blog.managedObjectContext;
