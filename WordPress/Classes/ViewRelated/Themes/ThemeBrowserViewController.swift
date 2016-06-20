@@ -46,7 +46,7 @@ public enum ThemeType
  */
 public protocol ThemePresenter: class
 {
-    var searchType: ThemeType { get set }
+    var filterType: ThemeType { get set }
 
     var screenshotWidth: Int { get }
 
@@ -124,9 +124,9 @@ public protocol ThemePresenter: class
         return !suspendedSearch.trim().isEmpty
     }
 
-    public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
+    public var filterType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
-            if searchType != oldValue {
+            if filterType != oldValue {
                 fetchThemes()
                 reloadThemes()
             }
@@ -630,7 +630,7 @@ public protocol ThemePresenter: class
     private func browsePredicate() -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
 
-        let subpredicates = [blogPredicate, searchNamePredicate(), searchType.predicate].flatMap { $0 }
+        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].flatMap { $0 }
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
