@@ -4,7 +4,6 @@ import OHHTTPStubs
 
 class WordPressComServiceRemoteRestTests: XCTestCase {
 
-    let wordPressComRestApi = "https://public-api.wordpress.com/rest/"
     let wordPressUsersNewEndpoint = "v1.1/users/new"
     let wordPressSitesNewEndpoint = "v1.1/sites/new"
 
@@ -28,13 +27,19 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
 
     private func isRestAPIUsersNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.wordPressComRestApi + self.wordPressUsersNewEndpoint
+            guard let url = request.URL else {
+                return false
+            }
+            return url.absoluteString.containsString(self.wordPressUsersNewEndpoint)
         }
     }
 
     private func isRestAPISitesNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.wordPressComRestApi + self.wordPressSitesNewEndpoint
+            guard let url = request.URL else {
+                return false
+            }
+            return url.absoluteString.containsString(self.wordPressSitesNewEndpoint)
         }
     }
 
