@@ -59,6 +59,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return syncHelper
     }()
 
+    lazy var searchHelper : WPContentSearchHelper = {
+        let searchHelper = WPContentSearchHelper()
+        return searchHelper
+    }()
+
     lazy var noResultsView : WPNoResultsView = {
         let noResultsView = WPNoResultsView()
         noResultsView.delegate = self
@@ -83,6 +88,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
+    private var searchesSyncing = 0
 
     // MARK: - Lifecycle
 
@@ -96,6 +102,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         configureFooterView()
         configureNavbar()
         configureSearchController()
+        configureSearchHelper()
         configureAuthorFilter()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -131,7 +138,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             }
 
             if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
-                strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
+                strongSelf.searchWrapperViewHeightConstraint.constant = strongSelf.heightForSearchWrapperView()
             }
         }, completion: nil)
     }
@@ -263,6 +270,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchWrapperView.backgroundColor = WPStyleGuide.wordPressBlue()
     }
 
+    func configureSearchHelper() {
+        searchHelper.resetConfiguration()
+        searchHelper.configureImmediateSearch({ [weak self] in
+            self?.updateForLocalPostsMatchingSearchText()
+        })
+        searchHelper.configureDeferredSearch({ [weak self] in
+            self?.syncPostsMatchingSearchText()
+        })
+    }
+
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
@@ -327,8 +344,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
         let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
+        if currentPostListFilter().filterType == .Draft {
+            return [sortDescriptorLocal, NSSortDescriptor(key: "dateModified", ascending: ascending)]
+        }
         let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
-
         return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
     }
 
@@ -370,21 +389,23 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
     }
 
-    func updateAndPerformFetchRequestRefreshingCachedRowHeights() {
-        updateAndPerformFetchRequest()
-
+    func refreshCachedRowHeightsForTableViewWidth() {
         let width = CGRectGetWidth(tableView.bounds)
         tableViewHandler.refreshCachedRowHeightsForWidth(width)
+    }
 
+    func updateAndPerformFetchRequestRefreshingResults() {
+        updateAndPerformFetchRequest()
+        refreshCachedRowHeightsForTableViewWidth()
         tableView.reloadData()
         refreshResults()
     }
 
-    func resetTableViewContentOffset() {
+    func resetTableViewContentOffset(animated: Bool = false) {
         // Reset the tableView contentOffset to the top before we make any dataSource changes.
         var tableOffset = tableView.contentOffset
         tableOffset.y = -tableView.contentInset.top
-        tableView.contentOffset = tableOffset
+        tableView.setContentOffset(tableOffset, animated: animated)
     }
 
     func predicateForFetchRequest() -> NSPredicate {
@@ -440,12 +461,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
         WPAnalytics.track(.PostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
 
-        if currentPostListFilter().filterType == .Scheduled {
-            let index = indexForFilterWithType(.Draft)
-            setCurrentFilterIndex(index)
-            return
-        }
-
         createPost()
     }
 
@@ -496,7 +511,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         filter.oldestPostDate = oldestPost.dateCreated()
         filter.hasMore = posts.count >= options.number.integerValue
 
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func numberOfPostsPerSync() -> UInt {
@@ -518,7 +533,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         if recentlyTrashedPostObjectIDs.count > 0 {
             recentlyTrashedPostObjectIDs.removeAll()
-            updateAndPerformFetchRequestRefreshingCachedRowHeights()
+            updateAndPerformFetchRequestRefreshingResults()
         }
 
         let filter = currentPostListFilter()
@@ -547,6 +562,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 }
 
                 success?(hasMore: filter.hasMore)
+
+                if strongSelf.isSearching() {
+                    // If we're currently searching, go ahead and request a sync with the searchText since
+                    // an action was triggered to syncContent.
+                    strongSelf.syncPostsMatchingSearchText()
+                }
+
             }, failure: {[weak self] (error: NSError?) -> () in
 
                 guard let strongSelf = self,
@@ -651,13 +673,108 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         presentViewController(navController, animated: true, completion: nil)
     }
 
+    // MARK: - Searching
+
+    func toggleSearch() {
+        searchController.active = !searchController.active
+    }
+
+    func heightForSearchWrapperView() -> CGFloat {
+
+        guard let navigationController = navigationController else {
+            return SearchWrapperViewMinHeight
+        }
+
+        let navBar = navigationController.navigationBar
+        let height = navBar.frame.height + self.topLayoutGuide.length
+
+        return max(height, SearchWrapperViewMinHeight)
+    }
+
+    func isSearching() -> Bool {
+        return searchController.active && currentSearchTerm()?.characters.count > 0
+    }
+
+    func currentSearchTerm() -> String? {
+        return searchController.searchBar.text
+    }
+
+    func updateForLocalPostsMatchingSearchText() {
+        updateAndPerformFetchRequest()
+        tableViewHandler.clearCachedRowHeights()
+        tableView.reloadData()
+
+        let filter = currentPostListFilter()
+        if filter.hasMore && tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            // If the filter detects there are more posts, but there are none that match the current search
+            // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
+            hideNoResultsView()
+            postListFooterView.hidden = true
+        } else {
+            refreshResults()
+        }
+    }
+
+    func isSyncingPostsWithSearch() -> Bool {
+        return searchesSyncing > 0
+    }
+
+    func postsSyncWithSearchDidBegin() {
+        searchesSyncing += 1
+        postListFooterView.showSpinner(true)
+        postListFooterView.hidden = false
+    }
+
+    func postsSyncWithSearchEnded() {
+        searchesSyncing -= 1
+        assert(searchesSyncing >= 0, "Expected Int searchesSyncing to be 0 or greater while searching.")
+        if !isSyncingPostsWithSearch() {
+            postListFooterView.showSpinner(false)
+            refreshResults()
+        }
+    }
+
+    func syncPostsMatchingSearchText() {
+        guard let searchText = searchController.searchBar.text where !searchText.isEmpty() else {
+            return
+        }
+        let filter = currentPostListFilter()
+        guard filter.hasMore else {
+            return
+        }
+
+        postsSyncWithSearchDidBegin()
+
+        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let postService = PostService(managedObjectContext: managedObjectContext())
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses
+        options.authorID = author
+        options.number = 20
+        options.purgesLocalSync = false
+        options.search = searchText
+
+        postService.syncPostsOfType(
+            postTypeToSync(),
+            withOptions: options,
+            forBlog: blog,
+            success: { [weak self] posts in
+                self?.postsSyncWithSearchEnded()
+            }, failure: { [weak self] (error: NSError?) in
+                self?.postsSyncWithSearchEnded()
+            }
+        )
+    }
+
     // MARK: - Actions
 
     func publishPost(apost: AbstractPost) {
         WPAnalytics.track(.PostListPublishAction, withProperties: propertiesForAnalytics())
 
         apost.status = PostStatusPublish
-        apost.setDateCreated(NSDate())
+        if let date = apost.dateCreated() where date == NSDate().laterDate(date) {
+            apost.setDateCreated(NSDate())
+        }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
@@ -794,32 +911,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         assert(false, "You should implement this method in the subclass")
     }
 
-    // MARK: - Search Related
-
-    func toggleSearch() {
-        searchController.active = !searchController.active
-    }
-
-    func heightForSearchWrapperView() -> Float {
-
-        guard let navigationController = navigationController else {
-            return Float(SearchWrapperViewMinHeight)
-        }
-
-        let navBar = navigationController.navigationBar
-        let height = navBar.frame.height + self.topLayoutGuide.length
-
-        return max(Float(height), Float(SearchWrapperViewMinHeight))
-    }
-
-    func isSearching() -> Bool {
-        return searchController.active && currentSearchTerm()?.characters.count > 0
-    }
-
-    func currentSearchTerm() -> String? {
-        return searchController.searchBar.text
-    }
-
     // MARK: - Data Sources
 
     /// Retrieves the userID for the user of the current blog.
@@ -933,7 +1024,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         recentlyTrashedPostObjectIDs.removeAll()
         updateFilterTitle()
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     func updateFilterTitle() {
@@ -993,7 +1084,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
 
         navigationController?.setNavigationBarHidden(true, animated: true) // Remove this line when switching to UISearchController.
-        searchWrapperViewHeightConstraint.constant = CGFloat(heightForSearchWrapperView())
+        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
 
         UIView.animateWithDuration(SearchBarAnimationDuration, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { [weak self] in
             self?.view.layoutIfNeeded()
@@ -1012,12 +1103,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         searchController.searchBar.text = nil
-        resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        searchHelper.searchCanceled()
     }
 
     func updateSearchResultsForSearchController(searchController: WPSearchController!) {
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        searchHelper.searchUpdated(searchController.searchBar.text)
     }
 }

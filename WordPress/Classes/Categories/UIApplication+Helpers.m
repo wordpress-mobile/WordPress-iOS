@@ -13,13 +13,4 @@
     return NO;
 }
 
-- (BOOL)isAlphaBuild
-{
-#if ALPHA_BUILD
-    return YES;
-#endif
-    
-    return NO;
-}
-
 @end

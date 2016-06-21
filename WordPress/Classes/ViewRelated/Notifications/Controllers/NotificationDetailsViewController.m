@@ -696,7 +696,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 /**
     Note:
     The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
-    gravatar, is because we're implementing a custom behavior whenever the user approves/ disapproves the comment.
+    gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
     
     -   Font colors are updated.
     -   A left separator is displayed.

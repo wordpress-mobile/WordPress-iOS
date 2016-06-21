@@ -13,8 +13,6 @@
 #import "WordPress-swift.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WPXMLRPCDecoder.h"
-#import "WordPress-Swift.h"
-
 
 @implementation MediaService
 
@@ -258,42 +256,20 @@
 
 - (NSError *)translateMediaUploadError:(NSError *)error {
     NSError *newError = error;
-    if (error.domain == WordPressComApiErrorDomain) {
-        NSString *errorMessage = [error localizedDescription];
-        NSInteger errorCode = error.code;
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-        switch (error.code) {
-            case WordPressComApiErrorUploadFailed:
-                errorMessage = NSLocalizedString(@"The app couldn't upload this media.", @"Message to show to user when media upload failed by unknow server error");
-                errorCode = WordPressComApiErrorUploadFailed;
-                break;
-            case WordPressComApiErrorUploadFailedInvalidFileType:
-                errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
-                errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
-                break;
-            case WordPressComApiErrorUploadFailedNotEnoughDiskQuota:
-                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
-                errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
-                break;
-        }
-        userInfo[NSLocalizedDescriptionKey] = errorMessage;
-        newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
-    } else if (error.domain == WPXMLRPCFaultErrorDomain) {
+    if (error.domain == WPXMLRPCFaultErrorDomain) {
         NSString *errorMessage = [error localizedDescription];
         NSInteger errorCode = error.code;
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
         switch (error.code) {
             case 500:{
                 errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
-                errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
             } break;
             case 401:{
-                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
-                errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");                
             } break;
         }
         userInfo[NSLocalizedDescriptionKey] = errorMessage;
-        newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
+        newError = [[NSError alloc] initWithDomain:WPXMLRPCFaultErrorDomain code:errorCode userInfo:userInfo];
     }
     return newError;
 }
@@ -453,7 +429,7 @@
         
         if (isPrivate) {
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-            NSString *authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+            NSString *authToken = [[accountService defaultWordPressComAccount] authToken];
             [imageSource downloadImageForURL:remoteURL
                                    authToken:authToken
                                  withSuccess:successBlock
@@ -585,13 +561,12 @@ static NSString * const MediaDirectory = @"Media";
 {
     id <MediaServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.restApi) {
+        if (blog.wordPressComRestApi) {
             remote = [[MediaServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi
                                                                           siteID:blog.dotComID];
         }
-    } else if (blog.api) {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
+    } else if (blog.xmlrpcApi) {
+        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return remote;
 }

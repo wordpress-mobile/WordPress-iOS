@@ -311,9 +311,9 @@ extension WPStyleGuide
     public struct Cards
     {
         public static let defaultLineHeight:CGFloat = UIDevice.isPad() ? 26.0 : 22.0
-        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 24.0 : 18.0
-        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 32.0 : 24.0
-        public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 28.0 : 18.0
+        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 39.0 : 23.0
+        public static let contentFontSize:CGFloat = 16.0
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
@@ -324,9 +324,10 @@ extension WPStyleGuide
 
     public struct Detail
     {
-        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 32.0 : 18.0
-        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 40.0 : 24.0
-        public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 36.0 : 28.0
+        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 45.0 : 35.0
+        public static let contentFontSize:CGFloat = 16.0
+        public static let contentLineHeight:CGFloat = 27.0
     }
 
 }

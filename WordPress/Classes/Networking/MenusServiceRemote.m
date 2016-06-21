@@ -1,6 +1,5 @@
 #import "MenusServiceRemote.h"
 #import "Blog.h"
-#import "WordPressComApi.h"
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"

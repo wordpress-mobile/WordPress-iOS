@@ -57,6 +57,18 @@ import WordPressComAnalytics
     }
 
 
+    /// Check if the specified topic is a search topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a search topic
+    ///
+    public class func isTopicSearchTopic(topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKindOfClass(ReaderSearchTopic)
+    }
+
+
     /// Check if the specified topic is for Freshly Pressed
     ///
     /// - Parameters:
