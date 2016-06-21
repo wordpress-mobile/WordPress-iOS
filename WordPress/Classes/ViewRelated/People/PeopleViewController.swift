@@ -254,6 +254,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             service.loadFollowersPage(nextRequestOffset, success: success)
         case .Users:
             service.loadUsersPage(nextRequestOffset, success: success)
+        case .Viewers:
+            service.loadViewersPage(nextRequestOffset, success: success)
         }
     }
 
@@ -345,8 +347,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - Private Enums
 
     private enum Filter : String {
-        case Users      = "team"
+        case Users      = "users"
         case Followers  = "followers"
+        case Viewers    = "viewers"
 
         var title: String {
             switch self {
@@ -354,6 +357,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
                 return NSLocalizedString("Users", comment: "Blog Users")
             case .Followers:
                 return NSLocalizedString("Followers", comment: "Blog Followers")
+            case .Viewers:
+                return NSLocalizedString("Viewers", comment: "Blog Viewers")
             }
         }
 
@@ -363,6 +368,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
                 return .User
             case .Followers:
                 return .Follower
+            case .Viewers:
+                return .Viewer
             }
         }
 
