@@ -48,6 +48,7 @@ enum Role: String, Comparable, Equatable, CustomStringConvertible {
     case Contributor    = "contributor"
     case Subscriber     = "subscriber"
     case Follower       = "follower"
+    case Viewer         = "viewer"
     case Unsupported    = "unsupported"
 }
 
@@ -156,7 +157,7 @@ extension Viewer {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = Role.Follower
+        role = Role.Viewer
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
@@ -209,6 +210,7 @@ extension Role {
         Contributor : WPStyleGuide.People.contributorColor,
         Subscriber  : WPStyleGuide.People.contributorColor,
         Follower    : WPStyleGuide.People.contributorColor,
+        Viewer      : WPStyleGuide.People.contributorColor,
         Unsupported : WPStyleGuide.People.contributorColor
     ]
 
@@ -220,6 +222,7 @@ extension Role {
         Contributor : NSLocalizedString("Contributor", comment: "User role badge"),
         Subscriber  : NSLocalizedString("Subscriber", comment: "User role badge"),
         Follower    : NSLocalizedString("Follower", comment: "User role badge"),
+        Viewer      : NSLocalizedString("Viewer", comment: "User role badge"),
         Unsupported : NSLocalizedString("Unsupported", comment: "User role badge")
     ]
 }
