@@ -5,6 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 50
 
+- @jleandroperez 2016-06-21
+- `Person` removed `isFollower` property.
+- `Person` added `kind` Int16 attribute.
 - @aerych 2016-05-26
 - Added `ReaderSearchSuggestion` entity. Represents a search in the reader.
 - @aerych 2016-05-31
