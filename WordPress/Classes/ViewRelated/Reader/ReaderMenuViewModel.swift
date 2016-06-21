@@ -1,4 +1,6 @@
 import Foundation
+import Gridicons
+
 
 /// Enum of the sections shown in the reader.
 ///
@@ -213,13 +215,17 @@ enum ReaderDefaultMenuItemOrder: Int {
                 guard let abstractTopic = topic as? ReaderAbstractTopic else {
                     continue
                 }
+
                 var item = ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: abstractTopic)
                 if ReaderHelpers.topicIsFollowing(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Followed.rawValue
+                    item.icon = Gridicon.iconOfType(.CheckmarkCircle)
                 } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Discover.rawValue
+                    item.icon = Gridicon.iconOfType(.MySites)
                 } else if ReaderHelpers.topicIsLiked(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Likes.rawValue
+                    item.icon = Gridicon.iconOfType(.Star)
                 } else {
                     item.order = ReaderDefaultMenuItemOrder.Other.rawValue
                 }
@@ -230,6 +236,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Create a menu item for search
         var searchItem = searchMenuItem()
         searchItem.order = ReaderDefaultMenuItemOrder.Search.rawValue
+        searchItem.icon = Gridicon.iconOfType(.Search)
         defaultSectionItems.append(searchItem)
 
         // Sort the items into the desired order.
