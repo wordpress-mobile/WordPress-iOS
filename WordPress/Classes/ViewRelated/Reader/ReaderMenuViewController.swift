@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import WordPressShared
 
 
@@ -6,7 +7,8 @@ import WordPressShared
 ///
 @objc class ReaderMenuViewController : UITableViewController
 {
-    let cellIdentifier = "MenuCellIdentifier"
+    let defaultCellIdentifier = "DefaultCellIdentifier"
+    let actionCellIdentifier = "ActionCellIdentifier"
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
@@ -39,7 +41,8 @@ import WordPressShared
 
 
     func configureTableView() {
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
+        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -77,6 +80,38 @@ import WordPressShared
     func showReaderSearch() {
         let controller = ReaderSearchViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+
+    /// Presents a new view controller for subscribing to a new tag.
+    ///
+    func showAddTag() {
+        let placeholder = NSLocalizedString("Add any tag", comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe.")
+        let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
+        controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
+        controller.onValueChanged = { value in
+            self.followTagNamed(value)
+        }
+        controller.displaysActionButton = true
+        controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
+        controller.onActionPress = {
+            self.dismissModal()
+        }
+
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(ReaderMenuViewController.dismissModal))
+        controller.navigationItem.leftBarButtonItem = cancelButton
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .FormSheet
+
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+
+    /// Dismisses a presented view controller.
+    ///
+    func dismissModal() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
 
@@ -122,6 +157,25 @@ import WordPressShared
     }
 
 
+    /// Follow a new tag with the specified tag name.
+    ///
+    /// - Parameters:
+    ///     - tagName: The name of the tag to follow.
+    ///
+    func followTagNamed(tagName: String) {
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.followTagNamed(tagName, withSuccess: nil) { (error) in
+            DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
+
+            let title = NSLocalizedString("Could not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let message = error.localizedDescription
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledge ment of the message displayed in a prompt."))
+            alert.presentFromRootViewController()
+        }
+    }
+
+
     // MARK: - TableView Delegate Methods
 
 
@@ -150,7 +204,14 @@ import WordPressShared
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+        let menuItem = viewModel.menuItemAtIndexPath(indexPath)
+        if menuItem?.type == .AddItem {
+            let cell = tableView.dequeueReusableCellWithIdentifier(actionCellIdentifier)!
+            configureActionCell(cell, atIndexPath: indexPath)
+            return cell
+        }
+
+        let cell = tableView.dequeueReusableCellWithIdentifier(defaultCellIdentifier)!
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -158,6 +219,12 @@ import WordPressShared
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
+            return
+        }
+
+        if menuItem.type == .AddItem {
+            tableView.deselectSelectedRowWithAnimation(true)
+            showAddTag()
             return
         }
 
@@ -184,6 +251,24 @@ import WordPressShared
         cell.selectionStyle = .Default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
+    }
+
+
+    func configureActionCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
+            return
+        }
+
+        WPStyleGuide.configureTableViewActionCell(cell)
+
+        let image = Gridicon.iconOfType(.AddOutline)
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = WPStyleGuide.wordPressBlue()
+        cell.accessoryView = imageView
+        cell.selectionStyle = .Default
+        cell.imageView?.image = menuItem.icon
+        cell.imageView?.tintColor = WPStyleGuide.wordPressBlue()
+        cell.textLabel?.text = menuItem.title
     }
 
 
