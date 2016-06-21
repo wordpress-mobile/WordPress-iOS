@@ -3,6 +3,16 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 50
+
+- @aerych 2016-05-26
+- Added `ReaderSearchSuggestion` entity. Represents a search in the reader.
+- @aerych 2016-05-31
+- Added `dateModified` property to `BasePost` model.
+- @aerych 2016-05-23
+- `ReaderPost` added `score`.
+- `ReaderPost` added `sortRank`. It is not optional so the default of 0 is enforced.
+
 ## WordPress 49
 
 - @frosty 2016-05-17

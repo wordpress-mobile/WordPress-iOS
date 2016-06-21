@@ -8,7 +8,6 @@
 #import "ReaderSite.h"
 #import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"

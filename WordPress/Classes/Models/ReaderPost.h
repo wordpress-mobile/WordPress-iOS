@@ -32,7 +32,11 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
+@property (nonatomic, strong) NSNumber *score;
 @property (nonatomic, strong) NSNumber *siteID;
+// Normalizes sorting between score or sortDate depending on the flavor of post.
+@property (nonatomic, strong) NSNumber *sortRank;
+// Normalizes the date to sort by depending on the flavor of post.
 @property (nonatomic, strong) NSDate *sortDate;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSSet *comments;

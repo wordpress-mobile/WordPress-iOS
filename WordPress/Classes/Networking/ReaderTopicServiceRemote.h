@@ -3,7 +3,6 @@
 
 extern NSString * const WordPressComReaderEndpointURL;
 
-@class WordPressComApi;
 @class RemoteReaderSiteInfo;
 @class RemoteReaderTopic;
 

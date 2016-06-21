@@ -1,6 +1,5 @@
 #import "JetpackSettingsViewController.h"
 #import "Blog.h"
-#import "WordPressComApi.h"
 #import "WPWebViewController.h"
 #import "WPAccount.h"
 #import "WPNUXUtility.h"

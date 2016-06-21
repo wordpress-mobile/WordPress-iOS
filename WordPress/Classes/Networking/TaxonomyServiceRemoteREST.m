@@ -141,7 +141,7 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
                        failure:(nullable void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
-    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
+    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
@@ -166,7 +166,7 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@?context=edit", self.siteID, typeIdentifier];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi GET:requestUrl
        parameters:parameters

@@ -28,10 +28,14 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
-NSString * const BlogDetailAccountHideViewAdminTimeZone = @"GMT";
-NSInteger const BlogDetailAccountHideViewAdminYear = 2015;
-NSInteger const BlogDetailAccountHideViewAdminMonth = 9;
-NSInteger const BlogDetailAccountHideViewAdminDay = 7;
+CGFloat const BLogDetailGridiconAccessorySize = 17.0;
+
+// NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
+// stats/insights. Per @mtias, if the dashboard should change at some point the
+// redirect will be updated to point to new content, eventhough the path is still
+// "stats/".
+// aerych, 2016-06-14
+NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Helper Classes for Blog Details view model.
 
@@ -40,6 +44,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic, copy) void (^callback)();
 
@@ -210,6 +215,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 #pragma mark - Data Model setup
 
+- (NSString *)adminRowTitle
+{
+    if (self.blog.isHostedAtWPcom) {
+        return NSLocalizedString(@"Dashboard", @"Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.");
+    } else {
+        return NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.");
+    }
+}
 
 - (void)configureTableViewData
 {
@@ -229,25 +242,28 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                                    image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                 callback:^{
+                                                     [weakSelf showStats];
+                                                 }]];
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
                                                     image:[Gridicon iconOfType:GridiconTypeHouse]
                                                  callback:^{
                                                      [weakSelf showViewSite];
                                                  }]];
 
-    if ([self shouldShowWPAdminRow]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-                                                        image:[Gridicon iconOfType:GridiconTypeMySites]
-                                                     callback:^{
-                                                         [weakSelf showViewAdmin];
-                                                     }]];
-    }
-
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypeStatsAlt]
-                                                 callback:^{
-                                                     [weakSelf showStats];
-                                                 }]];
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
+                                                          image:[Gridicon iconOfType:GridiconTypeMySites]
+                                                       callback:^{
+                                                           [weakSelf showViewAdmin];
+                                                       }];
+    UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)];
+    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
+    accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
+    row.accessoryView = accessoryView;
+    [rows addObject:row];
 
     if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
@@ -261,7 +277,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
         [rows addObject:row];
     }
-    
+
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
 
@@ -433,6 +449,9 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     cell.textLabel.text = row.title;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
+    if (row.accessoryView) {
+        cell.accessoryView = row.accessoryView;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -441,6 +460,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     [WPStyleGuide configureTableViewCell:cell];
@@ -573,7 +593,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
-    MenusViewController *viewController = [[MenusViewController alloc] initWithBlog:self.blog];
+    MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
@@ -601,34 +621,13 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlog:self.blog];
 
-    NSString *dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+    NSString *dashboardUrl;
+    if (self.blog.isHostedAtWPcom) {
+        dashboardUrl = [NSString stringWithFormat:@"%@%@", WPCalypsoDashboardPath, self.blog.hostname];
+    } else {
+        dashboardUrl = [self.blog adminUrlWithPath:@""];
+    }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
-}
-
-- (BOOL)shouldShowWPAdminRow
-{
-    return !self.blog.isHostedAtWPcom || [self wasAccountCreateBeforeHideViewAdminDate];
-}
-
-- (BOOL)wasAccountCreateBeforeHideViewAdminDate
-{
-    NSDate *hideViewAdminDate = [self hideViewAdminDate];
-    WPAccount *account = self.blog.account;
-    
-    return [account.dateCreated compare:hideViewAdminDate] == NSOrderedAscending;
-}
-
-- (NSDate *)hideViewAdminDate
-{
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    calendar.timeZone = [NSTimeZone timeZoneWithName:BlogDetailAccountHideViewAdminTimeZone];
-    
-    NSDateComponents *hideAdminDateComponents = [NSDateComponents new];
-    hideAdminDateComponents.year = BlogDetailAccountHideViewAdminYear;
-    hideAdminDateComponents.month = BlogDetailAccountHideViewAdminMonth;
-    hideAdminDateComponents.day = BlogDetailAccountHideViewAdminDay;
-    
-    return [calendar dateFromComponents:hideAdminDateComponents];
 }
 
 

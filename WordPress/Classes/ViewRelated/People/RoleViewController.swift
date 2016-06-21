@@ -6,9 +6,42 @@ import WordPressShared
 ///
 class RoleViewController : UITableViewController {
 
-    /// Person's Blog
+    /// RoleViewController operation modes
     ///
-    var blog : Blog!
+    enum Mode {
+        /// Dynamic Mode: The list of available roles will be downloaded from the blog's remote endpoint.
+        ///
+        case Dynamic(blog: Blog)
+
+        /// Static Mode: The list of modes must be provided
+        ///
+        case Static(roles: [Role])
+    }
+
+    /// Specifies the way RoleViewController behaves
+    ///
+    var mode : Mode? {
+        didSet {
+            guard let mode = mode else {
+                return
+            }
+
+            switch mode {
+            case .Dynamic(let blog):
+                self.blog = blog
+            case .Static(let list):
+                self.roles = list
+            }
+        }
+    }
+
+    /// Optional Person Blog. When set, will be used to refresh the list of available roles.
+    ///
+    private var blog : Blog?
+
+    /// Available Roles for the current blog.
+    ///
+    private var roles = [Role]()
 
     /// Currently Selected Role
     ///
@@ -17,10 +50,6 @@ class RoleViewController : UITableViewController {
     /// Closure to be executed whenever the selected role changes.
     ///
     var onChange : (Role -> Void)?
-
-    /// Private collection of roles, available for the current blog.
-    ///
-    private var roles = [Role]()
 
     /// Activity Spinner, to be animated during Backend Interaction
     ///
@@ -32,6 +61,7 @@ class RoleViewController : UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        assert(mode != nil)
         title = NSLocalizedString("Role", comment: "User Roles Title")
         setupActivityIndicator()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -39,7 +69,7 @@ class RoleViewController : UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        refreshAvailableRoles()
+        refreshAvailableRolesIfNeeded()
     }
 
 
@@ -50,10 +80,15 @@ class RoleViewController : UITableViewController {
         view.pinSubviewAtCenter(activityIndicator)
     }
 
-    private func refreshAvailableRoles() {
+    private func refreshAvailableRolesIfNeeded() {
+        guard let blog = blog else {
+            return
+        }
+
         activityIndicator.startAnimating()
 
-        let service = PeopleService(blog: blog)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PeopleService(blog: blog, context: context)
         service?.loadAvailableRoles({ roles in
             self.roles = roles
             self.tableView.reloadData()
