@@ -173,7 +173,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func setupDefaultResultsController() {
         let fetchRequest = NSFetchRequest(entityName: "ReaderDefaultTopic")
-        fetchRequest.predicate = NSPredicate(format: "following = YES")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -294,7 +293,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func setupListResultsController() {
         let fetchRequest = NSFetchRequest(entityName: "ReaderListTopic")
-        fetchRequest.predicate = NSPredicate(format: "following = YES")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -304,6 +302,14 @@ enum ReaderDefaultMenuItemOrder: Int {
                                                                    cacheName: nil)
         listsFetchedResultsController.delegate = self
 
+        updateAndPerformListsFetchRequest()
+    }
+
+
+    /// Updates the lists results controller's fetch request predicate and performs a new fetch
+    ///
+    func updateAndPerformListsFetchRequest() {
+        listsFetchedResultsController.fetchRequest.predicate = predicateForRequests()
         do {
             let _ = try listsFetchedResultsController.performFetch()
         } catch {
@@ -352,7 +358,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func setupTagsResultsController() {
         let fetchRequest = NSFetchRequest(entityName: "ReaderTagTopic")
-        fetchRequest.predicate = NSPredicate(format: "following = YES")
+        fetchRequest.predicate = predicateForRequests()
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -362,6 +368,19 @@ enum ReaderDefaultMenuItemOrder: Int {
                                                                   cacheName: nil)
         tagsFetchedResultsController.delegate = self
 
+        do {
+            let _ = try tagsFetchedResultsController.performFetch()
+        } catch {
+            DDLogSwift.logError("There was a problem fetching tag topics for the menu.")
+            assertionFailure("There was a problem fetching tag topics.")
+        }
+    }
+
+
+    /// Updates the lists results controller's fetch request predicate and performs a new fetch
+    ///
+    func updateAndPerformTagsFetchRequest() {
+        tagsFetchedResultsController.fetchRequest.predicate = predicateForRequests()
         do {
             let _ = try tagsFetchedResultsController.performFetch()
         } catch {
@@ -414,6 +433,19 @@ enum ReaderDefaultMenuItemOrder: Int {
     }
 
 
+    /// Returns the predicate for tag and list fetch requests.
+    ///
+    /// - Returns: An NSPredicate
+    ///
+    func predicateForRequests() -> NSPredicate {
+        if isSignedInWPCom() {
+            return NSPredicate(format: "following = YES AND showInMenu = YES")
+        } else {
+            return NSPredicate(format: "following = NO AND showInMenu = YES")
+        }
+    }
+
+
     // MARK: - Notifications
 
 
@@ -423,6 +455,11 @@ enum ReaderDefaultMenuItemOrder: Int {
     func handleWordPressComAccountChanged(notification: NSNotification) {
         // TODO: We need to ensure we have no stale topics in core data prior to reloading content.
         delegate?.menuWillReloadContent()
+
+        // Update predicates to correctly fetch following or not following.
+        updateAndPerformListsFetchRequest()
+        updateAndPerformTagsFetchRequest()
+
         setupSections()
         delegate?.menuDidReloadContent()
     }
