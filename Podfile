@@ -52,7 +52,7 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.6.1'
     pod 'WordPressApi', '0.4.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.13'
-    pod 'WordPressCom-Stats-iOS', :path => '../WordPressCom-Stats-iOS/'
+    pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :branch => '5537-stats-preloading'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -71,7 +71,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', :path => '../WordPressCom-Stats-iOS/'
+    pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :branch => '5537-stats-preloading'
   end
 
 end
