@@ -17,6 +17,7 @@ enum ReaderMenuItemType: Int {
     case Topic
     case Search
     case Recommended
+    case AddItem
 }
 
 
@@ -403,7 +404,12 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// - Returns: The number of items in the section.
     ///
     func itemCountForTagSection() -> Int {
-        return tagsFetchedResultsController.fetchedObjects?.count ?? 0
+        var count = tagsFetchedResultsController.fetchedObjects?.count ?? 0
+        if ReaderHelpers.isLoggedIn() {
+            // The first tiem for a logged in user will be an "AddItem" type, so increase the count by 1.
+            count += 1
+        }
+        return count
     }
 
 
@@ -415,6 +421,17 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// - Returns: The requested menu item or nil.
     ///
     func menuItemForTagAtIndex(index: Int) -> ReaderMenuItem? {
+        var fetchedIndex = index
+        if ReaderHelpers.isLoggedIn() {
+            if fetchedIndex == 0 {
+                let title = NSLocalizedString("Add a Tag", comment: "Title. Let's the user know that they can use this fature to subscribe to new tags.")
+                return ReaderMenuItem(title: title, type: .AddItem)
+            } else {
+                // Adjust the index by one to account for AddItem
+                fetchedIndex -= 1
+            }
+        }
+
         guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
             return nil
         }
