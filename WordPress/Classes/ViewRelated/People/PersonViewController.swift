@@ -13,6 +13,10 @@ final class PersonViewController : UITableViewController {
     ///
     var blog : Blog!
 
+    /// Core Data Context that should be used
+    ///
+    var context: NSManagedObjectContext!
+
     /// Person to be displayed
     ///
     var person : Person! {
@@ -137,7 +141,7 @@ final class PersonViewController : UITableViewController {
             return
         }
 
-        roleViewController.blog = blog
+        roleViewController.mode = .Dynamic(blog: blog)
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
@@ -195,7 +199,7 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog)
+        let service = PeopleService(blog: blog, context: context)
         service?.deleteUser(user)
         navigationController?.popViewControllerAnimated(true)
 
@@ -209,7 +213,7 @@ private extension PersonViewController {
             return
         }
 
-        guard let service = PeopleService(blog: blog) else {
+        guard let service = PeopleService(blog: blog, context: context) else {
             DDLogSwift.logError("Couldn't instantiate People Service")
             return
         }

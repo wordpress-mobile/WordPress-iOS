@@ -1,5 +1,4 @@
 import Foundation
-import AFNetworking
 import UIDeviceIdentifier
 
 /// The purpose of this class is to encapsulate all of the interaction with the Notifications REST endpoints.
@@ -83,7 +82,7 @@ public class NotificationsServiceRemote : ServiceRemoteWordPressComREST
         let parameters = [
             "device_token"    : token,
             "device_family"   : "apple",
-            "app_secret_key"  : WordPressComApiPushAppId,
+            "app_secret_key"  : WPPushNotificationAppId,
             "device_name"     : device.name,
             "device_model"    : UIDeviceHardware.platform(),
             "os_version"      : device.systemVersion,

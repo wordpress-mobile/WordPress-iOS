@@ -26,7 +26,7 @@ abstract_target 'WordPress_Base' do
     pod 'FormatterKit', '~> 1.8.1'
     pod 'Helpshift', '~> 5.5.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Optimizely-iOS-SDK', '~> 1.4.2'
@@ -48,10 +48,10 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
-    pod 'WPMediaPicker', '~> 0.9.1'
+    pod 'WPMediaPicker', '~> 0.9.2'
     pod 'WordPress-iOS-Editor', '1.6.1'
     pod 'WordPressApi', '0.4.0'
-    pod 'WordPressCom-Analytics-iOS', '0.1.13'
+    pod 'WordPressCom-Analytics-iOS', '0.1.15'
     pod 'WordPressCom-Stats-iOS', '0.7.0'
     pod 'wpxmlrpc', '~> 0.8'
     

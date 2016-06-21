@@ -1,12 +1,12 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "WordPressComApi.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemoteTaxonomyPaging.h"
 #import "RemotePostCategory.h"
+#import "WordPress-Swift.h"
 
 @interface PostCategoryServiceForStubbing : PostCategoryService
 
@@ -36,11 +36,11 @@
 {
     [super setUp];
     
-    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
     Blog *blog = OCMStrictClassMock([Blog class]);
     
-    OCMStub([blog restApi]).andReturn(api);
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
     OCMStub([blog objectID]).andReturn(nil);
     
