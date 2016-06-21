@@ -500,7 +500,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
     
-    if (isOnWifi && oauthToken) // check for wifi
+    if (isOnWifi && oauthToken) // only preload on wifi
     {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
