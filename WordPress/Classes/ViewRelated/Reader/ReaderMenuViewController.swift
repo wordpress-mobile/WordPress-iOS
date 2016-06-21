@@ -90,7 +90,7 @@ import WordPressShared
     ///
     func promptUnfollowTagTopic(topic: ReaderTagTopic) {
         let title = NSLocalizedString("Unfollow", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
-        let template = NSLocalizedString("Are you sure you wish to unfollow the tag: %@", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
+        let template = NSLocalizedString("Are you sure you wish to unfollow the tag '%@'", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
         let message = String(format: template, topic.title)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title of a cancel button.")) { (action) in
