@@ -47,8 +47,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// Filter Predicate
     ///
     private var predicate: NSPredicate {
-        let follower = self.filter == .Followers
-        let predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", self.blog!.dotComID!, follower)
+        let predicate = NSPredicate(format: "siteID = %@ AND kind = %@", blog!.dotComID!, NSNumber(integer: filter.personKind.rawValue))
         return predicate
     }
 
@@ -343,7 +342,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
 
 
-    // MARK: - Private Structs
+    // MARK: - Private Enums
 
     private enum Filter : String {
         case Users      = "team"
@@ -358,11 +357,17 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             }
         }
 
+        var personKind: PersonKind {
+            switch self {
+            case .Users:
+                return .User
+            case .Followers:
+                return .Follower
+            }
+        }
+
         static let allFilters = [Filter.Users, .Followers]
     }
-
-
-    // MARK: - Constants
 
     private enum RestorationKeys {
         static let blog = "peopleBlogRestorationKey"
