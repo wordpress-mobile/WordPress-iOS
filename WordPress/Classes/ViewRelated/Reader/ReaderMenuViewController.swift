@@ -80,6 +80,48 @@ import WordPressShared
     }
 
 
+    // MARK: - Tag Wrangling
+
+
+    /// Prompts the user to confirm unfolowing a tag.
+    ///
+    /// - Parameters:
+    ///     - topic: The tag topic that is to be unfollowed.
+    ///
+    func promptUnfollowTagTopic(topic: ReaderTagTopic) {
+        let title = NSLocalizedString("Unfollow", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
+        let template = NSLocalizedString("Are you sure you wish to unfollow the tag: %@", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
+        let message = String(format: template, topic.title)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title of a cancel button.")) { (action) in
+            self.tableView.setEditing(false, animated: true)
+        }
+        alert.addDestructiveActionWithTitle(NSLocalizedString("Unfollow", comment: "Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader.")) { (action) in
+            self.unfollowTagTopic(topic)
+        }
+        alert.presentFromRootViewController()
+    }
+
+
+    /// Tells the ReaderTopicService to unfollow the specified topic.
+    ///
+    /// - Parameters:
+    ///     - topic: The tag topic that is to be unfollowed.
+    ///
+    func unfollowTagTopic(topic: ReaderTagTopic) {
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.unfollowTag(topic, withSuccess: nil) { (error) in
+            DDLogSwift.logError("Could not unfollow topic \(topic), \(error)")
+
+            let title = NSLocalizedString("Could not Unfollow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let message = error.localizedDescription
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledge ment of the message displayed in a prompt."))
+            alert.presentFromRootViewController()
+        }
+    }
+
+
     // MARK: - TableView Delegate Methods
 
 
@@ -144,6 +186,45 @@ import WordPressShared
         cell.imageView?.image = menuItem.icon
     }
 
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if !ReaderHelpers.isLoggedIn() {
+            return false
+        }
+
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
+            return false
+        }
+
+        guard let topic = menuItem.topic else {
+            return false
+        }
+
+        return ReaderHelpers.isTopicTag(topic)
+    }
+
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
+            return
+        }
+
+        guard let topic = menuItem.topic as? ReaderTagTopic else {
+            return
+        }
+
+        promptUnfollowTagTopic(topic)
+    }
+
+
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return .Delete
+    }
+
+
+    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+        return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing tags.")
+    }
 }
 
 
