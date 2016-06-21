@@ -54,8 +54,9 @@ enum Role: String, Comparable, Equatable, CustomStringConvertible {
 // MARK: - Specifies all of the possible Person Types that might exist.
 //
 enum PersonKind: Int {
-    case User           = 0
-    case Follower       = 1
+    case User       = 0
+    case Follower   = 1
+    case Viewer     = 2
 }
 
 // MARK: - Defines a Blog's User
@@ -90,6 +91,22 @@ struct Follower: Person {
     static let kind = PersonKind.Follower
 }
 
+// MARK: - Defines a Blog's Viewer
+//
+struct Viewer: Person {
+    let ID: Int
+    let username: String
+    let firstName: String?
+    let lastName: String?
+    let displayName: String
+    let role: Role
+    let siteID: Int
+    let linkedUserID: Int
+    let avatarURL: NSURL?
+    let isSuperAdmin: Bool
+    static let kind = PersonKind.Viewer
+}
+
 // MARK: - Extensions
 //
 extension Person {
@@ -118,6 +135,21 @@ extension User {
 }
 
 extension Follower {
+    init(managedPerson: ManagedPerson) {
+        ID = Int(managedPerson.userID)
+        username = managedPerson.username
+        firstName = managedPerson.firstName
+        lastName = managedPerson.lastName
+        displayName = managedPerson.displayName
+        role = Role.Follower
+        siteID = Int(managedPerson.siteID)
+        linkedUserID = Int(managedPerson.linkedUserID)
+        avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        isSuperAdmin = managedPerson.isSuperAdmin
+    }
+}
+
+extension Viewer {
     init(managedPerson: ManagedPerson) {
         ID = Int(managedPerson.userID)
         username = managedPerson.username
