@@ -31,6 +31,8 @@
 
 #import "EditPageViewController.h"
 
+#import "FollowedSitesViewController.h"
+
 #import "HelpshiftUtils.h"
 
 #import "InteractivePostView.h"
