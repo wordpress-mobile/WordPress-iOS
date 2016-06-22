@@ -172,7 +172,9 @@ class InvitePersonViewController : UITableViewController {
             return
         }
 
-        roleViewController.mode = .Static(roles: Role.inviteRoles)
+        let roles = (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+
+        roleViewController.mode = .Static(roles: roles)
         roleViewController.selectedRole = role
         roleViewController.onChange = { [unowned self] newRole in
             self.role = newRole
