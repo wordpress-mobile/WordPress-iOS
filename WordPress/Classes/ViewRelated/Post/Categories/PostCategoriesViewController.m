@@ -27,7 +27,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
             currentSelection:(NSArray *)originalSelection
                selectionMode:(CategoriesSelectionMode)selectionMode
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _selectionMode = selectionMode;
         _blog = blog;
