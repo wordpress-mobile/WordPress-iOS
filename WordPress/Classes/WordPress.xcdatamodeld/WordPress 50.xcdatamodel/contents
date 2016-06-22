@@ -395,8 +395,8 @@
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isFollower" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="kind" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="linkedUserID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="role" attributeType="String" syncable="YES"/>
