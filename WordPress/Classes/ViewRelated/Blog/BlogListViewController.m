@@ -139,7 +139,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [super viewDidLoad];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
-    if (IS_IPHONE) {
+    if ([WPDeviceIdentification isiPhone]) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
@@ -484,26 +484,9 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
-    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : WPTableHeaderPadFrame.size.height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    // Use the standard dimension on the last section
-    return section == [tableView numberOfSections] - 1 ? UITableViewAutomaticDimension : 0.0;
+    return (self.tableView.isEditing) ? CGFLOAT_MIN : UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -586,8 +569,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         self.hideCount = 0;
     }
     else {
-        // setting the table header view to nil creates extra space, empty view is a way around that
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+        self.tableView.tableHeaderView = nil;
     }
 
     // Animate view to editing mode
