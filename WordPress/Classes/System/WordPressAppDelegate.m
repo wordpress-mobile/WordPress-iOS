@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <Optimizely/Optimizely.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -126,7 +125,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-    [OptimizelyHelper setupOptimizelyWithLaunchOptions:launchOptions];
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
