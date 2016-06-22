@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "BlogServiceRemote.h"
-#import "ServiceRemoteXMLRPC.h"
+#import "ServiceRemoteWordPressXMLRPC.h"
 
-@interface BlogServiceRemoteXMLRPC : ServiceRemoteXMLRPC<BlogServiceRemote>
+@interface BlogServiceRemoteXMLRPC : ServiceRemoteWordPressXMLRPC<BlogServiceRemote>
 
 @end

@@ -1,8 +1,6 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "RemoteComment.h"
-#import <WordPressApi/WordPressApi.h>
-
-
+#import "WordPress-Swift.h"
 
 @implementation CommentServiceRemoteXMLRPC
 
@@ -27,12 +25,12 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.getComments"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          success([self remoteCommentsFromXMLRPCArray:responseObject]);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -45,13 +43,13 @@
 {
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:commentID];
     [self.api callMethod:@"wp.getComment"
-              parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              parameters:parameters success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                   if (success) {
                       // TODO: validate response
                       RemoteComment *comment = [self remoteCommentFromXMLRPCDictionary:responseObject];
                       success(comment);
                   }
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   failure(error);
               }];
 }
@@ -72,13 +70,13 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.newComment"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSNumber *commentID = responseObject;
                      // TODO: validate response
                      [self getCommentWithID:commentID
                                     success:success
                                     failure:failure];
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -98,12 +96,12 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.editComment"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      // TODO: validate response
                      [self getCommentWithID:commentID
                                     success:success
                                     failure:failure];
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -122,13 +120,13 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.editComment"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSNumber *commentID = responseObject;
                      // TODO: validate response
                      [self getCommentWithID:commentID
                                     success:success
                                     failure:failure];
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -143,11 +141,11 @@
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:comment.commentID];
     [self.api callMethod:@"wp.deleteComment"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if (success) {
                          success();
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }

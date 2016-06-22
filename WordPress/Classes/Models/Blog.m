@@ -8,6 +8,7 @@
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
+#import "WPUserAgent.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -27,6 +28,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
+@property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
 
 @end
@@ -80,6 +82,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize jetpack = _jetpack;
+@synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -89,6 +92,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     
     // Beware: Lazy getters below. Let's hit directly the ivar
     [_api.operationQueue cancelAllOperations];
+    [_xmlrpcApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -97,7 +101,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
     // Clean up instance variables
     self.api = nil;
-
+    self.xmlrpcApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -431,6 +435,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureReblog:
         case BlogFeatureMentions:
         case BlogFeatureOAuth2Login:
+        case BlogFeaturePlans:
+            return [self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
@@ -584,6 +590,18 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return _api;
+}
+
+- (WordPressOrgXMLRPCApi *)xmlrpcApi
+{
+    NSURL *xmlRPCEndpoint = [NSURL URLWithString:self.xmlrpc];
+    if (_xmlrpcApi == nil) {
+        if (xmlRPCEndpoint != nil) {
+        _xmlrpcApi = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRPCEndpoint
+                                                                   userAgent:[WPUserAgent wordPressUserAgent]];
+        }
+    }
+    return _xmlrpcApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi

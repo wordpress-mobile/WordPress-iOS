@@ -127,11 +127,12 @@ static CGFloat const SettingsMinHeight = 41.0f;
 
 - (void)adjustCellSize
 {
+    CGFloat widthInUse = CGRectGetWidth(self.textView.frame);
     CGFloat widthAvailable = CGRectGetWidth(self.textViewCell.contentView.bounds) - (2 * SettingsTextPadding.dx);
     CGSize size = [self.textView sizeThatFits:CGSizeMake(widthAvailable, CGFLOAT_MAX)];
     CGFloat height = size.height;
 
-    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f))
+    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f) || widthInUse != widthAvailable)
     {
         [self.tableView beginUpdates];
         self.textView.frame = CGRectMake(SettingsTextPadding.dx, SettingsTextPadding.dy, widthAvailable, height);
