@@ -15,6 +15,9 @@ class InvitePersonViewController : UITableViewController {
     ///
     var blog: Blog!
 
+    /// Core Data Context
+    ///
+    let context = ContextManager.sharedInstance().mainContext
 
     // MARK: - Private Properties
 
@@ -230,7 +233,7 @@ extension InvitePersonViewController {
     }
 
     func sendInvitation(blog: Blog, recipient: String, role: Role, message: String) {
-        guard let service = PeopleService(blog: blog) else {
+        guard let service = PeopleService(blog: blog, context: context) else {
             return
         }
 
@@ -268,7 +271,7 @@ extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func validateInvitation() {
-        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog) else {
+        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog, context: context) else {
             sendActionEnabled = false
             return
         }
