@@ -71,7 +71,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :branch => '5537-stats-preloading'
+    pod 'WordPressCom-Stats-iOS/Services', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :branch => '5537-stats-preloading'
   end
 
 end
