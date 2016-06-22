@@ -155,11 +155,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)configureTableViewFooter
 {
     // Notes:
-    //  -   iPhone: Hide the cellSeparators, when the table is empty
-    //  -   iPad: contentInset breaks tableSectionViews
-    CGRect footerFrame = UIDevice.isPad ? WPTableFooterPadFrame : CGRectZero;
-    
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
+    //  -  Hide the cellSeparators, when the table is empty
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)configureTableViewLayoutCell
