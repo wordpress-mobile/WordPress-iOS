@@ -838,7 +838,6 @@
 		FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */; };
 		FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */; };
 		FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */; };
-		FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19340B1BB2F892006825B8 /* ServiceRemoteXMLRPC.m */; };
 		FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716911CAAC87B0006E2D4 /* LoginTests.swift */; };
 		FF27169F1CAAF5060006E2D4 /* WordPressTestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF27169E1CAAF5060006E2D4 /* WordPressTestCredentials.swift */; };
 		FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
@@ -1848,7 +1847,6 @@
 		E1249B4219408C910035E895 /* RemoteComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteComment.m; path = "Remote Objects/RemoteComment.m"; sourceTree = "<group>"; };
 		E1249B4419408D0F0035E895 /* CommentServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
-		E1249B471940AE550035E895 /* ServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteREST.h; sourceTree = "<group>"; };
 		E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteREST.m; sourceTree = "<group>"; };
 		E124CE6A1C85813300F7BA99 /* PlansRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansRemote.swift; sourceTree = "<group>"; };
@@ -2186,7 +2184,6 @@
 		FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaProgressTableViewController.m; sourceTree = "<group>"; };
 		FF1933FD1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelatedPostsPreviewTableViewCell.h; sourceTree = "<group>"; };
 		FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelatedPostsPreviewTableViewCell.m; sourceTree = "<group>"; };
-		FF19340B1BB2F892006825B8 /* ServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF2716911CAAC87B0006E2D4 /* LoginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTests.swift; sourceTree = "<group>"; };
 		FF2716931CAAC87B0006E2D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3203,8 +3200,6 @@
 				5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */,
 				E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */,
 				E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */,
-				E1249B471940AE550035E895 /* ServiceRemoteXMLRPC.h */,
-				FF19340B1BB2F892006825B8 /* ServiceRemoteXMLRPC.m */,
 				FFDBAC5F1D01860E0088DEB1 /* ServiceRemoteWordPressXMLRPC.h */,
 				FFDBAC601D0186490088DEB1 /* ServiceRemoteWordPressXMLRPC.m */,
 				E6374DC21C4454EA00F24720 /* SharingServiceRemote.swift */,
@@ -6208,7 +6203,6 @@
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
-				FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
