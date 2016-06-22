@@ -14,6 +14,7 @@ import Gridicons
     private var backgroundTapRecognizer: UITapGestureRecognizer!
     private var streamController: ReaderStreamViewController!
     private let searchBarSearchIconSize = CGFloat(13.0)
+    private var suggestionsController: ReaderSearchSuggestionsViewController?
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -44,14 +45,6 @@ import Gridicons
         setupSearchBar()
         configureLabel()
         configureBackgroundTapRecognizer()
-    }
-
-
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderSearchViewController.handleKeyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderSearchViewController.handleKeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
 
 
@@ -109,6 +102,7 @@ import Gridicons
         backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
         backgroundTapRecognizer.cancelsTouchesInView = true
         backgroundTapRecognizer.enabled = false
+        backgroundTapRecognizer.delegate = self
         view.addGestureRecognizer(backgroundTapRecognizer)
     }
 
@@ -127,7 +121,7 @@ import Gridicons
     func performSearch() {
         assert(streamController != nil)
 
-        guard let phrase = searchBar.text else {
+        guard let phrase = searchBar.text?.trim() else {
             return
         }
 
@@ -149,25 +143,130 @@ import Gridicons
     }
 
 
-    func handleKeyboardDidShow(notification: NSNotification) {
-        backgroundTapRecognizer.enabled = true
+    // MARK: - Autocomplete
+
+
+    /// Display the search suggestions view
+    ///
+    func presentAutoCompleteView() {
+        let controller = ReaderSearchSuggestionsViewController.controller()
+        controller.delegate = self
+        addChildViewController(controller)
+
+        let autoView = controller.view
+        autoView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(autoView)
+
+        let views = [
+            "searchBar": searchBar,
+            "autoView" : autoView
+        ]
+
+        // Match the width of the search bar.
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[autoView(==searchBar)]",
+            options: .AlignAllBaseline,
+            metrics: nil,
+            views: views))
+        // Pin below the search bar.
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[searchBar][autoView]",
+            options: .AlignAllCenterX,
+            metrics: nil,
+            views: views))
+        // Center on the search bar.
+        view.addConstraint(NSLayoutConstraint(
+            item: autoView,
+            attribute: .CenterX,
+            relatedBy: .Equal,
+            toItem: searchBar,
+            attribute: .CenterX,
+            multiplier: 1,
+            constant: 0))
+
+        view.setNeedsUpdateConstraints()
+
+        controller.didMoveToParentViewController(self)
+        suggestionsController = controller
     }
 
 
-    func handleKeyboardWillHide(notification: NSNotification) {
-        backgroundTapRecognizer.enabled = false
+    /// Remove the search suggestions view.
+    ///
+    func dismissAutoCompleteView() {
+        guard let controller = suggestionsController else {
+            return
+        }
+        controller.willMoveToParentViewController(nil)
+        controller.view.removeFromSuperview()
+        controller.removeFromParentViewController()
+        suggestionsController = nil
+    }
+
+}
+
+
+extension ReaderSearchViewController : UIGestureRecognizerDelegate {
+
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        guard let suggestionsView = suggestionsController?.view else {
+            return true
+        }
+
+        // The gesture recognizer should not handle touches inside the suggestions view.
+        // We want those taps to be processed normally.
+        let point = touch.locationInView(suggestionsView)
+        if CGRectContainsPoint(suggestionsView.bounds, point) {
+            return false
+        }
+
+        return true
     }
 }
 
 
 extension ReaderSearchViewController : UISearchBarDelegate {
 
+    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        // update the autocomplete suggestions
+        suggestionsController?.phrase = searchText.trim()
+    }
+
+
+    public func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        backgroundTapRecognizer.enabled = true
+        // prepare autocomplete view
+        presentAutoCompleteView()
+    }
+
+
+    public func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        // remove auto complete view
+        dismissAutoCompleteView()
+        backgroundTapRecognizer.enabled = false
+    }
+
+
     public func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         performSearch()
     }
+
 
     public func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         endSearch()
     }
 
+}
+
+
+extension ReaderSearchViewController : ReaderSearchSuggestionsDelegate {
+
+    func searchSuggestionsController(controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
+        searchBar.text = selectedItem
+        performSearch()
+    }
+
+
+    func clearSuggestionsForSearchController(controller: ReaderSearchSuggestionsViewController) {
+        let service = ReaderSearchSuggestionService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.deleteAllSuggestions()
+    }
 }
