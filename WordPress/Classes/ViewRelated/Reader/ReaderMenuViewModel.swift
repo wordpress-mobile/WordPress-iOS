@@ -146,7 +146,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Rebuild!
         setupDefaultsSection()
 
-        if isSignedInWPCom() {
+        if ReaderHelpers.isLoggedIn() {
             setupListsSection()
         }
 
@@ -413,20 +413,12 @@ enum ReaderDefaultMenuItemOrder: Int {
     // MARK: - Helper Methods
 
 
-    /// Check if the user is signed in
-    ///
-    func isSignedInWPCom() -> Bool {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return service.defaultWordPressComAccount() != nil
-    }
-
-
     /// Returns the predicate for tag and list fetch requests.
     ///
     /// - Returns: An NSPredicate
     ///
     func predicateForRequests() -> NSPredicate {
-        if isSignedInWPCom() {
+        if ReaderHelpers.isLoggedIn() {
             return NSPredicate(format: "following = YES AND showInMenu = YES")
         } else {
             return NSPredicate(format: "following = NO AND showInMenu = YES")
@@ -442,7 +434,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func handleWordPressComAccountChanged(notification: NSNotification) {
         // TODO: We need to ensure we have no stale topics in core data prior to reloading content.
-        delegate?.menuWillReloadContent()
 
         // Update predicates to correctly fetch following or not following.
         updateAndPerformListsFetchRequest()
