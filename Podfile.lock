@@ -137,7 +137,6 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (4.6.0)
   - OHHTTPStubs/Swift (4.6.0):
     - OHHTTPStubs/Core
-  - Optimizely-iOS-SDK (1.4.2)
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
@@ -225,7 +224,6 @@ DEPENDENCIES:
   - OCMock (= 3.1.2)
   - OHHTTPStubs (~> 4.6.0)
   - OHHTTPStubs/Swift (~> 4.6.0)
-  - Optimizely-iOS-SDK (~> 1.4.2)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
   - RxCocoa (~> 2.5.0)
@@ -292,7 +290,6 @@ SPEC CHECKSUMS:
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  Optimizely-iOS-SDK: 6d23c5cde187f894430d134caa15f56874754cca
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
@@ -313,6 +310,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 899e782e5d53b904e39d96036646b2b2db20307b
+PODFILE CHECKSUM: 0cdacbe852eb9a2196c86a2719e9389e9db212d9
 
 COCOAPODS: 1.0.1
