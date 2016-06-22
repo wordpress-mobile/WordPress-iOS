@@ -46,7 +46,7 @@ public enum ThemeType
  */
 public protocol ThemePresenter: class
 {
-    var searchType: ThemeType { get set }
+    var filterType: ThemeType { get set }
 
     var screenshotWidth: Int { get }
 
@@ -75,6 +75,8 @@ public protocol ThemePresenter: class
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchWrapperView: UIView!
     @IBOutlet weak var searchWrapperViewHeightConstraint: NSLayoutConstraint!
+
+    private var searchButton: UIBarButtonItem!
 
     /**
      *  @brief      The FRC this VC will use to display filtered content.
@@ -122,9 +124,9 @@ public protocol ThemePresenter: class
         return !suspendedSearch.trim().isEmpty
     }
 
-    public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
+    public var filterType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
-            if searchType != oldValue {
+            if filterType != oldValue {
                 fetchThemes()
                 reloadThemes()
             }
@@ -216,9 +218,18 @@ public protocol ThemePresenter: class
         sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
 
         configureSearchController()
+        configureSearchButton()
 
         updateActiveTheme()
         setupSyncHelper()
+    }
+
+    private func configureSearchButton() {
+        searchButton = UIBarButtonItem(image: UIImage.init(named: "icon-post-search"),
+                                       style: .Plain,
+                                       target: self,
+                                       action: #selector(didTapSearchButton))
+        navigationItem.rightBarButtonItem = searchButton
     }
 
     private func configureSearchController() {
@@ -508,7 +519,7 @@ public protocol ThemePresenter: class
             return CGSize.zero
         }
         let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
-        let height = Styles.headerHeight(horizontallyCompact)
+        let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
 
         return CGSize(width: 0, height: height)
     }
@@ -538,7 +549,7 @@ public protocol ThemePresenter: class
 
     // MARK: - Search support
 
-    @IBAction func didTapSearchButton(sender: UIButton) {
+    @objc func didTapSearchButton(sender: UIButton) {
         WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
         beginSearchFor("", animated: true)
     }
@@ -619,7 +630,7 @@ public protocol ThemePresenter: class
     private func browsePredicate() -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
 
-        let subpredicates = [blogPredicate, searchNamePredicate(), searchType.predicate].flatMap { $0 }
+        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].flatMap { $0 }
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
