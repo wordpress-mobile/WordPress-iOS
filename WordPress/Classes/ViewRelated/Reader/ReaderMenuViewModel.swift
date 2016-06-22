@@ -61,22 +61,10 @@ struct ReaderMenuItem
 ///
 protocol ReaderMenuViewModelDelegate
 {
-    /// Notifies the delegate that the menu is about to reload its content
-    ///
-    func menuWillReloadContent()
-
 
     /// Notifies the delegate that the menu did reload its content.
     ///
     func menuDidReloadContent()
-
-
-    /// Notifies the delegate that the content of the specified section is about to change.
-    ///
-    /// - Parameters:
-    ///     - index: The index of the section.
-    ///
-    func menuSectionWillChangeContent(index: Int)
 
 
     /// Notifies the delegate that the content of the specified section has changed.
