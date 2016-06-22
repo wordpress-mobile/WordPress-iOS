@@ -141,6 +141,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
                         where responseString.rangeOfString("<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
                             || responseString.rangeOfString("dm404Container") != nil {
                         failure(error: WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.convertToNSError())
+                        return
                     }
                 }
                 failure(error: error)
