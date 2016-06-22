@@ -9,6 +9,7 @@ import WordPressShared
 {
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
+    let manageCellIdentifier = "ManageCellIdentifier"
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
@@ -79,6 +80,14 @@ import WordPressShared
     ///
     func showReaderSearch() {
         let controller = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+
+    /// Presents the reader's followed sites vc.
+    ///
+    func showFollowedSites() {
+        let controller = FollowedSitesViewController.init()
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -246,11 +255,21 @@ import WordPressShared
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
             return
         }
+
         WPStyleGuide.configureTableViewCell(cell)
+        cell.accessoryView = nil
         cell.accessoryType = .DisclosureIndicator
         cell.selectionStyle = .Default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
+
+        if let topic = menuItem.topic where ReaderHelpers.topicIsFollowing(topic) {
+            let accessoryView = ManageCellAccessoryView.creaateFromNib()
+            accessoryView.onManageTapped = { [weak self] in
+                self?.showFollowedSites()
+            }
+            cell.accessoryView = accessoryView
+        }
     }
 
 
