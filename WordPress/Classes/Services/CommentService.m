@@ -997,8 +997,8 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
         if (blog.wordPressComRestApi) {
             remote = [[CommentServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.api) {
-        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+    } else if (blog.xmlrpcApi) {
+        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return remote;
 }

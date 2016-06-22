@@ -1,6 +1,5 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import "NSMutableDictionary+Helpers.h"
-#import <WordPressApi/WordPressApi.h>
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 
@@ -17,13 +16,13 @@ static NSString * const RemotePostTypePublicKey = @"public";
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *response) {
                      if (success) {
                          NSArray *response = (NSArray *)responseObject;
                          BOOL isMultiAuthor = [response count] > 1;
                          success(isMultiAuthor);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
                      if (failure) {
                          failure(error);
                      }
@@ -32,27 +31,104 @@ static NSString * const RemotePostTypePublicKey = @"public";
 
 - (void)syncOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
-    [self.api enqueueXMLRPCRequestOperation:operation];
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self.api callMethod:@"wp.getOptions"
+              parameters:parameters
+                 success:^(id responseObject, NSHTTPURLResponse *response) {
+                     NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+
+                     if (success) {
+                         success(responseObject);
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
+                     DDLogError(@"Error syncing options: %@", error);
+
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
 - (void)syncPostTypesWithSuccess:(PostTypesHandler)success failure:(void (^)(NSError *error))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForPostTypesWithSuccess:success failure:failure];
-    [self.api enqueueXMLRPCRequestOperation:operation];
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self.api callMethod:@"wp.getPostTypes"
+              parameters:parameters
+                 success:^(id responseObject, NSHTTPURLResponse *response) {
+
+                     NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+                     NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
+                         return [self remotePostTypeFromXMLRPCDictionary:json];
+                     }];
+                     if (!postTypes.count) {
+                         DDLogError(@"Response to wp.getPostTypes did not include post types for site.");
+                         failure(nil);
+                         return;
+                     }
+                     if (success) {
+                         success(postTypes);
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
+                     DDLogError(@"Error syncing post types (%@): %@", response.URL, error);
+                     
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
 - (void)syncPostFormatsWithSuccess:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
-    [self.api enqueueXMLRPCRequestOperation:operation];
+    NSDictionary *dict = @{@"show-supported": @"1"};
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:dict];
+
+    [self.api callMethod:@"wp.getPostFormats"
+              parameters:parameters
+                 success:^(id responseObject, NSHTTPURLResponse *response) {
+                     NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+
+                     NSDictionary *postFormats = responseObject;
+                     NSDictionary *respDict = responseObject;
+                     if ([postFormats objectForKey:@"supported"]) {
+                         NSMutableArray *supportedKeys;
+                         if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+                             supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+                         } else if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSDictionary class]]) {
+                             supportedKeys = [NSMutableArray arrayWithArray:[[postFormats objectForKey:@"supported"] allValues]];
+                         }
+
+                         // Standard isn't included in the list of supported formats? Maybe it will be one day?
+                         if (![supportedKeys containsObject:@"standard"]) {
+                             [supportedKeys addObject:@"standard"];
+                         }
+
+                         NSDictionary *allFormats = [postFormats objectForKey:@"all"];
+                         NSMutableArray *supportedValues = [NSMutableArray array];
+                         for (NSString *key in supportedKeys) {
+                             [supportedValues addObject:[allFormats objectForKey:key]];
+                         }
+                         respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+                     }
+                     
+                     if (success) {
+                         success(respDict);
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
+                     DDLogError(@"Error syncing post formats (%@): %@", response.URL, error);
+                     
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+
 }
 
 - (void)syncSettingsWithSuccess:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
-    [self.api callMethod:@"wp.getOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api callMethod:@"wp.getOptions" parameters:parameters
+                 success:^(id responseObject, NSHTTPURLResponse *response) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
                 failure(nil);
@@ -64,7 +140,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
         if (success) {
             success(remoteSettings);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *response) {
         DDLogError(@"Error syncing settings: %@", error);
         if (failure) {
             failure(error);
@@ -82,7 +158,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
     
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
     
-    [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
                 failure(nil);
@@ -94,113 +170,12 @@ static NSString * const RemotePostTypePublicKey = @"public";
         if (success) {
             success(remoteSettings);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error, NSHTTPURLResponse *response) {
         DDLogError(@"Error syncing settings: %@", error);
         if (failure) {
             failure(error);
         }
     }];
-}
-
-
-
-- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(OptionsHandler)success
-                                                    failure:(void (^)(NSError *error))failure
-{
-    NSArray *parameters = [self defaultXMLRPCArguments];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing options: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForPostTypesWithSuccess:(PostTypesHandler)success
-                                                         failure:(void (^)(NSError *error))failure
-{
-    NSArray *parameters = [self defaultXMLRPCArguments];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostTypes" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-        NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
-            return [self remotePostTypeFromXMLRPCDictionary:json];
-        }];
-        if (!postTypes.count) {
-            DDLogError(@"Response to %@ did not include post types for site.", request.method);
-            failure(nil);
-            return;
-        }
-        if (success) {
-            success(postTypes);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post types (%@): %@", operation.request.URL, error);
-        
-        if (failure) {
-            failure(error);
-        }
-    }];
-    
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(PostFormatsHandler)success
-                                                        failure:(void (^)(NSError *error))failure
-{
-    NSDictionary *dict = @{@"show-supported": @"1"};
-    NSArray *parameters = [self XMLRPCArgumentsWithExtra:dict];
-
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-
-        NSDictionary *postFormats = responseObject;
-        NSDictionary *respDict = responseObject;
-        if ([postFormats objectForKey:@"supported"]) {
-            NSMutableArray *supportedKeys;
-            if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-                supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
-            } else if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSDictionary class]]) {
-                supportedKeys = [NSMutableArray arrayWithArray:[[postFormats objectForKey:@"supported"] allValues]];
-            }
-            
-            // Standard isn't included in the list of supported formats? Maybe it will be one day?
-            if (![supportedKeys containsObject:@"standard"]) {
-                [supportedKeys addObject:@"standard"];
-            }
-
-            NSDictionary *allFormats = [postFormats objectForKey:@"all"];
-            NSMutableArray *supportedValues = [NSMutableArray array];
-            for (NSString *key in supportedKeys) {
-                [supportedValues addObject:[allFormats objectForKey:key]];
-            }
-            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
-        }
-
-        if (success) {
-            success(respDict);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
 }
 
 - (RemotePostType *)remotePostTypeFromXMLRPCDictionary:(NSDictionary *)json

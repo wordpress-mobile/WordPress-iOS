@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -456,7 +456,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to find?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afc-5c-5tF">
                                 <rect key="frame" x="16" y="213" width="568" height="26.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -496,6 +496,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vS-wl-yoY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="679" y="-228"/>
+        </scene>
+        <!--Reader Search Suggestions View Controller-->
+        <scene sceneID="cbf-in-zcc">
+            <objects>
+                <viewController storyboardIdentifier="ReaderSearchSuggestionsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZNR-Yp-I4L" customClass="ReaderSearchSuggestionsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2GT-7k-n3P"/>
+                        <viewControllerLayoutGuide type="bottom" id="AqZ-8p-qiO"/>
+                    </layoutGuides>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="qsG-4P-6th">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8qs-pi-Iqk">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KYy-mm-uEx">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="255"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="ZNR-Yp-I4L" id="q3l-TF-Fx0"/>
+                                            <outlet property="delegate" destination="ZNR-Yp-I4L" id="VQ7-Kg-Swl"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQ8-sg-BBr">
+                                        <rect key="frame" x="0.0" y="255" width="600" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="44" id="QH2-kg-tnA"/>
+                                        </constraints>
+                                        <state key="normal" title="Clear"/>
+                                        <connections>
+                                            <action selector="handleClearButtonTapped:" destination="ZNR-Yp-I4L" eventType="touchUpInside" id="fxa-2F-rsa"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BRl-AK-mht">
+                                        <rect key="frame" x="0.0" y="299" width="600" height="1"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="1" id="3FK-3W-zXI"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="68b-aj-vUX"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="8qs-pi-Iqk" secondAttribute="trailing" id="C9U-OJ-pgh"/>
+                            <constraint firstItem="AqZ-8p-qiO" firstAttribute="top" secondItem="8qs-pi-Iqk" secondAttribute="bottom" id="Ewx-V4-ubq"/>
+                            <constraint firstItem="8qs-pi-Iqk" firstAttribute="leading" secondItem="qsG-4P-6th" secondAttribute="leading" id="bp5-f2-zYC"/>
+                            <constraint firstItem="8qs-pi-Iqk" firstAttribute="top" secondItem="2GT-7k-n3P" secondAttribute="bottom" id="fyM-IJ-5UZ"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="300"/>
+                    <connections>
+                        <outlet property="borderImageView" destination="BRl-AK-mht" id="q9h-81-Xkm"/>
+                        <outlet property="clearButton" destination="oQ8-sg-BBr" id="dmf-HN-h6n"/>
+                        <outlet property="stackView" destination="8qs-pi-Iqk" id="CwT-RB-kp5"/>
+                        <outlet property="stackViewHeightConstraint" destination="68b-aj-vUX" id="clA-Ha-90U"/>
+                        <outlet property="tableView" destination="KYy-mm-uEx" id="832-VZ-H3s"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZnW-aR-PRt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1318" y="-250"/>
         </scene>
     </scenes>
     <resources>
