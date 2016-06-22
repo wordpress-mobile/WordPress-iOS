@@ -285,10 +285,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func displayModePicker() {
+        guard let blog = blog else {
+            fatalError()
+        }
+
+        let filters                 = filtersAvailableForBlog(blog)
+
         let controller              = SettingsSelectionViewController(style: .Grouped)
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
-        controller.titles           = Filter.allFilters.map { $0.title }
-        controller.values           = Filter.allFilters.map { $0.rawValue }
+        controller.titles           = filters.map { $0.title }
+        controller.values           = filters.map { $0.rawValue }
         controller.currentValue     = filter.rawValue
         controller.onItemSelected   = { [weak self] selectedValue in
             guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
@@ -301,6 +307,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
+    }
+
+    private func filtersAvailableForBlog(blog: Blog) -> [Filter] {
+        var available: [Filter] = [.Users, .Followers]
+        if blog.siteVisibility == .Private {
+            available.append(.Viewers)
+        }
+
+        return available
     }
 
 
@@ -372,8 +387,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
                 return .Viewer
             }
         }
-
-        static let allFilters = [Filter.Users, .Followers]
     }
 
     private enum RestorationKeys {
