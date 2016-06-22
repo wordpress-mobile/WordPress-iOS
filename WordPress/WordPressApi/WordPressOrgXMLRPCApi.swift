@@ -39,7 +39,21 @@ public class WordPressOrgXMLRPCApi: NSObject
     }
 
     //MARK: - Network requests
+    /**
+     Check if username and password are valid credentials for the xmlrpc endpoint.
 
+     - parameter username: username to check
+     - parameter password: password to check
+     - parameter success:  callback block to be invoked if credentials are valid, the object returned in the block is the options dictionary for the site.
+     - parameter failure:  callback block to be invoked is credentials fail
+     */
+    public func checkCredentials(username: String,
+                                 password: String,
+                                 success: SuccessResponseBlock,
+                                 failure: FailureReponseBlock) {
+        let parameters:[AnyObject] = [0, username, password]
+        callMethod("wp.getOptions", parameters: parameters, success: success, failure: failure)
+    }
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
 
