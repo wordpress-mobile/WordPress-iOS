@@ -150,20 +150,9 @@ import WordPressShared
 extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 {
 
-    func menuWillReloadContent() {
-
-    }
-
-
     func menuDidReloadContent() {
         tableView.reloadData()
     }
-
-
-    func menuSectionWillChangeContent(index: Int) {
-
-    }
-
 
     func menuSectionDidChangeContent(index: Int) {
         tableView.reloadData()
