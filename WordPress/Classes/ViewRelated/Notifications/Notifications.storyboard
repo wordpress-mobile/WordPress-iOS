@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="doV-5W-Rtg">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -21,7 +21,6 @@
                     <connections>
                         <outlet property="filtersSegmentedControl" destination="W2i-rX-Pc4" id="Ewf-g4-EIc"/>
                         <outlet property="ratingsHeightConstraint" destination="R1T-Iv-5Q8" id="380-AS-dyd"/>
-                        <outlet property="ratingsTopConstraint" destination="SJu-PU-nzt" id="4a1-TZ-SUd"/>
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
@@ -85,7 +84,7 @@
                         <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" identifier="FiltersTrailing" id="222-MX-igM"/>
                         <constraint firstItem="ZnY-3K-upT" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" identifier="RatingsLeading" id="27p-cV-siE"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="top" secondItem="ZnY-3K-upT" secondAttribute="bottom" identifier="FiltersTop" id="MBK-Ez-h7B"/>
-                        <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" priority="750" constant="40" identifier="RatingsTop" id="SJu-PU-nzt"/>
+                        <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" priority="750" identifier="RatingsTop" id="SJu-PU-nzt"/>
                         <constraint firstAttribute="trailing" secondItem="ZnY-3K-upT" secondAttribute="trailing" identifier="RatingsTrailing" id="b8L-0Q-JCB"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="centerX" secondItem="Uvo-9e-l6I" secondAttribute="centerX" identifier="FiltersCenter" id="rGu-9k-JxJ"/>
                         <constraint firstAttribute="bottom" secondItem="pEF-oN-cih" secondAttribute="bottom" identifier="FiltersBottom" id="zwD-z0-d6i"/>
