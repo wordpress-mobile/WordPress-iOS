@@ -569,21 +569,6 @@ enum ReaderDefaultMenuItemOrder: Int {
 extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
 {
 
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        var index = 0
-        if controller == defaultsFetchedResultsController {
-            index = indexOfSectionWithType(.Defaults)
-
-        } else if controller == listsFetchedResultsController {
-            index = indexOfSectionWithType(.Lists)
-
-        } else if controller == tagsFetchedResultsController {
-            index = indexOfSectionWithType(.Tags)
-        }
-        delegate?.menuSectionWillChangeContent(index)
-    }
-
-
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         var index = 0
         if controller == defaultsFetchedResultsController {
