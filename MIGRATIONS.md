@@ -5,6 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 50
 
+- @jleandroperez 2016-06-21
+- `Person` removed `isFollower` property.
+- `Person` added `kind` Int16 attribute.
 - @aerych 2016-06-09
 - Moved `dateModified` property from `BasePost` to `AbstractPost`
 - @aerych 2016-05-26
