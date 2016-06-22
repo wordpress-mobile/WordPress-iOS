@@ -706,7 +706,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         if (blog.wordPressComRestApi) {
             remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.api) {
+    } else if (blog.xmlrpcApi) {
         remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return remote;
