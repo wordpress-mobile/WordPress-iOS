@@ -29,13 +29,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="zdl-yg-1wZ">
                                     <size key="itemSize" width="250" height="241"/>
-                                    <size key="headerReferenceSize" width="50" height="162"/>
+                                    <size key="headerReferenceSize" width="50" height="163"/>
                                     <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserCell" id="YzH-tn-GEt" customClass="ThemeBrowserCell" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="162" width="250" height="241"/>
+                                        <rect key="frame" x="0.0" y="163" width="250" height="241"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="241"/>
@@ -135,27 +135,27 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserHeaderView" id="47y-8d-jwn" userLabel="ThemeBrowserHeaderView" customClass="ThemeBrowserHeaderView" customModule="WordPress" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="162"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="163"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4cE-G3-dPY">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="162"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="163"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1gq-o6-8td">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="109"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mll-1k-nOP" userLabel="Header Divider Line">
-                                                            <rect key="frame" x="16" y="8" width="568" height="92"/>
+                                                            <rect key="frame" x="16" y="8" width="568" height="93"/>
                                                             <color key="backgroundColor" red="0.84705883260000003" green="0.88627451660000001" blue="0.91372549530000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="U27-29-c8Q">
-                                                            <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="600" height="109"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwo-3t-dLB">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="53.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QqI-lf-7WU">
-                                                                            <rect key="frame" x="15" y="28" width="40" height="17"/>
+                                                                            <rect key="frame" x="15" y="29" width="40" height="17"/>
                                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -176,16 +176,16 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="AFz-WC-4n8">
-                                                                    <rect key="frame" x="0.0" y="54.5" width="600" height="53.5"/>
+                                                                    <rect key="frame" x="0.0" y="55" width="600" height="54"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IWG-BN-4Em">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="53.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="54"/>
                                                                             <subviews>
                                                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="theme-customize" translatesAutoresizingMaskIntoConstraints="NO" id="1xR-MV-xJj">
                                                                                     <rect key="frame" x="91" y="8" width="18" height="18"/>
                                                                                 </imageView>
                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u2z-nw-Vyc">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="53"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="54"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                                     <state key="normal" title="Customize">
@@ -207,13 +207,13 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JzW-Fm-uZ0">
-                                                                            <rect key="frame" x="200" y="0.0" width="200" height="53.5"/>
+                                                                            <rect key="frame" x="200" y="0.0" width="200" height="54"/>
                                                                             <subviews>
                                                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="theme-details" translatesAutoresizingMaskIntoConstraints="NO" id="ujm-Fw-DZX">
                                                                                     <rect key="frame" x="91" y="8" width="18" height="18"/>
                                                                                 </imageView>
                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6BA-aY-mOt">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="53"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="54"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                                     <state key="normal" title="Details">
@@ -235,13 +235,13 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ufe-0H-S8G">
-                                                                            <rect key="frame" x="400" y="0.0" width="200" height="53.5"/>
+                                                                            <rect key="frame" x="400" y="0.0" width="200" height="54"/>
                                                                             <subviews>
                                                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="theme-support" translatesAutoresizingMaskIntoConstraints="NO" id="xKH-00-3XD">
                                                                                     <rect key="frame" x="91" y="8" width="18" height="18"/>
                                                                                 </imageView>
                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iix-Pu-kKG">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="53"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="54"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                                     <state key="normal" title="Support">
@@ -287,7 +287,7 @@
                                                     </variation>
                                                 </view>
                                                 <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QcA-Am-6I5">
-                                                    <rect key="frame" x="0.0" y="108" width="600" height="53"/>
+                                                    <rect key="frame" x="0.0" y="109" width="600" height="53"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vOP-ZF-qi0" userLabel="Above Search Line">
                                                             <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
@@ -317,7 +317,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mCK-BA-lBb" userLabel="Below Search Line">
-                                                    <rect key="frame" x="0.0" y="161" width="600" height="1"/>
+                                                    <rect key="frame" x="0.0" y="162" width="600" height="1"/>
                                                     <color key="backgroundColor" red="0.84705883264541626" green="0.88627451658248901" blue="0.91372549533843994" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="4dN-RY-rvY"/>
@@ -348,7 +348,7 @@
                                     </connections>
                                 </collectionReusableView>
                                 <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserFooterView" id="Mhx-tS-Lea" userLabel="ThemeBrowserFooterView">
-                                    <rect key="frame" x="0.0" y="403" width="600" height="50"/>
+                                    <rect key="frame" x="0.0" y="404" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Va9-Te-cqS">
