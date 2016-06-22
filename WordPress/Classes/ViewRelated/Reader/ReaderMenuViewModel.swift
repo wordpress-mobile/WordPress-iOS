@@ -461,15 +461,15 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// - Paramters:
     ///     - type: The type of the section.
     ///
-    /// - Return: The index of the section or -1 if it was not found.
+    /// - Return: The index of the section or nil if it was not found.
     ///
-    func indexOfSectionWithType(type: ReaderMenuSectionType) -> Int {
+    func indexOfSectionWithType(type: ReaderMenuSectionType) -> Int? {
         for (index, section) in sections.enumerate() {
             if section.type == type {
                 return index
             }
         }
-        return -1
+        return nil
     }
 
 
@@ -561,19 +561,26 @@ extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
 {
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        var index = 0
+        var section: Int = 0
         if controller == defaultsFetchedResultsController {
             // Rebuild the defaults section since its source content changed.
             buildDefaultSectionItems()
-            index = indexOfSectionWithType(.Defaults)
+            if let index = indexOfSectionWithType(.Defaults) {
+                section = index
+            }
 
         } else if controller == listsFetchedResultsController {
-            index = indexOfSectionWithType(.Lists)
+            if let index = indexOfSectionWithType(.Lists) {
+                section = index
+            }
 
         } else if controller == tagsFetchedResultsController {
-            index = indexOfSectionWithType(.Tags)
+            if let index = indexOfSectionWithType(.Tags) {
+                section = index
+            }
         }
-        delegate?.menuSectionDidChangeContent(index)
+
+        delegate?.menuSectionDidChangeContent(section)
     }
 
 }
