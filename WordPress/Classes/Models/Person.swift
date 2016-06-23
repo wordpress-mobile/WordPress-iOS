@@ -195,6 +195,21 @@ extension Role {
         return localized
     }
 
+    var remoteValue: String {
+        // Note: Incoming Hack
+        // ====
+        //
+        // Apologies about this. When a site is Private, the *Viewer* doesn't really exist, but instead, 
+        // it's treated, backend side, as a follower.
+        //
+        switch self {
+        case .Viewer:
+            return Role.Follower.rawValue
+        default:
+            return rawValue
+        }
+    }
+
 
     // MARK: - Static Properties
     //
