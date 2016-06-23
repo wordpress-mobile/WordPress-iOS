@@ -20,7 +20,7 @@
                                 <rect key="frame" x="-1" y="7" width="322" height="430.5"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
                                 <rect key="frame" x="0.0" y="8" width="320" height="428.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8A-oh-TmY">
@@ -95,10 +95,21 @@
                                         <constraints>
                                             <constraint firstItem="vL4-BG-nfJ" firstAttribute="leading" secondItem="FV8-lg-7ZL" secondAttribute="leading" id="10n-Z4-rOq"/>
                                             <constraint firstItem="vL4-BG-nfJ" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="top" id="9yT-Bl-Qlp"/>
+                                            <constraint firstAttribute="width" priority="750" constant="600" id="I7d-fA-uKC"/>
                                             <constraint firstAttribute="trailing" secondItem="vL4-BG-nfJ" secondAttribute="trailing" id="Q1Y-zK-ZaE"/>
                                             <constraint firstAttribute="height" constant="196" id="Uc8-KW-ShJ"/>
                                             <constraint firstAttribute="bottom" secondItem="vL4-BG-nfJ" secondAttribute="bottom" id="rFK-Hl-qfe"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="I7d-fA-uKC"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="I7d-fA-uKC"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="YTV-MW-ksl">
                                         <rect key="frame" x="16" y="274" width="288" height="24"/>
@@ -233,7 +244,7 @@
                                     <constraint firstItem="l8A-oh-TmY" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="mdd-8z-Bln"/>
                                     <constraint firstItem="aU5-S0-uXT" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="ntL-A5-DRO"/>
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="leading" secondItem="l8A-oh-TmY" secondAttribute="trailing" constant="10" id="pjc-cr-lMu"/>
-                                    <constraint firstAttribute="width" priority="950" constant="600" id="t4d-zR-d9j"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" priority="950" constant="600" id="t4d-zR-d9j"/>
                                     <constraint firstAttribute="trailing" secondItem="MNF-NN-mpb" secondAttribute="trailing" constant="16" id="vpN-nS-zeN"/>
                                     <constraint firstItem="aU5-S0-uXT" firstAttribute="top" secondItem="MNF-NN-mpb" secondAttribute="bottom" constant="8" id="wuS-RO-i6c"/>
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="16" id="xiW-3y-5Gv"/>
