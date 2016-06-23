@@ -668,12 +668,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedNotificationSettingDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
             break;
-        case WPAnalyticsStatOpenedPlans:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Plans"];
-            break;
-        case WPAnalyticsStatOpenedPlansComparison:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Plans - Opened Comparison"];
-            break;
         case WPAnalyticsStatOpenedSharingManagement:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Sharing Management"];
             break;
@@ -1040,7 +1034,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListViewAction:
         case WPAnalyticsStatSupportSentMessage:
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
-            // Unimplemented events
+        // Unimplemented events
+        case WPAnalyticsStatOpenedPlans:
+        case WPAnalyticsStatOpenedPlansComparison:
             break;
     }
 

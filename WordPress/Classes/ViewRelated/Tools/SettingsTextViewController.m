@@ -24,9 +24,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
-@property (nonatomic, strong) NSString          *hint;
-@property (nonatomic, strong) NSString          *placeholder;
-@property (nonatomic, strong) NSString          *text;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
@@ -53,7 +50,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
-        _shouldNotifyValue = YES;
     }
     return self;
 }
@@ -64,6 +60,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.shouldNotifyValue = YES;
+
     [self startListeningTextfieldChanges];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

@@ -6,7 +6,6 @@
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
-#import "Post.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
 #import "PostGeolocationCell.h"
