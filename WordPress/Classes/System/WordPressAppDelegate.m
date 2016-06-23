@@ -131,6 +131,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
+    [self setupStoreKit];
 
     return YES;
 }
@@ -168,6 +169,11 @@ int ddLogLevel = DDLogLevelInfo;
     }
 }
 
+- (void)setupStoreKit
+{
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
+}
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     DDLogInfo(@"Application launched with URL: %@", url);
@@ -198,10 +204,16 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
-                [tabBarController showReaderTab];
-                [tabBarController.readerViewController openPost:postId onBlog:blogId];
-                
+                if ([Feature enabled: FeatureFlagReaderMenu]) {
+                    [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
+                } else {
+                    [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerViewController openPost:postId onBlog:blogId];
+                }
+
                 returnValue = YES;
             }
         } else if ([URLString rangeOfString:@"viewstats"].length) {
@@ -364,7 +376,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
-    [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
     // by any of the Merriweather varients.  Size is arbitrary.
@@ -658,17 +669,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 #pragma mark - Networking setup
 
-- (void)setupSingleSignOn
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WPComOAuthController *oAuthController = [WPComOAuthController sharedController];
-    
-    [oAuthController setWordPressComUsername:defaultAccount.username];
-    [oAuthController setWordPressComAuthToken:defaultAccount.authToken];
-}
-
 - (void)setupReachability
 {
     // Setup Reachability
@@ -931,7 +931,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     [self create3DTouchShortcutItems];
     [self toggleExtraDebuggingIfNeeded];
-    [self setupSingleSignOn];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
