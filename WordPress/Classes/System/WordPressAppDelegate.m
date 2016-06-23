@@ -204,10 +204,16 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
-                [tabBarController showReaderTab];
-                [tabBarController.readerViewController openPost:postId onBlog:blogId];
-                
+                if ([Feature enabled: FeatureFlagReaderMenu]) {
+                    [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
+                } else {
+                    [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerViewController openPost:postId onBlog:blogId];
+                }
+
                 returnValue = YES;
             }
         } else if ([URLString rangeOfString:@"viewstats"].length) {
