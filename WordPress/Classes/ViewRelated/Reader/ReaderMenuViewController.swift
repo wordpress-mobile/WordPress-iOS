@@ -264,10 +264,13 @@ import WordPressShared
 
         WPStyleGuide.configureTableViewActionCell(cell)
 
-        let image = Gridicon.iconOfType(.AddOutline)
-        let imageView = UIImageView(image: image)
-        imageView.tintColor = WPStyleGuide.wordPressBlue()
-        cell.accessoryView = imageView
+        if cell.accessoryView == nil {
+            let image = Gridicon.iconOfType(.AddOutline)
+            let imageView = UIImageView(image: image)
+            imageView.tintColor = WPStyleGuide.wordPressBlue()
+            cell.accessoryView = imageView
+        }
+
         cell.selectionStyle = .Default
         cell.imageView?.image = menuItem.icon
         cell.imageView?.tintColor = WPStyleGuide.wordPressBlue()
