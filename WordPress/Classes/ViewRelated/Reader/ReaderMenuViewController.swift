@@ -154,7 +154,7 @@ import WordPressShared
             let title = NSLocalizedString("Could not Unfollow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
             let message = error.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledge ment of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
         }
     }
@@ -173,7 +173,7 @@ import WordPressShared
             let title = NSLocalizedString("Could not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
             let message = error.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledge ment of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
         }
     }
