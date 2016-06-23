@@ -296,8 +296,10 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
     UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    
-    if (newMode == SettingsTextModesPassword) {
+
+    if (newMode == SettingsTextModesLowerCaseText) {
+        autocapitalizationType = UITextAutocapitalizationTypeNone;
+    } else if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
