@@ -790,6 +790,7 @@
 		E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */ = {isa = PBXBuildFile; fileRef = E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */; };
 		E69EF9D51BFA539F00ED0554 /* ReaderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */; };
 		E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */; };
+		E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */; };
 		E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */; };
 		E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */; };
 		E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */; };
@@ -817,6 +818,7 @@
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
 		E6E27D601C613B3C0063F821 /* RemoteSharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E27D5F1C613B3C0063F821 /* RemoteSharingButton.swift */; };
 		E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E27D611C6144DB0063F821 /* SharingButton.swift */; };
+		E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */; };
 		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
@@ -2124,6 +2126,7 @@
 		E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailViewController.swift; sourceTree = "<group>"; };
 		E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationWebViewController.h; sourceTree = "<group>"; };
 		E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationWebViewController.m; sourceTree = "<group>"; };
+		E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderMenuViewModel.swift; sourceTree = "<group>"; };
 		E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPostTest.swift; sourceTree = "<group>"; };
 		E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderGapMarker.h; sourceTree = "<group>"; };
 		E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderGapMarker.m; sourceTree = "<group>"; };
@@ -2154,6 +2157,7 @@
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
 		E6E27D5F1C613B3C0063F821 /* RemoteSharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteSharingButton.swift; path = "Remote Objects/RemoteSharingButton.swift"; sourceTree = "<group>"; };
 		E6E27D611C6144DB0063F821 /* SharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButton.swift; sourceTree = "<group>"; };
+		E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderMenuViewController.swift; sourceTree = "<group>"; };
 		E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostMenu.swift; sourceTree = "<group>"; };
 		ED6FF7A55A673B833AB667E3 /* Pods-WordPress_Base-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
@@ -2865,6 +2869,8 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */,
+				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
@@ -6042,6 +6048,7 @@
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
 				5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
+				E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */,
 				08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */,
@@ -6109,6 +6116,7 @@
 				B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */,
+				E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */,
 				E149D65019349E69006A843D /* MediaServiceRemoteREST.m in Sources */,
 				176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
