@@ -39,6 +39,7 @@ import WordPressShared
 
 
     func configureTableView() {
+        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
