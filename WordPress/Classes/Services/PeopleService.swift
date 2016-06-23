@@ -213,9 +213,10 @@ private extension PeopleService {
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
     func loadPeople<T : Person>(siteID: Int, type: T.Type) -> [T] {
-        let isFollower = type.isFollower
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@", NSNumber(integer: siteID), isFollower)
+        request.predicate = NSPredicate(format: "siteID = %@ AND kind = %@",
+                                        NSNumber(integer: siteID),
+                                        NSNumber(integer: type.kind.rawValue))
         let results: [ManagedPerson]
         do {
             results = try context.executeFetchRequest(request) as! [ManagedPerson]
@@ -231,11 +232,10 @@ private extension PeopleService {
     ///
     func managedPersonFromPerson(person: Person) -> ManagedPerson? {
         let request = NSFetchRequest(entityName: "Person")
-        let isFollower = person.dynamicType.isFollower
-        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@ AND isFollower = %@",
+        request.predicate = NSPredicate(format: "siteID = %@ AND userID = %@ AND kind = %@",
                                                 NSNumber(integer: siteID),
                                                 NSNumber(integer: person.ID),
-                                                NSNumber(bool: isFollower))
+                                                NSNumber(integer: person.dynamicType.kind.rawValue))
         request.fetchLimit = 1
 
         let results = (try? context.executeFetchRequest(request) as! [ManagedPerson]) ?? []
@@ -249,12 +249,11 @@ private extension PeopleService {
             return
         }
 
-        let follower = type.isFollower
         let numberIDs = ids.map { return NSNumber(integer: $0) }
         let request = NSFetchRequest(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@ AND isFollower = %@ AND userID IN %@",
+        request.predicate = NSPredicate(format: "siteID = %@ AND kind = %@ AND userID IN %@",
                                         NSNumber(integer: siteID),
-                                        NSNumber(bool: follower),
+                                        NSNumber(integer: type.kind.rawValue),
                                         numberIDs)
 
         let objects = (try? context.executeFetchRequest(request) as! [NSManagedObject]) ?? []
@@ -266,7 +265,7 @@ private extension PeopleService {
 
     /// Inserts a new Person instance into Core Data, with the specified payload.
     ///
-    func createManagedPerson(person: Person) {
+    func createManagedPerson<T: Person>(person: T) {
         let managedPerson = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: context) as! ManagedPerson
         managedPerson.updateWith(person)
         DDLogSwift.logDebug("Created person \(managedPerson)")

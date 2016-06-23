@@ -69,8 +69,11 @@ extension WPStyleGuide
         public static let currentBarSeparator: CGFloat = 1
         public static let searchBarHeight: CGFloat = 53
 
-        public static func headerHeight(horizontallyCompact: Bool) -> CGFloat {
-            var headerHeight = searchBarHeight + (currentBarSeparator * 2)
+        public static func headerHeight(horizontallyCompact: Bool, includingSearchBar: Bool) -> CGFloat {
+            var headerHeight = (currentBarSeparator * 2)
+            if (includingSearchBar) {
+                headerHeight += searchBarHeight
+            }
             if (horizontallyCompact) {
                 headerHeight += (currentBarLineHeight * 2) + currentBarSeparator
             } else {

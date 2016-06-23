@@ -41,6 +41,8 @@ import WordPressShared
 
 
     func configureTableView() {
+        WPStyleGuide.resetReadableMarginsForTableView(tableView)
+
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
 
@@ -316,20 +318,9 @@ import WordPressShared
 extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 {
 
-    func menuWillReloadContent() {
-
-    }
-
-
     func menuDidReloadContent() {
         tableView.reloadData()
     }
-
-
-    func menuSectionWillChangeContent(index: Int) {
-
-    }
-
 
     func menuSectionDidChangeContent(index: Int) {
         tableView.reloadData()

@@ -62,22 +62,10 @@ struct ReaderMenuItem
 ///
 protocol ReaderMenuViewModelDelegate
 {
-    /// Notifies the delegate that the menu is about to reload its content
-    ///
-    func menuWillReloadContent()
-
 
     /// Notifies the delegate that the menu did reload its content.
     ///
     func menuDidReloadContent()
-
-
-    /// Notifies the delegate that the content of the specified section is about to change.
-    ///
-    /// - Parameters:
-    ///     - index: The index of the section.
-    ///
-    func menuSectionWillChangeContent(index: Int)
 
 
     /// Notifies the delegate that the content of the specified section has changed.
@@ -159,7 +147,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Rebuild!
         setupDefaultsSection()
 
-        if isSignedInWPCom() {
+        if ReaderHelpers.isLoggedIn() {
             setupListsSection()
         }
 
@@ -442,20 +430,12 @@ enum ReaderDefaultMenuItemOrder: Int {
     // MARK: - Helper Methods
 
 
-    /// Check if the user is signed in
-    ///
-    func isSignedInWPCom() -> Bool {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return service.defaultWordPressComAccount() != nil
-    }
-
-
     /// Returns the predicate for tag and list fetch requests.
     ///
     /// - Returns: An NSPredicate
     ///
     func predicateForRequests() -> NSPredicate {
-        if isSignedInWPCom() {
+        if ReaderHelpers.isLoggedIn() {
             return NSPredicate(format: "following = YES AND showInMenu = YES")
         } else {
             return NSPredicate(format: "following = NO AND showInMenu = YES")
@@ -471,7 +451,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func handleWordPressComAccountChanged(notification: NSNotification) {
         // TODO: We need to ensure we have no stale topics in core data prior to reloading content.
-        delegate?.menuWillReloadContent()
 
         // Update predicates to correctly fetch following or not following.
         updateAndPerformListsFetchRequest()
@@ -499,15 +478,15 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// - Paramters:
     ///     - type: The type of the section.
     ///
-    /// - Return: The index of the section or -1 if it was not found.
+    /// - Return: The index of the section or nil if it was not found.
     ///
-    func indexOfSectionWithType(type: ReaderMenuSectionType) -> Int {
+    func indexOfSectionWithType(type: ReaderMenuSectionType) -> Int? {
         for (index, section) in sections.enumerate() {
             if section.type == type {
                 return index
             }
         }
-        return -1
+        return nil
     }
 
 
@@ -598,35 +577,27 @@ enum ReaderDefaultMenuItemOrder: Int {
 extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
 {
 
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        var index = 0
-        if controller == defaultsFetchedResultsController {
-            index = indexOfSectionWithType(.Defaults)
-
-        } else if controller == listsFetchedResultsController {
-            index = indexOfSectionWithType(.Lists)
-
-        } else if controller == tagsFetchedResultsController {
-            index = indexOfSectionWithType(.Tags)
-        }
-        delegate?.menuSectionWillChangeContent(index)
-    }
-
-
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        var index = 0
+        var section: Int = 0
         if controller == defaultsFetchedResultsController {
             // Rebuild the defaults section since its source content changed.
             buildDefaultSectionItems()
-            index = indexOfSectionWithType(.Defaults)
+            if let index = indexOfSectionWithType(.Defaults) {
+                section = index
+            }
 
         } else if controller == listsFetchedResultsController {
-            index = indexOfSectionWithType(.Lists)
+            if let index = indexOfSectionWithType(.Lists) {
+                section = index
+            }
 
         } else if controller == tagsFetchedResultsController {
-            index = indexOfSectionWithType(.Tags)
+            if let index = indexOfSectionWithType(.Tags) {
+                section = index
+            }
         }
-        delegate?.menuSectionDidChangeContent(index)
+
+        delegate?.menuSectionDidChangeContent(section)
     }
 
 }
