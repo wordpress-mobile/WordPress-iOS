@@ -394,7 +394,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     func itemCountForTagSection() -> Int {
         var count = tagsFetchedResultsController.fetchedObjects?.count ?? 0
         if ReaderHelpers.isLoggedIn() {
-            // The first tiem for a logged in user will be an "AddItem" type, so increase the count by 1.
+            // The first time for a logged in user will be an "AddItem" type, so increase the count by 1.
             count += 1
         }
         return count
@@ -420,7 +420,7 @@ enum ReaderDefaultMenuItemOrder: Int {
             }
         }
 
-        guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
+        guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: fetchedIndex, inSection: 0)) as? ReaderAbstractTopic else {
             return nil
         }
         return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
