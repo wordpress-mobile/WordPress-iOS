@@ -265,7 +265,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees"  : usernameOrEmail,
-            "role"      : role.rawValue
+            "role"      : role.remoteValue
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -309,7 +309,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees"  : usernameOrEmail,
-            "role"      : role.rawValue,
+            "role"      : role.remoteValue,
             "message"   : message
         ]
 
