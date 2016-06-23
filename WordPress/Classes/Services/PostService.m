@@ -1,5 +1,4 @@
 #import "PostService.h"
-#import "Post.h"
 #import "Coordinate.h"
 #import "PostCategory.h"
 #import "PostServiceRemote.h"
@@ -39,7 +38,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [post addCategoriesObject:category];
     }
     post.postFormat = blog.settings.defaultPostFormat;
-    post.postType = PostTypeDefaultIdentifier;
+    post.postType = Post.typeDefaultIdentifier;
     return post;
 }
 
