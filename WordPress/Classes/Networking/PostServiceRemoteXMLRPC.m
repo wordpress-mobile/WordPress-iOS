@@ -1,6 +1,6 @@
 #import "PostServiceRemoteXMLRPC.h"
+#import "AbstractPost.h"
 #import "Blog.h"
-#import "BasePost.h"
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
