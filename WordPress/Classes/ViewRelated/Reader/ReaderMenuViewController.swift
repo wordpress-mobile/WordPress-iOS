@@ -94,6 +94,7 @@ import WordPressShared
         controller.onValueChanged = { value in
             self.followTagNamed(value)
         }
+        controller.mode = .LowerCaseText
         controller.displaysActionButton = true
         controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
         controller.onActionPress = {
