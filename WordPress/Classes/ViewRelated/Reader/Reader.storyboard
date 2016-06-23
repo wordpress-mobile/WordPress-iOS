@@ -394,6 +394,48 @@
             </objects>
             <point key="canvasLocation" x="687" y="1130"/>
         </scene>
+        <!--Reader Followed Sites View Controller-->
+        <scene sceneID="17b-6F-HOS">
+            <objects>
+                <viewController storyboardIdentifier="ReaderFollowedSitesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e0f-8T-Sz8" customClass="ReaderFollowedSitesViewController" customModule="WordPress" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="POD-Dc-YbQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="POi-4x-5Dc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zNg-ay-PFI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="B6J-Lg-PdX">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="49S-3J-OMN">
+                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <connections>
+                                    <segue destination="FBk-BW-Oyk" kind="embed" id="BIm-m7-JCp"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="POi-4x-5Dc" firstAttribute="top" secondItem="49S-3J-OMN" secondAttribute="bottom" id="0rH-fk-AGg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="B6J-Lg-PdX" secondAttribute="trailing" constant="-20" id="FB0-IT-8ty"/>
+                            <constraint firstItem="49S-3J-OMN" firstAttribute="top" secondItem="B6J-Lg-PdX" secondAttribute="bottom" id="FPy-1r-Z0H"/>
+                            <constraint firstItem="B6J-Lg-PdX" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leadingMargin" constant="-20" id="LlQ-Hl-xwi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="49S-3J-OMN" secondAttribute="trailing" constant="-20" id="M8m-fa-9Kl"/>
+                            <constraint firstItem="49S-3J-OMN" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leadingMargin" constant="-20" id="Tjg-wk-KPx"/>
+                            <constraint firstItem="B6J-Lg-PdX" firstAttribute="top" secondItem="POD-Dc-YbQ" secondAttribute="bottom" constant="8" id="Wy7-AW-DmL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="B6J-Lg-PdX" id="nsa-JY-QYl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cfm-tk-192" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="687" y="1811"/>
+        </scene>
         <!--Table View Controller-->
         <scene sceneID="Xc2-1X-rOR">
             <objects>
@@ -566,6 +608,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZnW-aR-PRt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1318" y="-250"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="I2o-bP-1jd">
+            <objects>
+                <tableViewController id="FBk-BW-Oyk" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="q5P-P8-r6d">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="FBk-BW-Oyk" id="yba-yB-ea9"/>
+                            <outlet property="delegate" destination="FBk-BW-Oyk" id="Lvf-We-O91"/>
+                        </connections>
+                    </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Th3-pc-oEa">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ETa-G8-d6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1373" y="1811"/>
         </scene>
     </scenes>
     <resources>
