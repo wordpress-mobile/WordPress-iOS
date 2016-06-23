@@ -19,6 +19,10 @@ protocol Person {
     var isSuperAdmin: Bool { get }
     var fullName: String { get }
 
+    /// Static Properties
+    ///
+    static var kind: PersonKind { get }
+
     /// Initializers
     ///
     init(ID: Int,
@@ -47,6 +51,13 @@ enum Role: String, Comparable, Equatable, CustomStringConvertible {
     case Unsupported    = "unsupported"
 }
 
+// MARK: - Specifies all of the possible Person Types that might exist.
+//
+enum PersonKind: Int {
+    case User           = 0
+    case Follower       = 1
+}
+
 // MARK: - Defines a Blog's User
 //
 struct User: Person {
@@ -60,6 +71,7 @@ struct User: Person {
     let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
+    static let kind = PersonKind.User
 }
 
 // MARK: - Defines a Blog's Follower
@@ -75,6 +87,7 @@ struct Follower: Person {
     let linkedUserID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
+    static let kind = PersonKind.Follower
 }
 
 // MARK: - Extensions
@@ -86,10 +99,6 @@ extension Person {
         let separator = (first.isEmpty == false && last.isEmpty == false) ? " " : ""
 
         return "\(first)\(separator)\(last)"
-    }
-
-    static var isFollower: Bool {
-        return self == Follower.self
     }
 }
 

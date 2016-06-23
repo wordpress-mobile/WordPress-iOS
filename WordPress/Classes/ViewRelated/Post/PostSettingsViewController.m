@@ -836,7 +836,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     NSArray *statuses = [self.apost availableStatusesForEditing];
     NSArray *titles = [statuses wp_map:^id(NSString *status) {
-        return [BasePost titleForStatus:status];
+        return [AbstractPost titleForStatus:status];
     }];
 
     NSDictionary *statusDict = @{
