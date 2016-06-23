@@ -813,6 +813,7 @@
 		E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */; };
 		E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */; };
 		E6D35FFC1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D35FFB1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m */; };
+		E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */; };
 		E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */; };
 		E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */; };
 		E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */; };
@@ -2154,6 +2155,7 @@
 		E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamHeader.swift; sourceTree = "<group>"; };
 		E6D35FFA1C5ABC2700A46303 /* RemoteBlogOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBlogOptionsHelper.h; sourceTree = "<group>"; };
 		E6D35FFB1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteBlogOptionsHelper.m; sourceTree = "<group>"; };
+		E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesViewController.swift; sourceTree = "<group>"; };
 		E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCrossPostCell.swift; sourceTree = "<group>"; };
 		E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCrossPostCell.xib; sourceTree = "<group>"; };
 		E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSearchSuggestionsViewController.swift; sourceTree = "<group>"; };
@@ -2882,6 +2884,7 @@
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
 				E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */,
 				E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */,
+				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
 				E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				5DDC44651A72BB07007F538E /* ReaderViewController.h */,
@@ -5912,6 +5915,7 @@
 				E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */,
 				E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */,
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
+				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
