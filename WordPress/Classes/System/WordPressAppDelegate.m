@@ -376,7 +376,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
-    [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
     // by any of the Merriweather varients.  Size is arbitrary.
@@ -670,17 +669,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 #pragma mark - Networking setup
 
-- (void)setupSingleSignOn
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WPComOAuthController *oAuthController = [WPComOAuthController sharedController];
-    
-    [oAuthController setWordPressComUsername:defaultAccount.username];
-    [oAuthController setWordPressComAuthToken:defaultAccount.authToken];
-}
-
 - (void)setupReachability
 {
     // Setup Reachability
@@ -943,7 +931,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     [self create3DTouchShortcutItems];
     [self toggleExtraDebuggingIfNeeded];
-    [self setupSingleSignOn];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
