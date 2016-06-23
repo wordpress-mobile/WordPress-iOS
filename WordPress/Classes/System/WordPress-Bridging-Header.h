@@ -23,6 +23,7 @@
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
+#import "Coordinate.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "CustomHighlightButton.h"
 
@@ -62,7 +63,6 @@
 #import "PageListTableViewCell.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
-#import "Post.h"
 #import "PostCardTableViewCell.h"
 #import "PostCategory.h"
 #import "PostContentProvider.h"

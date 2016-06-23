@@ -45,8 +45,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePeople,
     /// Can the blog's site be changed or deleted?
     BlogFeatureSiteManagement,
-    /// Does the blog support different paid plans?
-    BlogFeaturePlans,
     /// Does the blog support custom domains?
     BlogFeatureDomains
 };
@@ -179,7 +177,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @return a string with the post format description and if no description was found the postFormatCode sent.
  */
-- (nullable NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
+- (nullable NSString *)postFormatTextFromSlug:(nullable NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  

@@ -37,14 +37,16 @@ namespace :dependencies do
     manifest = 'vendor/bundle/Manifest.lock'
 
     task :check do
-      unless check_manifest(lockfile, manifest)
+      unless check_manifest(lockfile, manifest) and File.exist?('.bundle/config')
         Rake::Task["dependencies:bundle:install"].invoke
       end
     end
 
     task :install do
-      sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
-      FileUtils.cp(lockfile, manifest)
+      fold("install.bundler") do
+        sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
+        FileUtils.cp(lockfile, manifest)
+      end
     end
     CLOBBER << "vendor/bundle"
     CLOBBER << ".bundle"
