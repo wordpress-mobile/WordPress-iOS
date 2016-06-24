@@ -44,7 +44,7 @@ struct DomainsService {
             }
         }
 
-        ContextManager.sharedInstance().saveContext(context)
+        ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
     private func blogForSiteID(siteID: Int) -> Blog? {
