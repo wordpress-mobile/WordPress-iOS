@@ -444,6 +444,12 @@
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="top" secondItem="POD-Dc-YbQ" secondAttribute="bottom" id="Wy7-AW-DmL"/>
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="centerX" secondItem="zNg-ay-PFI" secondAttribute="centerX" id="kaH-A8-bk2"/>
                         </constraints>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="FB0-IT-8ty"/>
+                                <exclude reference="LlQ-Hl-xwi"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="searchBar" destination="B6J-Lg-PdX" id="nsa-JY-QYl"/>
