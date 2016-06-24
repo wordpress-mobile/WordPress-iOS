@@ -426,9 +426,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (topic.isExternal) {
         if (newFollowValue) {
-            [siteService followSiteAtURL:topic.siteURL success:success failure:failureBlock];
+            [siteService followSiteAtURL:topic.feedURL success:success failure:failureBlock];
         } else {
-            [siteService unfollowSiteAtURL:topic.siteURL success:success failure:failureBlock];
+            [siteService unfollowSiteAtURL:topic.feedURL success:success failure:failureBlock];
         }
     } else {
         if (newFollowValue) {
