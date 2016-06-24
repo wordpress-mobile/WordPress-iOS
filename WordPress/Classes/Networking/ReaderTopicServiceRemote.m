@@ -81,6 +81,32 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     }];
 }
 
+- (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success failure:(void(^)(NSError *error))failure
+{
+    NSString *path = @"read/following/mine?meta=site,feed";
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+        if (!success) {
+            return;
+        }
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSArray *subscriptions = [response arrayForKey:@"subscriptions"];
+        NSMutableArray *sites = [NSMutableArray array];
+        for (NSDictionary *dict in subscriptions) {
+            RemoteReaderSiteInfo *siteInfo = [self siteInfoFromFollowedSiteDictionary:dict];
+            [sites addObject:siteInfo];
+        }
+        success(sites);
+
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)unfollowTopicWithSlug:(NSString *)slug
                   withSuccess:(void (^)(NSNumber *topicID))success
                       failure:(void (^)(NSError *error))failure
@@ -194,6 +220,17 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
             failure(error);
         }
     }];
+}
+
+- (RemoteReaderSiteInfo *)siteInfoFromFollowedSiteDictionary:(NSDictionary *)dict
+{
+    NSDictionary *meta = [dict dictionaryForKeyPath:@"meta.data.site"];
+    if (meta) {
+        return [self siteInfoForSiteResponse:meta];
+    } else {
+        meta = [dict dictionaryForKeyPath:@"meta.data.feed"];
+        return [self siteInfoForFeedResponse:meta];
+    }
 }
 
 - (RemoteReaderSiteInfo *)siteInfoForSiteResponse:(NSDictionary *)response
