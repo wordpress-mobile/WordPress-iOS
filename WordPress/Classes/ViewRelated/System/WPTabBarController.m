@@ -50,6 +50,7 @@ static NSInteger const WPTabBarIconOffset = 5;
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) ReaderViewController *readerViewController;
+@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
@@ -198,7 +199,14 @@ static NSInteger const WPTabBarIconOffset = 5;
     }
 
     self.readerViewController = [[ReaderViewController alloc] init];
-    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
+    self.readerMenuViewController = [ReaderMenuViewController controller];
+
+    if ([Feature enabled: FeatureFlagReaderMenu]) {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+    } else {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
+    }
+
     _readerNavigationController.navigationBar.translucent = NO;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -628,7 +636,12 @@ static NSInteger const WPTabBarIconOffset = 5;
     // In this method, we determine the UITabBarController's last button frame.
     // It's proven to be effective in *all* of the available devices to date, even in multitasking mode.
     // Even better, we don't even need one constant per device.
-    // *If* this ever breaks, worst case scenario, we'll notice the assertion below (and of course, we'll fix it!).
+    //
+    // On iOS 10, the first time this viewcontroller's view is laid out the tab bar buttons have
+    // a zero origin, so this method can't choose a frame. On subsequent layout passes, the
+    // buttons seem to have a correct frame, so this method still works for now.
+    // (When this viewcontroller's view is first created, `viewDidLayoutSubviews` is called twice -
+    // The second time has the correct frame).
     //
     CGRect lastButtonRect = CGRectZero;
     
@@ -640,7 +653,6 @@ static NSInteger const WPTabBarIconOffset = 5;
         }
     }
     
-    NSAssert(!CGRectEqualToRect(lastButtonRect, CGRectZero), @"Couldn't determine the last TabBarButton Frame");
     return lastButtonRect;
 }
 
