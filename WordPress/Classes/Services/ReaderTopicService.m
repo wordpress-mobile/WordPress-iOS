@@ -50,6 +50,25 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
+- (void)fetchFollowedSitesWithSuccess:(void(^)())success failure:(void(^)(NSError *error))failure
+{
+    ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
+        for (RemoteReaderSiteInfo *siteInfo in sites) {
+            [self siteTopicForRemoteSiteInfo:siteInfo];
+        }
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            if (success) {
+                success();
+            }
+        }];
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (ReaderAbstractTopic *)currentTopic
 {
     ReaderAbstractTopic *topic;
@@ -385,7 +404,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSError *error;
@@ -471,40 +489,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             return;
         }
 
-        NSEntityDescription *entity = [NSEntityDescription entityForName:[ReaderSiteTopic classNameWithoutNamespaces]
-                                                  inManagedObjectContext:self.managedObjectContext];
-
-        ReaderSiteTopic *topic = [[ReaderSiteTopic alloc] initWithEntity:entity
-                     insertIntoManagedObjectContext:self.managedObjectContext];
-
-        topic.feedID = siteInfo.feedID;
-        topic.following = siteInfo.isFollowing;
-        topic.isJetpack = siteInfo.isJetpack;
-        topic.isPrivate = siteInfo.isPrivate;
-        topic.isVisible = siteInfo.isVisible;
-        topic.postCount = siteInfo.postCount;
-        topic.showInMenu = NO;
-        topic.siteBlavatar = siteInfo.siteBlavatar;
-        topic.siteDescription = siteInfo.siteDescription;
-        topic.siteID = siteInfo.siteID;
-        topic.siteURL = siteInfo.siteURL;
-        topic.subscriberCount = siteInfo.subscriberCount;
-        topic.title = siteInfo.siteName;
-        topic.type = ReaderSiteTopic.TopicType;
-        topic.path = siteInfo.postsEndpoint;
-
-        NSError *error;
-        [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
-        if (error) {
-            DDLogError(@"%@ error obtaining permanent ID for topic for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        }
-
-        [self.managedObjectContext save:&error];
-        if (error) {
-            DDLogError(@"%@ error saving topic for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        }
-
-        success(topic.objectID, siteInfo.isFollowing);
+        ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo: siteInfo];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            success(topic.objectID, siteInfo.isFollowing);
+        }];
 
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
@@ -705,6 +693,33 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;
+
+    return topic;
+}
+
+- (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo
+{
+    ReaderSiteTopic *topic = (ReaderSiteTopic *)[self findWithPath:siteInfo.postsEndpoint];
+    if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
+
+    topic.feedID = siteInfo.feedID;
+    topic.following = siteInfo.isFollowing;
+    topic.isJetpack = siteInfo.isJetpack;
+    topic.isPrivate = siteInfo.isPrivate;
+    topic.isVisible = siteInfo.isVisible;
+    topic.postCount = siteInfo.postCount;
+    topic.showInMenu = NO;
+    topic.siteBlavatar = siteInfo.siteBlavatar;
+    topic.siteDescription = siteInfo.siteDescription;
+    topic.siteID = siteInfo.siteID;
+    topic.siteURL = siteInfo.siteURL;
+    topic.subscriberCount = siteInfo.subscriberCount;
+    topic.title = siteInfo.siteName;
+    topic.type = ReaderSiteTopic.TopicType;
+    topic.path = siteInfo.postsEndpoint;
 
     return topic;
 }
