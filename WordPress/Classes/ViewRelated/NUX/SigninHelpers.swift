@@ -1,6 +1,5 @@
 import UIKit
 import NSURL_IDN
-import Optimizely
 import WordPressComAnalytics
 
 
@@ -16,13 +15,7 @@ import WordPressComAnalytics
 
     // Allows for A/B testing between the old and new signin flows.
     class func useNewSigninFlow() -> Bool {
-        let value = OptimizelyHelper.useNewSigninFlow()
-        if (value) {
-            DDLogSwift.logInfo("Using the new sign in flow")
-        } else {
-            DDLogSwift.logInfo("Using the old sign in flow")
-        }
-        return value
+        return false
     }
 
 
