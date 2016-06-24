@@ -700,7 +700,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo
 {
     ReaderSiteTopic *topic = (ReaderSiteTopic *)[self findWithPath:siteInfo.postsEndpoint];
-    if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
+    if (!topic || ![topic isKindOfClass:[ReaderSiteTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
