@@ -175,7 +175,7 @@ class ReaderFollowedSitesViewController: UIViewController
         guard let url = urlFromString(site) else {
             let title = NSLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
             let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-            let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
+            let alert = UIAlertController(title: title, message: "", preferredStyle: .Alert)
             alert.addCancelActionWithTitle(buttonTitle)
             alert.presentFromRootViewController()
             return
