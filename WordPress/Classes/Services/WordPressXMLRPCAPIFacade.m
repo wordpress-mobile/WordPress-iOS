@@ -1,11 +1,10 @@
-#import "WordPressXMLRPCAPIFacade.h"
+    #import "WordPressXMLRPCAPIFacade.h"
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <WordPressApi/WordPressXMLRPCApi.h>
+#import "WordPress-Swift.h"
 
 
 @interface WordPressXMLRPCAPIFacade ()
 
-@property (nonatomic, strong) WordPressXMLRPCApi *xmlRPCApi;
 
 @end
 
@@ -16,8 +15,11 @@
                       success:(void (^)(NSURL *xmlrpcURL))success
                       failure:(void (^)(NSError *error))failure
 {
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:url success:success failure:^(NSError *error) {
-        failure([self errorForGuessXMLRPCApiFailure:error]);
+    WordPressOrgXMLRPCValidator *validator = [[WordPressOrgXMLRPCValidator alloc] init];
+    [validator guessXMLRPCURLForSite:url success:success failure:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure([self errorForGuessXMLRPCApiFailure:error]);
+        });
     }];
 }
 
@@ -48,8 +50,21 @@
                           failure:(void (^)(NSError *error))failure;
 {
     
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlrpc username:username password:password];
-    return [api getBlogOptionsWithSuccess:success failure:failure];
+    WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlrpc userAgent:[WPUserAgent wordPressUserAgent]];
+    [api checkCredentials:username password:password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                success(responseObject);
+            }
+        });
+
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (failure) {
+                failure(error);
+            }
+        });
+    }];
 }
 
 
