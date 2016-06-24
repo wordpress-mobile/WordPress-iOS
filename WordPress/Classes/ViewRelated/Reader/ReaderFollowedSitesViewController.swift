@@ -222,6 +222,11 @@ class ReaderFollowedSitesViewController: UIViewController
         return nil
     }
 
+
+    func showPostListForSite(site: ReaderSiteTopic) {
+        let controller = ReaderStreamViewController.controllerWithTopic(site)
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 
@@ -276,7 +281,10 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        
+        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
+            return
+        }
+        showPostListForSite(site)
     }
 
 
