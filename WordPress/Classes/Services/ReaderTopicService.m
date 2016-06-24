@@ -706,6 +706,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     topic.feedID = siteInfo.feedID;
+    topic.feedURL = siteInfo.feedURL;
     topic.following = siteInfo.isFollowing;
     topic.isJetpack = siteInfo.isJetpack;
     topic.isPrivate = siteInfo.isPrivate;

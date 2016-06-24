@@ -261,6 +261,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
     siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.feedURL = [response stringForKey:SiteDictionaryFeedURLKey];
     siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
     siteInfo.isJetpack = NO;
     siteInfo.isPrivate = NO;
