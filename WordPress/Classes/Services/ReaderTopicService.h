@@ -27,6 +27,15 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+ Get a list ReaderSiteTopics of the sites the user follows.
+
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchFollowedSitesWithSuccess:(void(^)())success
+                              failure:(void(^)(NSError *error))failure;
+
+/**
  Counts the number of `ReaderTagTopics` the user has subscribed to.
  
  @return The number of ReaderTagTopics whose `followed` property is set to `YES`
