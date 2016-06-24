@@ -61,12 +61,6 @@ class ReaderFollowedSitesViewController: UIViewController
     }
 
 
-    override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: animated)
-    }
-
-
     // MARK: - Setup
 
 
@@ -129,7 +123,7 @@ class ReaderFollowedSitesViewController: UIViewController
             return
         }
         isSyncing = true
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.fetchFollowedSitesWithSuccess({[weak self] in
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -234,8 +228,10 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
 
     func fetchRequest() -> NSFetchRequest! {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderSite")
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
+        let fetchRequest = NSFetchRequest(entityName: "ReaderSiteTopic")
+        fetchRequest.predicate = NSPredicate(format: "following = YES")
+
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
         return fetchRequest
@@ -243,20 +239,17 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
 
     func configureCell(cell: UITableViewCell!, atIndexPath indexPath: NSIndexPath!) {
-        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSite else {
+        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
         }
 
         cell.accessoryType = .DisclosureIndicator
-        let defaultImage = UIImage(named: "post-blavatar-placeholder")
-        cell.imageView?.image = defaultImage
         cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
 
-        cell.textLabel?.text = site.nameForDisplay()
-        cell.detailTextLabel?.text = site.pathForDisplay()
-        if site.icon != nil {
-            cell.imageView?.setImageWithSiteIcon(site.icon, placeholderImage: defaultImage)
-        }
+        cell.textLabel?.text = site.title
+        cell.detailTextLabel?.text = NSURL(string: site.siteURL)?.host
+        cell.imageView?.setImageWithSiteIcon(site.siteBlavatar, placeholderImage: UIImage(named: "blavatar-default"))
+
 
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         cell.layoutSubviews()
