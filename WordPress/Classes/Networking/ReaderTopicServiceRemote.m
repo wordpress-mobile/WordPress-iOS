@@ -19,6 +19,7 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
 
 // Site Topic Keys
 static NSString * const SiteDictionaryFeedIDKey = @"feed_ID";
+static NSString * const SiteDictionaryFeedURLKey = @"feed_URL";
 static NSString * const SiteDictionaryFollowingKey = @"is_following";
 static NSString * const SiteDictionaryJetpackKey = @"is_jetpack";
 static NSString * const SiteDictionaryPrivateKey = @"is_private";
@@ -199,6 +200,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
     siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.feedURL = [response stringForKey:SiteDictionaryFeedURLKey];
     siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
     siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
     siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
