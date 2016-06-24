@@ -143,15 +143,21 @@ class ReaderFollowedSitesViewController: UIViewController
     }
 
 
+    func refreshFollowedPosts() {
+        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        service.syncPostsForFollowedSites()
+    }
+
+
     func unfollowSiteAtIndexPath(indexPath: NSIndexPath) {
-        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSite else {
+        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
         }
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.unfollowSite(site, success: { [weak self] in
+        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        service.toggleFollowingForSite(site, success: { [weak self] in
             self?.syncSites()
-            service.syncPostsForFollowedSites()
+            self?.refreshFollowedPosts()
 
             }) { (error) in
                 DDLogSwift.logError("Could not unfollow site: \(error)")
@@ -270,7 +276,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        // TODO: preview site
+        
     }
 
 
