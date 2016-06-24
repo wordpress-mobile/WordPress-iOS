@@ -280,6 +280,11 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
+    func titleForHeaderInSection(section: Int) -> String! {
+        return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
+    }
+
+
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
