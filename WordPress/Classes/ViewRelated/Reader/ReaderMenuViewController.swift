@@ -89,7 +89,7 @@ import WordPressShared
     /// Presents the reader's followed sites vc.
     ///
     func showFollowedSites() {
-        let controller = FollowedSitesViewController.init()
+        let controller = ReaderFollowedSitesViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
     }
 
