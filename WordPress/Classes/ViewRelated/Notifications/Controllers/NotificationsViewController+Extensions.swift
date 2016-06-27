@@ -14,14 +14,14 @@ extension NotificationsViewController
 
         // This is only required for debugging:
         // If we're sync'ing against a custom bucket, we should let the user know about it!
-        let simperium = WordPressAppDelegate.sharedInstance().simperium
-        let bucketName = "\(Notification.classNameWithoutNamespaces())"
+        let bucketName = Notification.classNameWithoutNamespaces()
+        let overridenName = simperium.bucketOverrides[bucketName] as? String ?? WPNotificationsBucketName
 
-        guard let name = simperium.bucketOverrides[bucketName] as? String where name != WPNotificationsBucketName else {
+        guard overridenName != WPNotificationsBucketName else {
             return
         }
 
-        title = "Notifications from [\(name)]"
+        title = "Notifications from [\(overridenName)]"
     }
 
     func setupConstraints() {
@@ -82,7 +82,8 @@ extension NotificationsViewController
     func setupRatingsView() {
         precondition(ratingsView != nil)
 
-        let ratingsFont = WPFontManager.systemRegularFontOfSize(CGFloat(15.0))
+        let ratingsSize = CGFloat(15.0)
+        let ratingsFont = WPFontManager.systemRegularFontOfSize(ratingsSize)
 
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
@@ -109,14 +110,13 @@ extension NotificationsViewController
         ]
 
         for (index, title) in titles.enumerate() {
-            self.filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
+            filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
         }
 
         WPStyleGuide.configureSegmentedControl(filtersSegmentedControl)
     }
 
     func setupNotificationsBucketDelegate() {
-        let simperium = WordPressAppDelegate.sharedInstance().simperium
         let notesBucket = simperium.bucketForName(entityName())
         notesBucket.delegate = self as? SPBucketDelegate
         notesBucket.notifyWhileIndexing = true
@@ -129,5 +129,30 @@ extension NotificationsViewController
     func refresh() {
         // Yes. This is dummy. Simperium handles sync for us!
         refreshControl?.endRefreshing()
+    }
+
+
+
+    // MARK: - UISegmentedControl Methods
+
+    func segmentedControlDidChange(sender: UISegmentedControl) {
+        reloadResultsController()
+
+        // It's a long way, to the top (if you wanna rock'n roll!)
+        guard tableViewHandler.resultsController.fetchedObjects?.count != 0 else {
+            return
+        }
+
+        let path = NSIndexPath(forRow: 0, inSection: 0)
+        tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: true)
+    }
+
+
+
+
+    // MARK: - Private Properties
+
+    private var simperium: Simperium {
+        return WordPressAppDelegate.sharedInstance().simperium
     }
 }
