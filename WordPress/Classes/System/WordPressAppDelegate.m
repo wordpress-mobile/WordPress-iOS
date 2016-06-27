@@ -126,7 +126,11 @@ int ddLogLevel = DDLogLevelInfo;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
-    [self showWelcomeScreenIfNeededAnimated:NO];
+    // TODO: Proxy this call to a handler.
+    // Show a placeholder vc.
+    // Use the callback for loaded variants but set a time out.
+    [SigninHelpers loadABTestThenShowSigninController];
+//    [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
@@ -357,7 +361,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Analytics
     [self configureAnalytics];
-    
+
     // Start Simperium
     [self loginSimperium];
     
@@ -505,7 +509,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
     
@@ -531,6 +535,10 @@ int ddLogLevel = DDLogLevelInfo;
     UINavigationController *presentedViewController = (UINavigationController *)self.window.rootViewController.presentedViewController;
     if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
         return NO;
+    }
+
+    if ([presentedViewController isKindOfClass:[NUXNavigationController class]]) {
+        return YES;
     }
 
     // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
