@@ -658,7 +658,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         // bad login/pass combination
         let editSiteViewController = SiteSettingsViewController(blog: blog)
-        editSiteViewController.isCancellable = false
+        editSiteViewController.isCancellable = true
 
         let navController = UINavigationController(rootViewController: editSiteViewController)
         navController.navigationBar.translucent = false
