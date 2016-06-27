@@ -173,23 +173,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupTableView
-{
-    NSParameterAssert(self.tableView);
-    
-    // Register the cells
-    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
-    
-    for (NSString *nibName in cellNibs) {
-        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
-    }
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
 - (void)setupTableHeaderView
 {
     NSParameterAssert(self.tableHeaderView);
