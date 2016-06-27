@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "WPSearchController.h"
 
-extern const CGFloat SearchBarWidth;
 extern const CGFloat SearchBariPadWidth;
 extern const CGFloat SearchWrapperViewMinHeight;
 extern const NSTimeInterval SearchBarAnimationDuration;

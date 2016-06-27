@@ -44,7 +44,7 @@ struct DomainsService {
             }
         }
 
-        ContextManager.sharedInstance().saveContext(context)
+        ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
     private func blogForSiteID(siteID: Int) -> Blog? {
@@ -110,6 +110,6 @@ struct DomainsService {
 
 extension DomainsService {
     init(managedObjectContext context: NSManagedObjectContext, account: WPAccount) {
-        self.init(managedObjectContext: context, remote: DomainsServiceRemote(api: account.restApi))
+        self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
     }
 }

@@ -1,18 +1,18 @@
 import Foundation
 
-class DomainsServiceRemote: ServiceRemoteREST {
+class DomainsServiceRemote: ServiceRemoteWordPressComREST {
     enum Error: ErrorType {
         case DecodeError
     }
 
     func getDomainsForSite(siteID: Int, success: [Domain] -> Void, failure: ErrorType -> Void) {
         let endpoint = "sites/\(siteID)/domains"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
 
-        api.GET(path,
+        wordPressComRestApi.GET(path,
                 parameters: nil,
                 success: {
-                    _, response in
+                    response, _ in
                     do {
                         try success(mapDomainsResponse(response))
                     } catch {
@@ -20,7 +20,7 @@ class DomainsServiceRemote: ServiceRemoteREST {
                         failure(error)
                     }
             }, failure: {
-                _, error in
+                error, _ in
                 failure(error)
         })
     }

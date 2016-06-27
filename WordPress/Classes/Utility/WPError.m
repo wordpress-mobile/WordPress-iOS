@@ -1,6 +1,5 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
@@ -39,7 +38,9 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     NSString *message = nil;
     NSString *customTitle = nil;
 
-    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
+    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] ||
+        [error.domain isEqual:AFURLResponseSerializationErrorDomain])
+    {
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:AFNetworkingOperationFailingURLResponseErrorKey];
         switch (error.code) {
             case NSURLErrorBadServerResponse:
@@ -82,9 +83,10 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
             default:
                 break;
         }
-    } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
-        DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
-        if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
+    } else if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
+        DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
+                   [error localizedDescription]);
+        if (error.code == WordPressComRestApiErrorInvalidToken || error.code == WordPressComRestApiErrorAuthorizationRequired) {
             [SigninHelpers showSigninForWPComFixingAuthToken];
             return;
         }
