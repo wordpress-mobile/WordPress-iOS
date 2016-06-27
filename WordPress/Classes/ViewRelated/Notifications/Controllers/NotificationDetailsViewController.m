@@ -43,8 +43,7 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
-static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsets             = {0.0f,  0.0f, 20.0f, 0.0f};
 
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
@@ -394,7 +393,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)adjustTableInsetsIfNeeded
 {
-    UIEdgeInsets contentInset = [UIDevice isPad] ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
+    UIEdgeInsets contentInset = NotificationTableInsets;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
