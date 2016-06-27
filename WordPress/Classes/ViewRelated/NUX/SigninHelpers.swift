@@ -1,6 +1,7 @@
 import UIKit
 import NSURL_IDN
 import WordPressComAnalytics
+import Mixpanel
 
 
 /// A collection of helper methods for NUX.
@@ -10,13 +11,68 @@ import WordPressComAnalytics
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
 
-    //MARK: - Helpers for presenting the signin flow
+    // MARK: - AB test related methods
+
+    ///
+    ///
+    class func loadABTestThenShowSigninController() {
+
+        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            return
+        }
+
+        // Keep showing the launch screen until we know which signin varient we want.
+        let storyboard = UIStoryboard(name: "Launch Screen", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateInitialViewController()!
+        let navController = NUXNavigationController(rootViewController: controller)
+        navController.toolbarHidden = true
+
+        rootController.presentViewController(navController, animated: false, completion: nil)
+
+        // Load A/B tests.
+        Mixpanel.sharedInstance().joinExperimentsWithCallback {
+            SigninHelpers.showSigninControllerForABTest()
+        }
+
+        NSTimer.scheduledTimerWithTimeInterval(2, target: SigninHelpers.self, selector: #selector(SigninHelpers.showSigninControllerForABTest), userInfo: nil, repeats: false)
+    }
+
+
+    ///
+    ///
+    class func showSigninControllerForABTest() {
+        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            return
+        }
+
+        // If the presented controller is nil, or not a nux nav controller something isn't right so just bail.
+        guard let presentedController = rootController.presentedViewController as? NUXNavigationController  else {
+            return
+        }
+
+        // If we're already showing one of the signin screens just bail.
+        if let topViewController = presentedController.topViewController {
+            if topViewController.isKindOfClass(NUXAbstractViewController.self) {
+                return
+            }
+            if topViewController.isKindOfClass(LoginViewController.self) {
+                return
+            }
+        }
+
+        // Dismiss the temp launch vc and show the sign in flow.
+        rootController.dismissViewControllerAnimated(false, completion: nil)
+        SigninHelpers.showSigninFromPresenter(rootController, animated: false, thenEditor: false)
+    }
 
 
     // Allows for A/B testing between the old and new signin flows.
     class func useNewSigninFlow() -> Bool {
-        return false
+        return MixpanelTweaks.NUXMagicLinksEnabled()
     }
+
+
+    //MARK: - Helpers for presenting the signin flow
 
 
     // Helper used by the app delegate
