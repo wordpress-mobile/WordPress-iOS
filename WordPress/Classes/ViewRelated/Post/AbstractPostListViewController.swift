@@ -655,7 +655,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func promptForPassword() {
         let message = NSLocalizedString("The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", comment: "")
-        WPError.showAlertWithTitle(NSLocalizedString("Unable to Connect", comment: ""), message: message)
 
         // bad login/pass combination
         let editSiteViewController = SiteSettingsViewController(blog: blog)
@@ -667,7 +666,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         navController.modalTransitionStyle = .CrossDissolve
         navController.modalPresentationStyle = .FormSheet
 
-        presentViewController(navController, animated: true, completion: nil)
+        WPError.showAlertWithTitle(NSLocalizedString("Unable to Connect", comment: ""), message: message, withSupportButton: true) { _ in
+            self.presentViewController(navController, animated: true, completion: nil)
+        }
     }
 
     // MARK: - Searching
