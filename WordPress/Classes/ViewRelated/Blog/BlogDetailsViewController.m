@@ -512,7 +512,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
-    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStylePlain];
     controller.blog = self.blog;
     [self.navigationController pushViewController:controller animated:YES];
 }
