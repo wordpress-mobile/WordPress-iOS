@@ -23,4 +23,6 @@
 @property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
+- (NSString *)entityName;
+
 @end

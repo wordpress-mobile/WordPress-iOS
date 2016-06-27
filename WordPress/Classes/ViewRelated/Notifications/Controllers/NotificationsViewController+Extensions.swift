@@ -1,4 +1,5 @@
 import Foundation
+import Simperium
 import WordPress_AppbotX
 import WordPressShared
 
@@ -15,13 +16,12 @@ extension NotificationsViewController
         // If we're sync'ing against a custom bucket, we should let the user know about it!
         let simperium = WordPressAppDelegate.sharedInstance().simperium
         let bucketName = "\(Notification.classNameWithoutNamespaces())"
-        let unwrappedOverrideName = simperium.bucketOverrides[bucketName] as? String
 
-        guard let overrideName = unwrappedOverrideName where overrideName != WPNotificationsBucketName else {
+        guard let name = simperium.bucketOverrides[bucketName] as? String where name != WPNotificationsBucketName else {
             return
         }
 
-        title = "Notifications from [\(overrideName)]"
+        title = "Notifications from [\(name)]"
     }
 
     func setupConstraints() {
@@ -89,5 +89,45 @@ extension NotificationsViewController
         ratingsView.rightButton.titleLabel?.font = ratingsFont
         ratingsView.delegate = self as? ABXPromptViewDelegate
         ratingsView.alpha = WPAlphaZero
+    }
+
+    func setupRefreshControl() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
+        refreshControl = control
+    }
+
+    func setupFiltersSegmentedControl() {
+        precondition(filtersSegmentedControl != nil)
+
+        let titles = [
+            NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered"),
+            NSLocalizedString("Unread", comment: "Filters Unread Notifications"),
+            NSLocalizedString("Comments", comment: "Filters Comments Notifications"),
+            NSLocalizedString("Follows", comment: "Filters Follows Notifications"),
+            NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+        ]
+
+        for (index, title) in titles.enumerate() {
+            self.filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
+        }
+
+        WPStyleGuide.configureSegmentedControl(filtersSegmentedControl)
+    }
+
+    func setupNotificationsBucketDelegate() {
+        let simperium = WordPressAppDelegate.sharedInstance().simperium
+        let notesBucket = simperium.bucketForName(entityName())
+        notesBucket.delegate = self as? SPBucketDelegate
+        notesBucket.notifyWhileIndexing = true
+    }
+
+
+
+    // MARK: - UIRefreshControl Methods
+
+    func refresh() {
+        // Yes. This is dummy. Simperium handles sync for us!
+        refreshControl?.endRefreshing()
     }
 }
