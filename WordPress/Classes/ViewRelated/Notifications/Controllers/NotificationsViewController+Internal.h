@@ -24,5 +24,6 @@
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
 - (NSString *)entityName;
+- (void)reloadResultsController;
 
 @end
