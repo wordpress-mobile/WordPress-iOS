@@ -33,7 +33,7 @@ extension UIAlertController
         }
 
         var leafViewController = rootViewController
-        while leafViewController.presentedViewController != nil {
+        while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed() {
             leafViewController = leafViewController.presentedViewController!
         }
 
