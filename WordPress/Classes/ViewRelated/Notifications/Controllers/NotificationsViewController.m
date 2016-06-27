@@ -173,28 +173,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupTableHandler
-{
-    NSParameterAssert(self.tableView);
-    
-    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights = YES;
-    tableViewHandler.delegate = self;
-    self.tableViewHandler = tableViewHandler;
-}
-
-- (void)setupRatingsView
-{
-    NSParameterAssert(self.ratingsView);
-    
-    UIFont *ratingsFont                             = [WPFontManager systemRegularFontOfSize:15.0];
-    self.ratingsView.label.font                     = ratingsFont;
-    self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
-    self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
-    self.ratingsView.delegate                       = self;
-    self.ratingsView.alpha                          = WPAlphaZero;
-}
-
 - (void)setupRefreshControl
 {
     UIRefreshControl *refreshControl = [UIRefreshControl new];
