@@ -1049,9 +1049,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             }
         }
 
-        let navController = UINavigationController(rootViewController: controller)
-
-        displayFilterPopover(navController)
+        displayFilterPopover(controller)
     }
 
     func displayFilterPopover(controller: UIViewController) {
@@ -1061,13 +1059,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             return
         }
 
-        controller.modalPresentationStyle = .Popover
-        presentViewController(controller, animated: true, completion: nil)
+        ForcePopoverPresentationPopoverControllerDelegate.configurePresentationControllerForViewController(controller,
+                                                                                                           presentingFromView: titleView)
 
-        let presentationController = controller.popoverPresentationController
-        presentationController?.permittedArrowDirections = .Any
-        presentationController?.sourceView = titleView
-        presentationController?.sourceRect = titleView.bounds
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     func setFilterWithPostStatus(status: String) {
