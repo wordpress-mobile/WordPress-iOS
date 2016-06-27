@@ -394,7 +394,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     func itemCountForTagSection() -> Int {
         var count = tagsFetchedResultsController.fetchedObjects?.count ?? 0
         if ReaderHelpers.isLoggedIn() {
-            // The first tiem for a logged in user will be an "AddItem" type, so increase the count by 1.
+            // The first time for a logged in user will be an "AddItem" type, so increase the count by 1.
             count += 1
         }
         return count
@@ -412,7 +412,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         var fetchedIndex = index
         if ReaderHelpers.isLoggedIn() {
             if fetchedIndex == 0 {
-                let title = NSLocalizedString("Add a Tag", comment: "Title. Let's the user know that they can use this fature to subscribe to new tags.")
+                let title = NSLocalizedString("Add a Tag", comment: "Title. Lets the user know that they can use this feature to subscribe to new tags.")
                 return ReaderMenuItem(title: title, type: .AddItem)
             } else {
                 // Adjust the index by one to account for AddItem
@@ -420,7 +420,7 @@ enum ReaderDefaultMenuItemOrder: Int {
             }
         }
 
-        guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
+        guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: fetchedIndex, inSection: 0)) as? ReaderAbstractTopic else {
             return nil
         }
         return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
