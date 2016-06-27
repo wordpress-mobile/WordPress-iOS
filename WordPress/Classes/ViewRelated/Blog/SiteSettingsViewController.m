@@ -129,6 +129,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
+    if (self.isCancellable) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+    }
+
     [self refreshData];
 }
 
