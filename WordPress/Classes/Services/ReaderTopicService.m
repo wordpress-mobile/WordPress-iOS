@@ -9,7 +9,6 @@
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
-#import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 #import "WPAccount.h"
 #import <WordPressApi/WordPressApi.h>
@@ -187,7 +186,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
     ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
-    NSString *path = [remote endpointUrlForSearchPhrase:phrase];
+    NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
     ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
     if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
@@ -198,6 +197,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = path;
     topic.showInMenu = NO;
     topic.following = NO;
+
+    // Save / update the search phrase to use it as a suggestion later.
+    ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [suggestionService createOrUpdateSuggestionForPhrase:phrase];
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return topic;
 }

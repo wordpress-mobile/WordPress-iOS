@@ -16,9 +16,9 @@
 #import "WordPress-Swift.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPWebViewController.h"
-
+#import "WordPress-Swift.h"
+#import "BlogServiceRemoteXMLRPC.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WordPressApi/WordPressApi.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 
 
@@ -700,10 +700,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         return;
     }
 
-    SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.settings.tagline
+    SettingsTextViewController *siteTaglineViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.tagline
                                                                                                            placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
-                                                                                                                  hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
-                                                                                                            isPassword:NO];
+                                                                                                        hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")];
     siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
     siteTaglineViewController.onValueChanged = ^(NSString *value) {
         NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -899,21 +898,23 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
 
     NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL
-                                                               username:self.username
-                                                               password:self.password];
+    WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];
     __weak __typeof__(self) weakSelf = self;
-    [api getBlogOptionsWithSuccess:^(id options){
-        [SVProgressHUD dismiss];
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
-        [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
-    } failure:^(NSError *error){
-        [SVProgressHUD dismiss];
-        [weakSelf loginValidationFailedWithError:error];
+    [api checkCredentials:self.username password:self.password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            __typeof__(self) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
+            [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
+        });
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            [weakSelf loginValidationFailedWithError:error];
+        });
     }];
 }
 

@@ -10,6 +10,7 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "AccountServiceRemoteREST.h"
 #import "WPPostViewController.h"
+#import "WordPress-Swift.h"
 
 
 @interface WPAnalyticsTrackerMixpanel ()
@@ -175,7 +176,7 @@ NSString *const SessionCount = @"session_count";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    return [[defaultAccount restApi] hasCredentials];
+    return [[defaultAccount wordPressComRestApi] hasCredentials];
 }
 
 - (void)trackMixpanelDataForInstructions:(WPAnalyticsTrackerMixpanelInstructionsForStat *)instructions andProperties:(NSDictionary *)properties
@@ -368,6 +369,11 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Unfollowed List"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_list"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_unfollowed_list"];
+            break;
+        case WPAnalyticsStatReaderSearchLoaded:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Loaded Search"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_search_loaded"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reader_search_loaded"];
             break;
         case WPAnalyticsStatReaderSiteBlocked:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Blocked Blog"];
@@ -667,6 +673,12 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedNotificationSettingDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
+            break;
+        case WPAnalyticsStatOpenedPlans:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Plans"];
+            break;
+        case WPAnalyticsStatOpenedPlansComparison:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Plans - Opened Comparison"];
             break;
         case WPAnalyticsStatOpenedSharingManagement:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Sharing Management"];
@@ -1000,9 +1012,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Name Updated"];
-            break;
             
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
@@ -1034,9 +1043,7 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListViewAction:
         case WPAnalyticsStatSupportSentMessage:
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
-        // Unimplemented events
-        case WPAnalyticsStatOpenedPlans:
-        case WPAnalyticsStatOpenedPlansComparison:
+            // Unimplemented events
             break;
     }
 

@@ -1,5 +1,5 @@
 import XCTest
-import WordPress
+@testable import WordPress
 import OHHTTPStubs
 
 class WordPressComRestApiTests: XCTestCase {
@@ -19,13 +19,15 @@ class WordPressComRestApiTests: XCTestCase {
 
     private func isRestAPIRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.wordPressComRestApi + self.wordPressMediaRoute
+            let pathWithLocale = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(self.wordPressMediaRoute)
+            return request.URL?.absoluteString == self.wordPressComRestApi + pathWithLocale
         }
     }
 
     private func isRestAPIMediaNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.wordPressComRestApi + self.wordPressMediaNewEndpoint
+            let pathWithLocale = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(self.wordPressMediaNewEndpoint)
+            return request.URL?.absoluteString == self.wordPressComRestApi + pathWithLocale
         }
     }
 
@@ -121,5 +123,53 @@ class WordPressComRestApiTests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
+    func testMultipleErrorsFailedCall() {
+        stub(isRestAPIMediaNewRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiMultipleErrors.json", self.dynamicType)
+            return fixture(stubPath!, status:403, headers: ["Content-Type":"application/json"])
+        }
+        let expectation = self.expectationWithDescription("One callback should be invoked")
+        let api = WordPressComRestApi(oAuthToken:"fakeToken")
+        api.POST(wordPressMediaNewEndpoint, parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+            expectation.fulfill()
+            XCTFail("This call should fail")
+            }, failure: { (error, httpResponse) in
+                expectation.fulfill()
+                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+                XCTAssert(error.code == Int(WordPressComRestApiError.UploadFailed.rawValue), "The error code should be AuthorizationRequired")
+        })
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
+    func testThatAppendingLocaleWorks() {
+
+        let path = "path/path"
+        let localeKey = "locale"
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let expectedPath = "\(path)?\(localeKey)=\(preferredLanguageIdentifier)"
+
+        let localeAppendedPath = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
+        XCTAssert(localeAppendedPath == expectedPath, "Expected the locale to be appended to the path as (\(expectedPath)) but instead encountered (\(localeAppendedPath)).")
+    }
+
+    func testThatAppendingLocaleWorksWithExistingParams() {
+
+        let path = "path/path?someKey=value"
+        let localeKey = "locale"
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let expectedPath = "\(path)&\(localeKey)=\(preferredLanguageIdentifier)"
+
+        let localeAppendedPath = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
+        XCTAssert(localeAppendedPath == expectedPath, "Expected the locale to be appended to the path as (\(expectedPath)) but instead encountered (\(localeAppendedPath)).")
+    }
+
+    func testThatAppendingLocaleIgnoresIfAlreadyIncluded() {
+
+        let localeKey = "locale"
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let path = "path/path?\(localeKey)=\(preferredLanguageIdentifier)&someKey=value"
+
+        let localeAppendedPath = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
+        XCTAssert(localeAppendedPath == path, "Expected the locale to already be appended to the path as (\(path)) but instead encountered (\(localeAppendedPath)).")
+    }
 }

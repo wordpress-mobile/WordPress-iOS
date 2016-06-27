@@ -47,35 +47,36 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 @implementation MenusViewController
 
++ (MenusViewController *)controllerWithBlog:(Blog *)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
+    MenusViewController *controller = [storyboard instantiateInitialViewController];
+    [controller setupWithBlog:blog];
+    return controller;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithBlog:(Blog *)blog
+- (void)setupWithBlog:(Blog *)blog
 {
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
-    self = [storyboard instantiateInitialViewController];
-    if (self) {
-        
-        // using a new child context to keep local changes disacardable
-        // using main queue as we still want processing done on the main thread
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        context.parentContext = blog.managedObjectContext;
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        
-        // set local blog from local context
-        _blog = [context objectWithID:blog.objectID];
-        
-        // set up the undomanager
-        context.undoManager = [[NSUndoManager alloc] init];
+    // using a new child context to keep local changes discardable
+    // using main queue as we still want processing done on the main thread
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.parentContext = blog.managedObjectContext;
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-        MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
-        _menusService = service;
-    }
-    
-    return self;
+    // set local blog from local context
+    _blog = [context objectWithID:blog.objectID];
+
+    // set up the undomanager
+    context.undoManager = [[NSUndoManager alloc] init];
+
+    MenusService *service = [[MenusService alloc] initWithManagedObjectContext:context];
+    _menusService = service;
 }
 
 - (void)viewDidLoad
@@ -375,7 +376,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.itemsViewController.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
-    if ([menu.menuID integerValue] == MenuDefaultID) {
+    if ([menu isDefaultMenu]) {
         if ([self defaultMenuEnabledForSelectedLocation]) {
             // Set up as the default menu of page items.
             [self loadDefaultMenuItemsIfNeeded];
@@ -485,7 +486,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item
 {
-    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
+    MenuItemEditingViewController *controller = [MenuItemEditingViewController itemEditingViewControllerWithItem:item
+                                                                                                            blog:self.blog];
     void(^dismiss)() = ^() {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
@@ -497,7 +499,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     };
     controller.onSelectedToTrash = ^() {
         [WPAppAnalytics track:WPAnalyticsStatMenusDeletedItem withBlog:self.blog];
-        if (item.itemID.integerValue || item.menu.menuID.integerValue == MenuDefaultID) {
+        if (item.itemID.integerValue || [item.menu isDefaultMenu]) {
             // If the item had an ID, saving is enabled.
             // Or if the user trying to edit the default menu, saving is enabled.
             // Otherwise the item was never created remotely, so no need to save this deletion.
@@ -533,7 +535,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
     
     // Check if user is trying to save the Default Menu and made changes to it.
-    if (menuToSave.menuID.integerValue == MenuDefaultID && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
+    if ([menuToSave isDefaultMenu] && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
@@ -562,17 +564,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         [self setViewsWithMenu:menuToSave];
     }
     
+    self.isSaving = YES;
+
     __weak __typeof(self) weakSelf = self;
-    
-    void(^failureToSave)(NSError *) = ^(NSError *error) {
-        weakSelf.isSaving = NO;
-        // Present the error message.
-        NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
-        [WPError showNetworkingAlertWithError:error title:errorTitle];
-    };
-    
-    void(^updateMenu)() = ^() {
-        [weakSelf.menusService updateMenu:menuToSave
+    [self.menusService createOrUpdateMenu:menuToSave
                                   forBlog:weakSelf.blog
                                   success:^() {
                                       // Refresh the items stack since the items may have changed.
@@ -580,25 +575,12 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                       weakSelf.isSaving = NO;
                                       [weakSelf setNeedsSave:NO forMenu:nil significantChanges:NO];
                                   }
-                                  failure:failureToSave];
-    };
-    
-    self.isSaving = YES;
-    
-    if (menuToSave.menuID.integerValue == 0) {
-        // Need to create the menu first.
-        [self.menusService createMenuWithName:menuToSave.name
-                                         blog:self.blog
-                                      success:^(NSNumber *menuID) {
-                                          // Set the new menuID and continue the update.
-                                          menuToSave.menuID = menuID;
-                                          updateMenu();
-                                      }
-                                      failure:failureToSave];
-    } else {
-        // Update the menu.
-        updateMenu();
-    }
+                                  failure:^(NSError * _Nonnull error) {
+                                      weakSelf.isSaving = NO;
+                                      // Present the error message.
+                                      NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
+                                      [WPError showNetworkingAlertWithError:error title:errorTitle];
+                                  }];
 }
 
 #pragma mark - MenuHeaderViewControllerDelegate

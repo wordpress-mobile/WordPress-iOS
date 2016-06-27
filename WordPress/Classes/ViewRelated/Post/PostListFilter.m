@@ -1,5 +1,5 @@
 #import "PostListFilter.h"
-#import "BasePost.h"
+#import "AbstractPost.h"
 
 @interface PostListFilter ()
 

@@ -532,7 +532,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (void)removeBlog:(Blog *)blog
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
-    [blog.api cancelAllHTTPOperations];
+    [blog.xmlrpcApi invalidateAndCancelTasks];
     WPAccount *jetpackAccount = blog.jetpackAccount;
 
     [self.managedObjectContext deleteObject:blog];
@@ -647,8 +647,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (blog.wordPressComRestApi) {
             remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.api) {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+    } else if (blog.xmlrpcApi) {
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
 
     return remote;

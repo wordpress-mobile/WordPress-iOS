@@ -292,12 +292,16 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
     post.siteID = jsonPost[@"site_ID"];
-    post.authorAvatarURL = jsonPost[@"author"][@"avatar_URL"];
-    post.authorDisplayName = jsonPost[@"author"][@"name"];
-    post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
-    post.authorURL = jsonPost[@"author"][@"URL"];
+    if (jsonPost[@"author"] != [NSNull null]) {
+        NSDictionary *authorDictionary = jsonPost[@"author"];
+        post.authorAvatarURL = authorDictionary[@"avatar_URL"];
+        post.authorDisplayName = authorDictionary[@"name"];
+        post.authorEmail = [authorDictionary stringForKey:@"email"];
+        post.authorURL = authorDictionary[@"URL"];
+    }
     post.authorID = [jsonPost numberForKeyPath:@"author.ID"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
+    post.dateModified = [NSDate dateWithWordPressComJSONString:jsonPost[@"modified"]];
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
     post.shortURL = [NSURL URLWithString:jsonPost[@"short_URL"]];
@@ -368,9 +372,13 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     parameters[@"password"] = post.password ? post.password : @"";
     parameters[@"type"] = post.type;
 
-    if (post.date) {
+    if ([post.date isEqualToDate:post.dateModified]) {
+        // publish immediately when date created matches date modified
+        parameters[@"date"] = [[NSDate date] WordPressComJSONString];
+    } else if (post.date) {
         parameters[@"date"] = [post.date WordPressComJSONString];
     } else if (existingPost) {
+        // safety net. An existing post with no create date should publish immediately
         parameters[@"date"] = [[NSDate date] WordPressComJSONString];
     }
     if (post.excerpt) {

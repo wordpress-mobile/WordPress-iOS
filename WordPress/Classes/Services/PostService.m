@@ -517,6 +517,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.author = remotePost.authorDisplayName;
     post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
+    post.dateModified = remotePost.dateModified;
     post.postTitle = remotePost.title;
     post.permaLink = [remotePost.URL absoluteString];
     post.content = remotePost.content;
@@ -575,6 +576,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     RemotePost *remotePost = [RemotePost new];
     remotePost.postID = post.postID;
     remotePost.date = post.date_created_gmt;
+    remotePost.dateModified = post.dateModified;
     remotePost.title = post.postTitle ?: @"";
     remotePost.content = post.content;
     remotePost.status = post.status;
@@ -704,8 +706,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         if (blog.wordPressComRestApi) {
             remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.api) {
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+    } else if (blog.xmlrpcApi) {
+        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return remote;
 }
