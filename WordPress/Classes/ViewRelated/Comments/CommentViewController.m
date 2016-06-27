@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                           action:@selector(dismissKeyboardIfNeeded:)];
     tapRecognizer.cancelsTouchesInView = NO;
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -286,11 +286,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *layoutIdentifier = self.layoutIdentifiersMap[@(indexPath.row)];
@@ -303,12 +298,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
-}
-
 
 #pragma mark - Setup Cells
 
