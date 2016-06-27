@@ -173,33 +173,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupRefreshControl
-{
-    UIRefreshControl *refreshControl = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-- (void)setupFiltersSegmentedControl
-{
-    NSParameterAssert(self.filtersSegmentedControl);
-    
-    NSArray *titles = @[
-        NSLocalizedString(@"All",       @"Displays all of the Notifications, unfiltered"),
-        NSLocalizedString(@"Unread",    @"Filters Unread Notifications"),
-        NSLocalizedString(@"Comments",  @"Filters Comments Notifications"),
-        NSLocalizedString(@"Follows",   @"Filters Follows Notifications"),
-        NSLocalizedString(@"Likes",     @"Filters Likes Notifications")
-    ];
-    
-    NSInteger index = 0;
-    for (NSString *title in titles) {
-        [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
-    }
-    
-    [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
-}
-
 - (void)showFiltersSegmentedControlIfApplicable
 {
     if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
@@ -214,14 +187,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
         self.tableHeaderView.alpha  = WPAlphaZero;
     }
-}
-
-- (void)setupNotificationsBucketDelegate
-{
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    notesBucket.delegate            = self;
-    notesBucket.notifyWhileIndexing = YES;
 }
 
 - (BOOL)shouldDisplayFilters
@@ -786,15 +751,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     
     // Update NoResults View
     [self showNoResultsViewIfNeeded];
-}
-
-
-#pragma mark - UIRefreshControl Methods
-
-- (void)refresh
-{
-    // Yes. This is dummy. Simperium handles sync for us!
-    [self.refreshControl endRefreshing];
 }
 
 
