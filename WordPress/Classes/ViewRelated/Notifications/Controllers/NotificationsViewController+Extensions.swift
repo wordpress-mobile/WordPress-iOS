@@ -17,4 +17,19 @@ extension NotificationsViewController
         // Ratings is initially hidden!
         ratingsHeightConstraint.constant = 0
     }
+
+    func setupTableView() {
+        // Register the cells
+        let nibNames = [ NoteTableViewCell.classNameWithoutNamespaces() ]
+        let bundle = NSBundle.mainBundle()
+
+        for nibName in nibNames {
+            let nib = UINib(nibName: nibName, bundle: bundle)
+            tableView.registerNib(nib, forCellReuseIdentifier: nibName)
+        }
+
+        // UITableView
+        tableView.accessibilityIdentifier  = "Notifications Table"
+        WPStyleGuide.configureColorsForView(view, andTableView:tableView)
+    }
 }
