@@ -42,7 +42,7 @@ class AccountSettingsService {
 
     private let context = ContextManager.sharedInstance().mainContext
 
-    convenience init(userID: Int, api: WordPressComApi) {
+    convenience init(userID: Int, api: WordPressComRestApi) {
         let remote = AccountSettingsRemote.remoteWithApi(api)
         self.init(userID: userID, remote: remote)
     }

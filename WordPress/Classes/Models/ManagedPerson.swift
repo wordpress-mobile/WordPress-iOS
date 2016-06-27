@@ -5,7 +5,7 @@ import CoreData
 //
 class ManagedPerson: NSManagedObject {
 
-    func updateWith(person: Person) {
+    func updateWith<T : Person>(person: T) {
         avatarURL = person.avatarURL?.absoluteString
         displayName = person.displayName
         firstName = person.firstName
@@ -16,14 +16,15 @@ class ManagedPerson: NSManagedObject {
         linkedUserID = Int64(person.linkedUserID)
         username = person.username
         isSuperAdmin = person.isSuperAdmin
-        isFollower = person.dynamicType.isFollower
+        kind = Int16(person.dynamicType.kind.rawValue)
     }
 
     func toUnmanaged() -> Person {
-        if isFollower {
+        switch Int(kind) {
+        case PersonKind.User.rawValue:
+            return User(managedPerson: self)
+        default:
             return Follower(managedPerson: self)
         }
-
-        return User(managedPerson: self)
     }
 }

@@ -191,9 +191,13 @@ EditImageDetailsViewControllerDelegate
     return self;
 }
 
++ (Class)supportedPostClass {
+    return [Post class];
+}
+
 - (instancetype)initWithPost:(AbstractPost *)post
 {
-    NSParameterAssert([post isKindOfClass:[Post class]]);
+    NSParameterAssert([post isKindOfClass:[self.class supportedPostClass]]);
     
     return [self initWithPost:post
                          mode:kWPPostViewControllerModePreview];
@@ -202,6 +206,8 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initWithPost:(AbstractPost *)post
                         mode:(WPPostViewControllerMode)mode
 {
+    NSParameterAssert([post isKindOfClass:[self.class supportedPostClass]]);
+
     BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
     
@@ -707,7 +713,8 @@ EditImageDetailsViewControllerDelegate
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
-            
+            newPost.dateModified = oldPost.dateModified;
+
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
@@ -810,11 +817,6 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showSettings
 {
-    if ([self isMediaUploading]) {
-        [self showMediaUploadingAlert];
-        return;
-    }
-    
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
@@ -1392,6 +1394,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)discardChanges
 {
+    NSAssert([_post isKindOfClass:[self.class supportedPostClass]],
+             @"The post should exist here.");
+
     NSManagedObjectContext* context = self.post.managedObjectContext;
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
@@ -1473,13 +1478,6 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditView:YES];
 }
 
-- (BOOL)shouldPublishImmediately
-{
-    return !self.post.hasFuturePublishDate &&
-        [self.post.original.status isEqualToString:PostStatusDraft] &&
-        [self.post.status isEqualToString:PostStatusPublish];
-}
-
 /**
  *  @brief      Saves the post being edited and uploads it.
  *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
@@ -1491,10 +1489,6 @@ EditImageDetailsViewControllerDelegate
     [self logSavePostStats];
 
     [self.view endEditing:YES];
-    
-    if ([self shouldPublishImmediately]) {
-        self.post.dateCreated = [NSDate date];
-    }
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1736,7 +1730,6 @@ EditImageDetailsViewControllerDelegate
 - (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
@@ -1775,7 +1768,7 @@ EditImageDetailsViewControllerDelegate
     [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
     [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress resignCurrent];
+    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId

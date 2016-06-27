@@ -116,7 +116,7 @@ static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
         [[WPImageSource sharedSource] downloadImageForURL:url
-                                                authToken:[[defaultAccount restApi] authToken]
+                                                authToken:[defaultAccount authToken]
                                               withSuccess:successBlock
                                                   failure:failureBlock];
     } else {
