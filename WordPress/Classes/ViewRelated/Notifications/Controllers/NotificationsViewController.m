@@ -112,6 +112,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super viewDidLoad];
 
+    [self setupNavigationBar];
     [self setupConstraints];
     [self setupTableView];
     [self setupTableHeaderView];
@@ -119,7 +120,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
-    [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
     
@@ -173,32 +173,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupTableHeaderView
-{
-    NSParameterAssert(self.tableHeaderView);
-    
-    // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-    CGRect headerFrame          = self.tableHeaderView.frame;
-    CGSize requiredSize         = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
-    headerFrame.size.height     = requiredSize.height;
-    
-    self.tableHeaderView.frame  = headerFrame;
-    [self.tableHeaderView layoutIfNeeded];
-    
-    // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
-    self.tableView.tableHeaderView = self.tableHeaderView;
-    [self.tableView setNeedsLayout];
-}
-
-- (void)setupTableFooterView
-{
-    NSParameterAssert(self.tableView);
-    
-    //  Fix: Hide the cellSeparators, when the table is empty
-    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
-}
-
 - (void)setupTableHandler
 {
     NSParameterAssert(self.tableView);
@@ -226,23 +200,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     UIRefreshControl *refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-}
-
-- (void)setupNavigationBar
-{
-    // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
-    // This is only required for debugging:
-    // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
-    if ([name isEqualToString:WPNotificationsBucketName]) {
-        return;
-    }
-    
-    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
 - (void)setupFiltersSegmentedControl
