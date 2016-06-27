@@ -462,36 +462,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - UITableViewDelegate Methods
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    /**
-        Note
-        This is a workaround. iOS 7 + grouped cells result in an extra top spacing.
-        Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
-     */
-
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    // Make sure no SectionFooter is rendered
-    return CGFLOAT_MIN;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    // Make sure no SectionHeader is rendered
-    return nil;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    // Make sure no SectionFooter is rendered
-    return nil;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return NotificationSectionCount;
