@@ -653,22 +653,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-#pragma mark - UISegmentedControl Methods
-
-- (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
-{
-    [self reloadResultsController];
-    
-    // It's a long way, to the top (if you wanna rock'n roll!)
-    if (self.tableViewHandler.resultsController.fetchedObjects.count == 0) {
-        return;
-    }
-    
-    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-}
-
-
 #pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
