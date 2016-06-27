@@ -283,8 +283,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func displayModePicker() {
-        let controller              = SettingsSelectionViewController(style: .Grouped)
-        controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
+        let controller              = SettingsSelectionViewController(style: .Plain)
         controller.titles           = Filter.allFilters.map { $0.title }
         controller.values           = Filter.allFilters.map { $0.rawValue }
         controller.currentValue     = filter.rawValue
@@ -297,8 +296,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
 
-        let navController = UINavigationController(rootViewController: controller)
-        presentViewController(navController, animated: true, completion: nil)
+        ForcePopoverPresentationPopoverControllerDelegate.configurePresentationControllerForViewController(controller,
+                                                                                                           presentingFromView: titleButton)
+
+        presentViewController(controller, animated: true, completion: nil)
     }
 
 
