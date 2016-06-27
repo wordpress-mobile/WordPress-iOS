@@ -4,6 +4,6 @@
 
 @interface NSObject (Helpers)
 
-+ (NSString *)classNameWithoutNamespaces;
++ (nonnull NSString *)classNameWithoutNamespaces;
 
 @end
