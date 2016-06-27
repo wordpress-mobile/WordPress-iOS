@@ -1,10 +1,10 @@
 import Foundation
+import WordPress_AppbotX
 import WordPressShared
 
 
 extension NotificationsViewController
 {
-
     // MARK: - Setup Helpers
 
     func setupNavigationBar() {
@@ -15,11 +15,13 @@ extension NotificationsViewController
         // If we're sync'ing against a custom bucket, we should let the user know about it!
         let simperium = WordPressAppDelegate.sharedInstance().simperium
         let bucketName = "\(Notification.classNameWithoutNamespaces())"
-        if simperium.bucketOverrides[bucketName] == WPNotificationsBucketName {
+        let unwrappedOverrideName = simperium.bucketOverrides[bucketName] as? String
+
+        guard let overrideName = unwrappedOverrideName where overrideName != WPNotificationsBucketName else {
             return
         }
 
-        title = "Notifications from [\(name)]"
+        title = "Notifications from [\(overrideName)]"
     }
 
     func setupConstraints() {
@@ -65,11 +67,27 @@ extension NotificationsViewController
     }
 
     func setupTableFooterView() {
-        precondition(tableView != nil)
-
         //  Fix: Hide the cellSeparators, when the table is empty
-        let footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame
+        let footerFrame = UIDevice.isPad() ? CGRectZero : WPTableFooterPadFrame
         tableView.tableFooterView = UIView(frame: footerFrame)
     }
 
+    func setupTableHandler() {
+        let handler = WPTableViewHandler(tableView: tableView)
+        handler.cacheRowHeights = true
+        handler.delegate = self as? WPTableViewHandlerDelegate
+        tableViewHandler = handler
+    }
+
+    func setupRatingsView() {
+        precondition(ratingsView != nil)
+
+        let ratingsFont = WPFontManager.systemRegularFontOfSize(CGFloat(15.0))
+
+        ratingsView.label.font = ratingsFont
+        ratingsView.leftButton.titleLabel?.font = ratingsFont
+        ratingsView.rightButton.titleLabel?.font = ratingsFont
+        ratingsView.delegate = self as? ABXPromptViewDelegate
+        ratingsView.alpha = WPAlphaZero
+    }
 }
