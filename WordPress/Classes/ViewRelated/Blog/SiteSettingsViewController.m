@@ -130,7 +130,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
     if (self.isCancellable) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancel:)];
     }
 
     [self refreshData];
@@ -997,14 +997,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (IBAction)cancel:(id)sender
 {
-    if (self.isCancellable) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-
 
 #pragma mark - Discussion
 
