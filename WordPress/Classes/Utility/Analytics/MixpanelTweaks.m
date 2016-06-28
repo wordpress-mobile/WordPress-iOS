@@ -1,5 +1,5 @@
 #import "MixpanelTweaks.h"
-#import <Mixpanel/MPTweakInline.h>
+#import "Mixpanel/MPTweakInline.h"
 
 @implementation MixpanelTweaks
 
