@@ -13,11 +13,16 @@ import Mixpanel
 
     // MARK: - AB test related methods
 
-    ///
+
+    /// Loads the mixpanel experiments (if necessary) and shows a variant of the sign in flow.
+    /// A call is made to join mixpanel experiements, passing a callback to show
+    /// the relevant sign in variant. To compensate for latency, a brief timer is
+    /// scheduled to do the same task.  Regardless of whether the timer or the
+    /// callback is performed first the second call will be ignored by design.
     ///
     class func loadABTestThenShowSigninController() {
-
         guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            assertionFailure("Oh where oh where could my rootviewcontroller have gone?")
             return
         }
 
@@ -44,15 +49,19 @@ import Mixpanel
     }
 
 
-    ///
+    /// Displays a variant of the sign in flow.
+    /// Also checks if the visible view controller is already one of our test
+    /// variants and if so returns early.
     ///
     class func showSigninControllerForABTest() {
         guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            assertionFailure(" Oh where oh where could he be?")
             return
         }
 
         // If the presented controller is nil, or not a nux nav controller something isn't right so just bail.
         guard let navController = rootController.presentedViewController as? NUXNavigationController  else {
+            assertionFailure("It would be very strange for the presented controller to *not* be our desired nav controller.")
             return
         }
 
@@ -70,9 +79,9 @@ import Mixpanel
 
         var controller: UIViewController
         if useNewSigninFlow() {
-            controller = createControllerForNewSigninFlow(false)
+            controller = createControllerForNewSigninFlow(showsEditor: false)
         } else {
-            controller = createControllerForOldSigninFlow(false)
+            controller = createControllerForOldSigninFlow(showsEditor: false)
         }
 
         navController.setViewControllers([controller], animated: false)
@@ -87,7 +96,9 @@ import Mixpanel
 
     //MARK: - Helpers for presenting the signin flow
 
-    class func createControllerForOldSigninFlow(thenEditor: Bool) -> UIViewController {
+
+    // Convenience factory for the old LoginViewController
+    class func createControllerForOldSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
@@ -104,7 +115,8 @@ import Mixpanel
     }
 
 
-    class func createControllerForNewSigninFlow(thenEditor: Bool) -> UIViewController {
+    // Convenience factory for the new signin flow's first vc
+    class func createControllerForNewSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
         let controller = SigninEmailViewController.controller()
         controller.dismissBlock = {(cancelled) in
             // Show the editor if requested, and we weren't cancelled.
@@ -120,12 +132,12 @@ import Mixpanel
     // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         if useNewSigninFlow() {
-            let controller = createControllerForNewSigninFlow(thenEditor)
+            let controller = createControllerForNewSigninFlow(showsEditor: thenEditor)
             let navController = NUXNavigationController(rootViewController: controller)
             presenter.presentViewController(navController, animated: animated, completion: nil)
 
         } else {
-            let controller = createControllerForOldSigninFlow(thenEditor)
+            let controller = createControllerForOldSigninFlow(showsEditor: thenEditor)
             let navController = RotationAwareNavigationViewController(rootViewController: controller)
             navController.navigationBar.translucent = false
             presenter.presentViewController(navController, animated: animated, completion: nil)
