@@ -507,12 +507,10 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (nullable NSNumber *)siteID
 {
-    if (self.account)
-    {
+    if (self.account) {
         return self.dotComID;
     }
-    else if (self.jetpackAccount && self.jetpack.siteID)
-    {
+    else if (self.jetpackAccount && self.jetpack.siteID) {
         return self.jetpack.siteID;
     }
     return nil;
