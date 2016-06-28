@@ -65,10 +65,25 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 {
     NSURL *url = [NSURL URLWithString:AppReviewPromptDisabledUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error || data == nil) {
+            // Let's be optimistic and turn off throttling by default if this call doesn't work
+            [self resetReviewPromptDisabledStatus];
+            if (failure) {
+                failure();
+            }
+            return;
+        }
+        id responseObject = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
+        if (responseObject == nil || ![responseObject isKindOfClass:[NSDictionary class]]) {
+            // Let's be optimistic and turn off throttling by default if this call doesn't work
+            [self resetReviewPromptDisabledStatus];
+            if (failure) {
+                failure();
+            }
+            return;
+        }
         NSDictionary *responseDictionary = (NSDictionary *)responseObject;
         AppRatingUtility *appRatingUtility = [AppRatingUtility sharedInstance];
         appRatingUtility.allPromptingDisabled = [responseDictionary[@"all-disabled"] boolValue];
@@ -88,16 +103,9 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // Let's be optimistic and turn off throttling by default if this call doesn't work
-        [self resetReviewPromptDisabledStatus];
-        
-        if (failure) {
-            failure();
-        }
     }];
 
-    [operation start];
+    [task resume];
 }
 
 

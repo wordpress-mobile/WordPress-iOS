@@ -254,6 +254,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             service.loadFollowersPage(nextRequestOffset, success: success)
         case .Users:
             service.loadUsersPage(nextRequestOffset, success: success)
+        case .Viewers:
+            service.loadViewersPage(nextRequestOffset, success: success)
         }
     }
 
@@ -283,10 +285,16 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     }
 
     private func displayModePicker() {
+        guard let blog = blog else {
+            fatalError()
+        }
+
+        let filters                 = filtersAvailableForBlog(blog)
+
         let controller              = SettingsSelectionViewController(style: .Grouped)
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
-        controller.titles           = Filter.allFilters.map { $0.title }
-        controller.values           = Filter.allFilters.map { $0.rawValue }
+        controller.titles           = filters.map { $0.title }
+        controller.values           = filters.map { $0.rawValue }
         controller.currentValue     = filter.rawValue
         controller.onItemSelected   = { [weak self] selectedValue in
             guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
@@ -299,6 +307,15 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let navController = UINavigationController(rootViewController: controller)
         presentViewController(navController, animated: true, completion: nil)
+    }
+
+    private func filtersAvailableForBlog(blog: Blog) -> [Filter] {
+        var available: [Filter] = [.Users, .Followers]
+        if blog.siteVisibility == .Private {
+            available.append(.Viewers)
+        }
+
+        return available
     }
 
 
@@ -345,8 +362,9 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     // MARK: - Private Enums
 
     private enum Filter : String {
-        case Users      = "team"
+        case Users      = "users"
         case Followers  = "followers"
+        case Viewers    = "viewers"
 
         var title: String {
             switch self {
@@ -354,6 +372,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
                 return NSLocalizedString("Users", comment: "Blog Users")
             case .Followers:
                 return NSLocalizedString("Followers", comment: "Blog Followers")
+            case .Viewers:
+                return NSLocalizedString("Viewers", comment: "Blog Viewers")
             }
         }
 
@@ -363,10 +383,10 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
                 return .User
             case .Followers:
                 return .Follower
+            case .Viewers:
+                return .Viewer
             }
         }
-
-        static let allFilters = [Filter.Users, .Followers]
     }
 
     private enum RestorationKeys {
