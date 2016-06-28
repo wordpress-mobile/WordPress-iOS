@@ -43,7 +43,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
+                users = response["users"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(users, siteID: siteID, type: User.self) else
             {
                 failure(Error.DecodeError)
                 return
@@ -85,7 +86,50 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
+                followers = response["users"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(followers, siteID: siteID, type: Follower.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(followers: people, hasMore: hasMore)
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+    /// Retrieves the collection of Viewers associated to a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///     - count: The first N followers to be skipped in the returned array.
+    ///     - size: Number of objects to retrieve.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    /// - Returns: An array of Followers.
+    ///
+    func getViewers(siteID: Int,
+                    offset: Int = 0,
+                    count: Int,
+                    success: ((followers: [Viewer], hasMore: Bool) -> Void),
+                    failure: ErrorType -> ())
+    {
+        let endpoint = "sites/\(siteID)/viewers"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let pageNumber = (offset / count + 1)
+        let parameters: [String: AnyObject] = [
+            "number"    : count,
+            "page"      : pageNumber
+        ]
+
+        wordPressComRestApi.GET(path, parameters: parameters, success: { responseObject, httpResponse in
+            guard let response = responseObject as? [String: AnyObject],
+                viewers = response["viewers"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(viewers, siteID: siteID, type: Viewer.self) else
             {
                 failure(Error.DecodeError)
                 return
@@ -221,7 +265,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees"  : usernameOrEmail,
-            "role"      : role.rawValue
+            "role"      : role.remoteValue
         ]
 
         wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -265,7 +309,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees"  : usernameOrEmail,
-            "role"      : role.rawValue,
+            "role"      : role.remoteValue,
             "message"   : message
         ]
 
@@ -295,21 +339,17 @@ private extension PeopleRemote {
     /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
-    ///     - response: Raw backend dictionary
+    ///     - response: Raw array of entity dictionaries
     ///     - siteID: the ID of the site associated
     ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse<T : Person>(response: [String: AnyObject],
+    func peopleFromResponse<T : Person>(rawPeople: [[String: AnyObject]],
                                         siteID: Int,
                                         type: T.Type) throws -> [T]
     {
-        guard let users = response["users"] as? [[String: AnyObject]] else {
-            throw Error.DecodeError
-        }
-
-        let people = try users.flatMap { (user) -> T? in
+        let people = try rawPeople.flatMap { (user) -> T? in
             return try personFromResponse(user, siteID: siteID, type: type)
         }
 
