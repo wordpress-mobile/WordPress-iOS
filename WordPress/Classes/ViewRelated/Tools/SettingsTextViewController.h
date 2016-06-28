@@ -4,6 +4,7 @@
 // Typedef's
 typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesText,
+    SettingsTextModesLowerCaseText,
     SettingsTextModesEmail,
     SettingsTextModesPassword
 };
