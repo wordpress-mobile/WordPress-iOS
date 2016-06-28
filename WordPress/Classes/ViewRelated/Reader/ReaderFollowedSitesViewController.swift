@@ -128,13 +128,12 @@ class ReaderFollowedSitesViewController: UIViewController
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
             self?.isSyncing = false
-
-            }) { [weak self] (error) in
-                DDLogSwift.logError("Could not sync sites: \(error)")
-                self?.configureNoResultsView()
-                self?.refreshControl.endRefreshing()
-                self?.isSyncing = false
-        }
+        }, failure: { [weak self] (error) in
+            DDLogSwift.logError("Could not sync sites: \(error)")
+            self?.configureNoResultsView()
+            self?.refreshControl.endRefreshing()
+            self?.isSyncing = false
+        })
     }
 
 
@@ -158,26 +157,19 @@ class ReaderFollowedSitesViewController: UIViewController
         service.toggleFollowingForSite(site, success: { [weak self] in
             self?.syncSites()
             self?.refreshFollowedPosts()
-
-            }) { (error) in
-                DDLogSwift.logError("Could not unfollow site: \(error)")
-                let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
-                let description = error.localizedDescription
-                let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-                let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
-                alert.addCancelActionWithTitle(buttonTitle)
-                alert.presentFromRootViewController()
-        }
+        }, failure: { [weak self] (error) in
+            DDLogSwift.logError("Could not unfollow site: \(error)")
+            let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
+            let description = error.localizedDescription
+            self?.promptWithTitle(title, message: description)
+        })
     }
 
 
     func followSite(site: String) {
         guard let url = urlFromString(site) else {
             let title = NSLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
-            let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-            let alert = UIAlertController(title: title, message: "", preferredStyle: .Alert)
-            alert.addCancelActionWithTitle(buttonTitle)
-            alert.presentFromRootViewController()
+            promptWithTitle(title, message: "")
             return
         }
 
@@ -187,15 +179,12 @@ class ReaderFollowedSitesViewController: UIViewController
             SVProgressHUD.showSuccessWithStatus(success)
             self?.syncSites()
 
-        }) { (error) in
+        }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
             let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
             let description = error.localizedDescription
-            let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-            let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
-            alert.addCancelActionWithTitle(buttonTitle)
-            alert.presentFromRootViewController()
-        }
+            self?.promptWithTitle(title, message: description)
+        })
     }
 
 
@@ -226,6 +215,14 @@ class ReaderFollowedSitesViewController: UIViewController
     func showPostListForSite(site: ReaderSiteTopic) {
         let controller = ReaderStreamViewController.controllerWithTopic(site)
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+
+    func promptWithTitle(title: String, message: String) {
+        let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
+        let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
+        alert.addCancelActionWithTitle(buttonTitle)
+        alert.presentFromRootViewController()
     }
 }
 
