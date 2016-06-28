@@ -505,6 +505,17 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [defaultAccount isEqual:self.jetpackAccount];
 }
 
+- (nullable NSNumber *)siteID
+{
+    if (self.account) {
+        return self.dotComID;
+    }
+    else if (self.jetpackAccount && self.jetpack.siteID) {
+        return self.jetpack.siteID;
+    }
+    return nil;
+}
+
 - (NSNumber *)dotComID
 {
     [self willAccessValueForKey:@"blogID"];

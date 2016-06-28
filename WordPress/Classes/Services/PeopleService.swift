@@ -68,6 +68,25 @@ struct PeopleService {
         })
     }
 
+    /// Loads a page of Viewers associated to the current blog, starting at the specified offset.
+    ///
+    /// - Parameters:
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func loadViewersPage(offset: Int = 0, count: Int = 20, success: ((retrieved: Int, shouldLoadMore: Bool) -> Void), failure: (ErrorType -> Void)? = nil) {
+        remote.getViewers(siteID, offset: offset, count: count, success: { viewers, hasMore in
+            self.mergePeople(viewers)
+            success(retrieved: viewers.count, shouldLoadMore: hasMore)
+
+        }, failure: { error in
+            DDLogSwift.logError(String(error))
+            failure?(error)
+        })
+    }
+
     /// Updates a given User with the specified role.
     ///
     /// - Parameters:
