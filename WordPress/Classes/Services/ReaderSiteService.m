@@ -83,6 +83,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteWithID:siteID success:^(){
+            [self refreshPostsForFollowedTopic];
             if (success) {
                 success();
             }
@@ -109,6 +110,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
+        [self refreshPostsForFollowedTopic];
         if (success) {
             success();
         }
@@ -143,6 +145,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteAtURL:sanitizedURL success:^(){
+            [self refreshPostsForFollowedTopic];
             if (success) {
                 success();
             }
@@ -168,12 +171,25 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
+        [self refreshPostsForFollowedTopic];
         if (success) {
             success();
         }
         [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"url":siteURL}];
     } failure:failure];
 }
+
+
+- (void)refreshPostsForFollowedTopic
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
+    if (topic) {
+        ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        [postService fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
+    }
+}
+
 
 - (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
