@@ -125,11 +125,11 @@ int ddLogLevel = DDLogLevelInfo;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
-    // TODO: Proxy this call to a handler.
-    // Show a placeholder vc.
-    // Use the callback for loaded variants but set a time out.
-    [SigninHelpers loadABTestThenShowSigninController];
-//    [self showWelcomeScreenIfNeededAnimated:NO];
+
+    [self showWelcomeScreenABTestIfNeeded];
+
+    // TODO: Restore this method when the NUX A/B test is over. - aerych, 2016-06-28
+    // [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
@@ -500,6 +500,16 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)isLoggedIn
 {
     return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
+}
+
+// Only call this method when launching the app. At any other time the signin screen
+// should be shown by calling `showWelcomeScreenIfNeededAnimated:`
+- (void)showWelcomeScreenABTestIfNeeded
+{
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+        return;
+    }
+    [SigninHelpers loadABTestThenShowSigninController];
 }
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
