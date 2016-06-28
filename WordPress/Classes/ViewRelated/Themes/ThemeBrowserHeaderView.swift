@@ -20,10 +20,9 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
     @IBOutlet weak var customizeButton: UIButton!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var supportButton: UIButton!
-    @IBOutlet var searchBarBorders: [UIView]!
-    @IBOutlet weak var searchBar: UIView!
-    @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var searchTypeButton: UIButton!
+    @IBOutlet var filterBarBorders: [UIView]!
+    @IBOutlet weak var filterBar: UIView!
+    @IBOutlet weak var filterTypeButton: UIButton!
 
     // MARK: - Properties
 
@@ -32,9 +31,9 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
             currentThemeName.text = theme?.name
         }
     }
-    private var searchType: ThemeType = .All {
+    private var filterType: ThemeType = .All {
         didSet {
-            Styles.styleSearchTypeButton(searchTypeButton, title: searchType.title)
+            Styles.styleSearchTypeButton(filterTypeButton, title: filterType.title)
         }
     }
     public weak var presenter: ThemePresenter? {
@@ -43,9 +42,9 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
                 theme = presenter.currentTheme()
 
                 if ThemeType.mayPurchase {
-                    searchType = presenter.searchType
+                    filterType = presenter.filterType
                 } else {
-                    searchTypeButton.hidden = true
+                    filterBar.hidden = true
                 }
             }
         }
@@ -56,7 +55,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
     override public func awakeFromNib() {
         super.awakeFromNib()
 
-        let buttons = [customizeButton, detailsButton, supportButton, searchButton, searchTypeButton]
+        let buttons = [customizeButton, detailsButton, supportButton, filterTypeButton]
         buttons.forEach { $0.exclusiveTouch = true }
 
         applyStyles()
@@ -76,8 +75,8 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
         currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0) }
 
-        searchBar.backgroundColor = Styles.searchBarBackgroundColor
-        searchBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
+        filterBar.backgroundColor = Styles.searchBarBackgroundColor
+        filterBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
     }
 
     private func setTextForLabels() {
@@ -107,13 +106,13 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
         presenter?.presentSupportForTheme(theme)
     }
 
-    private func updateSearchType(type: ThemeType) {
-        guard type != self.searchType else {
+    private func updateFilterType(type: ThemeType) {
+        guard type != filterType else {
             return
         }
 
-        self.searchType = type
-        self.presenter?.searchType = type
+        filterType = type
+        presenter?.filterType = type
     }
 
     @IBAction func didTapSearchTypeButton(sender: UIButton) {
@@ -124,14 +123,14 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
             alertController.addActionWithTitle(type.title,
                 style: .Default,
                 handler: { [weak self] (action: UIAlertAction) in
-                    self?.updateSearchType(type)
+                    self?.updateFilterType(type)
             })
         }
 
         alertController.modalPresentationStyle = .Popover
         if let popover = alertController.popoverPresentationController {
-            popover.sourceView = searchTypeButton
-            popover.sourceRect = searchTypeButton.bounds
+            popover.sourceView = filterTypeButton
+            popover.sourceRect = filterTypeButton.bounds
             popover.permittedArrowDirections = .Any
             popover.canOverlapSourceViewRect = true
         }

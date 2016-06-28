@@ -18,10 +18,12 @@
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
+#import <Reachability/Reachability.h>
 
 @import Gridicons;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
+static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -104,6 +106,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray *tableSections;
+@property (nonatomic, strong) WPStatsService *statsService;
+@property (nonatomic, strong) BlogService *blogService;
 
 @end
 
@@ -166,11 +170,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog completionHandler:^() {
+    self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [self.blogService syncBlog:_blog completionHandler:^() {
         [weakSelf configureTableViewData];
         [weakSelf.tableView reloadData];
     }];
@@ -187,6 +192,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -199,6 +205,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
     [self.tableView reloadData];
+    [self preloadStats];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -262,6 +269,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
     row.accessoryView = accessoryView;
     [rows addObject:row];
+
+    if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+                                                         identifier:BlogDetailsPlanCellIdentifier
+                                                              image:[Gridicon iconOfType:GridiconTypeClipboard]
+                                                           callback:^{
+                                                               [weakSelf showPlans];
+                                                           }];
+
+        row.detail = self.blog.planTitle;
+
+        [rows addObject:row];
+    }
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
@@ -494,6 +514,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Private methods
 
+- (void)preloadStats
+{
+    NSString *oauthToken = self.blog.authToken;
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
+    
+    if (isOnWifi && oauthToken) { // only preload on wifi
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
+        [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
+    }
+    
+}
+
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
@@ -520,6 +553,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPlans
+{
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
+    PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -557,6 +597,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
+    statsView.statsService = self.statsService;
     [self.navigationController pushViewController:statsView animated:YES];
 }
 

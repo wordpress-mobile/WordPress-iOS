@@ -191,9 +191,13 @@ EditImageDetailsViewControllerDelegate
     return self;
 }
 
++ (Class)supportedPostClass {
+    return [Post class];
+}
+
 - (instancetype)initWithPost:(AbstractPost *)post
 {
-    NSParameterAssert([post isKindOfClass:[Post class]]);
+    NSParameterAssert([post isKindOfClass:[self.class supportedPostClass]]);
     
     return [self initWithPost:post
                          mode:kWPPostViewControllerModePreview];
@@ -202,7 +206,7 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initWithPost:(AbstractPost *)post
                         mode:(WPPostViewControllerMode)mode
 {
-    NSParameterAssert([post isKindOfClass:[Post class]]);
+    NSParameterAssert([post isKindOfClass:[self.class supportedPostClass]]);
 
     BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
@@ -814,7 +818,7 @@ EditImageDetailsViewControllerDelegate
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
+    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -826,7 +830,7 @@ EditImageDetailsViewControllerDelegate
         return;
     }
     
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -1390,7 +1394,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)discardChanges
 {
-    NSAssert([_post isKindOfClass:[Post class]],
+    NSAssert([_post isKindOfClass:[self.class supportedPostClass]],
              @"The post should exist here.");
 
     NSManagedObjectContext* context = self.post.managedObjectContext;
@@ -2219,18 +2223,6 @@ EditImageDetailsViewControllerDelegate
 
 
 #pragma mark - Status bar management
-
-- (BOOL)prefersStatusBarHidden
-{
-    /**
-     Never hide for the iPad. 
-     Always hide on the iPhone except when user is not editing
-     */
-    if (IS_IPAD || !self.isEditing) {
-        return NO;
-    }
-    return YES;
-}
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {

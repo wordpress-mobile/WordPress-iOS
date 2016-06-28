@@ -29,7 +29,6 @@ abstract_target 'WordPress_Base' do
     pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
-    pod 'Optimizely-iOS-SDK', '~> 1.4.2'
     pod 'Reachability',	'3.2'
     pod 'ReactiveCocoa', '~> 2.4.7'
     pod 'SVProgressHUD', '~>1.1.3'
@@ -49,10 +48,9 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.9.2'
-    pod 'WordPress-iOS-Editor', '1.6.1'
-    pod 'WordPressApi', '0.4.0'
+    pod 'WordPress-iOS-Editor', '1.6.3'
     pod 'WordPressCom-Analytics-iOS', '0.1.15'
-    pod 'WordPressCom-Stats-iOS', '0.7.0'
+    pod 'WordPressCom-Stats-iOS', '0.7.3'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -71,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.0'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.3'
   end
 
 end
