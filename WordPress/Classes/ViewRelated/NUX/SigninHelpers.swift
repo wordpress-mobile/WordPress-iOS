@@ -21,6 +21,12 @@ import Mixpanel
             return
         }
 
+        if useNewSigninFlow() {
+            // We know we're using a varient so proceeed without wait.
+            SigninHelpers.showSigninFromPresenter(rootController, animated: false, thenEditor: false)
+            return
+        }
+
         // Keep showing the launch screen until we know which signin varient we want.
         let storyboard = UIStoryboard(name: "Launch Screen", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateInitialViewController()!
@@ -46,12 +52,12 @@ import Mixpanel
         }
 
         // If the presented controller is nil, or not a nux nav controller something isn't right so just bail.
-        guard let presentedController = rootController.presentedViewController as? NUXNavigationController  else {
+        guard let navController = rootController.presentedViewController as? NUXNavigationController  else {
             return
         }
 
         // If we're already showing one of the signin screens just bail.
-        if let topViewController = presentedController.topViewController {
+        if let topViewController = navController.topViewController {
             if topViewController.isKindOfClass(NUXAbstractViewController.self) {
                 return
             }
@@ -60,9 +66,16 @@ import Mixpanel
             }
         }
 
-        // Dismiss the temp launch vc and show the sign in flow.
-        rootController.dismissViewControllerAnimated(false, completion: nil)
-        SigninHelpers.showSigninFromPresenter(rootController, animated: false, thenEditor: false)
+        // Repurpose the already presented nav controller to show our nux varient.
+
+        var controller: UIViewController
+        if useNewSigninFlow() {
+            controller = createControllerForNewSigninFlow(false)
+        } else {
+            controller = createControllerForOldSigninFlow(false)
+        }
+
+        navController.setViewControllers([controller], animated: false)
     }
 
 
@@ -74,36 +87,45 @@ import Mixpanel
 
     //MARK: - Helpers for presenting the signin flow
 
+    class func createControllerForOldSigninFlow(thenEditor: Bool) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        let blogService = BlogService(managedObjectContext: context)
+
+        let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
+
+        let controller = LoginViewController()
+        controller.showEditorAfterAddingSites = thenEditor
+        controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
+        controller.dismissBlock = { [weak controller] (_) in
+            controller?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        return controller
+    }
+
+
+    class func createControllerForNewSigninFlow(thenEditor: Bool) -> UIViewController {
+        let controller = SigninEmailViewController.controller()
+        controller.dismissBlock = {(cancelled) in
+            // Show the editor if requested, and we weren't cancelled.
+            if !cancelled && thenEditor {
+                WPTabBarController.sharedInstance().showPostTab()
+                return
+            }
+        }
+        return controller
+    }
+
 
     // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         if useNewSigninFlow() {
-            let controller = SigninEmailViewController.controller()
-            controller.dismissBlock = {(cancelled) in
-                // Show the editor if requested, and we weren't cancelled.
-                if !cancelled && thenEditor {
-                    WPTabBarController.sharedInstance().showPostTab()
-                    return
-                }
-            }
-
+            let controller = createControllerForNewSigninFlow(thenEditor)
             let navController = NUXNavigationController(rootViewController: controller)
             presenter.presentViewController(navController, animated: animated, completion: nil)
 
         } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let accountService = AccountService(managedObjectContext: context)
-            let blogService = BlogService(managedObjectContext: context)
-
-            let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
-
-            let controller = LoginViewController()
-            controller.showEditorAfterAddingSites = thenEditor
-            controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
-            controller.dismissBlock = { (_) in
-                presenter.dismissViewControllerAnimated(true, completion: nil)
-            }
-
+            let controller = createControllerForOldSigninFlow(thenEditor)
             let navController = RotationAwareNavigationViewController(rootViewController: controller)
             navController.navigationBar.translucent = false
             presenter.presentViewController(navController, animated: animated, completion: nil)
