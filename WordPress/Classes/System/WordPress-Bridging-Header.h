@@ -66,7 +66,6 @@
 #import "PostCardTableViewCell.h"
 #import "PostCategory.h"
 #import "PostContentProvider.h"
-#import "PostListFilter.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 #import "PostPreviewViewController.h"
