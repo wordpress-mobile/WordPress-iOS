@@ -1,5 +1,4 @@
 import Foundation
-import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
@@ -796,7 +795,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let post = apost.hasRevision() ? apost.revision : apost
 
-        let controller = PostPreviewViewController(post: post, shouldHideStatusBar: false)
+        let controller = PostPreviewViewController(post: post)
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
