@@ -48,14 +48,16 @@ enum Role: String, Comparable, Equatable, CustomStringConvertible {
     case Contributor    = "contributor"
     case Subscriber     = "subscriber"
     case Follower       = "follower"
+    case Viewer         = "viewer"
     case Unsupported    = "unsupported"
 }
 
 // MARK: - Specifies all of the possible Person Types that might exist.
 //
 enum PersonKind: Int {
-    case User           = 0
-    case Follower       = 1
+    case User       = 0
+    case Follower   = 1
+    case Viewer     = 2
 }
 
 // MARK: - Defines a Blog's User
@@ -88,6 +90,22 @@ struct Follower: Person {
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
     static let kind = PersonKind.Follower
+}
+
+// MARK: - Defines a Blog's Viewer
+//
+struct Viewer: Person {
+    let ID: Int
+    let username: String
+    let firstName: String?
+    let lastName: String?
+    let displayName: String
+    let role: Role
+    let siteID: Int
+    let linkedUserID: Int
+    let avatarURL: NSURL?
+    let isSuperAdmin: Bool
+    static let kind = PersonKind.Viewer
 }
 
 // MARK: - Extensions
@@ -132,6 +150,21 @@ extension Follower {
     }
 }
 
+extension Viewer {
+    init(managedPerson: ManagedPerson) {
+        ID = Int(managedPerson.userID)
+        username = managedPerson.username
+        firstName = managedPerson.firstName
+        lastName = managedPerson.lastName
+        displayName = managedPerson.displayName
+        role = Role.Viewer
+        siteID = Int(managedPerson.siteID)
+        linkedUserID = Int(managedPerson.linkedUserID)
+        avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        isSuperAdmin = managedPerson.isSuperAdmin
+    }
+}
+
 extension Role {
     init(string: String) {
         guard let parsedRole = Role(rawValue: string) else {
@@ -162,10 +195,26 @@ extension Role {
         return localized
     }
 
+    var remoteValue: String {
+        // Note: Incoming Hack
+        // ====
+        //
+        // Apologies about this. When a site is Private, the *Viewer* doesn't really exist, but instead, 
+        // it's treated, backend side, as a follower.
+        //
+        switch self {
+        case .Viewer:
+            return Role.Follower.rawValue
+        default:
+            return rawValue
+        }
+    }
+
 
     // MARK: - Static Properties
     //
-    static let inviteRoles = [Role.Follower, .Admin, .Editor, .Author, .Contributor]
+    static let inviteRoles: [Role] = [.Follower, .Admin, .Editor, .Author, .Contributor]
+    static let inviteRolesForPrivateSite: [Role] = [.Viewer, .Follower, .Admin, .Editor, .Author, .Contributor]
 
     // MARK: - Private Properties
     //
@@ -177,6 +226,7 @@ extension Role {
         Contributor : WPStyleGuide.People.contributorColor,
         Subscriber  : WPStyleGuide.People.contributorColor,
         Follower    : WPStyleGuide.People.contributorColor,
+        Viewer      : WPStyleGuide.People.contributorColor,
         Unsupported : WPStyleGuide.People.contributorColor
     ]
 
@@ -188,6 +238,7 @@ extension Role {
         Contributor : NSLocalizedString("Contributor", comment: "User role badge"),
         Subscriber  : NSLocalizedString("Subscriber", comment: "User role badge"),
         Follower    : NSLocalizedString("Follower", comment: "User role badge"),
+        Viewer      : NSLocalizedString("Viewer", comment: "User role badge"),
         Unsupported : NSLocalizedString("Unsupported", comment: "User role badge")
     ]
 }
