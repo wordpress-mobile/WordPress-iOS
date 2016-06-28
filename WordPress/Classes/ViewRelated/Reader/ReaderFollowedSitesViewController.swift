@@ -87,7 +87,7 @@ class ReaderFollowedSitesViewController: UIViewController
 
 
     func configureSearchBar() {
-        let placeholderText = NSLocalizedString("Enter a URL or a tag to follow", comment: "Placeholder text prompting the user to type the name of the URL or tag they would like to follow.")
+        let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL or tag they would like to follow.")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
