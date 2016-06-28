@@ -94,7 +94,7 @@ class FlingableViewHandler: NSObject {
     private func makeAttachmentBehaviorForRecognizer(recognizer: UIGestureRecognizer, inView view: UIView) -> UIAttachmentBehavior {
         let location = recognizer.locationInView(view)
 
-        let (centerX, centerY) = (view.bounds.width / 2.0, view.bounds.height / 2.0)
+        let (centerX, centerY) = (round(view.bounds.width / 2.0), round(view.bounds.height / 2.0))
         let offset = UIOffset(horizontal: location.x - centerX, vertical: location.y - centerY)
 
         let anchor = recognizer.locationInView(animator.referenceView)
