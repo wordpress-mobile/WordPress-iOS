@@ -198,6 +198,12 @@ import WordPressComAnalytics
         }
     }
 
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        refreshTableHeaderIfNeeded()
+    }
+
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -492,6 +498,17 @@ import WordPressComAnalytics
 
         tableView.tableHeaderView = header as? UIView
         refreshTableViewHeaderLayout()
+    }
+
+
+    // Refresh the header of a site topic when returning in case the
+    // topic's following status changed.
+    func refreshTableHeaderIfNeeded() {
+        if let siteTopic = readerTopic as? ReaderSiteTopic {
+            if let header = tableView.tableHeaderView as? ReaderStreamHeader {
+                header.configureHeader(siteTopic)
+            }
+        }
     }
 
 
