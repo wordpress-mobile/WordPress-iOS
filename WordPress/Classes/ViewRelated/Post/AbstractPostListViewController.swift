@@ -1,5 +1,4 @@
 import Foundation
-import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc

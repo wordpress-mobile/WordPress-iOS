@@ -22,8 +22,6 @@
 #import "RemotePostType.h"
 #import "PostType.h"
 
-#import <WordPressApi/WordPressApi.h>
-
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
