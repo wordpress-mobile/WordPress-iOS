@@ -12,7 +12,7 @@ class ManageCellAccessoryView : UIView
     var onManageTapped: ManageCellAccessoryCallback?
 
 
-    class func creaateFromNib() -> ManageCellAccessoryView {
+    class func createFromNib() -> ManageCellAccessoryView {
         return UINib(nibName: "ManageCellAccessoryView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ManageCellAccessoryView
     }
 
