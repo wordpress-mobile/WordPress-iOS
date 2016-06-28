@@ -267,7 +267,7 @@ import WordPressShared
         cell.imageView?.image = menuItem.icon
 
         if let topic = menuItem.topic where ReaderHelpers.topicIsFollowing(topic) {
-            let accessoryView = ManageCellAccessoryView.creaateFromNib()
+            let accessoryView = ManageCellAccessoryView.createFromNib()
             accessoryView.onManageTapped = { [weak self] in
                 self?.showFollowedSites()
             }
