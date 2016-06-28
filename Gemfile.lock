@@ -49,7 +49,7 @@ GEM
     molinillo (0.4.5)
     nap (1.1.0)
     netrc (0.7.8)
-    rake (0.9.6)
+    rake (11.2.2)
     rouge (1.11.1)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
