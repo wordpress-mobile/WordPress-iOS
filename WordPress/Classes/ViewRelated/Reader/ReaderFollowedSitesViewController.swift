@@ -9,7 +9,7 @@ class ReaderFollowedSitesViewController: UIViewController
     @IBOutlet var searchBar: UISearchBar!
 
     private var refreshControl: UIRefreshControl!
-    private var isSyncing: Bool = false
+    private var isSyncing = false
     private var tableView: UITableView!
     private var tableViewHandler: WPTableViewHandler!
     private var tableViewController: UITableViewController!
