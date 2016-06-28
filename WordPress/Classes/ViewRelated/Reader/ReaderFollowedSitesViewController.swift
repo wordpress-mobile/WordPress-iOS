@@ -282,7 +282,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
         }
-        return nil
+        return " "
     }
 
 
@@ -316,6 +316,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView!) {
         configureNoResultsView()
+        tableViewHandler.updateTitleForSection(0)
     }
 
 }
