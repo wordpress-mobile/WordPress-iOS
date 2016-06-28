@@ -23,6 +23,8 @@ class ManagedPerson: NSManagedObject {
         switch Int(kind) {
         case PersonKind.User.rawValue:
             return User(managedPerson: self)
+        case PersonKind.Viewer.rawValue:
+            return Viewer(managedPerson: self)
         default:
             return Follower(managedPerson: self)
         }
