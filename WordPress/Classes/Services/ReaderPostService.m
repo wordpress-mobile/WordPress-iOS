@@ -269,6 +269,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
+    // If this post belongs to a site topic, let the topic service do the work.
+    if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
+        ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
+        return;
+    }
+
     // Keep previous values in case of failure
     BOOL oldValue = readerPost.isFollowing;
     BOOL follow = !oldValue;
