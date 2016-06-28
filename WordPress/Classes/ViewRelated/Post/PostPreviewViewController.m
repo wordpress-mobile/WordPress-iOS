@@ -16,7 +16,6 @@
 @property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
-@property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 
 @end
@@ -32,13 +31,12 @@
     self.webView.delegate = nil;
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
+- (instancetype)initWithPost:(AbstractPost *)aPost
 {
     self = [super init];
     if (self) {
         self.apost = aPost;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
-        self.shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -352,14 +350,6 @@
 {
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
-}
-
-#pragma mark - Status bar management
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Do not hide status bar on iPad
-    return (self.shouldHideStatusBar && !IS_IPAD);
 }
 
 @end
