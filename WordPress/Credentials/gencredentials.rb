@@ -152,15 +152,7 @@ print <<-EOF
 EOF
 end
 
-def print_optimizely_api_key(optimizely_api_key)
-print <<-EOF
-+ (NSString *)optimizelyAPIKey {
-    return @"#{optimizely_api_key}";
-}
-EOF
-end
-
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key, optimizely_api_key)
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -179,7 +171,6 @@ EOF
   print_debugging_key(debugging_key)
   print_lookback_token(lookback_token)
   print_appbotx_api_key(appbotx_api_key)
-  print_optimizely_api_key(optimizely_api_key)
   printf("@end\n")
 end
 
@@ -211,7 +202,6 @@ helpshift_app_id = nil
 debugging_key = nil
 lookback_token = nil
 appbotx_api_key = nil
-optimizely_api_key = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -247,8 +237,6 @@ File.open(path) do |f|
       lookback_token = v.chomp
     elsif k == "APPBOTX_API_KEY"
       appbotx_api_key = v.chomp
-    elsif k == "OPTIMIZELY_API_KEY"
-      optimizely_api_key = v.chomp
     end
   end
 end
@@ -298,10 +286,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: AppbotX API key not found"
   end
 
-  if optimizely_api_key.nil?
-    $stderr.puts "warning: Optimizely API key not found"
-  end
-
   if configuration == "Release-Internal"
     if hockeyapp.nil?
       $stderr.puts "warning: HockeyApp App Id not found"
@@ -309,4 +293,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key, optimizely_api_key)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)

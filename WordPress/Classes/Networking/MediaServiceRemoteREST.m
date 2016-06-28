@@ -1,7 +1,6 @@
 #import "MediaServiceRemoteREST.h"
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
-#import <WordPressApi/WordPressApi.h>
 #import "WordPress-Swift.h"
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
@@ -144,7 +143,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             NSError * error = nil;
             if (errorList.count > 0){
                 NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressRestApiErrorDomain code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
+                error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
             }
             if (failure) {
                 failure(error);

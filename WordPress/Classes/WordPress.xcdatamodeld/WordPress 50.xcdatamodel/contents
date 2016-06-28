@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
+        <attribute name="dateModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
@@ -49,7 +50,6 @@
         <attribute name="date_created_gmt" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <attribute name="dateModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="mt_excerpt" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -395,8 +395,8 @@
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isFollower" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="kind" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="linkedUserID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="role" attributeType="String" syncable="YES"/>
@@ -627,10 +627,10 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="645"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
@@ -655,6 +655,7 @@
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="630"/>
+        <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
@@ -662,6 +663,5 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
-        <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
     </elements>
 </model>

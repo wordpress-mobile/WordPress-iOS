@@ -60,7 +60,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
@@ -91,12 +90,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self removePostPropertiesObserver];
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
+- (instancetype)initWithPost:(AbstractPost *)aPost
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
-        _shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -836,7 +834,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     NSArray *statuses = [self.apost availableStatusesForEditing];
     NSArray *titles = [statuses wp_map:^id(NSString *status) {
-        return [BasePost titleForStatus:status];
+        return [AbstractPost titleForStatus:status];
     }];
 
     NSDictionary *statusDict = @{
@@ -1227,14 +1225,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Status bar management
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Do not hide the status bar on iPad
-    return self.shouldHideStatusBar && !IS_IPAD;
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate

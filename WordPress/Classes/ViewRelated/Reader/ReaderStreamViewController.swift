@@ -37,6 +37,7 @@ import WordPressComAnalytics
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+    private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
@@ -54,6 +55,7 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
+    private var reloadTableViewBeforeAppearing = false
 
 
     /// Used for fetching content.
@@ -187,17 +189,14 @@ import WordPressComAnalytics
     }
 
 
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
 
-        // There appears to be a scenario where this method can be called prior to
-        // the view being fully setup in viewDidLoad.
-        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
-        if didSetupView {
-            refreshTableViewHeaderLayout()
+        if reloadTableViewBeforeAppearing {
+            reloadTableViewBeforeAppearing = false
+            tableView.reloadData()
         }
     }
-
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -238,6 +237,18 @@ import WordPressComAnalytics
             if let indexPaths = tableView.indexPathsForVisibleRows {
                 tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
             }
+        }
+    }
+
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if didSetupView {
+            refreshTableViewHeaderLayout()
         }
     }
 
@@ -337,6 +348,8 @@ import WordPressComAnalytics
 
         nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: readerWindowlessCellIdentifier)
     }
 
 
@@ -1522,6 +1535,16 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if view.window == nil && UIDevice.isPad() {
+            // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
+            // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
+            // The result is the cells do not show the correct layout on the iPad.
+            // HACK: aerych, 2016-06-27
+            // Use a generic cell in this situation and reload the table view once its back in a window.
+            reloadTableViewBeforeAppearing = true
+            return tableView.dequeueReusableCellWithIdentifier(readerWindowlessCellIdentifier)!
+        }
+
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 

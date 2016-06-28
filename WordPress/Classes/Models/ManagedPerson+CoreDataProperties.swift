@@ -14,5 +14,5 @@ extension ManagedPerson {
     @NSManaged var linkedUserID: Int64
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
-    @NSManaged var isFollower: Bool
+    @NSManaged var kind: Int16
 }
