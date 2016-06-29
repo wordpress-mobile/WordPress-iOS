@@ -65,7 +65,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self configureTableViewFooter];
     [self configureTableViewHandler];
     [self configureTableViewLayoutCell];
-    
+    [self adjustTableViewInsetsIfNeeded];
+
     [self refreshAndSyncIfNeeded];
 }
 
@@ -86,6 +87,12 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self.tableViewHandler clearCachedRowHeights];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self adjustTableViewInsetsIfNeeded];
+}
 
 #pragma mark - Configuration
 
@@ -172,6 +179,19 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     self.tableViewHandler                   = tableViewHandler;
 }
 
+- (void)adjustTableViewInsetsIfNeeded
+{
+    if ([WPDeviceIdentification isiPad]) {
+        BOOL isPadFullScreen = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+        if (isPadFullScreen) {
+            UIEdgeInsets inset = self.tableView.contentInset;
+            inset.top = WPTableViewTopMargin;
+            self.tableView.contentInset = inset;
+        } else {
+            self.tableView.contentInset = UIEdgeInsetsZero;
+        }
+    }
+}
 
 #pragma mark - UITableViewDelegate Methods
 
