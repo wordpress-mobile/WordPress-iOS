@@ -321,7 +321,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     };
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if (post.isWPCom) {
+    if (!post.isExternal) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
         } else {
