@@ -19,7 +19,7 @@ abstract_target 'WordPress_Base' do
     # Third party libraries
     # ---------------------
     pod '1PasswordExtension', '1.8.1'
-    pod 'AFNetworking',	'2.6.3'
+    pod 'AFNetworking',	'3.1.0'
     pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
@@ -50,7 +50,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '~> 0.9.2'
     pod 'WordPress-iOS-Editor', '1.6.3'
     pod 'WordPressCom-Analytics-iOS', '0.1.15'
-    pod 'WordPressCom-Stats-iOS', '0.7.3'
+    pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :commit => '072161d72fb626f53ca1d0fa7191ee9bc44b1633'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.3'
+    pod 'WordPressCom-Stats-iOS/Services', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :commit => '072161d72fb626f53ca1d0fa7191ee9bc44b1633'
   end
 
 end

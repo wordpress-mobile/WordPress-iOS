@@ -78,8 +78,8 @@ public final class WordPressComOAuthClient: NSObject {
             parameters["wpcom_otp"] = multifactorCode
         }
 
-        sessionManager.POST("token", parameters: parameters, success: { (task, responseObject) in
-            DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject))")
+        sessionManager.POST("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
+            DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject ?? "nil"))")
             guard let responseDictionary = responseObject as? [String:AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
                     success(authToken: nil)
@@ -115,7 +115,7 @@ public final class WordPressComOAuthClient: NSObject {
             "wpcom_resend_otp": true
         ]
 
-        sessionManager.POST("token", parameters:parameters, success:{ (task, responseObject) in
+        sessionManager.POST("token", parameters:parameters, progress:nil, success:{ (task, responseObject) in
             success()
             }, failure: { (task, error) in
                 failure(error: error)
