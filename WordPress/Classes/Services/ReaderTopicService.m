@@ -456,6 +456,29 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 }
 
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL
+{
+    ReaderSiteTopic *topic = [self findSiteTopicWithFeedURL:feedURL];
+    if (!topic) {
+        return;
+    }
+    topic.following = NO;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    ReaderSiteTopic *topic = [self findSiteTopicWithSiteID:siteID];
+    if (!topic) {
+        return;
+    }
+    topic.following = NO;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+
 - (ReaderAbstractTopic *)topicForFollowedSites
 {
     NSError *error;
@@ -854,5 +877,18 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderSiteTopic *)[results firstObject];
 }
 
+- (ReaderSiteTopic *)findSiteTopicWithFeedURL:(NSString *)feedURL
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"feedURL = %@", feedURL];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSiteTopic *)[results firstObject];
+}
 
 @end

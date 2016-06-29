@@ -132,6 +132,22 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+ Mark a site topic as unfollowed in core data only. Should be called after unfollowing
+ a post to ensure that any existing site topics reflect the correct following status.
+
+ @param feedURL The feedURL of the site topic.
+ */
+- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL;
+
+/**
+ Mark a site topic as unfollowed in core data only. Should be called after unfollowing
+ a post to ensure that any existing site topics reflect the correct following status.
+
+ @param siteID the siteID of the site topic.
+ */
+- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
+
+/**
 
  Fetch the topic for 'sites I follow' if it exists.
 
