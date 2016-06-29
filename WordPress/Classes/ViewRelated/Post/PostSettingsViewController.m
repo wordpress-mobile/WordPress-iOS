@@ -1027,7 +1027,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
-        CGSize imageSize = CGSizeMake(width, height);
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize imageSize = CGSizeMake(width * scale, height * scale);
         
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
