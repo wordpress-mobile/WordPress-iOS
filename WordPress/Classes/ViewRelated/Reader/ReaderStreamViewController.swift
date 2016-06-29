@@ -513,11 +513,11 @@ import WordPressComAnalytics
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     func refreshTableHeaderIfNeeded() {
-        if let siteTopic = readerTopic as? ReaderSiteTopic {
-            if let header = tableView.tableHeaderView as? ReaderStreamHeader {
-                header.configureHeader(siteTopic)
-            }
+        guard let siteTopic = readerTopic as? ReaderSiteTopic,
+            header = tableView.tableHeaderView as? ReaderStreamHeader else {
+            return
         }
+        header.configureHeader(siteTopic)
     }
 
 
