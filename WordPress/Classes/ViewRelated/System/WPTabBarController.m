@@ -299,6 +299,11 @@ static NSInteger const WPTabBarIconOffset = 5;
     [self showPostTabWithOptions:nil];
 }
 
+- (void)showMeTab
+{
+    [self showTabForIndex:WPTabMe];
+}
+
 - (void)showNotificationsTab
 {
     [self showTabForIndex:WPTabNotifications];
