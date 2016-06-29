@@ -137,7 +137,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }
 
     // Define success block
-    void (^successBlock)(AFHTTPRequestOperation *operation, id responseObject) = ^void(id responseObject, NSHTTPURLResponse *httpResponse) {
+    void (^successBlock)(id responseObject, NSHTTPURLResponse *response) = ^void(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
             return;
         }

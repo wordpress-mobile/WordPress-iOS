@@ -96,11 +96,18 @@ public class WordPressComRestApi: NSObject
                      failure: FailureReponseBlock) -> NSProgress?
     {
         let URLString = appendLocaleIfNeeded(URLString)
-        let progress = NSProgress()
-        progress.totalUnitCount = 1
+        let progress = NSProgress(totalUnitCount: 1)
+        let progressUpdater = {(taskProgress:NSProgress) in
+            progress.totalUnitCount = taskProgress.totalUnitCount
+            progress.completedUnitCount = taskProgress.completedUnitCount
+        }
 
-        let task = sessionManager.GET(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
-                success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
+        let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+                guard let responseObject = result else {
+                    failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
+                    return
+                }
+                success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
             }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
@@ -135,10 +142,17 @@ public class WordPressComRestApi: NSObject
                      failure: FailureReponseBlock) -> NSProgress?
     {
         let URLString = appendLocaleIfNeeded(URLString)
-        let progress = NSProgress()
-        progress.totalUnitCount = 1
-        let task = sessionManager.POST(URLString, parameters: parameters, success: { [weak progress] (dataTask, result) in
-                success(responseObject: result, httpResponse: dataTask.response as? NSHTTPURLResponse)
+        let progress = NSProgress(totalUnitCount: 1)
+        let progressUpdater = {(taskProgress:NSProgress) in
+            progress.totalUnitCount = taskProgress.totalUnitCount
+            progress.completedUnitCount = taskProgress.completedUnitCount
+        }
+        let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+                guard let responseObject = result else {
+                    failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
+                    return
+                }
+                success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
             }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
@@ -205,21 +219,33 @@ public class WordPressComRestApi: NSObject
             failure(error: error, httpResponse: nil)
             return nil
         }
-        var progress : NSProgress?
-        let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: &progress) { (response, responseObject, error) in
+        if let error = serializationError {
+            failure(error: error, httpResponse: nil)
+            return nil
+        }
+        let progress = NSProgress(totalUnitCount: 1)
+        let progressUpdater = {(taskProgress:NSProgress) in
+            progress.totalUnitCount = taskProgress.totalUnitCount
+            progress.completedUnitCount = taskProgress.completedUnitCount
+        }
+        let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
             if let error = error {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
             } else {
-                success(responseObject: responseObject!, httpResponse: response as? NSHTTPURLResponse)
+                guard let responseObject = result else {
+                    failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: response as? NSHTTPURLResponse)
+                    return
+                }
+                success(responseObject: responseObject, httpResponse: response as? NSHTTPURLResponse)
             }
         }
         task.resume()
-        progress?.cancellationHandler = {
+        progress.cancellationHandler = {
             task.cancel()
         }
         if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
            let size = Int64(sizeString) {
-            progress?.totalUnitCount = size
+            progress.totalUnitCount = size
         }
         return progress
     }
