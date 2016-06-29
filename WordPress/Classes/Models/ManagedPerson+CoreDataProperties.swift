@@ -15,4 +15,5 @@ extension ManagedPerson {
     @NSManaged var username: String
     @NSManaged var isSuperAdmin: Bool
     @NSManaged var kind: Int16
+    @NSManaged var creationDate: NSDate?
 }
