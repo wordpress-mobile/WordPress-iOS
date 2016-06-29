@@ -4,6 +4,7 @@
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderPost.h"
+#import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
@@ -428,6 +429,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [postService setFollowing:newFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
+    // Define success block
+    void (^successBlock)() = ^void() {
+        [self refreshPostsForFollowedTopic];
+        if (success) {
+            success();
+        }
+    };
+
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
@@ -443,17 +452,23 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (topic.isExternal) {
         if (newFollowValue) {
-            [siteService followSiteAtURL:topic.feedURL success:success failure:failureBlock];
+            [siteService followSiteAtURL:topic.feedURL success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteAtURL:topic.feedURL success:success failure:failureBlock];
+            [siteService unfollowSiteAtURL:topic.feedURL success:successBlock failure:failureBlock];
         }
     } else {
         if (newFollowValue) {
-            [siteService followSiteWithID:[topic.siteID integerValue] success:success failure:failureBlock];
+            [siteService followSiteWithID:[topic.siteID integerValue] success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[topic.siteID integerValue] success:success failure:failureBlock];
+            [siteService unfollowSiteWithID:[topic.siteID integerValue] success:successBlock failure:failureBlock];
         }
     }
+}
+
+- (void)refreshPostsForFollowedTopic
+{
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [postService refreshPostsForFollowedTopic];
 }
 
 // Updates the site topic's following status in core data only.
