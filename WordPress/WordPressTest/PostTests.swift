@@ -13,7 +13,7 @@ class PostTests: XCTestCase {
     }()
 
     private func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObjectForEntityForName(BlogEntityName, inManagedObjectContext: context) as! Blog
+        return NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: context) as! Blog
     }
 
     private func newTestPost() -> Post {
@@ -21,7 +21,7 @@ class PostTests: XCTestCase {
     }
 
     private func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObjectForEntityForName(PostCategoryEntityName, inManagedObjectContext: context) as! PostCategory
+        return NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: context) as! PostCategory
     }
 
     private func newTestPostCategory(name: String) -> PostCategory {
