@@ -1060,7 +1060,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             return
         }
 
-        ForcePopoverPresentationPopoverControllerDelegate.configurePresentationControllerForViewController(controller,
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
                                                                                                            presentingFromView: titleView)
 
         presentViewController(controller, animated: true, completion: nil)

@@ -307,7 +307,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         controller.tableView.scrollEnabled = false
 
-        ForcePopoverPresentationPopoverControllerDelegate.configurePresentationControllerForViewController(controller,
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
                                                                                                            presentingFromView: titleButton)
 
         presentViewController(controller, animated: true, completion: nil)

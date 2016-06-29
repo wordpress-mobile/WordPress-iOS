@@ -1,8 +1,8 @@
 import UIKit
 
 /// This delegate forces popover presentation even on iPhone / in compact size classes
-class ForcePopoverPresentationPopoverControllerDelegate: NSObject, UIPopoverPresentationControllerDelegate {
-    static let delegate = ForcePopoverPresentationPopoverControllerDelegate()
+class ForcePopoverPresenter: NSObject, UIPopoverPresentationControllerDelegate {
+    static let presenter = ForcePopoverPresenter()
 
     private static let verticalPadding: CGFloat = 10
 
@@ -19,7 +19,7 @@ class ForcePopoverPresentationPopoverControllerDelegate: NSObject, UIPopoverPres
         // the top of the popover lines up perfectly with the bottom of the
         // navigation controller and looks a little odd
         presentationController?.sourceRect = CGRectInset(sourceView.bounds, 0, -verticalPadding)
-        presentationController?.delegate = ForcePopoverPresentationPopoverControllerDelegate.delegate
+        presentationController?.delegate = ForcePopoverPresenter.presenter
 
         controller.view.sizeToFit()
     }
