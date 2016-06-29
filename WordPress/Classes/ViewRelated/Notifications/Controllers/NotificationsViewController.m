@@ -115,6 +115,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupConstraints];
     [self setupTableView];
     [self setupTableHeaderView];
+    [self setupTableFooterView];
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
@@ -212,6 +213,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
     self.tableView.tableHeaderView = self.tableHeaderView;
     [self.tableView setNeedsLayout];
+}
+
+- (void)setupTableFooterView
+{
+    NSParameterAssert(self.tableView);
+
+    //  Fix: Hide the cellSeparators, when the table is empty
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)setupTableHandler
@@ -658,6 +667,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - UITableViewDelegate
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return [NoteTableHeaderView headerHeight];
@@ -672,6 +686,18 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     headerView.separatorColor       = self.tableView.separatorColor;
     
     return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return CGFLOAT_MIN;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
