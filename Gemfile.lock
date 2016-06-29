@@ -67,7 +67,6 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (~> 1.0.1)
-  rake
   xcpretty-travis-formatter
 
 BUNDLED WITH
