@@ -199,7 +199,7 @@ extension Role {
         // Note: Incoming Hack
         // ====
         //
-        // Apologies about this. When a site is Private, the *Viewer* doesn't really exist, but instead, 
+        // Apologies about this. When a site is Private, the *Viewer* doesn't really exist, but instead,
         // it's treated, backend side, as a follower.
         //
         switch self {
