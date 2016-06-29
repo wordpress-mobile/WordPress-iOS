@@ -221,8 +221,14 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     self.imageView.frame = frame;
 
-    // Only allow the flinging gesture if we're zoomed all the way out
-    self.flingableViewHandler.isActive = (scrollView.zoomScale == scrollView.minimumZoomScale);
+    [self updateFlingableViewHandlerActiveState];
+}
+
+- (void)updateFlingableViewHandlerActiveState
+{
+    BOOL isScrollViewZoomedOut = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
+
+    self.flingableViewHandler.isActive = isScrollViewZoomedOut;
 }
 
 #pragma mark - Status bar management
