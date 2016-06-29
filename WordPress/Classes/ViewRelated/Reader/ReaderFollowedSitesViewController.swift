@@ -44,7 +44,7 @@ class ReaderFollowedSitesViewController: UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = NSLocalizedString("Followed Sites", comment: "Page title for the list of followed sites.")
+        self.title = NSLocalizedString("Manage Sites", comment: "Page title for the screeen to manage your list of followed sites.")
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
