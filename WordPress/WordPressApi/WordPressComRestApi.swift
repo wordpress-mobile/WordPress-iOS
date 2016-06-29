@@ -199,23 +199,24 @@ public class WordPressComRestApi: NSObject
             failure(error: error, httpResponse: nil)
             return nil
         }
-        var error: NSError?
+        var serializationError: NSError?
+        var filePartError: NSError?
         let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
           URLString: requestURLString,
-          parameters: parameters!,
+          parameters: parameters,
           constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
-            for filePart in fileParts {
-                let url = filePart.url
-                do {
+            do {
+                for filePart in fileParts {
+                    let url = filePart.url
                     try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
-                } catch let error as NSError {
-                    failure(error: error, httpResponse: nil)
                 }
+            } catch let error as NSError {
+                filePartError = error
             }
-            },
-          error: &error
+          },
+          error: &serializationError
         )
-        if let error = error {
+        if let error = filePartError {
             failure(error: error, httpResponse: nil)
             return nil
         }
