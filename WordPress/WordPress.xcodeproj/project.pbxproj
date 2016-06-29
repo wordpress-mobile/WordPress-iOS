@@ -95,6 +95,7 @@
 		1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */; };
 		1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */; };
 		1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */; };
+		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
@@ -1079,6 +1080,7 @@
 		1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
+		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
@@ -3403,6 +3405,7 @@
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
 				1746D7761D2165AE00B11D77 /* ForcePopoverPresentationPopoverControllerDelegate.swift */,
+				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -6038,6 +6041,7 @@
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
+				171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */,
 				FF3EAE9B1D0036E300CC4939 /* WordPressOrgXMLRPCApi.swift in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
 				FFC6ADDD1B56F3D2002F3C84 /* ThemeServiceRemote.m in Sources */,
@@ -6562,7 +6566,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "849fbb89-50ae-48bf-9d68-5cd876c18c32";
+				PROVISIONING_PROFILE = "4601e739-fb3d-43bd-bf22-56e7835186c5";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7079,7 +7083,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8bf2d302-f2ab-4846-9aba-5a85ded06d0c";
+				PROVISIONING_PROFILE = "05a4e80b-5cbf-4725-8ab2-9d59c3492087";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7446,7 +7450,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4c8e9c48-64d3-4200-ab05-8423eadedacc";
+				PROVISIONING_PROFILE = "1d80ed9e-3046-4358-b581-e70757ed7722";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
