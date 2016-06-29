@@ -97,6 +97,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyViewIfNeeded];
     [self setupAutolayoutConstraints];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)attachSuggestionsTableViewIfNeeded
@@ -190,6 +191,20 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
+- (void)adjustTableViewInsetsIfNeeded
+{
+    if ([WPDeviceIdentification isiPad]) {
+        BOOL isPadFullScreen = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+        if (isPadFullScreen) {
+            UIEdgeInsets inset = self.tableView.contentInset;
+            inset.top = WPTableViewTopMargin;
+            self.tableView.contentInset = inset;
+        } else {
+            self.tableView.contentInset = UIEdgeInsetsZero;
+        }
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -217,6 +232,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self adjustTableViewInsetsIfNeeded];
+}
 
 #pragma mark - Fetching Post
 
