@@ -46,6 +46,8 @@ class ShareViewController: SLComposeServiceViewController {
     // MARK: - UIViewController Methods
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
