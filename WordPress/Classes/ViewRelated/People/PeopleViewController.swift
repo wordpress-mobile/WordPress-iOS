@@ -51,6 +51,20 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         return predicate
     }
 
+    /// Sort Descriptor
+    ///
+    private var sortDescriptors: [NSSortDescriptor] {
+        // Note:
+        // Followers must be sorted out by creationDate!
+        //
+        switch filter {
+        case .Followers:
+            return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
+        default:
+            return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
+        }
+    }
+
     /// Core Data Context
     ///
     private lazy var context: NSManagedObjectContext = {
@@ -60,11 +74,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     /// Core Data FRC
     ///
     private lazy var resultsController: NSFetchedResultsController = {
+        // FIXME(@koke, 2015-11-02): my user should be first
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = self.predicate
+        request.sortDescriptors = self.sortDescriptors
 
-        // FIXME(@koke, 2015-11-02): my user should be first
-        request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
         frc.delegate = self
         return frc
@@ -201,6 +215,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     private func refreshResultsController() {
         resultsController.fetchRequest.predicate = predicate
+        resultsController.fetchRequest.sortDescriptors = sortDescriptors
 
         do {
             try resultsController.performFetch()
