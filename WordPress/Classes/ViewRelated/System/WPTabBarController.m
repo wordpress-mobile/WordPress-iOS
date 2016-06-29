@@ -579,6 +579,10 @@ static NSInteger const WPTabBarIconOffset = 5;
 }
 
 - (NSArray<UIKeyCommand *>*)keyCommands {
+    if (self.presentedViewController) {
+        return nil;
+    }
+
     return @[
              [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTab) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
              [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.")],
