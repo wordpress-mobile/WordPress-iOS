@@ -1489,6 +1489,13 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
+    public func tableViewDidChangeContent(tableView: UITableView!) {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            displayNoResultsView()
+        }
+    }
+
+
     // MARK - Refresh Bookends
 
     public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
@@ -1499,7 +1506,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
-        if self.tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             displayNoResultsView()
         } else {
             hideResultsStatus()
