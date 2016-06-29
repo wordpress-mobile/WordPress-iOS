@@ -43,7 +43,8 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsets             = {0.0f,  0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
 
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
@@ -145,13 +146,15 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self adjustTableInsetsIfNeeded];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
+
     [self.tableView reloadData];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)reloadData
@@ -172,7 +175,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Reload UI
     self.title = self.note.title;
     [self.tableView reloadData];
-    [self adjustTableInsetsIfNeeded];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 
@@ -391,9 +394,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableInsetsIfNeeded
+- (void)adjustTableViewInsetsIfNeeded
 {
-    UIEdgeInsets contentInset = NotificationTableInsets;
+    BOOL isiPadFullScreen = [WPDeviceIdentification isiPad] && [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+    UIEdgeInsets contentInset = isiPadFullScreen ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
