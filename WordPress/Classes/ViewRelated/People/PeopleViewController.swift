@@ -266,11 +266,11 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         switch filter {
         case .Followers:
-            service.loadFollowersPage(nextRequestOffset, success: success)
+            service.loadFollowersPage(offset, success: success)
         case .Users:
-            service.loadUsersPage(nextRequestOffset, success: success)
+            service.loadUsersPage(offset, success: success)
         case .Viewers:
-            service.loadViewersPage(nextRequestOffset, success: success)
+            service.loadViewersPage(offset, success: success)
         }
     }
 
