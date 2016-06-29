@@ -143,6 +143,15 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
+- (void)refreshPostsForFollowedTopic
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
+    if (topic) {
+        [self fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
+    }
+}
+
 
 #pragma mark - Update Methods
 
@@ -269,10 +278,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // If this post belongs to a site topic, let the topic service do the work.
     if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
         [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
         return;
     }
@@ -285,8 +294,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     readerPost.isFollowing = follow;
     [self setFollowing:follow forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
 
+
+    // If the post in question belongs to the default followed sites topic, skip refreshing.
+    // We don't want to jar the user.
+    BOOL shouldRefreshFollowedPosts = post.topic != [topicService topicForFollowedSites];
+
     // Define success block
     void (^successBlock)() = ^void() {
+        if (shouldRefreshFollowedPosts) {
+            [self refreshPostsForFollowedTopic];
+        }
         if (success) {
             success();
         }
@@ -323,6 +340,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         failureBlock(error);
     }
 }
+
 
 - (void)deletePostsWithNoTopic
 {
