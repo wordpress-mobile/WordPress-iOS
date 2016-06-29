@@ -199,6 +199,18 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  */
 - (nullable WordPressComRestApi *)wordPressComRestApi;
 
+/**
+ Returns the wp.com or Jetpack ID as appropriate
+ 
+ If the blog is a WordPress.com one or it has Jetpack it will return a site ID,
+ otherwise it will return nil
+ 
+ @warning Nate wrote this and he's a bad
+ 
+ @return a WordPressComRestApi object if available
+ */
+- (nullable NSNumber *)siteID;
+
 @end
 
 NS_ASSUME_NONNULL_END
