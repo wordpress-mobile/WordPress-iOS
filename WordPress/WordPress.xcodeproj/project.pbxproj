@@ -95,10 +95,10 @@
 		1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */; };
 		1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */; };
 		1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */; };
+		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
-		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
 		173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 173BCE741CEB369900AE8817 /* Domains.storyboard */; };
 		173BCE771CEB3D8200AE8817 /* DomainsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */; };
@@ -1079,10 +1079,10 @@
 		1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
+		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
-		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
 		173BCE741CEB369900AE8817 /* Domains.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Domains.storyboard; sourceTree = "<group>"; };
 		173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemote.swift; sourceTree = "<group>"; };
@@ -6562,7 +6562,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "b67a3ea5-428e-449b-b33c-40eabe148b68";
+				PROVISIONING_PROFILE = "4601e739-fb3d-43bd-bf22-56e7835186c5";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7079,7 +7079,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f838b7ba-0f43-405c-876f-994b585f30ef";
+				PROVISIONING_PROFILE = "05a4e80b-5cbf-4725-8ab2-9d59c3492087";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7446,7 +7446,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a70170f2-a2cf-41f4-9587-41f500cbe5f8";
+				PROVISIONING_PROFILE = "1d80ed9e-3046-4358-b581-e70757ed7722";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
