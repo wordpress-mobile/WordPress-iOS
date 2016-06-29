@@ -27,7 +27,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
             currentSelection:(NSArray *)originalSelection
                selectionMode:(CategoriesSelectionMode)selectionMode
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _selectionMode = selectionMode;
         _blog = blog;
@@ -87,7 +87,11 @@ static const CGFloat CategoryCellIndentation = 16.0;
 {
     WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithBlog:self.blog];
     addCategoryViewController.delegate = self;
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:addCategoryViewController]
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self presentViewController:navigationController
                        animated:YES
                      completion:nil];
 }
