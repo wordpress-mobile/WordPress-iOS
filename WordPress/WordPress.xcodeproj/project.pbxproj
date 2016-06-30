@@ -95,6 +95,7 @@
 		1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */; };
 		1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */; };
 		1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */; };
+		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
@@ -102,6 +103,7 @@
 		173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 173BCE741CEB369900AE8817 /* Domains.storyboard */; };
 		173BCE771CEB3D8200AE8817 /* DomainsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
+		1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */; };
 		1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */; };
 		176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176579F61C63A40F0000978E /* PurchaseButton.swift */; };
@@ -864,7 +866,6 @@
 		FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */; };
 		FFA162311CB7031A00E2E110 /* AppSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */; };
 		FFA9148F1BA6E5170068F8BF /* RotationAwareNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */; };
-		FFAC89101A96A85800CC06AC /* NSProcessInfo+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAC890F1A96A85800CC06AC /* NSProcessInfo+Util.m */; };
 		FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */; };
 		FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */; };
 		FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81D1A0012E80032E723 /* ApiCredentials.m */; };
@@ -1079,6 +1080,7 @@
 		1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
+		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
@@ -1086,6 +1088,7 @@
 		173BCE741CEB369900AE8817 /* Domains.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Domains.storyboard; sourceTree = "<group>"; };
 		173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemote.swift; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
+		1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForcePopoverPresenter.swift; sourceTree = "<group>"; };
 		1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueDatabase.swift; sourceTree = "<group>"; };
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		176579F61C63A40F0000978E /* PurchaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
@@ -2227,8 +2230,6 @@
 		FFA40D4D1CB3EDD5001CB1FB /* WordPress 48.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 48.xcdatamodel"; sourceTree = "<group>"; };
 		FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationAwareNavigationViewController.h; sourceTree = "<group>"; };
 		FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationAwareNavigationViewController.m; sourceTree = "<group>"; };
-		FFAC890E1A96A85800CC06AC /* NSProcessInfo+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSProcessInfo+Util.h"; sourceTree = "<group>"; };
-		FFAC890F1A96A85800CC06AC /* NSProcessInfo+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSProcessInfo+Util.m"; sourceTree = "<group>"; };
 		FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Exporters.swift"; sourceTree = "<group>"; };
 		FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+Exporters.swift"; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
@@ -3402,6 +3403,8 @@
 				FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */,
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
+				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
+				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -4277,8 +4280,6 @@
 				31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */,
 				85CE4C1E1A703CF200780DFE /* NSBundle+VersionNumberHelper.h */,
 				85CE4C1F1A703CF200780DFE /* NSBundle+VersionNumberHelper.m */,
-				FFAC890E1A96A85800CC06AC /* NSProcessInfo+Util.h */,
-				FFAC890F1A96A85800CC06AC /* NSProcessInfo+Util.m */,
 				F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */,
 				F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */,
 				B5416CFF1C17693B00006DD8 /* UIApplication+Helpers.h */,
@@ -5988,6 +5989,7 @@
 				5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */,
 				E1A6DBE219DC7D140071AC1E /* PostServiceRemoteXMLRPC.m in Sources */,
 				B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */,
+				1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */,
 				E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */,
@@ -6037,6 +6039,7 @@
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
+				171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */,
 				FF3EAE9B1D0036E300CC4939 /* WordPressOrgXMLRPCApi.swift in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
 				FFC6ADDD1B56F3D2002F3C84 /* ThemeServiceRemote.m in Sources */,
@@ -6132,7 +6135,6 @@
 				E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				E6417BA81CA07F050084050A /* SigninLinkMailViewController.swift in Sources */,
-				FFAC89101A96A85800CC06AC /* NSProcessInfo+Util.m in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				B52D29A51B66BEB70010BD3D /* RemoteNotificationSettings.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
@@ -6562,7 +6564,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "849fbb89-50ae-48bf-9d68-5cd876c18c32";
+				PROVISIONING_PROFILE = "4601e739-fb3d-43bd-bf22-56e7835186c5";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7079,7 +7081,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8bf2d302-f2ab-4846-9aba-5a85ded06d0c";
+				PROVISIONING_PROFILE = "05a4e80b-5cbf-4725-8ab2-9d59c3492087";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7446,7 +7448,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4c8e9c48-64d3-4200-ab05-8423eadedacc";
+				PROVISIONING_PROFILE = "1d80ed9e-3046-4358-b581-e70757ed7722";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

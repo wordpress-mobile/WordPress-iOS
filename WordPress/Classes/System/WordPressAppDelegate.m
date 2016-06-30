@@ -10,7 +10,6 @@
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
@@ -20,7 +19,6 @@
 
 // Categories & extensions
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 
@@ -178,10 +176,6 @@ int ddLogLevel = DDLogLevelInfo;
     BOOL returnValue = NO;
 
     if ([self.hockey handleOpenURL:url options:options]) {
-        returnValue = YES;
-    }
-
-    if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
     }
 
