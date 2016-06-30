@@ -91,7 +91,7 @@ class ShareViewController: SLComposeServiceViewController {
         }
 
         // Upload Media, if any
-        uploadImageIfNeeded(mediaView.mediaURL, siteID: siteID) { media in
+        uploadImageIfNeeded(mediaView?.mediaURL, siteID: siteID) { media in
             // Proceed uploading the actual post
             var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
 
