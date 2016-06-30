@@ -291,7 +291,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
         let filters                 = filtersAvailableForBlog(blog)
 
-        let controller              = SettingsSelectionViewController(style: .Grouped)
+        let controller              = SettingsSelectionViewController(style: .Plain)
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
         controller.titles           = filters.map { $0.title }
         controller.values           = filters.map { $0.rawValue }
@@ -305,8 +305,12 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
 
-        let navController = UINavigationController(rootViewController: controller)
-        presentViewController(navController, animated: true, completion: nil)
+        controller.tableView.scrollEnabled = false
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
+                                                                                                           presentingFromView: titleButton)
+
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     private func filtersAvailableForBlog(blog: Blog) -> [Filter] {
