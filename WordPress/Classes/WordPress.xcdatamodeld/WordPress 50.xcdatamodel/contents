@@ -393,6 +393,7 @@
     </entity>
     <entity name="Person" representedClassName=".ManagedPerson" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -643,7 +644,7 @@
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Person" positionX="18" positionY="153" width="128" height="210"/>
+        <element name="Person" positionX="18" positionY="153" width="128" height="30"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
