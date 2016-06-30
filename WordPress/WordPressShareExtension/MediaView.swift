@@ -44,6 +44,14 @@ class MediaView : UIView
     ///
     private let imageView = UIImageView()
 
+    /// Internal Width Constraint
+    ///
+    private var widthConstraint: NSLayoutConstraint!
+
+    /// Internal Height Constraint
+    ///
+    private var heightConstraint: NSLayoutConstraint!
+
     /// Internal activityIndicator Instance
     ///
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
@@ -85,6 +93,12 @@ class MediaView : UIView
 
     private func setupSubviews() {
         translatesAutoresizingMaskIntoConstraints = false
+        widthConstraint = widthAnchor.constraintEqualToConstant(maximumSize.width)
+        heightConstraint = heightAnchor.constraintEqualToConstant(maximumSize.height)
+
+        widthConstraint.active = true
+        heightConstraint.active = true
+
         imageView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -100,9 +114,8 @@ class MediaView : UIView
     }
 
     private func refreshContentSize() {
-        let targetSize = (image != nil) ? maximumSize : CGSizeZero
-        widthAnchor.constraintEqualToConstant(targetSize.width).active = true
-        heightAnchor.constraintEqualToConstant(targetSize.height).active = true
+        widthConstraint.constant = maximumSize.width
+        heightConstraint.constant = maximumSize.height
     }
 
     private func loadImageAndResizeIfNeeded(url: NSURL) {
