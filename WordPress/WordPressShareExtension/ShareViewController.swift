@@ -23,9 +23,7 @@ class ShareViewController: SLComposeServiceViewController {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
-    private lazy var mediaView: MediaView = {
-        MediaView()
-    }()
+    private var mediaView: MediaView!
 
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
@@ -202,8 +200,23 @@ private extension ShareViewController
 
     func loadMediaViewContent() {
         extensionContext?.loadImageUrl { url in
-            self.mediaView.mediaURL = url
+            guard let url = url else {
+                return
+            }
+
+            self.loadMediaViewFromURL(url)
         }
+    }
+
+    func loadMediaViewFromURL(url: NSURL) {
+        guard mediaView == nil else {
+            assertionFailure()
+            return
+        }
+
+        mediaView = MediaView()
+        mediaView.mediaURL = url
+        reloadConfigurationItems()
     }
 }
 
