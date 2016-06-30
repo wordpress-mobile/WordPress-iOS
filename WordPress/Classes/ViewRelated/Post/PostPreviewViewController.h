@@ -3,6 +3,6 @@
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate>
 
-- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar;
+- (instancetype)initWithPost:(AbstractPost *)aPost;
 
 @end

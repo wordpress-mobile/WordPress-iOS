@@ -209,7 +209,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
         return;
     }
-    
+
     // Rating View is already visible, don't bother to do anything
     if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
         return;
