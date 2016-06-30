@@ -227,14 +227,15 @@ private extension ShareViewController
 private extension ShareViewController
 {
     func uploadImageIfNeeded(imageURL: NSURL?, siteID: Int, completion: Media? -> ()) {
-        guard let imageURL = imageURL else {
+        guard let imageURL = imageURL, image = UIImage(contentsOfURL: imageURL), payload = UIImagePNGRepresentation(image) else {
             completion(nil)
             return
         }
 
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = MediaService(configuration: configuration)
-        service.createMedia(imageURL, siteID: siteID) { (media, error) in
+
+        service.createMedia(payload, filename: MediaSettings.filename, mimeType: MediaSettings.mimeType, siteID: siteID) { (media, error) in
             NSLog("Media: \(media) Error: \(error)")
             completion(media)
         }
@@ -246,5 +247,11 @@ private extension ShareViewController
         service.createPost(siteID: siteID, status: status, title: subject, body: body) { (post, error) in
             print("Post \(post) Error \(error)")
         }
+    }
+
+
+    enum MediaSettings {
+        static let filename = "image.png"
+        static let mimeType = "image/png"
     }
 }
