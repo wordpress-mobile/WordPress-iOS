@@ -129,8 +129,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
-    if (self.isCancellable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancel:)];
+    BOOL isFirstViewControllerInNavigationStack = self.navigationController.navigationBar.backItem == nil;
+    if (isFirstViewControllerInNavigationStack) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
     }
 
     [self refreshData];
@@ -995,7 +996,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
 }
 
-- (IBAction)cancel:(id)sender
+- (IBAction)dismiss
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
