@@ -46,6 +46,6 @@ extension String
     /// Returns the current string, preceded by an IMG embed pointing to the given URL
     ///
     func stringByPrependingMediaURL(url: String) -> String {
-        return "<img src='\(url)' alt='+alt+' /><br/><br/>" + self
+        return "<img src='\(url)' /><br/><br/>" + self
     }
 }
