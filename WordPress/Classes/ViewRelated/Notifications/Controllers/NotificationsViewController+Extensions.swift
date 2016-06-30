@@ -25,11 +25,7 @@ extension NotificationsViewController
     }
 
     func setupConstraints() {
-        precondition(ratingsTopConstraint != nil)
         precondition(ratingsHeightConstraint != nil)
-
-        // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
-        ratingsTopConstraint.constant = UIDevice.isPad() ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0
 
         // Ratings is initially hidden!
         ratingsHeightConstraint.constant = 0
@@ -68,8 +64,7 @@ extension NotificationsViewController
 
     func setupTableFooterView() {
         //  Fix: Hide the cellSeparators, when the table is empty
-        let footerFrame = UIDevice.isPad() ? CGRectZero : WPTableFooterPadFrame
-        tableView.tableFooterView = UIView(frame: footerFrame)
+        tableView.tableFooterView = UIView()
     }
 
     func setupTableHandler() {
