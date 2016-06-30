@@ -175,12 +175,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)setupConstraints
 {
-    NSParameterAssert(self.ratingsTopConstraint);
     NSParameterAssert(self.ratingsHeightConstraint);
-    
-    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
-    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
-    
+
     // Ratings is initially hidden!
     self.ratingsHeightConstraint.constant = 0;
 }
@@ -222,10 +218,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)setupTableFooterView
 {
     NSParameterAssert(self.tableView);
-    
+
     //  Fix: Hide the cellSeparators, when the table is empty
-    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)setupTableHandler
@@ -338,7 +333,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
         return;
     }
-    
+
     // Rating View is already visible, don't bother to do anything
     if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
         return;
