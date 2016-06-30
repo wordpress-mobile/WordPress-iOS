@@ -18,13 +18,13 @@ class MediaView : UIView
 
     /// The URL of the image that should be displayed
     ///
-    var mediaURL: NSURL? {
+    var mediaImage: UIImage? {
         didSet {
-            guard let mediaURL = mediaURL else {
+            guard let mediaImage = mediaImage else {
                 return
             }
 
-            loadImageAndResizeIfNeeded(mediaURL)
+            loadImageAndResizeIfNeeded(mediaImage)
         }
     }
 
@@ -125,21 +125,23 @@ class MediaView : UIView
         heightConstraint.constant = maximumSize.height
     }
 
-    private func loadImageAndResizeIfNeeded(url: NSURL) {
+    private func loadImageAndResizeIfNeeded(image: UIImage) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-            let scale = UIScreen.mainScreen().scale
-            var targetSize = self.maximumSize
-            targetSize.width *= scale
-            targetSize.height *= scale
-
-            let image = UIImage(contentsOfURL: url)?.resizedImageWithContentMode(.ScaleAspectFit,
-                                                                                 bounds: targetSize,
-                                                                                 interpolationQuality: .High)
+            let resizedImage = self.resizeImageIfNeeded(image)
 
             dispatch_async(dispatch_get_main_queue()) {
-                self.image = image
+                self.image = resizedImage
             }
         }
+    }
+
+    private func resizeImageIfNeeded(image: UIImage) -> UIImage {
+        let scale = UIScreen.mainScreen().scale
+        var targetSize = self.maximumSize
+        targetSize.width *= scale
+        targetSize.height *= scale
+
+        return image.resizedImageWithContentMode(.ScaleAspectFit, bounds: targetSize, interpolationQuality: .High)
     }
 
 
