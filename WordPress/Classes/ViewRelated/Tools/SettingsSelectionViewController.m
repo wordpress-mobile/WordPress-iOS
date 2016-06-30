@@ -12,6 +12,8 @@ NSString * const SettingsSelectionHintsKey = @"Hints";
 NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
+CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
+
 @interface SettingsSelectionViewController ()
 @property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
 @end
@@ -61,6 +63,17 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (CGSize)preferredContentSize
+{
+    CGSize size = [super preferredContentSize];
+
+    if (self.tableView.style == UITableViewStylePlain) {
+        size.height = [self.titles count] * SettingsSelectionDefaultTableViewCellHeight;
+    }
+
+    return size;
 }
 
 - (void)configureCancelButton
