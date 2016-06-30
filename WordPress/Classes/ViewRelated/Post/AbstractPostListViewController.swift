@@ -875,7 +875,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 // If not, prompt the user to let it know under which filter it appears.
                 let filter = strongSelf.filterThatDisplaysPostsWithStatus(postStatus)
 
-                if filter == strongSelf.currentPostListFilter() {
+                if filter.filterType == strongSelf.currentPostListFilter().filterType {
                     return
                 }
 
@@ -943,7 +943,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let authorFilterKey = "filter_key_\(currentAuthorFilter.rawValue)"
 
         if allPostListFilters[authorFilterKey] == nil {
-            allPostListFilters[authorFilterKey] = PostListFilter.newPostListFilters()
+            allPostListFilters[authorFilterKey] = PostListFilter.postListFilters()
         }
 
         return allPostListFilters[authorFilterKey]!
@@ -963,8 +963,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         var found = false
 
         for (idx, filter) in availablePostListFilters().enumerate() {
-
-            if let statuses = filter.statuses where statuses.contains(postStatus) {
+            if filter.statuses.contains(postStatus) {
                 found = true
                 index = idx
                 break
@@ -979,7 +978,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return index
     }
 
-    func indexForFilterWithType(filterType: PostListStatusFilter) -> Int {
+    func indexForFilterWithType(filterType: PostListFilter.Status) -> Int {
         if let index = availablePostListFilters().indexOf({ (filter: PostListFilter) -> Bool in
             return filter.filterType == filterType
         }) {
@@ -1029,7 +1028,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func displayFilters() {
         let titles = availablePostListFilters().map { (filter: PostListFilter) -> String in
-            return filter.title!
+            return filter.title
         }
 
         let dict = [SettingsSelectionDefaultValueKey: availablePostListFilters()[0],
@@ -1038,7 +1037,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     SettingsSelectionValuesKey: availablePostListFilters(),
                     SettingsSelectionCurrentValueKey: currentPostListFilter()]
 
-        let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict)
+        let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
         controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
             if let strongSelf = self,
                 let index = strongSelf.availablePostListFilters().indexOf(selectedValue as! PostListFilter) {
