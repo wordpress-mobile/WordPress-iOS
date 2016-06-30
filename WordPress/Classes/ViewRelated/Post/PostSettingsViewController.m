@@ -973,6 +973,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -1001,6 +1002,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
     picker.showMostRecentFirst = YES;
+    picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -1027,7 +1029,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
-        CGSize imageSize = CGSizeMake(width, height);
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize imageSize = CGSizeMake(width * scale, height * scale);
         
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
