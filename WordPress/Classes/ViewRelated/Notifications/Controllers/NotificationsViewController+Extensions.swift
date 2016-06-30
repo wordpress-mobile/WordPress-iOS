@@ -70,7 +70,7 @@ extension NotificationsViewController
     func setupTableHandler() {
         let handler = WPTableViewHandler(tableView: tableView)
         handler.cacheRowHeights = true
-        handler.delegate = self as? WPTableViewHandlerDelegate
+        handler.delegate = tableViewHandlerDelegate()
         tableViewHandler = handler
     }
 
@@ -83,7 +83,7 @@ extension NotificationsViewController
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
         ratingsView.rightButton.titleLabel?.font = ratingsFont
-        ratingsView.delegate = self as? ABXPromptViewDelegate
+        ratingsView.delegate = appbotViewDelegate()
         ratingsView.alpha = WPAlphaZero
     }
 
@@ -113,7 +113,7 @@ extension NotificationsViewController
 
     func setupNotificationsBucketDelegate() {
         let notesBucket = simperium.bucketForName(entityName())
-        notesBucket.delegate = self as? SPBucketDelegate
+        notesBucket.delegate = simperiumBucketDelegate()
         notesBucket.notifyWhileIndexing = true
     }
 

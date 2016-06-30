@@ -5,6 +5,10 @@
 @class WPTableViewHandler;
 @class WPNoResultsView;
 
+@protocol ABXPromptViewDelegate;
+@protocol WPTableViewHandlerDelegate;
+@protocol SPBucketDelegate;
+
 
 #pragma mark - Private Properties
 
@@ -24,5 +28,9 @@
 
 - (NSString *)entityName;
 - (void)reloadResultsController;
+
+- (id <ABXPromptViewDelegate>)appbotViewDelegate;
+- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
+- (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end
