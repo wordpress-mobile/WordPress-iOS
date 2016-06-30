@@ -491,13 +491,7 @@ import WordPressComAnalytics
         }
 
         guard let header = ReaderStreamViewController.headerForStream(topic) else {
-            if WPDeviceIdentification.isiPad() {
-                let headerView = UIView(frame: frameForEmptyHeaderView)
-                headerView.backgroundColor = UIColor.clearColor()
-                tableView.tableHeaderView = headerView
-            } else {
-                tableView.tableHeaderView = nil
-            }
+            tableView.tableHeaderView = nil
             return
         }
 
