@@ -884,4 +884,30 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
 
+
+#pragma mark - Swift Migration Helpers
+
+// Note:
+// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
+// just as a workaround during the Swift migration.
+//
+// TODO: Nuke them. JLP 06.30.2016
+//
+
+- (id <ABXPromptViewDelegate>)appbotViewDelegate
+{
+    return self;
+}
+
+- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
+{
+    return self;
+}
+
+- (id <SPBucketDelegate>)simperiumBucketDelegate
+{
+    return self;
+}
+
+
 @end
