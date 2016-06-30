@@ -91,7 +91,7 @@ class ShareViewController: SLComposeServiceViewController {
         }
 
         // Upload Media, if any
-        uploadImageIfNeeded(mediaView?.mediaURL, siteID: siteID) { media in
+        uploadImageIfNeeded(mediaView?.mediaImage, siteID: siteID) { media in
             // Proceed uploading the actual post
             var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
 
@@ -199,23 +199,23 @@ private extension ShareViewController
     }
 
     func loadMediaViewContent() {
-        extensionContext?.loadImageUrl { url in
-            guard let url = url else {
+        extensionContext?.loadMediaImage { image in
+            guard let image = image else {
                 return
             }
 
-            self.loadMediaViewFromURL(url)
+            self.loadMediaViewFromImage(image)
         }
     }
 
-    func loadMediaViewFromURL(url: NSURL) {
+    func loadMediaViewFromImage(image: UIImage) {
         guard mediaView == nil else {
             assertionFailure()
             return
         }
 
         mediaView = MediaView()
-        mediaView.mediaURL = url
+        mediaView.mediaImage = image
         reloadConfigurationItems()
     }
 }
@@ -226,8 +226,8 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func uploadImageIfNeeded(imageURL: NSURL?, siteID: Int, completion: Media? -> ()) {
-        guard let imageURL = imageURL, image = UIImage(contentsOfURL: imageURL), payload = UIImagePNGRepresentation(image) else {
+    func uploadImageIfNeeded(image: UIImage?, siteID: Int, completion: Media? -> ()) {
+        guard let image = image, payload = UIImagePNGRepresentation(image) else {
             completion(nil)
             return
         }
