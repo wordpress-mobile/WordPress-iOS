@@ -3,6 +3,7 @@
 @interface RemoteReaderSiteInfo : NSObject
 
 @property (nonatomic, strong) NSNumber *feedID;
+@property (nonatomic, strong) NSString *feedURL;
 @property (nonatomic) BOOL isFollowing;
 @property (nonatomic) BOOL isJetpack;
 @property (nonatomic) BOOL isPrivate;
