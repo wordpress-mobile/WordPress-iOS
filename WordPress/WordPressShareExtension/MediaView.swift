@@ -88,6 +88,13 @@ class MediaView : UIView
         imageView.alpha = Constants.alphaFull
     }
 
+    /// Workaround to prevent having a zero contentSize before the image is effectively loaded
+    ///
+    override func intrinsicContentSize() -> CGSize {
+        return maximumSize
+    }
+
+
 
     // MARK: - Private Helpers
 
