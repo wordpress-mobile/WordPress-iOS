@@ -5,6 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 50
 
+
+- @aerych 2016-06-24
+- `ReaderSiteTopic` added `feedURL` string property
 - @jleandroperez 2016-06-20
 - `Person` added `creationDate` attribute.
 - @jleandroperez 2016-06-21
