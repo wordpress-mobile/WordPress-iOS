@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import Simperium
 import WordPressComAnalytics
 import WordPress_AppbotX
@@ -162,55 +163,59 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     public func fetchRequest() -> NSFetchRequest {
-        return NSFetchRequest()
-//        let sortKey = NSStringFromSelector(#selector(Notification.timestamp))
-        //    NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-        //    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-        //    fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-        //    fetchRequest.predicate          = [self predicateForSelectedFilters];
-        //
-//            return fetchRequest
+        let sortKey = NSStringFromSelector(#selector(Notification.timestampAsString))
+        let request = NSFetchRequest(entityName: entityName())
+        request.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: false)]
+        request.predicate = predicateForSelectedFilters()
+
+        return request
     }
 
     public func predicateForSelectedFilters() -> NSPredicate {
-        return NSPredicate()
-        //    NSDictionary *filtersMap = @{
-        //        @(NotificationFilterUnread)     : @" AND (read = NO)",
-        //        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
-        //        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
-        //        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
-        //                                            NoteTypeLike, NoteTypeCommentLike]
-        //    };
-        //
-        //    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
-        //    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
-        //
-        //    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
+        let filtersMap: [Filter: String] = [
+            .None       : "",
+            .Unread     : " AND (read = NO)",
+            .Comment    : " AND (type = '\(NoteTypeComment)')",
+            .Follow     : " AND (type = '\(NoteTypeFollow)')",
+            .Like       : " AND (type = '\(NoteTypeLike)' OR type = '\(NoteTypeCommentLike)')"
+        ]
+
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
+        let condition = filtersMap[filter] ?? String()
+        let format = "NOT (SELF IN %@)" + condition
+
+        return NSPredicate(format: format, notificationIdsBeingDeleted.allObjects)
     }
 
     public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        //    // Note:
-        //    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-        //    // For that reason, we draw our own separators.
+        // Note:
+        // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+        // For that reason, we draw our own separators.
         //
-        //    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-        //    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
-        //    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
-        //    __weak __typeof(self) weakSelf  = self;
-        //
-        //    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
-        //    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
-        //    cell.read                       = note.read.boolValue;
-        //    cell.noticon                    = note.noticon;
-        //    cell.unapproved                 = note.isUnapprovedComment;
-        //    cell.markedForDeletion          = isMarkedForDeletion;
-        //    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
-        //    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
-        //    cell.onUndelete                 = ^{
-        //        [weakSelf cancelDeletionForNoteWithID:note.objectID];
-        //    };
-        //
-        //    [cell downloadIconWithURL:note.iconURL];
+        guard let note = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Notification else {
+            return
+        }
+
+        guard let cell = cell as? NoteTableViewCell else {
+            return
+        }
+
+        let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
+        let isLastRow               = isRowLastRowForSection(indexPath)
+
+        cell.attributedSubject      = note.subjectBlock().attributedSubjectText()
+        cell.attributedSnippet      = note.subjectBlock().attributedSnippetText()
+        cell.read                   = note.read.boolValue
+        cell.noticon                = note.noticon
+        cell.unapproved             = note.isUnapprovedComment()
+        cell.markedForDeletion      = isMarkedForDeletion
+        cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
+        cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
+        cell.onUndelete             = { [weak self] in
+            self?.cancelDeletionForNoteWithID(note.objectID)
+        }
+
+        cell.downloadIconWithURL(note.iconURL)
     }
 
     public func sectionNameKeyPath() -> String {
@@ -222,17 +227,16 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     public func tableViewDidChangeContent(tableView: UITableView) {
-        //    // Update Separators:
-        //    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-        //    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-        //    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
-        //    {
-        //        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        //        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
-        //    }
-        //
-        //    // Update NoResults View
-        //    [self showNoResultsViewIfNeeded];
+        // Update Separators:
+        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
+            cell.showsBottomSeparator = isRowLastRowForSection(indexPath)
+        }
+
+        // Update NoResults View
+        showNoResultsViewIfNeeded()
     }
 }
 
@@ -331,7 +335,15 @@ private extension NotificationsViewController
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
-    struct RatingSettings {
+    enum Filter: Int {
+        case None                   = 0
+        case Unread                 = 1
+        case Comment                = 2
+        case Follow                 = 3
+        case Like                   = 4
+    }
+
+    enum RatingSettings {
         static let section          = "notifications"
         static let heightFull       = CGFloat(100)
         static let heightZero       = CGFloat(0)
