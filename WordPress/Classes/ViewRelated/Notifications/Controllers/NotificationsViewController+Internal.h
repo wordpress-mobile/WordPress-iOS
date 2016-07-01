@@ -5,6 +5,10 @@
 @class WPTableViewHandler;
 @class WPNoResultsView;
 
+@protocol ABXPromptViewDelegate;
+@protocol WPTableViewHandlerDelegate;
+@protocol SPBucketDelegate;
+
 
 #pragma mark - Private Properties
 
@@ -21,5 +25,12 @@
 @property (nonatomic, strong) NSDate                        *lastReloadDate;
 @property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
+
+- (NSString *)entityName;
+- (void)reloadResultsController;
+
+- (id <ABXPromptViewDelegate>)appbotViewDelegate;
+- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
+- (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end
