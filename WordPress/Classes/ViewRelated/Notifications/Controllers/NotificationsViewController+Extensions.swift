@@ -192,7 +192,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
         // For that reason, we draw our own separators.
         //
-        guard let note = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
             return
         }
 
