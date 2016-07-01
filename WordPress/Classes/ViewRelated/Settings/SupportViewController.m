@@ -97,11 +97,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     [super viewDidLoad];
     
     [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
-    
-    if (UIDevice.isPad) {
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-    }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
@@ -331,18 +326,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    // Make sure no Section Header is rendered
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    // Make sure no Section Header is rendered
-    return CGFLOAT_MIN;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
@@ -359,10 +342,8 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     NSString *title = [self titleForFooterInSection:section];
     if (!title) {
-        // Fix: Prevents extra spacing when dealing with empty footers
-        return CGFLOAT_MIN;
+        return UITableViewAutomaticDimension;
     }
-    
     return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
 }
 
