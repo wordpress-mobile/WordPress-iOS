@@ -112,6 +112,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super viewDidLoad];
 
+    [self setupNavigationBar];
     [self setupConstraints];
     [self setupTableView];
     [self setupTableHeaderView];
@@ -119,7 +120,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
-    [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
     
@@ -173,122 +173,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupConstraints
-{
-    NSParameterAssert(self.ratingsHeightConstraint);
-
-    // Ratings is initially hidden!
-    self.ratingsHeightConstraint.constant = 0;
-}
-
-- (void)setupTableView
-{
-    NSParameterAssert(self.tableView);
-    
-    // Register the cells
-    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
-    
-    for (NSString *nibName in cellNibs) {
-        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
-    }
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
-- (void)setupTableHeaderView
-{
-    NSParameterAssert(self.tableHeaderView);
-    
-    // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-    CGRect headerFrame          = self.tableHeaderView.frame;
-    CGSize requiredSize         = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
-    headerFrame.size.height     = requiredSize.height;
-    
-    self.tableHeaderView.frame  = headerFrame;
-    [self.tableHeaderView layoutIfNeeded];
-    
-    // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
-    self.tableView.tableHeaderView = self.tableHeaderView;
-    [self.tableView setNeedsLayout];
-}
-
-- (void)setupTableFooterView
-{
-    NSParameterAssert(self.tableView);
-
-    //  Fix: Hide the cellSeparators, when the table is empty
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (void)setupTableHandler
-{
-    NSParameterAssert(self.tableView);
-    
-    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights = YES;
-    tableViewHandler.delegate = self;
-    self.tableViewHandler = tableViewHandler;
-}
-
-- (void)setupRatingsView
-{
-    NSParameterAssert(self.ratingsView);
-    
-    UIFont *ratingsFont                             = [WPFontManager systemRegularFontOfSize:15.0];
-    self.ratingsView.label.font                     = ratingsFont;
-    self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
-    self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
-    self.ratingsView.delegate                       = self;
-    self.ratingsView.alpha                          = WPAlphaZero;
-}
-
-- (void)setupRefreshControl
-{
-    UIRefreshControl *refreshControl = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-- (void)setupNavigationBar
-{
-    // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
-    // This is only required for debugging:
-    // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
-    if ([name isEqualToString:WPNotificationsBucketName]) {
-        return;
-    }
-    
-    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
-}
-
-- (void)setupFiltersSegmentedControl
-{
-    NSParameterAssert(self.filtersSegmentedControl);
-    
-    NSArray *titles = @[
-        NSLocalizedString(@"All",       @"Displays all of the Notifications, unfiltered"),
-        NSLocalizedString(@"Unread",    @"Filters Unread Notifications"),
-        NSLocalizedString(@"Comments",  @"Filters Comments Notifications"),
-        NSLocalizedString(@"Follows",   @"Filters Follows Notifications"),
-        NSLocalizedString(@"Likes",     @"Filters Likes Notifications")
-    ];
-    
-    NSInteger index = 0;
-    for (NSString *title in titles) {
-        [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
-    }
-    
-    [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
-}
-
 - (void)showFiltersSegmentedControlIfApplicable
 {
     if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
@@ -303,14 +187,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
         self.tableHeaderView.alpha  = WPAlphaZero;
     }
-}
-
-- (void)setupNotificationsBucketDelegate
-{
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    notesBucket.delegate            = self;
-    notesBucket.notifyWhileIndexing = YES;
 }
 
 - (BOOL)shouldDisplayFilters
@@ -777,22 +653,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-#pragma mark - UISegmentedControl Methods
-
-- (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
-{
-    [self reloadResultsController];
-    
-    // It's a long way, to the top (if you wanna rock'n roll!)
-    if (self.tableViewHandler.resultsController.fetchedObjects.count == 0) {
-        return;
-    }
-    
-    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-}
-
-
 #pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
@@ -875,15 +735,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     
     // Update NoResults View
     [self showNoResultsViewIfNeeded];
-}
-
-
-#pragma mark - UIRefreshControl Methods
-
-- (void)refresh
-{
-    // Yes. This is dummy. Simperium handles sync for us!
-    [self.refreshControl endRefreshing];
 }
 
 
@@ -1032,5 +883,31 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
+
+
+#pragma mark - Swift Migration Helpers
+
+// Note:
+// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
+// just as a workaround during the Swift migration.
+//
+// TODO: Nuke them. JLP 06.30.2016
+//
+
+- (id <ABXPromptViewDelegate>)appbotViewDelegate
+{
+    return self;
+}
+
+- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
+{
+    return self;
+}
+
+- (id <SPBucketDelegate>)simperiumBucketDelegate
+{
+    return self;
+}
+
 
 @end
