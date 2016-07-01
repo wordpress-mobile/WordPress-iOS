@@ -172,4 +172,23 @@ class WordPressComRestApiTests: XCTestCase {
         let localeAppendedPath = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
         XCTAssert(localeAppendedPath == path, "Expected the locale to already be appended to the path as (\(path)) but instead encountered (\(localeAppendedPath)).")
     }
+
+    func testStreamMethodCallWithInvalidFile() {
+        stub(isRestAPIMediaNewRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiMedia.json", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+        }
+
+        let expectation = self.expectationWithDescription("One callback should be invoked")
+        let api = WordPressComRestApi(oAuthToken:"fakeToken")
+        let filePart = FilePart(parameterName: "file", url: NSURL(fileURLWithPath:"/a.txt"), filename: "a.txt", mimeType: "image/jpeg")
+        api.multipartPOST(wordPressMediaNewEndpoint, parameters:nil, fileParts:[filePart], success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+            expectation.fulfill()
+            XCTFail("This call should fail")
+            }, failure: { (error, httpResponse) in
+                expectation.fulfill()
+            }
+        )
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }

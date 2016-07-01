@@ -21,6 +21,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
     
     [manager GET:GetUsersBlogsApiPath
       parameters:parameters
+        progress:nil
          success:^(NSURLSessionDataTask *task, id responseObject) {
              NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
              DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
