@@ -226,10 +226,13 @@ public class WordPressComRestApi: NSObject
         }
         let progress = NSProgress(totalUnitCount: 1)
         let progressUpdater = {(taskProgress:NSProgress) in
-            progress.totalUnitCount = taskProgress.totalUnitCount
+            progress.totalUnitCount = taskProgress.totalUnitCount+1
             progress.completedUnitCount = taskProgress.completedUnitCount
+            print(progress)
         }
         let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
+            progress.completedUnitCount = progress.totalUnitCount
+
             if let error = error {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
             } else {
