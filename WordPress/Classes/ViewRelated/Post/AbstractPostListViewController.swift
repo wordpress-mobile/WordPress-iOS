@@ -410,15 +410,15 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Table View Handling
 
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         assert(false, "You should implement this method in the subclass")
     }
 
-    func tableViewDidChangeContent(tableView: UITableView!) {
+    func tableViewDidChangeContent(tableView: UITableView) {
         refreshResults()
     }
 
-    func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard isViewOnScreen() && !isSearching() else {
             return
         }
