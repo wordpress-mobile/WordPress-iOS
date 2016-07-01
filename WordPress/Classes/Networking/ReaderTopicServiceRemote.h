@@ -19,6 +19,15 @@ extern NSString * const WordPressComReaderEndpointURL;
                          failure:(void (^)(NSError *error))failure;
 
 /**
+ Get a list of the sites the user follows.
+
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success
+                              failure:(void(^)(NSError *error))failure;
+
+/**
  Unfollows the topic with the specified slug.
 
  @param slug The slug of the topic to unfollow.
