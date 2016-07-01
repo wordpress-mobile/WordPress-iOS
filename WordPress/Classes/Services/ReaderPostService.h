@@ -77,6 +77,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
 
 
 /**
+ Silently refresh posts for the followed sites topic.
+ */
+- (void)refreshPostsForFollowedTopic;
+
+/**
  Toggle the liked status of the specified post.
 
  @param post The reader post to like/unlike.
