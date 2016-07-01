@@ -567,6 +567,7 @@
     </entity>
     <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="feedURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -659,7 +660,7 @@
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
-        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
+        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
