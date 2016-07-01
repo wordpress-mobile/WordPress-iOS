@@ -27,6 +27,15 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+ Get a list of ReaderSiteTopics of the sites the user follows.
+
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchFollowedSitesWithSuccess:(void(^)())success
+                              failure:(void(^)(NSError *error))failure;
+
+/**
  Counts the number of `ReaderTagTopics` the user has subscribed to.
  
  @return The number of ReaderTagTopics whose `followed` property is set to `YES`
@@ -121,6 +130,22 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Mark a site topic as unfollowed in core data only. Should be called after unfollowing
+ a post to ensure that any existing site topics reflect the correct following status.
+
+ @param feedURL The feedURL of the site topic.
+ */
+- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL;
+
+/**
+ Mark a site topic as unfollowed in core data only. Should be called after unfollowing
+ a post to ensure that any existing site topics reflect the correct following status.
+
+ @param siteID the siteID of the site topic.
+ */
+- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
 
 /**
 
