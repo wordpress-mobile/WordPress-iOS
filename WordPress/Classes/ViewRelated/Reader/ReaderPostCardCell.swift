@@ -294,9 +294,9 @@ import WordPressShared
         blogNameButton.setTitle(blogName, forState: .Highlighted)
         blogNameButton.setTitle(blogName, forState: .Disabled)
 
-        var byline = contentProvider?.dateForDisplay().shortString()
+        var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
         if let author = contentProvider?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline!)
+            byline = String(format: "%@ · %@", author, byline)
         }
 
         bylineLabel.text = byline
@@ -309,7 +309,7 @@ import WordPressShared
 
             if !configureForLayoutOnly {
                 if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
-                    return; // Don't reload an image already being displayed.
+                    return // Don't reload an image already being displayed.
                 }
 
                 // Always clear the previous image so there is no stale or unexpected image

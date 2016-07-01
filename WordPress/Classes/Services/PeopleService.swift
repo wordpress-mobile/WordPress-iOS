@@ -287,6 +287,7 @@ private extension PeopleService {
     func createManagedPerson<T: Person>(person: T) {
         let managedPerson = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: context) as! ManagedPerson
         managedPerson.updateWith(person)
+        managedPerson.creationDate = NSDate()
         DDLogSwift.logDebug("Created person \(managedPerson)")
     }
 }
