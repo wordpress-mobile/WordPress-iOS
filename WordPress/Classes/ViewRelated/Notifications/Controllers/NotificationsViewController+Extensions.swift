@@ -148,6 +148,19 @@ extension NotificationsViewController
     // MARK: - Private Properties
 
     private var simperium: Simperium {
+// MARK: - Private Properties
+//
+private extension NotificationsViewController
+{
+    var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
+    }
+
+    struct RatingSettings {
+        static let section          = "notifications"
+        static let heightFull       = CGFloat(100)
+        static let heightZero       = CGFloat(0)
+        static let animationDelay   = NSTimeInterval(0.5)
+        static let reviewURL        = AppRatingUtility.appReviewUrl()
     }
 }
