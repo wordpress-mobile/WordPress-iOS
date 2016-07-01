@@ -96,6 +96,11 @@ extension NotificationsViewController
         refreshControl = control
     }
 
+    func setupNoResultsView() {
+        noResultsView = WPNoResultsView()
+        noResultsView.delegate = self
+    }
+
     func setupFiltersSegmentedControl() {
         precondition(filtersSegmentedControl != nil)
 
@@ -237,6 +242,128 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
         // Update NoResults View
         showNoResultsViewIfNeeded()
+    }
+}
+
+
+
+// MARK - Filter Helpers
+//
+extension NotificationsViewController
+{
+    func showFiltersSegmentedControlIfApplicable() {
+        guard tableHeaderView.alpha != WPAlphaZero && shouldDisplayFilters == true else {
+            return
+        }
+
+        UIView.animateWithDuration(WPAnimationDurationDefault) {
+            self.tableHeaderView.alpha = WPAlphaFull
+        }
+    }
+
+    func hideFiltersSegmentedControlIfApplicable() {
+        if tableHeaderView.alpha == WPAlphaFull && shouldDisplayFilters == false {
+            tableHeaderView.alpha = WPAlphaZero
+        }
+    }
+
+    var shouldDisplayFilters: Bool {
+        // Note:
+        // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
+        // results, which are filtered by the active predicate!).
+        //
+        let bucket = simperium.bucketForName(entityName())
+        return bucket.numObjects() > 0
+    }
+}
+
+
+
+// MARK: - NoResults Helpers
+//
+extension NotificationsViewController
+{
+    func showNoResultsViewIfNeeded() {
+        // Remove + Show Filters, if needed
+        guard shouldDisplayNoResultsView == true else {
+            noResultsView.removeFromSuperview()
+            showFiltersSegmentedControlIfApplicable()
+            return
+        }
+
+        // Attach the view
+        if noResultsView.superview == nil {
+            tableView.addSubviewWithFadeAnimation(noResultsView)
+        }
+
+        // Refresh its properties: The user may have signed into WordPress.com
+        noResultsView.titleText     = noResultsTitleText
+        noResultsView.titleText     = noResultsTitleText
+        noResultsView.messageText   = noResultsMessageText
+        noResultsView.accessoryView = noResultsAccessoryView
+        noResultsView.buttonTitle   = noResultsButtonText
+
+        // Hide the filter header if we're showing the Jetpack prompt
+        hideFiltersSegmentedControlIfApplicable()
+    }
+
+    var noResultsTitleText: String {
+        guard shouldDisplayJetpackMessage == false else {
+            return NSLocalizedString("Connect to Jetpack", comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
+        }
+
+        let messageMap: [Filter: String] = [
+            .None       : NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
+            .Unread     : NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
+            .Comment    : NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
+            .Follow     : NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
+            .Like       : NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
+        ]
+
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
+        return messageMap[filter] ?? String()
+    }
+
+    var noResultsMessageText: String? {
+        let jetpackMessage = NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.", comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
+        return shouldDisplayJetpackMessage ? jetpackMessage : nil
+    }
+
+    var noResultsAccessoryView: UIView? {
+        return shouldDisplayJetpackMessage ? UIImageView(image: UIImage(named: "icon-jetpack-gray")) : nil
+    }
+    var noResultsButtonText: String? {
+        return shouldDisplayJetpackMessage ? NSLocalizedString("Learn more", comment: "") : nil
+    }
+
+    var shouldDisplayJetpackMessage: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount() == nil
+    }
+
+    var shouldDisplayNoResultsView: Bool {
+        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+    }
+}
+
+
+// MARK: - WPNoResultsViewDelegate Methods
+//
+extension NotificationsViewController: WPNoResultsViewDelegate
+{
+    public func didTapNoResultsView(noResultsView: WPNoResultsView) {
+        guard let targetURL = NSURL(string: WPJetpackInformationURL) else {
+            fatalError()
+        }
+
+        let webViewController = WPWebViewController(URL: targetURL)
+        let navController = UINavigationController(rootViewController: webViewController)
+        presentViewController(navController, animated: true, completion: nil)
+
+        let properties = ["source": "notifications"]
+        WPAnalytics.track(.SelectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
     }
 }
 
