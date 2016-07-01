@@ -65,7 +65,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self configureTableViewFooter];
     [self configureTableViewHandler];
     [self configureTableViewLayoutCell];
-    
+    [self adjustTableViewInsetsIfNeeded];
+
     [self refreshAndSyncIfNeeded];
 }
 
@@ -86,6 +87,12 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self.tableViewHandler clearCachedRowHeights];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self adjustTableViewInsetsIfNeeded];
+}
 
 #pragma mark - Configuration
 
@@ -155,11 +162,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)configureTableViewFooter
 {
     // Notes:
-    //  -   iPhone: Hide the cellSeparators, when the table is empty
-    //  -   iPad: contentInset breaks tableSectionViews
-    CGRect footerFrame = UIDevice.isPad ? WPTableFooterPadFrame : CGRectZero;
-    
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
+    //  -  Hide the cellSeparators, when the table is empty
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)configureTableViewLayoutCell
@@ -175,33 +179,21 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     self.tableViewHandler                   = tableViewHandler;
 }
 
+- (void)adjustTableViewInsetsIfNeeded
+{
+    if ([WPDeviceIdentification isiPad]) {
+        BOOL isPadFullScreen = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+        if (isPadFullScreen) {
+            UIEdgeInsets inset = self.tableView.contentInset;
+            inset.top = WPTableViewTopMargin;
+            self.tableView.contentInset = inset;
+        } else {
+            self.tableView.contentInset = UIEdgeInsetsZero;
+        }
+    }
+}
 
 #pragma mark - UITableViewDelegate Methods
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [UIView new];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
-    return nil;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return [UIView new];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
