@@ -189,7 +189,7 @@ PODS:
     - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
     - WordPressCom-Stats-iOS/Services
-  - WordPressComKit (0.0.2):
+  - WordPressComKit (0.0.3):
     - Alamofire (~> 3.0)
   - WPMediaPicker (0.9.2)
   - wpxmlrpc (0.8.2)
@@ -228,7 +228,7 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (= 0.1.15)
   - WordPressCom-Stats-iOS (= 0.7.3)
   - WordPressCom-Stats-iOS/Services (= 0.7.3)
-  - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.2`)
+  - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.3`)
   - WPMediaPicker (~> 0.9.2)
   - wpxmlrpc (~> 0.8)
 
@@ -241,7 +241,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
-    :tag: 0.0.2
+    :tag: 0.0.3
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -252,7 +252,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
-    :tag: 0.0.2
+    :tag: 0.0.3
 
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
@@ -290,10 +290,10 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 50a7bd7056b8721e86c3cbe167eab49ef85ec07b
   WordPressCom-Analytics-iOS: e1a7111255e98561c4b5a33ef4baa75a68e0d5d3
   WordPressCom-Stats-iOS: 149f437b111cae51cec729542fedd674c51ff9e9
-  WordPressComKit: 75b1f5b2acba6d89bef68217402b8dc39f8f44e7
+  WordPressComKit: 41248e3753a64508b31db1625127b2a9f51bc24c
   WPMediaPicker: 98356dbf35bfaba0f51aff16d88563babadf24c7
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 130e62832d3c110abd3e8af3d6fede476bdb7f67
+PODFILE CHECKSUM: fa73eee8b84980514014208fe302e6d9123f9758
 
 COCOAPODS: 1.0.1
