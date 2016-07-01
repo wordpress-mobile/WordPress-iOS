@@ -230,12 +230,12 @@ class ReaderFollowedSitesViewController: UIViewController
 extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 {
 
-    func managedObjectContext() -> NSManagedObjectContext! {
+    func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
 
 
-    func fetchRequest() -> NSFetchRequest! {
+    func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "ReaderSiteTopic")
         fetchRequest.predicate = NSPredicate(format: "following = YES")
 
@@ -246,7 +246,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func configureCell(cell: UITableViewCell!, atIndexPath indexPath: NSIndexPath!) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
         }
@@ -264,7 +264,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) ?? WPTableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
 
         configureCell(cell, atIndexPath: indexPath)
@@ -272,12 +272,12 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 54.0
     }
 
 
-    func titleForHeaderInSection(section: Int) -> String! {
+    func titleForHeaderInSection(section: Int) -> String {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
@@ -286,7 +286,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
         }
@@ -294,27 +294,27 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
 
 
-    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
 
 
-    func tableView(tableView: UITableView!, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return .Delete
     }
 
 
-    func tableView(tableView: UITableView!, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath!) -> String! {
+    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
         return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
     }
 
 
-    func tableViewDidChangeContent(tableView: UITableView!) {
+    func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
         tableViewHandler.updateTitleForSection(0)
     }
