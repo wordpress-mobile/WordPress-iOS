@@ -26,10 +26,8 @@
 @property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
-- (NSString *)entityName;
 - (void)reloadResultsController;
 
-- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
 - (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end
