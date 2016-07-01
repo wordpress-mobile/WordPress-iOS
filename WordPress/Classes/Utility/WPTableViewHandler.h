@@ -4,88 +4,88 @@
 
 @protocol WPTableViewHandlerDelegate <NSObject>
 
-- (NSManagedObjectContext *)managedObjectContext;
-- (NSFetchRequest *)fetchRequest;
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (nonnull NSManagedObjectContext *)managedObjectContext;
+- (nonnull NSFetchRequest *)fetchRequest;
+- (void)configureCell:(nonnull UITableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)tableView:(nonnull UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 @optional
 
 #pragma mark - WPTableViewHandlerDelegate Methods
 
-- (NSString *)sectionNameKeyPath;
-- (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)tableViewDidChangeContent:(UITableView *)tableView;
-- (void)tableViewWillChangeContent:(UITableView *)tableView;
-- (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
-- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
+- (nonnull NSString *)sectionNameKeyPath;
+- (void)deletingSelectedRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)tableViewDidChangeContent:(nonnull UITableView *)tableView;
+- (void)tableViewWillChangeContent:(nonnull UITableView *)tableView;
+- (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(nonnull WPTableViewHandler *)tableViewHandler;
+- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(nonnull WPTableViewHandler *)tableViewHandler;
 
 
 #pragma mark - Proxied UITableViewDelegate Methods.
 #pragma mark - Configure rows for the table view.
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width;
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(nonnull UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (CGFloat)tableView:(nonnull UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath forWidth:(CGFloat)width;
+- (CGFloat)tableView:(nonnull UITableView *)tableView estimatedHeightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)tableView:(nonnull UITableView *)tableView willDisplayCell:(nonnull UITableViewCell *)cell forRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Managing selections
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable NSIndexPath *)tableView:(nonnull UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Modifying the header and footer of sections
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section;
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section;
+- (nullable UIView *)tableView:(nonnull UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
+- (CGFloat)tableView:(nonnull UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
+- (nullable UIView *)tableView:(nonnull UITableView *)tableView viewForFooterInSection:(NSInteger)section;
+- (CGFloat)tableView:(nonnull UITableView *)tableView heightForFooterInSection:(NSInteger)section;
 
 #pragma mark - Editing table rows
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCellEditingStyle)tableView:(nonnull UITableView *)tableView editingStyleForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (nullable NSString *)tableView:(nonnull UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Editing actions
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(nonnull UITableView *)tableView editActionsForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Tracking the removal of views
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(nonnull UITableView *)tableView didEndDisplayingCell:(nonnull UITableViewCell *)cell forRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Managing table view highlighting
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)tableView:(nonnull UITableView *)tableView shouldHighlightRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 
 #pragma mark - Proxied UITableViewDatasource Methods
 #pragma mark - Configuring a table view
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section;
+- (nonnull NSString *)titleForHeaderInSection:(NSInteger)section;
 
 #pragma mark - Inserting or deleting table rows
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(nonnull UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (BOOL)tableView:(nonnull UITableView *)tableView canEditRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 
 #pragma mark - Proxied UIScrollViewDelegate Methods
 #pragma mark - Responding to Scrolling and Dragging
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(nonnull UIScrollView *)scrollView;
+- (void)scrollViewDidEndDecelerating:(nonnull UIScrollView *)scrollView;
+- (void)scrollViewDidEndDragging:(nonnull UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 
 @end
 
 
 @interface WPTableViewHandler : NSObject <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong, readonly) UITableView *tableView;
-@property (nonatomic, strong, readonly) NSFetchedResultsController *resultsController;
-@property (nonatomic, weak) id<WPTableViewHandlerDelegate> delegate;
+@property (nonatomic, strong, readonly, nonnull) UITableView *tableView;
+@property (nonatomic, strong, readonly, nonnull) NSFetchedResultsController *resultsController;
+@property (nonatomic, weak, nullable) id<WPTableViewHandlerDelegate> delegate;
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;
 @property (nonatomic) UITableViewRowAnimation updateRowAnimation;
@@ -94,11 +94,11 @@
 @property (nonatomic) UITableViewRowAnimation moveRowAnimation;
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
-- (instancetype)initWithTableView:(UITableView *)tableView;
+- (nonnull instancetype)initWithTableView:(nonnull UITableView *)tableView;
 - (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
-- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath;
+- (void)invalidateCachedRowHeightAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /**
  A convenience method for clearing cached row heights and reloading the table view.
