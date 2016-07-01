@@ -83,7 +83,7 @@ extension NotificationsViewController
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
         ratingsView.rightButton.titleLabel?.font = ratingsFont
-        ratingsView.delegate = appbotViewDelegate()
+        ratingsView.delegate = self
         ratingsView.alpha = WPAlphaZero
     }
 
