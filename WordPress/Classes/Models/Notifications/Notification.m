@@ -627,6 +627,11 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return self.date;
 }
 
+- (NSString *)timestampAsString
+{
+    return self.timestamp;
+}
+
 - (NotificationBlockGroup *)subjectBlockGroup
 {
     if (!_subjectBlockGroup) {
