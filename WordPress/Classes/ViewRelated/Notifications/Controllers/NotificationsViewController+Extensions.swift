@@ -5,10 +5,11 @@ import WordPress_AppbotX
 import WordPressShared
 
 
+
+// MARK: - User Interface Initialization
+//
 extension NotificationsViewController
 {
-    // MARK: - Setup Helpers
-
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
@@ -117,20 +118,26 @@ extension NotificationsViewController
         notesBucket.delegate = simperiumBucketDelegate()
         notesBucket.notifyWhileIndexing = true
     }
+}
 
 
 
-    // MARK: - UIRefreshControl Methods
-
+// MARK: - UIRefreshControl Methods
+//
+extension NotificationsViewController
+{
     func refresh() {
         // Yes. This is dummy. Simperium handles sync for us!
         refreshControl?.endRefreshing()
     }
+}
 
 
 
-    // MARK: - UISegmentedControl Methods
-
+// MARK: - UISegmentedControl Methods
+//
+extension NotificationsViewController
+{
     func segmentedControlDidChange(sender: UISegmentedControl) {
         reloadResultsController()
 
@@ -142,6 +149,7 @@ extension NotificationsViewController
         let path = NSIndexPath(forRow: 0, inSection: 0)
         tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: true)
     }
+}
 
 
 
