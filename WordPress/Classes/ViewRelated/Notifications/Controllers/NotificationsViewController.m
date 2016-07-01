@@ -894,11 +894,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 // TODO: Nuke them. JLP 06.30.2016
 //
 
-- (id <ABXPromptViewDelegate>)appbotViewDelegate
-{
-    return self;
-}
-
 - (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
 {
     return self;
