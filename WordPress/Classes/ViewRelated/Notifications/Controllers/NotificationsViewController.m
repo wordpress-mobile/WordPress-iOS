@@ -8,7 +8,6 @@
 
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
-#import "WPNoResultsView.h"
 #import "WPTabBarController.h"
 
 #import "Notification.h"
@@ -53,7 +52,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 #pragma mark Protocols
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController (Protocols) <SPBucketDelegate, WPNoResultsViewDelegate>
+@interface NotificationsViewController (Protocols) <SPBucketDelegate>
 
 @end
 
@@ -108,6 +107,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
+    [self setupNoResultsView];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
     
@@ -156,37 +156,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - Setup Helpers
-
-- (void)showFiltersSegmentedControlIfApplicable
-{
-    if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
-        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-            self.tableHeaderView.alpha = WPAlphaFull;
-        } completion:nil];
-    }
-}
-
-- (void)hideFiltersSegmentedControlIfApplicable
-{
-    if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
-        self.tableHeaderView.alpha  = WPAlphaZero;
-    }
-}
-
-- (BOOL)shouldDisplayFilters
-{
-    // Note:
-    // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
-    // results, which are filtered by the active predicate!).
-    //
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-
-    return notesBucket.numObjects > 0;
 }
 
 
@@ -599,104 +568,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         ReaderDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
-}
-
-
-#pragma mark - No Results Helpers
-
-- (void)showNoResultsViewIfNeeded
-{
-    // Remove If Needed
-    if (!self.shouldDisplayNoResultsView) {
-        [self.noResultsView removeFromSuperview];
-        
-        // Show filters if we have results
-        [self showFiltersSegmentedControlIfApplicable];
-        
-        return;
-    }
-    
-    // Attach the view
-    WPNoResultsView *noResultsView  = self.noResultsView;
-    if (!noResultsView.superview) {
-        [self.tableView addSubviewWithFadeAnimation:noResultsView];
-    }
-    
-    // Refresh its properties: The user may have signed into WordPress.com
-    noResultsView.titleText         = self.noResultsTitleText;
-    noResultsView.messageText       = self.noResultsMessageText;
-    noResultsView.accessoryView     = self.noResultsAccessoryView;
-    noResultsView.buttonTitle       = self.noResultsButtonText;
-    
-    // Hide the filter header if we're showing the Jetpack prompt
-    [self hideFiltersSegmentedControlIfApplicable];
-}
-
-- (WPNoResultsView *)noResultsView
-{
-    if (!_noResultsView) {
-        _noResultsView          = [WPNoResultsView new];
-        _noResultsView.delegate = self;
-    }
-    return _noResultsView;
-}
-
-- (NSString *)noResultsTitleText
-{
-    if (self.shouldDisplayJetpackMessage) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
-    }
-    
-    NSDictionary *messageMap = @{
-        @(NotificationFilterNone)       : NSLocalizedString(@"No notifications yet", @"Displayed in the Notifications Tab, when there are no notifications"),
-        @(NotificationFilterUnread)     : NSLocalizedString(@"No unread notifications", @"Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-        @(NotificationFilterComment)    : NSLocalizedString(@"No comments notifications", @"Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-        @(NotificationFilterFollow)     : NSLocalizedString(@"No new followers notifications", @"Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-        @(NotificationFilterLike)       : NSLocalizedString(@"No like notifications", @"Displayed in the Notifications Tab, when the Likes Filter shows no notifications"),
-    };
-
-    return messageMap[@(self.filtersSegmentedControl.selectedSegmentIndex)];
-}
-
-- (NSString *)noResultsMessageText
-{
-    NSString *jetpackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
-    return self.shouldDisplayJetpackMessage ? jetpackMessage : nil;
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    return self.shouldDisplayJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
-}
- 
-- (NSString *)noResultsButtonText
-{
-    return self.shouldDisplayJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
-}
- 
-- (BOOL)shouldDisplayJetpackMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
-    
-    return showsJetpackMessage;
-}
-
-- (BOOL)shouldDisplayNoResultsView
-{
-    return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-}
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
-    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
- 
-    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
- 
-    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
 
 
