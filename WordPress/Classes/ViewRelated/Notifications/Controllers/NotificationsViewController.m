@@ -25,8 +25,6 @@
 
 #import "UIView+Subviews.h"
 
-#import "AppRatingUtility.h"
-
 #import "WordPress-Swift.h"
 
 
@@ -55,9 +53,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 #pragma mark Protocols
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController (Protocols) <SPBucketDelegate,
-                                                    WPNoResultsViewDelegate,
-                                                    WPTableViewHandlerDelegate>
+@interface NotificationsViewController (Protocols) <SPBucketDelegate, WPNoResultsViewDelegate>
 
 @end
 
@@ -189,7 +185,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     //
     Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    
+
     return notesBucket.numObjects > 0;
 }
 
@@ -606,91 +602,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-#pragma mark - WPTableViewHandlerDelegate Methods
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    return [[ContextManager sharedInstance] mainContext];
-}
-
-- (NSFetchRequest *)fetchRequest
-{
-    NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-    fetchRequest.predicate          = [self predicateForSelectedFilters];
-    
-    return fetchRequest;
-}
-
-- (NSPredicate *)predicateForSelectedFilters
-{
-    NSDictionary *filtersMap = @{
-        @(NotificationFilterUnread)     : @" AND (read = NO)",
-        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
-        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
-        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
-                                            NoteTypeLike, NoteTypeCommentLike]
-    };
- 
-    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
-    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
-    
-    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
-}
-
-- (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    // Note:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
- 
-    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
-    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
-    __weak __typeof(self) weakSelf  = self;
-    
-    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
-    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
-    cell.read                       = note.read.boolValue;
-    cell.noticon                    = note.noticon;
-    cell.unapproved                 = note.isUnapprovedComment;
-    cell.markedForDeletion          = isMarkedForDeletion;
-    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
-    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
-    cell.onUndelete                 = ^{
-        [weakSelf cancelDeletionForNoteWithID:note.objectID];
-    };
-
-    [cell downloadIconWithURL:note.iconURL];
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Notification class]);
-}
-
-- (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    // Update Separators:
-    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
-    {
-        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
-    }
-    
-    // Update NoResults View
-    [self showNoResultsViewIfNeeded];
-}
-
-
 #pragma mark - No Results Helpers
 
 - (void)showNoResultsViewIfNeeded
@@ -798,15 +709,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 // TODO: Nuke them. JLP 06.30.2016
 //
 
-- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
-{
-    return self;
-}
-
 - (id <SPBucketDelegate>)simperiumBucketDelegate
 {
     return self;
 }
-
 
 @end
