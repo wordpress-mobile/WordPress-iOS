@@ -50,7 +50,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '~> 0.9.2'
     pod 'WordPress-iOS-Editor', '1.6.3'
     pod 'WordPressCom-Analytics-iOS', '0.1.15'
-    pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :commit => '072161d72fb626f53ca1d0fa7191ee9bc44b1633'
+    pod 'WordPressCom-Stats-iOS', '0.7.4'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git', :commit => '072161d72fb626f53ca1d0fa7191ee9bc44b1633'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.4'
   end
 
 end
