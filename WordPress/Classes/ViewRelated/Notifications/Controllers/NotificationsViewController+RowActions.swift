@@ -19,7 +19,7 @@ extension NotificationsViewController
     }
 
     public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        guard let note = tableViewHandler?.resultsController?.objectOfType(Notification.self, atIndexPath: indexPath),
+        guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
                     group = note.blockGroupOfType(NoteBlockGroupType.Comment),
                     block = group.blockOfType(.Comment) else
         {
