@@ -920,8 +920,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Filter Related
 
-    func canFilterByAuthor() -> Bool {
-        return blog.isHostedAtWPcom && blog.isMultiAuthor && blogUserID() != nil
+    class func canFilterByAuthor(blog blog:Blog) -> Bool {
+        return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
+    }
+
+    class func authorIDFilter(forBlog blog:Blog) -> NSNumber? {
+        return currentPostAuthorFilter(forBlog:blog) == .Mine ? blog.account?.userID : nil
     }
 
     func shouldShowOnlyMyPosts() -> Bool {
@@ -929,8 +933,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return filter == .Mine
     }
 
-    func currentPostAuthorFilter() -> PostAuthorFilter {
+    class func currentPostAuthorFilter(forBlog blog:Blog) -> PostAuthorFilter {
         return .Everyone
+    }
+
+    func currentPostAuthorFilter() -> PostAuthorFilter {
+        return self.dynamicType.currentPostAuthorFilter(forBlog:blog)
     }
 
     func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {

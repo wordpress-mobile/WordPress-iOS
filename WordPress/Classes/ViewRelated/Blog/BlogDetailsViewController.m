@@ -544,7 +544,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     PostServiceSyncOptions *options = [PostServiceSyncOptions new];
     //options.statuses = filter.statuses
-    options.authorID = nil; //author // blog.account?.userID
+    options.authorID = [PostListViewController authorIDFilterForBlog:self.blog];
     // options.number = numberOfPostsPerSync()
     options.purgesLocalSync = YES;
     
