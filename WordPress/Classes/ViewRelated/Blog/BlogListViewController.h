@@ -2,7 +2,7 @@
 #import "WPSearchController.h"
 
 
-@interface BlogListViewController : UIViewController
+@interface BlogListViewController : UITableViewController
 
 - (void)bypassBlogListViewController;
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
