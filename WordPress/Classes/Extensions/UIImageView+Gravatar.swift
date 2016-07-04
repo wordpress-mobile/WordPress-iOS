@@ -72,7 +72,8 @@ extension UIImageView
 
         let request = NSURLRequest(URL: targetURL)
 
-        self.dynamicType.sharedImageCache().cacheImage(image, forRequest: request)
+
+        self.dynamicType.sharedImageDownloader().imageCache?.addImage(image, forRequest: request, withAdditionalIdentifier: nil)
         NSURLCache.sharedURLCache().cacheImage(image, forRequest: request)
     }
 

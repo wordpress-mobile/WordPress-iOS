@@ -141,12 +141,12 @@ class ReaderSearchSuggestionsViewController : UIViewController
 
 extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 {
-    func managedObjectContext() -> NSManagedObjectContext! {
+    func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
 
 
-    func fetchRequest() -> NSFetchRequest! {
+    func fetchRequest() -> NSFetchRequest {
         let request = NSFetchRequest(entityName: "ReaderSearchSuggestion")
         request.predicate = predicateForFetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
@@ -154,7 +154,7 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
     }
 
 
-    func configureCell(cell: UITableViewCell!, atIndexPath indexPath: NSIndexPath!) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
@@ -162,7 +162,7 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableViewDidChangeContent(tableView: UITableView!) {
+    func tableViewDidChangeContent(tableView: UITableView) {
         updateHeightConstraint()
     }
 
@@ -188,12 +188,12 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.Delete
     }
 
 
-    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let suggestion = tableViewHandler.resultsController.objectOfType(ReaderSearchSuggestion.self, atIndexPath: indexPath) else {
             return
         }
@@ -202,7 +202,7 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView!, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath!) -> String! {
+    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
         return NSLocalizedString("Delete", comment: "Title of a delete button")
     }
 }
