@@ -1444,14 +1444,14 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     // MARK: Scrolling Related
 
-    public func scrollViewWillBeginDragging(scrollView: UIScrollView!) {
+    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if refreshControl.refreshing {
             refreshControl.endRefreshing()
         }
     }
 
 
-    public func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
@@ -1461,7 +1461,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
@@ -1475,7 +1475,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func fetchRequest() -> NSFetchRequest? {
+    public func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -1483,7 +1483,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func tableViewDidChangeContent(tableView: UITableView!) {
+    public func tableViewDidChangeContent(tableView: UITableView) {
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             displayNoResultsView()
         }
@@ -1492,14 +1492,14 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     // MARK - Refresh Bookends
 
-    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
         // Reload the table view to reflect new content.
         managedObjectContext().reset()
         updateAndPerformFetchRequest()
     }
 
 
-    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             displayNoResultsView()
         } else {
@@ -1521,7 +1521,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!, forWidth width: CGFloat) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             return 0.0
         }
