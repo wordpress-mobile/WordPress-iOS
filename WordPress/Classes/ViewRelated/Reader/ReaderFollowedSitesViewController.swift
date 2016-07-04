@@ -277,7 +277,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func titleForHeaderInSection(section: Int) -> String {
+    func titleForHeaderInSection(section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
