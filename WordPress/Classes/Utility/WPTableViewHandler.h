@@ -63,7 +63,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
-- (nonnull NSString *)titleForHeaderInSection:(NSInteger)section;
+- (nullable NSString *)titleForHeaderInSection:(NSInteger)section;
 
 #pragma mark - Inserting or deleting table rows
 
