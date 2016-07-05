@@ -9,7 +9,7 @@ import Mixpanel
 @objc class SigninHelpers: NSObject
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
-
+    private static let JoinABTestTimeoutInSeconds: NSTimeInterval = 2
 
     // MARK: - AB test related methods
 
@@ -22,7 +22,7 @@ import Mixpanel
     ///
     class func loadABTestThenShowSigninController() {
         guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
-            assertionFailure("Oh where oh where could my rootviewcontroller have gone?")
+            assertionFailure("Missing a rootViewController.")
             return
         }
 
@@ -45,7 +45,7 @@ import Mixpanel
             SigninHelpers.showSigninControllerForABTest()
         }
 
-        NSTimer.scheduledTimerWithTimeInterval(2, target: SigninHelpers.self, selector: #selector(SigninHelpers.showSigninControllerForABTest), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(JoinABTestTimeoutInSeconds, target: SigninHelpers.self, selector: #selector(SigninHelpers.showSigninControllerForABTest), userInfo: nil, repeats: false)
     }
 
 
@@ -55,7 +55,7 @@ import Mixpanel
     ///
     class func showSigninControllerForABTest() {
         guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
-            assertionFailure(" Oh where oh where could he be?")
+            assertionFailure("Missing a rootViewController.")
             return
         }
 
