@@ -408,8 +408,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Filter Related
 
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPageListStatusFilterKey
+    override class func keyForCurrentListStatusFilter() -> String {
+        return currentPageListStatusFilterKey
     }
 
     // MARK: - Cell Action Handling

@@ -541,11 +541,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilter *filter = [PostListViewController currentPostListFilter];
     
     PostServiceSyncOptions *options = [PostServiceSyncOptions new];
-    //options.statuses = filter.statuses
+    options.statuses = filter.statuses;
     options.authorID = [PostListViewController authorIDFilterForBlog:self.blog];
-    // options.number = numberOfPostsPerSync()
     options.purgesLocalSync = YES;
     
     NSLog(@"Preloading posts for %@", self.blog.hostname);
