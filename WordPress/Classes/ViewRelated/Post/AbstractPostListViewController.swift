@@ -925,7 +925,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     class func authorIDFilter(forBlog blog:Blog) -> NSNumber? {
-        return currentPostAuthorFilter(forBlog:blog) == .Mine ? blog.account?.userID : nil
+        return currentPostAuthorFilter(blog:blog) == .Mine ? blog.account?.userID : nil
     }
 
     func shouldShowOnlyMyPosts() -> Bool {
@@ -933,12 +933,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return filter == .Mine
     }
 
-    class func currentPostAuthorFilter(forBlog blog:Blog) -> PostAuthorFilter {
+    class func currentPostAuthorFilter(blog blog:Blog) -> PostAuthorFilter {
         return .Everyone
     }
 
     func currentPostAuthorFilter() -> PostAuthorFilter {
-        return self.dynamicType.currentPostAuthorFilter(forBlog:blog)
+        return self.dynamicType.currentPostAuthorFilter(blog:blog)
     }
 
     func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
@@ -964,7 +964,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     class func currentPostListFilter() -> PostListFilter {
-        return PostListFilter.postListFilters()[currentFilterIndex()]
+        return availablePostListFilters()[currentFilterIndex()]
     }
 
     func filterThatDisplaysPostsWithStatus(postStatus: String) -> PostListFilter {

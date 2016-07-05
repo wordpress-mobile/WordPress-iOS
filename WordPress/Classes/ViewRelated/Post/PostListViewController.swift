@@ -553,7 +553,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Filter Related
 
-    override class func currentPostAuthorFilter(forBlog blog:Blog) -> PostAuthorFilter {
+    override class func currentPostAuthorFilter(blog blog:Blog) -> PostAuthorFilter {
         if !canFilterByAuthor(blog:blog) {
             // No REST API, so we have to use XMLRPC and can't filter results by author.
             return .Everyone
