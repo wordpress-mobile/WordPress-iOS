@@ -265,7 +265,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     row.accessoryView = accessoryView;
     [rows addObject:row];
 
-    if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
+    if ([self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeClipboard]
@@ -527,6 +527,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPlans
+{
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
+    PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
