@@ -36,6 +36,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                         UISearchControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -61,7 +62,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (instancetype)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
@@ -125,6 +126,11 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.tableView];
+    [self.view pinSubviewToAllEdges:self.tableView];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if ([WPDeviceIdentification isiPhone]) {
@@ -321,13 +327,13 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
 }
 
@@ -337,26 +343,29 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
     CGFloat searchBarHeight = CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+
     CGRect keyboardFrame = [self localKeyboardFrameFromNotification:notification];
+    CGFloat keyboardHeight = CGRectGetMaxY(self.tableView.frame) - keyboardFrame.origin.y;
 
     UIEdgeInsets insets = self.tableView.contentInset;
 
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardFrame.size.height, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardFrame.size.height, insets.right);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
 }
 
-- (void)keyboardDidHide:(NSNotification*)notification
+- (void)keyboardWillHide:(NSNotification*)notification
 {
+    CGFloat searchBarHeight = CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+
     CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
 
     UIEdgeInsets insets = self.tableView.contentInset;
-    insets.bottom = tabBarHeight;
 
-    self.tableView.contentInset = insets;
-    self.tableView.scrollIndicatorInsets = insets;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, tabBarHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, tabBarHeight, insets.right);
 }
 
 -(CGRect)localKeyboardFrameFromNotification:(NSNotification *)notification
