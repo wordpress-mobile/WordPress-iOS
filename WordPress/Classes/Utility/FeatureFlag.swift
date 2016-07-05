@@ -6,10 +6,6 @@ enum FeatureFlag: Int {
     /// My Sites > Site > People
     /// Development on hold while we focus on Me
     case People
-    /// My Sites > Site > Plans
-    case Plans
-    /// My Sites > Site > Domains
-    case Domains
     /// Me > My Profile
     case MyProfile
     /// Me > Account Settings
@@ -21,10 +17,6 @@ enum FeatureFlag: Int {
         case .ReaderMenu:
             return build(.Debug)
         case .People:
-            return build(.Debug)
-        case .Plans:
-            return build(.Debug)
-        case .Domains:
             return build(.Debug)
         case .MyProfile, .AccountSettings:
             return true
