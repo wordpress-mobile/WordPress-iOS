@@ -584,8 +584,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         syncItemsWithUserInteraction(false)
     }
 
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPostListStatusFilterKey
+    override class func keyForCurrentListStatusFilter() -> String {
+        return currentPostListStatusFilterKey
     }
 
     // MARK: - InteractivePostViewDelegate
