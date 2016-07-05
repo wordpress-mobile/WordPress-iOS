@@ -125,8 +125,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     if (!CGSizeEqualToSize(self.previousViewGeometry, CGSizeZero)) {
         if (! CGSizeEqualToSize(self.previousViewGeometry, self.view.frame.size)) {
-            // Refresh cached row heights based on the new width
-            [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+            // Clear cached heights and refresh
+            [self.tableViewHandler clearCachedRowHeights];
             [self.tableView reloadData];
         }
     }
@@ -210,7 +210,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     CGFloat width = CGRectGetWidth(self.view.frame);
     [self updateCellsAndRefreshMediaForWidth:width];
-    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 
@@ -483,16 +483,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self updateCachedMediaCellLayoutForWidth:width];
 
     // Resize cells in the media cell cache
-    // No need to refresh on iPad when using a fixed width.
     for (NSString *key in [self.mediaCellCache allKeys]) {
         ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
-        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
-
         [cell refreshMediaLayout];
-        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
     }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+    [self.tableViewHandler clearCachedRowHeights];
 }
 
 - (void)updateCellForLayoutWidthConstraint:(CGFloat)width
