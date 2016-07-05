@@ -94,12 +94,12 @@ class ShareViewController: SLComposeServiceViewController {
         // Proceed uploading the actual post
         let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
         let attachedImageData = encodedMediaAttachment()
-        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: attachedImageData)
+        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: attachedImageData) {
 
 // TODO: Handle retry?
-
-        tracks.trackExtensionPosted(postStatus)
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
+            self.tracks.trackExtensionPosted(self.postStatus)
+            self.extensionContext?.completeRequestReturningItems([], completionHandler: nil)
+        }
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -222,18 +222,21 @@ private extension ShareViewController
 private extension ShareViewController
 {
     func encodedMediaAttachment() -> NSData? {
-        guard let image = mediaView?.mediaImage, payload = UIImagePNGRepresentation(image) else {
+        let quality = CGFloat(0.9)
+        guard let image = mediaView?.mediaImage, payload = UIImageJPEGRepresentation(image, quality) else {
             return nil
         }
 
         return payload
     }
 
-    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?) {
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?, requestEqueued: Void -> ()) {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)
-        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImagePNGData: attachedImageData) { (post, error) in
+        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
+            requestEqueued()
+        }, completion: { (post, error) in
             print("Post \(post) Error \(error)")
-        }
+        })
     }
 }
