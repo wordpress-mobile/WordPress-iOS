@@ -90,18 +90,13 @@ class ShareViewController: SLComposeServiceViewController {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
-        // Upload Media, if any
-        uploadImageIfNeeded(mediaView?.mediaImage, siteID: siteID) { media in
-            // Proceed uploading the actual post
-            var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
 
-            if let mediaURL = media?.remoteURL {
-                body = body.stringByPrependingMediaURL(mediaURL)
-            }
-            self.uploadPostWithSubject(subject, body: body, status: self.postStatus, siteID: siteID)
+        // Proceed uploading the actual post
+        let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
+        let attachedImageData = encodedMediaAttachment()
+        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: attachedImageData)
 
 // TODO: Handle retry?
-        }
 
         tracks.trackExtensionPosted(postStatus)
         extensionContext?.completeRequestReturningItems([], completionHandler: nil)
@@ -226,32 +221,19 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func uploadImageIfNeeded(image: UIImage?, siteID: Int, completion: Media? -> ()) {
-        guard let image = image, payload = UIImagePNGRepresentation(image) else {
-            completion(nil)
-            return
+    func encodedMediaAttachment() -> NSData? {
+        guard let image = mediaView?.mediaImage, payload = UIImagePNGRepresentation(image) else {
+            return nil
         }
 
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-        let service = MediaService(configuration: configuration)
-
-        service.createMedia(payload, filename: MediaSettings.filename, mimeType: MediaSettings.mimeType, siteID: siteID) { (media, error) in
-            NSLog("Media: \(media) Error: \(error)")
-            completion(media)
-        }
+        return payload
     }
 
-    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int) {
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?) {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)
-        service.createPost(siteID: siteID, status: status, title: subject, body: body) { (post, error) in
+        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImagePNGData: attachedImageData) { (post, error) in
             print("Post \(post) Error \(error)")
         }
-    }
-
-
-    enum MediaSettings {
-        static let filename = "image.png"
-        static let mimeType = "image/png"
     }
 }
