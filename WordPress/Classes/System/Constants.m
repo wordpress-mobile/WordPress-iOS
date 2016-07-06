@@ -28,12 +28,12 @@ NSString *const WPGravatarBaseURL                                   = @"http://g
 ///
 NSString *const WPNotificationsBucketName                           = @"note20";
 #ifdef DEBUG
-NSString *const  WPPushNotificationAppId = @"org.wordpress.appstore.dev";
+NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
 #else
 #ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId = @"org.wordpress.internal";
+NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
 #else
-NSString *const WPPushNotificationAppId = @"org.wordpress.appstore";
+NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
 #endif
 #endif
 /// Keychain Constants
@@ -78,4 +78,4 @@ NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
 
 /// Scheme Constants
 ///
-NSString *const WPComScheme = WPCOM_SCHEME;
+NSString *const WPComScheme                                         = WPCOM_SCHEME;
