@@ -27,10 +27,6 @@
 
 #import "AppRatingUtility.h"
 
-#import <WordPress_AppbotX/ABXPromptView.h>
-#import <WordPress_AppbotX/ABXAppStore.h>
-#import <WordPress_AppbotX/ABXFeedbackViewController.h>
-
 #import "WordPress-Swift.h"
 
 
@@ -44,8 +40,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
-
-static CGFloat const RatingsViewHeight                  = 100.0;
 
 typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
@@ -63,9 +57,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 @interface NotificationsViewController (Protocols) <SPBucketDelegate,
                                                     WPNoResultsViewDelegate,
-                                                    WPTableViewHandlerDelegate,
-                                                    ABXPromptViewDelegate,
-                                                    ABXFeedbackViewControllerDelegate>
+                                                    WPTableViewHandlerDelegate>
 
 @end
 
@@ -199,45 +191,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
     
     return notesBucket.numObjects > 0;
-}
-
-
-#pragma mark - AppBotX Helpers
-
-- (void)showRatingViewIfApplicable
-{
-    if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-        return;
-    }
-
-    // Rating View is already visible, don't bother to do anything
-    if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
-        return;
-    }
-    
-    // Animate FadeIn + Enhance
-    self.ratingsView.alpha = WPAlphaZero;
-    
-    CGFloat const delay = 0.5f;
-    
-    [UIView animateWithDuration:WPAnimationDurationDefault delay:delay options:UIViewAnimationCurveEaseIn animations:^{
-        self.ratingsView.alpha                  = WPAlphaFull;
-        self.ratingsHeightConstraint.constant   = RatingsViewHeight;
-                    
-        [self setupTableHeaderView];
-    } completion:nil];
-    
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
-}
-
-- (void)hideRatingView
-{
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.ratingsView.alpha                  = WPAlphaZero;
-        self.ratingsHeightConstraint.constant   = 0;
-                
-        [self setupTableHeaderView];
-    } completion:nil];
 }
 
 
@@ -836,55 +789,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-
-#pragma mark - ABXPromptViewDelegate
-
-- (void)appbotPromptForReview
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[AppRatingUtility appReviewUrl]]];
-    [AppRatingUtility ratedCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptForFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
-    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
-    [AppRatingUtility gaveFeedbackForCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptClose
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
-    [AppRatingUtility declinedToRateCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptLiked
-{
-    [AppRatingUtility likedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
-}
-
-- (void)appbotPromptDidntLike
-{
-    [AppRatingUtility dislikedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
-}
-
-- (void)abxFeedbackDidSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
-}
-
-- (void)abxFeedbackDidntSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
-}
-
-
 #pragma mark - Swift Migration Helpers
 
 // Note:
@@ -893,11 +797,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 //
 // TODO: Nuke them. JLP 06.30.2016
 //
-
-- (id <ABXPromptViewDelegate>)appbotViewDelegate
-{
-    return self;
-}
 
 - (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
 {

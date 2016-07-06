@@ -1,13 +1,15 @@
 import Foundation
 import Simperium
+import WordPressComAnalytics
 import WordPress_AppbotX
 import WordPressShared
 
 
+
+// MARK: - User Interface Initialization
+//
 extension NotificationsViewController
 {
-    // MARK: - Setup Helpers
-
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
@@ -83,7 +85,7 @@ extension NotificationsViewController
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
         ratingsView.rightButton.titleLabel?.font = ratingsFont
-        ratingsView.delegate = appbotViewDelegate()
+        ratingsView.delegate = self
         ratingsView.alpha = WPAlphaZero
     }
 
@@ -116,20 +118,26 @@ extension NotificationsViewController
         notesBucket.delegate = simperiumBucketDelegate()
         notesBucket.notifyWhileIndexing = true
     }
+}
 
 
 
-    // MARK: - UIRefreshControl Methods
-
+// MARK: - UIRefreshControl Methods
+//
+extension NotificationsViewController
+{
     func refresh() {
         // Yes. This is dummy. Simperium handles sync for us!
         refreshControl?.endRefreshing()
     }
+}
 
 
 
-    // MARK: - UISegmentedControl Methods
-
+// MARK: - UISegmentedControl Methods
+//
+extension NotificationsViewController
+{
     func segmentedControlDidChange(sender: UISegmentedControl) {
         reloadResultsController()
 
@@ -141,13 +149,108 @@ extension NotificationsViewController
         let path = NSIndexPath(forRow: 0, inSection: 0)
         tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: true)
     }
+}
 
 
 
+// MARK: - RatingsView Helpers
+//
+extension NotificationsViewController
+{
+    public func showRatingViewIfApplicable() {
+        guard AppRatingUtility.shouldPromptForAppReviewForSection(RatingSettings.section) else {
+            return
+        }
 
-    // MARK: - Private Properties
+        guard ratingsHeightConstraint.constant != RatingSettings.heightFull && ratingsView.alpha != WPAlphaFull else {
+            return
+        }
 
-    private var simperium: Simperium {
+        ratingsView.alpha = WPAlphaZero
+
+        UIView.animateWithDuration(WPAnimationDurationDefault, delay: RatingSettings.animationDelay, options: .CurveEaseIn, animations: {
+            self.ratingsView.alpha = WPAlphaFull
+            self.ratingsHeightConstraint.constant = RatingSettings.heightFull
+
+            self.setupTableHeaderView()
+        }, completion: nil)
+
+        WPAnalytics.track(.AppReviewsSawPrompt)
+    }
+
+    public func hideRatingView() {
+        UIView.animateWithDuration(WPAnimationDurationDefault) {
+            self.ratingsView.alpha = WPAlphaZero
+            self.ratingsHeightConstraint.constant = RatingSettings.heightZero
+
+            self.setupTableHeaderView()
+        }
+    }
+}
+
+
+
+// MARK: - ABXPromptViewDelegate Methods
+//
+extension NotificationsViewController: ABXPromptViewDelegate
+{
+    public func appbotPromptForReview() {
+        WPAnalytics.track(.AppReviewsRatedApp)
+        AppRatingUtility.ratedCurrentVersion()
+        hideRatingView()
+
+        if let targetURL = NSURL(string: RatingSettings.reviewURL) {
+            UIApplication.sharedApplication().openURL(targetURL)
+        }
+    }
+
+    public func appbotPromptForFeedback() {
+        WPAnalytics.track(.AppReviewsOpenedFeedbackScreen)
+        ABXFeedbackViewController.showFromController(self, placeholder: nil, delegate: nil)
+        AppRatingUtility.gaveFeedbackForCurrentVersion()
+        hideRatingView()
+    }
+
+    public func appbotPromptClose() {
+        WPAnalytics.track(.AppReviewsDeclinedToRateApp)
+        AppRatingUtility.declinedToRateCurrentVersion()
+        hideRatingView()
+    }
+
+    public func appbotPromptLiked() {
+        WPAnalytics.track(.AppReviewsLikedApp)
+        AppRatingUtility.likedCurrentVersion()
+    }
+
+    public func appbotPromptDidntLike() {
+        WPAnalytics.track(.AppReviewsDidntLikeApp)
+        AppRatingUtility.dislikedCurrentVersion()
+    }
+
+    public func abxFeedbackDidSendFeedback () {
+        WPAnalytics.track(.AppReviewsSentFeedback)
+    }
+
+    public func abxFeedbackDidntSendFeedback() {
+        WPAnalytics.track(.AppReviewsCanceledFeedbackScreen)
+    }
+}
+
+
+
+// MARK: - Private Properties
+//
+private extension NotificationsViewController
+{
+    var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
+    }
+
+    struct RatingSettings {
+        static let section          = "notifications"
+        static let heightFull       = CGFloat(100)
+        static let heightZero       = CGFloat(0)
+        static let animationDelay   = NSTimeInterval(0.5)
+        static let reviewURL        = AppRatingUtility.appReviewUrl()
     }
 }
