@@ -524,6 +524,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (isOnWifi) {
         [self preloadStats];
         [self preloadPosts];
+        [self preloadPages];
     }
 }
 
@@ -549,6 +550,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     options.purgesLocalSync = YES;
     
     [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
+}
+
+- (void)preloadPages
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilter *filter = [PageListViewController currentPostListFilter];
+
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [PageListViewController authorIDFilterForBlog:self.blog];
+    options.purgesLocalSync = YES;
+
+    [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
 }
 
 - (void)showComments
