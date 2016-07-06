@@ -16,18 +16,6 @@ class MediaView : UIView
         }
     }
 
-    /// The URL of the image that should be displayed
-    ///
-    var mediaImage: UIImage? {
-        didSet {
-            guard let mediaImage = mediaImage else {
-                return
-            }
-
-            loadImageAndResizeIfNeeded(mediaImage)
-        }
-    }
-
     /// The image that should be displayed
     ///
     private var image: UIImage? {
@@ -94,6 +82,17 @@ class MediaView : UIView
         return maximumSize
     }
 
+    /// Resizes -to fit screen- and displays given image
+    ///
+    func resizeIfNeededAndDisplay(image: UIImage) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            let resizedImage = image.resizeWithMaximumSize(self.maximumSize)
+
+            dispatch_async(dispatch_get_main_queue()) {
+                self.image = resizedImage
+            }
+        }
+    }
 
 
     // MARK: - Private Helpers
@@ -123,16 +122,6 @@ class MediaView : UIView
     private func refreshContentSize() {
         widthConstraint.constant = maximumSize.width
         heightConstraint.constant = maximumSize.height
-    }
-
-    private func loadImageAndResizeIfNeeded(image: UIImage) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-            let resizedImage = image.resizeWithMaximumSize(self.maximumSize)
-
-            dispatch_async(dispatch_get_main_queue()) {
-                self.image = resizedImage
-            }
-        }
     }
 
 
