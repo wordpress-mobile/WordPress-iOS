@@ -7,34 +7,57 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
 
+    /// WordPress.com Username
+    ///
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
 
+    /// WordPress.com OAuth Token
+    ///
     private lazy var oauth2Token: String? = {
         ShareExtensionService.retrieveShareExtensionToken()
     }()
 
+    /// Selected Site's ID
+    ///
     private lazy var selectedSiteID: Int? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
     }()
 
+    /// Selected Site's Name
+    ///
     private lazy var selectedSiteName: String? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
-    private var mediaView: MediaView!
+    /// Maximum Image Size
+    ///
+    private lazy var maximumImageSize: CGSize = {
+        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? self.defaultMaxDimension
+        return CGSize(width: dimension, height: dimension)
+    }()
 
+    /// Tracks Instance
+    ///
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
+    /// MediaView Instance
+    ///
+    private var mediaView: MediaView!
+
+    /// Post's Status
+    ///
     private var postStatus = "publish"
 
 
+    // MARK: - Private Constants
 
-    // TODO: This should eventually be moved into WordPressComKit
+    private let defaultMaxDimension = 3000
     private let postStatuses = [
+        // TODO: This should eventually be moved into WordPressComKit
         "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
     ]
