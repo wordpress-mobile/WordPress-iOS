@@ -120,7 +120,7 @@ class ShareViewController: SLComposeServiceViewController {
 
         // Proceed uploading the actual post
         let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
-        let encodedMedia = mediaImage?.resizeWithMaximumSize(self.maximumImageSize).JPEGEncoded()
+        let encodedMedia = mediaImage?.resizeWithMaximumSize(maximumImageSize).JPEGEncoded()
 
         uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
             self.tracks.trackExtensionPosted(self.postStatus)
