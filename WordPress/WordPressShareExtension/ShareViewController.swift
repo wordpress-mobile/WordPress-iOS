@@ -48,6 +48,10 @@ class ShareViewController: SLComposeServiceViewController {
     ///
     private var mediaView: MediaView!
 
+    /// Image Attachment
+    ///
+    private var mediaImage: UIImage?
+
     /// Post's Status
     ///
     private var postStatus = "publish"
@@ -77,8 +81,8 @@ class ShareViewController: SLComposeServiceViewController {
         setupBearerToken()
 
         // Load TextView + PreviewImage
-        loadTextViewContent()
-        loadMediaViewContent()
+        loadTextContent()
+        loadMediaContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -116,12 +120,13 @@ class ShareViewController: SLComposeServiceViewController {
 
         // Proceed uploading the actual post
         let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
-        let attachedImageData = encodedMediaAttachment()
-        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: attachedImageData) {
+        let encodedMedia = mediaImage?.resizeWithMaximumSize(maximumImageSize).JPEGEncoded()
 
-// TODO: Handle retry?
+        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
             self.tracks.trackExtensionPosted(self.postStatus)
             self.extensionContext?.completeRequestReturningItems([], completionHandler: nil)
+            
+// TODO: Handle retry?
         }
     }
 
@@ -206,8 +211,9 @@ private extension ShareViewController
         RequestRouter.bearerToken = bearerToken
     }
 
-    func loadTextViewContent() {
+    func loadTextContent() {
         extensionContext?.loadWebsiteUrl { url in
+            // Text + New Line + Source
             let current = self.contentText ?? String()
             let source  = url?.absoluteString ?? String()
             let spacing = current.isEmpty ? String() : "\n\n"
@@ -216,25 +222,21 @@ private extension ShareViewController
         }
     }
 
-    func loadMediaViewContent() {
+    func loadMediaContent() {
         extensionContext?.loadMediaImage { image in
-            guard let image = image else {
+            guard let mediaImage = image else {
                 return
             }
 
-            self.loadMediaViewFromImage(image)
-        }
-    }
+            // Load the View
+            let mediaView = MediaView()
+            mediaView.resizeIfNeededAndDisplay(mediaImage)
 
-    func loadMediaViewFromImage(image: UIImage) {
-        guard mediaView == nil else {
-            assertionFailure()
-            return
+            // References please
+            self.mediaImage = mediaImage
+            self.mediaView = mediaView
+            self.reloadConfigurationItems()
         }
-
-        mediaView = MediaView()
-        mediaView.mediaImage = image
-        reloadConfigurationItems()
     }
 }
 
@@ -244,18 +246,10 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func encodedMediaAttachment() -> NSData? {
-        let quality = CGFloat(0.9)
-        guard let image = mediaView?.mediaImage, payload = UIImageJPEGRepresentation(image, quality) else {
-            return nil
-        }
-
-        return payload
-    }
-
     func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?, requestEqueued: Void -> ()) {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)
+
         service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
             requestEqueued()
         }, completion: { (post, error) in
