@@ -548,11 +548,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     options.authorID = [PostListViewController authorIDFilterForBlog:self.blog];
     options.purgesLocalSync = YES;
     
-    NSLog(@"Preloading posts for %@", self.blog.hostname);
-    
-    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:^(NSArray<AbstractPost *> *posts) {
-        NSLog(@"Found %d posts", posts.count);
-    } failure:nil];
+    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
 }
 
 - (void)showComments
