@@ -94,8 +94,6 @@ public class ShareExtensionService: NSObject
 
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
-    /// - Returns: The OAuth Token, if any.
-    ///
     class func retrieveShareExtensionToken() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
             andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
@@ -108,8 +106,6 @@ public class ShareExtensionService: NSObject
 
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
-    /// - Returns: The Username, if any.
-    ///
     class func retrieveShareExtensionUsername() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
             andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
@@ -120,9 +116,7 @@ public class ShareExtensionService: NSObject
         return oauth2Token
     }
 
-    /// Retrieves the Primary Site Details
-    ///
-    /// - Returns: Tuple with the Primary Site ID + Name. If any.
+    /// Retrieves the Primary Site Details (ID + Name), if any.
     ///
     class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
         guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
