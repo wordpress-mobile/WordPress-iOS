@@ -10,4 +10,11 @@ extension UIImage
 
         self.init(data: rawImage)
     }
+
+    func resizeWithMaximumSize(maximumSize: CGSize) -> UIImage {
+        let scale = UIScreen.mainScreen().scale
+        let targetSize = CGSize(width: maximumSize.width * scale, height: maximumSize.height * scale)
+
+        return resizedImageWithContentMode(.ScaleAspectFit, bounds: targetSize, interpolationQuality: .High)
+    }
 }
