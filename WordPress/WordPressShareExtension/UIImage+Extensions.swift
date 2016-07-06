@@ -12,10 +12,7 @@ extension UIImage
     }
 
     func resizeWithMaximumSize(maximumSize: CGSize) -> UIImage {
-        let scale = UIScreen.mainScreen().scale
-        let targetSize = CGSize(width: maximumSize.width * scale, height: maximumSize.height * scale)
-
-        return resizedImageWithContentMode(.ScaleAspectFit, bounds: targetSize, interpolationQuality: .High)
+        return resizedImageWithContentMode(.ScaleAspectFit, bounds: maximumSize, interpolationQuality: .High)
     }
 
     func JPEGEncoded(quality: CGFloat = 0.9) -> NSData? {

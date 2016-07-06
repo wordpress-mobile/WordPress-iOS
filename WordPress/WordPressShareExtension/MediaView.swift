@@ -85,8 +85,11 @@ class MediaView : UIView
     /// Resizes -to fit screen- and displays given image
     ///
     func resizeIfNeededAndDisplay(image: UIImage) {
+        let scale = UIScreen.mainScreen().scale
+        let scaledMaximumSize = CGSize(width: maximumSize.width * scale, height: maximumSize.height * scale)
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-            let resizedImage = image.resizeWithMaximumSize(self.maximumSize)
+            let resizedImage = image.resizeWithMaximumSize(scaledMaximumSize)
 
             dispatch_async(dispatch_get_main_queue()) {
                 self.image = resizedImage
