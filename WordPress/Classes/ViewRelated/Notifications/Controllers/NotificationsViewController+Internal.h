@@ -29,7 +29,6 @@
 - (NSString *)entityName;
 - (void)reloadResultsController;
 
-- (id <ABXPromptViewDelegate>)appbotViewDelegate;
 - (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
 - (id <SPBucketDelegate>)simperiumBucketDelegate;
 
