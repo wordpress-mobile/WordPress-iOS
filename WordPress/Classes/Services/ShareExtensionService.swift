@@ -51,6 +51,20 @@ public class ShareExtensionService: NSObject
         userDefaults.synchronize()
     }
 
+
+    /// Sets the Maximum Media Size.
+    ///
+    /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
+    ///
+    class func configureShareExtensionMaximumMediaDimension(maximumMediaDimension: Int) {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+
+        userDefaults.setInteger(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
+        userDefaults.synchronize()
+    }
+
     /// Nukes all of the Share Extension Configuration
     ///
     class func removeShareExtensionConfiguration() {
@@ -73,6 +87,7 @@ public class ShareExtensionService: NSObject
         if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteID)
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteName)
+            userDefaults.removeObjectForKey(WPShareExtensionMaximumMediaDimensionKey)
             userDefaults.synchronize()
         }
     }
@@ -121,5 +136,15 @@ public class ShareExtensionService: NSObject
         }
 
         return (siteID, siteName)
+    }
+
+    /// Retrieves the Maximum Media Attachment Size
+    ///
+    class func retrieveShareExtensionMaximumMediaDimension() -> Int? {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return nil
+        }
+
+        return userDefaults.objectForKey(WPShareExtensionMaximumMediaDimensionKey) as? Int
     }
 }
