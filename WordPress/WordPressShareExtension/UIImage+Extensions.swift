@@ -17,4 +17,8 @@ extension UIImage
 
         return resizedImageWithContentMode(.ScaleAspectFit, bounds: targetSize, interpolationQuality: .High)
     }
+
+    func JPEGEncoded(quality: CGFloat = 0.9) -> NSData? {
+        return UIImageJPEGRepresentation(self, quality)
+    }
 }
