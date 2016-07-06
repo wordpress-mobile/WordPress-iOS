@@ -53,6 +53,7 @@ NSString *const WPShareExtensionKeychainTokenKey                    = @"OAuth2To
 NSString *const WPShareExtensionKeychainServiceName                 = @"ShareExtension";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
+NSString *const WPShareExtensionMaximumMediaDimensionKey            = @"WPShareExtensionMaximumMediaDimensionKey";
 
 /// Today Widget Constants
 ///
