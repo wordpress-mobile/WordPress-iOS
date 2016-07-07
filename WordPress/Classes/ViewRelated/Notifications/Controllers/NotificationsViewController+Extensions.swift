@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import Simperium
 import WordPressComAnalytics
 import WordPress_AppbotX
@@ -72,7 +73,7 @@ extension NotificationsViewController
     func setupTableHandler() {
         let handler = WPTableViewHandler(tableView: tableView)
         handler.cacheRowHeights = true
-        handler.delegate = tableViewHandlerDelegate()
+        handler.delegate = self
         tableViewHandler = handler
     }
 
@@ -148,6 +149,93 @@ extension NotificationsViewController
 
         let path = NSIndexPath(forRow: 0, inSection: 0)
         tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: true)
+    }
+}
+
+
+
+// MARK: - WPTableViewHandlerDelegate Methods
+//
+extension NotificationsViewController: WPTableViewHandlerDelegate
+{
+    public func managedObjectContext() -> NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+
+    public func fetchRequest() -> NSFetchRequest {
+        let request = NSFetchRequest(entityName: entityName())
+        request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
+        request.predicate = predicateForSelectedFilters()
+
+        return request
+    }
+
+    public func predicateForSelectedFilters() -> NSPredicate {
+        let filtersMap: [Filter: String] = [
+            .None       : "",
+            .Unread     : " AND (read = NO)",
+            .Comment    : " AND (type = '\(NoteTypeComment)')",
+            .Follow     : " AND (type = '\(NoteTypeFollow)')",
+            .Like       : " AND (type = '\(NoteTypeLike)' OR type = '\(NoteTypeCommentLike)')"
+        ]
+
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
+        let condition = filtersMap[filter] ?? String()
+        let format = "NOT (SELF IN %@)" + condition
+
+        return NSPredicate(format: format, notificationIdsBeingDeleted.allObjects)
+    }
+
+    public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        // Note:
+        // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+        // For that reason, we draw our own separators.
+        //
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+            return
+        }
+
+        guard let cell = cell as? NoteTableViewCell else {
+            return
+        }
+
+        let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
+        let isLastRow               = isRowLastRowForSection(indexPath)
+
+        cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
+        cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
+        cell.read                   = note.read.boolValue
+        cell.noticon                = note.noticon
+        cell.unapproved             = note.isUnapprovedComment()
+        cell.markedForDeletion      = isMarkedForDeletion
+        cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
+        cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
+        cell.onUndelete             = { [weak self] in
+            self?.cancelDeletionForNoteWithID(note.objectID)
+        }
+
+        cell.downloadIconWithURL(note.iconURL)
+    }
+
+    public func sectionNameKeyPath() -> String {
+        return "sectionIdentifier"
+    }
+
+    public func entityName() -> String {
+        return Notification.classNameWithoutNamespaces()
+    }
+
+    public func tableViewDidChangeContent(tableView: UITableView) {
+        // Update Separators:
+        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
+            cell.showsBottomSeparator = isRowLastRowForSection(indexPath)
+        }
+
+        // Update NoResults View
+        showNoResultsViewIfNeeded()
     }
 }
 
@@ -246,7 +334,19 @@ private extension NotificationsViewController
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
-    struct RatingSettings {
+    enum Properties {
+        static let sortKey          = "timestamp"
+    }
+
+    enum Filter: Int {
+        case None                   = 0
+        case Unread                 = 1
+        case Comment                = 2
+        case Follow                 = 3
+        case Like                   = 4
+    }
+
+    enum RatingSettings {
         static let section          = "notifications"
         static let heightFull       = CGFloat(100)
         static let heightZero       = CGFloat(0)
