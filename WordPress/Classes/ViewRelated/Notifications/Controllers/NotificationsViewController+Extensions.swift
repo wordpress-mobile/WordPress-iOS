@@ -163,9 +163,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     public func fetchRequest() -> NSFetchRequest {
-        let sortKey = NSStringFromSelector(#selector(Notification.timestampAsString))
         let request = NSFetchRequest(entityName: entityName())
-        request.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
 
         return request
@@ -219,7 +218,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     public func sectionNameKeyPath() -> String {
-        return NSStringFromSelector(#selector(Notification.sectionIdentifier))
+        return "sectionIdentifier"
     }
 
     public func entityName() -> String {
@@ -333,6 +332,10 @@ private extension NotificationsViewController
 {
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
+    }
+
+    enum Properties {
+        static let sortKey          = "timestamp"
     }
 
     enum Filter: Int {
