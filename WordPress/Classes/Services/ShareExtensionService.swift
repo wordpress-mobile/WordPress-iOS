@@ -51,6 +51,20 @@ public class ShareExtensionService: NSObject
         userDefaults.synchronize()
     }
 
+
+    /// Sets the Maximum Media Size.
+    ///
+    /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
+    ///
+    class func configureShareExtensionMaximumMediaDimension(maximumMediaDimension: Int) {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+
+        userDefaults.setInteger(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
+        userDefaults.synchronize()
+    }
+
     /// Nukes all of the Share Extension Configuration
     ///
     class func removeShareExtensionConfiguration() {
@@ -73,13 +87,12 @@ public class ShareExtensionService: NSObject
         if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteID)
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteName)
+            userDefaults.removeObjectForKey(WPShareExtensionMaximumMediaDimensionKey)
             userDefaults.synchronize()
         }
     }
 
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
-    ///
-    /// - Returns: The OAuth Token, if any.
     ///
     class func retrieveShareExtensionToken() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
@@ -93,8 +106,6 @@ public class ShareExtensionService: NSObject
 
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
-    /// - Returns: The Username, if any.
-    ///
     class func retrieveShareExtensionUsername() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
             andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
@@ -105,9 +116,7 @@ public class ShareExtensionService: NSObject
         return oauth2Token
     }
 
-    /// Retrieves the Primary Site Details
-    ///
-    /// - Returns: Tuple with the Primary Site ID + Name. If any.
+    /// Retrieves the Primary Site Details (ID + Name), if any.
     ///
     class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
         guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
@@ -121,5 +130,15 @@ public class ShareExtensionService: NSObject
         }
 
         return (siteID, siteName)
+    }
+
+    /// Retrieves the Maximum Media Attachment Size
+    ///
+    class func retrieveShareExtensionMaximumMediaDimension() -> Int? {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return nil
+        }
+
+        return userDefaults.objectForKey(WPShareExtensionMaximumMediaDimensionKey) as? Int
     }
 }
