@@ -571,6 +571,24 @@ enum ReaderDefaultMenuItemOrder: Int {
         }
     }
 
+
+    /// Get the indexPath of the specified tag
+    ///
+    /// - Parameters:
+    ///     tag: The tag topic to find.
+    ///
+    /// - Returns: An NSIndexPath optional.
+    ///
+    func indexPathOfTag(tag: ReaderTagTopic) -> NSIndexPath? {
+        if let indexPath = tagsFetchedResultsController.indexPathForObject(tag) {
+            var row = indexPath.row
+            if ReaderHelpers.isLoggedIn() {
+                row += 1
+            }
+            return NSIndexPath(forRow: row, inSection: indexOfSectionWithType(.Tags)!)
+        }
+        return nil
+    }
 }
 
 
