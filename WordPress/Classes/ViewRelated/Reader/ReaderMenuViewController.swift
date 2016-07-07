@@ -176,15 +176,35 @@ import WordPressShared
     ///
     func followTagNamed(tagName: String) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.followTagNamed(tagName, withSuccess: nil) { (error) in
-            DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
 
-            let title = NSLocalizedString("Could not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
-            let message = error.localizedDescription
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
-            alert.presentFromRootViewController()
+        service.followTagNamed(tagName, withSuccess: { [weak self] in
+            // A successful follow makes the new tag the currentTopic.
+            if let tag = service.currentTopic as? ReaderTagTopic {
+                self?.scrollToTag(tag)
+            }
+
+            }, failure: { (error) in
+                DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
+
+                let title = NSLocalizedString("Could not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+                let message = error.localizedDescription
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+                alert.presentFromRootViewController()
+        })
+    }
+
+
+    /// Scrolls the tableView so the specified tag is in view.
+    ///
+    /// - Paramters:
+    ///     - tag: The tag to scroll into view.
+    ///
+    func scrollToTag(tag: ReaderTagTopic) {
+        guard let indexPath = viewModel.indexPathOfTag(tag) else {
+            return
         }
+        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
     }
 
 
@@ -284,7 +304,7 @@ import WordPressShared
         WPStyleGuide.configureTableViewActionCell(cell)
 
         if cell.accessoryView == nil {
-            let image = Gridicon.iconOfType(.AddOutline)
+            let image = Gridicon.iconOfType(.Plus)
             let imageView = UIImageView(image: image)
             imageView.tintColor = WPStyleGuide.wordPressBlue()
             cell.accessoryView = imageView
@@ -333,7 +353,7 @@ import WordPressShared
 
 
     override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
-        return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing tags.")
+        return NSLocalizedString("Remove", comment: "Label of the table view cell's delete button, when unfollowing tags.")
     }
 }
 
