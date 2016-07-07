@@ -202,8 +202,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
         let isLastRow               = isRowLastRowForSection(indexPath)
 
-        cell.attributedSubject      = note.subjectBlock().attributedSubjectText()
-        cell.attributedSnippet      = note.subjectBlock().attributedSnippetText()
+        cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
+        cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
         cell.read                   = note.read.boolValue
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment()
