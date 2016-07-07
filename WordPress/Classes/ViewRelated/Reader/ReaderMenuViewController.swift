@@ -136,14 +136,14 @@ import WordPressShared
     ///     - topic: The tag topic that is to be unfollowed.
     ///
     func promptUnfollowTagTopic(topic: ReaderTagTopic) {
-        let title = NSLocalizedString("Unfollow", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
-        let template = NSLocalizedString("Are you sure you wish to unfollow the tag '%@'", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
+        let title = NSLocalizedString("Remove", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
+        let template = NSLocalizedString("Are you sure you wish to remove the tag '%@'", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
         let message = String(format: template, topic.title)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title of a cancel button.")) { (action) in
             self.tableView.setEditing(false, animated: true)
         }
-        alert.addDestructiveActionWithTitle(NSLocalizedString("Unfollow", comment: "Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader.")) { (action) in
+        alert.addDestructiveActionWithTitle(NSLocalizedString("Remove", comment: "Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader.")) { (action) in
             self.unfollowTagTopic(topic)
         }
         alert.presentFromRootViewController()
@@ -160,7 +160,7 @@ import WordPressShared
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogSwift.logError("Could not unfollow topic \(topic), \(error)")
 
-            let title = NSLocalizedString("Could not Unfollow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
             let message = error.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
@@ -204,7 +204,15 @@ import WordPressShared
         guard let indexPath = viewModel.indexPathOfTag(tag) else {
             return
         }
-        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+        tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Middle)
+
+        let time = dispatch_time(
+            DISPATCH_TIME_NOW,
+            Int64(0.7 * Double(NSEC_PER_SEC))
+        )
+        dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
+        }
     }
 
 
