@@ -47,7 +47,7 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
-    pod 'WPMediaPicker', '~> 0.9.2'
+    pod 'WPMediaPicker', '~> 0.10.0'
     pod 'WordPress-iOS-Editor', '1.7.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.15'
     pod 'WordPressCom-Stats-iOS', '0.7.4'
