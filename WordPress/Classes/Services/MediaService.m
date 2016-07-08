@@ -713,7 +713,7 @@ static NSString * const MediaDirectory = @"Media";
                                                                                     error:nil];
 
         for (NSURL *currentURL in contentsOfDir) {
-            NSString *filepath = [currentURL path];
+            NSString *filepath = [[currentURL URLByResolvingSymlinksInPath] path];
             NSString *extension = filepath.pathExtension.lowercaseString;
             if (![mediaExtensions containsObject:extension] ||
                 [pathsToKeep containsObject:filepath]) {
