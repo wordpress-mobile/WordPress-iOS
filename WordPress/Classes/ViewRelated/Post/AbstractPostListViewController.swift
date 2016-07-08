@@ -3,7 +3,13 @@ import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
 
-class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
+extension UISearchController {
+    public override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+}
+
+class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
 
@@ -75,14 +81,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView : UIView!
-    @IBOutlet var searchButton : UIButton!
     @IBOutlet var addButton : UIButton!
-    @IBOutlet var searchWrapperView : UIView! // Used on iPhone for presenting the search bar.
-    @IBOutlet var authorsFilterView : UIView! // Search lives here on iPad
-    @IBOutlet var authorsFilterViewHeightConstraint : NSLayoutConstraint!
-    @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
 
-    var searchController : WPSearchController! // Stand-in for UISearchController
+    var searchController : UISearchController!
     private var allPostListFilters = [String:[PostListFilter]]()
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
@@ -111,6 +112,50 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refreshResults()
+
+        registerForKeyboardNotifications()
+    }
+
+    private func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+    }
+
+    private func unregisterForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidHideNotification, object: nil)
+    }
+
+    @objc private func keyboardDidShow(notification: NSNotification) {
+        let searchBarHeight = CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
+
+        let keyboardFrame = localKeyboardFrameFromNotification(notification)
+        let keyboardHeight = CGRectGetMaxY(tableView.frame) - keyboardFrame.origin.y
+
+        let insets = self.tableView.contentInset
+
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right)
+        self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right)
+    }
+
+    @objc private func keyboardDidHide(notification: NSNotification) {
+        let searchBarHeight = CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
+
+        let insets = tableView.contentInset
+
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, 0, insets.right)
+        tableView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, insets.left, 0, insets.right)
+    }
+
+    private func localKeyboardFrameFromNotification(notification: NSNotification) -> CGRect {
+        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
+            let window = view.window else {
+                return .zero
+        }
+
+        var convertedFrame = window.convertRect(keyboardFrame, fromWindow: nil)
+        convertedFrame = view.convertRect(convertedFrame, fromView: nil)
+        return convertedFrame
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -126,20 +171,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchController.active = false
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-    }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-
-        coordinator.animateAlongsideTransition({[weak self] context in
-            guard let strongSelf = self else {
-                return
-            }
-
-            if strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
-                strongSelf.searchWrapperViewHeightConstraint.constant = strongSelf.heightForSearchWrapperView()
-            }
-        }, completion: nil)
+        unregisterForKeyboardNotifications()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -236,12 +269,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         fatalError("You should implement this method in the subclass")
     }
 
+    /// Subclasses should override this method (and call super) to insert the
+    /// search controller's search bar into the view hierarchy
     func configureSearchController() {
-        searchController = WPSearchController(searchResultsController: nil)
+        // Required for insets to work out correctly when the search bar becomes active
+        extendedLayoutIncludesOpaqueBars = true
 
-        let searchControllerConfigurator = WPSearchControllerConfigurator(searchController: searchController, withSearchWrapperView: searchWrapperView)
-        searchControllerConfigurator.configureSearchControllerAndWrapperView()
-        configureSearchBarPlaceholder()
+        definesPresentationContext = true
+
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.translucent = false
+
         searchController.delegate = self
         searchController.searchResultsUpdater = self
     }
@@ -260,10 +299,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).attributedPlaceholder = attrPlacholderText
 
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).defaultTextAttributes = defaultTextAttributes
-    }
-
-    func configureSearchWrapper() {
-        searchWrapperView.backgroundColor = WPStyleGuide.wordPressBlue()
     }
 
     func configureSearchHelper() {
@@ -448,10 +483,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     @IBAction func handleAddButtonTapped(sender: AnyObject) {
         createPost()
-    }
-
-    @IBAction func handleSearchButtonTapped(sender: AnyObject) {
-        toggleSearch()
     }
 
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
@@ -670,22 +701,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     // MARK: - Searching
-
-    func toggleSearch() {
-        searchController.active = !searchController.active
-    }
-
-    func heightForSearchWrapperView() -> CGFloat {
-
-        guard let navigationController = navigationController else {
-            return SearchWrapperViewMinHeight
-        }
-
-        let navBar = navigationController.navigationBar
-        let height = navBar.frame.height + self.topLayoutGuide.length
-
-        return max(height, SearchWrapperViewMinHeight)
-    }
 
     func isSearching() -> Bool {
         return searchController.active && currentSearchTerm()?.characters.count > 0
@@ -1072,33 +1087,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Search Controller Delegate Methods
 
-    func presentSearchController(searchController: WPSearchController!) {
+    func willPresentSearchController(searchController: UISearchController) {
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
-
-        navigationController?.setNavigationBarHidden(true, animated: true) // Remove this line when switching to UISearchController.
-        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
-
-        UIView.animateWithDuration(SearchBarAnimationDuration, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { [weak self] in
-            self?.view.layoutIfNeeded()
-            }, completion: { (finished: Bool) -> () in
-                searchController.searchBar.becomeFirstResponder()
-        })
     }
 
-    func willDismissSearchController(searchController: WPSearchController!) {
-        searchController.searchBar.resignFirstResponder()
-        navigationController?.setNavigationBarHidden(false, animated: true) // Remove this line when switching to UISearchController
-        searchWrapperViewHeightConstraint.constant = 0
-
-        UIView.animateWithDuration(SearchBarAnimationDuration) { [weak self] in
-            self?.view.layoutIfNeeded()
-        }
-
+    func willDismissSearchController(searchController: UISearchController) {
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
     }
 
-    func updateSearchResultsForSearchController(searchController: WPSearchController!) {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
     }

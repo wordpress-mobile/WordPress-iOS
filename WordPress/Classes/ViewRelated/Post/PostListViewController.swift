@@ -25,6 +25,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
+    @IBOutlet var authorsFilterView : UIView! // Search lives here on iPad
+    @IBOutlet var searchWrapperView: UIView!
+    @IBOutlet var headerStackView: UIStackView!
+
     // MARK: - GUI
 
     private let animatedBox = WPAnimatedBox()
@@ -158,6 +162,15 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
+    override func configureSearchController() {
+        super.configureSearchController()
+
+        searchWrapperView.addSubview(searchController.searchBar)
+        tableView.tableHeaderView = headerStackView
+
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+    }
+
     private func noResultsTitles() -> [PostListFilter.Status:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
@@ -203,8 +216,12 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
         if !canFilterByAuthor() {
-            authorsFilterViewHeightConstraint?.constant = 0
-            authorFilterSegmentedControl.hidden = true
+            authorsFilterView.removeFromSuperview()
+
+            headerStackView.frame.size.height = searchController.searchBar.frame.height
+
+            // Required to update the size of the table header view
+            tableView.tableHeaderView = headerStackView
         }
 
         if currentPostAuthorFilter() == .Mine {
@@ -677,6 +694,19 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
         default:
             return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        }
+    }
+}
+
+/// Keeps the search bar properly sized inside its container.
+/// We can't use Auto Layout constraints directly on the search bar, as they
+/// get broken when it activates and is moved into its search controller's view.
+class SearchWrapperView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        for view in subviews where view is UISearchBar {
+            view.frame = self.bounds
         }
     }
 }
