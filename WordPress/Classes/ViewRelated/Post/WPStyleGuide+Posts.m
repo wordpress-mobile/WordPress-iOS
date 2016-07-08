@@ -33,8 +33,8 @@
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [self greyLighten30];
-    cell.contentView.backgroundColor = [self greyLighten30];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
