@@ -113,15 +113,13 @@
                   success:(void (^)(UIImage *image))success
                   failure:(void (^)(NSError *error))failure;
 /**
- *  Get number of items in media library
+ *  Get the number of items in a blog media library that are of a certain type.
  *
- *  @param blog    from where to count the media items
- *  @param success a block that will be invoked when the media is retrieved
- *  @param failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ *  @param blog from what blog to count the media items.
+ *  @param mediaTypes set of media type values to be considered in the counting.
  */
-- (void)getMediaLibraryCountForBlog:(Blog *)blog
-                            success:(void (^)(NSInteger))success
-                            failure:(void (^)(NSError *error))failure;
+- (NSInteger)getMediaLibraryCountForBlog:(Blog *)blog
+                           forMediaTypes:(NSSet *)mediaTypes;
 
 #pragma mark - Media cleanup
 

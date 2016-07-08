@@ -349,20 +349,43 @@
     return @"org.wordpress.medialibrary";
 }
 
-- (NSInteger)numberOfAssets
+- (NSInteger)numberOfAssetsOfType:(WPMediaType)mediaType
 {
-    if (self.itemsCount == NSNotFound) {
-        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    NSSet *mediaTypes = [NSMutableSet set];
+    switch (mediaType) {
+        case WPMediaTypeImage: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage)]];
+        } break;
+        case WPMediaTypeVideo: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeVideo)]];
+        } break;
+        case WPMediaTypeVideoOrImage: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage), @(MediaTypeVideo)]];
+        } break;
+        default:
+            break;
+    };
+
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
+                                                   forMediaTypes:mediaTypes];
+    // If we have a count of zero and this is the first time we are checking this group
+    // let's sync with the server
+    if (count == 0 && self.itemsCount == NSNotFound) {
         __weak __typeof__(self) weakSelf = self;
-        [mediaService getMediaLibraryCountForBlog:self.blog
-                                          success:^(NSInteger count) {
-                                              weakSelf.itemsCount = count;
-                                              [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
-                                          } failure:^(NSError *error) {
-                                              DDLogError(@"%@", [error localizedDescription]);
-                                          }];
+        [mediaService syncMediaLibraryForBlog:self.blog
+                                      success:^() {
+                                          weakSelf.itemsCount = [mediaService getMediaLibraryCountForBlog:self.blog
+                                                        forMediaTypes:mediaTypes];;
+                                          [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
+                                      } failure:^(NSError *error) {
+                                          DDLogError(@"%@", [error localizedDescription]);
+        }];
+    } else {
+        self.itemsCount = count;
     }
+
     return self.itemsCount;
 }
 
