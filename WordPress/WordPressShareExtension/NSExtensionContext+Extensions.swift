@@ -14,15 +14,22 @@ extension NSExtensionContext {
 
     /// Attempts to load the Image Attachment, and returns, asynchronously, the result.
     ///
-    func loadImageAttachment(completion: (UIImage? -> Void)) {
-        loadItemOfType(NSURL.self, identifier: Identifier.PublicImage) { url in
-            guard let targetURL = url, let rawImage = NSData(contentsOfURL: targetURL) else {
-                completion(nil)
-                return
+    func loadMediaImage(completion: (UIImage? -> Void)) {
+        loadItemOfType(AnyObject.self, identifier: Identifier.PublicImage) { payload in
+            var loadedImage: UIImage?
+
+            switch payload {
+            case let url as NSURL:
+                loadedImage = UIImage(contentsOfURL: url)
+            case let data as NSData:
+                loadedImage = UIImage(data: data)
+            case let image as UIImage:
+                loadedImage = image
+            default:
+                break
             }
 
-            let image = UIImage(data: rawImage)
-            completion(image)
+            completion(loadedImage)
         }
     }
 

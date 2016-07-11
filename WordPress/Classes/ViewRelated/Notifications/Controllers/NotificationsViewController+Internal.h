@@ -26,11 +26,14 @@
 @property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
-- (NSString *)entityName;
 - (void)reloadResultsController;
 
-- (id <ABXPromptViewDelegate>)appbotViewDelegate;
-- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath;
+- (void)showNoResultsViewIfNeeded;
+
+- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID;
+- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID;
+
 - (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end
