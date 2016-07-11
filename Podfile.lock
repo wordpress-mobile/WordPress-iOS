@@ -185,7 +185,7 @@ PODS:
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.4):
     - Alamofire (~> 3.0)
-  - WPMediaPicker (0.9.2)
+  - WPMediaPicker (0.10.0)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -223,7 +223,7 @@ DEPENDENCIES:
   - WordPressCom-Stats-iOS (= 0.7.4)
   - WordPressCom-Stats-iOS/Services (= 0.7.4)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.4`)
-  - WPMediaPicker (~> 0.9.2)
+  - WPMediaPicker (~> 0.10.0)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -285,9 +285,9 @@ SPEC CHECKSUMS:
   WordPressCom-Analytics-iOS: e1a7111255e98561c4b5a33ef4baa75a68e0d5d3
   WordPressCom-Stats-iOS: 87b64bc36015e90789fec4abdb931af87c6e4cfe
   WordPressComKit: 0742c47e5b55bff0e6d26d40db9e010404675a73
-  WPMediaPicker: 98356dbf35bfaba0f51aff16d88563babadf24c7
+  WPMediaPicker: 8ec6e21020447461dcb19d2f524e4b2e7f7a8a78
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: baa47bc285158d18e8761c191d1e68427e319449
+PODFILE CHECKSUM: df640b096b347a1477d40861401f3f93aef5ad81
 
 COCOAPODS: 1.0.1
