@@ -183,7 +183,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the defaults section and its corresponding NSFetchedResultsController.
     ///
     func setupDefaultsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("General", comment:"Section title of the default reader items."), type: .Defaults)
+        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .Defaults)
         sections.append(section)
 
         buildDefaultSectionItems()
