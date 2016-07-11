@@ -32,8 +32,22 @@ class ReaderSearchSuggestionsViewController : UIViewController
     var tableViewHandler: WPTableViewHandler!
     var delegate: ReaderSearchSuggestionsDelegate?
     let cellIdentifier = "CellIdentifier"
-    let maxTableViewRows = 5
     let rowAndButtonHeight = CGFloat(44.0)
+    var maxTableViewRows:Int {
+        let height = UIApplication.sharedApplication().keyWindow?.frame.size.height ?? 0
+        if height == 320 {
+            // iPhone 4s, 5, 5s, in landscape orientation
+            return 1
+        } else if height <= 480 {
+            // iPhone 4s in portrait orientation
+            return 2
+        } else if height <= 568 {
+            // iPhone 5, 5s in portrait orientation
+            return 4
+        }
+        // Everything else
+        return 5
+    }
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -70,6 +84,13 @@ class ReaderSearchSuggestionsViewController : UIViewController
         borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
         updateHeightConstraint()
+    }
+
+
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition({ (_) in
+            self.updateHeightConstraint()
+            }, completion: nil)
     }
 
 
