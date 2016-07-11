@@ -38,6 +38,13 @@ import WordPressShared
     }
 
 
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition(nil) { (_) in
+            self.tableView.reloadData()
+        }
+    }
+
+
     // MARK: - Configuration
 
 
