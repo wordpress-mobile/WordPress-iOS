@@ -524,6 +524,17 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
+        if let topic = readerTopic, properties = topicPropertyForStats() {
+            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+
+            // Disable pull to refresh for search topics.
+            // Searches are a snap shot in time, and ephemeral. There should be no
+            // need to refresh.
+            if ReaderHelpers.isTopicSearchTopic(topic) {
+                tableViewController.refreshControl = nil
+            }
+        }
+
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let account = service.defaultWordPressComAccount()
@@ -555,10 +566,6 @@ import WordPressComAnalytics
                 selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
                 name: ReaderPostMenu.BlockSiteNotification,
                 object: nil)
-        }
-
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
         }
     }
 
