@@ -1,6 +1,7 @@
 import UIKit
 import NSURL_IDN
 import WordPressComAnalytics
+import Mixpanel
 
 
 /// A collection of helper methods for NUX.
@@ -8,46 +9,135 @@ import WordPressComAnalytics
 @objc class SigninHelpers: NSObject
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
+    private static let JoinABTestTimeoutInSeconds: NSTimeInterval = 2
+
+    // MARK: - AB test related methods
+
+
+    /// Loads the mixpanel experiments (if necessary) and shows a variant of the sign in flow.
+    /// A call is made to join mixpanel experiements, passing a callback to show
+    /// the relevant sign in variant. To compensate for latency, a brief timer is
+    /// scheduled to do the same task.  Regardless of whether the timer or the
+    /// callback is performed first the second call will be ignored by design.
+    ///
+    class func loadABTestThenShowSigninController() {
+        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            assertionFailure("Missing a rootViewController.")
+            return
+        }
+
+        if useNewSigninFlow() {
+            // We know we're using a varient so proceeed without wait.
+            SigninHelpers.showSigninFromPresenter(rootController, animated: false, thenEditor: false)
+            return
+        }
+
+        // Keep showing the launch screen until we know which signin varient we want.
+        let storyboard = UIStoryboard(name: "Launch Screen", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateInitialViewController()!
+        let navController = NUXNavigationController(rootViewController: controller)
+        navController.toolbarHidden = true
+
+        rootController.presentViewController(navController, animated: false, completion: nil)
+
+        // Load A/B tests.
+        Mixpanel.sharedInstance().joinExperimentsWithCallback {
+            SigninHelpers.showSigninControllerForABTest()
+        }
+
+        NSTimer.scheduledTimerWithTimeInterval(JoinABTestTimeoutInSeconds, target: SigninHelpers.self, selector: #selector(SigninHelpers.showSigninControllerForABTest), userInfo: nil, repeats: false)
+    }
+
+
+    /// Displays a variant of the sign in flow.
+    /// Also checks if the visible view controller is already one of our test
+    /// variants and if so returns early.
+    ///
+    class func showSigninControllerForABTest() {
+        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
+            assertionFailure("Missing a rootViewController.")
+            return
+        }
+
+        // If the presented controller is nil, or not a nux nav controller something isn't right so just bail.
+        guard let navController = rootController.presentedViewController as? NUXNavigationController  else {
+            assertionFailure("It would be very strange for the presented controller to *not* be our desired nav controller.")
+            return
+        }
+
+        // If we're already showing one of the signin screens just bail.
+        if let topViewController = navController.topViewController {
+            if topViewController.isKindOfClass(NUXAbstractViewController.self) {
+                return
+            }
+            if topViewController.isKindOfClass(LoginViewController.self) {
+                return
+            }
+        }
+
+        // Repurpose the already presented nav controller to show our nux varient.
+
+        var controller: UIViewController
+        if useNewSigninFlow() {
+            controller = createControllerForNewSigninFlow(showsEditor: false)
+        } else {
+            controller = createControllerForOldSigninFlow(showsEditor: false)
+        }
+
+        navController.setViewControllers([controller], animated: false)
+    }
+
+
+    // Allows for A/B testing between the old and new signin flows.
+    class func useNewSigninFlow() -> Bool {
+        return MixpanelTweaks.NUXMagicLinksEnabled()
+    }
 
 
     //MARK: - Helpers for presenting the signin flow
 
 
-    // Allows for A/B testing between the old and new signin flows.
-    class func useNewSigninFlow() -> Bool {
-        return false
+    // Convenience factory for the old LoginViewController
+    class func createControllerForOldSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        let blogService = BlogService(managedObjectContext: context)
+
+        let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
+
+        let controller = LoginViewController()
+        controller.showEditorAfterAddingSites = thenEditor
+        controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
+        controller.dismissBlock = { [weak controller] (_) in
+            controller?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        return controller
+    }
+
+
+    // Convenience factory for the new signin flow's first vc
+    class func createControllerForNewSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
+        let controller = SigninEmailViewController.controller()
+        controller.dismissBlock = {(cancelled) in
+            // Show the editor if requested, and we weren't cancelled.
+            if !cancelled && thenEditor {
+                WPTabBarController.sharedInstance().showPostTab()
+                return
+            }
+        }
+        return controller
     }
 
 
     // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         if useNewSigninFlow() {
-            let controller = SigninEmailViewController.controller()
-            controller.dismissBlock = {(cancelled) in
-                // Show the editor if requested, and we weren't cancelled.
-                if !cancelled && thenEditor {
-                    WPTabBarController.sharedInstance().showPostTab()
-                    return
-                }
-            }
-
+            let controller = createControllerForNewSigninFlow(showsEditor: thenEditor)
             let navController = NUXNavigationController(rootViewController: controller)
             presenter.presentViewController(navController, animated: animated, completion: nil)
 
         } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let accountService = AccountService(managedObjectContext: context)
-            let blogService = BlogService(managedObjectContext: context)
-
-            let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
-
-            let controller = LoginViewController()
-            controller.showEditorAfterAddingSites = thenEditor
-            controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
-            controller.dismissBlock = { (_) in
-                presenter.dismissViewControllerAnimated(true, completion: nil)
-            }
-
+            let controller = createControllerForOldSigninFlow(showsEditor: thenEditor)
             let navController = RotationAwareNavigationViewController(rootViewController: controller)
             navController.navigationBar.translucent = false
             presenter.presentViewController(navController, animated: animated, completion: nil)
