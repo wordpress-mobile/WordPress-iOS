@@ -45,6 +45,7 @@
 #import "Media.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
+#import "MixpanelTweaks.h"
 
 #import "NavbarTitleDropdownButton.h"
 #import "NotificationsViewController.h"
