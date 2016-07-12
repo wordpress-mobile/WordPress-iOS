@@ -183,7 +183,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the defaults section and its corresponding NSFetchedResultsController.
     ///
     func setupDefaultsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("General", comment:"Section title of the default reader items."), type: .Defaults)
+        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .Defaults)
         sections.append(section)
 
         buildDefaultSectionItems()
@@ -571,6 +571,24 @@ enum ReaderDefaultMenuItemOrder: Int {
         }
     }
 
+
+    /// Get the indexPath of the specified tag
+    ///
+    /// - Parameters:
+    ///     tag: The tag topic to find.
+    ///
+    /// - Returns: An NSIndexPath optional.
+    ///
+    func indexPathOfTag(tag: ReaderTagTopic) -> NSIndexPath? {
+        if let indexPath = tagsFetchedResultsController.indexPathForObject(tag) {
+            var row = indexPath.row
+            if ReaderHelpers.isLoggedIn() {
+                row += 1
+            }
+            return NSIndexPath(forRow: row, inSection: indexOfSectionWithType(.Tags)!)
+        }
+        return nil
+    }
 }
 
 
