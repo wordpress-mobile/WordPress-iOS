@@ -77,11 +77,10 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
                                                               action:@selector(handleCancelButtonTapped:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
 
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"The label of a done button in the image details view controller.")
-                                                               style:UIBarButtonItemStylePlain
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                               target:self
                                                               action:@selector(handleDoneButtonTapped:)];
-    self.navigationItem.rightBarButtonItem = button;
+    self.navigationItem.rightBarButtonItem = doneButton;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
