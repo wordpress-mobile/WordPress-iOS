@@ -306,7 +306,7 @@
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    //This shouldn't be called because we don't have sections.
+    //This shouldn't be called because we don't have changes to sections.
 }
 
 
