@@ -22,11 +22,11 @@ struct PlanService<S: Store> {
             success: {
                 activePlan, availablePlans in
                 PlanStorage.activatePlan(activePlan.id, forSite: siteID)
-                self.store.getPricesForPlans(availablePlans,
-                    success: { pricedPlans in
-                        let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
-                        success(result)
-                    }, failure: failure)
+
+                // Purchasing is currently disabled in the app, so return empty prices for all the plans.
+                let pricedPlans: [PricedPlan] = availablePlans.map { ($0, "") }
+                let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
+                success(result)
             }, failure: failure)
     }
 

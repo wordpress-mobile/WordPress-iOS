@@ -19,6 +19,7 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
 
 // Site Topic Keys
 static NSString * const SiteDictionaryFeedIDKey = @"feed_ID";
+static NSString * const SiteDictionaryFeedURLKey = @"feed_URL";
 static NSString * const SiteDictionaryFollowingKey = @"is_following";
 static NSString * const SiteDictionaryJetpackKey = @"is_jetpack";
 static NSString * const SiteDictionaryPrivateKey = @"is_private";
@@ -72,6 +73,32 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
         [topics addObjectsFromArray:[self normalizeMenuTopicsList:subscribedAndRecommended subscribed:YES recommended:YES]];
 
         success(topics);
+
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success failure:(void(^)(NSError *error))failure
+{
+    NSString *path = @"read/following/mine?meta=site,feed";
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+        if (!success) {
+            return;
+        }
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSArray *subscriptions = [response arrayForKey:@"subscriptions"];
+        NSMutableArray *sites = [NSMutableArray array];
+        for (NSDictionary *dict in subscriptions) {
+            RemoteReaderSiteInfo *siteInfo = [self siteInfoFromFollowedSiteDictionary:dict];
+            [sites addObject:siteInfo];
+        }
+        success(sites);
 
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         if (failure) {
@@ -167,11 +194,11 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     if (isFeed) {
         NSString *path = [NSString stringWithFormat:@"read/feed/%@", siteID];
         requestUrl = [self pathForEndpoint:path
-                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     } else {
         NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
         requestUrl = [self pathForEndpoint:path
-                               withVersion:ServiceRemoteRESTApiVersion_1_2];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     }
     
     [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -195,10 +222,22 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     }];
 }
 
+- (RemoteReaderSiteInfo *)siteInfoFromFollowedSiteDictionary:(NSDictionary *)dict
+{
+    NSDictionary *meta = [dict dictionaryForKeyPath:@"meta.data.site"];
+    if (meta) {
+        return [self siteInfoForSiteResponse:meta];
+    } else {
+        meta = [dict dictionaryForKeyPath:@"meta.data.feed"];
+        return [self siteInfoForFeedResponse:meta];
+    }
+}
+
 - (RemoteReaderSiteInfo *)siteInfoForSiteResponse:(NSDictionary *)response
 {
     RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
     siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.feedURL = [response stringForKey:SiteDictionaryFeedURLKey];
     siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
     siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
     siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
@@ -222,6 +261,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
     siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.feedURL = [response stringForKey:SiteDictionaryFeedURLKey];
     siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
     siteInfo.isJetpack = NO;
     siteInfo.isPrivate = NO;

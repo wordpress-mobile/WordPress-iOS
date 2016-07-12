@@ -9,6 +9,10 @@
 
 @implementation EditPageViewController
 
++ (Class)supportedPostClass {
+    return [Page class];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,13 +59,13 @@
 
 - (void)showOnboardingTips
 {
-    CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+    CGFloat xValue = CGRectGetMaxX(self.view.frame) - [WPStyleGuide navigationBarButtonRect].size.width;
     if (IS_IPAD) {
         xValue -= 20.0;
     } else {
         xValue -= 10.0;
     }
-    CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+    CGRect targetFrame = CGRectMake(xValue, 0.0, [WPStyleGuide navigationBarButtonRect].size.width, 0.0);
     NSString *tooltipText = NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.");
     [WPTooltip displayTooltipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
 }

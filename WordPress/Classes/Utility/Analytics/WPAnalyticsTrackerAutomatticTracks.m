@@ -366,9 +366,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
-        case WPAnalyticsStatMenusUpdatedMenuName:
-            eventName = @"menus_updated_menu_name";
-            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -587,6 +584,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatReaderListUnfollowed:
             eventName = @"reader_list_unfollowed";
+            break;
+        case WPAnalyticsStatReaderSearchLoaded:
+            eventName = @"reader_search_loaded";
             break;
         case WPAnalyticsStatReaderSiteBlocked:
             eventName = @"reader_blog_blocked";

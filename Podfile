@@ -12,24 +12,23 @@ platform :ios, '9.0'
 abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.5.9'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.3'
 
   target 'WordPress' do
     # ---------------------
     # Third party libraries
     # ---------------------
     pod '1PasswordExtension', '1.8.1'
-    pod 'AFNetworking',	'2.6.3'
+    pod 'AFNetworking',	'3.1.0'
     pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'Helpshift', '~> 5.5.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
-    pod 'Optimizely-iOS-SDK', '~> 1.4.2'
     pod 'Reachability',	'3.2'
     pod 'ReactiveCocoa', '~> 2.4.7'
     pod 'SVProgressHUD', '~>1.1.3'
@@ -48,11 +47,10 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
-    pod 'WPMediaPicker', '~> 0.9.1'
-    pod 'WordPress-iOS-Editor', '1.6.1'
-    pod 'WordPressApi', '0.4.0'
-    pod 'WordPressCom-Analytics-iOS', '0.1.13'
-    pod 'WordPressCom-Stats-iOS', '0.7.0'
+    pod 'WPMediaPicker', '~> 0.9.2'
+    pod 'WordPress-iOS-Editor', '1.7.1'
+    pod 'WordPressCom-Analytics-iOS', '0.1.15'
+    pod 'WordPressCom-Stats-iOS', '0.7.4'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -71,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.0'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.4'
   end
 
 end
