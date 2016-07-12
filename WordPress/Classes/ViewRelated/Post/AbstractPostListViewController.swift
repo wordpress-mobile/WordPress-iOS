@@ -132,10 +132,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = CGRectGetMaxY(tableView.frame) - keyboardFrame.origin.y
 
-        let insets = self.tableView.contentInset
+        let insets = tableView.contentInset
 
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right)
-        self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right)
+        tableView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, insets.left, keyboardHeight, insets.right)
     }
 
     @objc private func keyboardDidHide(notification: NSNotification) {
