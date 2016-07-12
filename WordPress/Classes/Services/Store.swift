@@ -262,7 +262,9 @@ class StoreKitStore: Store {
     }
 
     var canMakePayments: Bool {
-        return SKPaymentQueue.canMakePayments()
+        // Payments are currently disabled. If this is reverted in the future,
+        // simply return the result of SKPaymentQueue.canMakePayments()
+        return false
     }
 }
 
