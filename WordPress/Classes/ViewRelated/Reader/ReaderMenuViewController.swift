@@ -160,7 +160,7 @@ import WordPressShared
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogSwift.logError("Could not unfollow topic \(topic), \(error)")
 
-            let title = NSLocalizedString("Could not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
             let message = error.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
@@ -186,7 +186,7 @@ import WordPressShared
             }, failure: { (error) in
                 DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
 
-                let title = NSLocalizedString("Could not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+                let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
                 let message = error.localizedDescription
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                 alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
