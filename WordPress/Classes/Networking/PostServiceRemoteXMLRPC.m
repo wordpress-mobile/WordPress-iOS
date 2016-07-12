@@ -1,11 +1,11 @@
 #import "PostServiceRemoteXMLRPC.h"
+#import "AbstractPost.h"
 #import "Blog.h"
-#import "BasePost.h"
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
-#import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
 
 const NSInteger HTTP404ErrorCode = 404;
 
@@ -32,11 +32,11 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:postID];
     [self.api callMethod:@"wp.getPost"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if (success) {
                          success([self remotePostFromXMLRPCDictionary:responseObject]);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -68,12 +68,12 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.getPosts"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          success([self remotePostsFromXMLRPCArray:responseObject]);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -88,7 +88,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"metaWeblog.newPost"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if ([responseObject respondsToSelector:@selector(numericValue)]) {
                          post.postID = [responseObject numericValue];
                          // TODO: fetch individual post
@@ -104,7 +104,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
                          NSError *error = [NSError errorWithDomain:WordPressAppErrorDomain code:0 userInfo:userInfo];
                          failure(error);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -133,12 +133,12 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     [parameters replaceObjectAtIndex:0 withObject:post.postID];
     [self.api callMethod:@"metaWeblog.editPost"
               parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      // TODO: fetch individual post
                      if (success) {
                          success(post);
                      }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
                          failure(error);
                      }
@@ -155,9 +155,9 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         NSArray *parameters = [self XMLRPCArgumentsWithExtra:postID];
         [self.api callMethod:@"wp.deletePost"
                   parameters:parameters
-                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                          if (success) success();
-                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                          if (failure) failure(error);
                      }];
     }
@@ -169,37 +169,35 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 {
     NSParameterAssert([post.postID longLongValue] > 0);
     NSNumber *postID = post.postID;
-    if ([postID longLongValue] > 0) {
-        NSArray *parameters = [self XMLRPCArgumentsWithExtra:postID];
-
-        WPXMLRPCRequest *deletePostRequest = [self.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:parameters];
-        WPXMLRPCRequestOperation *delOperation = [self.api XMLRPCRequestOperationWithRequest:deletePostRequest success:nil failure:nil];
-
-        WPXMLRPCRequest *getPostRequest = [self.api XMLRPCRequestWithMethod:@"wp.getPost" parameters:parameters];
-        WPXMLRPCRequestOperation *getOperation = [self.api XMLRPCRequestOperationWithRequest:getPostRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if (success) {
-                // The post was trashed but not yet deleted.
-                RemotePost *post = [self remotePostFromXMLRPCDictionary:responseObject];
-                success(post);
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if (error.code == HTTP404ErrorCode) {
-                // The post was deleted.
-                if (success) {
-                    success(post);
-                }
-            }
-        }];
-
-        AFHTTPRequestOperation *operation = [self.api combinedHTTPRequestOperationWithOperations:@[delOperation, getOperation]
-                                                                                         success:nil
-                                                                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                                             if (failure) {
-                                                                                                 failure(error);
-                                                                                             }
-                                                                                         }];
-        [self.api enqueueHTTPRequestOperation:operation];
+    if ([postID longLongValue] <= 0) {
+        return;
     }
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:postID];
+
+    [self.api callMethod:@"wp.deletePost"
+              parameters:parameters
+                success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+      [self.api callMethod:@"wp.getPost"
+                parameters:parameters
+                   success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+          if (success) {
+              // The post was trashed but not yet deleted.
+              RemotePost *post = [self remotePostFromXMLRPCDictionary:responseObject];
+              success(post);
+          }
+      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+          if (httpResponse.statusCode == HTTP404ErrorCode) {
+              // The post was deleted.
+              if (success) {
+                  success(post);
+              }
+          }
+      }];
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)restorePost:(RemotePost *)post
@@ -280,6 +278,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
     post.postID = [xmlrpcDictionary numberForKey:@"post_id"];
     post.date = xmlrpcDictionary[@"post_date_gmt"];
+    post.dateModified = xmlrpcDictionary[@"post_modified_gmt"];
     if (xmlrpcDictionary[@"link"]) {
         post.URL = [NSURL URLWithString:xmlrpcDictionary[@"link"]];
     }

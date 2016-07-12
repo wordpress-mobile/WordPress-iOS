@@ -4,12 +4,16 @@ xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
 xcode_sdk: iphonesimulator
 cache:
-- bundler
-- cocoapods
+- cocoapods: true
+- bundler: false
+- directories:
+  - vendor
+  - .bundle
 notifications:
   email: true
 install:
-- rake dependencies
+- bundle install --path vendor/bundle
+- bundle exec rake dependencies
 script:
 - rake test
 env:

@@ -8,7 +8,6 @@
 #import "ReaderSite.h"
 #import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
-#import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
@@ -110,6 +109,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
+        [self unfollowSiteTopicWithSiteID:@(siteID)];
         if (success) {
             success();
         }
@@ -169,11 +169,24 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
+        [self unfollowSiteTopicWithURL:siteURL];
         if (success) {
             success();
         }
         [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"url":siteURL}];
     } failure:failure];
+}
+
+- (void)unfollowSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [topicService markUnfollowedSiteTopicWithSiteID:siteID];
+}
+
+- (void)unfollowSiteTopicWithURL:(NSString *)siteURL
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [topicService markUnfollowedSiteTopicWithFeedURL:siteURL];
 }
 
 - (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure

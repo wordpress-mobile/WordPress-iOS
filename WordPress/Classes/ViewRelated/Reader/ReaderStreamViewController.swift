@@ -37,6 +37,7 @@ import WordPressComAnalytics
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+    private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
@@ -54,6 +55,7 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
+    private var reloadTableViewBeforeAppearing = false
 
 
     /// Used for fetching content.
@@ -72,6 +74,9 @@ import WordPressComAnalytics
     private var tagSlug:String? {
         didSet {
             if tagSlug != nil {
+                // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
+                title = tagSlug
+
                 fetchTagTopic()
             }
         }
@@ -161,6 +166,10 @@ import WordPressComAnalytics
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Disable the view until we have a topic.  This prevents a premature
+        // pull to refresh animation.
+        view.userInteractionEnabled = readerTopic != nil
+
         setupCellsForLayout()
         setupTableView()
         setupFooterView()
@@ -180,14 +189,13 @@ import WordPressComAnalytics
     }
 
 
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
 
-        // There appears to be a scenario where this method can be called prior to
-        // the view being fully setup in viewDidLoad.
-        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
-        if didSetupView {
-            refreshTableViewHeaderLayout()
+        refreshTableHeaderIfNeeded()
+        if reloadTableViewBeforeAppearing {
+            reloadTableViewBeforeAppearing = false
+            tableView.reloadData()
         }
     }
 
@@ -231,6 +239,18 @@ import WordPressComAnalytics
             if let indexPaths = tableView.indexPathsForVisibleRows {
                 tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
             }
+        }
+    }
+
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if didSetupView {
+            refreshTableViewHeaderLayout()
         }
     }
 
@@ -330,6 +350,8 @@ import WordPressComAnalytics
 
         nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: readerWindowlessCellIdentifier)
     }
 
 
@@ -390,6 +412,7 @@ import WordPressComAnalytics
         frame.size.height = heightForFooterView
         footerView.frame = frame
         tableView.tableFooterView = footerView
+        footerView.hidden = true
     }
 
 
@@ -468,13 +491,7 @@ import WordPressComAnalytics
         }
 
         guard let header = ReaderStreamViewController.headerForStream(topic) else {
-            if WPDeviceIdentification.isiPad() {
-                let headerView = UIView(frame: frameForEmptyHeaderView)
-                headerView.backgroundColor = UIColor.clearColor()
-                tableView.tableHeaderView = headerView
-            } else {
-                tableView.tableHeaderView = nil
-            }
+            tableView.tableHeaderView = nil
             return
         }
 
@@ -487,11 +504,25 @@ import WordPressComAnalytics
     }
 
 
+    // Refresh the header of a site topic when returning in case the
+    // topic's following status changed.
+    func refreshTableHeaderIfNeeded() {
+        guard let siteTopic = readerTopic as? ReaderSiteTopic,
+            header = tableView.tableHeaderView as? ReaderStreamHeader else {
+            return
+        }
+        header.configureHeader(siteTopic)
+    }
+
+
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
     func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
+
+        // Enable the view now that we have a topic.
+        view.userInteractionEnabled = true
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -502,6 +533,7 @@ import WordPressComAnalytics
         managedObjectContext().reset()
 
         configureTitleForTopic()
+        configureNavigationItemForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -542,6 +574,23 @@ import WordPressComAnalytics
         }
 
         title = topic.title
+    }
+
+
+    func configureNavigationItemForTopic() {
+        guard let topic = readerTopic else {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        if ReaderHelpers.isTopicSearchTopic(topic) {
+            navigationItem.rightBarButtonItems = nil
+            return
+        }
+        let button = UIBarButtonItem(image: UIImage(named: "icon-post-search"),
+                                     style: .Plain,
+                                     target: self,
+                                     action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
+        navigationItem.rightBarButtonItem = button
     }
 
 
@@ -933,6 +982,14 @@ import WordPressComAnalytics
     }
 
 
+    /// Handle's the user tapping the search button.  Displays the search controller
+    ///
+    func handleSearchButtonTapped(sender: UIBarButtonItem) {
+        let controller = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+
     // MARK: - Sync Methods
 
 
@@ -984,7 +1041,7 @@ import WordPressComAnalytics
 
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
-        if canSync() && interval >= refreshInterval {
+        if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
@@ -1035,28 +1092,35 @@ import WordPressComAnalytics
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
+
             let objectID = topicInContext.objectID
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: NSDate(),
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
-                            strongSelf.updateLastSyncedForTopic(objectID)
+
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError?) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let error = error {
-                            failure?(error: error)
-                        }
-                    })
-                })
+                        strongSelf.updateLastSyncedForTopic(objectID)
+                    }
+                    success?(hasMore: hasMore)
+                }
+            }
+
+            let failureBlock = { (error:NSError?) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let error = error {
+                        failure?(error: error)
+                    }
+                }
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1091,26 +1155,31 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan:sortDate,
-                deletingEarlier:true,
-                success: { [weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let strongSelf = self {
-                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
-                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
-                                strongSelf.updateAndPerformFetchRequest()
-                            }
+            let successBlock = { [weak self] (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if let strongSelf = self {
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                            strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                            strongSelf.updateAndPerformFetchRequest()
                         }
+                    }
 
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
-                })
+                    success?(hasMore: hasMore)
+                }
+            }
+
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    failure?(error: error)
+                }
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                assertionFailure("Search topics should no have a gap to fill.")
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+            }
         }
     }
 
@@ -1138,19 +1207,24 @@ import WordPressComAnalytics
                 return
             }
 
-            service.fetchPostsForTopic(topicInContext,
-                earlierThan: earlierThan,
-                success: { (count:Int, hasMore:Bool) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        success?(hasMore: hasMore)
-                    })
-                },
-                failure: { (error:NSError!) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        failure?(error: error)
-                    })
-            })
+            let successBlock = { (count:Int, hasMore:Bool) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    success?(hasMore: hasMore)
+                })
+            }
 
+            let failureBlock = { (error:NSError!) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    failure?(error: error)
+                })
+            }
+
+            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+                let offset = UInt(topicInContext.posts.count)
+                service.fetchPostsForTopic(topicInContext, atOffset: offset, deletingEarlier: false, success: successBlock, failure: failureBlock)
+            } else {
+                service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
+            }
         }
 
         if let properties = topicPropertyForStats() {
@@ -1198,7 +1272,7 @@ import WordPressComAnalytics
 
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortDate", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
         return [sortDescriptor]
     }
 
@@ -1370,14 +1444,14 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     // MARK: Scrolling Related
 
-    public func scrollViewWillBeginDragging(scrollView: UIScrollView!) {
+    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if refreshControl.refreshing {
             refreshControl.endRefreshing()
         }
     }
 
 
-    public func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
@@ -1387,7 +1461,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
@@ -1401,7 +1475,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func fetchRequest() -> NSFetchRequest? {
+    public func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -1409,17 +1483,24 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
+    public func tableViewDidChangeContent(tableView: UITableView) {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            displayNoResultsView()
+        }
+    }
+
+
     // MARK - Refresh Bookends
 
-    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
         // Reload the table view to reflect new content.
         managedObjectContext().reset()
         updateAndPerformFetchRequest()
     }
 
 
-    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
-        if self.tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             displayNoResultsView()
         } else {
             hideResultsStatus()
@@ -1440,7 +1521,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!, forWidth width: CGFloat) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             return 0.0
         }
@@ -1468,6 +1549,16 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if view.window == nil && UIDevice.isPad() {
+            // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
+            // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
+            // The result is the cells do not show the correct layout on the iPad.
+            // HACK: aerych, 2016-06-27
+            // Use a generic cell in this situation and reload the table view once its back in a window.
+            reloadTableViewBeforeAppearing = true
+            return tableView.dequeueReusableCellWithIdentifier(readerWindowlessCellIdentifier)!
+        }
+
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 

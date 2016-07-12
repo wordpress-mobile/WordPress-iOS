@@ -6,12 +6,10 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <Optimizely/Optimizely.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
@@ -21,7 +19,6 @@
 
 // Categories & extensions
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 
@@ -126,9 +123,12 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-    [OptimizelyHelper setupOptimizelyWithLaunchOptions:launchOptions];
     [self.window makeKeyAndVisible];
-    [self showWelcomeScreenIfNeededAnimated:NO];
+
+    [self showWelcomeScreenABTestIfNeeded];
+
+    // TODO: Restore this method when the NUX A/B test is over. - aerych, 2016-06-28
+    // [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
@@ -183,10 +183,6 @@ int ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
-    if ([WordPressApi handleOpenURL:url]) {
-        returnValue = YES;
-    }
-
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
 
@@ -204,10 +200,16 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
-                [tabBarController showReaderTab];
-                [tabBarController.readerViewController openPost:postId onBlog:blogId];
-                
+                if ([Feature enabled: FeatureFlagReaderMenu]) {
+                    [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
+                } else {
+                    [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
+                    [tabBarController showReaderTab];
+                    [tabBarController.readerViewController openPost:postId onBlog:blogId];
+                }
+
                 returnValue = YES;
             }
         } else if ([URLString rangeOfString:@"viewstats"].length) {
@@ -353,7 +355,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Analytics
     [self configureAnalytics];
-    
+
     // Start Simperium
     [self loginSimperium];
     
@@ -365,15 +367,11 @@ int ddLogLevel = DDLogLevelInfo;
     [KeychainTools processKeychainDebugArguments];
 #endif
 
-    // Stats and feedback
-    [SupportViewController checkIfFeedbackShouldBeEnabled];
-    
     [HelpshiftUtils setup];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
-    [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
     // by any of the Merriweather varients.  Size is arbitrary.
@@ -382,10 +380,6 @@ int ddLogLevel = DDLogLevelInfo;
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-
-    // Notifications
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -507,9 +501,19 @@ int ddLogLevel = DDLogLevelInfo;
     return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
 }
 
+// Only call this method when launching the app. At any other time the signin screen
+// should be shown by calling `showWelcomeScreenIfNeededAnimated:`
+- (void)showWelcomeScreenABTestIfNeeded
+{
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+        return;
+    }
+    [SigninHelpers loadABTestThenShowSigninController];
+}
+
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
     
@@ -535,6 +539,10 @@ int ddLogLevel = DDLogLevelInfo;
     UINavigationController *presentedViewController = (UINavigationController *)self.window.rootViewController.presentedViewController;
     if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
         return NO;
+    }
+
+    if ([presentedViewController isKindOfClass:[NUXNavigationController class]]) {
+        return YES;
     }
 
     // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
@@ -563,15 +571,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)customizeAppearance
 {
-    UIColor *defaultTintColor = self.window.tintColor;
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.window.tintColor = [WPStyleGuide wordPressBlue];
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setTintColor:defaultTintColor];
 
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)]];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
@@ -674,17 +678,6 @@ int ddLogLevel = DDLogLevelInfo;
 }
 
 #pragma mark - Networking setup
-
-- (void)setupSingleSignOn
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WPComOAuthController *oAuthController = [WPComOAuthController sharedController];
-    
-    [oAuthController setWordPressComUsername:defaultAccount.username];
-    [oAuthController setWordPressComAuthToken:defaultAccount.authToken];
-}
 
 - (void)setupReachability
 {
@@ -948,7 +941,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     [self create3DTouchShortcutItems];
     [self toggleExtraDebuggingIfNeeded];
-    [self setupSingleSignOn];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }

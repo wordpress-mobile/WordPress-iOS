@@ -9,7 +9,6 @@
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
 #import "PostService.h"
-#import "Post.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
@@ -66,7 +65,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                           action:@selector(dismissKeyboardIfNeeded:)];
     tapRecognizer.cancelsTouchesInView = NO;
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -98,6 +97,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyViewIfNeeded];
     [self setupAutolayoutConstraints];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)attachSuggestionsTableViewIfNeeded
@@ -191,6 +191,20 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
+- (void)adjustTableViewInsetsIfNeeded
+{
+    if ([WPDeviceIdentification isiPad]) {
+        BOOL isPadFullScreen = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+        if (isPadFullScreen) {
+            UIEdgeInsets inset = self.tableView.contentInset;
+            inset.top = WPTableViewTopMargin;
+            self.tableView.contentInset = inset;
+        } else {
+            self.tableView.contentInset = UIEdgeInsetsZero;
+        }
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -218,6 +232,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self adjustTableViewInsetsIfNeeded];
+}
 
 #pragma mark - Fetching Post
 
@@ -287,11 +307,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *layoutIdentifier = self.layoutIdentifiersMap[@(indexPath.row)];
@@ -304,12 +319,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
-}
-
 
 #pragma mark - Setup Cells
 

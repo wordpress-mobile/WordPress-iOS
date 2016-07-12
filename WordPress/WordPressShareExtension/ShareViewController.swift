@@ -6,6 +6,7 @@ import WordPressComKit
 class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
+
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
@@ -22,21 +23,39 @@ class ShareViewController: SLComposeServiceViewController {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
+    private var mediaView: MediaView!
+
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
-    private lazy var postStatus = "publish"
+    private var postStatus = "publish"
+
+
+
+    // TODO: This should eventually be moved into WordPressComKit
+    private let postStatuses = [
+        "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
+    ]
+
 
 
     // MARK: - UIViewController Methods
+
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
 
-        // TextView
+        // Initialization
+        setupBearerToken()
+
+        // Load TextView + PreviewImage
         loadTextViewContent()
+        loadMediaViewContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -48,10 +67,10 @@ class ShareViewController: SLComposeServiceViewController {
 
 
 
-    // MARK: - Overriden Methods
+    // MARK: - SLComposeService Overriden Methods
+
     override func loadPreviewView() -> UIView! {
-        // Hides Composer Thumbnail Preview.
-        return UIView()
+        return mediaView
     }
 
     override func isContentValid() -> Bool {
@@ -67,28 +86,25 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func didSelectPost() {
-        guard let oauth2Token = oauth2Token, selectedSiteID = selectedSiteID else {
+        guard let _ = oauth2Token, siteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
-        RequestRouter.bearerToken = oauth2Token
+        // Upload Media, if any
+        uploadImageIfNeeded(mediaView?.mediaImage, siteID: siteID) { media in
+            // Proceed uploading the actual post
+            var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
 
-        let identifier = WPAppGroupName + "." + NSUUID().UUIDString
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-        configuration.sharedContainerIdentifier = WPAppGroupName
+            if let mediaURL = media?.remoteURL {
+                body = body.stringByPrependingMediaURL(mediaURL)
+            }
+            self.uploadPostWithSubject(subject, body: body, status: self.postStatus, siteID: siteID)
 
-        let service = PostService(configuration: configuration)
-        let linkified = contentText.stringWithAnchoredLinks()
-        let (subject, body) = splitContentTextIntoSubjectAndBody(linkified)
-
-        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
-            (post, error) in
-            print("Post \(post) Error \(error)")
+// TODO: Handle retry?
         }
 
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
-
         tracks.trackExtensionPosted(postStatus)
+        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -108,11 +124,16 @@ class ShareViewController: SLComposeServiceViewController {
 
         return [blogPickerItem, statusPickerItem]
     }
+}
 
 
 
-    // MARK: - Private Helpers
-    private func dismissIfNeeded() {
+
+/// ShareViewController Extension: Encapsulates all of the Action Helpers.
+///
+private extension ShareViewController
+{
+    func dismissIfNeeded() {
         guard oauth2Token == nil else {
             return
         }
@@ -130,7 +151,7 @@ class ShareViewController: SLComposeServiceViewController {
         presentViewController(alertController, animated: true, completion: nil)
     }
 
-    private func displaySitePicker() {
+    func displaySitePicker() {
         let pickerViewController = SitePickerViewController()
         pickerViewController.onChange = { (siteId, description) in
             self.selectedSiteID = siteId
@@ -142,7 +163,7 @@ class ShareViewController: SLComposeServiceViewController {
         pushConfigurationViewController(pickerViewController)
     }
 
-    private func displayStatusPicker() {
+    func displayStatusPicker() {
         let pickerViewController = PostStatusPickerViewController(statuses: postStatuses)
         pickerViewController.onChange = { (status, description) in
             self.postStatus = status
@@ -151,31 +172,86 @@ class ShareViewController: SLComposeServiceViewController {
 
         pushConfigurationViewController(pickerViewController)
     }
+}
 
-    private func loadTextViewContent() {
+
+
+/// ShareViewController Extension: Encapsulates private helpers
+///
+private extension ShareViewController
+{
+    func setupBearerToken() {
+        guard let bearerToken = oauth2Token else {
+            return
+        }
+
+        RequestRouter.bearerToken = bearerToken
+    }
+
+    func loadTextViewContent() {
         extensionContext?.loadWebsiteUrl { url in
-            dispatch_async(dispatch_get_main_queue()) {
-                let current = self.contentText ?? String()
-                let source  = url?.absoluteString ?? String()
-                let spacing = current.isEmpty ? String() : "\n\n"
+            let current = self.contentText ?? String()
+            let source  = url?.absoluteString ?? String()
+            let spacing = current.isEmpty ? String() : "\n\n"
 
-                self.textView.text = "\(current)\(spacing)\(source)"
+            self.textView.text = "\(current)\(spacing)\(source)"
+        }
+    }
+
+    func loadMediaViewContent() {
+        extensionContext?.loadMediaImage { image in
+            guard let image = image else {
+                return
             }
+
+            self.loadMediaViewFromImage(image)
+        }
+    }
+
+    func loadMediaViewFromImage(image: UIImage) {
+        guard mediaView == nil else {
+            assertionFailure()
+            return
+        }
+
+        mediaView = MediaView()
+        mediaView.mediaImage = image
+        reloadConfigurationItems()
+    }
+}
+
+
+
+/// ShareViewController Extension: Backend Interaction
+///
+private extension ShareViewController
+{
+    func uploadImageIfNeeded(image: UIImage?, siteID: Int, completion: Media? -> ()) {
+        guard let image = image, payload = UIImagePNGRepresentation(image) else {
+            completion(nil)
+            return
+        }
+
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+        let service = MediaService(configuration: configuration)
+
+        service.createMedia(payload, filename: MediaSettings.filename, mimeType: MediaSettings.mimeType, siteID: siteID) { (media, error) in
+            NSLog("Media: \(media) Error: \(error)")
+            completion(media)
+        }
+    }
+
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int) {
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+        let service = PostService(configuration: configuration)
+        service.createPost(siteID: siteID, status: status, title: subject, body: body) { (post, error) in
+            print("Post \(post) Error \(error)")
         }
     }
 
 
-    // TODO: This should eventually be moved into WordPressComKit
-    private let postStatuses = [
-        "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
-        "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
-
-    private func splitContentTextIntoSubjectAndBody(contentText: String) -> (subject: String, body: String) {
-        let fullText = contentText
-        let indexOfFirstNewline = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
-        let firstLineOfText = indexOfFirstNewline != nil ? fullText.substringToIndex(indexOfFirstNewline!.startIndex) : fullText
-        let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
-
-        return (firstLineOfText, restOfText)
+    enum MediaSettings {
+        static let filename = "image.png"
+        static let mimeType = "image/png"
     }
 }

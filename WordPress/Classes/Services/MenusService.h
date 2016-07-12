@@ -8,8 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class MenuItem;
 
 typedef void(^MenusServiceSuccessBlock)();
-typedef void(^MenusServiceCreateMenuRequestSuccessBlock)(NSNumber *menuID);
-typedef void(^MenusServiceUpdateMenuRequestSuccessBlock)();
+typedef void(^MenusServiceCreateOrUpdateMenuRequestSuccessBlock)();
 typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> * _Nullable menus);
 typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);
@@ -42,24 +41,10 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
                  success:(nullable MenusServiceSuccessBlock)success
                  failure:(nullable MenusServiceFailureBlock)failure;
 
-#pragma mark - Creating and updating menus
+#pragma mark - Updating menus
 
 /**
- *  @brief      Creates a menu.
- *
- *  @param      menuName  The name to create a new menu with.  Cannot be nil.
- *  @param      blog      The blog to create a menu on.  Cannot be nil.
- *  @param      success   The success handler.  Can be nil.
- *  @param      failure   The failure handler.  Can be nil.
- *
- */
-- (void)createMenuWithName:(NSString *)menuName
-                      blog:(Blog *)blog
-                   success:(nullable MenusServiceCreateMenuRequestSuccessBlock)success
-                   failure:(nullable MenusServiceFailureBlock)failure;
-
-/**
- *  @brief      Updates a menu.
+ *  @brief      Creates or updates a menu, as needed.
  *
  *  @param      menu      The updated menu object to update with local storage and remotely.  Cannot be nil.
  *  @param      blog      The blog to update a single menu on.  Cannot be nil.
@@ -67,10 +52,10 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  *  @param      failure   The failure handler.  Can be nil.
  *
  */
-- (void)updateMenu:(Menu *)menu
-           forBlog:(Blog *)blog
-           success:(nullable MenusServiceUpdateMenuRequestSuccessBlock)success
-           failure:(nullable MenusServiceFailureBlock)failure;
+- (void)createOrUpdateMenu:(Menu *)menu
+                   forBlog:(Blog *)blog
+                   success:(nullable MenusServiceCreateOrUpdateMenuRequestSuccessBlock)success
+                   failure:(nullable MenusServiceFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu.

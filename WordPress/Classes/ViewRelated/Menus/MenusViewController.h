@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MenusViewController : UIViewController
 
-- (id)initWithBlog:(Blog *)blog;
++ (MenusViewController *)controllerWithBlog:(Blog *)blog;
 
 @end
 

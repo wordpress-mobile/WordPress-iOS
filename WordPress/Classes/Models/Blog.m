@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -8,7 +7,7 @@
 #import "Constants.h"
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
-#import <WordPressApi/WordPressApi.h>
+#import "WPUserAgent.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -27,7 +26,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 @interface Blog ()
 
-@property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
+@property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
 
 @end
@@ -75,21 +74,20 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic sharingButtons;
 @dynamic capabilities;
 
-@synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize jetpack = _jetpack;
+@synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
-    
-    // Beware: Lazy getters below. Let's hit directly the ivar
-    [_api.operationQueue cancelAllOperations];
+
+    [_xmlrpcApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -97,8 +95,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     [super didTurnIntoFault];
 
     // Clean up instance variables
-    self.api = nil;
-
+    self.xmlrpcApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -349,7 +346,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     [self didChangeValueForKey:@"xmlrpc"];
 
     // Reset the api client so next time we use the new XML-RPC URL
-    self.api = nil;
+    self.xmlrpcApi = nil;
 }
 
 - (NSString *)version
@@ -422,7 +419,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
              */
             return [self accountIsDefaultAccount];
         case BlogFeaturePeople:
-            return [self restApi] != nil && self.isListingUsersAllowed;
+            return [self supportsRestApi] && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureStats:
             return [self supportsRestApi];
@@ -508,6 +505,17 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [defaultAccount isEqual:self.jetpackAccount];
 }
 
+- (nullable NSNumber *)siteID
+{
+    if (self.account) {
+        return self.dotComID;
+    }
+    else if (self.jetpackAccount && self.jetpack.siteID) {
+        return self.jetpack.siteID;
+    }
+    return nil;
+}
+
 - (NSNumber *)dotComID
 {
     [self willAccessValueForKey:@"blogID"];
@@ -576,27 +584,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 #pragma mark - api accessor
 
-- (WPXMLRPCClient *)api
+- (WordPressOrgXMLRPCApi *)xmlrpcApi
 {
-    if (_api == nil) {
-        _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
-        // Enable compression for wp.com only, as some self hosted have connection issues
-        if ([self isHostedAtWPcom]) {
-            [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
-            [_api setAuthorizationHeaderWithToken:self.account.authToken];
+    NSURL *xmlRPCEndpoint = [NSURL URLWithString:self.xmlrpc];
+    if (_xmlrpcApi == nil) {
+        if (xmlRPCEndpoint != nil) {
+        _xmlrpcApi = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRPCEndpoint
+                                                                   userAgent:[WPUserAgent wordPressUserAgent]];
         }
     }
-    return _api;
-}
-
-- (WordPressComApi *)restApi
-{
-    if (self.account) {
-        return self.account.restApi;
-    } else if ([self jetpackRESTSupported]) {
-        return self.jetpackAccount.restApi;
-    }
-    return nil;
+    return _xmlrpcApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi

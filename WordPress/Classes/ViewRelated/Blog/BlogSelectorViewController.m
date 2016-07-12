@@ -1,6 +1,5 @@
 #import "BlogSelectorViewController.h"
 #import "UIImageView+Gravatar.h"
-#import "WordPressComApi.h"
 #import "BlogDetailsViewController.h"
 #import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
@@ -289,17 +288,6 @@ static CGFloat BlogCellRowHeight = 54.0;
     return BlogCellRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    // In iPad devices + Non Modal Presentation, we actually do want the standard UITableView's top padding
-    if ([UIDevice isPad] && !self.presentingViewController) {
-        return 0;
-    }
-    
-    return CGFLOAT_MIN;
-}
-
-
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController
@@ -352,17 +340,23 @@ static CGFloat BlogCellRowHeight = 54.0;
 - (NSPredicate *)fetchRequestPredicate
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    
-    NSManagedObject *currentBlog = [context objectWithID:self.selectedObjectID];
-    NSString *predicate = @"(visible = YES OR self = %@)";
+
+    NSPredicate *visiblePredicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+    if (self.selectedObjectID) {
+        NSManagedObject *currentBlog = [context existingObjectWithID:self.selectedObjectID error:nil];
+        if (currentBlog) {
+            NSPredicate *currentBlogPredicate = [NSPredicate predicateWithFormat:@"self = %@", currentBlog];
+            visiblePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[visiblePredicate, currentBlogPredicate]];
+        }
+    }
     if (!self.displaysOnlyDefaultAccountSites) {
-        return [NSPredicate predicateWithFormat:predicate, currentBlog];
+        return visiblePredicate;
     } else {
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
         
-        predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
-        return [NSPredicate predicateWithFormat:predicate, currentBlog, defaultAccount, defaultAccount];
+        NSPredicate *accountPredicate = [NSPredicate predicateWithFormat:@"account == %@ OR jetpackAccount == %@", defaultAccount, defaultAccount];
+        return [NSCompoundPredicate andPredicateWithSubpredicates:@[visiblePredicate, accountPredicate]];
     }
 }
 

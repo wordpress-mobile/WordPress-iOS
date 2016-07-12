@@ -8,33 +8,50 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     enum Error: ErrorType {
         case DecodeError
+        case InvalidInputError
+        case UserAlreadyHasRoleError
+        case UnknownError
     }
+
 
     /// Retrieves the collection of users associated to a given Site.
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
-    ///     - success: Closure to be executed on success
+    ///     - offset: The first N users to be skipped in the returned array.
+    ///     - count: Number of objects to retrieve.
+    ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Users.
     ///
-    func getUsers(siteID: Int, success: ([User] -> Void), failure: (ErrorType -> Void)) {
+    func getUsers(siteID: Int,
+                  offset: Int = 0,
+                  count: Int,
+                  success: ((users: [User], hasMore: Bool) -> Void),
+                  failure: (ErrorType -> Void))
+    {
         let endpoint = "sites/\(siteID)/users"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
+        let parameters: [String: AnyObject] = [
+            "number"    : count,
+            "offset"    : offset,
+            "order_by"  : "display_name",
+            "order"     : "ASC",
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID, type: User.self) else
+                users = response["users"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(users, siteID: siteID, type: User.self) else
             {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(users: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -45,27 +62,81 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Parameters:
     ///     - siteID: The target site's ID.
+    ///     - count: The first N followers to be skipped in the returned array.
+    ///     - size: Number of objects to retrieve.
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
     /// - Returns: An array of Followers.
     ///
-    func getFollowers(siteID: Int, success: [Follower] -> (), failure: ErrorType -> ()) {
+    func getFollowers(siteID: Int,
+                      offset: Int = 0,
+                      count: Int,
+                      success: ((followers: [Follower], hasMore: Bool) -> Void),
+                      failure: ErrorType -> ())
+    {
         let endpoint = "sites/\(siteID)/follows"
         let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = [
-            "number": 50,
-            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL"
+        let pageNumber = (offset / count + 1)
+        let parameters: [String: AnyObject] = [
+            "number"    : count,
+            "page"      : pageNumber,
+            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL"
         ]
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                      people = try? self.peopleFromResponse(response, siteID: siteID, type: Follower.self) else
+                followers = response["users"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(followers, siteID: siteID, type: Follower.self) else
             {
                 failure(Error.DecodeError)
                 return
             }
-            success(people)
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(followers: people, hasMore: hasMore)
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+    /// Retrieves the collection of Viewers associated to a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///     - count: The first N followers to be skipped in the returned array.
+    ///     - size: Number of objects to retrieve.
+    ///     - success: Closure to be executed on success
+    ///     - failure: Closure to be executed on error.
+    ///
+    /// - Returns: An array of Followers.
+    ///
+    func getViewers(siteID: Int,
+                    offset: Int = 0,
+                    count: Int,
+                    success: ((followers: [Viewer], hasMore: Bool) -> Void),
+                    failure: ErrorType -> ())
+    {
+        let endpoint = "sites/\(siteID)/viewers"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let pageNumber = (offset / count + 1)
+        let parameters: [String: AnyObject] = [
+            "number"    : count,
+            "page"      : pageNumber
+        ]
+
+        wordPressComRestApi.GET(path, parameters: parameters, success: { responseObject, httpResponse in
+            guard let response = responseObject as? [String: AnyObject],
+                viewers = response["viewers"] as? [[String: AnyObject]],
+                people = try? self.peopleFromResponse(viewers, siteID: siteID, type: Viewer.self) else
+            {
+                failure(Error.DecodeError)
+                return
+            }
+
+            let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
+            success(followers: people, hasMore: hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -146,8 +217,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
     /// - Parameters:
-    ///     - siteID: The ID of the site associated
-    ///     - success: Optional closure to be executed on success
+    ///     - siteID: The ID of the site associated.
+    ///     - success: Optional closure to be executed on success.
     ///     - failure: Optional closure to be executed on error.
     ///
     /// - Returns: An array of Person.Role entities.
@@ -172,6 +243,93 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             failure?(error)
         })
     }
+
+
+    /// Validates Invitation Recipients.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated.
+    ///     - usernameOrEmail: Recipient that should be validated.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func validateInvitation(siteID: Int,
+                            usernameOrEmail: String,
+                            role: Role,
+                            success: (Void -> Void),
+                            failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/validate"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.remoteValue
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+
+    /// Sends an Invitation to the specified recipient.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the associated site.
+    ///     - usernameOrEmail: Recipient that should receive the invite.
+    ///     - role: Role that would be granted to the recipient.
+    ///     - message: String that should be sent to the recipient.
+    ///     - success: Closure to be executed on success.
+    ///     - failure: Closure to be executed on failure. The remote error will be passed on.
+    ///
+    func sendInvitation(siteID: Int,
+                        usernameOrEmail: String,
+                        role: Role,
+                        message: String,
+                        success: (Void -> Void),
+                        failure: (ErrorType -> Void))
+    {
+        let endpoint = "sites/\(siteID)/invites/new"
+        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+
+        let parameters = [
+            "invitees"  : usernameOrEmail,
+            "role"      : role.remoteValue,
+            "message"   : message
+        ]
+
+        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+            guard let responseDict = responseObject as? [String: AnyObject] else {
+                failure(Error.DecodeError)
+                return
+            }
+
+            if let error = self.errorFromInviteResponse(responseDict, usernameOrEmail: usernameOrEmail) {
+                failure(error)
+                return
+            }
+
+            success()
+
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
 }
 
 
@@ -181,21 +339,17 @@ private extension PeopleRemote {
     /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
-    ///     - response: Raw backend dictionary
+    ///     - response: Raw array of entity dictionaries
     ///     - siteID: the ID of the site associated
     ///     - type: The kind of Person we should parse.
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse<T : Person>(response: [String: AnyObject],
+    func peopleFromResponse<T : Person>(rawPeople: [[String: AnyObject]],
                                         siteID: Int,
                                         type: T.Type) throws -> [T]
     {
-        guard let users = response["users"] as? [[String: AnyObject]] else {
-            throw Error.DecodeError
-        }
-
-        let people = try users.flatMap { (user) -> T? in
+        let people = try rawPeople.flatMap { (user) -> T? in
             return try personFromResponse(user, siteID: siteID, type: type)
         }
 
@@ -255,7 +409,20 @@ private extension PeopleRemote {
                  isSuperAdmin  : isSuperAdmin)
     }
 
+    /// Returns the count of persons that can be retrieved from the backend.
+    ///
+    /// - Parameters response: Raw backend dictionary
+    ///
+    func peopleFoundFromResponse(response: [String: AnyObject]) -> Int {
+        return response["found"] as? Int ?? 0
+    }
+
+
     /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
+    ///
+    /// - Parameter roles: Raw backend dictionary
+    ///
+    /// - Returns: Collection of the remote roles.
     ///
     func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
@@ -272,5 +439,33 @@ private extension PeopleRemote {
 
         let filtered = parsed.filter { $0 != .Unsupported }
         return filtered.sort()
+    }
+
+    /// Parses a remote Invitation Error into a PeopleRemote.Error.
+    ///
+    /// - Parameters:
+    ///     - response: Raw backend dictionary
+    ///     - usernameOrEmail: Recipient that was used to either validate, or effectively send an invite.
+    ///
+    /// - Returns: The remote error, if any.
+    ///
+    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+        guard let errors = response["errors"] as? [String: AnyObject],
+            let theError = errors[usernameOrEmail] as? [String: String],
+            let code = theError["code"] else
+        {
+            return nil
+        }
+
+        switch code {
+        case "invalid_input":
+            return Error.InvalidInputError
+        case "invalid_input_has_role":
+            return Error.UserAlreadyHasRoleError
+        case "invalid_input_following":
+            return Error.UserAlreadyHasRoleError
+        default:
+            return Error.UnknownError
+        }
     }
 }

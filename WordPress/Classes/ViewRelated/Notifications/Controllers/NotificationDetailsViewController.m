@@ -146,13 +146,15 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self adjustTableInsetsIfNeeded];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
+
     [self.tableView reloadData];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 - (void)reloadData
@@ -173,7 +175,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Reload UI
     self.title = self.note.title;
     [self.tableView reloadData];
-    [self adjustTableInsetsIfNeeded];
+    [self adjustTableViewInsetsIfNeeded];
 }
 
 
@@ -392,9 +394,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableInsetsIfNeeded
+- (void)adjustTableViewInsetsIfNeeded
 {
-    UIEdgeInsets contentInset = [UIDevice isPad] ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
+    BOOL isiPadFullScreen = [WPDeviceIdentification isiPad] && [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
+    UIEdgeInsets contentInset = isiPadFullScreen ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
@@ -461,36 +464,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 
 #pragma mark - UITableViewDelegate Methods
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    /**
-        Note
-        This is a workaround. iOS 7 + grouped cells result in an extra top spacing.
-        Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
-     */
-
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    // Make sure no SectionFooter is rendered
-    return CGFLOAT_MIN;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    // Make sure no SectionHeader is rendered
-    return nil;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    // Make sure no SectionFooter is rendered
-    return nil;
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -696,7 +669,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 /**
     Note:
     The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
-    gravatar, is because we're implementing a custom behavior whenever the user approves/ disapproves the comment.
+    gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
     
     -   Font colors are updated.
     -   A left separator is displayed.

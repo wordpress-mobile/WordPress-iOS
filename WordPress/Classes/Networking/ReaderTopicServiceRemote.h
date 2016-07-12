@@ -3,7 +3,6 @@
 
 extern NSString * const WordPressComReaderEndpointURL;
 
-@class WordPressComApi;
 @class RemoteReaderSiteInfo;
 @class RemoteReaderTopic;
 
@@ -18,6 +17,15 @@ extern NSString * const WordPressComReaderEndpointURL;
  */
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success
                          failure:(void (^)(NSError *error))failure;
+
+/**
+ Get a list of the sites the user follows.
+
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success
+                              failure:(void(^)(NSError *error))failure;
 
 /**
  Unfollows the topic with the specified slug.

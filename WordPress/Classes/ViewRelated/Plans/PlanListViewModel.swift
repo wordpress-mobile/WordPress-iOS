@@ -24,22 +24,24 @@ enum PlanListViewModel {
         }
     }
 
-    func tableFooterViewModelWithPresenter(presenter: UIViewController) -> (title: NSAttributedString, action: () -> Void)? {
+    func tableFooterViewModelWithPresenter(presenter: UIViewController) -> (title: String, action: () -> Void)? {
         switch self {
         case .Ready:
-            let action = { [weak presenter] in
+            // Currently unused as we've removed the terms and conditions footer until we re-add purchasing at a later date
+            let _ = { [weak presenter] in
                 let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
                 let navController = UINavigationController(rootViewController: webViewController)
                 presenter?.presentViewController(navController, animated: true, completion: nil)
             }
 
-            return (footerTitle, action)
+            return (footerTitle, {})
         default:
             return nil
         }
     }
 
-    private var footerTitle: NSAttributedString {
+    // Currently unused until we re-add purchasing at a later date
+    private var termsAndConditionsFooterTitle: NSAttributedString {
         let bodyColor = WPStyleGuide.greyDarken10()
         let linkColor = WPStyleGuide.wordPressBlue()
 
@@ -54,6 +56,10 @@ enum PlanListViewModel {
         let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)
 
         return attributedTos
+    }
+
+    private var footerTitle: String {
+        return NSLocalizedString("You can manage your current plan at WordPress.com/plans", comment: "Footer for Plans list")
     }
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {

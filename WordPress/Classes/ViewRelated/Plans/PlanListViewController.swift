@@ -20,14 +20,14 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     private var footerTapAction: (() -> Void)?
-    private func tableFooterViewWithViewModel(viewModel: (title: NSAttributedString, action: () -> Void)?) -> UIView? {
+    private func tableFooterViewWithViewModel(viewModel: (title: String, action: () -> Void)?) -> UIView? {
         guard let viewModel = viewModel else { return nil }
 
         let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
 
         let title = viewModel.title
-        footerView.attributedTitle = title
-        footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
+        footerView.title = title
+        footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: footerView.bounds.width)
 
         // Don't add a recognizer if we already have one
         let recognizers = footerView.gestureRecognizers

@@ -6,7 +6,6 @@
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
-#import "Post.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
 #import "PostGeolocationCell.h"
@@ -61,7 +60,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
@@ -92,12 +90,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self removePostPropertiesObserver];
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
+- (instancetype)initWithPost:(AbstractPost *)aPost
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
-        _shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -316,10 +313,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.tableView reloadData];
 }
 
-- (void)datePickerChanged:(NSDate *)date
-{
-    self.apost.dateCreated = date;
-}
 
 #pragma mark - TextField Delegate Methods
 
@@ -566,7 +559,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (indexPath.row == 0 && !self.datePicker) {
         // Publish date
         cell = [self getWPTableViewCell];
-        if (self.apost.dateCreated) {
+        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
             if ([self.apost hasFuturePublishDate]) {
                 cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
             } else {
@@ -824,8 +817,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         frame.size.width = WPTableViewFixedWidth;
     } else {
         frame.size.width = CGRectGetWidth(self.tableView.bounds);
-        self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
+    self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.datePicker.frame = frame;
 
     NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
@@ -841,7 +834,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     NSArray *statuses = [self.apost availableStatusesForEditing];
     NSArray *titles = [statuses wp_map:^id(NSString *status) {
-        return [BasePost titleForStatus:status];
+        return [AbstractPost titleForStatus:status];
     }];
 
     NSDictionary *statusDict = @{
@@ -980,6 +973,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -1008,6 +1002,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
     picker.showMostRecentFirst = YES;
+    picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -1034,7 +1029,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
-        CGSize imageSize = CGSizeMake(width, height);
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize imageSize = CGSizeMake(width * scale, height * scale);
         
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
@@ -1186,7 +1182,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     if (value == nil) {
         // Publish Immediately
-        [self datePickerChanged:nil];
+        [self.apost publishImmediately];
     } else {
         // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
         NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
@@ -1195,7 +1191,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         if (fabs(interval) < 1.0) {
             return;
         }
-        [self datePickerChanged:selectedDate];
+        self.apost.dateCreated = selectedDate;
     }
 }
 
@@ -1232,14 +1228,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Status bar management
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Do not hide the status bar on iPad
-    return self.shouldHideStatusBar && !IS_IPAD;
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate
