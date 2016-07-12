@@ -158,6 +158,33 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager systemRegularFontOfSize:fontSize]};
 }
 
++ (CGRect)navigationBarButtonRect
+{
+    return CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+};
+
++ (CGFloat)spacingBetweeenNavbarButtons
+{
+    return 40.0f;
+}
+
++ (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
+                                            target:(id)target
+                                          selector:(SEL)selector
+{
+    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:[self navigationBarButtonRect]];
+    
+    button.tintColor = [UIColor whiteColor];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    button.removeDefaultLeftSpacing = YES;
+    button.removeDefaultRightSpacing = YES;
+    button.rightSpacing = [self spacingBetweeenNavbarButtons] / 2.0f;
+    button.leftSpacing = [self spacingBetweeenNavbarButtons] / 2.0f;
+    
+    return button;
+}
+
 
 #pragma mark - Page Cell Styles
 

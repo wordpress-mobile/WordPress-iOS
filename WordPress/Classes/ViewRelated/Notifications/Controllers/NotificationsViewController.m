@@ -25,12 +25,6 @@
 
 #import "UIView+Subviews.h"
 
-#import "AppRatingUtility.h"
-
-#import <WordPress_AppbotX/ABXPromptView.h>
-#import <WordPress_AppbotX/ABXAppStore.h>
-#import <WordPress_AppbotX/ABXFeedbackViewController.h>
-
 #import "WordPress-Swift.h"
 
 
@@ -44,8 +38,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
-
-static CGFloat const RatingsViewHeight                  = 100.0;
 
 typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
@@ -61,11 +53,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 #pragma mark Protocols
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController (Protocols) <SPBucketDelegate,
-                                                    WPNoResultsViewDelegate,
-                                                    WPTableViewHandlerDelegate,
-                                                    ABXPromptViewDelegate,
-                                                    ABXFeedbackViewControllerDelegate>
+@interface NotificationsViewController (Protocols) <SPBucketDelegate, WPNoResultsViewDelegate>
 
 @end
 
@@ -112,6 +100,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super viewDidLoad];
 
+    [self setupNavigationBar];
     [self setupConstraints];
     [self setupTableView];
     [self setupTableHeaderView];
@@ -119,7 +108,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
-    [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
     
@@ -173,127 +161,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
-- (void)setupConstraints
-{
-    NSParameterAssert(self.ratingsTopConstraint);
-    NSParameterAssert(self.ratingsHeightConstraint);
-    
-    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
-    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
-    
-    // Ratings is initially hidden!
-    self.ratingsHeightConstraint.constant = 0;
-}
-
-- (void)setupTableView
-{
-    NSParameterAssert(self.tableView);
-    
-    // Register the cells
-    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
-    
-    for (NSString *nibName in cellNibs) {
-        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
-    }
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
-- (void)setupTableHeaderView
-{
-    NSParameterAssert(self.tableHeaderView);
-    
-    // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-    CGRect headerFrame          = self.tableHeaderView.frame;
-    CGSize requiredSize         = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
-    headerFrame.size.height     = requiredSize.height;
-    
-    self.tableHeaderView.frame  = headerFrame;
-    [self.tableHeaderView layoutIfNeeded];
-    
-    // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
-    self.tableView.tableHeaderView = self.tableHeaderView;
-    [self.tableView setNeedsLayout];
-}
-
-- (void)setupTableFooterView
-{
-    NSParameterAssert(self.tableView);
-    
-    //  Fix: Hide the cellSeparators, when the table is empty
-    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
-}
-
-- (void)setupTableHandler
-{
-    NSParameterAssert(self.tableView);
-    
-    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights = YES;
-    tableViewHandler.delegate = self;
-    self.tableViewHandler = tableViewHandler;
-}
-
-- (void)setupRatingsView
-{
-    NSParameterAssert(self.ratingsView);
-    
-    UIFont *ratingsFont                             = [WPFontManager systemRegularFontOfSize:15.0];
-    self.ratingsView.label.font                     = ratingsFont;
-    self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
-    self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
-    self.ratingsView.delegate                       = self;
-    self.ratingsView.alpha                          = WPAlphaZero;
-}
-
-- (void)setupRefreshControl
-{
-    UIRefreshControl *refreshControl = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-- (void)setupNavigationBar
-{
-    // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
-    // This is only required for debugging:
-    // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
-    if ([name isEqualToString:WPNotificationsBucketName]) {
-        return;
-    }
-    
-    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
-}
-
-- (void)setupFiltersSegmentedControl
-{
-    NSParameterAssert(self.filtersSegmentedControl);
-    
-    NSArray *titles = @[
-        NSLocalizedString(@"All",       @"Displays all of the Notifications, unfiltered"),
-        NSLocalizedString(@"Unread",    @"Filters Unread Notifications"),
-        NSLocalizedString(@"Comments",  @"Filters Comments Notifications"),
-        NSLocalizedString(@"Follows",   @"Filters Follows Notifications"),
-        NSLocalizedString(@"Likes",     @"Filters Likes Notifications")
-    ];
-    
-    NSInteger index = 0;
-    for (NSString *title in titles) {
-        [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
-    }
-    
-    [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
-}
-
 - (void)showFiltersSegmentedControlIfApplicable
 {
     if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
@@ -310,14 +177,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
 }
 
-- (void)setupNotificationsBucketDelegate
-{
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    notesBucket.delegate            = self;
-    notesBucket.notifyWhileIndexing = YES;
-}
-
 - (BOOL)shouldDisplayFilters
 {
     // Note:
@@ -326,47 +185,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     //
     Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    
+
     return notesBucket.numObjects > 0;
-}
-
-
-#pragma mark - AppBotX Helpers
-
-- (void)showRatingViewIfApplicable
-{
-    if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-        return;
-    }
-    
-    // Rating View is already visible, don't bother to do anything
-    if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
-        return;
-    }
-    
-    // Animate FadeIn + Enhance
-    self.ratingsView.alpha = WPAlphaZero;
-    
-    CGFloat const delay = 0.5f;
-    
-    [UIView animateWithDuration:WPAnimationDurationDefault delay:delay options:UIViewAnimationCurveEaseIn animations:^{
-        self.ratingsView.alpha                  = WPAlphaFull;
-        self.ratingsHeightConstraint.constant   = RatingsViewHeight;
-                    
-        [self setupTableHeaderView];
-    } completion:nil];
-    
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
-}
-
-- (void)hideRatingView
-{
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.ratingsView.alpha                  = WPAlphaZero;
-        self.ratingsHeightConstraint.constant   = 0;
-                
-        [self setupTableHeaderView];
-    } completion:nil];
 }
 
 
@@ -782,116 +602,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-#pragma mark - UISegmentedControl Methods
-
-- (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
-{
-    [self reloadResultsController];
-    
-    // It's a long way, to the top (if you wanna rock'n roll!)
-    if (self.tableViewHandler.resultsController.fetchedObjects.count == 0) {
-        return;
-    }
-    
-    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-}
-
-
-#pragma mark - WPTableViewHandlerDelegate Methods
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    return [[ContextManager sharedInstance] mainContext];
-}
-
-- (NSFetchRequest *)fetchRequest
-{
-    NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-    fetchRequest.predicate          = [self predicateForSelectedFilters];
-    
-    return fetchRequest;
-}
-
-- (NSPredicate *)predicateForSelectedFilters
-{
-    NSDictionary *filtersMap = @{
-        @(NotificationFilterUnread)     : @" AND (read = NO)",
-        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
-        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
-        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
-                                            NoteTypeLike, NoteTypeCommentLike]
-    };
- 
-    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
-    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
-    
-    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
-}
-
-- (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    // Note:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
- 
-    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
-    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
-    __weak __typeof(self) weakSelf  = self;
-    
-    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
-    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
-    cell.read                       = note.read.boolValue;
-    cell.noticon                    = note.noticon;
-    cell.unapproved                 = note.isUnapprovedComment;
-    cell.markedForDeletion          = isMarkedForDeletion;
-    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
-    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
-    cell.onUndelete                 = ^{
-        [weakSelf cancelDeletionForNoteWithID:note.objectID];
-    };
-
-    [cell downloadIconWithURL:note.iconURL];
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Notification class]);
-}
-
-- (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    // Update Separators:
-    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
-    {
-        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
-    }
-    
-    // Update NoResults View
-    [self showNoResultsViewIfNeeded];
-}
-
-
-#pragma mark - UIRefreshControl Methods
-
-- (void)refresh
-{
-    // Yes. This is dummy. Simperium handles sync for us!
-    [self.refreshControl endRefreshing];
-}
-
-
 #pragma mark - No Results Helpers
 
 - (void)showNoResultsViewIfNeeded
@@ -990,52 +700,18 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
+#pragma mark - Swift Migration Helpers
 
-#pragma mark - ABXPromptViewDelegate
+// Note:
+// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
+// just as a workaround during the Swift migration.
+//
+// TODO: Nuke them. JLP 06.30.2016
+//
 
-- (void)appbotPromptForReview
+- (id <SPBucketDelegate>)simperiumBucketDelegate
 {
-    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[AppRatingUtility appReviewUrl]]];
-    [AppRatingUtility ratedCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptForFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
-    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
-    [AppRatingUtility gaveFeedbackForCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptClose
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
-    [AppRatingUtility declinedToRateCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptLiked
-{
-    [AppRatingUtility likedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
-}
-
-- (void)appbotPromptDidntLike
-{
-    [AppRatingUtility dislikedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
-}
-
-- (void)abxFeedbackDidSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
-}
-
-- (void)abxFeedbackDidntSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
+    return self;
 }
 
 @end

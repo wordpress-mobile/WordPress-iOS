@@ -5,6 +5,10 @@
 @class WPTableViewHandler;
 @class WPNoResultsView;
 
+@protocol ABXPromptViewDelegate;
+@protocol WPTableViewHandlerDelegate;
+@protocol SPBucketDelegate;
+
 
 #pragma mark - Private Properties
 
@@ -13,7 +17,6 @@
 @property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
 @property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsHeightConstraint;
 @property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView               *noResultsView;
@@ -22,5 +25,15 @@
 @property (nonatomic, strong) NSDate                        *lastReloadDate;
 @property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
+
+- (void)reloadResultsController;
+
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath;
+- (void)showNoResultsViewIfNeeded;
+
+- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID;
+- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID;
+
+- (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end

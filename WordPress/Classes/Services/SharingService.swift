@@ -258,7 +258,7 @@ public class SharingService : LocalCoreDataService
                 success?()
             },
             failure: { (error:NSError!) in
-                if let errorCode = error.userInfo[WordPressComApiErrorCodeKey] as? String {
+                if let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
                     if errorCode == self.SharingAPIErrorNotFound {
                         // This is a special situation. If the call to disconnect the service returns not_found then the service
                         // has probably already been disconnected and the call was made with stale data.
@@ -731,10 +731,10 @@ public class SharingService : LocalCoreDataService
     /// - Parameter blog: The blog to use for the rest api.
     ///
     private func remoteForBlog(blog: Blog) -> SharingServiceRemote? {
-        guard let api = blog.restApi() else {
+        guard let api = blog.wordPressComRestApi() else {
             return nil
         }
 
-        return SharingServiceRemote(api: api)
+        return SharingServiceRemote(wordPressComRestApi: api)
     }
 }

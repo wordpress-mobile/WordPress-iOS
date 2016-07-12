@@ -12,8 +12,6 @@ typedef enum
 }
 WPPostViewControllerMode;
 
-extern const CGRect NavigationBarButtonRect;
-
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
 

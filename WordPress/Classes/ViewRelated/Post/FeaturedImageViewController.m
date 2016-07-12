@@ -1,6 +1,5 @@
 #import "FeaturedImageViewController.h"
 
-#import "Post.h"
 #import "Media.h"
 #import "WordPress-Swift.h"
 
@@ -27,8 +26,6 @@
     if (self) {
         self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
         self.post = post;
-        self.extendedLayoutIncludesOpaqueBars = YES;
-        self.automaticallyAdjustsScrollViewInsets = NO;
     }
     return self;
 }

@@ -62,9 +62,9 @@ struct PlanDetailViewModel {
         return activePlan == plan
     }
 
-    var priceText: String {
+    var priceText: String? {
         if price.isEmpty  {
-            return NSLocalizedString("Free for life", comment: "Price label for the free plan")
+            return nil
         } else {
             return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
         }

@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "TaxonomyServiceRemote.h"
-#import "ServiceRemoteXMLRPC.h"
+#import "ServiceRemoteWordPressXMLRPC.h"
 
 @class RemoteCategory;
 
-@interface TaxonomyServiceRemoteXMLRPC : ServiceRemoteXMLRPC<TaxonomyServiceRemote>
+@interface TaxonomyServiceRemoteXMLRPC : ServiceRemoteWordPressXMLRPC<TaxonomyServiceRemote>
 
 @end

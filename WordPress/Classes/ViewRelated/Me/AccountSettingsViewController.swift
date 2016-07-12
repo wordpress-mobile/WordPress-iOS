@@ -3,7 +3,7 @@ import UIKit
 import WordPressComAnalytics
 
 func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.restApi else {
+    guard let api = account.wordPressComRestApi else {
         return nil
     }
     let service = AccountSettingsService(userID: account.userID.integerValue, api: api)

@@ -1,6 +1,5 @@
 #import "WPLegacyEditPostViewController.h"
 #import "ContextManager.h"
-#import "Post.h"
 #import "Coordinate.h"
 #import "Media.h"
 #import "WPTableViewCell.h"
@@ -305,6 +304,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
+            newPost.dateModified = oldPost.dateModified;
 
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
@@ -357,7 +357,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:NO];
+    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
@@ -365,7 +365,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showPreview
 {
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:NO];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];

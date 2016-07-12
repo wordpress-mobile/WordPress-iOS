@@ -158,7 +158,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
-    private func noResultsTitles() -> [PostListStatusFilter:String] {
+    private func noResultsTitles() -> [PostListFilter.Status:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -166,7 +166,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
-    private func noResultsTitlesWhenSearching() -> [PostListStatusFilter:String] {
+    private func noResultsTitlesWhenSearching() -> [PostListFilter.Status:String] {
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -175,7 +175,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitlesWhenFiltering() -> [PostListStatusFilter:String] {
+    private func noResultsTitlesWhenFiltering() -> [PostListFilter.Status:String] {
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         let trashedMessage = NSLocalizedString("You don't have any posts in your trash folder.", comment: "Displayed when the user views trashed in the posts list and there are no posts")
@@ -184,7 +184,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListStatusFilter:String] {
+    private func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status:String] {
         return [.Draft: draft,
                 .Scheduled: scheduled,
                 .Trashed: trashed,
@@ -274,21 +274,15 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()
-        var filterPredicate = currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
         if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
-            if let originalFilterPredicate = filterPredicate {
-                filterPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [originalFilterPredicate, trashedPredicate])
-            } else {
-                filterPredicate = trashedPredicate
-            }
-        }
-
-        if let filterPredicate = filterPredicate {
+            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
+        } else {
             predicates.append(filterPredicate)
         }
 
@@ -586,7 +580,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         recentlyTrashedPostObjectIDs.removeAll()
         resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        updateAndPerformFetchRequestRefreshingResults()
         syncItemsWithUserInteraction(false)
     }
 
@@ -648,8 +642,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = currentPostListFilter().filterType
 
         switch filterType {
-        case .Scheduled:
-            return NSLocalizedString("Edit Drafts", comment: "Button title, encourages users to schedule a draft post to publish.")
         case .Trashed:
             return ""
         default:
@@ -680,7 +672,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         case .Draft:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         case .Scheduled:
-            return NSLocalizedString("Would you like to schedule a draft to publish?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         case .Trashed:
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
         default:

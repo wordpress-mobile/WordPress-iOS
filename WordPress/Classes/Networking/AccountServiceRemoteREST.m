@@ -1,5 +1,4 @@
 #import "AccountServiceRemoteREST.h"
-#import "WordPressComApi.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
 #import "Constants.h"
@@ -24,7 +23,7 @@ static NSString * const UserDictionaryDateKey = @"date";
                     failure:(void (^)(NSError *))failure
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
     NSDictionary *parameters = @{
@@ -54,7 +53,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
     
     NSString *requestUrl = [self pathForEndpoint:@"me"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi GET:requestUrl
        parameters:nil
@@ -107,7 +106,7 @@ static NSString * const UserDictionaryDateKey = @"date";
                                  @"sites": sites
                                  };
     NSString *path = [self pathForEndpoint:@"me/sites"
-                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     [self.wordPressComRestApi POST:path
         parameters:parameters
            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -123,10 +122,6 @@ static NSString * const UserDictionaryDateKey = @"date";
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
-    // TODO: (Aerych 2016-04) We need to make a versioned flavor of this endpoint
-    // and ensure it always returns a JSON object. See 7724 in the relevant trac.
-    // Remove the special case in `WordPressComApi.assertApiVersion` once the
-    // endpoint is versioned.
     NSString *path = @"https://public-api.wordpress.com/is-available/email";
     [self.wordPressComRestApi GET:path
        parameters:@{ @"q": email, @"format": @"json"}
@@ -160,7 +155,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     NSAssert([email length] > 0, @"Needs an email address.");
 
     NSString *path = [self pathForEndpoint:@"auth/send-login-email"
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [self.wordPressComRestApi POST:path
         parameters:@{
