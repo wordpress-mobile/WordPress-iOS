@@ -31,13 +31,6 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     ImageDetailsRowSize
 };
 
-typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
-    ImageDetailsTextFieldTitle,
-    ImageDetailsTextFieldCaption,
-    ImageDetailsTextFieldAlt,
-    ImageDetailsTextFieldLink
-};
-
 @interface EditImageDetailsViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, strong) UIImage *image;
@@ -45,6 +38,12 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 @property (nonatomic, strong) NSArray *alignValues;
 @property (nonatomic, strong) NSArray *sizeTitles;
 @property (nonatomic, strong) NSArray *sizeValues;
+
+@property (nonatomic, strong) SettingTableViewCell *imageTitleCell;
+@property (nonatomic, strong) SettingTableViewCell *imageCaptionCell;
+@property (nonatomic, strong) SettingTableViewCell *imageAltTextCell;
+@property (nonatomic, strong) SettingTableViewCell *imageLinkCell;
+
 @end
 
 @implementation EditImageDetailsViewController
@@ -73,13 +72,22 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     tgr.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tgr];
 
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"The label of a close button in the image details view controller.")
-                                                               style:UIBarButtonItemStylePlain
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                               target:self
-                                                              action:@selector(handleCloseButtonTapped:)];
-    self.navigationItem.leftBarButtonItem = button;
+                                                              action:@selector(handleCancelButtonTapped:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                              target:self
+                                                              action:@selector(handleDoneButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    self.imageTitleCell.textValue = self.imageDetails.title;
+    self.imageCaptionCell.textValue = self.imageDetails.caption;
+    self.imageAltTextCell.textValue = self.imageDetails.alt;
+    self.imageLinkCell.textValue = self.imageDetails.linkURL;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -203,66 +211,26 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 #pragma mark - Actions
 
-- (void)handleCloseButtonTapped:(id)sender
+- (void)handleCancelButtonTapped:(id)sender
 {
-    if ([UIDevice isOS8]) {
-        // Update the delegate immediately for iOS 8 and later. This allows for a
-        // better user experience as any changes should already be in place when the
-        // editor reappears.
-        [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        // Update the delegate in the completion block. Avoids a race condition
-        // on iOS7 that could lead to a crash in WebCore due to invalid geometry,
-        // apparently caused by changes to the DOM during vc transition animation.
-        [self dismissViewControllerAnimated:YES completion:^{
-            [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
-        }];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)handleDoneButtonTapped:(id)sender
+{
+    self.imageDetails.title = self.imageTitleCell.textValue;
+    self.imageDetails.caption = self.imageCaptionCell.textValue;
+    self.imageDetails.alt = self.imageAltTextCell.textValue;
+    self.imageDetails.linkURL = self.imageLinkCell.textValue;
+
+    [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)handleTapInView:(UITapGestureRecognizer *)gestureRecognizer
 {
     [self.view endEditing:YES];
 }
-
-
-#pragma mark - TextField Delegate Methods
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (textField.tag == ImageDetailsTextFieldTitle) {
-        self.imageDetails.title = textField.text;
-    } else if (textField.tag == ImageDetailsTextFieldCaption) {
-        self.imageDetails.caption = textField.text;
-    } else if (textField.tag == ImageDetailsTextFieldAlt) {
-        self.imageDetails.alt = textField.text;
-    } else if (textField.tag == ImageDetailsTextFieldLink) {
-        self.imageDetails.linkURL = textField.text;
-    }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (textField.tag == ImageDetailsTextFieldTitle) {
-        self.imageDetails.title = str;
-    } else if (textField.tag == ImageDetailsTextFieldCaption) {
-        self.imageDetails.caption = str;
-    } else if (textField.tag == ImageDetailsTextFieldAlt) {
-        self.imageDetails.alt = str;
-    } else if (textField.tag == ImageDetailsTextFieldLink) {
-        self.imageDetails.linkURL = str;
-    }
-    return YES;
-}
-
 
 #pragma mark - UITableView Delegate
 
@@ -357,10 +325,25 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
-    if (cell.tag == ImageDetailsRowAlign) {
-        [self showAlignmentSelector];
-    } else if (cell.tag == ImageDetailsRowSize) {
-        [self showSizeSelector];
+    switch (cell.tag) {
+        case ImageDetailsRowTitle:
+            [self showEditImageTitleController];
+        break;
+        case ImageDetailsRowCaption:
+            [self showEditImageCaptionController];
+            break;
+        case ImageDetailsRowAlt:
+            [self showEditImageAltController];
+            break;
+        case ImageDetailsRowLink:
+            [self showEditImageLinkController];
+            break;
+        case ImageDetailsRowAlign:
+            [self showAlignmentSelector];
+        break;
+        case ImageDetailsRowSize:
+            [self showSizeSelector];
+        break;
     }
 }
 
@@ -411,33 +394,65 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     return cell;
 }
 
+- (SettingTableViewCell *)imageTitleCell
+{
+    if (_imageTitleCell) {
+        return _imageTitleCell;
+    }
+    _imageTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Title", @"Label for the title field of an image.")
+                                                        editable:YES
+                                                 reuseIdentifier:nil];
+    _imageTitleCell.tag = ImageDetailsRowTitle;
+    return _imageTitleCell;
+}
+
+- (SettingTableViewCell *)imageCaptionCell
+{
+    if (_imageCaptionCell) {
+        return _imageCaptionCell;
+    }
+    _imageCaptionCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Caption", @"Label for the caption field")
+                                                         editable:YES
+                                                  reuseIdentifier:nil];
+    _imageCaptionCell.tag = ImageDetailsRowCaption;
+    return _imageCaptionCell;
+}
+
+- (SettingTableViewCell *)imageAltTextCell
+{
+    if (_imageAltTextCell) {
+        return _imageAltTextCell;
+    }
+    _imageAltTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Alt Text", @"Label for the image's alt attribute.")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    _imageAltTextCell.tag = ImageDetailsRowAlt;
+    return _imageAltTextCell;
+}
+
+- (SettingTableViewCell *)imageLinkCell
+{
+    if (_imageLinkCell) {
+        return _imageLinkCell;
+    }
+    _imageLinkCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Link To", @"Image link option title")
+                                                       editable:YES
+                                                reuseIdentifier:nil];
+    _imageLinkCell.tag = ImageDetailsRowLink;
+    return _imageLinkCell;
+}
+
 - (UITableViewCell *)detailCellForIndexPath:(NSIndexPath *)indexPath
 {
     WPTextFieldTableViewCell *cell = [self getTextFieldCell];
 
     if (indexPath.row == 0) {
-        cell.tag = ImageDetailsRowTitle;
-        cell.textLabel.text = NSLocalizedString(@"Title", @"Label for the title field.");
-        cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Add a title", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-        cell.textField.accessibilityIdentifier = @"title value";
-        cell.textField.text = self.imageDetails.title;
-        cell.textField.tag = ImageDetailsTextFieldTitle;
-
+        return self.imageTitleCell;
     } else if (indexPath.row == 1) {
-        cell.tag = ImageDetailsRowCaption;
-        cell.textLabel.text = NSLocalizedString(@"Caption", @"Label for the caption field");
-        cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Add a caption", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-        cell.textField.accessibilityIdentifier = @"caption value";
-        cell.textField.text = self.imageDetails.caption;
-        cell.textField.tag = ImageDetailsTextFieldCaption;
+        return self.imageCaptionCell;
 
     } else if (indexPath.row == 2) {
-        cell.tag = ImageDetailsRowAlt;
-        cell.textLabel.text = NSLocalizedString(@"Alt Text", @"Label for the image's alt attribute.");
-        cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Add alt text", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-        cell.textField.accessibilityIdentifier = @"alt text value";
-        cell.textField.text = self.imageDetails.alt;
-        cell.textField.tag = ImageDetailsTextFieldAlt;
+        return self.imageAltTextCell;
     }
 
     return cell;
@@ -454,31 +469,14 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
         cell.textLabel.text = NSLocalizedString(@"Alignment", @"Image alignment option title.");
         cell.detailTextLabel.text = [self titleForAlignment:self.imageDetails.align];
         [WPStyleGuide configureTableViewCell:cell];
-
     } else if (indexPath.row == 1) {
-        cell = [self linkCellForIndexPath:indexPath];
-        cell.tag = ImageDetailsRowLink;
-        ((WPTextFieldTableViewCell *)cell).textField.tag = ImageDetailsTextFieldLink;
-
+        return self.imageLinkCell;
     } else if (indexPath.row == 2) {
         cell.tag = ImageDetailsRowSize;
         cell.textLabel.text = NSLocalizedString(@"Size", @"Image size option title");
         cell.detailTextLabel.text = [self titleForSize:self.imageDetails.size];
         [WPStyleGuide configureTableViewCell:cell];
     }
-
-    return cell;
-}
-
-- (UITableViewCell *)linkCellForIndexPath:(NSIndexPath *)indexPath
-{
-    WPTextFieldTableViewCell *cell = [self getTextFieldCell];
-    cell.tag = ImageDetailsRowLink;
-    cell.textLabel.text = NSLocalizedString(@"Link To", @"Image link option title");
-    cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"http://www.example.com/", @"Placeholder text for the link field.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-    cell.textField.accessibilityIdentifier = @"title value";
-    cell.textField.text = self.imageDetails.linkURL;
-    cell.textField.tag = 0;
 
     return cell;
 }
@@ -503,6 +501,54 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 
 #pragma mark - Setting Selection Methods
+
+- (void)showEditImageTitleController
+{
+    SettingsTextViewController *settingsTextViewController = [[SettingsTextViewController alloc] initWithText:self.imageTitleCell.textValue
+                                                                                                  placeholder:NSLocalizedString(@"Add a title", @"Hint for image title. Should be the same as WP core.")
+                                                                                                         hint:NSLocalizedString(@"Image title", @"Hint for image title on image settings.")];
+    settingsTextViewController.title = NSLocalizedString(@"Image Title", @"Title for screen that show site title editor");
+    settingsTextViewController.onValueChanged = ^(NSString *value) {
+        self.imageTitleCell.detailTextLabel.text = value;
+    };
+    [self.navigationController pushViewController:settingsTextViewController animated:YES];
+}
+
+- (void)showEditImageCaptionController
+{
+    SettingsTextViewController *settingsTextViewController = [[SettingsTextViewController alloc] initWithText:self.imageCaptionCell.textValue
+                                                                                                  placeholder:NSLocalizedString(@"Add a caption", @"Placeholder text for the tags field. Should be the same as WP core.")
+                                                                                                         hint:NSLocalizedString(@"Image Caption", @"Hint for image caption on image settings.")];
+    settingsTextViewController.title = NSLocalizedString(@"Image Caption", @"Title for screen that show image caption editor.");
+    settingsTextViewController.onValueChanged = ^(NSString *value) {
+        self.imageCaptionCell.detailTextLabel.text = value;
+    };
+    [self.navigationController pushViewController:settingsTextViewController animated:YES];
+}
+
+- (void)showEditImageAltController
+{
+    SettingsTextViewController *settingsTextViewController = [[SettingsTextViewController alloc] initWithText:self.imageAltTextCell.textValue
+                                                                                                  placeholder:NSLocalizedString(@"Add alt text", @"Placeholder text for the tags field. Should be the same as WP core.")
+                                                                                                         hint:NSLocalizedString(@"Image alt text", @"Placeholder text for the tags field. Should be the same as WP core.")];
+    settingsTextViewController.title = NSLocalizedString(@"Alt Text", @"Title for screen that show image alt editor.");
+    settingsTextViewController.onValueChanged = ^(NSString *value) {
+        self.imageAltTextCell.detailTextLabel.text = value;
+    };
+    [self.navigationController pushViewController:settingsTextViewController animated:YES];
+}
+
+- (void)showEditImageLinkController
+{
+    SettingsTextViewController *settingsTextViewController = [[SettingsTextViewController alloc] initWithText:self.imageLinkCell.textValue
+                                                                                                  placeholder:NSLocalizedString(@"http://www.example.com/", @"Placeholder text for the link field.")
+                                                                                                         hint:NSLocalizedString(@"URL for image to link to", @"Hint text for link field on the image settings.")];
+    settingsTextViewController.title = NSLocalizedString(@"Link To", @"Title for screen that show image link editor.");
+    settingsTextViewController.onValueChanged = ^(NSString *value) {
+        self.imageLinkCell.detailTextLabel.text = value;
+    };
+    [self.navigationController pushViewController:settingsTextViewController animated:YES];
+}
 
 - (void)showAlignmentSelector
 {
