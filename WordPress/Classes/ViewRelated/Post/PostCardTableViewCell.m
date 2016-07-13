@@ -330,11 +330,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSURL *url = [post featuredImageURLForDisplay];
     self.postCardImageView.image = nil; // Clear the image so we know its not stale.
-    // if not private create photon url
     if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
         NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
         [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
     } else {
+        // if not private create photon url
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
         [self.postCardImageView setImageWithURL:url placeholderImage:nil];
