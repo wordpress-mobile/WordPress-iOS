@@ -64,6 +64,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
++ (NSString *)stringFromMediaType:(MediaType)mediaType;
 
 - (void)remove;
 - (void)save;
