@@ -21,7 +21,10 @@ static NSString *cachedToken;
 {    
     @synchronized(mutex) {
         if (regcount == 0) {
-            [NSURLProtocol registerClass:[self class]];
+            if (![NSURLProtocol registerClass:[self class]]) {
+                NSAssert(YES, @"Unable to register protocol");
+                DDLogInfo(@"Unable to register protocol");
+            }
         }
         regcount++;
     }
@@ -31,9 +34,13 @@ static NSString *cachedToken;
 {
     @synchronized(mutex) {
         cachedToken = nil;
-        regcount--;
-        if (regcount == 0) {
-            [NSURLProtocol unregisterClass:[self class]];
+        if (regcount > 0) {
+            regcount--;
+            if (regcount == 0) {
+                [NSURLProtocol unregisterClass:[self class]];
+            }
+        } else {
+            DDLogInfo(@"Detected unbalanced register/unregister private site protocol.");
         }
     }
 }
@@ -89,6 +96,18 @@ static NSString *cachedToken;
     }
 
     return NO;
+}
+
++ (NSURLRequest *)requestForPrivateSiteFromURL:(NSURL *)url
+{
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    //make sure the scheme used is https
+    [urlComponents setScheme:@"https"];
+    NSURL *httpsURL = [urlComponents URL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:httpsURL];
+    NSString *bearerToken = [NSString stringWithFormat:@"Bearer %@", [self bearerToken]];
+    [request addValue:bearerToken forHTTPHeaderField:@"Authorization"];
+    return request;
 }
 
 - (void)startLoading
