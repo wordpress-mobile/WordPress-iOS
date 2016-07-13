@@ -21,7 +21,9 @@ static NSString *cachedToken;
 {    
     @synchronized(mutex) {
         if (regcount == 0) {
-            [NSURLProtocol registerClass:[self class]];
+            if (![NSURLProtocol registerClass:[self class]]) {
+                DDLogInfo(@"Unable to register protocol");
+            }
         }
         regcount++;
     }
@@ -31,9 +33,13 @@ static NSString *cachedToken;
 {
     @synchronized(mutex) {
         cachedToken = nil;
-        regcount--;
-        if (regcount == 0) {
-            [NSURLProtocol unregisterClass:[self class]];
+        if (regcount > 0) {
+            regcount--;
+            if (regcount == 0) {
+                [NSURLProtocol unregisterClass:[self class]];
+            }
+        } else {
+            DDLogInfo(@"Detected unbalanced register/unregister private site protocol.");
         }
     }
 }
