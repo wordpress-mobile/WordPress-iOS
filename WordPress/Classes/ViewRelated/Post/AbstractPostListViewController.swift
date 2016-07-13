@@ -3,12 +3,6 @@ import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
 
-extension UISearchController {
-    public override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
-}
-
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
@@ -274,15 +268,15 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func configureSearchController() {
         // Required for insets to work out correctly when the search bar becomes active
         extendedLayoutIncludesOpaqueBars = true
-
         definesPresentationContext = true
 
         searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.translucent = false
 
         searchController.delegate = self
         searchController.searchResultsUpdater = self
+
+        WPStyleGuide.configureSearchBar(searchController.searchBar)
     }
 
     func configureSearchBarPlaceholder() {

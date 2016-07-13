@@ -94,16 +94,7 @@ public protocol ThemePresenter: class
         return themesController.fetchedObjects?.count ?? 0
     }
 
-    /**
-     *  @brief      Searching support
-     */
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-
-        return searchController
-    }()
+    private var searchController: UISearchController!
 
     private var searchName = "" {
         didSet {
@@ -222,17 +213,20 @@ public protocol ThemePresenter: class
 
     private func configureSearchController() {
         extendedLayoutIncludesOpaqueBars = true
-
         definesPresentationContext = true
 
+        searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.translucent = false
+
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
 
         collectionView.registerClass(ThemeBrowserSearchHeaderView.self,
                                      forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                      withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
 
-        configureSearchBarPlaceholder()
+        WPStyleGuide.configureSearchBar(searchController.searchBar)
+
         configureInitialScrollInsets()
     }
 
