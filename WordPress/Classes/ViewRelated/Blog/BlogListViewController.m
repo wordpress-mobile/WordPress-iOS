@@ -283,6 +283,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
 - (void)configureSearchController
