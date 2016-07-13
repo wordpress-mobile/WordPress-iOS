@@ -127,24 +127,24 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     @objc private func keyboardDidShow(notification: NSNotification) {
-        let searchBarHeight = CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
-
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = CGRectGetMaxY(tableView.frame) - keyboardFrame.origin.y
 
-        let insets = tableView.contentInset
-
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right)
-        tableView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, insets.left, keyboardHeight, insets.right)
+        tableView.contentInset.top = topLayoutGuide.length
+        tableView.contentInset.bottom = keyboardHeight
+        tableView.scrollIndicatorInsets.top = searchBarHeight
+        tableView.scrollIndicatorInsets.bottom = keyboardHeight
     }
 
     @objc private func keyboardDidHide(notification: NSNotification) {
-        let searchBarHeight = CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
+        tableView.contentInset.top = topLayoutGuide.length
+        tableView.contentInset.bottom = 0
+        tableView.scrollIndicatorInsets.top = searchBarHeight
+        tableView.scrollIndicatorInsets.bottom = 0
+    }
 
-        let insets = tableView.contentInset
-
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, 0, insets.right)
-        tableView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, insets.left, 0, insets.right)
+    private var searchBarHeight: CGFloat {
+        return CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
     }
 
     private func localKeyboardFrameFromNotification(notification: NSNotification) -> CGRect {

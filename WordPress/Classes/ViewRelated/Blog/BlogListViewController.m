@@ -302,6 +302,14 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
+
+    UIEdgeInsets insets = self.tableView.scrollIndicatorInsets;
+    insets.top = [self searchBarHeight];
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+- (CGFloat)searchBarHeight {
+    return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
 }
 
 - (void)configureSearchBarPlaceholder
@@ -345,26 +353,22 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    CGFloat searchBarHeight = CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
-
     CGRect keyboardFrame = [self localKeyboardFrameFromNotification:notification];
     CGFloat keyboardHeight = CGRectGetMaxY(self.tableView.frame) - keyboardFrame.origin.y;
 
     UIEdgeInsets insets = self.tableView.contentInset;
 
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, keyboardHeight, insets.right);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, keyboardHeight, insets.right);
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification
 {
-    CGFloat searchBarHeight = CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
-
     CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
 
     UIEdgeInsets insets = self.tableView.contentInset;
 
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(searchBarHeight, insets.left, tabBarHeight, insets.right);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, tabBarHeight, insets.right);
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, tabBarHeight, insets.right);
 }
 
