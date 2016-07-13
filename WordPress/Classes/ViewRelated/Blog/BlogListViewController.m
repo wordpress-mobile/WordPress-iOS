@@ -126,25 +126,18 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [super viewDidLoad];
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.tableView];
     [self.view pinSubviewToAllEdges:self.tableView];
 
-    // Remove one-pixel gap resulting from a top-aligned grouped table view
-    if ([WPDeviceIdentification isiPhone]) {
-        UIEdgeInsets tableInset = [self.tableView contentInset];
-        tableInset.top = -1;
-        self.tableView.contentInset = tableInset;
-    }
-
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
-    
+
     [self configureTableView];
     [self configureHeaderView];
     [self configureSearchController];
-    
+
     [self registerForAccountChangeNotification];
 }
 
@@ -284,6 +277,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
 
+    self.tableView.tableFooterView = [UIView new];
+
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
@@ -291,19 +286,29 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     // Required for insets to work out correctly when the search bar becomes active
     self.extendedLayoutIncludesOpaqueBars = YES;
-
     self.definesPresentationContext = YES;
 
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.dimsBackgroundDuringPresentation = NO;
 
-    self.searchController.searchBar.translucent = NO;
-
-    self.tableView.tableHeaderView = self.searchController.searchBar;
+    // Required to work around a bug where the search bar was extending a
+    // grey background above the top of the tableview, which was visible when
+    // pulling down further than offset zero
+    SearchWrapperView *wrapperView = [SearchWrapperView new];
+    [wrapperView addSubview:self.searchController.searchBar];
+    wrapperView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.searchController.searchBar.bounds.size.height);
+    self.tableView.tableHeaderView = wrapperView;
 
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
 
+    [self configureInitialScrollInsets];
+
+    [WPStyleGuide configureSearchBar:self.searchController.searchBar];
+}
+
+- (void)configureInitialScrollInsets
+{
     UIEdgeInsets insets = self.tableView.scrollIndicatorInsets;
     insets.top = [self searchBarHeight];
     self.tableView.scrollIndicatorInsets = insets;
@@ -311,16 +316,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (CGFloat)searchBarHeight {
     return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
-}
-
-- (void)configureSearchBarPlaceholder
-{
-    // Adjust color depending on where the search bar is being presented.
-    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
-    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 #pragma mark - Notifications
@@ -415,6 +410,12 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     return numberOfRows;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.contentView.backgroundColor = [UIColor whiteColor];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
@@ -463,8 +464,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-    cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    cell.imageView.layer.borderWidth = 1.5;
+    cell.imageView.layer.borderColor = self.tableView.separatorColor.CGColor;
+    cell.imageView.layer.borderWidth = 1;
     [cell.imageView setImageWithSiteIcon:blog.icon];
     
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];

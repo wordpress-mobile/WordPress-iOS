@@ -605,9 +605,10 @@ int ddLogLevel = DDLogLevelInfo;
     
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
-    
-    // SVProgressHUD styles    
+    // Search
+    [WPStyleGuide configureSearchAppearance];
+
+    // SVProgressHUD styles
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
     [SVProgressHUD setFont:[WPFontManager systemRegularFontOfSize:18.0]];
