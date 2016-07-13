@@ -22,6 +22,7 @@ static NSString *cachedToken;
     @synchronized(mutex) {
         if (regcount == 0) {
             if (![NSURLProtocol registerClass:[self class]]) {
+                NSAssert(YES, @"Unable to register protocol");
                 DDLogInfo(@"Unable to register protocol");
             }
         }
