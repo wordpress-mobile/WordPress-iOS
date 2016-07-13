@@ -15,7 +15,6 @@
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
-#import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
 #import "CreateNewBlogViewController.h"
 
