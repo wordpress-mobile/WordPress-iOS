@@ -72,18 +72,23 @@
 
 - (void)setMediaType:(MediaType)mediaType
 {
+    self.mediaTypeString = [[self class] stringFromMediaType:mediaType];    
+}
+
++ (NSString *)stringFromMediaType:(MediaType)mediaType
+{
     switch (mediaType) {
         case MediaTypeImage:
-            self.mediaTypeString = @"image";
+            return @"image";
             break;
         case MediaTypeVideo:
-            self.mediaTypeString = @"video";
+            return @"video";
             break;
         case MediaTypePowerpoint:
-            self.mediaTypeString = @"powerpoint";
+            return @"powerpoint";
             break;
         case MediaTypeDocument:
-            self.mediaTypeString = @"document";
+            return @"document";
             break;
     }
 }
