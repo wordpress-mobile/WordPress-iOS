@@ -329,14 +329,16 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
 
     NSURL *url = [post featuredImageURLForDisplay];
+    self.postCardImageView.image = nil; // Clear the image so we know its not stale.
     // if not private create photon url
     if (![post isPrivate]) {
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
+        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
+    } else {
+        NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
+        [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
     }
-
-    self.postCardImageView.image = nil; // Clear the image so we know its not stale.
-    [self.postCardImageView setImageWithURL:url placeholderImage:nil];
 }
 
 - (void)configureTitle
