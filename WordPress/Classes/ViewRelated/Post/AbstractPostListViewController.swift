@@ -83,7 +83,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
 
     var searchController : WPSearchController! // Stand-in for UISearchController
-    private var allPostListFilters = [String:[PostListFilter]]()
+    private var allPostListFilters:[PostListFilter]?
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
@@ -920,8 +920,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Filter Related
 
-    func canFilterByAuthor() -> Bool {
-        return blog.isHostedAtWPcom && blog.isMultiAuthor && blogUserID() != nil
+    class func canFilterByAuthor(blog blog:Blog) -> Bool {
+        return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
+    }
+
+    class func authorIDFilter(forBlog blog:Blog) -> NSNumber? {
+        return currentPostAuthorFilter(blog:blog) == .Mine ? blog.account?.userID : nil
     }
 
     func shouldShowOnlyMyPosts() -> Bool {
@@ -929,8 +933,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return filter == .Mine
     }
 
-    func currentPostAuthorFilter() -> PostAuthorFilter {
+    class func currentPostAuthorFilter(blog blog:Blog) -> PostAuthorFilter {
         return .Everyone
+    }
+
+    func currentPostAuthorFilter() -> PostAuthorFilter {
+        return self.dynamicType.currentPostAuthorFilter(blog:blog)
     }
 
     func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
@@ -938,19 +946,25 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         // Subclasses may override the getter and setter for their own filter storage.
     }
 
+    class func availablePostListFilters() -> [PostListFilter] {
+        return PostListFilter.postListFilters()
+    }
+    
     func availablePostListFilters() -> [PostListFilter] {
-        let currentAuthorFilter = currentPostAuthorFilter()
-        let authorFilterKey = "filter_key_\(currentAuthorFilter.rawValue)"
 
-        if allPostListFilters[authorFilterKey] == nil {
-            allPostListFilters[authorFilterKey] = PostListFilter.postListFilters()
+        if allPostListFilters == nil {
+            allPostListFilters = PostListFilter.postListFilters()
         }
 
-        return allPostListFilters[authorFilterKey]!
+        return allPostListFilters!
     }
 
     func currentPostListFilter() -> PostListFilter {
-        return self.availablePostListFilters()[currentFilterIndex()]
+        return availablePostListFilters()[self.dynamicType.currentFilterIndex()]
+    }
+    
+    class func currentPostListFilter() -> PostListFilter {
+        return availablePostListFilters()[currentFilterIndex()]
     }
 
     func filterThatDisplaysPostsWithStatus(postStatus: String) -> PostListFilter {
@@ -988,11 +1002,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
     }
 
-    func keyForCurrentListStatusFilter() -> String {
+    class func keyForCurrentListStatusFilter() -> String {
         fatalError("You should implement this method in the subclass")
     }
 
-    func currentFilterIndex() -> Int {
+    class func currentFilterIndex() -> Int {
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -1006,14 +1020,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
      }
 
     func setCurrentFilterIndex(newIndex: Int) {
-        let index = currentFilterIndex()
+        let index = self.dynamicType.currentFilterIndex()
 
         guard newIndex != index else {
             return
         }
 
         WPAnalytics.track(.PostListStatusFilterChanged, withProperties: propertiesForAnalytics())
-        NSUserDefaults.standardUserDefaults().setObject(newIndex, forKey: keyForCurrentListStatusFilter())
+        NSUserDefaults.standardUserDefaults().setObject(newIndex, forKey: self.dynamicType.keyForCurrentListStatusFilter())
         NSUserDefaults.resetStandardUserDefaults()
 
         recentlyTrashedPostObjectIDs.removeAll()
@@ -1059,8 +1073,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             return
         }
 
-        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
-                                                                                                           presentingFromView: titleView)
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
 
         presentViewController(controller, animated: true, completion: nil)
     }

@@ -205,7 +205,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
     [self.tableView reloadData];
-    [self preloadStats];
+    [self preloadBlogData];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -506,17 +506,56 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Private methods
 
-- (void)preloadStats
+
+- (void)preloadBlogData
 {
-    NSString *oauthToken = self.blog.authToken;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
     
-    if (isOnWifi && oauthToken) { // only preload on wifi
+    // only preload on wifi
+    if (isOnWifi) {
+        [self preloadStats];
+        [self preloadPosts];
+        [self preloadPages];
+    }
+}
+
+- (void)preloadStats
+{
+    NSString *oauthToken = self.blog.authToken;
+    
+    if (oauthToken) {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }
+}
+
+- (void)preloadPosts
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilter *filter = [PostListViewController currentPostListFilter];
     
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [PostListViewController authorIDFilterForBlog:self.blog];
+    options.purgesLocalSync = YES;
+    
+    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
+}
+
+- (void)preloadPages
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilter *filter = [PageListViewController currentPostListFilter];
+
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [PageListViewController authorIDFilterForBlog:self.blog];
+    options.purgesLocalSync = YES;
+
+    [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
 }
 
 - (void)showComments

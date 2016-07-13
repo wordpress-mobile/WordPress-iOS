@@ -202,7 +202,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
-        if !canFilterByAuthor() {
+        if !self.dynamicType.canFilterByAuthor(blog:self.blog) {
             authorsFilterViewHeightConstraint?.constant = 0
             authorFilterSegmentedControl.hidden = true
         }
@@ -553,13 +553,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Filter Related
 
-    override func currentPostAuthorFilter() -> PostAuthorFilter {
-        if !canFilterByAuthor() {
+    override class func currentPostAuthorFilter(blog blog:Blog) -> PostAuthorFilter {
+        if !canFilterByAuthor(blog:blog) {
             // No REST API, so we have to use XMLRPC and can't filter results by author.
             return .Everyone
         }
 
-        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.dynamicType.currentPostAuthorFilterKey) {
+        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.currentPostAuthorFilterKey) {
             if filter.unsignedIntegerValue == PostAuthorFilter.Everyone.rawValue {
                 return .Everyone
             }
@@ -584,8 +584,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         syncItemsWithUserInteraction(false)
     }
 
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPostListStatusFilterKey
+    override class func keyForCurrentListStatusFilter() -> String {
+        return currentPostListStatusFilterKey
     }
 
     // MARK: - InteractivePostViewDelegate
