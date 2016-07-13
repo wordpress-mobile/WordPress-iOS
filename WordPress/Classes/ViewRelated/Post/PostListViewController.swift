@@ -29,18 +29,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     private let animatedBox = WPAnimatedBox()
 
-    // MARK: - Initializers & deinitializers
-
-    deinit {
-        PrivateSiteURLProtocol.unregisterPrivateSiteURLProtocol()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        PrivateSiteURLProtocol.registerPrivateSiteURLProtocol()
-    }
-
     // MARK: - Convenience constructors
 
     class func controllerWithBlog(blog: Blog) -> PostListViewController {
