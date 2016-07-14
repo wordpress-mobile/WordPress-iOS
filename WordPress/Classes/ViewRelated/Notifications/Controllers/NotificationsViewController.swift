@@ -7,6 +7,197 @@ import WordPressShared
 
 
 
+
+/// The purpose of this class is to render the collection of Notifications, associated to the main
+/// WordPress.com account found in the system.
+///
+/// This class relies on both, Simperium and WPTableViewHandler to automatically receive
+/// new Notifications that might be generated, and render them onscreen.
+/// Plus, we provide a simple mechanism to render the details for a specific Notification,
+/// given its remote identifier. This is specially useful when dealing with events derived from
+/// interactions with Push Notifications OS banners.
+///
+class NotificationsViewController : UITableViewController
+{
+    @IBOutlet private var tableHeaderView : UIView!
+    @IBOutlet private var filtersSegmentedControl : UISegmentedControl!
+    @IBOutlet private var ratingsView : ABXPromptView!
+    @IBOutlet private var ratingsHeightConstraint : NSLayoutConstraint!
+    private var tableViewHandler : WPTableViewHandler!
+    private var noResultsView : WPNoResultsView!
+    private var pushNotificationID : String?
+    private var pushNotificationDate : NSDate?
+
+    // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+    private var lastReloadDate = NSDate()
+
+    // Notifications that received a destructive action will allow the user to Undo this action.
+    // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
+    // so that it can be proactively filtered from the list.
+    private var notificationDeletionBlocks = [NSManagedObjectID: NotificationDeletionActionBlock]()
+    private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
+
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupNavigationBar()
+        setupConstraints()
+        setupTableView()
+        setupTableHeaderView()
+        setupTableFooterView()
+        setupTableHandler()
+        setupRatingsView()
+        setupRefreshControl()
+        setupNoResultsView()
+        setupFiltersSegmentedControl()
+        setupNotificationsBucketDelegate()
+
+        tableView.reloadData()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        // While we're onscreen, please, update rows with animations
+        tableViewHandler.updateRowAnimation = .Fade
+
+        // Tracking
+        trackAppeared()
+        updateLastSeenTime()
+
+        // Notifications
+        startListeningToNotifications()
+        resetApplicationBadge()
+
+        // Refresh the UI
+        reloadResultsControllerIfNeeded()
+        showNoResultsViewIfNeeded()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        showRatingViewIfApplicable()
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToNotifications()
+
+        // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
+        tableViewHandler.updateRowAnimation = .None
+    }
+
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableViewHandler.clearCachedRowHeights()
+    }
+
+
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
+
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return NoteTableHeaderView.headerHeight
+    }
+
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
+            return nil
+        }
+
+        let headerView = NoteTableHeaderView()
+        headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        headerView.separatorColor = tableView.separatorColor
+
+        return headerView
+    }
+
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Make sure no SectionFooter is rendered
+        return CGFloat.min
+    }
+
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Make sure no SectionFooter is rendered
+        return nil
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let identifier = NoteTableViewCell.reuseIdentifier()
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? NoteTableViewCell else {
+            fatalError()
+        }
+
+        configureCell(cell, atIndexPath: indexPath)
+
+        return cell
+    }
+
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return NoteEstimatedHeight
+    }
+
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // Load the Subject + Snippet
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+            return CGFloat.min
+        }
+
+        // Old School Height Calculation
+        let subject = note.subjectBlock().attributedSubjectText()
+        let snippet = note.snippetBlock().attributedSnippetText()
+
+        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // Failsafe: Make sure that the Notification (still) exists
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+            tableView.deselectSelectedRowWithAnimation(true)
+            return
+        }
+
+        // Push the Details: Unless the note has a pending deletion!
+        guard isNoteMarkedForDeletion(note.objectID) == false else {
+            return
+        }
+
+        showDetailsForNotification(note)
+    }
+
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let note = sender as? Notification else {
+            return
+        }
+
+        if let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController {
+            detailsViewController.setupWithNotification(note)
+            detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
+                self.showUndelete(note.objectID, onTimeout: onUndoTimeout)
+            }
+        }
+
+        if let readerViewController = segue.destinationViewController as? ReaderDetailViewController {
+            readerViewController.setupWithPostID(note.metaPostID, siteID: note.metaSiteID)
+        }
+    }
+
+    let NoteEstimatedHeight = CGFloat(70)
+}
+
+
+
 // MARK: - User Interface Initialization
 //
 extension NotificationsViewController
@@ -18,13 +209,12 @@ extension NotificationsViewController
         // This is only required for debugging:
         // If we're sync'ing against a custom bucket, we should let the user know about it!
         let bucketName = Notification.classNameWithoutNamespaces()
-        let overridenName = simperium.bucketOverrides[bucketName] as? String ?? WPNotificationsBucketName
 
-        guard overridenName != WPNotificationsBucketName else {
-            return
+        if let overridenName = simperium.bucketOverrides[bucketName] as? String {
+            title = "Notifications from [\(overridenName)]"
+        } else {
+            title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
         }
-
-        title = "Notifications from [\(overridenName)]"
     }
 
     func setupConstraints() {
@@ -138,6 +328,11 @@ extension NotificationsViewController
         nc.addObserver(self, selector: #selector(applicationWillResignActive), name:UIApplicationWillResignActiveNotification, object: nil)
     }
 
+    func startListeningToAccountNotifications() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name:WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+    }
+
     func stopListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -225,8 +420,7 @@ extension NotificationsViewController
     ///
     func showUndelete(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
         // Mark this note as Pending Deletichroon and Reload
-//        notificationDeletionBlocks[noteObjectID] = onTimeout
-        setDeletionBlock(onTimeout, forNoteObjectID: noteObjectID)
+        notificationDeletionBlocks[noteObjectID] = onTimeout
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
@@ -241,19 +435,19 @@ extension NotificationsViewController
 {
     func performDeletionAction(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
-        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] as? NotificationDeletionActionBlock else {
+        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
             return
         }
 
         // Hide the Notification
-        notificationIdsBeingDeleted.addObject(noteObjectID)
+        notificationIdsBeingDeleted.insert(noteObjectID)
         reloadResultsController()
 
         // Hit the Deletion Block
         deletionBlock { success in
             // Cleanup
-            self.notificationDeletionBlocks.removeObjectForKey(noteObjectID)
-            self.notificationIdsBeingDeleted.removeObject(noteObjectID)
+            self.notificationDeletionBlocks.removeValueForKey(noteObjectID)
+            self.notificationIdsBeingDeleted.remove(noteObjectID)
 
             // Error: let's unhide the row
             if success == false {
@@ -263,7 +457,7 @@ extension NotificationsViewController
     }
 
     func cancelDeletionAction(noteObjectID: NSManagedObjectID) {
-        notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+        notificationDeletionBlocks.removeValueForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(performDeletionAction), object: noteObjectID)
@@ -368,11 +562,11 @@ extension NotificationsViewController
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate
 {
-    public func managedObjectContext() -> NSManagedObjectContext {
+    func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
 
-    public func fetchRequest() -> NSFetchRequest {
+    func fetchRequest() -> NSFetchRequest {
         let request = NSFetchRequest(entityName: entityName())
         request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
@@ -380,7 +574,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         return request
     }
 
-    public func predicateForSelectedFilters() -> NSPredicate {
+    func predicateForSelectedFilters() -> NSPredicate {
         let filtersMap: [Filter: String] = [
             .None       : "",
             .Unread     : " AND (read = NO)",
@@ -393,10 +587,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let condition = filtersMap[filter] ?? String()
         let format = "NOT (SELF IN %@)" + condition
 
-        return NSPredicate(format: format, notificationIdsBeingDeleted.allObjects)
+        return NSPredicate(format: format, Array(notificationIdsBeingDeleted))
     }
 
-    public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         // Note:
         // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
         // For that reason, we draw our own separators.
@@ -427,15 +621,15 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.downloadIconWithURL(note.iconURL)
     }
 
-    public func sectionNameKeyPath() -> String {
+    func sectionNameKeyPath() -> String {
         return "sectionIdentifier"
     }
 
-    public func entityName() -> String {
+    func entityName() -> String {
         return Notification.classNameWithoutNamespaces()
     }
 
-    public func tableViewDidChangeContent(tableView: UITableView) {
+    func tableViewDidChangeContent(tableView: UITableView) {
         // Update Separators:
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
@@ -454,7 +648,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
 // MARK - Filter Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func showFiltersSegmentedControlIfApplicable() {
         guard tableHeaderView.alpha == WPAlphaZero && shouldDisplayFilters == true else {
@@ -557,7 +751,7 @@ extension NotificationsViewController
 //
 extension NotificationsViewController: WPNoResultsViewDelegate
 {
-    public func didTapNoResultsView(noResultsView: WPNoResultsView) {
+    func didTapNoResultsView(noResultsView: WPNoResultsView) {
         guard let targetURL = NSURL(string: WPJetpackInformationURL) else {
             fatalError()
         }
@@ -575,9 +769,9 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 
 // MARK: - RatingsView Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
-    public func showRatingViewIfApplicable() {
+    func showRatingViewIfApplicable() {
         guard AppRatingUtility.shouldPromptForAppReviewForSection(RatingSettings.section) else {
             return
         }
@@ -598,7 +792,7 @@ extension NotificationsViewController
         WPAnalytics.track(.AppReviewsSawPrompt)
     }
 
-    public func hideRatingView() {
+    func hideRatingView() {
         UIView.animateWithDuration(WPAnimationDurationDefault) {
             self.ratingsView.alpha = WPAlphaZero
             self.ratingsHeightConstraint.constant = RatingSettings.heightZero
@@ -614,25 +808,10 @@ extension NotificationsViewController
 //
 extension NotificationsViewController: SPBucketDelegate
 {
-    public func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
+    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
         // We're only concerned with New Notification Events
         guard changeType == .Insert else {
             return
-        }
-
-        // Were we waiting for this notification?
-        if pushNotificationID == key {
-            // Show the details only if NotificationPushMaxWait hasn't elapsed
-            if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
-                showDetailsForNoteWithID(key)
-            }
-
-            // Stop the sync timeout: we've got activity!
-            stopSyncTimeoutTimer()
-
-            // Cleanup
-            pushNotificationID = nil
-            pushNotificationDate = nil
         }
 
         // Mark as read immediately if:
@@ -643,6 +822,25 @@ extension NotificationsViewController: SPBucketDelegate
             resetApplicationBadge()
             updateLastSeenTime()
         }
+
+        // Were we waiting for this notification?
+        guard pushNotificationID == key else {
+            return
+        }
+
+        // Show the details only if NotificationPushMaxWait hasn't elapsed
+        guard let timeElapsed = pushNotificationDate?.timeIntervalSinceNow else {
+            return
+        }
+
+        if abs(timeElapsed) <= Syncing.pushMaxWait {
+            showDetailsForNoteWithID(key)
+        }
+
+        // Cleanup
+        stopSyncTimeoutTimer()
+        pushNotificationID = nil
+        pushNotificationDate = nil
     }
 }
 
@@ -706,7 +904,7 @@ extension NotificationsViewController
 //
 extension NotificationsViewController: ABXPromptViewDelegate
 {
-    public func appbotPromptForReview() {
+    func appbotPromptForReview() {
         WPAnalytics.track(.AppReviewsRatedApp)
         AppRatingUtility.ratedCurrentVersion()
         hideRatingView()
@@ -716,34 +914,34 @@ extension NotificationsViewController: ABXPromptViewDelegate
         }
     }
 
-    public func appbotPromptForFeedback() {
+    func appbotPromptForFeedback() {
         WPAnalytics.track(.AppReviewsOpenedFeedbackScreen)
         ABXFeedbackViewController.showFromController(self, placeholder: nil, delegate: nil)
         AppRatingUtility.gaveFeedbackForCurrentVersion()
         hideRatingView()
     }
 
-    public func appbotPromptClose() {
+    func appbotPromptClose() {
         WPAnalytics.track(.AppReviewsDeclinedToRateApp)
         AppRatingUtility.declinedToRateCurrentVersion()
         hideRatingView()
     }
 
-    public func appbotPromptLiked() {
+    func appbotPromptLiked() {
         WPAnalytics.track(.AppReviewsLikedApp)
         AppRatingUtility.likedCurrentVersion()
     }
 
-    public func appbotPromptDidntLike() {
+    func appbotPromptDidntLike() {
         WPAnalytics.track(.AppReviewsDidntLikeApp)
         AppRatingUtility.dislikedCurrentVersion()
     }
 
-    public func abxFeedbackDidSendFeedback () {
+    func abxFeedbackDidSendFeedback () {
         WPAnalytics.track(.AppReviewsSentFeedback)
     }
 
-    public func abxFeedbackDidntSendFeedback() {
+    func abxFeedbackDidntSendFeedback() {
         WPAnalytics.track(.AppReviewsCanceledFeedbackScreen)
     }
 }
