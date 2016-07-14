@@ -690,17 +690,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         return _resultsController;
     }
 
-    // Notes:
-    // ======
-    //
-    //  -   We're grouping "Primary Sites" at the top of the list, by means of the sectionNameKeyPath property.
-    //
-    //  -   NSFetchedResultsController *requires and enforces* sectionNameKeypath never to be nil.
-    //      Otherwise, unpredictable behavior arises. This property *may* be calculated (YAY!)
-    //
-    //  -   NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
-    //      be calculated. For that reason, we can't hit the same getter as above.
-    //
+    // NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
+    // be calculated. For that reason, we can't hit the same getter as above.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     
@@ -715,7 +706,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:context
-                                                               sectionNameKeyPath:self.sectionNameKeyPath
+                                                               sectionNameKeyPath:nil
                                                                         cacheName:nil];
     _resultsController.delegate = self;
 
@@ -731,11 +722,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (NSString *)entityName
 {
     return NSStringFromClass([Blog class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return @"sectionIdentifier";
 }
 
 - (NSString *)defaultBlogAccountIdKeyPath
