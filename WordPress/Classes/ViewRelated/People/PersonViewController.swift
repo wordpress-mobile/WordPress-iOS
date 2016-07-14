@@ -133,6 +133,24 @@ final class PersonViewController : UITableViewController {
         }
     }
 
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // Forgive Me:
+        // ===========
+        // Why do we check the indexPath's values, instead of grabbing the cellForRowAtIndexPath, and check if
+        // it's hidden or not?
+        //
+        // Because:
+        // UITableView is crashing if we do so, in this method. Probably due to an internal structure
+        // not being timely initialized.
+        //
+        //
+        if isFullnamePrivate == true && fullnameSection == indexPath.section && fullnameRows.contains(indexPath.row) {
+            return CGFloat.min
+        }
+        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+    }
+
+
 
     // MARK: - Storyboard Methods
 
@@ -153,6 +171,8 @@ final class PersonViewController : UITableViewController {
     // MARK: - Constants
     private let roleSegueIdentifier = "editRole"
     private let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
+    private let fullnameSection = 1
+    private let fullnameRows = [1, 2]
 }
 
 
@@ -322,10 +342,12 @@ private extension PersonViewController {
 
     func refreshFirstNameCell() {
         firstNameCell.detailTextLabel?.text = person.firstName
+        firstNameCell.hidden = isFullnamePrivate
     }
 
     func refreshLastNameCell() {
         lastNameCell.detailTextLabel?.text = person.lastName
+        lastNameCell.hidden = isFullnamePrivate
     }
 
     func refreshDisplayNameCell() {
@@ -354,6 +376,11 @@ private extension PersonViewController {
 
     var isMyself : Bool {
         return blog.account!.userID == person.ID || blog.account!.userID == person.linkedUserID
+    }
+
+    var isFullnamePrivate: Bool {
+        // Followers + Viewers shouldn't display First / Last name
+        return isUser == false
     }
 
     var isPromoteEnabled : Bool {

@@ -955,9 +955,14 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)setupWordPressExtensions
 {
+    // Default Account
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     [accountService setupAppExtensionsWithDefaultAccount];
+
+    // Settings
+    NSInteger maxImageSize = [[MediaSettings new] maxImageSizeSetting];
+    [ShareExtensionService configureShareExtensionMaximumMediaDimension:maxImageSize];
 }
 
 
