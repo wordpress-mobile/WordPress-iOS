@@ -128,6 +128,45 @@ extension NotificationsViewController
 
 
 
+// MARK: - Notifications
+//
+extension NotificationsViewController
+{
+    func startListeningToNotifications() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive), name:UIApplicationWillResignActiveNotification, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+        nc.removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
+    }
+
+    func applicationDidBecomeActive(note: NSNotification) {
+        // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+        guard isViewLoaded() == true && view.window != nil else {
+            return
+        }
+
+        // Reset the badge: the notifications are visible!
+        resetApplicationBadge()
+        updateLastSeenTime()
+        reloadResultsControllerIfNeeded()
+    }
+
+    func applicationWillResignActive(note: NSNotification) {
+        stopSyncTimeoutTimer()
+    }
+
+    func defaultAccountDidChange(note: NSNotification) {
+        resetApplicationBadge()
+    }
+}
+
+
+
 // MARK: - Public Methods
 //
 extension NotificationsViewController
