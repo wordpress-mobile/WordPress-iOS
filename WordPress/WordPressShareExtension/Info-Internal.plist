@@ -33,7 +33,7 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<string>1</string>
+				<integer>1</integer>
 				<key>NSExtensionActivationDictionaryVersion</key>
 				<integer>2</integer>
 				<key>NSExtensionActivationSupportsText</key>
