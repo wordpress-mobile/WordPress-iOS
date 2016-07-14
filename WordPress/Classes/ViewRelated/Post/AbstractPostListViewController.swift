@@ -133,7 +133,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @objc private func keyboardDidHide(notification: NSNotification) {
         tableView.contentInset.top = topLayoutGuide.length
         tableView.contentInset.bottom = 0
-        tableView.scrollIndicatorInsets.top = searchBarHeight
+        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
         tableView.scrollIndicatorInsets.bottom = 0
     }
 
@@ -154,6 +154,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+        if !searchController.active {
+            configureInitialScrollInsets()
+        }
 
         automaticallySyncIfAppropriate()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AbstractPostListViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -279,20 +283,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPStyleGuide.configureSearchBar(searchController.searchBar)
     }
 
-    func configureSearchBarPlaceholder() {
-
-        // Adjust color depending on where the search bar is being presented.
-        let placeholderColor = WPStyleGuide.wordPressBlue()
-        let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar on the post screen.")
-
-        let defaultSearchBarTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(placeholderColor)
-        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: defaultSearchBarTextAttributes)
-
-        let defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor())
-
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).attributedPlaceholder = attrPlacholderText
-
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).defaultTextAttributes = defaultTextAttributes
+    private func configureInitialScrollInsets() {
+        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
     func configureSearchHelper() {
