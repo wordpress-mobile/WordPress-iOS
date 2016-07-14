@@ -29,7 +29,6 @@
 - (void)reloadResultsController;
 
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath;
-- (void)showNoResultsViewIfNeeded;
 
 - (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID;
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID;
