@@ -25,9 +25,6 @@
 @property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID *, NotificationDeletionActionBlock> *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
-- (void)reloadResultsController;
-- (void)reloadResultsControllerIfNeeded;
-- (void)reloadRowForNotificationWithID:(NSManagedObjectID *)noteObjectID;
 - (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID;
 
 @end
