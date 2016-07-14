@@ -226,26 +226,10 @@ public protocol ThemePresenter: class
                                      withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
 
         WPStyleGuide.configureSearchBar(searchController.searchBar)
-
-        configureInitialScrollInsets()
-    }
-
-    private func configureSearchBarPlaceholder() {
-        let placeholderText = NSLocalizedString("Search",  comment:"Placeholder text for the themes browser search bar")
-        let placeholderAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.wordPressBlue())
-        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).attributedPlaceholder = attrPlacholderText
-
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor())
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).defaultTextAttributes = textAttributes
     }
 
     private var searchBarHeight: CGFloat {
         return CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
-    }
-
-    private func configureInitialScrollInsets() {
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -317,7 +301,7 @@ public protocol ThemePresenter: class
 
         collectionView.contentInset.top = topLayoutGuide.length
         collectionView.contentInset.bottom = tabBarHeight
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
+        collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
         collectionView.scrollIndicatorInsets.bottom = tabBarHeight
     }
 
