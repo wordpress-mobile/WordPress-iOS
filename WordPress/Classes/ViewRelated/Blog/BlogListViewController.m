@@ -302,16 +302,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
 
-    [self configureInitialScrollInsets];
-
     [WPStyleGuide configureSearchBar:self.searchController.searchBar];
-}
-
-- (void)configureInitialScrollInsets
-{
-    UIEdgeInsets insets = self.tableView.scrollIndicatorInsets;
-    insets.top = [self searchBarHeight];
-    self.tableView.scrollIndicatorInsets = insets;
 }
 
 - (CGFloat)searchBarHeight {
@@ -363,9 +354,11 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
 
     UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = self.topLayoutGuide.length;
+    insets.bottom = tabBarHeight;
 
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, tabBarHeight, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, tabBarHeight, insets.right);
+    self.tableView.scrollIndicatorInsets = insets;
+    self.tableView.contentInset = insets;
 }
 
 -(CGRect)localKeyboardFrameFromNotification:(NSNotification *)notification
