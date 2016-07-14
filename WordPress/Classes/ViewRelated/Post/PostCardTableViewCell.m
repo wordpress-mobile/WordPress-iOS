@@ -331,6 +331,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     NSURL *url = [post featuredImageURLForDisplay];
     self.postCardImageView.image = nil; // Clear the image so we know its not stale.
     if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
+        CGSize imageSize = self.postCardImageView.frame.size;
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize scaledSize = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
+        url = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:url];
         NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
         [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
     } else {
