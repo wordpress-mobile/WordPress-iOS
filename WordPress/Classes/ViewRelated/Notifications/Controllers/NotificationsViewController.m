@@ -366,17 +366,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
 }
 
-- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
-{
-    // Failsafe!
-    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
-        return false;
-    }
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
-    return indexPath.row == (sectionInfo.numberOfObjects - 1);
-}
-
 - (void)trackAppeared
 {
     [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
