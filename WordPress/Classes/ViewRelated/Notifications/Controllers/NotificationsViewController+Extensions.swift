@@ -121,7 +121,7 @@ extension NotificationsViewController
 
     func setupNotificationsBucketDelegate() {
         let notesBucket = simperium.bucketForName(entityName())
-        notesBucket.delegate = simperiumBucketDelegate()
+        notesBucket.delegate = self
         notesBucket.notifyWhileIndexing = true
     }
 }
@@ -404,6 +404,42 @@ extension NotificationsViewController
 }
 
 
+
+// MARK: - SPBucketDelegate Methods
+//
+extension NotificationsViewController: SPBucketDelegate
+{
+    public func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
+        // We're only concerned with New Notification Events
+        guard changeType == .Insert else {
+            return
+        }
+
+        // Were we waiting for this notification?
+        if pushNotificationID == key {
+            // Show the details only if NotificationPushMaxWait hasn't elapsed
+            if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
+                showDetailsForNoteWithID(key)
+            }
+
+            // Stop the sync timeout: we've got activity!
+            stopSyncTimeoutTimer()
+
+            // Cleanup
+            pushNotificationID = nil
+            pushNotificationDate = nil
+        }
+
+        // Mark as read immediately if:
+        //  -   We're onscreen
+        //  -   The app is in Foreground (This may be called during a Background Fetch Event).
+        //
+        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
+            resetApplicationBadge()
+            updateLastSeenTime()
+        }
+    }
+}
 
 // MARK: - ABXPromptViewDelegate Methods
 //
