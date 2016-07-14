@@ -357,8 +357,13 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     insets.top = self.topLayoutGuide.length;
     insets.bottom = tabBarHeight;
 
-    self.tableView.scrollIndicatorInsets = insets;
     self.tableView.contentInset = insets;
+
+    if (self.searchController.active) {
+        insets.top = [self searchBarHeight];
+    }
+
+    self.tableView.scrollIndicatorInsets = insets;
 }
 
 -(CGRect)localKeyboardFrameFromNotification:(NSNotification *)notification
@@ -515,6 +520,13 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)willDismissSearchController:(UISearchController *)searchController
 {
     self.searchController.searchBar.text = nil;
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController
+{
+    UIEdgeInsets insets = self.tableView.scrollIndicatorInsets;
+    insets.top = self.topLayoutGuide.length;
+    self.tableView.scrollIndicatorInsets = insets;
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController

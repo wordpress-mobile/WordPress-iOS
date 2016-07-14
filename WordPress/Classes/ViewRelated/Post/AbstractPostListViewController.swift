@@ -133,7 +133,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @objc private func keyboardDidHide(notification: NSNotification) {
         tableView.contentInset.top = topLayoutGuide.length
         tableView.contentInset.bottom = 0
-        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        tableView.scrollIndicatorInsets.top = searchController.active ? searchBarHeight : topLayoutGuide.length
         tableView.scrollIndicatorInsets.bottom = 0
     }
 
@@ -1080,6 +1080,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func willDismissSearchController(searchController: UISearchController) {
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
+
+        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
     func updateSearchResultsForSearchController(searchController: UISearchController) {
