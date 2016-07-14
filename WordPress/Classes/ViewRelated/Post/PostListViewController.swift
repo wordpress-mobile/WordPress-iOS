@@ -25,6 +25,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
+    @IBOutlet var authorsFilterView : UIView!
+    @IBOutlet var searchWrapperView: UIView!
+    @IBOutlet var headerStackView: UIStackView!
+
     // MARK: - GUI
 
     private let animatedBox = WPAnimatedBox()
@@ -146,6 +150,15 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
+    override func configureSearchController() {
+        super.configureSearchController()
+
+        searchWrapperView.addSubview(searchController.searchBar)
+        tableView.tableHeaderView = headerStackView
+
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+    }
+
     private func noResultsTitles() -> [PostListFilter.Status:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
@@ -191,8 +204,12 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
         if !canFilterByAuthor() {
-            authorsFilterViewHeightConstraint?.constant = 0
-            authorFilterSegmentedControl.hidden = true
+            authorsFilterView.removeFromSuperview()
+
+            headerStackView.frame.size.height = searchController.searchBar.frame.height
+
+            // Required to update the size of the table header view
+            tableView.tableHeaderView = headerStackView
         }
 
         if currentPostAuthorFilter() == .Mine {

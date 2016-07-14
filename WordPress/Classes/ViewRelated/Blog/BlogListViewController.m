@@ -15,10 +15,8 @@
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
-#import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
 #import "CreateNewBlogViewController.h"
-#import "WordPress-Swift.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -33,19 +31,16 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                         UITableViewDelegate,
                                         UITableViewDataSource,
                                         NSFetchedResultsControllerDelegate,
-                                        WPSearchResultsUpdating,
-                                        WPSearchControllerDelegate>
+                                        UISearchResultsUpdating,
+                                        UISearchControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
-@property (nonatomic, strong) WPSearchController *searchController;
-@property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
-@property (nonatomic, strong) UIBarButtonItem *searchButton;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -88,13 +83,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                                     style:UIBarButtonItemStylePlain
                                                                                    target:self
                                                                                    action:@selector(addSite)];
-    
-    self.searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(toggleSearch)];
-
-    [self updateSearchButton];
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -138,20 +126,18 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [super viewDidLoad];
 
-    // Remove one-pixel gap resulting from a top-aligned grouped table view
-    if ([WPDeviceIdentification isiPhone]) {
-        UIEdgeInsets tableInset = [self.tableView contentInset];
-        tableInset.top = -1;
-        self.tableView.contentInset = tableInset;
-    }
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.tableView];
+    [self.view pinSubviewToAllEdges:self.tableView];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
-    
+
     [self configureTableView];
     [self configureHeaderView];
     [self configureSearchController];
-    
+
     [self registerForAccountChangeNotification];
 }
 
@@ -159,19 +145,18 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [super viewWillAppear:animated];
     [self registerForKeyboardNotifications];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
     [self updateEditButton];
-    [self updateSearchButton];
     [self maybeShowNUX];
     [self syncBlogs];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.searchController setActive:NO];
+    self.searchController.active = NO;
     [super viewWillDisappear:animated];
     [self unregisterForKeyboardNotifications];
     self.resultsController.delegate = nil;
@@ -186,10 +171,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
             
             // this forces the tableHeaderView to resize
             self.tableView.tableHeaderView = self.headerView;
-        }
-        
-        if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
-            self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
         }
     } completion:nil];
 }
@@ -207,18 +188,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
-    }
-}
-
-- (void)updateSearchButton
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] <= 1) {
-        // Hide the search button if there's only one blog
-        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton ];
-    } else {
-        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.searchButton ];
     }
 }
 
@@ -307,35 +276,37 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
+
+    self.tableView.tableFooterView = [UIView new];
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
 - (void)configureSearchController
 {
-    self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
-    
-    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController
-                                                                                                    withSearchWrapperView:self.searchWrapperView];
-    [searchControllerConfigurator configureSearchControllerAndWrapperView];
-    [self configureSearchBarPlaceholder];
+    // Required for insets to work out correctly when the search bar becomes active
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.definesPresentationContext = YES;
+
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+
+    // Required to work around a bug where the search bar was extending a
+    // grey background above the top of the tableview, which was visible when
+    // pulling down further than offset zero
+    SearchWrapperView *wrapperView = [SearchWrapperView new];
+    [wrapperView addSubview:self.searchController.searchBar];
+    wrapperView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.searchController.searchBar.bounds.size.height);
+    self.tableView.tableHeaderView = wrapperView;
+
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
+
+    [WPStyleGuide configureSearchBar:self.searchController.searchBar];
 }
 
-- (void)configureSearchBarPlaceholder
-{
-    // Adjust color depending on where the search bar is being presented.
-    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
-    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
-}
-
-- (CGFloat)heightForSearchWrapperView
-{
-    UINavigationBar *navBar = self.navigationController.navigationBar;
-    CGFloat height = CGRectGetHeight(navBar.frame) + [UIApplication sharedApplication].statusBarFrame.size.height;
-    return MAX(height, SearchWrapperViewMinHeight);
+- (CGFloat)searchBarHeight {
+    return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
 }
 
 #pragma mark - Notifications
@@ -351,10 +322,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
@@ -363,25 +334,44 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (void)unregisterForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    NSDictionary *info = notification.userInfo;
-    CGFloat keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
-    
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight - tabBarHeight, 0.0);
-    self.tableView.contentInset = newInsets;
-    self.tableView.scrollIndicatorInsets = newInsets;
+    CGRect keyboardFrame = [self localKeyboardFrameFromNotification:notification];
+    CGFloat keyboardHeight = CGRectGetMaxY(self.tableView.frame) - keyboardFrame.origin.y;
+
+    UIEdgeInsets insets = self.tableView.contentInset;
+
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+- (void)keyboardWillHide:(NSNotification*)notification
 {
-    self.tableView.contentInset = UIEdgeInsetsZero;
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
+
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = self.topLayoutGuide.length;
+    insets.bottom = tabBarHeight;
+
+    self.tableView.contentInset = insets;
+
+    if (self.searchController.active) {
+        insets.top = [self searchBarHeight];
+    }
+
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+-(CGRect)localKeyboardFrameFromNotification:(NSNotification *)notification
+{
+    CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+
+    // Convert the frame from window coordinates
+    return [self.view convertRect:keyboardFrame fromView:nil];
 }
 
 - (void)wordPressComApiDidLogin:(NSNotification *)notification
@@ -416,6 +406,12 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
 
     return numberOfRows;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -466,8 +462,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-    cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    cell.imageView.layer.borderWidth = 1.5;
+    cell.imageView.layer.borderColor = self.tableView.separatorColor.CGColor;
+    cell.imageView.layer.borderWidth = 1;
     [cell.imageView setImageWithSiteIcon:blog.icon];
     
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
@@ -519,35 +515,21 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     return BLVCSiteRowHeight;
 }
 
-# pragma mark - WPSeachController delegate methods
+# pragma mark - UISearchController delegate methods
 
-- (void)presentSearchController:(WPSearchController *)searchController
+- (void)willDismissSearchController:(UISearchController *)searchController
 {
-    [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
-    self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:SearchBarAnimationDuration
-                          delay:0.0
-                        options:0
-                     animations:^{
-                         [self.view layoutIfNeeded];
-                     } completion:^(BOOL finished) {
-                         [self.searchController.searchBar becomeFirstResponder];
-                     }];
-}
-
-- (void)willDismissSearchController:(WPSearchController *)searchController
-{
-    [self.searchController.searchBar resignFirstResponder];
-    [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
-    self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
-        [self.view layoutIfNeeded];
-    }];
-    
     self.searchController.searchBar.text = nil;
 }
 
-- (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
+- (void)didDismissSearchController:(UISearchController *)searchController
+{
+    UIEdgeInsets insets = self.tableView.scrollIndicatorInsets;
+    insets.top = self.topLayoutGuide.length;
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     [self updateFetchRequest];
 }
@@ -569,7 +551,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         self.hideCount = 0;
     }
     else {
-        self.tableView.tableHeaderView = nil;
+        self.tableView.tableHeaderView = self.searchController.searchBar;
     }
 
     // Animate view to editing mode
@@ -598,12 +580,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     for (UIBarButtonItem *buttonItem in self.navigationItem.rightBarButtonItems) {
         buttonItem.enabled = enabled;
     }
-}
-
-- (void)toggleSearch
-{
-    [self.addSiteAlertController dismissViewControllerAnimated:YES completion:nil];
-    self.searchController.active = !self.searchController.active;
 }
 
 - (void)addSite
@@ -714,17 +690,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         return _resultsController;
     }
 
-    // Notes:
-    // ======
-    //
-    //  -   We're grouping "Primary Sites" at the top of the list, by means of the sectionNameKeyPath property.
-    //
-    //  -   NSFetchedResultsController *requires and enforces* sectionNameKeypath never to be nil.
-    //      Otherwise, unpredictable behavior arises. This property *may* be calculated (YAY!)
-    //
-    //  -   NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
-    //      be calculated. For that reason, we can't hit the same getter as above.
-    //
+    // NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
+    // be calculated. For that reason, we can't hit the same getter as above.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     
@@ -739,7 +706,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:context
-                                                               sectionNameKeyPath:self.sectionNameKeyPath
+                                                               sectionNameKeyPath:nil
                                                                         cacheName:nil];
     _resultsController.delegate = self;
 
@@ -755,11 +722,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (NSString *)entityName
 {
     return NSStringFromClass([Blog class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return @"sectionIdentifier";
 }
 
 - (NSString *)defaultBlogAccountIdKeyPath
