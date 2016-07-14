@@ -48,7 +48,7 @@ extension NotificationsViewController
             let title = NSLocalizedString("Trash", comment: "Trashes a comment")
 
             let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] action, path in
-                self?.showUndeleteForNoteWithID(note.objectID) { completion in
+                self?.showUndelete(note.objectID) { completion in
                     self?.trashCommentWithBlock(block) { success in
                         completion(success)
                     }

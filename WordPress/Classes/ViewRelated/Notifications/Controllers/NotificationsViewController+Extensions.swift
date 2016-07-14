@@ -214,8 +214,65 @@ extension NotificationsViewController
             performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
         }
     }
+
+    /// Will display an Undelete button on top of a given notification.
+    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// will (supposedly) get deleted.
+    ///
+    /// -   Parameters:
+    ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
+    ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
+    ///
+    func showUndelete(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+        // Mark this note as Pending Deletichroon and Reload
+//        notificationDeletionBlocks[noteObjectID] = onTimeout
+        setDeletionBlock(onTimeout, forNoteObjectID: noteObjectID)
+        reloadRowForNotificationWithID(noteObjectID)
+
+        // Dispatch the Action block
+        performSelector(#selector(performDeletionAction), withObject:noteObjectID, afterDelay:Properties.undoTimeout)
+    }
 }
 
+
+///
+///
+extension NotificationsViewController
+{
+    func performDeletionAction(noteObjectID: NSManagedObjectID) {
+        // Was the Deletion Cancelled?
+        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] as? NotificationDeletionActionBlock else {
+            return
+        }
+
+        // Hide the Notification
+        notificationIdsBeingDeleted.addObject(noteObjectID)
+        reloadResultsController()
+
+        // Hit the Deletion Block
+        deletionBlock { success in
+            // Cleanup
+            self.notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+            self.notificationIdsBeingDeleted.removeObject(noteObjectID)
+
+            // Error: let's unhide the row
+            if success == false {
+                self.reloadResultsController()
+            }
+        }
+    }
+
+    func cancelDeletionAction(noteObjectID: NSManagedObjectID) {
+        notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+        reloadRowForNotificationWithID(noteObjectID)
+
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(performDeletionAction), object: noteObjectID)
+    }
+
+    func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
+        return notificationDeletionBlocks[noteObjectID] != nil
+    }
+}
 
 
 // MARK: - UIRefreshControl Methods
@@ -306,7 +363,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
         cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
         cell.onUndelete             = { [weak self] in
-            self?.cancelDeletionForNoteWithID(note.objectID)
+            self?.cancelDeletionAction(note.objectID)
         }
 
         cell.downloadIconWithURL(note.iconURL)
@@ -645,6 +702,7 @@ private extension NotificationsViewController
 
     enum Properties {
         static let sortKey          = "timestamp"
+        static let undoTimeout      = NSTimeInterval(4)
     }
 
     enum Filter: Int {
