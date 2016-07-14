@@ -48,14 +48,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 };
 
 
-#pragma mark ====================================================================================
-#pragma mark Protocols
-#pragma mark ====================================================================================
-
-@interface NotificationsViewController (Protocols) <SPBucketDelegate>
-
-@end
-
 
 
 #pragma mark ====================================================================================
@@ -156,42 +148,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - SPBucketDelegate Methods
-
-- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
-{
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    // Did the user tap on a push notification?
-    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
-
-        // Show the details only if NotificationPushMaxWait hasn't elapsed
-        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
-            [self showDetailsForNoteWithID:key];
-        }
-        
-        // Stop the sync timeout: we've got activity!
-        [self stopSyncTimeoutTimer];
-        
-        // Cleanup
-        self.pushNotificationID     = nil;
-        self.pushNotificationDate   = nil;
-    }
-    
-    // Mark as read immediately if:
-    //  -   We're onscreen
-    //  -   The app is in Foreground
-    //
-    // We need to make sure that the app is in FG, since this method might get called during a Background Fetch OS event,
-    // which would cause the badge to get reset on its own.
-    //
-    if (changeType == SPBucketChangeInsert && self.isViewOnScreen && application.applicationState == UIApplicationStateActive) {
-        [self resetApplicationBadge];
-        [self updateLastSeenTime];
-    }
 }
 
 
@@ -557,21 +513,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         ReaderDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
-}
-
-
-#pragma mark - Swift Migration Helpers
-
-// Note:
-// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
-// just as a workaround during the Swift migration.
-//
-// TODO: Nuke them. JLP 06.30.2016
-//
-
-- (id <SPBucketDelegate>)simperiumBucketDelegate
-{
-    return self;
 }
 
 @end
