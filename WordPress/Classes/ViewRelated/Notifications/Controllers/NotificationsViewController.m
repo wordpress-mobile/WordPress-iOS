@@ -36,17 +36,6 @@ static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
 static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
-static NSString const *NotificationsNetworkStatusKey    = @"network_status";
-
-typedef NS_ENUM(NSUInteger, NotificationFilter)
-{
-    NotificationFilterNone,
-    NotificationFilterUnread,
-    NotificationFilterComment,
-    NotificationFilterFollow,
-    NotificationFilterLike
-};
-
 
 
 
