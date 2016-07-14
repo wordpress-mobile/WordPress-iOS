@@ -19,11 +19,11 @@ import WordPressShared
 ///
 class NotificationsViewController : UITableViewController
 {
-    @IBOutlet private var tableHeaderView : UIView!
-    @IBOutlet private var filtersSegmentedControl : UISegmentedControl!
-    @IBOutlet private var ratingsView : ABXPromptView!
-    @IBOutlet private var ratingsHeightConstraint : NSLayoutConstraint!
-    private var tableViewHandler : WPTableViewHandler!
+    @IBOutlet var tableHeaderView : UIView!
+    @IBOutlet var filtersSegmentedControl : UISegmentedControl!
+    @IBOutlet var ratingsView : ABXPromptView!
+    @IBOutlet var ratingsHeightConstraint : NSLayoutConstraint!
+    var tableViewHandler : WPTableViewHandler!
     private var noResultsView : WPNoResultsView!
     private var pushNotificationID : String?
     private var pushNotificationDate : NSDate?
