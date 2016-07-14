@@ -251,7 +251,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 extension NotificationsViewController
 {
     func showFiltersSegmentedControlIfApplicable() {
-        guard tableHeaderView.alpha != WPAlphaZero && shouldDisplayFilters == true else {
+        guard tableHeaderView.alpha == WPAlphaZero && shouldDisplayFilters == true else {
             return
         }
 
