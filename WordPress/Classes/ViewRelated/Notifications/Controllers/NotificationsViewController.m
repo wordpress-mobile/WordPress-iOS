@@ -202,9 +202,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
     }
 }
 
-
-#pragma mark - Stats Helpers
-
 - (void)startSyncTimeoutTimer
 {
     // Don't proceed if we're not even connected
@@ -224,29 +221,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 
 
 #pragma mark - Helper methods
-
-- (void)resetApplicationBadge
-{
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
-- (void)updateLastSeenTime
-{
-    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
-    if (!note) {
-        return;
-    }
-
-    NSString *bucketName    = NSStringFromClass([Meta class]);
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
-    if (!metadata) {
-        return;
-    }
-
-    metadata.last_seen      = @(note.timestampAsDate.timeIntervalSince1970);
-    [simperium save];
-}
 
 - (void)reloadResultsControllerIfNeeded
 {
