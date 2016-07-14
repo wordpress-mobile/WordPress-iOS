@@ -34,7 +34,6 @@
 
 static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
-static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 
 
@@ -202,22 +201,7 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
     }
 }
 
-- (void)startSyncTimeoutTimer
-{
-    // Don't proceed if we're not even connected
-    BOOL isConnected = [[WordPressAppDelegate sharedInstance] connectionAvailable];
-    if (!isConnected) {
-        return;
-    }
-    
-    [self stopSyncTimeoutTimer];
-    [self performSelector:@selector(trackSyncTimeout) withObject:nil afterDelay:NotificationsSyncTimeout];
-}
 
-- (void)stopSyncTimeoutTimer
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(trackSyncTimeout) object:nil];
-}
 
 
 #pragma mark - Helper methods

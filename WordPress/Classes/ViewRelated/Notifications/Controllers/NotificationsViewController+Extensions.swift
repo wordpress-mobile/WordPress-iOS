@@ -464,6 +464,20 @@ extension NotificationsViewController
         metadata.last_seen = NSNumber(double: note.timestampAsDate.timeIntervalSince1970)
         simperium.save()
     }
+
+    func startSyncTimeoutTimer() {
+        // Don't proceed if we're not even connected
+        guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
+            return
+        }
+
+        stopSyncTimeoutTimer()
+        performSelector(#selector(trackSyncTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+    }
+
+    func stopSyncTimeoutTimer() {
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(trackSyncTimeout), object: nil)
+    }
 }
 
 
@@ -477,10 +491,9 @@ extension NotificationsViewController
     }
 
     func trackSyncTimeout() {
-        let properties = [Syncing.syncTimeoutKey : simperium.networkStatus]
+        let properties = [Syncing.networkStatusKey : simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
-
 }
 
 
@@ -554,7 +567,8 @@ private extension NotificationsViewController
 
     enum Syncing {
         static let pushMaxWait      = NSTimeInterval(1)
-        static let syncTimeoutKey   = "network_status"
+        static let syncTimeout      = NSTimeInterval(10)
+        static let networkStatusKey = "network_status"
     }
 
     enum RatingSettings {
