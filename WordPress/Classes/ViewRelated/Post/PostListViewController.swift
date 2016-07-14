@@ -25,7 +25,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
-    @IBOutlet var authorsFilterView : UIView! // Search lives here on iPad
+    @IBOutlet var authorsFilterView : UIView!
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet var headerStackView: UIStackView!
 
