@@ -297,7 +297,6 @@ extension NotificationsViewController
 
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
-        noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
         noResultsView.accessoryView = noResultsAccessoryView
         noResultsView.buttonTitle   = noResultsButtonText
