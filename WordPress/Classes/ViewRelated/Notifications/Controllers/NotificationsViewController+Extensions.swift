@@ -205,7 +205,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         }
 
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
-        let isLastRow               = isRowLastRowForSection(indexPath)
+        let isLastRow               = tableViewHandler.resultsController.isLastRowInSection(indexPath)
 
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
@@ -236,7 +236,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
-            cell.showsBottomSeparator = isRowLastRowForSection(indexPath) == false
+            let isLastRow = tableViewHandler.resultsController.isLastRowInSection(indexPath)
+            cell.showsBottomSeparator = isLastRow == false
         }
 
         // Update NoResults View
