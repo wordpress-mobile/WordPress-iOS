@@ -152,6 +152,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
     [self updateEditButton];
+    [self updateSearchVisibility];
     [self maybeShowNUX];
     [self syncBlogs];
 }
@@ -190,6 +191,18 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (void)updateSearchVisibility
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForAllAccounts] <= 3) {
+        // Hide the search button if there's only a few blogs
+        self.tableView.tableHeaderView = nil;
+    } else {
+        [self addSearchBarTableHeaderView];
     }
 }
 
@@ -293,18 +306,25 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.dimsBackgroundDuringPresentation = NO;
 
-    // Required to work around a bug where the search bar was extending a
-    // grey background above the top of the tableview, which was visible when
-    // pulling down further than offset zero
-    SearchWrapperView *wrapperView = [SearchWrapperView new];
-    [wrapperView addSubview:self.searchController.searchBar];
-    wrapperView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.searchController.searchBar.bounds.size.height);
-    self.tableView.tableHeaderView = wrapperView;
+    [self addSearchBarTableHeaderView];
 
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
 
     [WPStyleGuide configureSearchBar:self.searchController.searchBar];
+}
+
+- (void)addSearchBarTableHeaderView
+{
+    if (!self.tableView.tableHeaderView) {
+        // Required to work around a bug where the search bar was extending a
+        // grey background above the top of the tableview, which was visible when
+        // pulling down further than offset zero
+        SearchWrapperView *wrapperView = [SearchWrapperView new];
+        [wrapperView addSubview:self.searchController.searchBar];
+        wrapperView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.searchController.searchBar.bounds.size.height);
+        self.tableView.tableHeaderView = wrapperView;
+    }
 }
 
 - (CGFloat)searchBarHeight {
@@ -389,6 +409,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)wordPressComAccountChanged:(NSNotification *)notification
 {
     [self setEditing:NO];
+    [self updateSearchVisibility];
 }
 
 #pragma mark - Table view data source
