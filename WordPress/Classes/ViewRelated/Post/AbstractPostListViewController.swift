@@ -142,14 +142,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     private func localKeyboardFrameFromNotification(notification: NSNotification) -> CGRect {
-        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
-            let window = view.window else {
+        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() else {
                 return .zero
         }
 
-        var convertedFrame = window.convertRect(keyboardFrame, fromWindow: nil)
-        convertedFrame = view.convertRect(convertedFrame, fromView: nil)
-        return convertedFrame
+        // Convert the frame from window coordinates
+        return view.convertRect(keyboardFrame, fromView: nil)
     }
 
     override func viewDidAppear(animated: Bool) {
