@@ -279,6 +279,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchController.searchResultsUpdater = self
 
         WPStyleGuide.configureSearchBar(searchController.searchBar)
+
+        searchController.searchBar.autocorrectionType = .Default
     }
 
     private func configureInitialScrollInsets() {

@@ -4,9 +4,9 @@ import WordPressShared
 extension WPStyleGuide {
 
     public class func configureSearchBar(searchBar: UISearchBar) {
-        searchBar.backgroundColor = UIColor.blueColor()
         searchBar.accessibilityIdentifier = NSLocalizedString("Search", comment: "")
         searchBar.autocapitalizationType = .None
+        searchBar.autocorrectionType = .No
         searchBar.translucent = false
         searchBar.barTintColor = WPStyleGuide.greyLighten20()
         searchBar.layer.borderColor = WPStyleGuide.greyLighten20().CGColor
