@@ -301,7 +301,7 @@ public protocol ThemePresenter: class
 
         collectionView.contentInset.top = topLayoutGuide.length
         collectionView.contentInset.bottom = tabBarHeight
-        collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
+        collectionView.scrollIndicatorInsets.top = searchBarHeight
         collectionView.scrollIndicatorInsets.bottom = tabBarHeight
     }
 
@@ -572,6 +572,8 @@ public protocol ThemePresenter: class
         if sections[1] == .Themes {
             setInfoSectionHidden(false)
         }
+
+        collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
     private func setInfoSectionHidden(hidden: Bool) {
