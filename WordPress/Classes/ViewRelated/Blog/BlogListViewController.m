@@ -364,9 +364,9 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 -(CGRect)localKeyboardFrameFromNotification:(NSNotification *)notification
 {
     CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    keyboardFrame = [self.view.window convertRect:keyboardFrame fromWindow:nil];
-    keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    return keyboardFrame;
+
+    // Convert the frame from window coordinates
+    return [self.view convertRect:keyboardFrame fromView:nil];
 }
 
 - (void)wordPressComApiDidLogin:(NSNotification *)notification
