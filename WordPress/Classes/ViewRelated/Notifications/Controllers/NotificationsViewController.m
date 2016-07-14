@@ -222,14 +222,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(trackSyncTimeout) object:nil];
 }
 
-- (void)trackSyncTimeout
-{
-    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
-    NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
-    
-    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
-}
-
 
 #pragma mark - Helper methods
 
@@ -309,11 +301,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
     if (indexPath) {
         [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
     }
-}
-
-- (void)trackAppeared
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
 }
 
 

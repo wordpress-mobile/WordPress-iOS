@@ -441,6 +441,25 @@ extension NotificationsViewController: SPBucketDelegate
     }
 }
 
+
+
+
+// MARK: - Tracking
+//
+extension NotificationsViewController
+{
+    func trackAppeared() {
+        WPAnalytics.track(.OpenedNotificationsList)
+    }
+
+    func trackSyncTimeout() {
+        let properties = [Syncing.syncTimeoutKey : simperium.networkStatus]
+        WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
+    }
+
+}
+
+
 // MARK: - ABXPromptViewDelegate Methods
 //
 extension NotificationsViewController: ABXPromptViewDelegate
