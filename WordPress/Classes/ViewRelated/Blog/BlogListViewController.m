@@ -84,6 +84,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                                    target:self
                                                                                    action:@selector(addSite)];
 
+    self.navigationItem.rightBarButtonItem = self.addSiteButton;
+
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
 
