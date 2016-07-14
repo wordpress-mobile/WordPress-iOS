@@ -25,6 +25,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
+static NSInteger HideSearchMinSites = 3;
 
 @interface BlogListViewController () <UIViewControllerRestoration,
                                         UIDataSourceModelAssociation,
@@ -198,8 +199,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] <= 3) {
-        // Hide the search button if there's only a few blogs
+    if ([blogService blogCountForAllAccounts] <= HideSearchMinSites) {
+        // Hide the search bar if there's only a few blogs
         self.tableView.tableHeaderView = nil;
     } else {
         [self addSearchBarTableHeaderView];
