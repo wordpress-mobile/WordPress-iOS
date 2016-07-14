@@ -275,6 +275,64 @@ extension NotificationsViewController
 }
 
 
+
+// MARK: - WPTableViewHandler Helpers
+//
+extension NotificationsViewController
+{
+    func reloadResultsControllerIfNeeded() {
+        // Note:
+        // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
+        // Simply calling reloadData doesn't make the FRC recalculate the sections.
+        // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
+        //
+        let daysElapsed = NSCalendar.currentCalendar().daysElapsedSinceDate(lastReloadDate)
+        guard daysElapsed != 0 else {
+            return
+        }
+
+        reloadResultsController()
+    }
+
+    func reloadResultsController() {
+        // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
+        let fetchRequest = tableViewHandler.resultsController.fetchRequest
+        fetchRequest.predicate = predicateForSelectedFilters()
+
+        /// Refetch + Reload
+        tableViewHandler.clearCachedRowHeights()
+        _ = try? tableViewHandler.resultsController.performFetch()
+        tableView.reloadData()
+
+        // Empty State?
+        showNoResultsViewIfNeeded()
+
+        // Don't overwork!
+        lastReloadDate = NSDate()
+    }
+
+
+    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
+        // Failsafe
+        guard let noteObjectID = noteObjectID else {
+            return
+        }
+
+        // Load the Notification and its indexPath
+        do {
+            let note = try simperium.managedObjectContext().existingObjectWithID(noteObjectID)
+
+            if let indexPath = tableViewHandler.resultsController.indexPathForObject(note) {
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }
+        } catch {
+            DDLogSwift.logError("Error refreshing Notification Row \(error)")
+        }
+    }
+}
+
+
+
 // MARK: - UIRefreshControl Methods
 //
 extension NotificationsViewController
