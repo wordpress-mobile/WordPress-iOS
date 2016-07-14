@@ -5,17 +5,23 @@
 #import "ContextManager.h"
 #import "WordPress-swift.h"
 
-@interface  MediaLibraryPickerDataSource()
+@interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) MediaLibraryGroup *mediaGroup;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, assign) BOOL ascendingOrdering;
-@property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) NSMutableDictionary *observers;
 @property (nonatomic, strong) MediaService *mediaService;
+@property (nonatomic, strong) NSFetchedResultsController *fetchController;
 @property (nonatomic, strong) id groupObserverHandler;
+#pragma mark - change trackers
+@property (nonatomic, strong) NSMutableIndexSet *mediaRemoved;
+@property (nonatomic, strong) NSMutableIndexSet *mediaInserted;
+@property (nonatomic, strong) NSMutableIndexSet *mediaChanged;
+@property (nonatomic, strong) NSMutableArray *mediaMoved;
+
 @end
 
 @implementation MediaLibraryPickerDataSource
@@ -37,6 +43,12 @@
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
         _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
         _observers = [NSMutableDictionary dictionary];
+
+        _mediaRemoved = [[NSMutableIndexSet alloc] init];
+        _mediaInserted = [[NSMutableIndexSet alloc] init];
+        _mediaChanged = [[NSMutableIndexSet alloc] init];
+        _mediaMoved = [[NSMutableArray alloc] init];
+
     }
     return self;
 }
@@ -56,10 +68,15 @@
     return [self initWithBlog:nil];
 }
 
+#pragma mark - WPMediaCollectionDataSource
 
 -(NSInteger)numberOfAssets
 {
-    return [self.media count];
+    if ([[self.fetchController sections] count] > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchController sections] objectAtIndex:0];
+        return [sectionInfo numberOfObjects];
+    } else
+        return 0;
 }
 
 -(NSInteger)numberOfGroups
@@ -83,44 +100,31 @@
     return self.mediaGroup;
 }
 
--(void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
+- (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-    [mainContext performBlock:^{
-        NSString *entityName = NSStringFromClass([Media class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
-        request.sortDescriptors = @[sortDescriptor];
+    // let's check if we already have fetched results before
+    if (self.fetchController.fetchedObjects == nil) {
         NSError *error;
-        self.media = [mainContext executeFetchRequest:request error:&error];
-    }];
-    [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
-        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-        [mainContext performBlock:^{
-            NSString *entityName = NSStringFromClass([Media class]);
-            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-            request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
-            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
-            request.sortDescriptors = @[sortDescriptor];
-            NSError *error;
-            self.media = [mainContext executeFetchRequest:request error:&error];
-            if (self.media == nil && error) {
-                DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
-                if (failureBlock) {
-                    failureBlock(error);
-                }
-                return;
+        if (![self.fetchController performFetch:&error]) {
+            if (failureBlock) {
+                failureBlock(error);
             }
-            if (successBlock) {
-                successBlock();
-            }
-        }];
-    } failure:^(NSError *error) {
-        if (failureBlock) {
-            failureBlock(error);
+            return;
         }
-    }];
+    }
+    BOOL localResultsAvailable = NO;
+    if (self.fetchController.fetchedObjects.count > 0) {
+        localResultsAvailable = YES;
+        if (successBlock) {
+            successBlock();
+        }
+    }
+    // try to sync from the server
+    [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
+        if (!localResultsAvailable && successBlock) {
+            successBlock();
+        }
+    } failure:failureBlock];
 }
 
 - (void)notifyObserversWithIncrementalChanges:(BOOL)incrementalChanges removed:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moved
@@ -220,7 +224,7 @@
 
 -(id<WPMediaAsset>)mediaAtIndex:(NSInteger)index
 {
-    return self.media[index];
+    return [self.fetchController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
 }
 
 -(id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
@@ -244,23 +248,99 @@
     return media;
 }
 
+#pragma mark - NSFetchedResultsController helpers
+
 + (NSPredicate *)predicateForFilter:(WPMediaType)filter blog:(Blog *)blog
 {
-    NSPredicate *predicate;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"blog", blog];
+    NSPredicate *mediaPredicate = [NSPredicate predicateWithValue:YES];
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@",  @"image", blog];
+            mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeImage]];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@", @"video", blog];
+            mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeVideo]];
         } break;
         case WPMediaTypeVideoOrImage: {
-            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];
+            mediaPredicate = [NSPredicate predicateWithFormat:@"(mediaTypeString == %@ || mediaTypeString == %@)", [Media stringFromMediaType:MediaTypeImage], [Media stringFromMediaType:MediaTypeVideo]];
         } break;
         default:
             break;
     };
-    return predicate;
+    return [NSCompoundPredicate andPredicateWithSubpredicates:
+            @[predicate, mediaPredicate]];
+}
+
+- (NSFetchedResultsController *)fetchController
+{
+    if (_fetchController) {
+        return _fetchController;
+    }
+
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
+    fetchRequest.sortDescriptors = @[sortDescriptor];
+
+    _fetchController = [[NSFetchedResultsController alloc]
+                            initWithFetchRequest:fetchRequest
+                            managedObjectContext:mainContext
+                            sectionNameKeyPath:nil
+                            cacheName:nil];
+    _fetchController.delegate = self;
+
+    return _fetchController;
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.mediaRemoved removeAllIndexes];
+    [self.mediaInserted removeAllIndexes];
+    [self.mediaChanged removeAllIndexes];
+    [self.mediaMoved removeAllObjects];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    //This shouldn't be called because we don't have changes to sections.
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type) {
+
+        case NSFetchedResultsChangeInsert:
+            [self.mediaInserted addIndex:newIndexPath.row];
+        break;
+        case NSFetchedResultsChangeDelete:
+            [self.mediaRemoved addIndex:indexPath.row];
+        break;
+        case NSFetchedResultsChangeUpdate:
+            [self.mediaChanged addIndex:indexPath.row];
+        break;
+
+        case NSFetchedResultsChangeMove: {
+            WPIndexMove *mediaMove = [[WPIndexMove alloc] init:indexPath.row to:newIndexPath.row];
+            [self.mediaMoved addObject:mediaMove];
+        }
+        break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self notifyObserversWithIncrementalChanges:YES
+                                        removed:self.mediaRemoved
+                                       inserted:self.mediaInserted
+                                        changed:self.mediaChanged
+                                          moved:self.mediaMoved];
 }
 
 @end
@@ -349,20 +429,43 @@
     return @"org.wordpress.medialibrary";
 }
 
-- (NSInteger)numberOfAssets
+- (NSInteger)numberOfAssetsOfType:(WPMediaType)mediaType
 {
-    if (self.itemsCount == NSNotFound) {
-        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    NSSet *mediaTypes = [NSMutableSet set];
+    switch (mediaType) {
+        case WPMediaTypeImage: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage)]];
+        } break;
+        case WPMediaTypeVideo: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeVideo)]];
+        } break;
+        case WPMediaTypeVideoOrImage: {
+            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage), @(MediaTypeVideo)]];
+        } break;
+        default:
+            break;
+    };
+
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
+                                                   forMediaTypes:mediaTypes];
+    // If we have a count of zero and this is the first time we are checking this group
+    // let's sync with the server
+    if (count == 0 && self.itemsCount == NSNotFound) {
         __weak __typeof__(self) weakSelf = self;
-        [mediaService getMediaLibraryCountForBlog:self.blog
-                                          success:^(NSInteger count) {
-                                              weakSelf.itemsCount = count;
-                                              [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
-                                          } failure:^(NSError *error) {
-                                              DDLogError(@"%@", [error localizedDescription]);
-                                          }];
+        [mediaService syncMediaLibraryForBlog:self.blog
+                                      success:^() {
+                                          weakSelf.itemsCount = [mediaService getMediaLibraryCountForBlog:self.blog
+                                                        forMediaTypes:mediaTypes];;
+                                          [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
+                                      } failure:^(NSError *error) {
+                                          DDLogError(@"%@", [error localizedDescription]);
+        }];
+    } else {
+        self.itemsCount = count;
     }
+
     return self.itemsCount;
 }
 

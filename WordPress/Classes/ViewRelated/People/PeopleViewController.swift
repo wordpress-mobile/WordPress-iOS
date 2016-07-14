@@ -17,6 +17,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
             refreshInterface()
             refreshResultsController()
             refreshPeople()
+            refreshNoResultsView()
         }
     }
 
