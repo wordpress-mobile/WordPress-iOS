@@ -16,9 +16,7 @@ enum FeatureFlag: Int {
         switch self {
         case .ReaderMenu:
             return build(.Debug)
-        case .People:
-            return build(.Debug)
-        case .MyProfile, .AccountSettings:
+        case .People, .MyProfile, .AccountSettings:
             return true
         }
     }

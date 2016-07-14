@@ -7,34 +7,61 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
 
+    /// WordPress.com Username
+    ///
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
 
+    /// WordPress.com OAuth Token
+    ///
     private lazy var oauth2Token: String? = {
         ShareExtensionService.retrieveShareExtensionToken()
     }()
 
+    /// Selected Site's ID
+    ///
     private lazy var selectedSiteID: Int? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
     }()
 
+    /// Selected Site's Name
+    ///
     private lazy var selectedSiteName: String? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
-    private var mediaView: MediaView!
+    /// Maximum Image Size
+    ///
+    private lazy var maximumImageSize: CGSize = {
+        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? self.defaultMaxDimension
+        return CGSize(width: dimension, height: dimension)
+    }()
 
+    /// Tracks Instance
+    ///
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
+    /// MediaView Instance
+    ///
+    private var mediaView: MediaView!
+
+    /// Image Attachment
+    ///
+    private var mediaImage: UIImage?
+
+    /// Post's Status
+    ///
     private var postStatus = "publish"
 
 
+    // MARK: - Private Constants
 
-    // TODO: This should eventually be moved into WordPressComKit
+    private let defaultMaxDimension = 3000
     private let postStatuses = [
+        // TODO: This should eventually be moved into WordPressComKit
         "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
     ]
@@ -54,8 +81,8 @@ class ShareViewController: SLComposeServiceViewController {
         setupBearerToken()
 
         // Load TextView + PreviewImage
-        loadTextViewContent()
-        loadMediaViewContent()
+        loadTextContent()
+        loadMediaContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -90,21 +117,17 @@ class ShareViewController: SLComposeServiceViewController {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
-        // Upload Media, if any
-        uploadImageIfNeeded(mediaView?.mediaImage, siteID: siteID) { media in
-            // Proceed uploading the actual post
-            var (subject, body) = self.contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
 
-            if let mediaURL = media?.remoteURL {
-                body = body.stringByPrependingMediaURL(mediaURL)
-            }
-            self.uploadPostWithSubject(subject, body: body, status: self.postStatus, siteID: siteID)
+        // Proceed uploading the actual post
+        let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
+        let encodedMedia = mediaImage?.resizeWithMaximumSize(maximumImageSize).JPEGEncoded()
+
+        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
+            self.tracks.trackExtensionPosted(self.postStatus)
+            self.extensionContext?.completeRequestReturningItems([], completionHandler: nil)
 
 // TODO: Handle retry?
         }
-
-        tracks.trackExtensionPosted(postStatus)
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -188,8 +211,9 @@ private extension ShareViewController
         RequestRouter.bearerToken = bearerToken
     }
 
-    func loadTextViewContent() {
+    func loadTextContent() {
         extensionContext?.loadWebsiteUrl { url in
+            // Text + New Line + Source
             let current = self.contentText ?? String()
             let source  = url?.absoluteString ?? String()
             let spacing = current.isEmpty ? String() : "\n\n"
@@ -198,25 +222,21 @@ private extension ShareViewController
         }
     }
 
-    func loadMediaViewContent() {
+    func loadMediaContent() {
         extensionContext?.loadMediaImage { image in
-            guard let image = image else {
+            guard let mediaImage = image else {
                 return
             }
 
-            self.loadMediaViewFromImage(image)
-        }
-    }
+            // Load the View
+            let mediaView = MediaView()
+            mediaView.resizeIfNeededAndDisplay(mediaImage)
 
-    func loadMediaViewFromImage(image: UIImage) {
-        guard mediaView == nil else {
-            assertionFailure()
-            return
+            // References please
+            self.mediaImage = mediaImage
+            self.mediaView = mediaView
+            self.reloadConfigurationItems()
         }
-
-        mediaView = MediaView()
-        mediaView.mediaImage = image
-        reloadConfigurationItems()
     }
 }
 
@@ -226,32 +246,14 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    func uploadImageIfNeeded(image: UIImage?, siteID: Int, completion: Media? -> ()) {
-        guard let image = image, payload = UIImagePNGRepresentation(image) else {
-            completion(nil)
-            return
-        }
-
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-        let service = MediaService(configuration: configuration)
-
-        service.createMedia(payload, filename: MediaSettings.filename, mimeType: MediaSettings.mimeType, siteID: siteID) { (media, error) in
-            NSLog("Media: \(media) Error: \(error)")
-            completion(media)
-        }
-    }
-
-    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int) {
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?, requestEqueued: Void -> ()) {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)
-        service.createPost(siteID: siteID, status: status, title: subject, body: body) { (post, error) in
+
+        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
+            requestEqueued()
+        }, completion: { (post, error) in
             print("Post \(post) Error \(error)")
-        }
-    }
-
-
-    enum MediaSettings {
-        static let filename = "image.png"
-        static let mimeType = "image/png"
+        })
     }
 }
