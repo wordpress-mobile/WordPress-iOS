@@ -443,6 +443,30 @@ extension NotificationsViewController: SPBucketDelegate
 
 
 
+// MARK: - Sync'ing Helpers
+//
+extension NotificationsViewController
+{
+    func resetApplicationBadge() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
+
+    func updateLastSeenTime() {
+        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
+            return
+        }
+
+        let bucketName = Meta.classNameWithoutNamespaces()
+        guard let metadata = simperium.bucketForName(bucketName).objectForKey(bucketName.lowercaseString) as? Meta else {
+            return
+        }
+
+        metadata.last_seen = NSNumber(double: note.timestampAsDate.timeIntervalSince1970)
+        simperium.save()
+    }
+}
+
+
 
 // MARK: - Tracking
 //
@@ -526,6 +550,11 @@ private extension NotificationsViewController
         case Comment                = 2
         case Follow                 = 3
         case Like                   = 4
+    }
+
+    enum Syncing {
+        static let pushMaxWait      = NSTimeInterval(1)
+        static let syncTimeoutKey   = "network_status"
     }
 
     enum RatingSettings {
