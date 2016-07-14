@@ -179,31 +179,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 }
 
 
-#pragma mark - Public Methods
-
-- (void)showDetailsForNoteWithID:(NSString *)notificationID
-{
-    Simperium *simperium        = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
-    Notification *notification  = [notesBucket objectForKey:notificationID];
-    
-    if (notification) {
-        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
-        
-        [self showDetailsForNotification:notification];
-    } else {
-        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
-        
-        self.pushNotificationID     = notificationID;
-        self.pushNotificationDate   = [NSDate date];
-        
-        [self startSyncTimeoutTimer];
-    }
-}
-
-
-
-
 #pragma mark - Helper methods
 
 - (void)reloadResultsControllerIfNeeded
@@ -310,31 +285,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
 {
     return [self.notificationDeletionBlocks objectForKey:noteObjectID] != nil;
-}
-
-
-#pragma mark - Segue Helpers
-
-- (void)showDetailsForNotification:(Notification *)note
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
-    
-    // Mark as Read, if needed
-    if(!note.read.boolValue) {
-        note.read = @(1);
-        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
-    }
-    
-    // Failsafe: Don't push nested!
-    if (self.navigationController.visibleViewController != self) {
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    }
-    
-    if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:note];
-    } else {
-        [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
-    }
 }
 
 

@@ -128,6 +128,57 @@ extension NotificationsViewController
 
 
 
+// MARK: - Public Methods
+//
+extension NotificationsViewController
+{
+    /// The Details View associated for a given notificationID will be pushed
+    /// If the Notification is unavailable at the point in which this call is executed, we'll hold for
+    /// the time interval specified by the `NotificationsSyncTimeout` constant.
+    /// Whenever the notification is sync'ed, if the timeout hasn't yet elapsed, we'll proceed pushing
+    /// the details view. Otherwise, the event will be discarded.
+    ///
+    /// -   parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
+    ///
+    func showDetailsForNoteWithID(notificationID: String) {
+        guard let note = simperium.bucketForName(entityName()).objectForKey(notificationID) as? Notification else {
+            DDLogSwift.logInfo("Notification [\(notificationID)] is unavailable. Waiting \(Syncing.pushMaxWait) secs")
+
+            pushNotificationDate = NSDate()
+            pushNotificationID = notificationID
+            startSyncTimeoutTimer()
+            return
+        }
+
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(notificationID)]")
+        showDetailsForNotification(note)
+    }
+
+    func showDetailsForNotification(note: Notification) {
+        let properties = [Syncing.noteTypeKey : note.type ?? Syncing.noteTypeUnknown]
+        WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
+
+        // Mark as Read, if needed
+        if note.read.boolValue == false {
+            note.read = NSNumber(bool: true)
+            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
+        }
+
+        // Failsafe: Don't push nested!
+        if navigationController?.visibleViewController != self {
+            navigationController?.popViewControllerAnimated(false)
+        }
+
+        if note.isMatcher && note.metaPostID != nil && note.metaSiteID != nil {
+            performSegueWithIdentifier(ReaderDetailViewController.classNameWithoutNamespaces(), sender: note)
+        } else {
+            performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        }
+    }
+}
+
+
+
 // MARK: - UIRefreshControl Methods
 //
 extension NotificationsViewController
@@ -569,6 +620,8 @@ private extension NotificationsViewController
         static let pushMaxWait      = NSTimeInterval(1)
         static let syncTimeout      = NSTimeInterval(10)
         static let networkStatusKey = "network_status"
+        static let noteTypeKey      = "notification_type"
+        static let noteTypeUnknown  = "unknown"
     }
 
     enum RatingSettings {
