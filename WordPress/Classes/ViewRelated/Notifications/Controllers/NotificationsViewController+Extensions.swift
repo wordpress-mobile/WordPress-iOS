@@ -236,7 +236,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
-            cell.showsBottomSeparator = isRowLastRowForSection(indexPath)
+            cell.showsBottomSeparator = isRowLastRowForSection(indexPath) == false
         }
 
         // Update NoResults View
