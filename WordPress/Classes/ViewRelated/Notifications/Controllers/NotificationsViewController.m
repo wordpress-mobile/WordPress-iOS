@@ -170,7 +170,7 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 
 - (void)handleApplicationWillResignActiveNote:(NSNotification *)note
 {
-    [self stopSyncTimeoutTimer];
+    [self stopWaitingForNotification];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)note

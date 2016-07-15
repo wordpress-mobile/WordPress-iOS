@@ -132,28 +132,28 @@ extension NotificationsViewController
 //
 extension NotificationsViewController
 {
-    /// The Details View associated for a given notificationID will be pushed
-    /// If the Notification is unavailable at the point in which this call is executed, we'll hold for
-    /// the time interval specified by the `NotificationsSyncTimeout` constant.
-    /// Whenever the notification is sync'ed, if the timeout hasn't yet elapsed, we'll proceed pushing
-    /// the details view. Otherwise, the event will be discarded.
+    /// Pushes the Details for a given notificationID. If the Notification is unavailable at the point in
+    /// which this call is executed, we'll hold for the time interval specified by the `Syncing.pushMaxWait`
+    /// constant.
     ///
-    /// -   parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
+    /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
     ///
-    func showDetailsForNoteWithID(notificationID: String) {
-        guard let note = simperium.bucketForName(entityName()).objectForKey(notificationID) as? Notification else {
-            DDLogSwift.logInfo("Notification [\(notificationID)] is unavailable. Waiting \(Syncing.pushMaxWait) secs")
-
-            pushNotificationDate = NSDate()
-            pushNotificationID = notificationID
-            startSyncTimeoutTimer()
+    func showDetailsForNotificationWithID(noteID: String) {
+        guard let note = simperium.bucketForName(entityName()).objectForKey(noteID) as? Notification else {
+            DDLogSwift.logInfo("Notification [\(noteID)] is unavailable. Waiting \(Syncing.pushMaxWait) secs")
+            startWaitingForNotification(noteID)
             return
         }
 
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(notificationID)]")
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(noteID)]")
         showDetailsForNotification(note)
     }
 
+
+    /// Pushes the details for a given Notification Instance.
+    ///
+    /// - Parameter note: The Notification that should be rendered.
+    ///
     func showDetailsForNotification(note: Notification) {
         let properties = [Syncing.noteTypeKey : note.type ?? Syncing.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
@@ -466,25 +466,16 @@ extension NotificationsViewController: SPBucketDelegate
             return
         }
 
-        // Were we waiting for this notification?
+        // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
         if pushNotificationID == key {
-            // Show the details only if NotificationPushMaxWait hasn't elapsed
             if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
-                showDetailsForNoteWithID(key)
+                showDetailsForNotificationWithID(key)
             }
 
-            // Stop the sync timeout: we've got activity!
-            stopSyncTimeoutTimer()
-
-            // Cleanup
-            pushNotificationID = nil
-            pushNotificationDate = nil
+            stopWaitingForNotification()
         }
 
-        // Mark as read immediately if:
-        //  -   We're onscreen
-        //  -   The app is in Foreground (This may be called during a Background Fetch Event).
-        //
+        // Mark as read immediately, if needed
         if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
             resetApplicationBadge()
             updateLastSeenTime()
@@ -516,18 +507,23 @@ extension NotificationsViewController
         simperium.save()
     }
 
-    func startSyncTimeoutTimer() {
-        // Don't proceed if we're not even connected
-        guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
+    func startWaitingForNotification(notificationID: String) {
+        guard simperium.requiresConnection == false else {
             return
         }
 
-        stopSyncTimeoutTimer()
+        stopWaitingForNotification()
+
         performSelector(#selector(trackSyncTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+
+        pushNotificationID = notificationID
+        pushNotificationDate = NSDate()
     }
 
-    func stopSyncTimeoutTimer() {
+    func stopWaitingForNotification() {
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(trackSyncTimeout), object: nil)
+        pushNotificationID = nil
+        pushNotificationDate = nil
     }
 }
 
