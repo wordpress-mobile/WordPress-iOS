@@ -70,12 +70,12 @@ class NotificationsViewController : UITableViewController
         tableViewHandler.updateRowAnimation = .Fade
 
         // Tracking
-        trackAppeared()
-        updateLastSeenTime()
+        WPAnalytics.track(WPAnalyticsStat.OpenedNotificationsList)
 
         // Notifications
         startListeningToNotifications()
         resetApplicationBadge()
+        updateLastSeenTime()
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
@@ -310,7 +310,6 @@ extension NotificationsViewController
     }
 
     func setupNotificationsBucketDelegate() {
-        let notesBucket = simperium.bucketForName(entityName())
         notesBucket.delegate = self
         notesBucket.notifyWhileIndexing = true
     }
@@ -373,7 +372,7 @@ extension NotificationsViewController
     /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteID: String) {
-        guard let note = simperium.bucketForName(entityName()).objectForKey(noteID) as? Notification else {
+        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
             startWaitingForNotification(noteID)
             return
         }
@@ -672,8 +671,7 @@ private extension NotificationsViewController
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        let bucket = simperium.bucketForName(entityName())
-        return bucket.numObjects() > 0
+        return notesBucket.numObjects() > 0
     }
 }
 
@@ -815,15 +813,6 @@ extension NotificationsViewController: SPBucketDelegate
             return
         }
 
-        // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
-        if pushNotificationID == key {
-            if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
-                showDetailsForNotificationWithID(key)
-            }
-
-            stopWaitingForNotification()
-        }
-
         // Mark as read immediately, if needed
         if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
             resetApplicationBadge()
@@ -957,6 +946,10 @@ private extension NotificationsViewController
 {
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
+    }
+
+    var notesBucket: SPBucket {
+        return simperium.bucketForName(entityName())
     }
 
     enum Filter: Int {
