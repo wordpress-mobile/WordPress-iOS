@@ -210,7 +210,7 @@ extension NotificationsViewController
         // If we're sync'ing against a custom bucket, we should let the user know about it!
         let bucketName = Notification.classNameWithoutNamespaces()
 
-        if let overridenName = simperium.bucketOverrides[bucketName] as? String {
+        if let overridenName = simperium.bucketOverrides[bucketName] as? String where overridenName != WPNotificationsBucketName {
             title = "Notifications from [\(overridenName)]"
         } else {
             title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
