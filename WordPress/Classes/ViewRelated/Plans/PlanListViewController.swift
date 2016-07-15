@@ -119,6 +119,18 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     func footerTapped() {
         footerTapAction?()
     }
+
+    // MARK: - ImmuTablePresenter 
+
+    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+        return {
+            [unowned self] in
+            let controller = controllerGenerator($0)
+            self.presentViewController(controller, animated: true, completion: { _ in
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            })
+        }
+    }
 }
 
 // MARK: - WPNoResultsViewDelegate
