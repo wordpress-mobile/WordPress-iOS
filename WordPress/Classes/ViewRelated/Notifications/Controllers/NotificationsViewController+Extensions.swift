@@ -116,7 +116,7 @@ extension NotificationsViewController
             filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
         }
 
-        WPStyleGuide.configureSegmentedControl(filtersSegmentedControl)
+        WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
     }
 
     func setupNotificationsBucketDelegate() {
