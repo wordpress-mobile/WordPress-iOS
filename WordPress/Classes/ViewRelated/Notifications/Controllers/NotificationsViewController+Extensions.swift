@@ -140,12 +140,10 @@ extension NotificationsViewController
     ///
     func showDetailsForNotificationWithID(noteID: String) {
         guard let note = simperium.bucketForName(entityName()).objectForKey(noteID) as? Notification else {
-            DDLogSwift.logInfo("Notification [\(noteID)] is unavailable. Waiting \(Syncing.pushMaxWait) secs")
             startWaitingForNotification(noteID)
             return
         }
 
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(noteID)]")
         showDetailsForNotification(note)
     }
 
@@ -155,6 +153,9 @@ extension NotificationsViewController
     /// - Parameter note: The Notification that should be rendered.
     ///
     func showDetailsForNotification(note: Notification) {
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
+
+        // Track
         let properties = [Syncing.noteTypeKey : note.type ?? Syncing.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
@@ -512,32 +513,28 @@ extension NotificationsViewController
             return
         }
 
+        DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
+
         stopWaitingForNotification()
 
-        performSelector(#selector(trackSyncTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+        performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
 
         pushNotificationID = notificationID
         pushNotificationDate = NSDate()
     }
 
     func stopWaitingForNotification() {
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(trackSyncTimeout), object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
         pushNotificationID = nil
         pushNotificationDate = nil
     }
-}
 
+    func notificationWaitDidTimeout() {
+        DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
 
+        pushNotificationID = nil
+        pushNotificationDate = nil
 
-// MARK: - Tracking
-//
-extension NotificationsViewController
-{
-    func trackAppeared() {
-        WPAnalytics.track(.OpenedNotificationsList)
-    }
-
-    func trackSyncTimeout() {
         let properties = [Syncing.networkStatusKey : simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
