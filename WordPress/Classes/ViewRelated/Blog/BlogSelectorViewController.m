@@ -9,7 +9,7 @@
 #import "WordPress-Swift.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat BlogCellRowHeight = 54.0;
+static CGFloat BlogCellRowHeight = 74.0;
 
 @interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
 
@@ -32,7 +32,7 @@ static CGFloat BlogCellRowHeight = 54.0;
                               successHandler:(BlogSelectorSuccessHandler)successHandler
                               dismissHandler:(BlogSelectorDismissHandler)dismissHandler
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStylePlain];
 
     if (self) {
         _selectedObjectID = objectID;
@@ -212,7 +212,7 @@ static CGFloat BlogCellRowHeight = 54.0;
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
 
-    [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+    [WPStyleGuide configureTableViewBlogCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -301,10 +301,9 @@ static CGFloat BlogCellRowHeight = 54.0;
     request.sortDescriptors = _displaysPrimaryBlogOnTop ? self.sortDescriptorsWithAccountKeyPath : self.sortDescriptors;
     request.predicate = [self fetchRequestPredicate];
 
-    NSString *sectionNameKeyPath = _displaysPrimaryBlogOnTop ? self.sectionNameKeyPath : nil;
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                              managedObjectContext:context
-                                                               sectionNameKeyPath:sectionNameKeyPath
+                                                               sectionNameKeyPath:nil
                                                                         cacheName:nil];
     _resultsController.delegate = self;
 
@@ -320,11 +319,6 @@ static CGFloat BlogCellRowHeight = 54.0;
 - (NSString *)entityName
 {
     return NSStringFromClass([Blog class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return @"sectionIdentifier";
 }
 
 - (NSString *)defaultBlogAccountIdKeyPath
