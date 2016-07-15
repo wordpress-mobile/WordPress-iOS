@@ -6,8 +6,8 @@ import WordPressShared
     public typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    public var onFollowClick:      EventHandler?
-    public var onUnfollowClick:    EventHandler?
+    public var onFollowClick    : EventHandler?
+    public var onUnfollowClick  : EventHandler?
 
     public var isFollowEnabled: Bool {
         set {
@@ -61,23 +61,23 @@ import WordPressShared
         super.awakeFromNib()
 
         WPStyleGuide.configureFollowButton(btnFollow)
-        btnFollow.titleLabel?.font          = WPStyleGuide.Notifications.blockRegularFont
+        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
 
-        backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
-        accessoryType                       = .None
-        contentView.autoresizingMask        = [.FlexibleHeight, .FlexibleWidth]
+        backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
+        accessoryType = .None
+        contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
 
-        nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColor
+        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont
+        nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
 
-        blogLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
-        blogLabel.textColor                 = WPStyleGuide.Notifications.blockSubtitleColor
+        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
+        blogLabel.textColor = WPStyleGuide.Notifications.blockSubtitleColor
         blogLabel.adjustsFontSizeToFitWidth = false
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+            gravatarImageView.updateConstraint(.Width, constant: gravatarImageSizePad.height)
         }
     }
 
@@ -90,12 +90,12 @@ import WordPressShared
     }
 
     // MARK: - Private
-    private let gravatarImageSizePad:               CGSize = CGSize(width: 54.0, height: 54.0)
-    private var gravatarURL:                        NSURL?
+    private let gravatarImageSizePad                = CGSize(width: 54.0, height: 54.0)
+    private var gravatarURL                         : NSURL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var nameLabel:           UILabel!
-    @IBOutlet private weak var blogLabel:           UILabel!
-    @IBOutlet private weak var btnFollow:           UIButton!
-    @IBOutlet private weak var gravatarImageView:   CircularImageView!
+    @IBOutlet private weak var nameLabel            : UILabel!
+    @IBOutlet private weak var blogLabel            : UILabel!
+    @IBOutlet private weak var btnFollow            : UIButton!
+    @IBOutlet private weak var gravatarImageView    : CircularImageView!
 }
