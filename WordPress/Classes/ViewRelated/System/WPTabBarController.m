@@ -509,7 +509,7 @@ static NSInteger const WPTabBarIconOffset = 5;
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
 {
     [self showTabForIndex:WPTabNotifications];
-    [self.notificationsViewController showDetailsForNoteWithID:notificationID];
+    [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
 }
 
 - (BOOL)isNavigatingMySitesTab
