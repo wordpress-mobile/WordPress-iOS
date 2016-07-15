@@ -134,16 +134,15 @@ import WordPressShared.WPStyleGuide
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
-        if attributedCommentText == nil {
+        guard let commentText = attributedCommentText?.mutableCopy() as? NSMutableAttributedString else {
             return nil
         }
 
-        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as! NSMutableAttributedString
-        let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
-        let textColor               = Style.blockUnapprovedTextColor
-        unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+        let range = NSRange(location: 0, length: commentText.length)
+        let textColor = Style.blockUnapprovedTextColor
+        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
 
-        return unwrappedMutableString
+        return commentText
     }
 
 
