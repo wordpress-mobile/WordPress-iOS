@@ -464,19 +464,19 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 extension NotificationsViewController
 {
     public func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReviewForSection(RatingSettings.section) else {
+        guard AppRatingUtility.shouldPromptForAppReviewForSection(Ratings.section) else {
             return
         }
 
-        guard ratingsHeightConstraint.constant != RatingSettings.heightFull && ratingsView.alpha != WPAlphaFull else {
+        guard ratingsHeightConstraint.constant != Ratings.heightFull && ratingsView.alpha != WPAlphaFull else {
             return
         }
 
         ratingsView.alpha = WPAlphaZero
 
-        UIView.animateWithDuration(WPAnimationDurationDefault, delay: RatingSettings.animationDelay, options: .CurveEaseIn, animations: {
+        UIView.animateWithDuration(WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .CurveEaseIn, animations: {
             self.ratingsView.alpha = WPAlphaFull
-            self.ratingsHeightConstraint.constant = RatingSettings.heightFull
+            self.ratingsHeightConstraint.constant = Ratings.heightFull
 
             self.setupTableHeaderView()
         }, completion: nil)
@@ -487,7 +487,7 @@ extension NotificationsViewController
     public func hideRatingView() {
         UIView.animateWithDuration(WPAnimationDurationDefault) {
             self.ratingsView.alpha = WPAlphaZero
-            self.ratingsHeightConstraint.constant = RatingSettings.heightZero
+            self.ratingsHeightConstraint.constant = Ratings.heightZero
 
             self.setupTableHeaderView()
         }
@@ -589,7 +589,7 @@ extension NotificationsViewController: ABXPromptViewDelegate
         AppRatingUtility.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = NSURL(string: RatingSettings.reviewURL) {
+        if let targetURL = NSURL(string: Ratings.reviewURL) {
             UIApplication.sharedApplication().openURL(targetURL)
         }
     }
@@ -659,7 +659,7 @@ private extension NotificationsViewController
         static let syncTimeout      = NSTimeInterval(10)
     }
 
-    enum RatingSettings {
+    enum Ratings {
         static let section          = "notifications"
         static let heightFull       = CGFloat(100)
         static let heightZero       = CGFloat(0)
