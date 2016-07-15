@@ -32,12 +32,12 @@ import WordPressShared.WPStyleGuide
         selectionStyle = .None
     }
 
-    // MARK: - Private
-    private var imageURL:               NSURL?
-
     // MARK: - Helpers
     private typealias Styles = WPStyleGuide.Notifications
 
+    // MARK: - Private
+    private var imageURL: NSURL?
+
     // MARK: - IBOutlets
-    @IBOutlet weak var blockImageView:  UIImageView!
+    @IBOutlet weak var blockImageView: UIImageView!
 }
