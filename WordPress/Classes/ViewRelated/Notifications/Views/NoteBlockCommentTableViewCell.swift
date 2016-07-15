@@ -76,11 +76,11 @@ import WordPressShared.WPStyleGuide
         super.awakeFromNib()
 
         // Setup Labels
-        titleLabel.font                     = Style.blockBoldFont
-        detailsLabel.font                   = Style.blockRegularFont
+        titleLabel.font = Style.blockBoldFont
+        detailsLabel.font = Style.blockRegularFont
 
         // Setup Recognizers
-        detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
+        detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
         detailsLabel.userInteractionEnabled = true
 
         // Force iPad Size Class
@@ -127,11 +127,10 @@ import WordPressShared.WPStyleGuide
     }
 
     private func refreshApprovalColors() {
-        // Refresh Colors
-        titleLabel.textColor        = Style.blockTitleColorForComment(isApproved: isApproved)
-        detailsLabel.textColor      = Style.blockDetailsColorForComment(isApproved: isApproved)
-        linkColor                   = Style.blockLinkColorForComment(isApproved: isApproved)
-        attributedText              = isApproved ? attributedCommentText : attributedCommentUnapprovedText
+        titleLabel.textColor = Style.blockTitleColorForComment(isApproved: isApproved)
+        detailsLabel.textColor = Style.blockDetailsColorForComment(isApproved: isApproved)
+        linkColor = Style.blockLinkColorForComment(isApproved: isApproved)
+        attributedText = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
