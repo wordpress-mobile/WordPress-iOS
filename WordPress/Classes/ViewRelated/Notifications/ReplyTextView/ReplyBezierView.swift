@@ -6,23 +6,22 @@ import WordPressShared.WPStyleGuide
 //
 public class ReplyBezierView : UIView
 {
-
-    public var outerColor: UIColor = WPStyleGuide.Reply.backgroundColor {
+    public var outerColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bezierColor: UIColor = WPStyleGuide.Reply.separatorColor {
+    public var bezierColor = WPStyleGuide.Reply.separatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bezierRadius: CGFloat = 5 {
+    public var bezierRadius = CGFloat(5) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
+    public var insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }
