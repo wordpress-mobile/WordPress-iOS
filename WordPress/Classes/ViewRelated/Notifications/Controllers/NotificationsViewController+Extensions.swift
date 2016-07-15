@@ -157,7 +157,7 @@ extension NotificationsViewController
     }
 
     func applicationWillResignActive(note: NSNotification) {
-        stopSyncTimeoutTimer()
+        stopWaitingForNotification()
     }
 
     func defaultAccountDidChange(note: NSNotification) {
@@ -171,30 +171,31 @@ extension NotificationsViewController
 //
 extension NotificationsViewController
 {
-    /// The Details View associated for a given notificationID will be pushed
-    /// If the Notification is unavailable at the point in which this call is executed, we'll hold for
-    /// the time interval specified by the `NotificationsSyncTimeout` constant.
-    /// Whenever the notification is sync'ed, if the timeout hasn't yet elapsed, we'll proceed pushing
-    /// the details view. Otherwise, the event will be discarded.
+    /// Pushes the Details for a given notificationID. If the Notification is unavailable at the point in
+    /// which this call is executed, we'll hold for the time interval specified by the `Syncing.pushMaxWait`
+    /// constant.
     ///
-    /// -   parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
+    /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
     ///
-    func showDetailsForNoteWithID(notificationID: String) {
-        guard let note = simperium.bucketForName(entityName()).objectForKey(notificationID) as? Notification else {
-            DDLogSwift.logInfo("Notification [\(notificationID)] is unavailable. Waiting \(Syncing.pushMaxWait) secs")
-
-            pushNotificationDate = NSDate()
-            pushNotificationID = notificationID
-            startSyncTimeoutTimer()
+    func showDetailsForNotificationWithID(noteID: String) {
+        guard let note = simperium.bucketForName(entityName()).objectForKey(noteID) as? Notification else {
+            startWaitingForNotification(noteID)
             return
         }
 
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(notificationID)]")
         showDetailsForNotification(note)
     }
 
+
+    /// Pushes the details for a given Notification Instance.
+    ///
+    /// - Parameter note: The Notification that should be rendered.
+    ///
     func showDetailsForNotification(note: Notification) {
-        let properties = [Syncing.noteTypeKey : note.type ?? Syncing.noteTypeUnknown]
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
+
+        // Track
+        let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
         // Mark as Read, if needed
@@ -230,7 +231,7 @@ extension NotificationsViewController
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
-        performSelector(#selector(performDeletionAction), withObject:noteObjectID, afterDelay:Properties.undoTimeout)
+        performSelector(#selector(performDeletionAction), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
     }
 }
 
@@ -374,7 +375,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
     public func fetchRequest() -> NSFetchRequest {
         let request = NSFetchRequest(entityName: entityName())
-        request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
 
         return request
@@ -566,7 +567,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
 
-        let properties = ["source": "notifications"]
+        let properties = [Stats.sourceKey: Stats.sourceValue]
         WPAnalytics.track(.SelectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
     }
 }
@@ -578,19 +579,19 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 extension NotificationsViewController
 {
     public func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReviewForSection(RatingSettings.section) else {
+        guard AppRatingUtility.shouldPromptForAppReviewForSection(Ratings.section) else {
             return
         }
 
-        guard ratingsHeightConstraint.constant != RatingSettings.heightFull && ratingsView.alpha != WPAlphaFull else {
+        guard ratingsHeightConstraint.constant != Ratings.heightFull && ratingsView.alpha != WPAlphaFull else {
             return
         }
 
         ratingsView.alpha = WPAlphaZero
 
-        UIView.animateWithDuration(WPAnimationDurationDefault, delay: RatingSettings.animationDelay, options: .CurveEaseIn, animations: {
+        UIView.animateWithDuration(WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .CurveEaseIn, animations: {
             self.ratingsView.alpha = WPAlphaFull
-            self.ratingsHeightConstraint.constant = RatingSettings.heightFull
+            self.ratingsHeightConstraint.constant = Ratings.heightFull
 
             self.setupTableHeaderView()
         }, completion: nil)
@@ -601,7 +602,7 @@ extension NotificationsViewController
     public func hideRatingView() {
         UIView.animateWithDuration(WPAnimationDurationDefault) {
             self.ratingsView.alpha = WPAlphaZero
-            self.ratingsHeightConstraint.constant = RatingSettings.heightZero
+            self.ratingsHeightConstraint.constant = Ratings.heightZero
 
             self.setupTableHeaderView()
         }
@@ -620,25 +621,16 @@ extension NotificationsViewController: SPBucketDelegate
             return
         }
 
-        // Were we waiting for this notification?
+        // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
         if pushNotificationID == key {
-            // Show the details only if NotificationPushMaxWait hasn't elapsed
             if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
-                showDetailsForNoteWithID(key)
+                showDetailsForNotificationWithID(key)
             }
 
-            // Stop the sync timeout: we've got activity!
-            stopSyncTimeoutTimer()
-
-            // Cleanup
-            pushNotificationID = nil
-            pushNotificationDate = nil
+            stopWaitingForNotification()
         }
 
-        // Mark as read immediately if:
-        //  -   We're onscreen
-        //  -   The app is in Foreground (This may be called during a Background Fetch Event).
-        //
+        // Mark as read immediately, if needed
         if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
             resetApplicationBadge()
             updateLastSeenTime()
@@ -670,36 +662,37 @@ extension NotificationsViewController
         simperium.save()
     }
 
-    func startSyncTimeoutTimer() {
-        // Don't proceed if we're not even connected
-        guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
+    func startWaitingForNotification(notificationID: String) {
+        guard simperium.requiresConnection == false else {
             return
         }
 
-        stopSyncTimeoutTimer()
-        performSelector(#selector(trackSyncTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+        DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
+
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
+        performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+
+        pushNotificationID = notificationID
+        pushNotificationDate = NSDate()
     }
 
-    func stopSyncTimeoutTimer() {
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(trackSyncTimeout), object: nil)
-    }
-}
-
-
-
-// MARK: - Tracking
-//
-extension NotificationsViewController
-{
-    func trackAppeared() {
-        WPAnalytics.track(.OpenedNotificationsList)
+    func stopWaitingForNotification() {
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
+        pushNotificationID = nil
+        pushNotificationDate = nil
     }
 
-    func trackSyncTimeout() {
-        let properties = [Syncing.networkStatusKey : simperium.networkStatus]
+    func notificationWaitDidTimeout() {
+        DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
+
+        pushNotificationID = nil
+        pushNotificationDate = nil
+
+        let properties = [Stats.networkStatusKey : simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
+
 
 
 // MARK: - ABXPromptViewDelegate Methods
@@ -711,7 +704,7 @@ extension NotificationsViewController: ABXPromptViewDelegate
         AppRatingUtility.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = NSURL(string: RatingSettings.reviewURL) {
+        if let targetURL = NSURL(string: Ratings.reviewURL) {
             UIApplication.sharedApplication().openURL(targetURL)
         }
     }
@@ -758,28 +751,31 @@ private extension NotificationsViewController
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
-    enum Properties {
-        static let sortKey          = "timestamp"
-        static let undoTimeout      = NSTimeInterval(4)
-    }
-
     enum Filter: Int {
         case None                   = 0
         case Unread                 = 1
         case Comment                = 2
         case Follow                 = 3
         case Like                   = 4
+
+        static let sortKey          = "timestamp"
+    }
+
+    enum Stats {
+        static let networkStatusKey = "network_status"
+        static let noteTypeKey      = "notification_type"
+        static let noteTypeUnknown  = "unknown"
+        static let sourceKey        = "source"
+        static let sourceValue      = "notifications"
     }
 
     enum Syncing {
         static let pushMaxWait      = NSTimeInterval(1)
         static let syncTimeout      = NSTimeInterval(10)
-        static let networkStatusKey = "network_status"
-        static let noteTypeKey      = "notification_type"
-        static let noteTypeUnknown  = "unknown"
+        static let undoTimeout      = NSTimeInterval(4)
     }
 
-    enum RatingSettings {
+    enum Ratings {
         static let section          = "notifications"
         static let heightFull       = CGFloat(100)
         static let heightZero       = CGFloat(0)
