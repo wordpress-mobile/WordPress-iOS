@@ -154,8 +154,8 @@ class NotificationsViewController : UITableViewController
         }
 
         // Old School Height Calculation
-        let subject = note.subjectBlock().attributedSubjectText()
-        let snippet = note.snippetBlock().attributedSnippetText()
+        let subject = note.subjectBlock()?.attributedSubjectText()
+        let snippet = note.snippetBlock()?.attributedSnippetText()
 
         return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
