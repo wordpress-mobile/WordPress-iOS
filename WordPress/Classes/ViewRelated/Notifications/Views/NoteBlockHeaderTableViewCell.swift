@@ -76,11 +76,11 @@ import WordPressShared.WPStyleGuide
     private typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private
-    private let gravatarImageSizePad:               CGSize      = CGSize(width: 36.0, height: 36.0)
-    private var gravatarURL:                        NSURL?
+    private let gravatarImageSizePad                = CGSize(width: 36.0, height: 36.0)
+    private var gravatarURL                         : NSURL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var headerTitleLabel:    UILabel!
-    @IBOutlet private weak var headerDetailsLabel:  UILabel!
+    @IBOutlet private weak var gravatarImageView    : UIImageView!
+    @IBOutlet private weak var headerTitleLabel     : UILabel!
+    @IBOutlet private weak var headerDetailsLabel   : UILabel!
 }
