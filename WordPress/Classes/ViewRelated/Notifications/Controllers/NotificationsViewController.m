@@ -97,19 +97,19 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    // Tracking
+    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
+
     // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
     [self.tableView deselectSelectedRowWithAnimation:YES];
     
     // While we're onscreen, please, update rows with animations
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-    
-    // Tracking
-    [self trackAppeared];
-    [self updateLastSeenTime];
-    
+
     // Notifications
     [self hookApplicationStateNotes];
+    [self updateLastSeenTime];
     [self resetApplicationBadge];
 
     // Refresh the UI
