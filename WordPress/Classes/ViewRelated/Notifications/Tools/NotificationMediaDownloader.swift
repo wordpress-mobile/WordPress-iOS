@@ -211,8 +211,8 @@ import AFNetworking
         var targetSize = originalSize
 
         if targetSize.width > maximumWidth {
-            targetSize.height   = round(maximumWidth * targetSize.height / targetSize.width)
-            targetSize.width    = maximumWidth
+            targetSize.height = round(maximumWidth * targetSize.height / targetSize.width)
+            targetSize.width = maximumWidth
         }
 
         return targetSize
