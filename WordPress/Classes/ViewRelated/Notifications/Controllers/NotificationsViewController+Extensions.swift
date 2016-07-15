@@ -156,7 +156,7 @@ extension NotificationsViewController
         DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
 
         // Track
-        let properties = [Syncing.noteTypeKey : note.type ?? Syncing.noteTypeUnknown]
+        let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
         // Mark as Read, if needed
@@ -221,7 +221,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
     public func fetchRequest() -> NSFetchRequest {
         let request = NSFetchRequest(entityName: entityName())
-        request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
 
         return request
@@ -413,7 +413,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
 
-        let properties = ["source": "notifications"]
+        let properties = [Stats.sourceKey: Stats.sourceValue]
         WPAnalytics.track(.SelectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
     }
 }
@@ -515,8 +515,7 @@ extension NotificationsViewController
 
         DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
 
-        stopWaitingForNotification()
-
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
         performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
 
         pushNotificationID = notificationID
@@ -535,10 +534,11 @@ extension NotificationsViewController
         pushNotificationID = nil
         pushNotificationDate = nil
 
-        let properties = [Syncing.networkStatusKey : simperium.networkStatus]
+        let properties = [Stats.networkStatusKey : simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
+
 
 
 // MARK: - ABXPromptViewDelegate Methods
@@ -597,24 +597,27 @@ private extension NotificationsViewController
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
-    enum Properties {
-        static let sortKey          = "timestamp"
-    }
-
     enum Filter: Int {
         case None                   = 0
         case Unread                 = 1
         case Comment                = 2
         case Follow                 = 3
         case Like                   = 4
+
+        static let sortKey          = "timestamp"
+    }
+
+    enum Stats {
+        static let networkStatusKey = "network_status"
+        static let noteTypeKey      = "notification_type"
+        static let noteTypeUnknown  = "unknown"
+        static let sourceKey        = "source"
+        static let sourceValue      = "notifications"
     }
 
     enum Syncing {
         static let pushMaxWait      = NSTimeInterval(1)
         static let syncTimeout      = NSTimeInterval(10)
-        static let networkStatusKey = "network_status"
-        static let noteTypeKey      = "notification_type"
-        static let noteTypeUnknown  = "unknown"
     }
 
     enum RatingSettings {
