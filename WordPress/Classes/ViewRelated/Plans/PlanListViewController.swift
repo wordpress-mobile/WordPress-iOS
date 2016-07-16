@@ -119,6 +119,23 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     func footerTapped() {
         footerTapAction?()
     }
+
+    // MARK: - ImmuTablePresenter
+
+    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+        return {
+            [unowned self] in
+            let controller = controllerGenerator($0)
+            self.presentViewController(controller, animated: true, completion: { _ in
+                // When the detail view is displayed as a modal on iPad, we don't receive
+                // view did/will appear/disappear. Because of this, the selected row in the list
+                // is never deselected. So we'll do it manually.
+                if UIDevice.isPad() {
+                    self.tableView.deselectSelectedRowWithAnimation(true)
+                }
+            })
+        }
+    }
 }
 
 // MARK: - WPNoResultsViewDelegate
