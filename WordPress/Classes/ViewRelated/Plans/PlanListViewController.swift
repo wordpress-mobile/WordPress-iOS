@@ -120,7 +120,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         footerTapAction?()
     }
 
-    // MARK: - ImmuTablePresenter 
+    // MARK: - ImmuTablePresenter
 
     func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
