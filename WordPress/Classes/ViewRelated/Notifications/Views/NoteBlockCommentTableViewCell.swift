@@ -163,14 +163,14 @@ import WordPressShared.WPStyleGuide
     }
 
     // MARK: - Private Constants
-    private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
-    private let separatorUnapprovedInsets           = UIEdgeInsetsZero
-    private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
-    private let gravatarPadSize                     = CGSize(width: 37.0, height: 37.0)
+    private let separatorApprovedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
+    private let separatorUnapprovedInsets = UIEdgeInsetsZero
+    private let separatorRepliedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+    private let gravatarPadSize = CGSize(width: 37.0, height: 37.0)
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var actionsView          : UIView!
-    @IBOutlet private weak var gravatarImageView    : CircularImageView!
-    @IBOutlet private weak var titleLabel           : UILabel!
-    @IBOutlet private weak var detailsLabel         : UILabel!
+    @IBOutlet private weak var actionsView: UIView!
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var detailsLabel: UILabel!
 }
