@@ -24,7 +24,6 @@
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
-                        <segue destination="6Ef-w3-Us2" kind="show" identifier="ReaderDetailViewController" id="zp4-jZ-apm"/>
                     </connections>
                 </tableViewController>
                 <view contentMode="scaleToFill" id="Uvo-9e-l6I" userLabel="Header View">
@@ -100,34 +99,6 @@
             </objects>
             <point key="canvasLocation" x="700" y="-1061"/>
         </scene>
-        <!--ReaderDetailViewController-->
-        <scene sceneID="7zN-ZI-iQe">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Reader" bundleIdentifier="WordPress" referencedIdentifier="ReaderDetailViewController" id="6Ef-w3-Us2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bfo-xf-Dnl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2749.5" y="-1817"/>
-        </scene>
-        <!--Reader Comments View Controller-->
-        <scene sceneID="RLS-eH-qVH">
-            <objects>
-                <viewController id="kOE-dH-qnb" customClass="ReaderCommentsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="eaw-kn-CXc"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2949" y="-1279"/>
-        </scene>
-        <!--WebView-->
-        <scene sceneID="1zS-D4-F1Z">
-            <objects>
-                <viewController id="Bbj-DX-KQ7" userLabel="WebView" customClass="WPWebViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Ggf-4b-Gwr"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fEj-cd-uMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2949.375" y="-587.32394366197184"/>
-        </scene>
         <!--Notification Details-->
         <scene sceneID="0B7-mU-JSs">
             <objects>
@@ -174,10 +145,6 @@
                         <outlet property="tableGesturesRecognizer" destination="a20-Yr-RdT" id="Ap0-WK-Z2n"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <outlet property="topLayoutConstraint" destination="wB2-hr-QKf" id="6lI-hD-BmZ"/>
-                        <segue destination="8p8-88-FGK" kind="show" identifier="StatsViewController" id="EAn-K1-ofm"/>
-                        <segue destination="Bbj-DX-KQ7" kind="show" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
-                        <segue destination="kOE-dH-qnb" kind="show" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
-                        <segue destination="6Ef-w3-Us2" kind="show" identifier="ReaderDetailViewController" id="WHD-nZ-mNK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -188,20 +155,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1734.375" y="-634.85915492957747"/>
-        </scene>
-        <!--StatsView-->
-        <scene sceneID="iWL-VB-TOS">
-            <objects>
-                <viewController id="8p8-88-FGK" userLabel="StatsView" customClass="StatsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Emb-tQ-YvX"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KeQ-Nv-SGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2949.375" y="148.94366197183098"/>
+            <point key="canvasLocation" x="1446" y="-1061"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="WHD-nZ-mNK"/>
-    </inferredMetricsTieBreakers>
 </document>
