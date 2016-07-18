@@ -20,7 +20,7 @@ import Foundation
 
     public var isExternal: Bool {
         get {
-            return (feedID.integerValue > 0)
+            return siteID.integerValue == 0
         }
     }
 }
