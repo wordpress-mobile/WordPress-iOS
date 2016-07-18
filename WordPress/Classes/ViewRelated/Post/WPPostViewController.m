@@ -740,7 +740,7 @@ EditImageDetailsViewControllerDelegate
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
 
-    if ([UIDevice isPad] && ![self hasHorizontallyCompactView]) {
+    if ([WPDeviceIdentification isiPad] && ![self hasHorizontallyCompactView]) {
         [self presentBlogSelectorViewControllerAsPopover:vc];
     } else {
         [self presentBlogSelectorViewControllerAsModal:vc];
