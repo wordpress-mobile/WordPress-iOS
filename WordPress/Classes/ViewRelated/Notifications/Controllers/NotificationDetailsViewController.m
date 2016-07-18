@@ -330,28 +330,13 @@ static NSInteger NotificationSectionCount               = 1;
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
-    
-    // Pin the suggestions view left and right edges to the super view edges
-    NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
 
-    // Pin the suggestions view top to the super view top
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
-    
-    // Pin the suggestions view bottom to the top of the reply box
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                         attribute:NSLayoutAttributeBottom
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.replyTextView
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1
-                                                          constant:0]];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.suggestionsTableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.suggestionsTableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.suggestionsTableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [self.suggestionsTableView.bottomAnchor constraintEqualToAnchor:self.replyTextView.topAnchor]
+    ]];
 }
 
 
