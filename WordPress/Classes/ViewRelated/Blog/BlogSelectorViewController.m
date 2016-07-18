@@ -11,13 +11,14 @@
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat BlogCellRowHeight = 74.0;
 
-@interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
+@interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) NSFetchedResultsController    *resultsController;
 @property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;
 @property (nonatomic, strong) NSManagedObjectID             *selectedObjectID;
 @property (nonatomic,   copy) BlogSelectorSuccessHandler    successHandler;
 @property (nonatomic,   copy) BlogSelectorDismissHandler    dismissHandler;
+@property (nonatomic, strong) UISearchController            *searchController;
 
 @end
 
@@ -93,6 +94,9 @@ static CGFloat BlogCellRowHeight = 74.0;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     [self.tableView reloadData];
 
+    self.tableView.tableFooterView = [UIView new];
+
+    [self configureSearchController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,7 +104,8 @@ static CGFloat BlogCellRowHeight = 74.0;
     [super viewWillAppear:animated];
 
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    
+
+    [self registerForKeyboardNotifications];
     [self syncBlogs];
     [self scrollToSelectedObjectID];
 }
@@ -108,9 +113,92 @@ static CGFloat BlogCellRowHeight = 74.0;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [self unregisterForKeyboardNotifications];
+
     self.resultsController.delegate = nil;
 }
 
+- (void)configureSearchController
+{
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.definesPresentationContext = YES;
+
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+
+    self.searchController.delegate = self;
+    self.searchController.searchResultsUpdater = self;
+
+    [WPStyleGuide configureSearchBar:self.searchController.searchBar];
+
+    [self addSearchBarTableHeaderView];
+}
+
+- (void)addSearchBarTableHeaderView
+{
+    if (!self.tableView.tableHeaderView) {
+        // Required to work around a bug where the search bar was extending a
+        // grey background above the top of the tableview, which was visible when
+        // pulling down further than offset zero
+        SearchWrapperView *wrapperView = [SearchWrapperView new];
+        [wrapperView addSubview:self.searchController.searchBar];
+        wrapperView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.searchController.searchBar.bounds.size.height);
+        self.tableView.tableHeaderView = wrapperView;
+    }
+}
+
+#pragma mark - Notifications
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+}
+
+- (void)unregisterForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (CGFloat)searchBarHeight {
+    return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyboardHeight = MAX(CGRectGetMaxY(self.tableView.frame) - keyboardFrame.origin.y, 0);
+
+    UIEdgeInsets insets = self.tableView.contentInset;
+
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
+}
+
+- (void)keyboardDidHide:(NSNotification*)notification
+{
+    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = self.topLayoutGuide.length;
+    insets.bottom = tabBarHeight;
+
+    self.tableView.contentInset = insets;
+
+    if (self.searchController.active) {
+        insets.top = [self searchBarHeight];
+    }
+
+    self.tableView.scrollIndicatorInsets = insets;
+}
 
 #pragma mark - Helpers
 
@@ -331,27 +419,65 @@ static CGFloat BlogCellRowHeight = 74.0;
     return @"settings.name";
 }
 
+
 - (NSPredicate *)fetchRequestPredicate
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSPredicate *predicate;
 
+    if ([self.searchController isActive]) {
+        predicate = [self fetchRequestPredicateForSearch];
+    } else {
+        predicate = [self fetchRequestPredicateForVisibleBlogs];
+    }
+
+    if (!self.displaysOnlyDefaultAccountSites) {
+        return predicate;
+    } else {
+        NSPredicate *accountPredicate = [self fetchRequestPredicateForDotComBlogs];
+        return [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, accountPredicate]];
+    }
+}
+
+- (NSPredicate *)fetchRequestPredicateForSearch
+{
+    NSString *searchText = self.searchController.searchBar.text;
+    if ([searchText isEmpty]) {
+        // Don't filter – show all sites
+        return [self fetchRequestPredicateForAllBlogs];
+    }
+
+    return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
+}
+
+- (NSPredicate *)fetchRequestPredicateForVisibleBlogs
+{
     NSPredicate *visiblePredicate = [NSPredicate predicateWithFormat:@"visible = YES"];
+
     if (self.selectedObjectID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         NSManagedObject *currentBlog = [context existingObjectWithID:self.selectedObjectID error:nil];
         if (currentBlog) {
             NSPredicate *currentBlogPredicate = [NSPredicate predicateWithFormat:@"self = %@", currentBlog];
             visiblePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[visiblePredicate, currentBlogPredicate]];
         }
     }
-    if (!self.displaysOnlyDefaultAccountSites) {
-        return visiblePredicate;
-    } else {
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
-        NSPredicate *accountPredicate = [NSPredicate predicateWithFormat:@"account == %@ OR jetpackAccount == %@", defaultAccount, defaultAccount];
-        return [NSCompoundPredicate andPredicateWithSubpredicates:@[visiblePredicate, accountPredicate]];
-    }
+
+    return visiblePredicate;
+}
+
+- (NSPredicate *)fetchRequestPredicateForDotComBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    NSPredicate *accountPredicate = [NSPredicate predicateWithFormat:@"account == %@ OR jetpackAccount == %@", defaultAccount, defaultAccount];
+    return accountPredicate;
+}
+
+- (NSPredicate *)fetchRequestPredicateForAllBlogs
+{
+    return [NSPredicate predicateWithValue:YES];
 }
 
 - (NSArray *)sortDescriptors
@@ -370,6 +496,51 @@ static CGFloat BlogCellRowHeight = 74.0;
     
     [descriptors addObjectsFromArray:self.sortDescriptors];
     return descriptors;
+}
+
+#pragma mark - UISearchController
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
+
+    NSError *error = nil;
+    if (![self.resultsController performFetch:&error]) {
+        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
+    }
+
+    [self.tableView reloadData];
+}
+
+// Improves the appearance of the arrow when displayed in a popover, by matching
+// its color to the topmost view in the scrollview
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (!self.popoverPresentationController) { return; }
+
+    if (self.searchController.active) {
+        self.popoverPresentationController.backgroundColor = self.searchController.searchBar.barTintColor;
+        return;
+    }
+
+    UIColor *arrowColor;
+
+    if (scrollView.contentOffset.y < self.tableView.tableHeaderView.frame.origin.y) {
+        // Above the header view (search bar)
+        arrowColor = self.tableView.backgroundColor;
+    } else if (scrollView.contentOffset.y < self.searchController.searchBar.bounds.size.height) {
+        // Within the search bar
+        arrowColor = self.searchController.searchBar.barTintColor;
+    } else {
+        // Within the table content itself (cells have white backgrounds)
+        arrowColor = [UIColor whiteColor];
+    }
+
+    if (arrowColor != self.popoverPresentationController.backgroundColor) {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.popoverPresentationController.backgroundColor = arrowColor;
+        }];
+    }
 }
 
 @end
