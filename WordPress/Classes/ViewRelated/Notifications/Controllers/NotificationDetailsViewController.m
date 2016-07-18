@@ -43,9 +43,6 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
-static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
-
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
 
@@ -61,8 +58,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 @interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
+@property (nonatomic,   weak) IBOutlet UIStackView          *stackView;
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
 @property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *topLayoutConstraint;
+@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *centerLayoutConstraint;
 @property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
@@ -118,7 +118,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self setupTableView];
     [self setupMediaDownloader];
     [self setupNotificationListeners];
-    
+
     [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
 }
 
@@ -315,10 +315,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     replyTextView.delegate                  = self;
     self.replyTextView                      = replyTextView;
 
-    // Attach the ReplyTextView at the very bottom
-    [self.view addSubview:self.replyTextView];
-    [self.view pinSubviewAtBottom:self.replyTextView];
-    [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
+    [self.stackView addArrangedSubview:replyTextView];
 
     // Attach suggestionsView
     [self attachSuggestionsViewIfNeeded];
@@ -396,19 +393,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)adjustTableViewInsetsIfNeeded
 {
-    BOOL isiPadFullScreen = [WPDeviceIdentification isiPad] && [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
-    UIEdgeInsets contentInset = isiPadFullScreen ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
-    
     // Badge Notifications should be centered, and display no cell separators
-    if (self.note.isBadge) {
-        // Center only if the container view is big enough!
-        if (self.view.frame.size.height > self.tableView.contentSize.height) {
-            CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
-            contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
-        }
-    }
-    
-    self.tableView.contentInset = contentInset;
+    BOOL shouldCenterVertically = self.note.isBadge;
+
+    self.topLayoutConstraint.active = !shouldCenterVertically;
+    self.bottomLayoutConstraint.active = !shouldCenterVertically;
+    self.centerLayoutConstraint.active = shouldCenterVertically;
 }
 
 
