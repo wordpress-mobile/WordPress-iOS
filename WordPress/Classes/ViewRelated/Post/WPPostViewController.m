@@ -739,14 +739,33 @@ EditImageDetailsViewControllerDelegate
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
-    vc.displaysCancelButton = [self hasHorizontallyCompactView];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+
+    if ([UIDevice isPad] && ![self hasHorizontallyCompactView]) {
+        [self presentBlogSelectorViewControllerAsPopover:vc];
+    } else {
+        [self presentBlogSelectorViewControllerAsModal:vc];
+    }
+}
+
+- (void)presentBlogSelectorViewControllerAsPopover:(BlogSelectorViewController *)viewController
+{
+    viewController.modalPresentationStyle = UIModalPresentationPopover;
+    viewController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    viewController.popoverPresentationController.backgroundColor = [WPStyleGuide greyLighten20];
+    // A little extra vertical padding...
+    CGFloat padding = -10;
+    viewController.popoverPresentationController.sourceRect = CGRectInset(self.blogPickerButton.imageView.bounds, 0, padding);
+    viewController.popoverPresentationController.sourceView = self.blogPickerButton.imageView;
+
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)presentBlogSelectorViewControllerAsModal:(BlogSelectorViewController *)viewController
+{
+    viewController.displaysCancelButton = YES;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
     navController.navigationBar.translucent = NO;
-    navController.navigationBar.barStyle = UIBarStyleBlack;
-    navController.modalPresentationStyle = UIModalPresentationPopover;
-    navController.popoverPresentationController.barButtonItem = self.secondaryLeftUIBarButtonItem;
-    navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    navController.popoverPresentationController.backgroundColor = [WPStyleGuide wordPressBlue];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
