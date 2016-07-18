@@ -452,10 +452,12 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:note];
-    } else {
-        [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
+        ReaderDetailViewController *readerViewController = [ReaderDetailViewController controllerWithPostID:note.metaPostID siteID:note.metaSiteID];
+        [self.navigationController pushViewController:readerViewController animated:YES];
+        return;
     }
+
+    [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
 }
 
 
@@ -553,7 +555,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID         = [ReaderDetailViewController classNameWithoutNamespaces];
     Notification *note              = sender;
     __weak __typeof(self) weakSelf  = self;
     
@@ -563,10 +564,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
             [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
-        
-    } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderDetailViewController *readerViewController = segue.destinationViewController;
-        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
 
