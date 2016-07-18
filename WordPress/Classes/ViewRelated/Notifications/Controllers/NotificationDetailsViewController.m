@@ -63,6 +63,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
 @property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
@@ -127,7 +128,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillHideNotification object:nil];
     
     [self.tableView deselectSelectedRowWithAnimation:YES];
 }
@@ -1357,36 +1358,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Bottom Inset: Consider the tab bar!
     CGRect viewFrame = self.view.frame;
     CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-    
+
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:bottomInset];
-    
-    [self.view layoutIfNeeded];
-    
-    [UIView commitAnimations];
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    NSDictionary* userInfo = notification.userInfo;
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-    
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:0];
-    
+    self.bottomLayoutConstraint.constant = MAX(bottomInset, 0);
     [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
