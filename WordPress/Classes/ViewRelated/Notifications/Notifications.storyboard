@@ -140,30 +140,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                                <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="veA-Pg-QAw" id="VzN-sT-2Co"/>
-                                    <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
-                                    <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="9kS-tn-Ero"/>
-                                </connections>
-                            </tableView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <subviews>
+                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="MyTableView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="veA-Pg-QAw" id="VzN-sT-2Co"/>
+                                            <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
+                                            <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="9kS-tn-Ero"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="Dcn-Il-AtN" secondAttribute="bottom" priority="250" id="9mt-16-fFT"/>
-                            <constraint firstItem="Dcn-Il-AtN" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="EDd-eL-C3N"/>
-                            <constraint firstItem="Dcn-Il-AtN" firstAttribute="top" secondItem="lvM-1n-Dgf" secondAttribute="top" id="VrG-Fy-A84"/>
-                            <constraint firstAttribute="trailing" secondItem="Dcn-Il-AtN" secondAttribute="trailing" id="eJA-A9-B0Q"/>
+                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="V4D-fq-INq"/>
+                            <constraint firstAttribute="trailing" secondItem="t2r-NP-ili" secondAttribute="trailing" id="bEY-FT-8cX"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="centerY" secondItem="lvM-1n-Dgf" secondAttribute="centerY" priority="750" id="qQ1-lE-W83"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="top" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="wB2-hr-QKf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
                     <connections>
+                        <outlet property="bottomLayoutConstraint" destination="Em4-Ll-jHx" id="hyF-0f-xzw"/>
+                        <outlet property="centerLayoutConstraint" destination="qQ1-lE-W83" id="1rf-8U-syD"/>
+                        <outlet property="stackView" destination="t2r-NP-ili" id="JMP-dt-hBu"/>
                         <outlet property="tableGesturesRecognizer" destination="a20-Yr-RdT" id="Ap0-WK-Z2n"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
+                        <outlet property="topLayoutConstraint" destination="wB2-hr-QKf" id="6lI-hD-BmZ"/>
                         <segue destination="8p8-88-FGK" kind="show" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="show" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
                         <segue destination="kOE-dH-qnb" kind="show" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
@@ -192,6 +202,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zp4-jZ-apm"/>
+        <segue reference="WHD-nZ-mNK"/>
     </inferredMetricsTieBreakers>
 </document>
