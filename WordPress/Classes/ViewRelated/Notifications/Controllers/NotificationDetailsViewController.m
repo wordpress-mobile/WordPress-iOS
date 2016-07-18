@@ -67,7 +67,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 @property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
 // Table Helpers
-@property (nonatomic, strong) NSDictionary                  *layoutCellMap;
+@property (nonatomic, strong) NSDictionary                  *layoutIdentifierMap;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
 @property (nonatomic, strong) NSArray                       *blockGroups;
 
@@ -252,24 +252,23 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Autolayout Helpers
 
-- (NSDictionary *)layoutCellMap
+- (NSDictionary *)layoutIdentifierMap
 {
-    if (_layoutCellMap) {
-        return _layoutCellMap;
+    if (_layoutIdentifierMap) {
+        return _layoutIdentifierMap;
     }
     
-    UITableView *tableView  = self.tableView;
-    _layoutCellMap = @{
-        @(NoteBlockGroupTypeHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeFooter)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeActions)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockActionsTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeUser)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.layoutIdentifier]
+    _layoutIdentifierMap = @{
+        @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeFooter)    : NoteBlockTextTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeComment)   : NoteBlockCommentTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeActions)   : NoteBlockActionsTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeImage)     : NoteBlockImageTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeUser)      : NoteBlockUserTableViewCell.layoutIdentifier
     };
     
-    return _layoutCellMap;
+    return _layoutIdentifierMap;
 }
 
 - (NSDictionary *)reuseIdentifierMap
@@ -478,7 +477,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
-    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
+    NSString *layoutIdentifier              = self.layoutIdentifierMap[@(blockGroup.type)] ?: self.layoutIdentifierMap[@(NoteBlockGroupTypeText)];
+    NoteBlockTableViewCell *tableViewCell   = [tableView dequeueReusableCellWithIdentifier:layoutIdentifier];
 
     [self downloadAndResizeMedia:indexPath blockGroup:blockGroup];
     [self setupCell:tableViewCell blockGroup:blockGroup];
@@ -785,7 +785,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
     NSAssert(textBlock, @"Missing Text Block for Notification %@", self.note.simperiumKey);
-    
+
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
