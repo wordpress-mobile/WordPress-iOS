@@ -317,7 +317,24 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return self.dynamicType.postCardRestoreCellRowHeight
         }
 
+        // To work around a bug (https://github.com/wordpress-mobile/WordPress-iOS/issues/3844) where
+        // the table footer view would animate over cells, we'll only return estimated heights
+        // for cells that aren't in the visible area of the view.
+        let cellHeight = heightForEmptyCell
+        if cellHeight > 0 {
+            let visibleCellCount = Int(ceil(tableView.bounds.height / cellHeight))
+            if indexPath.row < visibleCellCount {
+                return self.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            }
+        }
+
         return self.dynamicType.postCardEstimatedRowHeight
+    }
+
+    private var heightForEmptyCell: CGFloat {
+        let size = textCellForLayout.sizeThatFits(CGSizeMake(tableView.bounds.width, CGFloat.max))
+
+        return size.height
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
