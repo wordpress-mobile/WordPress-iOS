@@ -379,6 +379,9 @@ static NSInteger NotificationSectionCount               = 1;
     self.topLayoutConstraint.active = !shouldCenterVertically;
     self.bottomLayoutConstraint.active = !shouldCenterVertically;
     self.centerLayoutConstraint.active = shouldCenterVertically;
+
+    // Lock Scrolling for Badge Notifications
+    self.tableView.scrollEnabled = !shouldCenterVertically;
 }
 
 
