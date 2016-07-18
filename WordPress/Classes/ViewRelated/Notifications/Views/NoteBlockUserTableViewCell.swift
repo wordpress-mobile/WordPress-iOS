@@ -90,12 +90,12 @@ import WordPressShared
     }
 
     // MARK: - Private
-    private let gravatarImageSizePad                = CGSize(width: 54.0, height: 54.0)
-    private var gravatarURL                         : NSURL?
+    private let gravatarImageSizePad = CGSize(width: 54.0, height: 54.0)
+    private var gravatarURL: NSURL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var nameLabel            : UILabel!
-    @IBOutlet private weak var blogLabel            : UILabel!
-    @IBOutlet private weak var btnFollow            : UIButton!
-    @IBOutlet private weak var gravatarImageView    : CircularImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var blogLabel: UILabel!
+    @IBOutlet private weak var btnFollow: UIButton!
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
 }
