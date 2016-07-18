@@ -123,8 +123,7 @@ static NSInteger NotificationSectionCount               = 1;
     [super viewWillAppear:animated];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillHideNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self.tableView deselectSelectedRowWithAnimation:YES];
 }
@@ -1276,7 +1275,7 @@ static NSInteger NotificationSectionCount               = 1;
     }
 }
 
-- (void)handleKeyboardWillShow:(NSNotification *)notification
+- (void)handleKeyboardWillChangeFrame:(NSNotification *)notification
 {
     NSDictionary* userInfo = notification.userInfo;
     
