@@ -6,13 +6,13 @@ import WordPressShared.WPStyleGuide
     public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    public var onReplyClick:        EventHandler?
-    public var onLikeClick:         EventHandler?
-    public var onUnlikeClick:       EventHandler?
-    public var onApproveClick:      EventHandler?
-    public var onUnapproveClick:    EventHandler?
-    public var onTrashClick:        EventHandler?
-    public var onSpamClick:         EventHandler?
+    public var onReplyClick: EventHandler?
+    public var onLikeClick: EventHandler?
+    public var onUnlikeClick: EventHandler?
+    public var onApproveClick: EventHandler?
+    public var onUnapproveClick: EventHandler?
+    public var onTrashClick: EventHandler?
+    public var onSpamClick: EventHandler?
 
     public var isReplyEnabled: Bool = false {
         didSet {
@@ -165,24 +165,24 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Private Constants
-    private let buttonSpacing           = CGFloat(20)
-    private let buttonSpacingCompact    = CGFloat(10)
+    private let buttonSpacing = CGFloat(20)
+    private let buttonSpacingCompact = CGFloat(10)
 
-    private let likeNormalTitle         = NSLocalizedString("Like", comment: "Like a comment")
-    private let likeSelectedTitle       = NSLocalizedString("Liked", comment: "A comment has been liked")
-    private let likeNormalHint          = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
-    private let likeSelectedHint        = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
+    private let likeNormalTitle = NSLocalizedString("Like", comment: "Like a comment")
+    private let likeSelectedTitle = NSLocalizedString("Liked", comment: "A comment has been liked")
+    private let likeNormalHint = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
+    private let likeSelectedHint = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
 
-    private let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
-    private let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
-    private let approveNormalHint       = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
-    private let approveSelectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
+    private let approveNormalTitle = NSLocalizedString("Approve",  comment: "Approve a comment")
+    private let approveSelectedTitle = NSLocalizedString("Approved", comment: "Unapprove a comment")
+    private let approveNormalHint = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
+    private let approveSelectedHint = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
 
     // MARK: - IBOutlets
-    @IBOutlet private var actionsView   : UIStackView!
-    @IBOutlet private var btnReply      : UIButton!
-    @IBOutlet private var btnLike       : UIButton!
-    @IBOutlet private var btnApprove    : UIButton!
-    @IBOutlet private var btnTrash      : UIButton!
-    @IBOutlet private var btnSpam       : UIButton!
+    @IBOutlet private var actionsView: UIStackView!
+    @IBOutlet private var btnReply: UIButton!
+    @IBOutlet private var btnLike: UIButton!
+    @IBOutlet private var btnApprove: UIButton!
+    @IBOutlet private var btnTrash: UIButton!
+    @IBOutlet private var btnSpam: UIButton!
 }
