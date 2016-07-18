@@ -218,7 +218,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         postListFooterView.frame = frame
         tableView.tableFooterView = postListFooterView
-        tableView.sendSubviewToBack(postListFooterView)
     }
 
     private func refreshResults() {
