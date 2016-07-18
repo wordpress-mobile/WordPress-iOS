@@ -46,10 +46,6 @@
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
 
-static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
-static NSString *NotificationsPostIdKey                 = @"NotificationsPostIdKey";
-static NSString *NotificationsCommentIdKey              = @"NotificationsCommentIdKey";
-
 
 #pragma mark ==========================================================================================
 #pragma mark Private
@@ -147,7 +143,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -155,7 +151,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self.tableView reloadData];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 - (void)reloadData
@@ -176,7 +172,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Reload UI
     self.title = self.note.title;
     [self.tableView reloadData];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 
@@ -391,7 +387,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableViewInsetsIfNeeded
+- (void)adjustLayoutConstraintsIfNeeded
 {
     // Badge Notifications should be centered, and display no cell separators
     BOOL shouldCenterVertically = self.note.isBadge;
@@ -881,12 +877,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSDictionary *parameters = @{
-            NotificationsSiteIdKey      : siteID,
-            NotificationsPostIdKey      : postID
-        };
-        
-        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:parameters];
+        ReaderDetailViewController *readerViewController = [ReaderDetailViewController controllerWithPostID:postID siteID:siteID];
+        [self.navigationController pushViewController:readerViewController animated:YES];
     }
     return success;
 }
@@ -895,12 +887,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSDictionary *parameters = @{
-            NotificationsSiteIdKey      : siteID,
-            NotificationsPostIdKey      : postID,
-        };
-        
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderCommentsViewController class]) sender:parameters];
+        ReaderCommentsViewController *commentsViewController = [ReaderCommentsViewController controllerWithPostID:postID siteID:siteID];
+        [commentsViewController setAllowsPushingPostDetails:YES];
+        [self.navigationController pushViewController:commentsViewController animated:YES];
     }
     return success;
 }
@@ -917,7 +906,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BOOL success                    = [blog supports:BlogFeatureStats];
 
     if (success) {
-        // TODO: Update StatsViewController to work with initWithCoder!
         StatsViewController *vc     = [[StatsViewController alloc] init];
         vc.blog = blog;
         [self.navigationController pushViewController:vc animated:YES];
@@ -1281,40 +1269,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     // Note: This viewController might not be visible anymore
     [alertController presentFromRootViewController];
-}
-
-
-#pragma mark - Storyboard Helpers
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[Blog class]]);
-        
-        StatsViewController *statsViewController        = segue.destinationViewController;
-        statsViewController.blog                        = (Blog *)sender;
-        
-    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderCommentsViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
-        
-        NSDictionary *parameters                        = (NSDictionary *)sender;
-        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
-        NSNumber *postID                                = parameters[NotificationsPostIdKey];
-        
-        ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
-        [commentsViewController setAllowsPushingPostDetails:YES];
-        [commentsViewController setupWithPostID:postID siteID:siteID];        
-        
-    } else if([segue.identifier isEqualToString:[ReaderDetailViewController classNameWithoutNamespaces]]) {
-        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
-        
-        NSDictionary *parameters                        = (NSDictionary *)sender;
-        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
-        NSNumber *postID                                = parameters[NotificationsPostIdKey];
-        
-        ReaderDetailViewController *readerViewController = segue.destinationViewController;
-        [readerViewController setupWithPostID:postID siteID:siteID];
-    }
 }
 
 
