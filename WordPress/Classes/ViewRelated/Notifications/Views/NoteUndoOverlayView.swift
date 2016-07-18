@@ -14,12 +14,12 @@ import WordPressShared
     // MARK: - NSCoder
     public override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor         = Style.noteUndoBackgroundColor
+        backgroundColor = Style.noteUndoBackgroundColor
 
         // Legend
-        legendLabel.text        = NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is removed")
-        legendLabel.textColor   = Style.noteUndoTextColor
-        legendLabel.font        = Style.noteUndoTextFont
+        legendLabel.text = NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is removed")
+        legendLabel.textColor = Style.noteUndoTextColor
+        legendLabel.font = Style.noteUndoTextFont
 
         // Button
         undoButton.titleLabel?.font = Style.noteUndoTextFont
