@@ -50,6 +50,6 @@ import WordPressShared
     }
 
     // MARK: - Private Constants
-    private let fullSeparatorInsets     = UIEdgeInsetsZero
+    private let fullSeparatorInsets = UIEdgeInsetsZero
     private let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
 }
