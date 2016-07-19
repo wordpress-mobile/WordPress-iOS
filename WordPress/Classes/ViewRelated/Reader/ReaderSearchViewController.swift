@@ -44,10 +44,14 @@ import Gridicons
             return nil
         }
 
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
         guard let topic = service.findWithPath(path) as? ReaderSearchTopic else {
             return nil
         }
+
+        topic.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContextAndWait(context)
 
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderSearchViewController") as! ReaderSearchViewController
@@ -58,7 +62,8 @@ import Gridicons
 
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         if let topic = streamController.readerTopic {
-            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
+            topic.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encodeObject(topic.path, forKey: self.dynamicType.restorableSearchTopicPathKey)
         }
         super.encodeRestorableStateWithCoder(coder)
@@ -94,10 +99,7 @@ import Gridicons
         setupSearchBar()
         configureLabel()
         configureBackgroundTapRecognizer()
-        if let topic = restoredSearchTopic {
-            searchBar.text = topic.title
-            streamController.readerTopic = topic
-        }
+        configureForRestoredTopic()
     }
 
 
@@ -152,6 +154,16 @@ import Gridicons
         backgroundTapRecognizer.enabled = false
         backgroundTapRecognizer.delegate = self
         view.addGestureRecognizer(backgroundTapRecognizer)
+    }
+
+
+    func configureForRestoredTopic() {
+        guard let topic = restoredSearchTopic else {
+            return
+        }
+        label.hidden = true
+        searchBar.text = topic.title
+        streamController.readerTopic = topic
     }
 
 

@@ -158,7 +158,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)deleteNonMenuTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false"];
+    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false AND preserveForRestoration = false"];
 
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -168,6 +168,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     for (ReaderAbstractTopic *topic in results) {
+        // Do not purge site topics that are followed. We want these to stay so they appear immediately when managing followed sites.
+        if ([topic isKindOfClass:[ReaderSiteTopic class]] && topic.following) {
+            continue;
+        }
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
