@@ -6,13 +6,13 @@ import WordPressShared.WPStyleGuide
     public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    public var onReplyClick:        EventHandler?
-    public var onLikeClick:         EventHandler?
-    public var onUnlikeClick:       EventHandler?
-    public var onApproveClick:      EventHandler?
-    public var onUnapproveClick:    EventHandler?
-    public var onTrashClick:        EventHandler?
-    public var onSpamClick:         EventHandler?
+    public var onReplyClick: EventHandler?
+    public var onLikeClick: EventHandler?
+    public var onUnlikeClick: EventHandler?
+    public var onApproveClick: EventHandler?
+    public var onUnapproveClick: EventHandler?
+    public var onTrashClick: EventHandler?
+    public var onSpamClick: EventHandler?
 
     public var isReplyEnabled: Bool = false {
         didSet {
@@ -70,31 +70,31 @@ import WordPressShared.WPStyleGuide
     public override func awakeFromNib() {
         super.awakeFromNib()
 
-        selectionStyle              = .None
+        selectionStyle = .None
 
-        let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
-        let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
+        let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
+        let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        let replyTitle              = NSLocalizedString("Reply",    comment: "Verb, reply to a comment")
-        let spamTitle               = NSLocalizedString("Spam",     comment: "Verb, spam a comment")
-        let trashTitle              = NSLocalizedString("Trash",    comment: "Move a comment to the trash")
+        let replyTitle = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
+        let spamTitle = NSLocalizedString("Spam", comment: "Verb, spam a comment")
+        let trashTitle = NSLocalizedString("Trash", comment: "Move a comment to the trash")
 
         btnReply.setTitle(replyTitle, forState: .Normal)
         btnReply.setTitleColor(textNormalColor, forState: .Normal)
         btnReply.accessibilityLabel = replyTitle
 
-        btnLike.setTitle(likeNormalTitle,           forState: .Normal)
-        btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
-        btnLike.setTitle(likeSelectedTitle,         forState: .Selected)
-        btnLike.setTitleColor(textNormalColor,      forState: .Normal)
-        btnLike.setTitleColor(textSelectedColor,    forState: .Highlighted)
-        btnLike.setTitleColor(textSelectedColor,    forState: .Selected)
+        btnLike.setTitle(likeNormalTitle, forState: .Normal)
+        btnLike.setTitle(likeSelectedTitle, forState: .Highlighted)
+        btnLike.setTitle(likeSelectedTitle, forState: .Selected)
+        btnLike.setTitleColor(textNormalColor, forState: .Normal)
+        btnLike.setTitleColor(textSelectedColor, forState: .Highlighted)
+        btnLike.setTitleColor(textSelectedColor, forState: .Selected)
         btnLike.accessibilityLabel = likeNormalTitle
 
-        btnApprove.setTitle(approveNormalTitle,     forState: .Normal)
-        btnApprove.setTitle(approveSelectedTitle,   forState: .Highlighted)
-        btnApprove.setTitle(approveSelectedTitle,   forState: .Selected)
-        btnApprove.setTitleColor(textNormalColor,   forState: .Normal)
+        btnApprove.setTitle(approveNormalTitle, forState: .Normal)
+        btnApprove.setTitle(approveSelectedTitle, forState: .Highlighted)
+        btnApprove.setTitle(approveSelectedTitle, forState: .Selected)
+        btnApprove.setTitleColor(textNormalColor, forState: .Normal)
         btnApprove.setTitleColor(textSelectedColor, forState: .Highlighted)
         btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
         btnApprove.accessibilityLabel = approveNormalTitle
@@ -165,24 +165,24 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Private Constants
-    private let buttonSpacing           = CGFloat(20)
-    private let buttonSpacingCompact    = CGFloat(10)
+    private let buttonSpacing = CGFloat(20)
+    private let buttonSpacingCompact = CGFloat(10)
 
-    private let likeNormalTitle         = NSLocalizedString("Like",     comment: "Like a comment")
-    private let likeSelectedTitle       = NSLocalizedString("Liked",    comment: "A comment has been liked")
-    private let likeNormalHint          = NSLocalizedString("Likes the comment",     comment: "Likes a comment. Spoken Hint.")
-    private let likeSelectedHint        = NSLocalizedString("Unlikes the comment",   comment: "Unlikes a comment. Spoken Hint.")
+    private let likeNormalTitle = NSLocalizedString("Like", comment: "Like a comment")
+    private let likeSelectedTitle = NSLocalizedString("Liked", comment: "A comment has been liked")
+    private let likeNormalHint = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
+    private let likeSelectedHint = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
 
-    private let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
-    private let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
-    private let approveNormalHint       = NSLocalizedString("Approves the comment",  comment: "Approves a comment. Spoken Hint.")
-    private let approveSelectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
+    private let approveNormalTitle = NSLocalizedString("Approve",  comment: "Approve a comment")
+    private let approveSelectedTitle = NSLocalizedString("Approved", comment: "Unapprove a comment")
+    private let approveNormalHint = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
+    private let approveSelectedHint = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
 
     // MARK: - IBOutlets
-    @IBOutlet private var actionsView   : UIStackView!
-    @IBOutlet private var btnReply      : UIButton!
-    @IBOutlet private var btnLike       : UIButton!
-    @IBOutlet private var btnApprove    : UIButton!
-    @IBOutlet private var btnTrash      : UIButton!
-    @IBOutlet private var btnSpam       : UIButton!
+    @IBOutlet private var actionsView: UIStackView!
+    @IBOutlet private var btnReply: UIButton!
+    @IBOutlet private var btnLike: UIButton!
+    @IBOutlet private var btnApprove: UIButton!
+    @IBOutlet private var btnTrash: UIButton!
+    @IBOutlet private var btnSpam: UIButton!
 }
