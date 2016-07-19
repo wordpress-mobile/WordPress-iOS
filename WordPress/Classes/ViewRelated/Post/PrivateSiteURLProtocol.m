@@ -4,10 +4,17 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
-@interface PrivateSiteURLProtocol()<NSURLSessionDataDelegate>
+@interface PrivateSiteURLProtocolSession: NSObject <NSURLSessionDelegate>
 
-@property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) NSURLSessionDataTask *sessionTask;
++ (instancetype) sharedInstance;
+- (NSURLSessionTask *)createSessionTaskForRequest:(NSURLRequest *)request forProtocol:(NSURLProtocol *)protocol;
+- (void)stopSessionTask:(NSURLSessionTask *)sessionTask;
+
+@end
+
+@interface PrivateSiteURLProtocol()
+
+@property (nonatomic, strong) NSURLSessionTask *sessionTask;
 
 @end
 
@@ -114,43 +121,103 @@ static NSString *cachedToken;
 {
     NSMutableURLRequest *mRequest = [self.request mutableCopy];
     [mRequest addValue:[NSString stringWithFormat:@"Bearer %@", [[self class] bearerToken]] forHTTPHeaderField:@"Authorization"];
-    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];
-    self.sessionTask = [self.session dataTaskWithRequest:mRequest];
-    [self.sessionTask resume];
+    self.sessionTask = [[PrivateSiteURLProtocolSession sharedInstance] createSessionTaskForRequest:mRequest forProtocol:self];
+
 }
 
 - (void)stopLoading
 {
-    [self.sessionTask cancel];
-    [self.session invalidateAndCancel];
+    [[PrivateSiteURLProtocolSession sharedInstance] stopSessionTask:self.sessionTask];
     self.sessionTask = nil;
-    self.session = nil;
+}
+
+@end
+
+@interface PrivateSiteURLProtocolSession()
+
+@property (nonatomic, strong) NSMutableDictionary *taskToProtocolMapping;
+@property (nonatomic, strong) NSURLSession *session;
+
+@end
+
+@implementation PrivateSiteURLProtocolSession
+
++ (instancetype) sharedInstance
+{
+    static id _sharedInstance = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+
+    return _sharedInstance;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _taskToProtocolMapping = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (NSURLSession *)session
+{
+    if (_session == nil) {
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        _session = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];
+    }
+    return _session;
+}
+
+- (NSURLSessionTask *)createSessionTaskForRequest:(NSURLRequest *)request forProtocol:(NSURLProtocol *)protocol
+{
+    NSURLSessionTask *sessionTask = [self.session dataTaskWithRequest:request];
+    [sessionTask resume];
+
+    self.taskToProtocolMapping[sessionTask] = protocol;
+    return sessionTask;
+}
+
+- (void)stopSessionTask:(NSURLSessionTask *)sessionTask
+{
+    if (sessionTask == nil) {
+        return;
+    }
+    [self.taskToProtocolMapping removeObjectForKey:sessionTask];
+
+    [sessionTask cancel];
 }
 
 - (void)URLSession:(NSURLSession *)session
           dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)data
 {
-    [self.client URLProtocol:self didLoadData:data];
+    NSURLProtocol *protocol = self.taskToProtocolMapping[dataTask];
+    id<NSURLProtocolClient> client = protocol.client;
+
+    [client URLProtocol:protocol didLoadData:data];
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
+    NSURLProtocol *protocol = self.taskToProtocolMapping[task];
+    id<NSURLProtocolClient> client = protocol.client;
+
     if (error) {
-        [self.client URLProtocol:self didFailWithError:error];
+        [client URLProtocol:protocol didFailWithError:error];
     } else {
-        [self.client URLProtocolDidFinishLoading:self];
+        [client URLProtocolDidFinishLoading:protocol];
     }
-    self.sessionTask = nil;
-    [self.session invalidateAndCancel];
+    [self.taskToProtocolMapping removeObjectForKey:task];
 }
 
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
 {
-    [self.client URLProtocol:self didFailWithError:error];
-    self.sessionTask = nil;
-    [self.session invalidateAndCancel];
+    if (session == _session) {
+        _session = nil;
+    }
 }
 
 - (void)URLSession:(NSURLSession *)session
@@ -158,7 +225,10 @@ static NSString *cachedToken;
 didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
 {
-    [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
+    NSURLProtocol *protocol = self.taskToProtocolMapping[dataTask];
+    id<NSURLProtocolClient> client = protocol.client;
+
+    [client URLProtocol:protocol didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
     completionHandler(NSURLSessionResponseAllow);
 }
 
