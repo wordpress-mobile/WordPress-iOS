@@ -121,7 +121,7 @@ import Gridicons
     func performSearch() {
         assert(streamController != nil)
 
-        guard let phrase = searchBar.text?.trim() else {
+        guard let phrase = searchBar.text?.trim() where !phrase.isEmpty else {
             return
         }
 
