@@ -28,11 +28,7 @@
 
 - (void)reloadResultsController;
 
-- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath;
-
 - (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID;
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID;
-
-- (id <SPBucketDelegate>)simperiumBucketDelegate;
 
 @end
