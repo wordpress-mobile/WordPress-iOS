@@ -4,17 +4,17 @@ import WordPressShared
 @objc public class NoteBlockTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
-    public var isBadge: Bool            = false {
+    public var isBadge: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    public var isLastRow: Bool          = false {
+    public var isLastRow: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    public var separatorsView           = SeparatorsView()
+    public var separatorsView = SeparatorsView()
 
     // MARK: - Public Methods
     public func refreshSeparators() {
@@ -25,8 +25,8 @@ import WordPressShared
         }
 
         // Last Rows requires full separators
-        separatorsView.bottomInsets     = isLastRow ? fullSeparatorInsets : indentedSeparatorInsets
-        separatorsView.bottomVisible    = true
+        separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : indentedSeparatorInsets
+        separatorsView.bottomVisible = true
 
     }
 
@@ -50,6 +50,6 @@ import WordPressShared
     }
 
     // MARK: - Private Constants
-    private let fullSeparatorInsets     = UIEdgeInsetsZero
+    private let fullSeparatorInsets = UIEdgeInsetsZero
     private let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
 }
