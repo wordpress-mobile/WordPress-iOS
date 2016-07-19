@@ -468,7 +468,7 @@ extension NotificationsViewController: SPBucketDelegate
         }
 
         // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
-        if pushNotificationID == key {
+        if let waitingNoteID = pushNotificationID where waitingNoteID == key {
             if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
                 showDetailsForNotificationWithID(key)
             }
