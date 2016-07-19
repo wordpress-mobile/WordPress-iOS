@@ -163,10 +163,14 @@ import WordPressComAnalytics
             return nil
         }
 
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
         guard let topic = service.findWithPath(path) else {
             return nil
         }
+
+        topic.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContextAndWait(context)
 
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
@@ -177,7 +181,8 @@ import WordPressComAnalytics
 
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         if let topic = readerTopic {
-            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
+            topic.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
         }
         super.encodeRestorableStateWithCoder(coder)
