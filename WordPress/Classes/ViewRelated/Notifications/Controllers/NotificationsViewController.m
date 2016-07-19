@@ -32,29 +32,8 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
-static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
-static NSString const *NotificationsNetworkStatusKey    = @"network_status";
-
-typedef NS_ENUM(NSUInteger, NotificationFilter)
-{
-    NotificationFilterNone,
-    NotificationFilterUnread,
-    NotificationFilterComment,
-    NotificationFilterFollow,
-    NotificationFilterLike
-};
-
-
-#pragma mark ====================================================================================
-#pragma mark Protocols
-#pragma mark ====================================================================================
-
-@interface NotificationsViewController (Protocols) <SPBucketDelegate>
-
-@end
 
 
 
@@ -117,19 +96,19 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    // Tracking
+    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
+
     // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
     [self.tableView deselectSelectedRowWithAnimation:YES];
     
     // While we're onscreen, please, update rows with animations
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-    
-    // Tracking
-    [self trackAppeared];
-    [self updateLastSeenTime];
-    
+
     // Notifications
     [self hookApplicationStateNotes];
+    [self updateLastSeenTime];
     [self resetApplicationBadge];
 
     // Refresh the UI
@@ -156,42 +135,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - SPBucketDelegate Methods
-
-- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
-{
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    // Did the user tap on a push notification?
-    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
-
-        // Show the details only if NotificationPushMaxWait hasn't elapsed
-        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
-            [self showDetailsForNoteWithID:key];
-        }
-        
-        // Stop the sync timeout: we've got activity!
-        [self stopSyncTimeoutTimer];
-        
-        // Cleanup
-        self.pushNotificationID     = nil;
-        self.pushNotificationDate   = nil;
-    }
-    
-    // Mark as read immediately if:
-    //  -   We're onscreen
-    //  -   The app is in Foreground
-    //
-    // We need to make sure that the app is in FG, since this method might get called during a Background Fetch OS event,
-    // which would cause the badge to get reset on its own.
-    //
-    if (changeType == SPBucketChangeInsert && self.isViewOnScreen && application.applicationState == UIApplicationStateActive) {
-        [self resetApplicationBadge];
-        [self updateLastSeenTime];
-    }
 }
 
 
@@ -226,7 +169,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)handleApplicationWillResignActiveNote:(NSNotification *)note
 {
-    [self stopSyncTimeoutTimer];
+    [self stopWaitingForNotification];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)note
@@ -235,81 +178,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 
-#pragma mark - Public Methods
-
-- (void)showDetailsForNoteWithID:(NSString *)notificationID
-{
-    Simperium *simperium        = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
-    Notification *notification  = [notesBucket objectForKey:notificationID];
-    
-    if (notification) {
-        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
-        
-        [self showDetailsForNotification:notification];
-    } else {
-        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
-        
-        self.pushNotificationID     = notificationID;
-        self.pushNotificationDate   = [NSDate date];
-        
-        [self startSyncTimeoutTimer];
-    }
-}
-
-
-#pragma mark - Stats Helpers
-
-- (void)startSyncTimeoutTimer
-{
-    // Don't proceed if we're not even connected
-    BOOL isConnected = [[WordPressAppDelegate sharedInstance] connectionAvailable];
-    if (!isConnected) {
-        return;
-    }
-    
-    [self stopSyncTimeoutTimer];
-    [self performSelector:@selector(trackSyncTimeout) withObject:nil afterDelay:NotificationsSyncTimeout];
-}
-
-- (void)stopSyncTimeoutTimer
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(trackSyncTimeout) object:nil];
-}
-
-- (void)trackSyncTimeout
-{
-    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
-    NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
-    
-    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
-}
-
-
 #pragma mark - Helper methods
-
-- (void)resetApplicationBadge
-{
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
-- (void)updateLastSeenTime
-{
-    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
-    if (!note) {
-        return;
-    }
-
-    NSString *bucketName    = NSStringFromClass([Meta class]);
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
-    if (!metadata) {
-        return;
-    }
-
-    metadata.last_seen      = @(note.timestampAsDate.timeIntervalSince1970);
-    [simperium save];
-}
 
 - (void)reloadResultsControllerIfNeeded
 {
@@ -366,22 +235,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
 }
 
-- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
-{
-    // Failsafe!
-    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
-        return false;
-    }
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
-    return indexPath.row == (sectionInfo.numberOfObjects - 1);
-}
-
-- (void)trackAppeared
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
-}
-
 
 #pragma mark - Undelete Mechanism
 
@@ -431,33 +284,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
 {
     return [self.notificationDeletionBlocks objectForKey:noteObjectID] != nil;
-}
-
-
-#pragma mark - Segue Helpers
-
-- (void)showDetailsForNotification:(Notification *)note
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
-    
-    // Mark as Read, if needed
-    if(!note.read.boolValue) {
-        note.read = @(1);
-        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
-    }
-    
-    // Failsafe: Don't push nested!
-    if (self.navigationController.visibleViewController != self) {
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    }
-    
-    if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        ReaderDetailViewController *readerViewController = [ReaderDetailViewController controllerWithPostID:note.metaPostID siteID:note.metaSiteID];
-        [self.navigationController pushViewController:readerViewController animated:YES];
-        return;
-    }
-
-    [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
 }
 
 
@@ -565,21 +391,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
             [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
     }
-}
-
-
-#pragma mark - Swift Migration Helpers
-
-// Note:
-// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
-// just as a workaround during the Swift migration.
-//
-// TODO: Nuke them. JLP 06.30.2016
-//
-
-- (id <SPBucketDelegate>)simperiumBucketDelegate
-{
-    return self;
 }
 
 @end
