@@ -54,12 +54,12 @@ static NSInteger NotificationSectionCount               = 1;
 @interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
-@property (nonatomic,   weak) IBOutlet UIStackView          *stackView;
-@property (nonatomic,   weak) IBOutlet UITableView          *tableView;
-@property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
-@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *topLayoutConstraint;
-@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *centerLayoutConstraint;
-@property (nonatomic,   weak) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
+@property (nonatomic, strong) IBOutlet UIStackView          *stackView;
+@property (nonatomic, strong) IBOutlet UITableView          *tableView;
+@property (nonatomic, strong) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *topLayoutConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *centerLayoutConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
