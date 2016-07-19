@@ -231,7 +231,6 @@ static CGFloat const NoteEstimatedHeight = 70;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID         = [ReaderDetailViewController classNameWithoutNamespaces];
     Notification *note              = sender;
     __weak __typeof(self) weakSelf  = self;
     
@@ -241,10 +240,6 @@ static CGFloat const NoteEstimatedHeight = 70;
         detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
             [weakSelf showUndelete:note.objectID onTimeout:onUndoTimeout];
         };
-        
-    } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderDetailViewController *readerViewController = segue.destinationViewController;
-        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
 

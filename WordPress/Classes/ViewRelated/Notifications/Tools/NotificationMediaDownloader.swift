@@ -32,18 +32,16 @@ import AFNetworking
 
             dispatch_group_enter(group)
 
-            downloadImage(url) { (error: NSError?, image: UIImage?) in
-
-                // On error: Don't proceed any further
-                if error != nil || image == nil {
+            downloadImage(url) { (error, image) in
+                guard let image = image else {
                     dispatch_group_leave(group)
                     return
                 }
 
                 // On success: Cache the original image, and resize (if needed)
-                self.originalImagesMap[url] = image!
+                self.originalImagesMap[url] = image
 
-                self.resizeImageIfNeeded(image!, maximumWidth: maximumWidth) {
+                self.resizeImageIfNeeded(image, maximumWidth: maximumWidth) {
                     self.resizedImagesMap[url] = $0
                     dispatch_group_leave(group)
                 }
@@ -213,8 +211,8 @@ import AFNetworking
         var targetSize = originalSize
 
         if targetSize.width > maximumWidth {
-            targetSize.height   = round(maximumWidth * targetSize.height / targetSize.width)
-            targetSize.width    = maximumWidth
+            targetSize.height = round(maximumWidth * targetSize.height / targetSize.width)
+            targetSize.width = maximumWidth
         }
 
         return targetSize
