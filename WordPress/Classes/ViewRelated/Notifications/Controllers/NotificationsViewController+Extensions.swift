@@ -116,7 +116,7 @@ extension NotificationsViewController
             filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
         }
 
-        WPStyleGuide.configureSegmentedControl(filtersSegmentedControl)
+        WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
     }
 
     func setupNotificationsBucketDelegate() {
@@ -209,11 +209,13 @@ extension NotificationsViewController
             navigationController?.popViewControllerAnimated(false)
         }
 
-        if note.isMatcher && note.metaPostID != nil && note.metaSiteID != nil {
-            performSegueWithIdentifier(ReaderDetailViewController.classNameWithoutNamespaces(), sender: note)
-        } else {
-            performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.isMatcher == true {
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            navigationController?.pushViewController(readerViewController, animated: true)
+            return
         }
+
+        performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -411,7 +413,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         }
 
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
-        let isLastRow               = tableViewHandler.resultsController.isLastRowInSection(indexPath)
+        let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
@@ -442,8 +444,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
-            let isLastRow = tableViewHandler.resultsController.isLastRowInSection(indexPath)
-            cell.showsBottomSeparator = isLastRow == false
+            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+            cell.showsBottomSeparator = !isLastRow
         }
 
         // Update NoResults View
@@ -622,7 +624,7 @@ extension NotificationsViewController: SPBucketDelegate
         }
 
         // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
-        if pushNotificationID == key {
+        if let waitingNoteID = pushNotificationID where waitingNoteID == key {
             if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
                 showDetailsForNotificationWithID(key)
             }
@@ -688,7 +690,7 @@ extension NotificationsViewController
         pushNotificationID = nil
         pushNotificationDate = nil
 
-        let properties = [Stats.networkStatusKey : simperium.networkStatus]
+        let properties = [Stats.networkStatusKey: simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
