@@ -36,6 +36,7 @@
 #import "NSString+Helpers.h"
 
 #import "WPAppAnalytics.h"
+#import "WPDeviceIdentification.h"
 
 
 
@@ -285,7 +286,7 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)attachReplyViewIfNeeded
 {
     // iPad: We've got a different UI!
-    if ([UIDevice isPad]) {
+    if ([WPDeviceIdentification isiPad]) {
         return;
     }
     
