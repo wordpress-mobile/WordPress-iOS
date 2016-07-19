@@ -433,6 +433,7 @@
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
 		B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
+		B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54075D31D3D7D5B0095C318 /* IntrinsicTableView.swift */; };
 		B54106901B6FE38400C880D0 /* WPWebViewController+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */; };
 		B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
 		B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */; };
@@ -1663,6 +1664,7 @@
 		B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsSelectionViewController.m; sourceTree = "<group>"; };
 		B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarPickerViewController.swift; sourceTree = "<group>"; };
 		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
+		B54075D31D3D7D5B0095C318 /* IntrinsicTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntrinsicTableView.swift; sourceTree = "<group>"; };
 		B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPWebViewController+Auth.swift"; sourceTree = "<group>"; };
 		B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
 		B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
@@ -4070,6 +4072,7 @@
 			isa = PBXGroup;
 			children = (
 				B54E1DF31A0A7BBF00807537 /* NotificationMediaDownloader.swift */,
+				B54075D31D3D7D5B0095C318 /* IntrinsicTableView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -6093,6 +6096,7 @@
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
+				B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */,
 				E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
 				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
