@@ -135,8 +135,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self.replyTextView resignFirstResponder];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews
