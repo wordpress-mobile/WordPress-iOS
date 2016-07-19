@@ -116,7 +116,7 @@ extension NotificationsViewController
             filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
         }
 
-        WPStyleGuide.configureSegmentedControl(filtersSegmentedControl)
+        WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
     }
 
     func setupNotificationsBucketDelegate() {
@@ -170,11 +170,13 @@ extension NotificationsViewController
             navigationController?.popViewControllerAnimated(false)
         }
 
-        if note.isMatcher && note.metaPostID != nil && note.metaSiteID != nil {
-            performSegueWithIdentifier(ReaderDetailViewController.classNameWithoutNamespaces(), sender: note)
-        } else {
-            performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.isMatcher == true {
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            navigationController?.pushViewController(readerViewController, animated: true)
+            return
         }
+
+        performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 }
 

@@ -486,8 +486,7 @@ static NSInteger HideSearchMinSites = 3;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-    cell.imageView.layer.borderColor = self.tableView.separatorColor.CGColor;
-    cell.imageView.layer.borderWidth = 1;
+
     [cell.imageView setImageWithSiteIcon:blog.icon];
     
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
