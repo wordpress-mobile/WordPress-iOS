@@ -121,8 +121,62 @@ extension NotificationsViewController
 
     func setupNotificationsBucketDelegate() {
         let notesBucket = simperium.bucketForName(entityName())
-        notesBucket.delegate = simperiumBucketDelegate()
+        notesBucket.delegate = self
         notesBucket.notifyWhileIndexing = true
+    }
+}
+
+
+
+// MARK: - Public Methods
+//
+extension NotificationsViewController
+{
+    /// Pushes the Details for a given notificationID. If the Notification is unavailable at the point in
+    /// which this call is executed, we'll hold for the time interval specified by the `Syncing.pushMaxWait`
+    /// constant.
+    ///
+    /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
+    ///
+    func showDetailsForNotificationWithID(noteID: String) {
+        guard let note = simperium.bucketForName(entityName()).objectForKey(noteID) as? Notification else {
+            startWaitingForNotification(noteID)
+            return
+        }
+
+        showDetailsForNotification(note)
+    }
+
+
+    /// Pushes the details for a given Notification Instance.
+    ///
+    /// - Parameter note: The Notification that should be rendered.
+    ///
+    func showDetailsForNotification(note: Notification) {
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
+
+        // Track
+        let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
+        WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
+
+        // Mark as Read, if needed
+        if note.read.boolValue == false {
+            note.read = NSNumber(bool: true)
+            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
+        }
+
+        // Failsafe: Don't push nested!
+        if navigationController?.visibleViewController != self {
+            navigationController?.popViewControllerAnimated(false)
+        }
+
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.isMatcher == true {
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            navigationController?.pushViewController(readerViewController, animated: true)
+            return
+        }
+
+        performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 }
 
@@ -169,7 +223,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
     public func fetchRequest() -> NSFetchRequest {
         let request = NSFetchRequest(entityName: entityName())
-        request.sortDescriptors = [NSSortDescriptor(key: Properties.sortKey, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
 
         return request
@@ -205,7 +259,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         }
 
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
-        let isLastRow               = isRowLastRowForSection(indexPath)
+        let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
@@ -236,7 +290,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
-            cell.showsBottomSeparator = isRowLastRowForSection(indexPath)
+            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+            cell.showsBottomSeparator = !isLastRow
         }
 
         // Update NoResults View
@@ -360,7 +415,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
 
-        let properties = ["source": "notifications"]
+        let properties = [Stats.sourceKey: Stats.sourceValue]
         WPAnalytics.track(.SelectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
     }
 }
@@ -399,6 +454,90 @@ extension NotificationsViewController
 
             self.setupTableHeaderView()
         }
+    }
+}
+
+
+
+// MARK: - SPBucketDelegate Methods
+//
+extension NotificationsViewController: SPBucketDelegate
+{
+    public func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
+        // We're only concerned with New Notification Events
+        guard changeType == .Insert else {
+            return
+        }
+
+        // If needed, show the details only if NotificationPushMaxWait hasn't elapsed
+        if let waitingNoteID = pushNotificationID where waitingNoteID == key {
+            if abs(pushNotificationDate.timeIntervalSinceNow) <= Syncing.pushMaxWait {
+                showDetailsForNotificationWithID(key)
+            }
+
+            stopWaitingForNotification()
+        }
+
+        // Mark as read immediately, if needed
+        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
+            resetApplicationBadge()
+            updateLastSeenTime()
+        }
+    }
+}
+
+
+
+// MARK: - Sync'ing Helpers
+//
+extension NotificationsViewController
+{
+    func resetApplicationBadge() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
+
+    func updateLastSeenTime() {
+        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
+            return
+        }
+
+        let bucketName = Meta.classNameWithoutNamespaces()
+        guard let metadata = simperium.bucketForName(bucketName).objectForKey(bucketName.lowercaseString) as? Meta else {
+            return
+        }
+
+        metadata.last_seen = NSNumber(double: note.timestampAsDate.timeIntervalSince1970)
+        simperium.save()
+    }
+
+    func startWaitingForNotification(notificationID: String) {
+        guard simperium.requiresConnection == false else {
+            return
+        }
+
+        DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
+
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
+        performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
+
+        pushNotificationID = notificationID
+        pushNotificationDate = NSDate()
+    }
+
+    func stopWaitingForNotification() {
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
+        pushNotificationID = nil
+        pushNotificationDate = nil
+    }
+
+    func notificationWaitDidTimeout() {
+        DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
+
+        pushNotificationID = nil
+        pushNotificationDate = nil
+
+        let properties = [Stats.networkStatusKey: simperium.networkStatus]
+        WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
 
@@ -460,16 +599,27 @@ private extension NotificationsViewController
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
-    enum Properties {
-        static let sortKey          = "timestamp"
-    }
-
     enum Filter: Int {
         case None                   = 0
         case Unread                 = 1
         case Comment                = 2
         case Follow                 = 3
         case Like                   = 4
+
+        static let sortKey          = "timestamp"
+    }
+
+    enum Stats {
+        static let networkStatusKey = "network_status"
+        static let noteTypeKey      = "notification_type"
+        static let noteTypeUnknown  = "unknown"
+        static let sourceKey        = "source"
+        static let sourceValue      = "notifications"
+    }
+
+    enum Syncing {
+        static let pushMaxWait      = NSTimeInterval(1)
+        static let syncTimeout      = NSTimeInterval(10)
     }
 
     enum RatingSettings {
