@@ -5,7 +5,7 @@ extension NSFetchedResultsController
 {
     /// Returns whether an indexPath represents the last row in it's section, or not
     ///
-    func isLastRowInSection(indexPath: NSIndexPath) -> Bool {
+    func isLastIndexPathInSection(indexPath: NSIndexPath) -> Bool {
         guard let sections = sections else {
             return false
         }
