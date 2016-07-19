@@ -36,6 +36,7 @@
 #import "NSString+Helpers.h"
 
 #import "WPAppAnalytics.h"
+#import "WPDeviceIdentification.h"
 
 
 
@@ -43,15 +44,8 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
-static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
-
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
-
-static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
-static NSString *NotificationsPostIdKey                 = @"NotificationsPostIdKey";
-static NSString *NotificationsCommentIdKey              = @"NotificationsCommentIdKey";
 
 
 #pragma mark ==========================================================================================
@@ -61,13 +55,17 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 @interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
-@property (nonatomic,   weak) IBOutlet UITableView          *tableView;
-@property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic, strong) IBOutlet UIStackView          *stackView;
+@property (nonatomic, strong) IBOutlet UITableView          *tableView;
+@property (nonatomic, strong) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *topLayoutConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *centerLayoutConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
 // Table Helpers
-@property (nonatomic, strong) NSDictionary                  *layoutCellMap;
+@property (nonatomic, strong) NSDictionary                  *layoutIdentifierMap;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
 @property (nonatomic, strong) NSArray                       *blockGroups;
 
@@ -117,7 +115,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self setupTableView];
     [self setupMediaDownloader];
     [self setupNotificationListeners];
-    
+
     [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
 }
 
@@ -126,8 +124,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [super viewWillAppear:animated];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self.tableView deselectSelectedRowWithAnimation:YES];
 }
@@ -139,14 +136,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self.replyTextView resignFirstResponder];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -154,7 +150,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self.tableView reloadData];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 - (void)reloadData
@@ -175,7 +171,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Reload UI
     self.title = self.note.title;
     [self.tableView reloadData];
-    [self adjustTableViewInsetsIfNeeded];
+    [self adjustLayoutConstraintsIfNeeded];
 }
 
 
@@ -252,24 +248,23 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Autolayout Helpers
 
-- (NSDictionary *)layoutCellMap
+- (NSDictionary *)layoutIdentifierMap
 {
-    if (_layoutCellMap) {
-        return _layoutCellMap;
+    if (_layoutIdentifierMap) {
+        return _layoutIdentifierMap;
     }
     
-    UITableView *tableView  = self.tableView;
-    _layoutCellMap = @{
-        @(NoteBlockGroupTypeHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeFooter)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeActions)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockActionsTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.layoutIdentifier],
-        @(NoteBlockGroupTypeUser)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.layoutIdentifier]
+    _layoutIdentifierMap = @{
+        @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeFooter)    : NoteBlockTextTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeComment)   : NoteBlockCommentTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeActions)   : NoteBlockActionsTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeImage)     : NoteBlockImageTableViewCell.layoutIdentifier,
+        @(NoteBlockGroupTypeUser)      : NoteBlockUserTableViewCell.layoutIdentifier
     };
     
-    return _layoutCellMap;
+    return _layoutIdentifierMap;
 }
 
 - (NSDictionary *)reuseIdentifierMap
@@ -291,7 +286,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)attachReplyViewIfNeeded
 {
     // iPad: We've got a different UI!
-    if ([UIDevice isPad]) {
+    if ([WPDeviceIdentification isiPad]) {
         return;
     }
     
@@ -315,10 +310,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     replyTextView.delegate                  = self;
     self.replyTextView                      = replyTextView;
 
-    // Attach the ReplyTextView at the very bottom
-    [self.view addSubview:self.replyTextView];
-    [self.view pinSubviewAtBottom:self.replyTextView];
-    [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
+    [self.stackView addArrangedSubview:replyTextView];
 
     // Attach suggestionsView
     [self attachSuggestionsViewIfNeeded];
@@ -337,28 +329,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
-    
-    // Pin the suggestions view left and right edges to the super view edges
-    NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
 
-    // Pin the suggestions view top to the super view top
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
-    
-    // Pin the suggestions view bottom to the top of the reply box
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                         attribute:NSLayoutAttributeBottom
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.replyTextView
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1
-                                                          constant:0]];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.suggestionsTableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.suggestionsTableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.suggestionsTableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [self.suggestionsTableView.bottomAnchor constraintEqualToAnchor:self.replyTextView.topAnchor]
+    ]];
 }
 
 
@@ -394,21 +371,17 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableViewInsetsIfNeeded
+- (void)adjustLayoutConstraintsIfNeeded
 {
-    BOOL isiPadFullScreen = [WPDeviceIdentification isiPad] && [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
-    UIEdgeInsets contentInset = isiPadFullScreen ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
-    
     // Badge Notifications should be centered, and display no cell separators
-    if (self.note.isBadge) {
-        // Center only if the container view is big enough!
-        if (self.view.frame.size.height > self.tableView.contentSize.height) {
-            CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
-            contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
-        }
-    }
-    
-    self.tableView.contentInset = contentInset;
+    BOOL shouldCenterVertically = self.note.isBadge;
+
+    self.topLayoutConstraint.active = !shouldCenterVertically;
+    self.bottomLayoutConstraint.active = !shouldCenterVertically;
+    self.centerLayoutConstraint.active = shouldCenterVertically;
+
+    // Lock Scrolling for Badge Notifications
+    self.tableView.scrollEnabled = !shouldCenterVertically;
 }
 
 
@@ -478,7 +451,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
-    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
+    NSString *layoutIdentifier              = self.layoutIdentifierMap[@(blockGroup.type)] ?: self.layoutIdentifierMap[@(NoteBlockGroupTypeText)];
+    NoteBlockTableViewCell *tableViewCell   = [tableView dequeueReusableCellWithIdentifier:layoutIdentifier];
 
     [self downloadAndResizeMedia:indexPath blockGroup:blockGroup];
     [self setupCell:tableViewCell blockGroup:blockGroup];
@@ -785,7 +759,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
     NSAssert(textBlock, @"Missing Text Block for Notification %@", self.note.simperiumKey);
-    
+
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
@@ -890,12 +864,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSDictionary *parameters = @{
-            NotificationsSiteIdKey      : siteID,
-            NotificationsPostIdKey      : postID
-        };
-        
-        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:parameters];
+        ReaderDetailViewController *readerViewController = [ReaderDetailViewController controllerWithPostID:postID siteID:siteID];
+        [self.navigationController pushViewController:readerViewController animated:YES];
     }
     return success;
 }
@@ -904,12 +874,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSDictionary *parameters = @{
-            NotificationsSiteIdKey      : siteID,
-            NotificationsPostIdKey      : postID,
-        };
-        
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderCommentsViewController class]) sender:parameters];
+        ReaderCommentsViewController *commentsViewController = [ReaderCommentsViewController controllerWithPostID:postID siteID:siteID];
+        [commentsViewController setAllowsPushingPostDetails:YES];
+        [self.navigationController pushViewController:commentsViewController animated:YES];
     }
     return success;
 }
@@ -926,7 +893,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BOOL success                    = [blog supports:BlogFeatureStats];
 
     if (success) {
-        // TODO: Update StatsViewController to work with initWithCoder!
         StatsViewController *vc     = [[StatsViewController alloc] init];
         vc.blog = blog;
         [self.navigationController pushViewController:vc animated:YES];
@@ -1293,40 +1259,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 }
 
 
-#pragma mark - Storyboard Helpers
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[Blog class]]);
-        
-        StatsViewController *statsViewController        = segue.destinationViewController;
-        statsViewController.blog                        = (Blog *)sender;
-        
-    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderCommentsViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
-        
-        NSDictionary *parameters                        = (NSDictionary *)sender;
-        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
-        NSNumber *postID                                = parameters[NotificationsPostIdKey];
-        
-        ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
-        [commentsViewController setAllowsPushingPostDetails:YES];
-        [commentsViewController setupWithPostID:postID siteID:siteID];        
-        
-    } else if([segue.identifier isEqualToString:[ReaderDetailViewController classNameWithoutNamespaces]]) {
-        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
-        
-        NSDictionary *parameters                        = (NSDictionary *)sender;
-        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
-        NSNumber *postID                                = parameters[NotificationsPostIdKey];
-        
-        ReaderDetailViewController *readerViewController = segue.destinationViewController;
-        [readerViewController setupWithPostID:postID siteID:siteID];
-    }
-}
-
-
 #pragma mark - Notification Helpers
 
 - (void)handleNotificationChange:(NSNotification *)notification
@@ -1346,7 +1278,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
 }
 
-- (void)handleKeyboardWillShow:(NSNotification *)notification
+- (void)handleKeyboardWillChangeFrame:(NSNotification *)notification
 {
     NSDictionary* userInfo = notification.userInfo;
     
@@ -1357,36 +1289,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Bottom Inset: Consider the tab bar!
     CGRect viewFrame = self.view.frame;
     CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-    
+
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:bottomInset];
-    
-    [self.view layoutIfNeeded];
-    
-    [UIView commitAnimations];
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    NSDictionary* userInfo = notification.userInfo;
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-    
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:0];
-    
+    self.bottomLayoutConstraint.constant = MAX(bottomInset, 0);
     [self.view layoutIfNeeded];
     
     [UIView commitAnimations];

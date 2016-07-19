@@ -76,11 +76,11 @@ import WordPressShared.WPStyleGuide
         super.awakeFromNib()
 
         // Setup Labels
-        titleLabel.font                     = Style.blockBoldFont
-        detailsLabel.font                   = Style.blockRegularFont
+        titleLabel.font = Style.blockBoldFont
+        detailsLabel.font = Style.blockRegularFont
 
         // Setup Recognizers
-        detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
+        detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
         detailsLabel.userInteractionEnabled = true
 
         // Force iPad Size Class
@@ -127,24 +127,22 @@ import WordPressShared.WPStyleGuide
     }
 
     private func refreshApprovalColors() {
-        // Refresh Colors
-        titleLabel.textColor        = Style.blockTitleColorForComment(isApproved: isApproved)
-        detailsLabel.textColor      = Style.blockDetailsColorForComment(isApproved: isApproved)
-        linkColor                   = Style.blockLinkColorForComment(isApproved: isApproved)
-        attributedText              = isApproved ? attributedCommentText : attributedCommentUnapprovedText
+        titleLabel.textColor = Style.blockTitleColorForComment(isApproved: isApproved)
+        detailsLabel.textColor = Style.blockDetailsColorForComment(isApproved: isApproved)
+        linkColor = Style.blockLinkColorForComment(isApproved: isApproved)
+        attributedText = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
-        if attributedCommentText == nil {
+        guard let commentText = attributedCommentText?.mutableCopy() as? NSMutableAttributedString else {
             return nil
         }
 
-        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as! NSMutableAttributedString
-        let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
-        let textColor               = Style.blockUnapprovedTextColor
-        unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+        let range = NSRange(location: 0, length: commentText.length)
+        let textColor = Style.blockUnapprovedTextColor
+        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
 
-        return unwrappedMutableString
+        return commentText
     }
 
 
@@ -165,14 +163,14 @@ import WordPressShared.WPStyleGuide
     }
 
     // MARK: - Private Constants
-    private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
-    private let separatorUnapprovedInsets           = UIEdgeInsetsZero
-    private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
-    private let gravatarPadSize                     = CGSize(width: 37.0, height: 37.0)
+    private let separatorApprovedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
+    private let separatorUnapprovedInsets = UIEdgeInsetsZero
+    private let separatorRepliedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+    private let gravatarPadSize = CGSize(width: 37.0, height: 37.0)
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var actionsView          : UIView!
-    @IBOutlet private weak var gravatarImageView    : CircularImageView!
-    @IBOutlet private weak var titleLabel           : UILabel!
-    @IBOutlet private weak var detailsLabel         : UILabel!
+    @IBOutlet private weak var actionsView: UIView!
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var detailsLabel: UILabel!
 }
