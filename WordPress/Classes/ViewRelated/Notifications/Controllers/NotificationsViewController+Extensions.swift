@@ -534,7 +534,7 @@ extension NotificationsViewController
         pushNotificationID = nil
         pushNotificationDate = nil
 
-        let properties = [Stats.networkStatusKey : simperium.networkStatus]
+        let properties = [Stats.networkStatusKey: simperium.networkStatus]
         WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
