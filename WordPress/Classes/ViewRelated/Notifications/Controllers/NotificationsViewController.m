@@ -32,7 +32,6 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 
