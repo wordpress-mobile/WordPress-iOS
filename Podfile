@@ -49,7 +49,7 @@ abstract_target 'WordPress_Base' do
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8'
-    pod 'WordPressCom-Analytics-iOS', '0.1.15'
+    pod 'WordPressCom-Analytics-iOS', '0.1.16'
     pod 'WordPressCom-Stats-iOS', '0.7.4'
     pod 'wpxmlrpc', '~> 0.8'
     
