@@ -1626,6 +1626,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
+        if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
+            WPAppAnalytics.track(.ReaderSearchResultTapped)
+        }
+
         var controller: ReaderDetailViewController
         if post.sourceAttributionStyle() == .Post &&
             post.sourceAttribution.postID != nil &&
