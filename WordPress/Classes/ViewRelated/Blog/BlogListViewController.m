@@ -294,8 +294,6 @@ static NSInteger HideSearchMinSites = 3;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
 
     self.tableView.tableFooterView = [UIView new];
-
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
 - (void)configureSearchController

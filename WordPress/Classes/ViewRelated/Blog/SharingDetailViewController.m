@@ -49,7 +49,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     self.navigationItem.title = self.publicizeConnection.externalDisplay;
 
-    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
