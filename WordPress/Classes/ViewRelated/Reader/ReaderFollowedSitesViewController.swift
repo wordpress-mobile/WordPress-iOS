@@ -92,7 +92,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)

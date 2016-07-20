@@ -84,7 +84,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     self.shouldNotifyValue = YES;
 
     [self startListeningTextfieldChanges];
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 

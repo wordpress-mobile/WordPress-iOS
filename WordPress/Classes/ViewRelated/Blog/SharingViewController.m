@@ -43,7 +43,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
 
-    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     // Optimistically sync the sharing buttons.

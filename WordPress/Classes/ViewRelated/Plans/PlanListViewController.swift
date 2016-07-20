@@ -96,7 +96,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
