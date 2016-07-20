@@ -148,26 +148,12 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         return tableView.rowHeight
     }
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let title = self.tableView(tableView, titleForHeaderInSection: section) where !title.isEmpty {
-            let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-            header.title = title
-            return header
-        } else {
-            return nil
-        }
-    }
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let headerView = self.tableView(tableView, viewForHeaderInSection: section) as? WPTableViewSectionHeaderFooterView {
-            return WPTableViewSectionHeaderFooterView.heightForHeader(headerView.title, width: CGRectGetWidth(view.bounds))
-        } else {
-            return 0
-        }
-    }
-
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sections[section].headerText
+    }
+
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 }
 
