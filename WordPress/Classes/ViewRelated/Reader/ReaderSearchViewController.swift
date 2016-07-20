@@ -31,7 +31,7 @@ import Gridicons
     public class func controller() -> ReaderSearchViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderSearchViewController") as! ReaderSearchViewController
-
+        WPAppAnalytics.track(.ReaderSearchLoaded)
         return controller
     }
 
@@ -181,7 +181,7 @@ import Gridicons
     func performSearch() {
         assert(streamController != nil)
 
-        guard let phrase = searchBar.text?.trim() else {
+        guard let phrase = searchBar.text?.trim() where !phrase.isEmpty else {
             return
         }
 
@@ -190,7 +190,7 @@ import Gridicons
 
         let topic = service.searchTopicForSearchPhrase(phrase)
         streamController.readerTopic = topic
-        WPAppAnalytics.track(.ReaderSearchLoaded)
+        WPAppAnalytics.track(.ReaderSearchPerformed)
 
         // Hide the starting label now that a topic has been set.
         label.hidden = true
