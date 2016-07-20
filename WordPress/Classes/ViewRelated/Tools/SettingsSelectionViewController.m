@@ -14,10 +14,6 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
 CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 
-@interface SettingsSelectionViewController ()
-@property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
-@end
-
 @implementation SettingsSelectionViewController
 
 /**
@@ -95,22 +91,6 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     }
 }
 
-- (UIView *)hintView
-{
-    if (!self.hints) {
-        return nil;
-    }
-    
-    if (!_hintView) {
-        _hintView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    }
-    
-    NSUInteger position = [self.values indexOfObject:self.currentValue];
-    _hintView.title = (position != NSNotFound) ? self.hints[position] : [NSString string];
-
-    return _hintView;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -157,9 +137,15 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    NSUInteger position = [self.values indexOfObject:self.currentValue];
+    return (position != NSNotFound) ? self.hints[position] : nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)dismiss
