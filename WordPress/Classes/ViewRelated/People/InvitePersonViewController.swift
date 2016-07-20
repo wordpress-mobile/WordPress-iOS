@@ -108,22 +108,15 @@ class InvitePersonViewController : UITableViewController {
 
     // MARK: - UITableView Methods
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section == lastSectionIndex else {
-            return CGFloat.min
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForFooter(lastSectionFooterText, width: view.bounds.width)
-    }
-
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard section == lastSectionIndex else {
             return nil
         }
+        return lastSectionFooterText
+    }
 
-        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title = lastSectionFooterText
-        return headerView
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
