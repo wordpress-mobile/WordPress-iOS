@@ -65,17 +65,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                           action:@selector(dismissKeyboardIfNeeded:)];
     tapRecognizer.cancelsTouchesInView = NO;
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.estimatedRowHeight = 44.0;
-    [self.tableView addGestureRecognizer:tapRecognizer];
-    [self.view addSubview:self.tableView];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.estimatedRowHeight = 44.0;
+    [tableView addGestureRecognizer:tapRecognizer];
+    [self.view addSubview:tableView];
 
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView = tableView;
+
+    [WPStyleGuide configureColorsForView:self.view andTableView:tableView];
 
     // Register Cell Nibs
     NSArray *cellClassNames = @[
@@ -92,7 +94,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass layoutIdentifier]];
     }
-
     
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyViewIfNeeded];
@@ -325,7 +326,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupCell:(UITableViewCell *)cell
 {
     NSParameterAssert(cell);
-    
+
+    if ([cell isKindOfClass:[WPTableViewCell class]]) {
+        // Temporarily force margins for WPTableViewCell hack.
+        // Brent C. Jul/19/2016
+        [(WPTableViewCell *)cell setForceCustomCellMargins:YES];
+    }
+
     // This is gonna look way better in Swift!
     if ([cell isKindOfClass:[NoteBlockHeaderTableViewCell class]]) {
         [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell];
