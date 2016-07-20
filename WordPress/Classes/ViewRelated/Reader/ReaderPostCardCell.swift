@@ -316,7 +316,8 @@ import WordPressShared
                 // momentarily visible.
                 featuredImageView.image = nil
                 var url = featuredImageURL
-                let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
+                let desiredWidth = UIApplication.sharedApplication().keyWindow?.frame.size.width ?? self.featuredMediaView.frame.width
+                let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
                 if !(contentProvider!.isPrivate()) {
                     url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
