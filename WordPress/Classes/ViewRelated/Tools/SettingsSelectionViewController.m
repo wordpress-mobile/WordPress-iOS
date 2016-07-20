@@ -57,7 +57,6 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 
     [self configureCancelButton];
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 

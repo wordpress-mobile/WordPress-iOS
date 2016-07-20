@@ -31,7 +31,6 @@ public class LanguageViewController : UITableViewController
 
         // Setup tableView
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
     }
 
     public override func viewWillAppear(animated: Bool) {
