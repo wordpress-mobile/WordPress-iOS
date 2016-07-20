@@ -872,6 +872,7 @@
 		FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */; };
 		FFA162311CB7031A00E2E110 /* AppSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */; };
 		FFA9148F1BA6E5170068F8BF /* RotationAwareNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */; };
+		FFB0DEAA1D38061B00DD4A50 /* WPImageURLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB0DEA91D38061B00DD4A50 /* WPImageURLHelper.swift */; };
 		FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */; };
 		FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */; };
 		FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81D1A0012E80032E723 /* ApiCredentials.m */; };
@@ -2241,6 +2242,7 @@
 		FFA40D4D1CB3EDD5001CB1FB /* WordPress 48.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 48.xcdatamodel"; sourceTree = "<group>"; };
 		FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationAwareNavigationViewController.h; sourceTree = "<group>"; };
 		FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationAwareNavigationViewController.m; sourceTree = "<group>"; };
+		FFB0DEA91D38061B00DD4A50 /* WPImageURLHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPImageURLHelper.swift; sourceTree = "<group>"; };
 		FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Exporters.swift"; sourceTree = "<group>"; };
 		FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+Exporters.swift"; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
@@ -3411,6 +3413,7 @@
 				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
 				E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */,
 				E12E6E321C21BA170033C5D0 /* FeatureFlag.swift */,
+				FFB0DEA91D38061B00DD4A50 /* WPImageURLHelper.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -6075,6 +6078,7 @@
 				B5772AC91C9C859D0031F97E /* GravatarServiceRemote.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
+				FFB0DEAA1D38061B00DD4A50 /* WPImageURLHelper.swift in Sources */,
 				E6C448571CB091AA00458157 /* SigninKeyboardResponder.swift in Sources */,
 				74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */,
 				B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */,

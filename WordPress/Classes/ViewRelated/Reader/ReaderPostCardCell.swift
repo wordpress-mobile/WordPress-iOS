@@ -316,13 +316,17 @@ import WordPressShared
                 // momentarily visible.
                 featuredImageView.image = nil
                 var url = featuredImageURL
+                let desiredWidth = UIApplication.sharedApplication().keyWindow?.frame.size.width ?? self.featuredMediaView.frame.width
+                let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
                 if !(contentProvider!.isPrivate()) {
-                    let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
                     url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
                 } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
                     // private wpcom image needs special handling.
+                    let scale = UIScreen.mainScreen().scale
+                    let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
+                    url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
                     let request = requestForURL(url)
                     featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
 
