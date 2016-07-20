@@ -83,12 +83,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
@@ -101,16 +95,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -121,16 +108,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    NSString *title = [self tableView:tableView titleForFooterInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    footer.title = title;
-    return footer;
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
