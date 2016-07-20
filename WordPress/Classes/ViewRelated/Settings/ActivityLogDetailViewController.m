@@ -25,19 +25,29 @@
 {
     [super viewDidLoad];
 
-    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
-    self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.textView.editable = NO;
-    self.textView.text = self.logText;
-    self.textView.font = [WPStyleGuide subtitleFont];
-    [self.view addSubview:self.textView];
+    [WPStyleGuide configureColorsForView:self.view andTableView:nil];
+
+    UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    textView.editable = NO;
+    textView.text = self.logText;
+    textView.font = [WPStyleGuide subtitleFont];
+    textView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:textView];
+    textView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    UILayoutGuide *readableGuide = self.view.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [textView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [textView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                              [textView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [textView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+                                              ]];
+    self.textView = textView;
 
     UIBarButtonItem *shareButton = nil;
-
     shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                 target:self
                                                                 action:@selector(showShareOptions:)];
-
     self.navigationItem.rightBarButtonItem = shareButton;
 }
 
