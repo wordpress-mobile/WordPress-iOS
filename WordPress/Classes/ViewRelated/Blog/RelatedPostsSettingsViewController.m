@@ -99,82 +99,34 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     return 0;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case RelatedPostsSettingsSectionOptions:{
-            WPTableViewSectionHeaderFooterView *headerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-            return headerView;
-        }
-            break;
-        case RelatedPostsSettingsSectionPreview:{
-            WPTableViewSectionHeaderFooterView *headerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-            headerView.title = NSLocalizedString(@"Preview", @"Section title for related posts section preview");
-            return headerView;
-        }
-            break;
-        case RelatedPostsSettingsSectionCount:
-            break;
+        case RelatedPostsSettingsSectionPreview:
+            return NSLocalizedString(@"Preview", @"Section title for related posts section preview");
+        default:
+            return nil;
     }
-    return nil;
-
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    switch (section) {
-        case RelatedPostsSettingsSectionOptions:{
-            WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil
-                                                                                                                           style:WPTableViewSectionStyleFooter];
-            footerView.title = NSLocalizedString(@"Related Posts displays relevant content from your site below your posts", @"Information of what related post are and how they are presented");
-            return footerView;
-        }
-            break;
-        case RelatedPostsSettingsSectionPreview:{
-            WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil
-                                                                                                                           style:WPTableViewSectionStyleFooter];
-            return footerView;
-        }
-            break;
-        case RelatedPostsSettingsSectionCount:
-            break;
-    }
-    return nil;
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     switch (section) {
-        case RelatedPostsSettingsSectionOptions:{
-            return [WPTableViewSectionHeaderFooterView heightForHeader:@"" width:tableView.frame.size.width];
-        }
-            break;
-        case RelatedPostsSettingsSectionPreview:{
-            return [WPTableViewSectionHeaderFooterView heightForHeader:NSLocalizedString(@"Preview", @"Section title for related posts section preview") width:tableView.frame.size.width];
-        }
-            break;
-        case RelatedPostsSettingsSectionCount:
-            break;
+        case RelatedPostsSettingsSectionOptions:
+            return NSLocalizedString(@"Related Posts displays relevant content from your site below your posts", @"Information of what related post are and how they are presented");;
+        default:
+            return nil;
     }
-    return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    switch (section) {
-        case RelatedPostsSettingsSectionOptions:{
-            return [WPTableViewSectionHeaderFooterView heightForFooter:NSLocalizedString(@"Related Posts displays relevant content from your site below your posts.", @"Information of what related post are and how they are presented.")
-                                                                 width:tableView.frame.size.width];
-        }
-            break;
-        case RelatedPostsSettingsSectionPreview:{
-            return [WPTableViewSectionHeaderFooterView heightForFooter:@"" width:tableView.frame.size.width];
-        }
-            break;
-        case RelatedPostsSettingsSectionCount:
-            break;
-    }
-    return 0;
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
