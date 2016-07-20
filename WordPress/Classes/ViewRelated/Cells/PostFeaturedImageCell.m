@@ -5,7 +5,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 
 @interface PostFeaturedImageCell ()
 
-//@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *featuredImageView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
 @end
@@ -16,45 +16,45 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self configureSubviews];
+        [self setupSubviews];
     }
     return self;
 }
 
-- (void)configureSubviews
+- (void)setupSubviews
 {
-    CGRect contentFrame = self.contentView.frame;
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.imageView.clipsToBounds = YES;
-    [self.contentView addSubview:self.imageView];
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:imageView];
 
-    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    CGRect activityFrame = self.activityView.frame;
+    UILayoutGuide *readableGuide = self.contentView.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [imageView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [imageView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [imageView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:PostFeaturedImageCellMargin],
+                                              [imageView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-PostFeaturedImageCellMargin]
+                                              ]];
+    _featuredImageView = imageView;
+
+    CGRect contentFrame = self.contentView.frame;
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    CGRect activityFrame = activityView.frame;
     CGFloat x = (contentFrame.size.width - activityFrame.size.width) / 2.0f;
     CGFloat y = (contentFrame.size.height - activityFrame.size.height) / 2.0f;
     activityFrame = CGRectMake(x, y, activityFrame.size.width, activityFrame.size.height);
-    self.activityView.frame = activityFrame;
-    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    self.activityView.hidesWhenStopped = YES;
-    [self.contentView addSubview:self.activityView];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    if (!self.imageView.hidden) {
-        CGFloat x = PostFeaturedImageCellMargin;
-        CGFloat y = PostFeaturedImageCellMargin;
-        CGFloat w = CGRectGetWidth(self.contentView.frame) - (PostFeaturedImageCellMargin * 2);
-        CGFloat h = CGRectGetHeight(self.contentView.frame) - (PostFeaturedImageCellMargin * 2);
-        self.imageView.frame = CGRectMake(x, y, w, h);
-    }
+    activityView.frame = activityFrame;
+    activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    activityView.hidesWhenStopped = YES;
+    [self.contentView addSubview:activityView];
+    _activityView = activityView;
 }
 
 - (void)setImage:(UIImage *)image
 {
-    [self.imageView setImage:image];
+    [self.featuredImageView setImage:image];
     [self showLoadingSpinner:NO];
 }
 
@@ -65,7 +65,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     } else {
         [self.activityView stopAnimating];
     }
-    self.imageView.hidden = showSpinner;
+    self.featuredImageView.hidden = showSpinner;
     self.textLabel.text = @"";
 }
 
