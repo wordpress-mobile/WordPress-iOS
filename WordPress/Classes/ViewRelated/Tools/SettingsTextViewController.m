@@ -176,9 +176,18 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         return _textFieldCell;
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _textFieldCell.selectionStyle = UITableViewCellSelectionStyleNone;
     [_textFieldCell.contentView addSubview:self.textField];
-    _textField.frame = CGRectInset(_textFieldCell.bounds, SettingsTextHorizontalMargin, 0);
-    
+
+    self.textField.translatesAutoresizingMaskIntoConstraints = NO;
+    UILayoutGuide *readableGuide = _textFieldCell.contentView.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                               [self.textField.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                               [self.textField.topAnchor constraintEqualToAnchor:_textFieldCell.contentView.topAnchor],
+                                               [self.textField.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                               [self.textField.bottomAnchor constraintEqualToAnchor:_textFieldCell.contentView.bottomAnchor],
+                                               ]];
+
     return _textFieldCell;
 }
 
@@ -211,7 +220,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _textField.placeholder = self.placeholder;
     _textField.returnKeyType = UIReturnKeyDone;
     _textField.keyboardType = UIKeyboardTypeDefault;
-    _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _textField.delegate = self;
     _textField.autocorrectionType = self.autocorrectionType;
     
