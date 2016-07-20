@@ -179,6 +179,16 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;
 
+
+/**
+ Find a topic by its path.
+ 
+ @param path The path of the topic
+ 
+ @returns A matching abstract topic or nil.
+ */
+- (ReaderAbstractTopic *)findWithPath:(NSString *)path;
+
 @end
 
 @interface ReaderTopicService (Tests)

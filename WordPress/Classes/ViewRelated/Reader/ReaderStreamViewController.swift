@@ -14,8 +14,12 @@ import WordPressComAnalytics
 ///         new content to be synced without interrupting the UI until desired.
 ///   - Row height is cached and 'layout cells' are used to calculate height.
 ///
-@objc public class ReaderStreamViewController : UIViewController
+@objc public class ReaderStreamViewController : UIViewController, UIViewControllerRestoration
 {
+
+    static let restorableTopicPathKey: String = "RestorableTopicPathKey"
+
+
     // MARK: - Properties
 
     private var tableView: UITableView!
@@ -151,10 +155,52 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - State Restoration
+
+
+    public static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObjectForKey(restorableTopicPathKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+        guard let topic = service.findWithPath(path) else {
+            return nil
+        }
+
+        topic.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContextAndWait(context)
+
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.readerTopic = topic
+        return controller
+    }
+
+
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        if let topic = readerTopic {
+            topic.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
+            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
+        }
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+
     // MARK: - LifeCycle Methods
+
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
+    public override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
     }
 
 
