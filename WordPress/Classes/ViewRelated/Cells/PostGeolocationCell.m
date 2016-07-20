@@ -24,24 +24,21 @@ CGFloat const PostGeolocationCellMargin = 15.0f;
 
 - (void)configureSubviews
 {
-    self.geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
-    self.geoView.labelMargin = 0.0f;
-    self.geoView.scrollEnabled = NO;
-    self.geoView.chevronHidden = YES;
-    self.geoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.contentView addSubview:self.geoView];
-}
+    PostGeolocationView *geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
+    geoView.translatesAutoresizingMaskIntoConstraints = NO;
+    geoView.labelMargin = 0.0f;
+    geoView.scrollEnabled = NO;
+    geoView.chevronHidden = YES;
+    [self.contentView addSubview:geoView];
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-
-    CGFloat x = PostGeolocationCellMargin;
-    CGFloat y = PostGeolocationCellMargin;
-    CGFloat w = CGRectGetWidth(self.contentView.frame) - (PostGeolocationCellMargin * 2);
-    CGFloat h = CGRectGetHeight(self.contentView.frame) - (PostGeolocationCellMargin * 2);
-
-    self.geoView.frame = CGRectMake(x, y, w, h);
+    UILayoutGuide *readableGuide = self.contentView.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [geoView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [geoView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [geoView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:PostGeolocationCellMargin],
+                                              [geoView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                              ]];
+    _geoView = geoView;
 }
 
 - (void)setCoordinate:(Coordinate *)coordinate andAddress:(NSString *)address
