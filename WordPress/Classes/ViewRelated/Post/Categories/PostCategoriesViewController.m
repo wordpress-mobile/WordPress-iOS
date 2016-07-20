@@ -41,7 +41,6 @@ static const CGFloat CategoryCellIndentation = 16.0;
     [super viewDidLoad];
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     // Hide extra cell separators.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

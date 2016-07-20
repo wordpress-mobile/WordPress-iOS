@@ -67,8 +67,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
     @IBAction func reloadTable() {

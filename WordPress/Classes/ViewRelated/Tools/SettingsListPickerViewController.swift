@@ -67,7 +67,6 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     // MARK: - Setup Helpers
     private func setupTableView() {
-        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
