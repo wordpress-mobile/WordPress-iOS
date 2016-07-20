@@ -200,7 +200,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     self.readerViewController = [[ReaderViewController alloc] init];
-    self.readerMenuViewController = [ReaderMenuViewController controller];
+    self.readerMenuViewController = [ReaderMenuViewController sharedInstance];
 
     if ([Feature enabled: FeatureFlagReaderMenu]) {
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];

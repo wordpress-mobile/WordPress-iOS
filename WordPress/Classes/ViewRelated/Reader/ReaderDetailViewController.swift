@@ -4,8 +4,11 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-final public class ReaderDetailViewController : UIViewController
+public class ReaderDetailViewController : UIViewController, UIViewControllerRestoration
 {
+
+    static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
+
     // Structs for Constants
 
     private struct DetailConstants
@@ -85,14 +88,15 @@ final public class ReaderDetailViewController : UIViewController
 
     // MARK: - Convenience Factories
 
-    /**
-     Convenience method for instantiating an instance of ReaderListViewController
-     for a particular topic.
 
-     @param topic The reader topic for the list.
-
-     @return A ReaderListViewController instance.
-     */
+    /// Convenience method for instantiating an instance of ReaderDetailViewController
+    /// for a particular topic.
+    ///
+    /// - Parameters:
+    ///     - topic:  The reader topic for the list.
+    ///
+    /// - Return: A ReaderListViewController instance.
+    ///
     public class func controllerWithPost(post:ReaderPost) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderDetailViewController") as! ReaderDetailViewController
@@ -111,11 +115,50 @@ final public class ReaderDetailViewController : UIViewController
     }
 
 
+    // MARK: - State Restoration
+
+
+    public static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObjectForKey(restorablePostObjectURLhKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let url = NSURL(string:path),
+            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) else {
+            return nil
+        }
+
+        guard let post = (try? context.existingObjectWithID(objectID)) as? ReaderPost else {
+            return nil
+        }
+
+        return controllerWithPost(post)
+    }
+
+
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        if let post = post {
+            coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLhKey)
+        }
+
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+
     // MARK: - LifeCycle Methods
+
 
     deinit {
         post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
+    public override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
     }
 
 

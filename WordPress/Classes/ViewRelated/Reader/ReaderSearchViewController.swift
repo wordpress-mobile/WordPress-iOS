@@ -6,8 +6,14 @@ import Gridicons
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
-@objc public class ReaderSearchViewController : UIViewController
+@objc public class ReaderSearchViewController : UIViewController, UIViewControllerRestoration
 {
+
+    static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
+
+
+    // MARK: - Properties
+
     @IBOutlet private weak var searchBar: UISearchBar!
     @IBOutlet private weak var label: UILabel!
 
@@ -15,6 +21,7 @@ import Gridicons
     private var streamController: ReaderStreamViewController!
     private let searchBarSearchIconSize = CGFloat(13.0)
     private var suggestionsController: ReaderSearchSuggestionsViewController?
+    private var restoredSearchTopic: ReaderSearchTopic?
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -29,11 +36,58 @@ import Gridicons
     }
 
 
+    // MARK: - State Restoration
+
+
+    public static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObjectForKey(restorableSearchTopicPathKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+        guard let topic = service.findWithPath(path) as? ReaderSearchTopic else {
+            return nil
+        }
+
+        topic.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContextAndWait(context)
+
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderSearchViewController") as! ReaderSearchViewController
+        controller.restoredSearchTopic = topic
+        return controller
+    }
+
+
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        if let topic = streamController.readerTopic {
+            topic.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
+            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableSearchTopicPathKey)
+        }
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+
+    // MARK: Lifecycle methods
+
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    // MARK: Lifecycle methods
+
+    public override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
+    }
+
+
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        streamController = segue.destinationViewController as? ReaderStreamViewController
+    }
 
 
     public override func viewDidLoad() {
@@ -45,6 +99,7 @@ import Gridicons
         setupSearchBar()
         configureLabel()
         configureBackgroundTapRecognizer()
+        configureForRestoredTopic()
     }
 
 
@@ -56,11 +111,6 @@ import Gridicons
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
-    }
-
-
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        streamController = segue.destinationViewController as? ReaderStreamViewController
     }
 
 
@@ -104,6 +154,16 @@ import Gridicons
         backgroundTapRecognizer.enabled = false
         backgroundTapRecognizer.delegate = self
         view.addGestureRecognizer(backgroundTapRecognizer)
+    }
+
+
+    func configureForRestoredTopic() {
+        guard let topic = restoredSearchTopic else {
+            return
+        }
+        label.hidden = true
+        searchBar.text = topic.title
+        streamController.readerTopic = topic
     }
 
 

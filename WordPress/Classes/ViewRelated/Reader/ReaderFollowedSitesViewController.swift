@@ -4,7 +4,7 @@ import SVProgressHUD
 
 ///
 ///
-class ReaderFollowedSitesViewController: UIViewController
+class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration
 {
     @IBOutlet var searchBar: UISearchBar!
 
@@ -34,7 +34,31 @@ class ReaderFollowedSitesViewController: UIViewController
     }
 
 
+    // MARK: - State Restoration
+
+
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return controller()
+    }
+
+
+//    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+//        if let topic = readerTopic {
+//            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
+//            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
+//        }
+//        super.encodeRestorableStateWithCoder(coder)
+//    }
+
+
     // MARK: - LifeCycle Methods
+
+
+    override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
+    }
 
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
