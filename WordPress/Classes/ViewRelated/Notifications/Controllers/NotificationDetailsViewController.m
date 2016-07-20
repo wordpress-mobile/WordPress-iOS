@@ -546,6 +546,10 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)setupCell:(NoteBlockTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+    // Temporarily force margins for WPTableViewCell hack.
+    // Brent C. Jul/19/2016
+    cell.forceCustomCellMargins = YES;
+
     // Note: This is gonna look awesome in Swift
     if (blockGroup.type == NoteBlockGroupTypeHeader) {
         [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:blockGroup];
