@@ -24,9 +24,10 @@ class FeatureFlagTest: XCTestCase {
 
     func testEnsureDisabledFeaturesInProduction() {
         Build.withCurrent(.AppStore) {
-            expect(FeatureFlag.People.enabled).to(beFalse())
-            expect(FeatureFlag.Plans.enabled).to(beFalse())
-            expect(FeatureFlag.Domains.enabled).to(beFalse())
+            expect(FeatureFlag.ReaderMenu.enabled).to(beFalse())
+            expect(FeatureFlag.People.enabled).to(beTrue())
+            expect(FeatureFlag.MyProfile.enabled).to(beTrue())
+            expect(FeatureFlag.AccountSettings.enabled).to(beTrue())
         }
     }
 
