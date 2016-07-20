@@ -94,24 +94,16 @@ public class SettingsPickerViewController : UITableViewController
         return cell
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section != sectionWithFooter || pickerHint == nil {
-            return 0
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForFooter(pickerHint!, width: tableView.bounds.width)
-    }
-
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section != sectionWithFooter || pickerHint == nil {
             return nil
         }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = pickerHint!
-        return footerView
+        return pickerHint!
     }
 
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
+    }
 
 
     // MARK: - Cell Setup Helpers

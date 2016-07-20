@@ -10,7 +10,6 @@ static CGFloat const SettingsMinHeight = 41.0f;
 
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) UIView *hintView;
 
 @end
 
@@ -77,17 +76,6 @@ static CGFloat const SettingsMinHeight = 41.0f;
     return _textViewCell;
 }
 
-- (UIView *)hintView
-{
-    if (_hintView) {
-        return _hintView;
-    }
-    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    [footerView setTitle:_hint];
-    _hintView = footerView;
-    return _hintView;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
@@ -115,9 +103,14 @@ static CGFloat const SettingsMinHeight = 41.0f;
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return self.hint;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
