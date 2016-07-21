@@ -23,7 +23,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
-@property (nonatomic, strong) UIView            *hintView;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
@@ -84,7 +83,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     self.shouldNotifyValue = YES;
 
     [self startListeningTextfieldChanges];
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -178,9 +176,18 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         return _textFieldCell;
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _textFieldCell.selectionStyle = UITableViewCellSelectionStyleNone;
     [_textFieldCell.contentView addSubview:self.textField];
-    _textField.frame = CGRectInset(_textFieldCell.bounds, SettingsTextHorizontalMargin, 0);
-    
+
+    self.textField.translatesAutoresizingMaskIntoConstraints = NO;
+    UILayoutGuide *readableGuide = _textFieldCell.contentView.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                               [self.textField.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                               [self.textField.topAnchor constraintEqualToAnchor:_textFieldCell.contentView.topAnchor],
+                                               [self.textField.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                               [self.textField.bottomAnchor constraintEqualToAnchor:_textFieldCell.contentView.bottomAnchor],
+                                               ]];
+
     return _textFieldCell;
 }
 
@@ -213,23 +220,10 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _textField.placeholder = self.placeholder;
     _textField.returnKeyType = UIReturnKeyDone;
     _textField.keyboardType = UIKeyboardTypeDefault;
-    _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _textField.delegate = self;
     _textField.autocorrectionType = self.autocorrectionType;
     
     return _textField;
-}
-
-- (UIView *)hintView
-{
-    if (_hintView) {
-        return _hintView;
-    }
-    
-    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    [footerView setTitle:_hint];
-    _hintView = footerView;
-    return _hintView;
 }
 
 
@@ -254,9 +248,17 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return self.actionCell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return (section == SettingsTextSectionsTextfield) ? self.hintView : nil;
+    if (section != SettingsTextSectionsTextfield) {
+        return nil;
+    }
+    return self.hint;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

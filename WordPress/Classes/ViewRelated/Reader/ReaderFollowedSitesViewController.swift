@@ -92,7 +92,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
@@ -300,15 +299,13 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
         return 54.0
     }
 
-
-    func titleForHeaderInSection(section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
         }
-        return " "
+        return nil
     }
-
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
@@ -340,7 +337,6 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
-        tableViewHandler.updateTitleForSection(0)
     }
 
 }

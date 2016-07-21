@@ -99,7 +99,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
@@ -326,28 +325,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    NSString *title = [self titleForFooterInSection:section];
-    if (!title) {
-        return nil;
-    }
-    
-    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    footer.title = title;
-    return footer;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    NSString *title = [self titleForFooterInSection:section];
-    if (!title) {
-        return UITableViewAutomaticDimension;
-    }
-    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
         if ([HelpshiftUtils isHelpshiftEnabled]) {
@@ -359,6 +337,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
         return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 #pragma mark - Table view delegate

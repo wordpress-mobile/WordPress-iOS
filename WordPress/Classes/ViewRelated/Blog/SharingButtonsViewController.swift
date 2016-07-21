@@ -89,7 +89,6 @@ import WordPressShared
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
 
@@ -795,20 +794,8 @@ import WordPressShared
     }
 
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = self.tableView(tableView, titleForHeaderInSection: section) else {
-            return nil
-        }
-
-        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        headerView.title = title
-        return headerView
-    }
-
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = self.tableView(tableView, titleForHeaderInSection: section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.bounds.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
 
@@ -817,20 +804,8 @@ import WordPressShared
     }
 
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let title = self.tableView(tableView, titleForFooterInSection: section) else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = title
-        return footerView
-    }
-
-
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let title = self.tableView(tableView, titleForFooterInSection: section)
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.bounds.width)
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
@@ -840,6 +815,16 @@ import WordPressShared
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         row.action?()
+    }
+
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // We only actual editing (ordering) with sections that canSort and are not toggled in the UI activating/deactivating.
+        let section = sections[indexPath.section]
+        if section.canSort && !section.editing && indexPath.row > 0 {
+            return true
+        }
+        return false
     }
 
 

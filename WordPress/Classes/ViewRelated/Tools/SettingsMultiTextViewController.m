@@ -10,7 +10,6 @@ static CGFloat const SettingsMinHeight = 41.0f;
 
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) UIView *hintView;
 
 @end
 
@@ -46,7 +45,6 @@ static CGFloat const SettingsMinHeight = 41.0f;
 {
     [super viewDidLoad];
     self.tableView.allowsSelection = NO;
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -63,29 +61,36 @@ static CGFloat const SettingsMinHeight = 41.0f;
     }
     _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _textViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, SettingsTextPadding.dx, SettingsTextPadding.dy)];
-    self.textView.text = self.text;
-    self.textView.returnKeyType = UIReturnKeyDefault;
-    self.textView.keyboardType = UIKeyboardTypeDefault;
-    self.textView.secureTextEntry = self.isPassword;
-    self.textView.font = [WPStyleGuide tableviewTextFont];
-    self.textView.textColor = [WPStyleGuide darkGrey];
-    self.textView.delegate = self;
-    self.textView.scrollEnabled = NO;
-    [_textViewCell.contentView addSubview:self.textView];
-    
-    return _textViewCell;
-}
 
-- (UIView *)hintView
-{
-    if (_hintView) {
-        return _hintView;
-    }
-    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    [footerView setTitle:_hint];
-    _hintView = footerView;
-    return _hintView;
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, SettingsTextPadding.dx, SettingsTextPadding.dy)];
+    textView.text = self.text;
+    textView.returnKeyType = UIReturnKeyDefault;
+    textView.keyboardType = UIKeyboardTypeDefault;
+    textView.secureTextEntry = self.isPassword;
+    textView.font = [WPStyleGuide tableviewTextFont];
+    textView.textColor = [WPStyleGuide darkGrey];
+    textView.delegate = self;
+    textView.scrollEnabled = NO;
+
+    UIEdgeInsets textInset = textView.textContainerInset;
+    textInset.left = 0.0;
+    textInset.right = 0.0;
+    textView.textContainerInset = textInset;
+    textView.textContainer.lineFragmentPadding = 0.0;
+
+    [_textViewCell.contentView addSubview:textView];
+    textView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    UILayoutGuide *readableGuide = _textViewCell.contentView.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [textView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [textView.topAnchor constraintEqualToAnchor:_textViewCell.contentView.topAnchor],
+                                              [textView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [textView.bottomAnchor constraintEqualToAnchor:_textViewCell.contentView.bottomAnchor],
+                                              ]];
+    self.textView = textView;
+
+    return _textViewCell;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,9 +120,14 @@ static CGFloat const SettingsMinHeight = 41.0f;
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return self.hint;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -127,15 +137,13 @@ static CGFloat const SettingsMinHeight = 41.0f;
 
 - (void)adjustCellSize
 {
-    CGFloat widthInUse = CGRectGetWidth(self.textView.frame);
-    CGFloat widthAvailable = CGRectGetWidth(self.textViewCell.contentView.bounds) - (2 * SettingsTextPadding.dx);
-    CGSize size = [self.textView sizeThatFits:CGSizeMake(widthAvailable, CGFLOAT_MAX)];
+    CGSize size = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, CGFLOAT_MAX)];
     CGFloat height = size.height;
 
-    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f) || widthInUse != widthAvailable)
+    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f))
     {
         [self.tableView beginUpdates];
-        self.textView.frame = CGRectMake(SettingsTextPadding.dx, SettingsTextPadding.dy, widthAvailable, height);
+        self.textView.frame = CGRectMake(SettingsTextPadding.dx, SettingsTextPadding.dy, self.textView.frame.size.width, height);
         self.tableView.rowHeight = MAX(height, SettingsMinHeight) + SettingsTextPadding.dy;
         [self.tableView endUpdates];
     }

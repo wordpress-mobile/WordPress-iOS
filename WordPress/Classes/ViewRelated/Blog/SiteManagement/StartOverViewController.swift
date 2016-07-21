@@ -49,7 +49,6 @@ public class StartOverViewController: UITableViewController
 
         title = NSLocalizedString("Start Over", comment: "Title of Start Over settings page")
 
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 

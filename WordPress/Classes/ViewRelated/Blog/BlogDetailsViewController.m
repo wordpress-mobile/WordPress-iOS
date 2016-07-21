@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
@@ -166,7 +165,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
@@ -200,21 +198,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     [self.headerView setBlog:self.blog];
-    [self updateHeaderViewConstraintsForTraitCollection:self.traitCollection];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
     [self.tableView reloadData];
     [self preloadStats];
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [self updateHeaderViewConstraintsForTraitCollection:newCollection];
-    } completion:nil];
 }
 
 
@@ -380,51 +368,21 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableView.tableHeaderView = headerWrapper;
 
     // Blog detail header view
-    self.headerView = [[BlogDetailHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize)];
-    self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [headerWrapper addSubview:self.headerView];
+    BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] initWithFrame:headerWrapper.bounds];
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [headerWrapper addSubview:headerView];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-    NSDictionary *metrics = @{@"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
-
-    // Constrain the headerView vertically
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_headerView]-(verticalMargin)-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
+    UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [headerView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
+                                              [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
+                                              [headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor],
+                                              [headerView.centerYAnchor constraintEqualToAnchor:headerWrapper.centerYAnchor]
+                                              ]];
+     self.headerView = headerView;
 }
-
-- (void)updateHeaderViewConstraintsForTraitCollection:(UITraitCollection *)traitCollection
-{
-    UIView *headerWrapper = self.tableView.tableHeaderView;
-
-    // We only remove the constraints we've added, not the view's autoresizing constraints
-    [headerWrapper removeConstraints:self.headerViewHorizontalConstraints];
-
-    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact || traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-        NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMarginiPhone)};
-
-        self.headerViewHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views];
-    } else {
-        NSMutableArray *constraints = [NSMutableArray new];
-
-        CGFloat headerWidth = WPTableViewFixedWidth;
-        [constraints addObject:[self.headerView.widthAnchor constraintEqualToConstant:headerWidth]];
-
-        // Center the headerView inside the wrapper
-        [constraints addObject:[self.headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor]];
-
-        self.headerViewHorizontalConstraints = [constraints copy];
-    }
-
-    [headerWrapper addConstraints:self.headerViewHorizontalConstraints];
-    [headerWrapper layoutIfNeeded];
-}
-
 
 #pragma mark - Table view data source
 
@@ -480,28 +438,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return WPTableViewDefaultRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
     return detailSection.title;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 #pragma mark - Private methods

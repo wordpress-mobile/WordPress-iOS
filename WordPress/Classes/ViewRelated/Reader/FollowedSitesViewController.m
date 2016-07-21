@@ -42,7 +42,6 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -204,19 +203,16 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     return NSLocalizedString(@"Unfollow", @"Label of the table view cell's delete button, when unfollowing a site.");
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] > 0) {
         return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
     }
-    // Return an space instead of empty string or nil to preserve the section
-    // header's height if all items are removed and then one added back.
-    return @" ";
+    return nil;
 }
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self.tableViewHandler updateTitleForSection:0];
     [self configureNoResultsView];
 }
 

@@ -55,7 +55,6 @@ public class SettingsListEditorViewController : UITableViewController
 
     private func setupTableView() {
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
@@ -99,25 +98,15 @@ public class SettingsListEditorViewController : UITableViewController
         return cell
     }
 
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard let unwrappedFooterText = footerText else {
             return nil
         }
-
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = unwrappedFooterText
-
-        return footerView
+        return unwrappedFooterText
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let unwrappedFooterText = footerText else {
-            return CGFloat.min
-        }
-
-        let height = WPTableViewSectionHeaderFooterView.heightForFooter(unwrappedFooterText, width: view.frame.width)
-        return height
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

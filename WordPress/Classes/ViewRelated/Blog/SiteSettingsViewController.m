@@ -14,7 +14,6 @@
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "WordPress-Swift.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
@@ -123,7 +122,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -536,29 +534,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 #pragma mark - UITableViewDelegate
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
-    if (title.length == 0) {
-        return [UIView new];
-    }
-    
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
+
+    return title.length > 0 ? title : nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return WPTableViewDefaultRowHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSInteger settingsSection = [self.tableSections[section] integerValue];
-    NSString *title = [self titleForHeaderInSection:settingsSection];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
