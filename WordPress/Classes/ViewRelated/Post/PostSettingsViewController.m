@@ -43,6 +43,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 
 static CGFloat CellHeight = 44.0f;
 static NSInteger RowIndexForDatePicker = 0;
+static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
@@ -434,7 +435,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
     if (sectionId == PostSettingsSectionGeolocation && self.post.geolocation != nil) {
-        return ceilf(width * 0.50f);
+        return ceilf(width * LocationCellHeightToWidthAspectRatio);
     }
 
     if (sectionId == PostSettingsSectionFeaturedImage) {
