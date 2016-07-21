@@ -542,11 +542,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    PostListFilter *filter = [PostListViewController currentPostListFilter];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
     
     PostServiceSyncOptions *options = [PostServiceSyncOptions new];
     options.statuses = filter.statuses;
-    options.authorID = [PostListViewController authorIDFilterForBlog:self.blog];
+    options.authorID = [filterSettings authorIDFilter];
     options.purgesLocalSync = YES;
     
     [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
@@ -556,11 +557,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    PostListFilter *filter = [PageListViewController currentPostListFilter];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
 
     PostServiceSyncOptions *options = [PostServiceSyncOptions new];
     options.statuses = filter.statuses;
-    options.authorID = [PageListViewController authorIDFilterForBlog:self.blog];
+    options.authorID = [filterSettings authorIDFilter];
     options.purgesLocalSync = YES;
 
     [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];

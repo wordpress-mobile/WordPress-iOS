@@ -14,9 +14,6 @@
 #import "Media.h"
 #import "WordPress-Swift.h"
 
-NSString * const PostServiceTypePost = @"post";
-NSString * const PostServiceTypePage = @"page";
-NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 const NSUInteger PostServiceDefaultNumberToSync = 40;
@@ -113,7 +110,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                   }];
 }
 
-- (void)syncPostsOfType:(NSString *)postType
+- (void)syncPostsOfType:(PostServiceType)postType
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
                 failure:(PostServiceSyncFailure)failure
@@ -125,7 +122,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                   failure:failure];
 }
 
-- (void)syncPostsOfType:(NSString *)postType
+- (void)syncPostsOfType:(PostServiceType)postType
                 withOptions:(PostServiceSyncOptions *)options
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
@@ -135,7 +132,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
 
     NSDictionary *remoteOptions = options ? [self remoteSyncParametersDictionaryForRemote:remote withOptions:options] : nil;
-    [remote getPostsOfType:postType
+    [remote getPostsOfType:[[self class] keyForType:postType]
                    options:remoteOptions
                    success:^(NSArray <RemotePost *> *remotePosts) {
                        [self.managedObjectContext performBlock:^{
@@ -146,7 +143,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                return;
                            }
                            [self mergePosts:remotePosts
-                                     ofType:postType
+                                     ofType:[[self class] keyForType:postType]
                                withStatuses:options.statuses
                                    byAuthor:options.authorID
                                     forBlog:blogInContext
@@ -436,7 +433,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
-            if ([remotePost.type isEqualToString:PostServiceTypePage]) {
+            if ([remotePost.type isEqualToString:[[self class] keyForType:PostServiceTypePage]]) {
                 // Create a Page entity for posts with a remote type of "page"
                 post = [self createPageForBlog:blog];
             } else {
@@ -461,10 +458,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         }
         
         NSFetchRequest *request;
-        if ([syncPostType isEqualToString:PostServiceTypeAny]) {
+        if ([syncPostType isEqualToString:[[self class] keyForType:PostServiceTypeAny]]) {
             // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-        } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
+        } else if ([syncPostType isEqualToString:[[self class] keyForType:PostServiceTypePage]]) {
             // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
         } else {
@@ -698,6 +695,23 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
     return [matchingEntries lastObject];
+}
+
++ (NSString *)keyForType:(PostServiceType)postType {
+    NSString *key;
+    switch (postType) {
+        case PostServiceTypePage:
+            key = @"page";
+            break;
+        case PostServiceTypePost:
+            key = @"post";
+            break;
+        case PostServiceTypeAny:
+        default:
+            key = @"any";
+            break;
+    }
+    return key;
 }
 
 - (id<PostServiceRemote>)remoteForBlog:(Blog *)blog {
