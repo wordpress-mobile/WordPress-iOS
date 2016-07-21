@@ -10,11 +10,7 @@ typedef NS_ENUM(NSInteger, PostServiceType) {
     PostServiceTypePage,
     PostServiceTypeAny
 };
-/*
-extern NSString * const PostServiceTypePost;
-extern NSString * const PostServiceTypePage;
-extern NSString * const PostServiceTypeAny;
-*/
+
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
 typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> *posts);
