@@ -1076,10 +1076,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (decelerate) {
-        return;
+    [self.keyboardManager scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+
+    if (decelerate == NO) {
+        [self preventPendingMediaLayoutInCells:NO];
     }
-    [self preventPendingMediaLayoutInCells:NO];
 }
 
 
