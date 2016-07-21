@@ -154,7 +154,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                                                       metrics:nil
                                                                         views:views]];
     if ([self shouldAttachReplyTextView]) {
-        self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:_replyTextView.bottomAnchor];
+        self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
         self.bottomLayoutConstraint.active = YES;
 
         [NSLayoutConstraint activateConstraints:@[
