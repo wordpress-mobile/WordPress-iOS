@@ -126,27 +126,14 @@ static NSInteger NotificationSectionCount               = 1;
     [super viewWillAppear:animated];
 
     [self.tableView deselectSelectedRowWithAnimation:YES];
-
-    // Note:
-    // Listening to UIKeyboardWillChangeFrameNotification is not enough. There are few corner cases in which
-    // willChangeFrame doesn't get fired, and the keyboard either dismisses, or gets repositioned.
-    // Incoming bulletproof code!
-    //
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    NSArray *keyboardNotes = @[UIKeyboardWillChangeFrameNotification, UIKeyboardDidChangeFrameNotification, UIKeyboardWillHideNotification];
-    for (NSString *name in keyboardNotes) {
-        [nc addObserver:self selector:@selector(handleKeyboardFrameChange:) name:name object:nil];
-    }
+    [self startListeningToKeyboardNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardDidChangeFrameNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self stopListeningToKeyboardNotifications];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1291,6 +1278,33 @@ static NSInteger NotificationSectionCount               = 1;
     // Dismiss this ViewController if *our* notification... just got deleted
     if ([deleted containsObject:self.note]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+
+#pragma mark - Keyboard Helpers
+
+- (NSArray *)keyboardNotificationNames
+{
+    return @[UIKeyboardWillChangeFrameNotification, UIKeyboardDidChangeFrameNotification, UIKeyboardWillHideNotification];
+}
+
+- (void)startListeningToKeyboardNotifications
+{
+    // Listening to UIKeyboardWillChangeFrameNotification is not enough. There are few corner cases in which
+    // willChangeFrame doesn't get fired, and the keyboard either dismisses, or gets repositioned.
+    //
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    for (NSString *name in self.keyboardNotificationNames) {
+        [nc addObserver:self selector:@selector(handleKeyboardFrameChange:) name:name object:nil];
+    }
+}
+
+- (void)stopListeningToKeyboardNotifications
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    for (NSString *name in self.keyboardNotificationNames) {
+        [nc removeObserver:self name:name object:nil];
     }
 }
 
