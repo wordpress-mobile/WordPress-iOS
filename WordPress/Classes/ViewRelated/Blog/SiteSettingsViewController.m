@@ -539,9 +539,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
-    NSString *title = [self titleForHeaderInSection:settingsSection];
-
-    return title.length > 0 ? title : nil;
+    return [self titleForHeaderInSection:settingsSection];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
