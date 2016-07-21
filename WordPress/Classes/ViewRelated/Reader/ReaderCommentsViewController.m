@@ -57,6 +57,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) KeyboardDismissHelper *keyboardManager;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) UIView *postHeaderWrapper;
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
@@ -155,7 +156,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
-    
+    [self configureKeyboardManager];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self refreshAndSync];
@@ -173,8 +175,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         }
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleApplicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -195,9 +196,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.previousViewGeometry = self.view.frame.size;
 
     [self.replyTextView resignFirstResponder];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self.keyboardManager stopListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -370,6 +369,19 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
     self.tapOffKeyboardGesture.enabled = NO;
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+}
+
+- (void)configureKeyboardManager
+{
+    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
+                                                                  scrollView:self.tableView
+                                                          dismissableControl:self.replyTextView
+                                                      bottomLayoutConstraint:self.replyTextViewBottomConstraint];
+
+    __weak UITableView *weakTableView = self.tableView;
+    self.keyboardManager.onWillHide = ^{
+        [weakTableView deselectSelectedRowWithAnimation:YES];
+    };
 }
 
 
@@ -727,51 +739,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 }
 
 
-#pragma mark - Notification handlers
-
-- (void)handleKeyboardWillShow:(NSNotification *)notification
-{
-    NSDictionary* userInfo = notification.userInfo;
-
-    // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect = [self.view convertRect:kbRect fromView:nil];
-
-    // Bottom Inset: Consider the tab bar!
-    CGRect viewFrame = self.view.frame;
-    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    self.replyTextViewBottomConstraint.constant = bottomInset;
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    //deselect the selected comment if there is one
-    NSArray *selection = [self.tableView indexPathsForSelectedRows];
-    if ([selection count] > 0) {
-        [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
-    }
-
-    NSDictionary* userInfo = notification.userInfo;
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    self.replyTextViewBottomConstraint.constant = 0;
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
-}
-
-
 #pragma mark - Actions
 
 - (void)tapRecognized:(id)sender
@@ -1091,16 +1058,20 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self preventPendingMediaLayoutInCells:YES];
+    [self.keyboardManager scrollViewWillBeginDragging:scrollView];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self preventPendingMediaLayoutInCells:NO];
-
-    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-    [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
-    [self.replyTextView resignFirstResponder];
     [self refreshReplyTextViewPlaceholder];
+
+    [self.tableView deselectSelectedRowWithAnimation:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.keyboardManager scrollViewDidScroll:scrollView];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
