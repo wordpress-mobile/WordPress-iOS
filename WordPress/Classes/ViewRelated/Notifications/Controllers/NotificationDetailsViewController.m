@@ -1335,6 +1335,11 @@ static NSInteger NotificationSectionCount               = 1;
     [self.keyboardManager scrollViewDidScroll:scrollView];
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.keyboardManager scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
 
 #pragma mark - SuggestionsTableViewDelegate
 
