@@ -101,7 +101,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self attachReplyViewIfNeeded];
     [self setupAutolayoutConstraints];
     [self adjustTableViewInsetsIfNeeded];
-    [self setupDismissManager];
+    [self setupKeyboardManager];
 }
 
 - (void)attachSuggestionsTableViewIfNeeded
@@ -196,7 +196,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
-- (void)setupDismissManager
+- (void)setupKeyboardManager
 {
     self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
                                                                   scrollView:self.tableView
