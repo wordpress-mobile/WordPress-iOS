@@ -69,8 +69,9 @@ static NSInteger NotificationSectionCount               = 1;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
 @property (nonatomic, strong) NSArray                       *blockGroups;
 
-// Media Helpers
+// Helpers
 @property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
+@property (nonatomic, strong) InteractiveDismissHelper      *dismissManager;
 
 // Model
 @property (nonatomic, strong) Notification                  *note;
@@ -114,6 +115,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self setupMainView];
     [self setupTableView];
     [self setupMediaDownloader];
+    [self setupDismissManager];
     [self setupNotificationListeners];
 
     [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
@@ -236,6 +238,11 @@ static NSInteger NotificationSectionCount               = 1;
     self.mediaDownloader = [NotificationMediaDownloader new];
 }
 
+- (void)setupDismissManager
+{
+    self.dismissManager = [[InteractiveDismissHelper alloc] initWithParentView:self.view bottomLayoutConstraint:self.bottomLayoutConstraint];
+}
+
 - (void)setupNotificationListeners
 {
     NSManagedObjectContext *context = self.note.managedObjectContext;
@@ -310,6 +317,7 @@ static NSInteger NotificationSectionCount               = 1;
     replyTextView.delegate                  = self;
     self.replyTextView                      = replyTextView;
 
+    [self.dismissManager setDismissableControl:replyTextView];
     [self.stackView addArrangedSubview:replyTextView];
 
     // Attach suggestionsView
@@ -1316,6 +1324,19 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.dismissManager scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.dismissManager scrollViewDidScroll:scrollView];
 }
 
 
