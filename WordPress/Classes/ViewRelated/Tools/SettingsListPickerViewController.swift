@@ -102,10 +102,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
     }
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let text = headers?[section] else {
-            return nil
-        }
-        return text
+        return headers?[section]
     }
 
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -113,10 +110,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
     }
 
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard let text = footers?[section] else {
-            return nil
-        }
-        return text
+        return footers?[section]
     }
 
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
