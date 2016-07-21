@@ -722,9 +722,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self.keyboardManager scrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    [self.keyboardManager scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
 

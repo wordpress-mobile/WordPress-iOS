@@ -135,19 +135,19 @@ import UIKit
         parentView.layoutIfNeeded()
     }
 
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         trackingDragOperation = false
     }
 
 
     // MARK: - Notification Helpers
     func keyboardWillShow(note: NSNotification) {
+        isKeyboardVisible = true
         handleKeyboardFrameChange(note)
         onWillShow?()
     }
 
     func keyboardDidShow(note: NSNotification) {
-        isKeyboardVisible = true
         handleKeyboardFrameChange(note)
         onDidShow?()
     }
