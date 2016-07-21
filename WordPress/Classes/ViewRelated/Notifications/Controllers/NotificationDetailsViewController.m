@@ -117,7 +117,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self setupMediaDownloader];
     [self setupReplyTextView];
     [self setupSuggestionsView];
-    [self setupDismissManager];
+    [self setupKeyboardManager];
     [self setupNotificationListeners];
 
     [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
@@ -260,7 +260,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
-- (void)setupDismissManager
+- (void)setupKeyboardManager
 {
     NSParameterAssert(self.replyTextView);
     NSParameterAssert(self.bottomLayoutConstraint);
