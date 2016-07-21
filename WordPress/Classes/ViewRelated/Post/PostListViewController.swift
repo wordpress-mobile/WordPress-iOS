@@ -201,12 +201,12 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
-        if !self.filterSettings.canFilterByAuthor() {
+        if !filterSettings.canFilterByAuthor() {
             authorsFilterViewHeightConstraint?.constant = 0
             authorFilterSegmentedControl.hidden = true
         }
 
-        if self.filterSettings.currentPostAuthorFilter() == .Mine {
+        if filterSettings.currentPostAuthorFilter() == .Mine {
             authorFilterSegmentedControl.selectedSegmentIndex = 0
         } else {
             authorFilterSegmentedControl.selectedSegmentIndex = 1
@@ -230,7 +230,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
             authorFilter = .Mine
         }
-        self.filterSettings.setCurrentPostAuthorFilter(authorFilter)
+        filterSettings.setCurrentPostAuthorFilter(authorFilter)
 
         WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
     }
@@ -275,7 +275,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()
-        let filterPredicate = self.filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -287,7 +287,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(filterPredicate)
         }
 
-        if self.filterSettings.shouldShowOnlyMyPosts() {
+        if filterSettings.shouldShowOnlyMyPosts() {
             let myAuthorID = blogUserID() ?? 0
 
             // Brand new local drafts have an authorID of 0.
@@ -393,7 +393,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     private func cellIdentifierForPost(post: Post) -> String {
         var identifier: String
 
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && self.filterSettings.currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
             identifier = self.dynamicType.postCardImageCellIdentifier
@@ -610,7 +610,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = self.filterSettings.currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -625,7 +625,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
 
-        let filter = self.filterSettings.currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
 
@@ -637,7 +637,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = self.filterSettings.currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:
