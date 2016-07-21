@@ -265,9 +265,10 @@ static NSInteger NotificationSectionCount               = 1;
     NSParameterAssert(self.replyTextView);
     NSParameterAssert(self.bottomLayoutConstraint);
 
-    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithScrollView:self.tableView
-                                                         dismissableControl:self.replyTextView
-                                                     bottomLayoutConstraint:self.bottomLayoutConstraint];
+    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
+                                                                  scrollView:self.tableView
+                                                          dismissableControl:self.replyTextView
+                                                      bottomLayoutConstraint:self.bottomLayoutConstraint];
 }
 
 - (void)setupNotificationListeners
