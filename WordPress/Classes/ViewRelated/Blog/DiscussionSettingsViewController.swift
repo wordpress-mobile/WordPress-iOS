@@ -128,10 +128,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let headerText = sections[section].headerText else {
-            return nil
-        }
-        return headerText
+        return sections[section].headerText
     }
 
     public override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -139,10 +136,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard let footerText = sections[section].footerText else {
-            return nil
-        }
-        return footerText
+        return sections[section].footerText
     }
 
     public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
