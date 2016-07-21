@@ -1074,13 +1074,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.keyboardManager scrollViewDidScroll:scrollView];
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [self.keyboardManager scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-
-    if (decelerate == NO) {
-        [self preventPendingMediaLayoutInCells:NO];
+    if (decelerate) {
+        return;
     }
+
+    [self preventPendingMediaLayoutInCells:NO];
 }
 
 
