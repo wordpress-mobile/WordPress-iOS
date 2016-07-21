@@ -76,6 +76,7 @@
 
 - (void)scrollViewWillBeginDragging:(nonnull UIScrollView *)scrollView;
 - (void)scrollViewDidEndDecelerating:(nonnull UIScrollView *)scrollView;
+- (void)scrollViewDidScroll:(nonnull UIScrollView *)scrollView;
 - (void)scrollViewDidEndDragging:(nonnull UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 
 @end
