@@ -5,10 +5,16 @@
 @class Blog, Post, Page, AbstractPost;
 @class RemotePost;
 
+typedef NS_ENUM(NSInteger, PostServiceType) {
+    PostServiceTypePost,
+    PostServiceTypePage,
+    PostServiceTypeAny
+};
+/*
 extern NSString * const PostServiceTypePost;
 extern NSString * const PostServiceTypePage;
 extern NSString * const PostServiceTypeAny;
-
+*/
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
 typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> *posts);
@@ -21,6 +27,8 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
 
 + (Post *)createDraftPostInMainContextForBlog:(Blog *)blog;
 + (Page *)createDraftPageInMainContextForBlog:(Blog *)blog;
+
++ (NSString *)keyForType:(PostServiceType)postType;
 
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
@@ -48,7 +56,7 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param success A success block
  @param failure A failure block
  */
-- (void)syncPostsOfType:(NSString *)postType
+- (void)syncPostsOfType:(PostServiceType)postType
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
                 failure:(PostServiceSyncFailure)failure;
@@ -65,7 +73,7 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param success A success block
  @param failure A failure block
  */
-- (void)syncPostsOfType:(NSString *)postType
+- (void)syncPostsOfType:(PostServiceType)postType
             withOptions:(PostServiceSyncOptions *)options
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
@@ -109,7 +117,6 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
 - (void)trashPost:(AbstractPost *)post
           success:(void (^)())success
           failure:(void (^)(NSError *error))failure;
-
 
 /**
  Moves the specified post out of the trash bin.
