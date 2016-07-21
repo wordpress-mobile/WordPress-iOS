@@ -27,9 +27,17 @@ import UIKit
     ///
     var onWillHide: (Void -> ())?
 
+    /// Closure to be executed whenever the Keyboard was hidden
+    ///
+    var onDidHide: (Void -> ())?
+
     /// Closure to be executed whenever the Keyboard will be Shown
     ///
     var onWillShow: (Void -> ())?
+
+    /// Closure to be executed whenever the Keyboard was Shown
+    ///
+    var onDidShow: (Void -> ())?
 
 
     /// Reference to the container view
@@ -48,6 +56,13 @@ import UIKit
     ///
     private var initialControlPositionY = CGFloat(0)
 
+    /// Indicates whether the keyboard is visible or not
+    ///
+    private var isKeyboardVisible = false
+
+    /// Indicates whether an Interactive Drag OP is being processed
+    ///
+    private var trackingDragOperation = false
 
 
     /// Deinitializer
@@ -73,14 +88,12 @@ import UIKit
     /// Initializes the Keyboard Event Listeners
     ///
     func startListeningToKeyboardNotifications() {
-        // Listening to UIKeyboardWillChangeFrameNotification is not enough. There are few corner cases in which
-        // willChangeFrame doesn't get fired, and the keyboard either dismisses, or gets repositioned.
-        //
         let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: UIKeyboardDidChangeFrameNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidShow), name: UIKeyboardDidShowNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIKeyboardDidHideNotification, object: nil)
+
     }
 
     /// Removes all of the Keyboard Event Listeners
@@ -94,22 +107,27 @@ import UIKit
     /// ScrollView willBeginDragging Event
     ///
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        guard let dismissableControl = dismissableControl else {
+        guard let dismissableControl = dismissableControl where isKeyboardVisible == true else {
             return
         }
 
         initialControlPositionY = dismissableControl.frame.maxY
         initialBottomConstraint = bottomLayoutConstraint.constant
+        trackingDragOperation = true
     }
 
     /// ScrollView didScroll Event
     ///
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        guard trackingDragOperation == true else {
+            return
+        }
+
         let location = scrollView.panGestureRecognizer.locationInView(parentView)
         let delta = location.y - initialControlPositionY
         let newConstant = min(max(initialBottomConstraint - delta, 0), initialBottomConstraint)
 
-        guard newConstant != bottomLayoutConstraint.constant && dismissableControl != nil else {
+        guard newConstant != bottomLayoutConstraint.constant else {
             return
         }
 
@@ -117,26 +135,33 @@ import UIKit
         parentView.layoutIfNeeded()
     }
 
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        trackingDragOperation = false
+    }
 
 
     // MARK: - Notification Helpers
-    func keyboardWillChangeFrame(note: NSNotification) {
-        handleKeyboardFrameChange(note)
-    }
-
-    func keyboardDidChangeFrame(note: NSNotification) {
-        handleKeyboardFrameChange(note)
-    }
-
     func keyboardWillShow(note: NSNotification) {
+        handleKeyboardFrameChange(note)
         onWillShow?()
     }
 
+    func keyboardDidShow(note: NSNotification) {
+        isKeyboardVisible = true
+        handleKeyboardFrameChange(note)
+        onDidShow?()
+    }
+
     func keyboardWillHide(note: NSNotification) {
+        isKeyboardVisible = false
         handleKeyboardFrameChange(note)
         onWillHide?()
     }
 
+    func keyboardDidHide(note: NSNotification) {
+        handleKeyboardFrameChange(note)
+        onDidHide?()
+    }
 
 
     // MARK: - Private Helpers
@@ -152,7 +177,7 @@ import UIKit
 
         // Bottom Inset: Consider the tab bar!
         let convertedKeyboardRect = parentView.convertRect(kbRect.CGRectValue(), fromView: nil)
-        let bottomInset = convertedKeyboardRect.height - convertedKeyboardRect.maxY + parentView.frame.height
+        let bottomInset = max(convertedKeyboardRect.height - convertedKeyboardRect.maxY + parentView.frame.height, 0)
 
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationCurve(curve)
