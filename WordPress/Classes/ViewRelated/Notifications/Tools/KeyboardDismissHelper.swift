@@ -23,6 +23,15 @@ import UIKit
     ///
     var bottomLayoutConstraint: NSLayoutConstraint
 
+    /// Closure to be executed whenever the Keyboard will be Hidden
+    ///
+    var onWillHide: (Void -> ())?
+
+    /// Closure to be executed whenever the Keyboard will be Shown
+    ///
+    var onWillShow: (Void -> ())?
+
+
     /// Reference to the container view
     ///
     private var scrollView: UIScrollView
@@ -68,11 +77,10 @@ import UIKit
         // willChangeFrame doesn't get fired, and the keyboard either dismisses, or gets repositioned.
         //
         let nc = NSNotificationCenter.defaultCenter()
-        let notifications = [UIKeyboardWillChangeFrameNotification, UIKeyboardDidChangeFrameNotification, UIKeyboardWillHideNotification]
-
-        for name in notifications {
-            nc.addObserver(self, selector: #selector(handleKeyboardFrameChange), name: name, object: nil)
-        }
+        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: UIKeyboardDidChangeFrameNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
     }
 
     /// Removes all of the Keyboard Event Listeners
@@ -112,8 +120,28 @@ import UIKit
 
 
     // MARK: - Notification Helpers
+    func keyboardWillChangeFrame(note: NSNotification) {
+        handleKeyboardFrameChange(note)
+    }
 
-    func handleKeyboardFrameChange(note: NSNotification) {
+    func keyboardDidChangeFrame(note: NSNotification) {
+        handleKeyboardFrameChange(note)
+    }
+
+    func keyboardWillShow(note: NSNotification) {
+        onWillShow?()
+    }
+
+    func keyboardWillHide(note: NSNotification) {
+        handleKeyboardFrameChange(note)
+        onWillHide?()
+    }
+
+
+
+    // MARK: - Private Helpers
+
+    private func handleKeyboardFrameChange(note: NSNotification) {
         guard let kbRect = note.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
             let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval,
             let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
