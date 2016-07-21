@@ -124,21 +124,29 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
+
     [self.tableView deselectSelectedRowWithAnimation:YES];
+
+    // Note:
+    // Listening to UIKeyboardWillChangeFrameNotification is not enough. There are few corner cases in which
+    // willChangeFrame doesn't get fired, and the keyboard either dismisses, or gets repositioned.
+    // Incoming bulletproof code!
+    //
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    NSArray *keyboardNotes = @[UIKeyboardWillChangeFrameNotification, UIKeyboardDidChangeFrameNotification, UIKeyboardWillHideNotification];
+    for (NSString *name in keyboardNotes) {
+        [nc addObserver:self selector:@selector(handleKeyboardFrameChange:) name:name object:nil];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self.replyTextView resignFirstResponder];
-    
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardDidChangeFrameNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1286,14 +1294,14 @@ static NSInteger NotificationSectionCount               = 1;
     }
 }
 
-- (void)handleKeyboardWillChangeFrame:(NSNotification *)notification
+- (void)handleKeyboardFrameChange:(NSNotification *)notification
 {
     NSDictionary* userInfo = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
     CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     kbRect = [self.view convertRect:kbRect fromView:nil];
-    
+
     // Bottom Inset: Consider the tab bar!
     CGRect viewFrame = self.view.frame;
     CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
