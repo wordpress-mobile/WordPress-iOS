@@ -29,9 +29,7 @@ import UIKit
 
     /// Returns the scrollView's Parent View. If nil, will fall back to the scrollView itself
     ///
-    private var parentView: UIView {
-        return scrollView.superview ?? scrollView
-    }
+    private var parentView: UIView
 
     /// State of the BottomLayout Constraint, at the beginning of a drag OP
     ///
@@ -53,7 +51,8 @@ import UIKit
     ///
     /// -   Parameter scrollView: View that contains everything
     ///
-    init(scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
+    init(parentView: UIView, scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
+        self.parentView = parentView
         self.scrollView = scrollView
         self.dismissableControl = dismissableControl
         self.bottomLayoutConstraint = bottomLayoutConstraint
@@ -74,7 +73,6 @@ import UIKit
         for name in notifications {
             nc.addObserver(self, selector: #selector(handleKeyboardFrameChange), name: name, object: nil)
         }
-
     }
 
     /// Removes all of the Keyboard Event Listeners
