@@ -100,10 +100,7 @@ public class SettingsListEditorViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard let unwrappedFooterText = footerText else {
-            return nil
-        }
-        return unwrappedFooterText
+        return footerText
     }
 
     public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
