@@ -7,11 +7,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
 
-    enum PostAuthorFilter : UInt {
-        case Mine = 0
-        case Everyone = 1
-    }
-
     private static let postsControllerRefreshInterval = NSTimeInterval(300)
     private static let HTTPErrorCodeForbidden = Int(403)
     private static let postsFetchRequestBatchSize = Int(10)
@@ -70,6 +65,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return noResultsView
     }()
 
+    lazy var filterSettings : PostListFilterSettings = {
+        return PostListFilterSettings(blog:self.blog, postType:self.postTypeToSync())
+    }()
+
 
     var postListFooterView : PostListFooterView!
 
@@ -83,7 +82,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
 
     var searchController : WPSearchController! // Stand-in for UISearchController
-    private var allPostListFilters:[PostListFilter]?
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var needsRefreshCachedCellHeightsBeforeLayout = false
@@ -279,8 +277,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = postTypeToSync()
-        properties["filter"] = currentPostListFilter().title
+        properties["type"] = PostService.keyForType(postTypeToSync())
+        properties["filter"] = filterSettings.currentPostListFilter().title
 
         if let dotComID = blog.dotComID {
             properties[WPAppAnalyticsKeyBlogID] = dotComID
@@ -336,11 +334,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         // Ascending only for scheduled posts/pages.
-        let ascending = currentPostListFilter().filterType == .Scheduled
+        let ascending = filterSettings.currentPostListFilter().filterType == .Scheduled
 
         let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
         let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        if currentPostListFilter().filterType == .Draft {
+        if filterSettings.currentPostListFilter().filterType == .Draft {
             return [sortDescriptorLocal, NSSortDescriptor(key: "dateModified", ascending: ascending)]
         }
         let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
@@ -355,7 +353,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let fetchRequest = tableViewHandler.resultsController.fetchRequest
 
         // Set the predicate based on filtering by the oldestPostDate and not searching.
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
 
         if let oldestPostDate = filter.oldestPostDate where !isSearching() {
 
@@ -428,7 +426,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             && indexPath.row + self.dynamicType.postsLoadMoreThreshold >= tableView.numberOfRowsInSection(indexPath.section) {
 
             // Only 3 rows till the end of table
-            if currentPostListFilter().hasMore {
+            if filterSettings.currentPostListFilter().hasMore {
                 syncHelper.syncMoreContent()
             }
         }
@@ -516,9 +514,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - WPContentSyncHelperDelegate
 
-    func postTypeToSync() -> String {
+    internal func postTypeToSync() -> PostServiceType {
         // Subclasses should override.
-        return PostServiceTypeAny
+        return PostServiceType.Any
     }
 
     func lastSyncDate() -> NSDate? {
@@ -528,12 +526,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> ())?, failure: ((error: NSError) -> ())?) {
 
         if recentlyTrashedPostObjectIDs.count > 0 {
-            recentlyTrashedPostObjectIDs.removeAll()
-            updateAndPerformFetchRequestRefreshingResults()
+            refreshAndReload()
         }
 
-        let filter = currentPostListFilter()
-        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let filter = filterSettings.currentPostListFilter()
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
         let postService = PostService(managedObjectContext: managedObjectContext())
 
@@ -585,8 +582,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListLoadedMore, withProperties: propertiesForAnalytics())
         postListFooterView.showSpinner(true)
 
-        let filter = currentPostListFilter()
-        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let filter = filterSettings.currentPostListFilter()
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
         let postService = PostService(managedObjectContext: managedObjectContext())
 
@@ -700,7 +697,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableViewHandler.clearCachedRowHeights()
         tableView.reloadData()
 
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         if filter.hasMore && tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             // If the filter detects there are more posts, but there are none that match the current search
             // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
@@ -734,14 +731,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         guard let searchText = searchController.searchBar.text where !searchText.isEmpty() else {
             return
         }
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         guard filter.hasMore else {
             return
         }
 
         postsSyncWithSearchDidBegin()
 
-        let author = shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
         let postService = PostService(managedObjectContext: managedObjectContext())
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses
@@ -873,9 +870,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             if let postStatus = apost.status {
                 // If the post was restored, see if it appears in the current filter.
                 // If not, prompt the user to let it know under which filter it appears.
-                let filter = strongSelf.filterThatDisplaysPostsWithStatus(postStatus)
+                let filter = strongSelf.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
 
-                if filter.filterType == strongSelf.currentPostListFilter().filterType {
+                if filter.filterType == strongSelf.filterSettings.currentPostListFilter().filterType {
                     return
                 }
 
@@ -918,146 +915,45 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return blog.account?.userID
     }
 
-    // MARK: - Filter Related
-
-    class func canFilterByAuthor(blog blog:Blog) -> Bool {
-        return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
-    }
-
-    class func authorIDFilter(forBlog blog:Blog) -> NSNumber? {
-        return currentPostAuthorFilter(blog:blog) == .Mine ? blog.account?.userID : nil
-    }
-
-    func shouldShowOnlyMyPosts() -> Bool {
-        let filter = currentPostAuthorFilter()
-        return filter == .Mine
-    }
-
-    class func currentPostAuthorFilter(blog blog:Blog) -> PostAuthorFilter {
-        return .Everyone
-    }
-
-    func currentPostAuthorFilter() -> PostAuthorFilter {
-        return self.dynamicType.currentPostAuthorFilter(blog:blog)
-    }
-
-    func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
-        // Noop. The default implementation is read only.
-        // Subclasses may override the getter and setter for their own filter storage.
-    }
-
-    class func availablePostListFilters() -> [PostListFilter] {
-        return PostListFilter.postListFilters()
-    }
-    
-    func availablePostListFilters() -> [PostListFilter] {
-
-        if allPostListFilters == nil {
-            allPostListFilters = PostListFilter.postListFilters()
-        }
-
-        return allPostListFilters!
-    }
-
-    func currentPostListFilter() -> PostListFilter {
-        return availablePostListFilters()[self.dynamicType.currentFilterIndex()]
-    }
-    
-    class func currentPostListFilter() -> PostListFilter {
-        return availablePostListFilters()[currentFilterIndex()]
-    }
-
-    func filterThatDisplaysPostsWithStatus(postStatus: String) -> PostListFilter {
-        let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
-        return availablePostListFilters()[index]
-    }
-
-    func indexOfFilterThatDisplaysPostsWithStatus(postStatus: String) -> Int {
-        var index = 0
-        var found = false
-
-        for (idx, filter) in availablePostListFilters().enumerate() {
-            if filter.statuses.contains(postStatus) {
-                found = true
-                index = idx
-                break
-            }
-        }
-
-        if !found {
-            // The draft filter is the catch all by convention.
-            index = indexForFilterWithType(.Draft)
-        }
-
-        return index
-    }
-
-    func indexForFilterWithType(filterType: PostListFilter.Status) -> Int {
-        if let index = availablePostListFilters().indexOf({ (filter: PostListFilter) -> Bool in
-            return filter.filterType == filterType
-        }) {
-            return index
-        } else {
-            return NSNotFound
-        }
-    }
-
-    class func keyForCurrentListStatusFilter() -> String {
-        fatalError("You should implement this method in the subclass")
-    }
-
-    class func currentFilterIndex() -> Int {
-
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-
-        if let filter = userDefaults.objectForKey(keyForCurrentListStatusFilter()) as? Int
-            where filter < availablePostListFilters().count {
-
-            return filter
-        } else {
-            return 0 // first item is the default
-        }
-     }
-
-    func setCurrentFilterIndex(newIndex: Int) {
-        let index = self.dynamicType.currentFilterIndex()
-
-        guard newIndex != index else {
-            return
-        }
-
-        WPAnalytics.track(.PostListStatusFilterChanged, withProperties: propertiesForAnalytics())
-        NSUserDefaults.standardUserDefaults().setObject(newIndex, forKey: self.dynamicType.keyForCurrentListStatusFilter())
-        NSUserDefaults.resetStandardUserDefaults()
-
+    func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
         updateFilterTitle()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
     }
 
+    func keyForCurrentListStatusFilter() -> String {
+        fatalError("You should implement this method in the subclass")
+    }
+
     func updateFilterTitle() {
-        filterButton.setAttributedTitleForTitle(currentPostListFilter().title)
+        filterButton.setAttributedTitleForTitle(filterSettings.currentPostListFilter().title)
     }
 
     func displayFilters() {
-        let titles = availablePostListFilters().map { (filter: PostListFilter) -> String in
+        let availableFilters = filterSettings.availablePostListFilters()
+
+        let titles = availableFilters.map { (filter: PostListFilter) -> String in
             return filter.title
         }
 
-        let dict = [SettingsSelectionDefaultValueKey: availablePostListFilters()[0],
+        let dict = [SettingsSelectionDefaultValueKey: availableFilters[0],
                     SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
                     SettingsSelectionTitlesKey: titles,
-                    SettingsSelectionValuesKey: availablePostListFilters(),
-                    SettingsSelectionCurrentValueKey: currentPostListFilter()]
+                    SettingsSelectionValuesKey: availableFilters,
+                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()]
 
         let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
         controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
             if let strongSelf = self,
-                let index = strongSelf.availablePostListFilters().indexOf(selectedValue as! PostListFilter) {
+                let index = strongSelf.filterSettings.availablePostListFilters().indexOf(selectedValue as! PostListFilter) {
 
-                strongSelf.setCurrentFilterIndex(index)
+                strongSelf.filterSettings.setCurrentFilterIndex(index)
                 strongSelf.dismissViewControllerAnimated(true, completion: nil)
+
+                strongSelf.refreshAndReload()
+
+                WPAnalytics.track(.PostListStatusFilterChanged, withProperties: strongSelf.propertiesForAnalytics())
             }
         }
 
@@ -1076,11 +972,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
 
         presentViewController(controller, animated: true, completion: nil)
-    }
-
-    func setFilterWithPostStatus(status: String) {
-        let index = indexOfFilterThatDisplaysPostsWithStatus(status)
-        setCurrentFilterIndex(index)
     }
 
     // MARK: - Search Controller Delegate Methods
