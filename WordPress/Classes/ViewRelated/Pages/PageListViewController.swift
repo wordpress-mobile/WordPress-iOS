@@ -186,7 +186,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         let searchText = currentSearchTerm()
-        let filterPredicate = self.filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -310,7 +310,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private func cellIdentifierForPage(page: Page) -> String {
         var identifier : String
 
-        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && self.filterSettings.currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.restorePageCellIdentifier
         } else {
             identifier = self.dynamicType.pageCellIdentifier
@@ -427,7 +427,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
 
-        let filter = self.filterSettings.currentPostListFilter().filterType
+        let filter = filterSettings.currentPostListFilter().filterType
 
         if filter == .Trashed {
             alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
@@ -572,7 +572,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = self.filterSettings.currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -587,7 +587,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
 
-        let filter = self.filterSettings.currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
         return title ?? ""
@@ -598,7 +598,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = self.filterSettings.currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:
