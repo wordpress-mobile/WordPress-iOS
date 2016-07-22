@@ -2,6 +2,7 @@ import Foundation
 import WordPressComAnalytics
 
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
+/// - Note: previously found within `AbstractPostListViewController`
 class PostListFilterSettings: NSObject {
     private static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
