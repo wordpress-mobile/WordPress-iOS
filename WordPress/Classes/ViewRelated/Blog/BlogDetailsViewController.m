@@ -368,7 +368,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableView.tableHeaderView = headerWrapper;
 
     // Blog detail header view
-    BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] initWithFrame:headerWrapper.bounds];
+    BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     [headerWrapper addSubview:headerView];
 
@@ -378,8 +378,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                               [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
                                               [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
                                               [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
-                                              [headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor],
-                                              [headerView.centerYAnchor constraintEqualToAnchor:headerWrapper.centerYAnchor]
                                               ]];
      self.headerView = headerView;
 }

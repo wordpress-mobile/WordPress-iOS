@@ -25,7 +25,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self = [super initWithFrame:frame];
     if (self) {
         [self setupStackView];
-        [self setupBalavatarImageView];
+        [self setupBlavatarImageView];
         [self setupLabelsStackView];
         [self setupTitleLabel];
         [self setupSubtitleLabel];
@@ -78,18 +78,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               trailingConstraint,
                                               [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-                                              [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
-                                              [stackView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor]
                                               ]];
     _stackView = stackView;
 }
 
-- (void)setupBalavatarImageView
+- (void)setupBlavatarImageView
 {
     NSAssert(_stackView != nil, @"stackView was nil");
 
-    CGRect blavatarFrame = CGRectMake(0.0f, 0.0f, BlogDetailHeaderViewBlavatarSize, BlogDetailHeaderViewBlavatarSize);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
+    UIImageView *imageView = [[UIImageView alloc] init];
     imageView.backgroundColor = [UIColor whiteColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
