@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 
 @objc class PostListFilterSettings: NSObject {
     private static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
@@ -54,6 +55,8 @@ import Foundation
         guard filter != currentPostAuthorFilter() else {
             return
         }
+
+        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
 
         NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
         NSUserDefaults.resetStandardUserDefaults()
@@ -146,5 +149,18 @@ import Foundation
         let index = indexOfFilterThatDisplaysPostsWithStatus(status)
         self.setCurrentFilterIndex(index)
 
+    }
+
+    func propertiesForAnalytics() -> [String:AnyObject] {
+        var properties = [String:AnyObject]()
+
+        properties["type"] = PostService.keyForType(postType)
+        properties["filter"] = currentPostListFilter().title
+
+        if let dotComID = blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+
+        return properties
     }
 }
