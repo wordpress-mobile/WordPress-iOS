@@ -795,20 +795,8 @@ import WordPressShared
     }
 
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = self.tableView(tableView, titleForHeaderInSection: section) else {
-            return nil
-        }
-
-        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        headerView.title = title
-        return headerView
-    }
-
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = self.tableView(tableView, titleForHeaderInSection: section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.bounds.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
 
@@ -817,20 +805,8 @@ import WordPressShared
     }
 
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let title = self.tableView(tableView, titleForFooterInSection: section) else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = title
-        return footerView
-    }
-
-
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let title = self.tableView(tableView, titleForFooterInSection: section)
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.bounds.width)
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
@@ -840,6 +816,14 @@ import WordPressShared
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         row.action?()
+    }
+
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Since we want to be able to order particular rows, let's only allow editing for those specific rows.
+        // Note: We have to allow editing because UITableView will only give us the ordering accessory while editing is toggled.
+        let section = sections[indexPath.section]
+        return section.canSort && !section.editing && indexPath.row > 0
     }
 
 
