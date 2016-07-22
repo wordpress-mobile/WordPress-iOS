@@ -842,6 +842,14 @@ import WordPressShared
     }
 
 
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Since we want to be able to order particular rows, let's only allow editing for those specific rows.
+        // Note: We have to allow editing because UITableView will only give us the ordering accessory while editing is toggled.
+        let section = sections[indexPath.section]
+        return section.canSort && !section.editing && indexPath.row > 0
+    }
+
+
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let section = sections[indexPath.section]
         return section.canSort && !section.editing && indexPath.row > 0
