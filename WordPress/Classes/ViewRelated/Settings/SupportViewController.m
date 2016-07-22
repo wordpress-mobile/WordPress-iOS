@@ -99,7 +99,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 

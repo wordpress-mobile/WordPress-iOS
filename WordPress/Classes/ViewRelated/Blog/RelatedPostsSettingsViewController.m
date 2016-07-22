@@ -6,7 +6,6 @@
 #import "SettingTableViewCell.h"
 #import "RelatedPostsPreviewTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
-#import "WPStyleGuide+ReadableMargins.h"
 
 #import <WordPressShared/WPStyleGuide.h>
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -58,7 +57,6 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.navigationItem.title = NSLocalizedString(@"Related Posts", @"Title for screen that allows configuration of your blog/site related posts settings.");
     self.tableView.allowsSelection = NO;
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
 

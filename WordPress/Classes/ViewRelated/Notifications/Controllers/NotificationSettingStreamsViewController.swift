@@ -54,8 +54,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
 

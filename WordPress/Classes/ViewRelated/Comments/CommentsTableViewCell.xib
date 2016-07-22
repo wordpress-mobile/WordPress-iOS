@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -9,15 +10,15 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Upg-EE-wRd" customClass="CommentsTableViewCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Upg-EE-wRd" id="p6H-P7-J7f">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" layoutMarginsFollowReadableWidth="YES" tableViewCell="Upg-EE-wRd" id="p6H-P7-J7f">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="69.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-YX-qnu" userLabel="Layout View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                    <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-YX-qnu" userLabel="Layout View">
+                        <rect key="frame" x="8" y="0.0" width="304" height="70"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcl-X2-f1f" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                                <rect key="frame" x="0.0" y="0.0" width="304" height="70"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -28,7 +29,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrp-Wr-ZBq">
-                                <rect key="frame" x="68" y="8" width="240" height="20.5"/>
+                                <rect key="frame" x="68" y="8" width="224" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -41,7 +42,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDl-id-9M7">
-                                <rect key="frame" x="88" y="28.5" width="220" height="20.5"/>
+                                <rect key="frame" x="88" y="28.5" width="204" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -58,7 +59,7 @@
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bDl-id-9M7" secondAttribute="bottom" priority="750" constant="9" id="PVc-g0-lrn"/>
                             <constraint firstAttribute="bottom" secondItem="Kcl-X2-f1f" secondAttribute="bottom" id="QxH-g8-9jc"/>
                             <constraint firstAttribute="trailing" secondItem="bDl-id-9M7" secondAttribute="trailing" constant="12" id="WP3-62-HDv"/>
-                            <constraint firstAttribute="trailing" secondItem="Wrp-Wr-ZBq" secondAttribute="trailing" priority="750" constant="12" id="WyT-D4-F81"/>
+                            <constraint firstAttribute="trailing" secondItem="Wrp-Wr-ZBq" secondAttribute="trailing" constant="12" id="WyT-D4-F81"/>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="top" constant="4" id="Xqq-1P-og4"/>
                             <constraint firstItem="rcg-tb-060" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="bottom" constant="2" id="Zbd-5G-fWz"/>
                             <constraint firstItem="bDl-id-9M7" firstAttribute="leading" secondItem="rcg-tb-060" secondAttribute="trailing" constant="4" id="eSq-C3-JsX"/>
@@ -69,10 +70,10 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="AUn-YX-qnu" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" id="3mF-u8-Qvl"/>
+                    <constraint firstItem="AUn-YX-qnu" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" id="3mF-u8-Qvl"/>
                     <constraint firstItem="AUn-YX-qnu" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="top" id="Loo-Lw-U24"/>
                     <constraint firstAttribute="bottom" secondItem="AUn-YX-qnu" secondAttribute="bottom" id="lzS-Au-eFv"/>
-                    <constraint firstAttribute="trailing" secondItem="AUn-YX-qnu" secondAttribute="trailing" id="wHU-Ba-gic"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="AUn-YX-qnu" secondAttribute="trailing" id="wHU-Ba-gic"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
