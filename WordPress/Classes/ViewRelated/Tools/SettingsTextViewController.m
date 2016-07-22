@@ -23,7 +23,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
-@property (nonatomic, strong) UIView            *hintView;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
 @end
@@ -220,18 +219,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return _textField;
 }
 
-- (UIView *)hintView
-{
-    if (_hintView) {
-        return _hintView;
-    }
-    
-    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    [footerView setTitle:_hint];
-    _hintView = footerView;
-    return _hintView;
-}
-
 
 #pragma mark - UITableViewDelegate
 
@@ -254,9 +241,17 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return self.actionCell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return (section == SettingsTextSectionsTextfield) ? self.hintView : nil;
+    if (section != SettingsTextSectionsTextfield) {
+        return nil;
+    }
+    return self.hint;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

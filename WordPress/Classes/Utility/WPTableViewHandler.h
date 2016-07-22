@@ -39,6 +39,8 @@
 - (CGFloat)tableView:(nonnull UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
 - (nullable UIView *)tableView:(nonnull UITableView *)tableView viewForFooterInSection:(NSInteger)section;
 - (CGFloat)tableView:(nonnull UITableView *)tableView heightForFooterInSection:(NSInteger)section;
+- (void)tableView:(nonnull UITableView *)tableView willDisplayHeaderView:(nonnull UIView *)view forSection:(NSInteger)section;
+- (void)tableView:(nonnull UITableView *)tableView willDisplayFooterView:(nonnull UIView *)view forSection:(NSInteger)section;
 
 #pragma mark - Editing table rows
 
@@ -63,7 +65,8 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
-- (nullable NSString *)titleForHeaderInSection:(NSInteger)section;
+- (nullable NSString *)tableView:(nonnull UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+- (nullable NSString *)tableView:(nonnull UITableView *)tableView titleForFooterInSection:(NSInteger)section;
 
 #pragma mark - Inserting or deleting table rows
 
@@ -95,7 +98,6 @@
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
 - (nonnull instancetype)initWithTableView:(nonnull UITableView *)tableView;
-- (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
 - (void)invalidateCachedRowHeightAtIndexPath:(nonnull NSIndexPath *)indexPath;

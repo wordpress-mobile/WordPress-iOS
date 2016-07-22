@@ -98,12 +98,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *title;
@@ -113,20 +107,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         NSString *format = NSLocalizedString(@"Publicize to %@", @"Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name.");
         title = [NSString stringWithFormat:format, self.publicizeService.label];
     }
-
     return title;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -134,21 +120,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if ([self hasConnectedAccounts] && section == 0) {
         return nil;
     }
-
     NSString *title = NSLocalizedString(@"Connect to automatically share your blog posts to %@", @"Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service.");
     return [NSString stringWithFormat:title, self.publicizeService.label];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    NSString *title = [self tableView:tableView titleForFooterInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    footer.title = title;
-    return footer;
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
