@@ -30,6 +30,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [self.view addSubview:self.tableView];
 
     if (IS_IPHONE) {
