@@ -25,19 +25,19 @@ import UIKit
 
     /// Closure to be executed whenever the Keyboard will be Hidden
     ///
-    var onWillHide: (Void -> ())?
+    var onWillHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was hidden
     ///
-    var onDidHide: (Void -> ())?
+    var onDidHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard will be Shown
     ///
-    var onWillShow: (Void -> ())?
+    var onWillShow: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was Shown
     ///
-    var onDidShow: (Void -> ())?
+    var onDidShow: (() -> Void)?
 
 
     /// Reference to the container view
