@@ -167,7 +167,9 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SiteCellIdentifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SiteCellIdentifier];
+        WPTableViewCell *wpCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SiteCellIdentifier];
+        wpCell.forceCustomCellMargins = YES;
+        cell = wpCell;
     }
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
