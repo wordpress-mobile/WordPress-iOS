@@ -36,11 +36,12 @@ static CGFloat const PostHeaderHeight = 54.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
-
+static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             CommentContentViewDelegate,
                                             ReplyTextViewDelegate,
+                                            UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate>
@@ -88,11 +89,52 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 }
 
 
+#pragma mark - State Restoration
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *path = [coder decodeObjectForKey:RestorablePostObjectIDURLKey];
+    if (!path) {
+        return nil;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:path]];
+    if (!objectID) {
+        return nil;
+    }
+
+    NSError *error = nil;
+    ReaderPost *restoredPost = (ReaderPost *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredPost) {
+        return nil;
+    }
+
+    return [self controllerWithPost:restoredPost];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:RestorablePostObjectIDURLKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
