@@ -24,7 +24,6 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 - (void)setupSubviews
 {
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;

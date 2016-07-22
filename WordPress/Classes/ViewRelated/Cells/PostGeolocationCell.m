@@ -24,7 +24,7 @@ CGFloat const PostGeolocationCellMargin = 15.0f;
 
 - (void)configureSubviews
 {
-    PostGeolocationView *geoView = [[PostGeolocationView alloc] initWithFrame:self.contentView.bounds];
+    PostGeolocationView *geoView = [[PostGeolocationView alloc] init];
     geoView.translatesAutoresizingMaskIntoConstraints = NO;
     geoView.labelMargin = 0.0f;
     geoView.scrollEnabled = NO;
