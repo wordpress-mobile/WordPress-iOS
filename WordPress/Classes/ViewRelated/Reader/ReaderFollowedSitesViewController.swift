@@ -92,7 +92,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
@@ -273,6 +272,10 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
             return
+        }
+
+        if let wpCell = cell as? WPTableViewCell {
+            wpCell.forceCustomCellMargins = true
         }
 
         cell.accessoryType = .DisclosureIndicator

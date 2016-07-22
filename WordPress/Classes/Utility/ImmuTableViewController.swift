@@ -77,7 +77,6 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
         noticeAnimator = NoticeAnimator(target: view)
 
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 

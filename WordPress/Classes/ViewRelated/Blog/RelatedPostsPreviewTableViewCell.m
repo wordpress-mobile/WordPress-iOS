@@ -2,7 +2,7 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-static CGFloat HorizontalMargin = 10.0;
+static CGFloat HorizontalMargin = 0.0;
 static CGFloat VerticalMargin = 5.0;
 static CGFloat ImageHeight = 96.0;
 
@@ -71,8 +71,21 @@ static CGFloat ImageHeight = 96.0;
 
 @end
 
-@interface RelatedPostsPreviewTableViewCell()
+// Temporary container view for helping to follow readable margins until we can properly adopt this view for readability.
+// Brent C. Jul/22/2016
+@protocol RelatedPostsPreviewReadableContentViewDelegate;
 
+@interface RelatedPostsPreviewReadableContentView : UIView
+@property (nonatomic, weak) id <RelatedPostsPreviewReadableContentViewDelegate> delegate;
+@end
+
+@protocol RelatedPostsPreviewReadableContentViewDelegate <NSObject>
+- (void)postPreviewReadableContentViewDidLayoutSubviews:(RelatedPostsPreviewReadableContentView *)readableContentView;
+@end
+
+@interface RelatedPostsPreviewTableViewCell() <RelatedPostsPreviewReadableContentViewDelegate>
+
+@property (nonatomic, strong) UIView *readableContentView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) NSArray *previewPosts;
 
@@ -84,13 +97,29 @@ static CGFloat ImageHeight = 96.0;
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
+
+        RelatedPostsPreviewReadableContentView *readableContentView = [[RelatedPostsPreviewReadableContentView alloc] init];
+        readableContentView.delegate = self;
+        readableContentView.translatesAutoresizingMaskIntoConstraints = NO;
+        readableContentView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:readableContentView];
+
+        UILayoutGuide *readableGuide = self.contentView.readableContentGuide;
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [readableContentView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                                  [readableContentView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                                  [readableContentView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+                                                  [readableContentView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                                  ]];
+        _readableContentView = readableContentView;
+
         _enabledHeader = YES;
         _enabledImages = YES;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.text = NSLocalizedString(@"Related Posts", @"Label for Related Post header preview");
         _headerLabel.textColor = [WPStyleGuide greyDarken20];
         _headerLabel.font = [WPFontManager systemSemiBoldFontOfSize:11.0];
-        [self.contentView addSubview:_headerLabel];
+        [readableContentView addSubview:_headerLabel];
         
         RelatedPostsPreview *preview1 = [[RelatedPostsPreview alloc] initWithTitle:NSLocalizedString(@"Big iPhone/iPad Update Now Available", @"Text for related post cell preview")
                                                                               site:NSLocalizedString(@"in \"Mobile\"", @"Text for related post cell preview")
@@ -105,18 +134,39 @@ static CGFloat ImageHeight = 96.0;
         _previewPosts = @[preview1, preview2, preview3];
         
         for (RelatedPostsPreview *relatedPostPreview in _previewPosts) {
-            [self.contentView addSubview:relatedPostPreview.imageView];
-            [self.contentView addSubview:relatedPostPreview.titleLabel];
-            [self.contentView addSubview:relatedPostPreview.siteLabel];
+            [readableContentView addSubview:relatedPostPreview.imageView];
+            [readableContentView addSubview:relatedPostPreview.titleLabel];
+            [readableContentView addSubview:relatedPostPreview.siteLabel];
         }
     }
     return self;
 }
 
-- (void)layoutSubviews
+- (CGFloat)heightForWidth:(CGFloat)availableWidth
 {
-    [super layoutSubviews];
-    CGFloat width = self.contentView.frame.size.width - (2 * HorizontalMargin);
+    CGFloat width = self.readableContentView.frame.size.width - (2 * HorizontalMargin);
+    CGFloat height = 0;
+    CGSize sizeRestriction = CGSizeMake(width, CGFLOAT_MAX);
+    if (self.enabledHeader) {
+        height += ceilf([self.headerLabel sizeThatFits:sizeRestriction].height) + VerticalMargin;
+    }
+    for (RelatedPostsPreview *relatedPostPreview in _previewPosts) {
+        if (self.enabledImages) {
+            height += ImageHeight + (2 * VerticalMargin);
+        }
+        height += ceilf([relatedPostPreview.titleLabel sizeThatFits:sizeRestriction].height) + VerticalMargin;
+        height += ceilf([relatedPostPreview.siteLabel sizeThatFits:sizeRestriction].height);
+    }
+    height += VerticalMargin;
+
+    return height;
+}
+
+#pragma mark - RelatedPostsPreviewReadableContentViewDelegate
+
+- (void)postPreviewReadableContentViewDidLayoutSubviews:(RelatedPostsPreviewReadableContentView *)readableContentView
+{
+    CGFloat width = self.readableContentView.frame.size.width - (2 * HorizontalMargin);
     CGFloat height = 0;
     CGSize sizeRestriction = CGSizeMake(width, CGFLOAT_MAX);
     if (self.enabledHeader) {
@@ -135,36 +185,26 @@ static CGFloat ImageHeight = 96.0;
             relatedPostPreview.imageView.frame = CGRectZero;
             relatedPostPreview.imageView.hidden = YES;
         }
-        
+
         height = ceilf([relatedPostPreview.titleLabel sizeThatFits:sizeRestriction].height);
         relatedPostPreview.titleLabel.frame = CGRectMake(HorizontalMargin, CGRectGetMaxY(referenceView.frame) + VerticalMargin, width, height);
         referenceView = relatedPostPreview.titleLabel;
-        
+
         height = ceilf([relatedPostPreview.siteLabel sizeThatFits:sizeRestriction].height);
         relatedPostPreview.siteLabel.frame = CGRectMake(HorizontalMargin, CGRectGetMaxY(referenceView.frame), width, height);
         referenceView = relatedPostPreview.siteLabel;
     }
 }
 
-- (CGFloat)heightForWidth:(CGFloat)availableWidth
+@end
+
+@implementation RelatedPostsPreviewReadableContentView
+
+- (void)layoutSubviews
 {
-    CGFloat width = self.contentView.frame.size.width - (2 * HorizontalMargin);
-    CGFloat height = 0;
-    CGSize sizeRestriction = CGSizeMake(width, CGFLOAT_MAX);
-    if (self.enabledHeader) {
-        height += ceilf([self.headerLabel sizeThatFits:sizeRestriction].height) + VerticalMargin;
-    }
-    for (RelatedPostsPreview *relatedPostPreview in _previewPosts) {
-        if (self.enabledImages) {
-            height += ImageHeight + (2 * VerticalMargin);
-        }
-        height += ceilf([relatedPostPreview.titleLabel sizeThatFits:sizeRestriction].height) + VerticalMargin;
-        height += ceilf([relatedPostPreview.siteLabel sizeThatFits:sizeRestriction].height);
-    }
-    height += VerticalMargin;
-    
-    return height;
+    [super layoutSubviews];
+
+    [self.delegate postPreviewReadableContentViewDidLayoutSubviews:self];
 }
 
 @end
-
