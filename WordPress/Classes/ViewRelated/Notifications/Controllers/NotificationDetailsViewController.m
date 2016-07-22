@@ -69,8 +69,9 @@ static NSInteger NotificationSectionCount               = 1;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
 @property (nonatomic, strong) NSArray                       *blockGroups;
 
-// Media Helpers
+// Helpers
 @property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
+@property (nonatomic, strong) KeyboardDismissHelper         *keyboardManager;
 
 // Model
 @property (nonatomic, strong) Notification                  *note;
@@ -114,6 +115,9 @@ static NSInteger NotificationSectionCount               = 1;
     [self setupMainView];
     [self setupTableView];
     [self setupMediaDownloader];
+    [self setupReplyTextView];
+    [self setupSuggestionsView];
+    [self setupKeyboardManager];
     [self setupNotificationListeners];
 
     [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
@@ -122,21 +126,15 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
+
     [self.tableView deselectSelectedRowWithAnimation:YES];
+    [self.keyboardManager startListeningToKeyboardNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self.replyTextView resignFirstResponder];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+    [self.keyboardManager stopListeningToKeyboardNotifications];
 }
 
 - (void)viewDidLayoutSubviews
@@ -180,7 +178,9 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)setupWithNotification:(Notification *)notification
 {
     self.note = notification;
+    [self loadViewIfNeeded];
     [self attachReplyViewIfNeeded];
+    [self attachSuggestionsViewIfNeeded];
     [self attachEditActionIfNeeded];
     [self reloadData];
 }
@@ -236,6 +236,41 @@ static NSInteger NotificationSectionCount               = 1;
     self.mediaDownloader = [NotificationMediaDownloader new];
 }
 
+- (void)setupReplyTextView
+{
+    __typeof(self) __weak weakSelf = self;
+
+    ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
+    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
+    replyTextView.accessibilityIdentifier = @"Reply Text";
+    replyTextView.delegate = self;
+    replyTextView.onReply = ^(NSString *content) {
+        NotificationBlock *block = [[weakSelf.note blockGroupOfType:NoteBlockGroupTypeComment] blockOfType:NoteBlockTypeComment];
+        [weakSelf sendReplyWithBlock:block content:content];
+    };
+
+    self.replyTextView = replyTextView;
+}
+
+- (void)setupSuggestionsView
+{
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+}
+
+- (void)setupKeyboardManager
+{
+    NSParameterAssert(self.replyTextView);
+    NSParameterAssert(self.bottomLayoutConstraint);
+
+    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
+                                                                  scrollView:self.tableView
+                                                          dismissableControl:self.replyTextView
+                                                      bottomLayoutConstraint:self.bottomLayoutConstraint];
+}
+
 - (void)setupNotificationListeners
 {
     NSManagedObjectContext *context = self.note.managedObjectContext;
@@ -285,35 +320,22 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)attachReplyViewIfNeeded
 {
-    // iPad: We've got a different UI!
-    if ([WPDeviceIdentification isiPad]) {
+    if (self.shouldAttachReplyView == NO) {
+        [self.replyTextView removeFromSuperview];
         return;
     }
-    
+
+    [self.stackView addArrangedSubview:self.replyTextView];
+}
+
+- (BOOL)shouldAttachReplyView
+{
     // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
-    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
-    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
-    
-    if (![block isActionOn:NoteActionReplyKey]) {
-        return;
-    }
-    
-    __typeof(self) __weak weakSelf          = self;
-    
-    ReplyTextView *replyTextView            = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder               = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
-    replyTextView.replyText                 = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    replyTextView.accessibilityIdentifier   = @"Reply Text";
-    replyTextView.onReply                   = ^(NSString *content) {
-        [weakSelf sendReplyWithBlock:block content:content];
-    };
-    replyTextView.delegate                  = self;
-    self.replyTextView                      = replyTextView;
+    //
+    NotificationBlockGroup *group = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    BOOL allowsCommentAction = [[group blockOfType:NoteBlockTypeComment] isActionOn:NoteActionReplyKey];
 
-    [self.stackView addArrangedSubview:replyTextView];
-
-    // Attach suggestionsView
-    [self attachSuggestionsViewIfNeeded];
+    return (allowsCommentAction && [WPDeviceIdentification isiPad] == NO);
 }
 
 
@@ -321,13 +343,11 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
+    if (self.shouldAttachSuggestionsView == NO) {
+        [self.suggestionsTableView removeFromSuperview];
         return;
     }
-    
-    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
-    self.suggestionsTableView.suggestionsDelegate = self;
-    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
     [self.view addSubview:self.suggestionsTableView];
 
     [NSLayoutConstraint activateConstraints:@[
@@ -336,6 +356,12 @@ static NSInteger NotificationSectionCount               = 1;
         [self.suggestionsTableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.suggestionsTableView.bottomAnchor constraintEqualToAnchor:self.replyTextView.topAnchor]
     ]];
+}
+
+- (BOOL)shouldAttachSuggestionsView
+{
+    SuggestionService *suggestionsService = [SuggestionService sharedInstance];
+    return ([self shouldAttachReplyView] && [suggestionsService shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
 }
 
 
@@ -1282,28 +1308,6 @@ static NSInteger NotificationSectionCount               = 1;
     }
 }
 
-- (void)handleKeyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSDictionary* userInfo = notification.userInfo;
-    
-    // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect = [self.view convertRect:kbRect fromView:nil];
-    
-    // Bottom Inset: Consider the tab bar!
-    CGRect viewFrame = self.view.frame;
-    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    self.bottomLayoutConstraint.constant = MAX(bottomInset, 0);
-    [self.view layoutIfNeeded];
-    
-    [UIView commitAnimations];
-}
-
 
 #pragma mark - UITextViewDelegate
 
@@ -1320,6 +1324,24 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.keyboardManager scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.keyboardManager scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
 
