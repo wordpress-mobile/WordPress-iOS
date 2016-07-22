@@ -67,7 +67,12 @@ import UIKit
 
     /// Indicates whether the keyboard is visible or not
     ///
-    private var isKeyboardVisible = false
+    private var isKeyboardVisible = false {
+        didSet {
+            // Reset any current Drag OP on change
+            trackingDragOperation = false
+        }
+    }
 
     /// Indicates whether an Interactive Drag OP is being processed
     ///
@@ -203,7 +208,7 @@ import UIKit
         guard bottomInset != bottomLayoutConstraint.constant else {
             return
         }
-NSLog("[\(note.name)] New \(bottomInset) Current \(bottomLayoutConstraint.constant) Duration \(duration)")
+
         // Proceed Animating
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationCurve(curve)
