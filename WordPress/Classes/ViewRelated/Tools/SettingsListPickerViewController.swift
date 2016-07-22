@@ -67,7 +67,6 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     // MARK: - Setup Helpers
     private func setupTableView() {
-        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
@@ -101,42 +100,20 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
         return cell!
     }
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let text = headers?[section] else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        footerView.title = text
-
-        return footerView
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return headers?[section]
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let text = headers?[section] else {
-            return 0
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForHeader(text, width: view.frame.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let text = footers?[section] else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = text
-
-        return footerView
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return footers?[section]
     }
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let text = footers?[section] else {
-            return 0
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForFooter(text, width: view.frame.width)
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
