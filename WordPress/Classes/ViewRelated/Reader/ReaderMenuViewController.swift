@@ -76,7 +76,6 @@ import WordPressShared
 
 
     func configureTableView() {
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
@@ -262,20 +261,13 @@ import WordPressShared
         return viewModel.numberOfItemsInSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = viewModel.titleForSection(section)
-        let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        header.title = title
-        return header
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = viewModel.titleForSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
-
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let menuItem = viewModel.menuItemAtIndexPath(indexPath)

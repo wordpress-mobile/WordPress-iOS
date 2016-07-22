@@ -304,6 +304,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [self.view addSubview:self.tableView];
 
     [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentCellIdentifier];
