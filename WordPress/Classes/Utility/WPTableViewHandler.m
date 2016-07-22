@@ -57,12 +57,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Public Methods
 
-- (void)updateTitleForSection:(NSUInteger)section
-{
-    WPTableViewSectionHeaderFooterView *sectionHeaderView = (WPTableViewSectionHeaderFooterView *)[self tableView:self.tableView viewForHeaderInSection:section];
-    sectionHeaderView.title = [self titleForHeaderInSection:section];
-}
-
 - (void)clearCachedRowHeights
 {
     [self.cachedRowHeights removeAllObjects];
@@ -281,14 +275,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(titleForHeaderInSection:)]) {
-        return [self.delegate titleForHeaderInSection:section];
-    }
-    return nil;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
@@ -429,54 +415,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
-        return [self.delegate tableView:tableView viewForHeaderInSection:section];
-    }
-
-    WPTableViewSectionHeaderFooterView *header;
-    if ([self.sectionHeaders count] > section) {
-        header = [self.sectionHeaders objectAtIndex:section];
-    } else {
-        header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-        [self.sectionHeaders addObject:header];
-    }
-
-    header.title = [self titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
-        return [self.delegate tableView:tableView heightForHeaderInSection:section];
-    }
-
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.tableView.bounds)];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
-        return [self.delegate tableView:tableView heightForFooterInSection:section];
-    }
-
-    // Remove footer height for all but last section
-    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
-        return [self.delegate tableView:tableView viewForFooterInSection:section];
-    }
-
-    return nil;
-}
-
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
@@ -484,6 +422,55 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView viewForHeaderInSection:section];
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView heightForHeaderInSection:section];
+    }
+    return UITableViewAutomaticDimension;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
+        return [self.delegate tableView:tableView viewForFooterInSection:section];
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
+        return [self.delegate tableView:tableView heightForFooterInSection:section];
+    }
+    return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)]) {
+        [self.delegate tableView:tableView willDisplayHeaderView:view forSection:section];
+    } else {
+        [WPStyleGuide configureTableViewSectionHeader:view];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willDisplayFooterView:forSection:)]) {
+        [self.delegate tableView:tableView willDisplayFooterView:view forSection:section];
+    } else {
+        [WPStyleGuide configureTableViewSectionFooter:view];
+    }
+}
 
 #pragma mark - TableView Datasource Methods
 
@@ -505,10 +492,20 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if ([self.delegate respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView titleForHeaderInSection:section];
+    }
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:titleForFooterInSection:)]) {
+        return [self.delegate tableView:tableView titleForFooterInSection:section];
+    }
+    return nil;
+}
 
 #pragma mark - UIScrollViewDelegate Methods
 

@@ -480,28 +480,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return WPTableViewDefaultRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
     return detailSection.title;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 #pragma mark - Private methods

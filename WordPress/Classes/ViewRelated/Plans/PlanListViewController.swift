@@ -9,36 +9,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         didSet {
             handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
             updateNoResults()
-            updateFooterView()
         }
-    }
-
-    func updateFooterView() {
-        let footerViewModel = viewModel.tableFooterViewModelWithPresenter(self)
-
-        tableView.tableFooterView = tableFooterViewWithViewModel(footerViewModel)
-    }
-
-    private var footerTapAction: (() -> Void)?
-    private func tableFooterViewWithViewModel(viewModel: (title: String, action: () -> Void)?) -> UIView? {
-        guard let viewModel = viewModel else { return nil }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
-
-        let title = viewModel.title
-        footerView.title = title
-        footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: footerView.bounds.width)
-
-        // Don't add a recognizer if we already have one
-        let recognizers = footerView.gestureRecognizers
-        if recognizers == nil || recognizers?.count == 0 {
-            footerTapAction = viewModel.action
-
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
-            footerView.addGestureRecognizer(tapRecognizer)
-        }
-
-        return footerView
     }
 
     private let noResultsView = WPNoResultsView()
@@ -114,10 +85,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
                 self.viewModel = .Error(String(error))
             }
         )
-    }
-
-    func footerTapped() {
-        footerTapAction?()
     }
 
     // MARK: - ImmuTablePresenter
