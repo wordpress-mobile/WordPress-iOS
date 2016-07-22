@@ -39,6 +39,15 @@ import UIKit
     ///
     var onDidShow: (() -> Void)?
 
+    /// Closure to be executed whenever the Keyboard *will* change its frame
+    ///
+    var onWillChangeFrame: (() -> Void)?
+
+    /// Closure to be executed whenever the Keyboard *did* change its frame
+    ///
+    var onDidChangeFrame: (() -> Void)?
+
+
 
     /// Reference to the container view
     ///
@@ -93,6 +102,8 @@ import UIKit
         nc.addObserver(self, selector: #selector(keyboardDidShow), name: UIKeyboardDidShowNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIKeyboardDidHideNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: UIKeyboardDidChangeFrameNotification, object: nil)
 
     }
 
@@ -163,6 +174,15 @@ import UIKit
         onDidHide?()
     }
 
+    func keyboardWillChangeFrame(note: NSNotification) {
+        onWillChangeFrame?()
+    }
+
+    func keyboardDidChangeFrame(note: NSNotification) {
+        handleKeyboardFrameChange(note)
+        onDidChangeFrame?()
+    }
+
 
     // MARK: - Private Helpers
 
@@ -179,11 +199,17 @@ import UIKit
         let convertedKeyboardRect = parentView.convertRect(kbRect.CGRectValue(), fromView: nil)
         let bottomInset = max(convertedKeyboardRect.height - convertedKeyboardRect.maxY + parentView.frame.height, 0)
 
+        // Don't Overwork!
+        guard bottomInset != bottomLayoutConstraint.constant else {
+            return
+        }
+NSLog("[\(note.name)] New \(bottomInset) Current \(bottomLayoutConstraint.constant) Duration \(duration)")
+        // Proceed Animating
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationCurve(curve)
         UIView.setAnimationDuration(duration)
 
-        bottomLayoutConstraint.constant = max(bottomInset, 0)
+        bottomLayoutConstraint.constant = bottomInset
         parentView.layoutIfNeeded()
 
         UIView.commitAnimations()
