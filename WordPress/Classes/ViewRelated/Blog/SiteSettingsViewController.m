@@ -14,7 +14,6 @@
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "WordPress-Swift.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
@@ -123,7 +122,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];

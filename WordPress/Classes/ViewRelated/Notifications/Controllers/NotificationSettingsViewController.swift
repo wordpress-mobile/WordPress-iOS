@@ -49,8 +49,6 @@ public class NotificationSettingsViewController : UIViewController
 
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
 

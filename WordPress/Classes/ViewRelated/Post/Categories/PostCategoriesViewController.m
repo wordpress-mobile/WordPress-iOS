@@ -41,7 +41,6 @@ static const CGFloat CategoryCellIndentation = 16.0;
     [super viewDidLoad];
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     // Hide extra cell separators.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -161,10 +160,6 @@ static const CGFloat CategoryCellIndentation = 16.0;
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CategoryCellIdentifier forIndexPath:indexPath];
     
-    // HACK: We use zero here, because the the separator inset will do the work we want
-    cell.indentationLevel = 0;
-    cell.indentationWidth = CategoryCellIndentation;
-    
     NSInteger row = indexPath.row; // Use this index for the remainder for this method.
     
     // When showing this VC in mode CategoriesSelectionModeParent, we want the first item to be
@@ -192,7 +187,8 @@ static const CGFloat CategoryCellIndentation = 16.0;
     
     PostCategory* category = self.categories[row];
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
-    cell.separatorInset = UIEdgeInsetsMake(0, (indentationLevel+1) * cell.indentationWidth, 0, 0);
+    cell.indentationLevel = indentationLevel;
+    cell.indentationWidth = CategoryCellIndentation;
     cell.textLabel.text = [category.categoryName stringByDecodingXMLCharacters];
     [WPStyleGuide configureTableViewCell:cell];
 

@@ -48,7 +48,6 @@ public class DiscussionSettingsViewController : UITableViewController
 
     private func setupTableView() {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        tableView.cellLayoutMarginsFollowReadableWidth = false
 
         // Note: We really want to handle 'Unselect' manually.
         // Reason: we always reload previously selected rows.

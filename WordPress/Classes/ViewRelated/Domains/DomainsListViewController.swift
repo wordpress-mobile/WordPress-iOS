@@ -93,7 +93,6 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Domains", comment: "Title for the Domains list")
 
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         if let dotComID = blog.dotComID {
