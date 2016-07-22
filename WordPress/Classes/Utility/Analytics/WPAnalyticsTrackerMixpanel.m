@@ -375,6 +375,16 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_search_loaded"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_reader_search_loaded"];
             break;
+        case WPAnalyticsStatReaderSearchPerformed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Performed Search"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_search_performed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reader_search_performed"];
+            break;
+        case WPAnalyticsStatReaderSearchResultTapped:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Tapped Search Result"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_reader_search_result_tapped"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_reader_search_result_tapped"];
+            break;
         case WPAnalyticsStatReaderSiteBlocked:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Blocked Blog"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_blocked_a_blog"];

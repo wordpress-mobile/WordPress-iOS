@@ -46,6 +46,7 @@ extension NotificationsViewController
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
+        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView:tableView)
     }
 
@@ -261,6 +262,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
+        cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
         cell.read                   = note.read.boolValue
