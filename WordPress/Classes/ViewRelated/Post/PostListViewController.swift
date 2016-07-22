@@ -231,8 +231,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             authorFilter = .Mine
         }
         filterSettings.setCurrentPostAuthorFilter(authorFilter)
-
-        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
     }
 
     // MARK: - Data Model Interaction
@@ -551,12 +549,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
 
         navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    // MARK: - Filter Related
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPostListStatusFilterKey
     }
 
     // MARK: - InteractivePostViewDelegate

@@ -406,12 +406,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         alertController.presentFromRootViewController()
     }
 
-    // MARK: - Filter Related
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPageListStatusFilterKey
-    }
-
     // MARK: - Cell Action Handling
 
     private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
