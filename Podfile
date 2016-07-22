@@ -50,7 +50,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8'
     pod 'WordPressCom-Analytics-iOS', '0.1.16'
-    pod 'WordPressCom-Stats-iOS', '0.7.4'
+    pod 'WordPressCom-Stats-iOS', '0.7.5'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.4'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.5'
   end
 
 end
