@@ -63,7 +63,7 @@ static CGFloat const SettingsMinHeight = 41.0f;
     _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _textViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, SettingsTextPadding.dx, SettingsTextPadding.dy)];
+    UITextView *textView = [[UITextView alloc] init];
     textView.text = self.text;
     textView.returnKeyType = UIReturnKeyDefault;
     textView.keyboardType = UIKeyboardTypeDefault;
