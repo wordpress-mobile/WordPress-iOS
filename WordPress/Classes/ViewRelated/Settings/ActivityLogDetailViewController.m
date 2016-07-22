@@ -27,7 +27,7 @@
 
     [WPStyleGuide configureColorsForView:self.view andTableView:nil];
 
-    UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    UITextView *textView = [[UITextView alloc] init];
     textView.editable = NO;
     textView.text = self.logText;
     textView.font = [WPStyleGuide subtitleFont];
@@ -44,8 +44,7 @@
                                               ]];
     self.textView = textView;
 
-    UIBarButtonItem *shareButton = nil;
-    shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                 target:self
                                                                 action:@selector(showShareOptions:)];
     self.navigationItem.rightBarButtonItem = shareButton;
