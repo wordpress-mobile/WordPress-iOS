@@ -468,6 +468,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
     cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
     cell.imageView.layer.borderWidth = 1.5;
+
     [cell.imageView setImageWithSiteIcon:blog.icon];
     
     cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
