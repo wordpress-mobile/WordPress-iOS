@@ -1225,13 +1225,12 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
-        WPButtonForNavigationBar* button = [WPStyleGuide buttonForBarWithImage:image
+        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                 style:[WPStyleGuide barButtonStyleForDone]
                                                                 target:self
-                                                              selector:@selector(showPreview)];
-        
-        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+                                                                action:@selector(showPreview)];
+        _previewBarButtonItem.accessibilityLabel = buttonTitle;
     }
 	
 	return _previewBarButtonItem;
