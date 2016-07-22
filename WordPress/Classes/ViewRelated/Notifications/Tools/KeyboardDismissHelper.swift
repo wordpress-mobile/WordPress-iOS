@@ -159,23 +159,23 @@ import UIKit
     // MARK: - Notification Helpers
     func keyboardWillShow(note: NSNotification) {
         isKeyboardVisible = true
-        handleKeyboardFrameChange(note)
+        refreshBottomInsetIfNeeded(note)
         onWillShow?()
     }
 
     func keyboardDidShow(note: NSNotification) {
-        handleKeyboardFrameChange(note)
+        refreshBottomInsetIfNeeded(note)
         onDidShow?()
     }
 
     func keyboardWillHide(note: NSNotification) {
         isKeyboardVisible = false
-        handleKeyboardFrameChange(note)
+        refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onWillHide?()
     }
 
     func keyboardDidHide(note: NSNotification) {
-        handleKeyboardFrameChange(note)
+        refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onDidHide?()
     }
 
@@ -184,28 +184,20 @@ import UIKit
     }
 
     func keyboardDidChangeFrame(note: NSNotification) {
-        handleKeyboardFrameChange(note)
         onDidChangeFrame?()
     }
 
 
     // MARK: - Private Helpers
 
-    private func handleKeyboardFrameChange(note: NSNotification) {
-        guard let kbRect = note.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-            let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval,
-            let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let curve = UIViewAnimationCurve(rawValue: rawCurve) else
-        {
-            return
-        }
-
-        // Bottom Inset: Consider the tab bar!
-        let convertedKeyboardRect = parentView.convertRect(kbRect.CGRectValue(), fromView: nil)
-        let bottomInset = max(convertedKeyboardRect.height - convertedKeyboardRect.maxY + parentView.frame.height, 0)
+    private func refreshBottomInsetIfNeeded(note: NSNotification, isHideEvent: Bool = false) {
+        // Parse the Notification: We'll enforce a Zero Padding for Hide Events
+        let duration = durationFromKeyboardNote(note)
+        let curve = curveFromKeyboardNote(note)
+        let newBottomInset = isHideEvent ? CGFloat(0) : bottomInsetFromKeyboardNote(note)
 
         // Don't Overwork!
-        guard bottomInset != bottomLayoutConstraint.constant else {
+        guard newBottomInset != bottomLayoutConstraint.constant else {
             return
         }
 
@@ -214,9 +206,36 @@ import UIKit
         UIView.setAnimationCurve(curve)
         UIView.setAnimationDuration(duration)
 
-        bottomLayoutConstraint.constant = bottomInset
+        bottomLayoutConstraint.constant = newBottomInset
         parentView.layoutIfNeeded()
 
         UIView.commitAnimations()
+    }
+
+    private func bottomInsetFromKeyboardNote(note: NSNotification) -> CGFloat {
+        let wrappedRect = note.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue
+        let keyboardRect = wrappedRect?.CGRectValue() ?? CGRectZero
+        let relativeRect = parentView.convertRect(keyboardRect, fromView: nil)
+        let bottomInset = max(relativeRect.height - relativeRect.maxY + parentView.frame.height, 0)
+
+        return bottomInset
+    }
+
+    private func durationFromKeyboardNote(note:  NSNotification) -> NSTimeInterval {
+        guard let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval else {
+            return NSTimeInterval(0)
+        }
+
+        return duration
+    }
+
+    private func curveFromKeyboardNote(note:  NSNotification) -> UIViewAnimationCurve {
+        guard let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
+            let curve = UIViewAnimationCurve(rawValue: rawCurve) else
+        {
+            return .EaseInOut
+        }
+
+        return curve
     }
 }
