@@ -104,7 +104,10 @@ class ShareViewController: SLComposeServiceViewController {
         // Even when the oAuth Token is nil, it's possible the default site hasn't been retrieved yet.
         // Let's disable Post, until the user picks a valid site.
         //
-        return selectedSiteID != nil
+        let containsMedia = extensionContext?.containsMediaAttachment() ?? false
+        let containsText = contentText.isEmpty == false
+
+        return selectedSiteID != nil && (containsText || containsMedia)
     }
 
     override func didSelectCancel() {
