@@ -922,10 +922,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         updateAndPerformFetchRequestRefreshingResults()
     }
 
-    func keyForCurrentListStatusFilter() -> String {
-        fatalError("You should implement this method in the subclass")
-    }
-
     func updateFilterTitle() {
         filterButton.setAttributedTitleForTitle(filterSettings.currentPostListFilter().title)
     }
