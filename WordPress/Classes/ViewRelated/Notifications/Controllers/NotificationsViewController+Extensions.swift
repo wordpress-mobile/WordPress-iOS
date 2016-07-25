@@ -238,7 +238,7 @@ extension NotificationsViewController
 }
 
 
-///
+/// Notifications Deletion Mechanism
 ///
 extension NotificationsViewController
 {
