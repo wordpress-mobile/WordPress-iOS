@@ -4,11 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="Merriweather-Bold.ttf">
-            <string>Merriweather-Bold</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Team-->
         <scene sceneID="0Jd-lB-cu0">
@@ -52,7 +47,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="1up-XI-AiZ"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="Merriweather-Bold" family="Merriweather" pointSize="14"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                             <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
