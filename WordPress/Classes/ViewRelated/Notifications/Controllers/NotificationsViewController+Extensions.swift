@@ -265,7 +265,7 @@ extension NotificationsViewController
         }
     }
 
-    func cancelDeletionAction(noteObjectID: NSManagedObjectID) {
+    func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
         notificationDeletionBlocks.removeObjectForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
@@ -425,7 +425,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
         cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
         cell.onUndelete             = { [weak self] in
-            self?.cancelDeletionAction(note.objectID)
+            self?.cancelDeletionForNoteWithID(note.objectID)
         }
 
         cell.downloadIconWithURL(note.iconURL)
