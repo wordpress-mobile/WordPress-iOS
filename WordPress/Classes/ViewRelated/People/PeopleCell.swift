@@ -9,7 +9,6 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
 
     override func awakeFromNib() {
-        forceCustomCellMargins = true
         displayNameLabel.font = WPFontManager.merriweatherBoldFontOfSize(14)
     }
 
