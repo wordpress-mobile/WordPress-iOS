@@ -60,7 +60,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         HelpshiftUtils.refreshUnreadNotificationCount()
-        animateDeselectionInteractively()
+
+        if splitViewControllerIsCollapsed {
+            animateDeselectionInteractively()
+        }
     }
 
     @objc private func reloadViewModel() {
@@ -74,7 +77,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+
+        let selectedIndexPath = tableView.indexPathForSelectedRow
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
+        tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
     }
 
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
@@ -86,30 +92,37 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+        let showsDisclosureIndicator = splitViewControllerIsCollapsed
+
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
             icon: Gridicon.iconOfType(.User),
+            showsDisclosureIndicator: showsDisclosureIndicator,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
             icon: Gridicon.iconOfType(.Cog),
+            showsDisclosureIndicator: showsDisclosureIndicator,
             action: pushAccountSettings())
 
         let appSettings = NavigationItemRow(
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
             icon: Gridicon.iconOfType(.Phone),
+            showsDisclosureIndicator: showsDisclosureIndicator,
             action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             icon: Gridicon.iconOfType(.Bell),
+            showsDisclosureIndicator: showsDisclosureIndicator,
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
             icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
+            showsDisclosureIndicator: showsDisclosureIndicator,
             action: pushHelp())
 
         let logIn = ButtonRow(
@@ -193,20 +206,23 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
 
+    private lazy var myProfileViewController: UIViewController? = {
+        guard let account = self.defaultAccount() else {
+            let error = "Tried to push My Profile without a default account. This shouldn't happen"
+            assertionFailure(error)
+            DDLogSwift.logError(error)
+            return nil
+        }
+
+        return MyProfileViewController(account: account)
+    }()
+
     private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
-            guard let account = self.defaultAccount() else {
-                let error = "Tried to push My Profile without a default account. This shouldn't happen"
-                assertionFailure(error)
-                DDLogSwift.logError(error)
-                return
+            if let myProfileViewController = self.myProfileViewController {
+                WPAppAnalytics.track(.OpenedMyProfile)
+                self.showDetailViewController(myProfileViewController, sender: self)
             }
-
-            WPAppAnalytics.track(.OpenedMyProfile)
-            guard let controller = MyProfileViewController(account: account) else {
-                return
-            }
-            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -217,7 +233,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.navigationController?.pushViewController(controller, animated: true)
+
+                self.showDetailViewController(controller, sender: self)
             }
         }
     }
@@ -226,21 +243,21 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAppSettings)
             let controller = AppSettingsViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
     func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
@@ -341,4 +358,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
         return headerView
     }()
+}
+
+extension MeViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        return myProfileViewController
+    }
 }

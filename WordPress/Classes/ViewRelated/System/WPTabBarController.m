@@ -61,6 +61,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
+@property (nonatomic, strong) WPSplitViewController *meSplitViewController;
+
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
 
 @end
@@ -104,7 +106,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self setViewControllers:@[self.blogListNavigationController,
                                    self.readerNavigationController,
                                    self.newPostViewController,
-                                   self.meNavigationController,
+                                   self.meSplitViewController,
                                    self.notificationsNavigationController]];
 
         [self setSelectedViewController:self.blogListNavigationController];
@@ -244,7 +246,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _meNavigationController;
     }
 
-    self.meViewController = [MeViewController new];
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
     UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
     _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -255,6 +256,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
 
     return _meNavigationController;
+}
+
+- (MeViewController *)meViewController {
+    if (!_meViewController) {
+        _meViewController = [MeViewController new];
+    }
+
+    return _meViewController;
 }
 
 - (UINavigationController *)notificationsNavigationController
@@ -283,6 +292,21 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     CGFloat offset = [WPDeviceIdentification isiPad] ? WPTabBarIconOffsetiPad : WPTabBarIconOffsetiPhone;
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
+}
+
+#pragma mark - Split View Controllers
+
+- (UISplitViewController *)meSplitViewController
+{
+    if (!_meSplitViewController) {
+        _meSplitViewController = [WPSplitViewController new];
+    }
+
+    [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+
+    _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
+
+    return _meSplitViewController;
 }
 
 #pragma mark - Navigation Helpers

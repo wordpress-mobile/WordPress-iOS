@@ -69,8 +69,19 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
                 accessoryType = .None
             } else {
                 accessoryView = nil
-                accessoryType = .DisclosureIndicator
+                accessoryType = previousAccessoryType
             }
+        }
+    }
+
+    // Allows us to restore the previous accessory type whenever we clear the badge
+    private lazy var previousAccessoryType: UITableViewCellAccessoryType = {
+        return self.accessoryType
+    }()
+
+    override var accessoryType: UITableViewCellAccessoryType {
+        didSet {
+            previousAccessoryType = oldValue
         }
     }
 

@@ -8,16 +8,18 @@ struct NavigationItemRow : ImmuTableRow {
     let title: String
     let icon: UIImage?
     let action: ImmuTableAction?
+    let showsDisclosureIndicator: Bool
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, showsDisclosureIndicator: Bool = true, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
+        self.showsDisclosureIndicator = showsDisclosureIndicator
         self.action = action
     }
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
-        cell.accessoryType = .DisclosureIndicator
+        cell.accessoryType = showsDisclosureIndicator ? .DisclosureIndicator : .None
         cell.imageView?.image = icon
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -31,11 +33,13 @@ struct BadgeNavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let badgeCount: Int
+    let showsDisclosureIndicator: Bool
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, showsDisclosureIndicator: Bool = true, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
         self.badgeCount = badgeCount
+        self.showsDisclosureIndicator = showsDisclosureIndicator
         self.action = action
     }
 
@@ -43,7 +47,7 @@ struct BadgeNavigationItemRow: ImmuTableRow {
         let cell = cell as! WPTableViewCellBadge
 
         cell.textLabel?.text = title
-        cell.accessoryType = .None
+        cell.accessoryType = showsDisclosureIndicator ? .DisclosureIndicator : .None
         cell.imageView?.image = icon
         cell.badgeCount = badgeCount
 
