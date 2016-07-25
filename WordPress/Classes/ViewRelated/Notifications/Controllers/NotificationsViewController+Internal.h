@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
 - (void)reloadResultsController;
+- (void)reloadResultsControllerIfNeeded;
 
 - (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID;
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID;
