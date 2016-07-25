@@ -83,7 +83,7 @@ private class AccountSettingsController: SettingsController {
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
-            action: presenter.prompt(editEmailAddress(settings, service: service))
+            action: presenter.push(editEmailAddress(settings, service: service))
         )
 
         let primarySite = EditableTextRow(
@@ -95,7 +95,7 @@ private class AccountSettingsController: SettingsController {
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.prompt(editWebAddress(service))
+            action: presenter.push(editWebAddress(service))
         )
 
         return ImmuTable(sections: [
