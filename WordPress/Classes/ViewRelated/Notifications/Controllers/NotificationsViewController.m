@@ -238,7 +238,7 @@ static CGFloat const NoteEstimatedHeight = 70;
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
         detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
-            [weakSelf showUndelete:note.objectID onTimeout:onUndoTimeout];
+            [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
     }
 }
