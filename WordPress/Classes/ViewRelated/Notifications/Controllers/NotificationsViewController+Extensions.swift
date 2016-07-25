@@ -227,14 +227,13 @@ extension NotificationsViewController
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
     ///
-    func showUndelete(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
         // Mark this note as Pending Deletichroon and Reload
-//        notificationDeletionBlocks[noteObjectID] = onTimeout
         setDeletionBlock(onTimeout, forNoteObjectID: noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
-        performSelector(#selector(performDeletionAction), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
+        performSelector(#selector(deleteNoteWithID), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
     }
 }
 
@@ -243,7 +242,7 @@ extension NotificationsViewController
 ///
 extension NotificationsViewController
 {
-    func performDeletionAction(noteObjectID: NSManagedObjectID) {
+    func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
         guard let deletionBlock = notificationDeletionBlocks[noteObjectID] as? NotificationDeletionActionBlock else {
             return
@@ -270,7 +269,7 @@ extension NotificationsViewController
         notificationDeletionBlocks.removeObjectForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(performDeletionAction), object: noteObjectID)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
     func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
