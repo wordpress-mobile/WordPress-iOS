@@ -246,10 +246,14 @@ static CGFloat const NoteEstimatedHeight = 70;
 
 - (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID
 {
-    // Note:
-    // This method is just a temporary workaround. Will be removed in the next PR!.
-    // Thank you!
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
     self.notificationDeletionBlocks[noteObjectID] = [deletionBlock copy];
+}
+
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID
+{
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    return self.notificationDeletionBlocks[noteObjectID];
 }
 
 @end
