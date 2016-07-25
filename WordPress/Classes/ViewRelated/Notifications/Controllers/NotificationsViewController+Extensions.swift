@@ -46,6 +46,7 @@ extension NotificationsViewController
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
+        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView:tableView)
     }
 
@@ -415,6 +416,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
+        cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
         cell.read                   = note.read.boolValue
@@ -442,8 +444,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // Update Separators:
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NoteTableViewCell else {
+                continue
+            }
+
             let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
             cell.showsBottomSeparator = !isLastRow
         }

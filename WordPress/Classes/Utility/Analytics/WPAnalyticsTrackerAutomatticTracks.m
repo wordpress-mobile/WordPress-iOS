@@ -588,6 +588,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatReaderSearchLoaded:
             eventName = @"reader_search_loaded";
             break;
+        case WPAnalyticsStatReaderSearchPerformed:
+            eventName = @"reader_search_performed";
+            break;
+        case WPAnalyticsStatReaderSearchResultTapped:
+            eventName = @"reader_searchcard_clicked";
+            break;
         case WPAnalyticsStatReaderSiteBlocked:
             eventName = @"reader_blog_blocked";
             break;

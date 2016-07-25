@@ -36,11 +36,12 @@ static CGFloat const PostHeaderHeight = 54.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
-
+static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             CommentContentViewDelegate,
                                             ReplyTextViewDelegate,
+                                            UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate>
@@ -56,6 +57,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) KeyboardDismissHelper *keyboardManager;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) UIView *postHeaderWrapper;
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
@@ -88,11 +90,52 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 }
 
 
+#pragma mark - State Restoration
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *path = [coder decodeObjectForKey:RestorablePostObjectIDURLKey];
+    if (!path) {
+        return nil;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:path]];
+    if (!objectID) {
+        return nil;
+    }
+
+    NSError *error = nil;
+    ReaderPost *restoredPost = (ReaderPost *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredPost) {
+        return nil;
+    }
+
+    return [self controllerWithPost:restoredPost];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:RestorablePostObjectIDURLKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -113,7 +156,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
-    
+    [self configureKeyboardManager];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self refreshAndSync];
@@ -131,8 +175,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         }
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleApplicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -153,9 +196,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.previousViewGeometry = self.view.frame.size;
 
     [self.replyTextView resignFirstResponder];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self.keyboardManager stopListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -263,6 +304,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [self.view addSubview:self.tableView];
 
     [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentCellIdentifier];
@@ -328,6 +370,19 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
     self.tapOffKeyboardGesture.enabled = NO;
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+}
+
+- (void)configureKeyboardManager
+{
+    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
+                                                                  scrollView:self.tableView
+                                                          dismissableControl:self.replyTextView
+                                                      bottomLayoutConstraint:self.replyTextViewBottomConstraint];
+
+    __weak UITableView *weakTableView = self.tableView;
+    self.keyboardManager.onWillHide = ^{
+        [weakTableView deselectSelectedRowWithAnimation:YES];
+    };
 }
 
 
@@ -685,51 +740,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 }
 
 
-#pragma mark - Notification handlers
-
-- (void)handleKeyboardWillShow:(NSNotification *)notification
-{
-    NSDictionary* userInfo = notification.userInfo;
-
-    // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect = [self.view convertRect:kbRect fromView:nil];
-
-    // Bottom Inset: Consider the tab bar!
-    CGRect viewFrame = self.view.frame;
-    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    self.replyTextViewBottomConstraint.constant = bottomInset;
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    //deselect the selected comment if there is one
-    NSArray *selection = [self.tableView indexPathsForSelectedRows];
-    if ([selection count] > 0) {
-        [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
-    }
-
-    NSDictionary* userInfo = notification.userInfo;
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    self.replyTextViewBottomConstraint.constant = 0;
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
-}
-
-
 #pragma mark - Actions
 
 - (void)tapRecognized:(id)sender
@@ -1049,16 +1059,25 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self preventPendingMediaLayoutInCells:YES];
+    [self.keyboardManager scrollViewWillBeginDragging:scrollView];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self preventPendingMediaLayoutInCells:NO];
-
-    NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-    [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
-    [self.replyTextView resignFirstResponder];
     [self refreshReplyTextViewPlaceholder];
+
+    [self.tableView deselectSelectedRowWithAnimation:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.keyboardManager scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -1066,6 +1085,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (decelerate) {
         return;
     }
+
     [self preventPendingMediaLayoutInCells:NO];
 }
 

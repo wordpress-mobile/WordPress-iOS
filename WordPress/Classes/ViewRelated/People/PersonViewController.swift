@@ -405,3 +405,12 @@ private extension PersonViewController {
         return person as? User
     }
 }
+
+
+// MARK: Private Cell
+//
+class PersonCell : WPTableViewCell {
+    override func awakeFromNib() {
+        forceCustomCellMargins = true
+    }
+}

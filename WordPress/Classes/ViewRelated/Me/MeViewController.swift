@@ -54,7 +54,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         refreshAccountDetails()
 
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
