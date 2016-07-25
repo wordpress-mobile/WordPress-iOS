@@ -56,7 +56,7 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -107,7 +107,7 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
 
     // Notifications
-    [self hookApplicationStateNotes];
+    [self startListeningToNotifications];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
 
@@ -125,7 +125,7 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self unhookApplicationStateNotes];
+    [self stopListeningToNotifications];
     
     // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
@@ -135,46 +135,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - NSNotification Helpers
-
-- (void)hookApplicationStateNotes
-{
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)unhookApplicationStateNotes
-{
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
-{
-    // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
-    if (!self.isViewLoaded || !self.view.window) {
-        return;
-    }
-
-    // Reset the badge: the notifications are visible!
-    [self resetApplicationBadge];
-    [self updateLastSeenTime];
-    [self reloadResultsControllerIfNeeded];
-}
-
-- (void)handleApplicationWillResignActiveNote:(NSNotification *)note
-{
-    [self stopWaitingForNotification];
-}
-
-- (void)handleDefaultAccountChangedNote:(NSNotification *)note
-{
-    [self resetApplicationBadge];
 }
 
 

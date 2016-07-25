@@ -129,6 +129,45 @@ extension NotificationsViewController
 
 
 
+// MARK: - Notifications
+//
+extension NotificationsViewController
+{
+    func startListeningToNotifications() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive), name:UIApplicationWillResignActiveNotification, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+        nc.removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
+    }
+
+    func applicationDidBecomeActive(note: NSNotification) {
+        // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+        guard isViewLoaded() == true && view.window != nil else {
+            return
+        }
+
+        // Reset the badge: the notifications are visible!
+        resetApplicationBadge()
+        updateLastSeenTime()
+        reloadResultsControllerIfNeeded()
+    }
+
+    func applicationWillResignActive(note: NSNotification) {
+        stopWaitingForNotification()
+    }
+
+    func defaultAccountDidChange(note: NSNotification) {
+        resetApplicationBadge()
+    }
+}
+
+
+
 // MARK: - Public Methods
 //
 extension NotificationsViewController
@@ -290,8 +329,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // Update Separators:
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NoteTableViewCell else {
+                continue
+            }
+
             let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
             cell.showsBottomSeparator = !isLastRow
         }
@@ -429,19 +472,19 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 extension NotificationsViewController
 {
     public func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReviewForSection(RatingSettings.section) else {
+        guard AppRatingUtility.shouldPromptForAppReviewForSection(Ratings.section) else {
             return
         }
 
-        guard ratingsHeightConstraint.constant != RatingSettings.heightFull && ratingsView.alpha != WPAlphaFull else {
+        guard ratingsHeightConstraint.constant != Ratings.heightFull && ratingsView.alpha != WPAlphaFull else {
             return
         }
 
         ratingsView.alpha = WPAlphaZero
 
-        UIView.animateWithDuration(WPAnimationDurationDefault, delay: RatingSettings.animationDelay, options: .CurveEaseIn, animations: {
+        UIView.animateWithDuration(WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .CurveEaseIn, animations: {
             self.ratingsView.alpha = WPAlphaFull
-            self.ratingsHeightConstraint.constant = RatingSettings.heightFull
+            self.ratingsHeightConstraint.constant = Ratings.heightFull
 
             self.setupTableHeaderView()
         }, completion: nil)
@@ -452,7 +495,7 @@ extension NotificationsViewController
     public func hideRatingView() {
         UIView.animateWithDuration(WPAnimationDurationDefault) {
             self.ratingsView.alpha = WPAlphaZero
-            self.ratingsHeightConstraint.constant = RatingSettings.heightZero
+            self.ratingsHeightConstraint.constant = Ratings.heightZero
 
             self.setupTableHeaderView()
         }
@@ -554,7 +597,7 @@ extension NotificationsViewController: ABXPromptViewDelegate
         AppRatingUtility.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = NSURL(string: RatingSettings.reviewURL) {
+        if let targetURL = NSURL(string: Ratings.reviewURL) {
             UIApplication.sharedApplication().openURL(targetURL)
         }
     }
@@ -624,7 +667,7 @@ private extension NotificationsViewController
         static let syncTimeout      = NSTimeInterval(10)
     }
 
-    enum RatingSettings {
+    enum Ratings {
         static let section          = "notifications"
         static let heightFull       = CGFloat(100)
         static let heightZero       = CGFloat(0)
