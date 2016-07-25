@@ -26,5 +26,6 @@
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
 - (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID;
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID;
 
 @end
