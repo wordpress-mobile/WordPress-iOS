@@ -244,7 +244,7 @@ extension NotificationsViewController
 {
     func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
-        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] as? NotificationDeletionActionBlock else {
+        guard let deletionBlock = deletionBlockForNoteWithID(noteObjectID) else {
             return
         }
 
