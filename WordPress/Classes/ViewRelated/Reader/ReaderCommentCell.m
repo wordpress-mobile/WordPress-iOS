@@ -28,6 +28,9 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+
+        self.forceCustomCellMargins = YES;
+
         UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
         selectedBackgroundView.backgroundColor = [UIColor whiteColor];
         self.selectedBackgroundView = selectedBackgroundView;

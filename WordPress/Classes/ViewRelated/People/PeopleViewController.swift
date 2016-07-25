@@ -154,6 +154,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add,
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))
+
+        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         // By default, let's display the Blog's Users

@@ -2,6 +2,7 @@
 
 @interface WPStyleGuide (ReadableMargins)
 
-+ (void)resetReadableMarginsForTableView:(UITableView *)tableView;
+
++ (void)resetReadableMarginsForTableView:(UITableView *)tableView __deprecated_msg("Follow readable margins via constraints or instead explicitly set setCellLayoutMarginsFollowReadableWidth on UITableView.");
 
 @end
