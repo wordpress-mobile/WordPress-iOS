@@ -36,16 +36,18 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
-@property (nonatomic, strong) UITableView           *tableView;
-@property (nonatomic, strong) ReplyTextView         *replyTextView;
-@property (nonatomic, strong) SuggestionsTableView  *suggestionsTableView;
+@property (nonatomic, strong) UITableView               *tableView;
+@property (nonatomic, strong) ReplyTextView             *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView      *suggestionsTableView;
+@property (nonatomic, strong) NSLayoutConstraint        *bottomLayoutConstraint;
+@property (nonatomic, strong) KeyboardDismissHelper     *keyboardManager;
 
-@property (nonatomic, strong) NSDictionary          *layoutIdentifiersMap;
-@property (nonatomic, strong) NSDictionary          *reuseIdentifiersMap;
-@property (nonatomic, assign) NSUInteger            numberOfRows;
-@property (nonatomic, assign) NSUInteger            rowNumberForHeader;
-@property (nonatomic, assign) NSUInteger            rowNumberForComment;
-@property (nonatomic, assign) NSUInteger            rowNumberForActions;
+@property (nonatomic, strong) NSDictionary              *layoutIdentifiersMap;
+@property (nonatomic, strong) NSDictionary              *reuseIdentifiersMap;
+@property (nonatomic, assign) NSUInteger                numberOfRows;
+@property (nonatomic, assign) NSUInteger                rowNumberForHeader;
+@property (nonatomic, assign) NSUInteger                rowNumberForComment;
+@property (nonatomic, assign) NSUInteger                rowNumberForActions;
 
 @end
 
@@ -65,17 +67,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                           action:@selector(dismissKeyboardIfNeeded:)];
     tapRecognizer.cancelsTouchesInView = NO;
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.estimatedRowHeight = 44.0;
-    [self.tableView addGestureRecognizer:tapRecognizer];
-    [self.view addSubview:self.tableView];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.estimatedRowHeight = 44.0;
+    [tableView addGestureRecognizer:tapRecognizer];
+    [self.view addSubview:tableView];
 
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.tableView = tableView;
+
+    [WPStyleGuide configureColorsForView:self.view andTableView:tableView];
 
     // Register Cell Nibs
     NSArray *cellClassNames = @[
@@ -93,11 +97,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass layoutIdentifier]];
     }
 
-    
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyViewIfNeeded];
     [self setupAutolayoutConstraints];
     [self adjustTableViewInsetsIfNeeded];
+    [self setupKeyboardManager];
 }
 
 - (void)attachSuggestionsTableViewIfNeeded
@@ -128,6 +132,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
+
     [self.view addSubview:self.replyTextView];
 }
 
@@ -149,15 +154,15 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                                                       metrics:nil
                                                                         views:views]];
     if ([self shouldAttachReplyTextView]) {
-        views[@"replyTextView"] = self.replyTextView;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][replyTextView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[replyTextView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
+        self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
+        self.bottomLayoutConstraint.active = YES;
+
+        [NSLayoutConstraint activateConstraints:@[
+            [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+            [self.replyTextView.topAnchor constraintEqualToAnchor:self.tableView.bottomAnchor],
+            [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        ]];
     }
     else {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
@@ -191,6 +196,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
+- (void)setupKeyboardManager
+{
+    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
+                                                                  scrollView:self.tableView
+                                                          dismissableControl:self.replyTextView
+                                                      bottomLayoutConstraint:self.bottomLayoutConstraint];
+}
+
 - (void)adjustTableViewInsetsIfNeeded
 {
     if ([WPDeviceIdentification isiPad]) {
@@ -218,18 +231,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     [super viewWillAppear:animated];
 
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self.keyboardManager startListeningToKeyboardNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    [self.replyTextView resignFirstResponder];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.keyboardManager stopListeningToKeyboardNotifications];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -325,7 +334,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupCell:(UITableViewCell *)cell
 {
     NSParameterAssert(cell);
-    
+
+    if ([cell isKindOfClass:[WPTableViewCell class]]) {
+        // Temporarily force margins for WPTableViewCell hack.
+        // Brent C. Jul/19/2016
+        [(WPTableViewCell *)cell setForceCustomCellMargins:YES];
+    }
+
     // This is gonna look way better in Swift!
     if ([cell isKindOfClass:[NoteBlockHeaderTableViewCell class]]) {
         [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell];
@@ -701,52 +716,21 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 }
 
 
-#pragma mark - Keyboard Management
+#pragma mark - UIScrollViewDelegate
 
-- (void)handleKeyboardWillShow:(NSNotification *)notification
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSDictionary* userInfo = notification.userInfo;
-
-    // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect = [self.view convertRect:kbRect fromView:nil];
-
-    // Bottom Inset: Consider the tab bar!
-    CGRect viewFrame = self.view.frame;
-    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:bottomInset];
-
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
+    [self.keyboardManager scrollViewWillBeginDragging:scrollView];
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSDictionary* userInfo = notification.userInfo;
+    [self.keyboardManager scrollViewDidScroll:scrollView];
+}
 
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:0];
-
-    [self.view layoutIfNeeded];
-
-    [UIView commitAnimations];
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
 
