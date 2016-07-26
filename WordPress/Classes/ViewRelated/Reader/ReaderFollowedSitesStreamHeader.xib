@@ -38,7 +38,7 @@
                                 <constraint firstAttribute="width" constant="20" id="sFR-fr-BWy"/>
                             </constraints>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFi-ME-clV" customClass="PostMetaButton">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFi-ME-clV" customClass="PostMetaButton">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -57,7 +57,6 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="3tN-sa-FJf" secondAttribute="bottom" constant="16" id="2yv-DV-kym"/>
                         <constraint firstItem="EFi-ME-clV" firstAttribute="leading" secondItem="an8-aa-V2Q" secondAttribute="leading" id="7hT-0c-NJA"/>
-                        <constraint firstAttribute="width" priority="900" constant="600" id="7wU-7w-TcU"/>
                         <constraint firstItem="2R7-Bw-ts8" firstAttribute="leading" secondItem="rlf-7m-KPD" secondAttribute="trailing" constant="8" id="Llc-dY-rjq"/>
                         <constraint firstAttribute="trailing" secondItem="EFi-ME-clV" secondAttribute="trailing" id="Mlk-GV-sj3"/>
                         <constraint firstItem="rlf-7m-KPD" firstAttribute="leading" secondItem="3tN-sa-FJf" secondAttribute="trailing" constant="10" id="UEx-8O-RuE"/>
@@ -68,15 +67,16 @@
                         <constraint firstItem="EFi-ME-clV" firstAttribute="top" secondItem="an8-aa-V2Q" secondAttribute="top" id="nhe-JO-YOc"/>
                         <constraint firstItem="2R7-Bw-ts8" firstAttribute="centerY" secondItem="an8-aa-V2Q" secondAttribute="centerY" id="rqC-vc-4Bp"/>
                         <constraint firstAttribute="bottom" secondItem="EFi-ME-clV" secondAttribute="bottom" id="sQE-uZ-MEU"/>
+                        <constraint firstAttribute="width" priority="950" constant="600" id="uSp-oZ-V6u"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
-                            <exclude reference="7wU-7w-TcU"/>
+                            <exclude reference="uSp-oZ-V6u"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
-                            <include reference="7wU-7w-TcU"/>
+                            <include reference="uSp-oZ-V6u"/>
                         </mask>
                     </variation>
                 </view>
