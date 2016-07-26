@@ -507,7 +507,7 @@ import WordPressComAnalytics
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if ReaderHelpers.topicIsFollowing(topic) && Feature.enabled(.ReaderMenu) {
             resultsStatusView.buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
             resultsStatusView.delegate = self
         } else {
