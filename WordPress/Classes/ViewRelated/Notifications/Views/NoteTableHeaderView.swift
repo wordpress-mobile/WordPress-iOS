@@ -22,8 +22,8 @@ import WordPressShared
 
     public var separatorColor: UIColor? {
         set {
-            layoutView.bottomColor  = newValue ?? UIColor.clearColor()
-            layoutView.topColor     = newValue ?? UIColor.clearColor()
+            layoutView.bottomColor = newValue ?? UIColor.clearColor()
+            layoutView.topColor = newValue ?? UIColor.clearColor()
         }
         get {
             return layoutView.bottomColor
@@ -55,21 +55,21 @@ import WordPressShared
         addSubview(contentView)
 
         // Make sure the Outlets are loaded
-        assert(contentView  != nil)
-        assert(layoutView   != nil)
-        assert(imageView    != nil)
-        assert(titleLabel   != nil)
+        assert(contentView != nil)
+        assert(layoutView != nil)
+        assert(imageView != nil)
+        assert(titleLabel != nil)
 
         // Layout
         contentView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(contentView)
 
         // Background + Separators
-        backgroundColor             = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
 
-        layoutView.backgroundColor  = Style.sectionHeaderBackgroundColor
-        layoutView.bottomVisible    = true
-        layoutView.topVisible       = true
+        layoutView.backgroundColor = Style.sectionHeaderBackgroundColor
+        layoutView.bottomVisible = true
+        layoutView.topVisible = true
     }
 
 
@@ -81,8 +81,8 @@ import WordPressShared
     public static let headerHeight  = CGFloat(26)
 
     // MARK: - Outlets
-    @IBOutlet private var contentView:        UIView!
-    @IBOutlet private var layoutView:         SeparatorsView!
-    @IBOutlet private var imageView:          UIImageView!
-    @IBOutlet private var titleLabel:         UILabel!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var layoutView: SeparatorsView!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
 }

@@ -2,12 +2,11 @@
 
 
 @class ABXPromptView;
+@class NSManagedObjectID;
 @class WPTableViewHandler;
 @class WPNoResultsView;
 
-@protocol ABXPromptViewDelegate;
 @protocol WPTableViewHandlerDelegate;
-@protocol SPBucketDelegate;
 
 
 #pragma mark - Private Properties
@@ -23,14 +22,10 @@
 @property (nonatomic, strong) NSString                      *pushNotificationID;
 @property (nonatomic, strong) NSDate                        *pushNotificationDate;
 @property (nonatomic, strong) NSDate                        *lastReloadDate;
-@property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
+@property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID *, NotificationDeletionActionBlock> *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
-- (NSString *)entityName;
-- (void)reloadResultsController;
-
-- (id <ABXPromptViewDelegate>)appbotViewDelegate;
-- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate;
-- (id <SPBucketDelegate>)simperiumBucketDelegate;
+- (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID;
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID;
 
 @end

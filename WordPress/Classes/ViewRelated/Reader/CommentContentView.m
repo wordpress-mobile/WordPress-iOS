@@ -449,6 +449,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (void)configureContentView
 {
+    // Set the content to an empty string first. This "resets" the text layout
+    // and helps clear up some artifacting and drawing errors in certain edge cases.
+    self.textContentView.content = @"";
     self.textContentView.privateContent = [self.contentProvider isPrivateContent];
     self.textContentView.content = [self sanitizedContentStringForDisplay:[self.contentProvider contentForDisplay]];
 }

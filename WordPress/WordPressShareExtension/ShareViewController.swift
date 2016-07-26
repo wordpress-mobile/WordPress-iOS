@@ -7,30 +7,61 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
 
+    /// WordPress.com Username
+    ///
     private lazy var wpcomUsername: String? = {
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
 
+    /// WordPress.com OAuth Token
+    ///
     private lazy var oauth2Token: String? = {
         ShareExtensionService.retrieveShareExtensionToken()
     }()
 
+    /// Selected Site's ID
+    ///
     private lazy var selectedSiteID: Int? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
     }()
 
+    /// Selected Site's Name
+    ///
     private lazy var selectedSiteName: String? = {
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
+    /// Maximum Image Size
+    ///
+    private lazy var maximumImageSize: CGSize = {
+        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? self.defaultMaxDimension
+        return CGSize(width: dimension, height: dimension)
+    }()
+
+    /// Tracks Instance
+    ///
     private lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
-    private lazy var postStatus = "publish"
+    /// MediaView Instance
+    ///
+    private var mediaView: MediaView!
 
-    // TODO: This should eventually be moved into WordPressComKit
+    /// Image Attachment
+    ///
+    private var mediaImage: UIImage?
+
+    /// Post's Status
+    ///
+    private var postStatus = "publish"
+
+
+    // MARK: - Private Constants
+
+    private let defaultMaxDimension = 3000
     private let postStatuses = [
+        // TODO: This should eventually be moved into WordPressComKit
         "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
     ]
@@ -40,12 +71,18 @@ class ShareViewController: SLComposeServiceViewController {
     // MARK: - UIViewController Methods
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
 
-        // TextView
-        loadTextViewContent()
+        // Initialization
+        setupBearerToken()
+
+        // Load TextView + PreviewImage
+        loadTextContent()
+        loadMediaContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -60,8 +97,7 @@ class ShareViewController: SLComposeServiceViewController {
     // MARK: - SLComposeService Overriden Methods
 
     override func loadPreviewView() -> UIView! {
-        // Hides Composer Thumbnail Preview.
-        return UIView()
+        return mediaView
     }
 
     override func isContentValid() -> Bool {
@@ -77,28 +113,21 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func didSelectPost() {
-        guard let oauth2Token = oauth2Token, selectedSiteID = selectedSiteID else {
+        guard let _ = oauth2Token, siteID = selectedSiteID else {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
-        RequestRouter.bearerToken = oauth2Token
 
-        let identifier = WPAppGroupName + "." + NSUUID().UUIDString
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-        configuration.sharedContainerIdentifier = WPAppGroupName
+        // Proceed uploading the actual post
+        let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
+        let encodedMedia = mediaImage?.resizeWithMaximumSize(maximumImageSize).JPEGEncoded()
 
-        let service = PostService(configuration: configuration)
-        let linkified = contentText.stringWithAnchoredLinks()
-        let (subject, body) = linkified.splitContentTextIntoSubjectAndBody()
+        uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
+            self.tracks.trackExtensionPosted(self.postStatus)
+            self.extensionContext?.completeRequestReturningItems([], completionHandler: nil)
 
-        service.createPost(siteID: selectedSiteID, status: postStatus, title: subject, body: body) {
-            (post, error) in
-            print("Post \(post) Error \(error)")
+// TODO: Handle retry?
         }
-
-        extensionContext?.completeRequestReturningItems([], completionHandler: nil)
-
-        tracks.trackExtensionPosted(postStatus)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -174,13 +203,59 @@ private extension ShareViewController
 ///
 private extension ShareViewController
 {
-    private func loadTextViewContent() {
-        extensionContext?.loadWebsiteUrl { url in
-            let current = self.contentText ?? String()
-            let source  = url?.absoluteString ?? String()
-            let spacing = current.isEmpty ? String() : "\n\n"
-
-            self.textView.text = "\(current)\(spacing)\(source)"
+    func setupBearerToken() {
+        guard let bearerToken = oauth2Token else {
+            return
         }
+
+        RequestRouter.bearerToken = bearerToken
+    }
+
+    func loadTextContent() {
+        extensionContext?.loadWebsiteUrl { url in
+            // Text + New Line + Source
+            var payload = self.contentText ?? String()
+            if let sourceURL = url?.absoluteString where url?.fileURL == false {
+                payload += payload.isEmpty ? String() : "\n\n"
+                payload += sourceURL
+            }
+
+            self.textView.text = payload
+        }
+    }
+
+    func loadMediaContent() {
+        extensionContext?.loadMediaImage { image in
+            guard let mediaImage = image else {
+                return
+            }
+
+            // Load the View
+            let mediaView = MediaView()
+            mediaView.resizeIfNeededAndDisplay(mediaImage)
+
+            // References please
+            self.mediaImage = mediaImage
+            self.mediaView = mediaView
+            self.reloadConfigurationItems()
+        }
+    }
+}
+
+
+
+/// ShareViewController Extension: Backend Interaction
+///
+private extension ShareViewController
+{
+    func uploadPostWithSubject(subject: String, body: String, status: String, siteID: Int, attachedImageData: NSData?, requestEqueued: Void -> ()) {
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+        let service = PostService(configuration: configuration)
+
+        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
+            requestEqueued()
+        }, completion: { (post, error) in
+            print("Post \(post) Error \(error)")
+        })
     }
 }

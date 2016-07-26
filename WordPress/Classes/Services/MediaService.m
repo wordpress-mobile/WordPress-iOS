@@ -441,23 +441,35 @@
     }];
 }
 
-- (void)getMediaLibraryCountForBlog:(Blog *)blog
-                            success:(void (^)(NSInteger))success
-                            failure:(void (^)(NSError *error))failure
+- (NSInteger)getMediaLibraryCountForBlog:(Blog *)blog
+                           forMediaTypes:(NSSet *)mediaTypes
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMediaLibraryCountWithSuccess:^(NSInteger count) {
-                               if (success) {
-                                   success(count);
-                               }
-                           }
-                           failure:^(NSError *error) {
-                               if (failure) {
-                                   [self.managedObjectContext performBlock:^{
-                                       failure(error);
-                                   }];
-                               }
-                           }];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [self predicateForMediaTypes:mediaTypes blog:blog];
+    NSError *error;
+    NSArray *mediaAssets = [self.managedObjectContext executeFetchRequest:request error:&error];
+    return mediaAssets.count;
+}
+
+- (NSPredicate *)predicateForMediaTypes:(NSSet *)mediaTypes blog:(Blog *)blog
+{
+    NSMutableArray * filters = [NSMutableArray array];
+    [mediaTypes enumerateObjectsUsingBlock:^(NSNumber *obj, BOOL *stop){
+        MediaType filter = (MediaType)[obj intValue];
+        NSString *filterString = [Media stringFromMediaType:filter];
+        [filters addObject:[NSString stringWithFormat:@"mediaTypeString == \"%@\"", filterString]];
+    }];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", blog];
+    if (filters.count > 0) {
+        NSString *mediaFilters = [filters componentsJoinedByString:@" || "];
+        NSPredicate *mediaPredicate = [NSPredicate predicateWithFormat:mediaFilters];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:
+                     @[predicate, mediaPredicate]];
+    }
+
+    return predicate;
 }
 
 #pragma mark - Private
@@ -701,7 +713,7 @@ static NSString * const MediaDirectory = @"Media";
                                                                                     error:nil];
 
         for (NSURL *currentURL in contentsOfDir) {
-            NSString *filepath = [currentURL path];
+            NSString *filepath = [[currentURL URLByResolvingSymlinksInPath] path];
             NSString *extension = filepath.pathExtension.lowercaseString;
             if (![mediaExtensions containsObject:extension] ||
                 [pathsToKeep containsObject:filepath]) {

@@ -32,6 +32,7 @@
     }
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.rowHeight = 44.0;
     self.tableView.estimatedRowHeight = 44.0;
@@ -47,7 +48,6 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -135,6 +135,11 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isKindOfClass:[WPTableViewCell class]]) {
+        WPTableViewCell *wpCell = (WPTableViewCell *)cell;
+        wpCell.forceCustomCellMargins = YES;
+    }
+
     if ([cell.textLabel.text length] == 0) {
         // The sizeToFit call in [WPStyleGuide configureTableViewCell:] seems to mess with the
         // UI when cells are configured the first time round and the modal animation is playing.
@@ -168,7 +173,7 @@
     }
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
 
@@ -180,7 +185,8 @@
         return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
     }
 
-    return nil;}
+    return nil;
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {

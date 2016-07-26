@@ -41,6 +41,7 @@ extern NSString *const WPShareExtensionKeychainTokenKey;
 extern NSString *const WPShareExtensionKeychainServiceName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
+extern NSString *const WPShareExtensionMaximumMediaDimensionKey;
 
 /// Today Widget Constants
 ///
