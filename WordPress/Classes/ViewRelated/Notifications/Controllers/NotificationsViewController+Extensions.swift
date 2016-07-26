@@ -206,15 +206,13 @@ class NotificationsViewController : UITableViewController
             return
         }
 
-        if let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController {
-            detailsViewController.setupWithNotification(note)
-            detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
-                self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
-            }
+        guard let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController else {
+            return
         }
 
-        if let readerViewController = segue.destinationViewController as? ReaderDetailViewController {
-            readerViewController.setupWithPostID(note.metaPostID, siteID: note.metaSiteID)
+        detailsViewController.setupWithNotification(note)
+        detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
+            self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
         }
     }
 }
