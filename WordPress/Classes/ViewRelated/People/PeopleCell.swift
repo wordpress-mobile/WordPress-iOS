@@ -9,8 +9,7 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
 
     override func awakeFromNib() {
-        forceCustomCellMargins = true
-        displayNameLabel.font = WPFontManager.merriweatherBoldFontOfSize(14)
+        displayNameLabel.font = WPFontManager.systemBoldFontOfSize(14)
     }
 
     func bindViewModel(viewModel: PeopleCellViewModel) {
