@@ -54,7 +54,8 @@ static CGFloat const ERVCContentScrollMargin = 10.;
     
     if ([[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.siteID]) {        
         // attach the suggestions view
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.siteID];
+        self.suggestionsTableView = [SuggestionsTableView new];
+        self.suggestionsTableView.siteID = self.siteID;
         self.suggestionsTableView.suggestionsDelegate = self;
         self.suggestionsTableView.useTransparentHeader = YES;
         [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
