@@ -119,14 +119,6 @@ import WordPressShared
     }
 
 
-    /// Presents the reader's followed sites vc.
-    ///
-    func showFollowedSites() {
-        let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
-
     /// Presents a new view controller for subscribing to a new tag.
     ///
     func showAddTag() {
@@ -319,14 +311,6 @@ import WordPressShared
         cell.selectionStyle = .Default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
-
-        if let topic = menuItem.topic where ReaderHelpers.topicIsFollowing(topic) {
-            let accessoryView = ManageCellAccessoryView.createFromNib()
-            accessoryView.onManageTapped = { [weak self] in
-                self?.showFollowedSites()
-            }
-            cell.accessoryView = accessoryView
-        }
     }
 
 
