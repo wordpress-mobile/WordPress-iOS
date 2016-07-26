@@ -37,7 +37,8 @@ class NotificationsViewController : UITableViewController
 
     /// TableView Handler: Our commander in chief!
     ///
-    private var tableViewHandler: WPTableViewHandler!
+    // TODO JLP 7.26.2016: Make this one private once +RowActions has been merged in
+    var tableViewHandler: WPTableViewHandler!
 
     /// NoResults View
     ///
