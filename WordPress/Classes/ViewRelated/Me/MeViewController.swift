@@ -66,6 +66,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Required to update the tableview cell disclosure indicators
+        reloadViewModel()
+    }
+
     @objc private func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
