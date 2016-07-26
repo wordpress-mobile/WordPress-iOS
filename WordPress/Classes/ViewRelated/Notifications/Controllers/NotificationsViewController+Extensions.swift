@@ -189,8 +189,6 @@ class NotificationsViewController : UITableViewController
             readerViewController.setupWithPostID(note.metaPostID, siteID: note.metaSiteID)
         }
     }
-
-    let NoteEstimatedHeight = CGFloat(70)
 }
 
 
@@ -342,7 +340,6 @@ extension NotificationsViewController
             return
         }
 
-        // Reset the badge: the notifications are visible!
         resetApplicationBadge()
         updateLastSeenTime()
         reloadResultsControllerIfNeeded()
@@ -444,7 +441,6 @@ extension NotificationsViewController
 
         // Hit the Deletion Block
         deletionBlock { success in
-            // Cleanup
             self.notificationDeletionBlocks.removeValueForKey(noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
@@ -474,7 +470,6 @@ extension NotificationsViewController
 extension NotificationsViewController
 {
     func reloadResultsControllerIfNeeded() {
-        // Note:
         // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
         // Simply calling reloadData doesn't make the FRC recalculate the sections.
         // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
@@ -505,12 +500,10 @@ extension NotificationsViewController
     }
 
     func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
-        // Failsafe
         guard let noteObjectID = noteObjectID else {
             return
         }
 
-        // Load the Notification and its indexPath
         do {
             let note = try simperium.managedObjectContext().existingObjectWithID(noteObjectID)
 
@@ -589,7 +582,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        // Note:
         // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
         // For that reason, we draw our own separators.
         //
@@ -629,10 +621,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     func tableViewDidChangeContent(tableView: UITableView) {
-        // Update Separators:
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-
+        //
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NoteTableViewCell else {
                 continue
@@ -670,7 +661,6 @@ private extension NotificationsViewController
     }
 
     var shouldDisplayFilters: Bool {
-        // Note:
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
