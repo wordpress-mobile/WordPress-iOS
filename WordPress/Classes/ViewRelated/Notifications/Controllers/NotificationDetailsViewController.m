@@ -255,7 +255,8 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)setupSuggestionsView
 {
-    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+    self.suggestionsTableView = [SuggestionsTableView new];
+    self.suggestionsTableView.siteID = self.note.metaSiteID;
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
