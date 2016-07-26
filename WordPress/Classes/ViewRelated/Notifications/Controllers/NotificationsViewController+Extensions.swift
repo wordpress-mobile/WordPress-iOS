@@ -8,34 +8,63 @@ import WordPressShared
 
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
-/// WordPress.com account found in the system.
+/// WordPress.com account.
 ///
 /// This class relies on both, Simperium and WPTableViewHandler to automatically receive
 /// new Notifications that might be generated, and render them onscreen.
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
-/// given its remote identifier. This is specially useful when dealing with events derived from
-/// interactions with Push Notifications OS banners.
+/// given its remote identifier.
 ///
 class NotificationsViewController : UITableViewController
 {
-    @IBOutlet var tableHeaderView : UIView!
-    @IBOutlet var filtersSegmentedControl : UISegmentedControl!
-    @IBOutlet var ratingsView : ABXPromptView!
-    @IBOutlet var ratingsHeightConstraint : NSLayoutConstraint!
-    var tableViewHandler : WPTableViewHandler!
-    private var noResultsView : WPNoResultsView!
-    private var pushNotificationID : String?
-    private var pushNotificationDate : NSDate?
+    // MARK: - Properties
 
-    // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+    /// TableHeader
+    ///
+    @IBOutlet var tableHeaderView: UIView!
+
+    /// Filtering Segmented Control
+    ///
+    @IBOutlet var filtersSegmentedControl: UISegmentedControl!
+
+    /// Ratings View
+    ///
+    @IBOutlet var ratingsView: ABXPromptView!
+
+    /// Defines the Height of the Ratings View
+    ///
+    @IBOutlet var ratingsHeightConstraint: NSLayoutConstraint!
+
+    /// TableView Handler: Our commander in chief!
+    ///
+    private var tableViewHandler: WPTableViewHandler!
+
+    /// NoResults View
+    ///
+    private var noResultsView: WPNoResultsView!
+
+    /// ID of the Notification that must be pushed, granted that it gets synced before the timeout kicks.
+    ///
+    private var pushNotificationID: String?
+
+    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
+    ///
+    private var pushNotificationDate: NSDate?
+
+    /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+    ///
     private var lastReloadDate = NSDate()
 
-    // Notifications that received a destructive action will allow the user to Undo this action.
-    // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
-    // so that it can be proactively filtered from the list.
+    /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
+    ///
     private var notificationDeletionBlocks = [NSManagedObjectID: NotificationDeletionActionBlock]()
+
+    /// Notifications being deleted are proactively filtered from the list.
+    ///
     private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
+
+    // MARK: - View Lifecycle
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
