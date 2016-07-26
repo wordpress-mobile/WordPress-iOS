@@ -67,7 +67,7 @@ extension ReaderStreamViewController
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("Welcome to the reader", comment:"A message title"),
+                title: NSLocalizedString("Welcome to the Reader", comment:"A message title"),
                 message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment:"A message explaining the Following topic in the reader")
             )
         }
