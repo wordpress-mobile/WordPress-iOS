@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -47,45 +47,21 @@
                             <constraint firstAttribute="trailing" secondItem="dPd-xc-GkE" secondAttribute="trailing" constant="14" id="TF1-Iy-WTJ">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                             </constraint>
-                            <constraint firstAttribute="width" constant="600" id="UOv-L4-TfA"/>
                             <constraint firstAttribute="bottom" secondItem="dPd-xc-GkE" secondAttribute="bottom" id="VuC-Uj-kS2"/>
                             <constraint firstItem="au3-8f-nAh" firstAttribute="top" secondItem="qtC-jW-wnY" secondAttribute="top" id="aEF-bJ-dLs"/>
                             <constraint firstItem="au3-8f-nAh" firstAttribute="leading" secondItem="qtC-jW-wnY" secondAttribute="leading" constant="13" id="ly1-3i-mjX">
                                 <variation key="heightClass=regular-widthClass=regular" constant="22"/>
                             </constraint>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="UOv-L4-TfA"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="UOv-L4-TfA"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="qtC-jW-wnY" firstAttribute="top" secondItem="QqJ-JC-nik" secondAttribute="top" id="Bt5-qm-4ab"/>
                     <constraint firstItem="qtC-jW-wnY" firstAttribute="leading" secondItem="QqJ-JC-nik" secondAttribute="leading" constant="6" id="Ldq-L9-1TE"/>
-                    <constraint firstAttribute="centerX" secondItem="qtC-jW-wnY" secondAttribute="centerX" id="c5X-JV-HuI"/>
                     <constraint firstAttribute="trailing" secondItem="qtC-jW-wnY" secondAttribute="trailing" constant="6" id="ejN-GF-xfr"/>
                     <constraint firstAttribute="bottom" secondItem="qtC-jW-wnY" secondAttribute="bottom" constant="1" id="tKa-MQ-ESY"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="c5X-JV-HuI"/>
-                    </mask>
-                </variation>
-                <variation key="heightClass=regular-widthClass=regular">
-                    <mask key="constraints">
-                        <exclude reference="Ldq-L9-1TE"/>
-                        <include reference="c5X-JV-HuI"/>
-                        <exclude reference="ejN-GF-xfr"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="pageContentView" destination="qtC-jW-wnY" id="Bqm-qT-TJI"/>
