@@ -502,10 +502,18 @@ import WordPressComAnalytics
             return
         }
 
+        tableView.tableHeaderView?.hidden = true
         let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
+        if ReaderHelpers.topicIsFollowing(topic) {
+            resultsStatusView.buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
+            resultsStatusView.delegate = self
+        } else {
+            resultsStatusView.buttonTitle = nil
+            resultsStatusView.delegate = nil
+        }
         displayResultsStatus()
     }
 
@@ -937,6 +945,12 @@ import WordPressComAnalytics
             return
         }
         header.configureHeader(topic)
+    }
+
+
+    func showManageSites() {
+        let controller = ReaderFollowedSitesViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
@@ -1411,8 +1425,7 @@ extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
         } else if topic.isKindOfClass(ReaderSiteTopic) {
             toggleFollowingForSite(topic as! ReaderSiteTopic)
         } else if ReaderHelpers.topicIsFollowing(topic) {
-            let controller = ReaderFollowedSitesViewController.controller()
-            navigationController?.pushViewController(controller, animated: true)
+            showManageSites()
         }
     }
 }
@@ -1727,4 +1740,12 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         postCell.delegate = self
     }
 
+}
+
+
+extension ReaderStreamViewController : WPNoResultsViewDelegate
+{
+    public func didTapNoResultsView(noResultsView: WPNoResultsView!) {
+        showManageSites()
+    }
 }
