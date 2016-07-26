@@ -236,6 +236,7 @@ extension NotificationsViewController
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
+        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView:tableView)
     }
 
@@ -420,22 +421,22 @@ extension NotificationsViewController
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
     ///
-    func showUndelete(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
         // Mark this note as Pending Deletichroon and Reload
         notificationDeletionBlocks[noteObjectID] = onTimeout
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
-        performSelector(#selector(performDeletionAction), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
+        performSelector(#selector(deleteNoteWithID), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
     }
 }
 
 
-///
+/// Notifications Deletion Mechanism
 ///
 extension NotificationsViewController
 {
-    func performDeletionAction(noteObjectID: NSManagedObjectID) {
+    func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
         guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
             return
@@ -458,11 +459,11 @@ extension NotificationsViewController
         }
     }
 
-    func cancelDeletionAction(noteObjectID: NSManagedObjectID) {
-        notificationDeletionBlocks.removeValueForKey(noteObjectID)
+    func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
+        notificationDeletionBlocks.removeObjectForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(performDeletionAction), object: noteObjectID)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
     func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
@@ -506,7 +507,6 @@ extension NotificationsViewController
         // Don't overwork!
         lastReloadDate = NSDate()
     }
-
 
     func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
         // Failsafe
@@ -608,6 +608,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
+        cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
         cell.read                   = note.read.boolValue
@@ -617,7 +618,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
         cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
         cell.onUndelete             = { [weak self] in
-            self?.cancelDeletionAction(note.objectID)
+            self?.cancelDeletionForNoteWithID(note.objectID)
         }
 
         cell.downloadIconWithURL(note.iconURL)
@@ -635,8 +636,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // Update Separators:
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NoteTableViewCell
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NoteTableViewCell else {
+                continue
+            }
+
             let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
             cell.showsBottomSeparator = !isLastRow
         }
