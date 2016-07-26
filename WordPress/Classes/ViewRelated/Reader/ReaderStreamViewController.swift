@@ -631,6 +631,10 @@ import WordPressComAnalytics
 
 
     func configureNavigationItemForTopic() {
+        if Feature.enabled(.ReaderMenu) {
+            return
+        }
+
         guard let topic = readerTopic else {
             navigationItem.rightBarButtonItems = nil
             return
