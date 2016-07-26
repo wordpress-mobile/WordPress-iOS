@@ -4,7 +4,7 @@ import SVProgressHUD
 
 ///
 ///
-class ReaderFollowedSitesViewController: UIViewController
+class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration
 {
     @IBOutlet var searchBar: UISearchBar!
 
@@ -34,7 +34,31 @@ class ReaderFollowedSitesViewController: UIViewController
     }
 
 
+    // MARK: - State Restoration
+
+
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return controller()
+    }
+
+
+//    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+//        if let topic = readerTopic {
+//            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
+//            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
+//        }
+//        super.encodeRestorableStateWithCoder(coder)
+//    }
+
+
     // MARK: - LifeCycle Methods
+
+
+    override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
+    }
 
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -68,7 +92,6 @@ class ReaderFollowedSitesViewController: UIViewController
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
@@ -251,6 +274,10 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
             return
         }
 
+        if let wpCell = cell as? WPTableViewCell {
+            wpCell.forceCustomCellMargins = true
+        }
+
         cell.accessoryType = .DisclosureIndicator
         cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
 
@@ -276,15 +303,13 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
         return 54.0
     }
 
-
-    func titleForHeaderInSection(section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
         }
-        return " "
+        return nil
     }
-
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
@@ -316,7 +341,6 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
-        tableViewHandler.updateTitleForSection(0)
     }
 
 }

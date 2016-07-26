@@ -214,11 +214,13 @@ private extension ShareViewController
     func loadTextContent() {
         extensionContext?.loadWebsiteUrl { url in
             // Text + New Line + Source
-            let current = self.contentText ?? String()
-            let source  = url?.absoluteString ?? String()
-            let spacing = current.isEmpty ? String() : "\n\n"
+            var payload = self.contentText ?? String()
+            if let sourceURL = url?.absoluteString where url?.fileURL == false {
+                payload += payload.isEmpty ? String() : "\n\n"
+                payload += sourceURL
+            }
 
-            self.textView.text = "\(current)\(spacing)\(source)"
+            self.textView.text = payload
         }
     }
 

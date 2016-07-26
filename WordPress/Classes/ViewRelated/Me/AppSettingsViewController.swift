@@ -33,7 +33,6 @@ public class AppSettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
 
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 

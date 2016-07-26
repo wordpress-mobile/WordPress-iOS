@@ -55,7 +55,7 @@ static CGFloat const NoteEstimatedHeight = 70;
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -238,15 +238,21 @@ static CGFloat const NoteEstimatedHeight = 70;
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
         detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
-            [weakSelf showUndelete:note.objectID onTimeout:onUndoTimeout];
+            [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
     }
 }
 
-
 - (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID
 {
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
     self.notificationDeletionBlocks[noteObjectID] = [deletionBlock copy];
+}
+
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID
+{
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    return self.notificationDeletionBlocks[noteObjectID];
 }
 
 @end
