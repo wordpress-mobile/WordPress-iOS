@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -30,29 +29,17 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" priority="750" constant="600" id="FtB-JF-glz"/>
                         <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="Ai0-Ac-pOc" secondAttribute="trailing" constant="6" id="Wsa-tE-gWT"/>
                         <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailing" constant="8" id="Xsw-Up-pnb"/>
                         <constraint firstItem="Ai0-Ac-pOc" firstAttribute="leading" secondItem="efX-hG-Sds" secondAttribute="leading" constant="10" id="dri-xh-fhD"/>
                         <constraint firstAttribute="centerY" secondItem="Ai0-Ac-pOc" secondAttribute="centerY" id="oQk-Ec-Dja"/>
                         <constraint firstAttribute="centerY" secondItem="T0w-kY-8uW" secondAttribute="centerY" id="wtN-Mq-k8V"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="FtB-JF-glz"/>
-                        </mask>
-                    </variation>
-                    <variation key="heightClass=regular-widthClass=regular">
-                        <mask key="constraints">
-                            <include reference="FtB-JF-glz"/>
-                        </mask>
-                    </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="efX-hG-Sds" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="6" id="Aef-iO-3Oa"/>
-                <constraint firstAttribute="centerX" secondItem="efX-hG-Sds" secondAttribute="centerX" id="NNx-Uw-e0a"/>
                 <constraint firstAttribute="trailing" secondItem="efX-hG-Sds" secondAttribute="trailing" constant="6" id="cLT-oe-KgI"/>
                 <constraint firstAttribute="bottom" secondItem="efX-hG-Sds" secondAttribute="bottom" constant="1" id="of4-Ii-10A"/>
                 <constraint firstItem="efX-hG-Sds" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="upM-9B-YNK"/>
@@ -61,18 +48,6 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="NNx-Uw-e0a"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=regular">
-                <mask key="constraints">
-                    <exclude reference="Aef-iO-3Oa"/>
-                    <include reference="NNx-Uw-e0a"/>
-                    <exclude reference="cLT-oe-KgI"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="contentView" destination="efX-hG-Sds" id="IZX-YI-2he"/>
                 <outlet property="titleLabel" destination="T0w-kY-8uW" id="YvO-AP-LKa"/>
