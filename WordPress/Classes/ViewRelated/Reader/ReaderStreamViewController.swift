@@ -1398,11 +1398,17 @@ import WordPressComAnalytics
 extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
+        guard let topic = readerTopic else {
+            return
+        }
         // Toggle following for the topic
-        if readerTopic!.isKindOfClass(ReaderTagTopic) {
-            toggleFollowingForTag(readerTopic as! ReaderTagTopic)
-        } else if readerTopic!.isKindOfClass(ReaderSiteTopic) {
-            toggleFollowingForSite(readerTopic as! ReaderSiteTopic)
+        if topic.isKindOfClass(ReaderTagTopic) {
+            toggleFollowingForTag(topic as! ReaderTagTopic)
+        } else if topic.isKindOfClass(ReaderSiteTopic) {
+            toggleFollowingForSite(topic as! ReaderSiteTopic)
+        } else if ReaderHelpers.topicIsFollowing(topic) {
+            let controller = ReaderFollowedSitesViewController.controller()
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }
