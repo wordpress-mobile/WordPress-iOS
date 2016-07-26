@@ -33,7 +33,6 @@ extension String
         return output as String
     }
 
-
     /// Returns a tuple containing the First Line + Body of the text
     ///
     func splitContentTextIntoSubjectAndBody() -> (subject: String, body: String) {
@@ -42,5 +41,11 @@ extension String
         let restOfText = indexOfFirstNewline != nil ? substringFromIndex(indexOfFirstNewline!.endIndex) : ""
 
         return (firstLineOfText, restOfText)
+    }
+
+    /// Returns the current string, preceded by an IMG embed pointing to the given URL
+    ///
+    func stringByPrependingMediaURL(url: String) -> String {
+        return "<img src='\(url)' /><br/><br/>" + self
     }
 }

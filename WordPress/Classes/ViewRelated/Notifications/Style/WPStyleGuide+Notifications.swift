@@ -8,14 +8,14 @@ extension WPStyleGuide
         // MARK: - Styles Used by NotificationsViewController
         //
 
-        //  NoteTableViewHeader
+        // NoteTableViewHeader
         public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
         public static let sectionHeaderRegularStyle = [ NSParagraphStyleAttributeName:  sectionHeaderParagraph,
                                                         NSFontAttributeName:            sectionHeaderFont,
                                                         NSForegroundColorAttributeName: sectionHeaderTextColor ]
 
-        //  NoteTableViewCell
+        // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.whiteColor()
         public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
@@ -31,12 +31,12 @@ extension WPStyleGuide
         public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")!
         public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")!
 
-        //  NoteUndoOverlayView
+        // NoteUndoOverlayView
         public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
         public static let noteUndoTextColor         = UIColor.whiteColor()
         public static let noteUndoTextFont          = subjectRegularFont
 
-        //  Subject Text
+        // Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
                                                         NSForegroundColorAttributeName: subjectTextColor ]
@@ -53,7 +53,7 @@ extension WPStyleGuide
 
         public static let subjectQuotedStyle        = blockQuotedStyle
 
-        //  Subject Snippet
+        // Subject Snippet
         public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName:  snippetParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
                                                         NSForegroundColorAttributeName: snippetColor ]
@@ -80,12 +80,12 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            headerTitleItalicsFont,
                                                         NSForegroundColorAttributeName: headerTitleContextColor]
 
-        //  Footer
+        // Footer
         public static let footerRegularStyle        = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: footerTextColor]
 
-        //  Badges
+        // Badges
         public static let badgeBackgroundColor      = UIColor.clearColor()
         public static let badgeLinkColor            = blockLinkColor
 
@@ -97,7 +97,7 @@ extension WPStyleGuide
         public static let badgeItalicsStyle         = blockItalicsStyle
         public static let badgeQuotedStyle          = blockQuotedStyle
 
-        //  Blocks
+        // Blocks
         public static let contentBlockRegularFont   = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
         public static let contentBlockBoldFont      = WPFontManager.merriweatherBoldFontOfSize(blockFontSize)
         public static let contentBlockItalicFont    = WPFontManager.merriweatherItalicFontOfSize(blockFontSize)
@@ -166,12 +166,12 @@ extension WPStyleGuide
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
 
-        //  RichText Helpers
+        // RichText Helpers
         public static func blockBackgroundColorForRichText(isBadge: Bool) -> UIColor {
             return isBadge ? badgeBackgroundColor : blockBackgroundColor
         }
 
-        //  Comment Helpers
+        // Comment Helpers
         public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
             return approved ? gravatarPlaceholderImage : gravatarUnapprovedImage
         }
@@ -194,6 +194,12 @@ extension WPStyleGuide
 
         public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockLinkColor : blockUnapprovedLinkColor
+        }
+
+        // Filters Helpers
+        public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
+            let style = [ NSFontAttributeName: WPFontManager.systemRegularFontOfSize(12) ]
+            segmentedControl.setTitleTextAttributes(style, forState: .Normal)
         }
 
 
@@ -257,15 +263,5 @@ extension WPStyleGuide
         private static let headerTitleItalicsFont   = blockItalicsFont
         private static let blockItalicsFont         = WPFontManager.systemItalicFontOfSize(blockFontSize)
         private static let blockNoticonFont         = subjectNoticonFont
-    }
-
-
-    // TODO: Move this over to the Notifications struct, once NotificationsViewController has been
-    // fully migrated to Swift!. JLP 10.2.2015.
-    //
-    public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
-        let style = [ NSFontAttributeName: WPFontManager.systemRegularFontOfSize(12) ]
-
-        segmentedControl.setTitleTextAttributes(style, forState: .Normal)
     }
 }

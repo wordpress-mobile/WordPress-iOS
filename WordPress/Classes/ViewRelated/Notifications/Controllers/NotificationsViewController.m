@@ -8,7 +8,6 @@
 
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
-#import "WPNoResultsView.h"
 #import "WPTabBarController.h"
 
 #import "Notification.h"
@@ -25,12 +24,6 @@
 
 #import "UIView+Subviews.h"
 
-#import "AppRatingUtility.h"
-
-#import <WordPress_AppbotX/ABXPromptView.h>
-#import <WordPress_AppbotX/ABXAppStore.h>
-#import <WordPress_AppbotX/ABXFeedbackViewController.h>
-
 #import "WordPress-Swift.h"
 
 
@@ -39,35 +32,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait     = 1;
-static CGFloat const NoteEstimatedHeight                = 70;
-static NSTimeInterval NotificationsSyncTimeout          = 10;
-static NSTimeInterval NotificationsUndoTimeout          = 4;
-static NSString const *NotificationsNetworkStatusKey    = @"network_status";
-
-static CGFloat const RatingsViewHeight                  = 100.0;
-
-typedef NS_ENUM(NSUInteger, NotificationFilter)
-{
-    NotificationFilterNone,
-    NotificationFilterUnread,
-    NotificationFilterComment,
-    NotificationFilterFollow,
-    NotificationFilterLike
-};
-
-
-#pragma mark ====================================================================================
-#pragma mark Protocols
-#pragma mark ====================================================================================
-
-@interface NotificationsViewController (Protocols) <SPBucketDelegate,
-                                                    WPNoResultsViewDelegate,
-                                                    WPTableViewHandlerDelegate,
-                                                    ABXPromptViewDelegate,
-                                                    ABXFeedbackViewControllerDelegate>
-
-@end
+static CGFloat const NoteEstimatedHeight = 70;
 
 
 
@@ -90,7 +55,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -120,6 +85,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
+    [self setupNoResultsView];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
     
@@ -129,19 +95,19 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    // Tracking
+    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
+
     // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
     [self.tableView deselectSelectedRowWithAnimation:YES];
     
     // While we're onscreen, please, update rows with animations
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-    
-    // Tracking
-    [self trackAppeared];
-    [self updateLastSeenTime];
-    
+
     // Notifications
-    [self hookApplicationStateNotes];
+    [self startListeningToNotifications];
+    [self updateLastSeenTime];
     [self resetApplicationBadge];
 
     // Refresh the UI
@@ -158,7 +124,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self unhookApplicationStateNotes];
+    [self stopListeningToNotifications];
     
     // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
@@ -168,376 +134,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - Setup Helpers
-
-- (void)showFiltersSegmentedControlIfApplicable
-{
-    if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
-        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-            self.tableHeaderView.alpha = WPAlphaFull;
-        } completion:nil];
-    }
-}
-
-- (void)hideFiltersSegmentedControlIfApplicable
-{
-    if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
-        self.tableHeaderView.alpha  = WPAlphaZero;
-    }
-}
-
-- (BOOL)shouldDisplayFilters
-{
-    // Note:
-    // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
-    // results, which are filtered by the active predicate!).
-    //
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    
-    return notesBucket.numObjects > 0;
-}
-
-
-#pragma mark - AppBotX Helpers
-
-- (void)showRatingViewIfApplicable
-{
-    if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-        return;
-    }
-
-    // Rating View is already visible, don't bother to do anything
-    if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
-        return;
-    }
-    
-    // Animate FadeIn + Enhance
-    self.ratingsView.alpha = WPAlphaZero;
-    
-    CGFloat const delay = 0.5f;
-    
-    [UIView animateWithDuration:WPAnimationDurationDefault delay:delay options:UIViewAnimationCurveEaseIn animations:^{
-        self.ratingsView.alpha                  = WPAlphaFull;
-        self.ratingsHeightConstraint.constant   = RatingsViewHeight;
-                    
-        [self setupTableHeaderView];
-    } completion:nil];
-    
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
-}
-
-- (void)hideRatingView
-{
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.ratingsView.alpha                  = WPAlphaZero;
-        self.ratingsHeightConstraint.constant   = 0;
-                
-        [self setupTableHeaderView];
-    } completion:nil];
-}
-
-
-#pragma mark - SPBucketDelegate Methods
-
-- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
-{
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    // Did the user tap on a push notification?
-    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
-
-        // Show the details only if NotificationPushMaxWait hasn't elapsed
-        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
-            [self showDetailsForNoteWithID:key];
-        }
-        
-        // Stop the sync timeout: we've got activity!
-        [self stopSyncTimeoutTimer];
-        
-        // Cleanup
-        self.pushNotificationID     = nil;
-        self.pushNotificationDate   = nil;
-    }
-    
-    // Mark as read immediately if:
-    //  -   We're onscreen
-    //  -   The app is in Foreground
-    //
-    // We need to make sure that the app is in FG, since this method might get called during a Background Fetch OS event,
-    // which would cause the badge to get reset on its own.
-    //
-    if (changeType == SPBucketChangeInsert && self.isViewOnScreen && application.applicationState == UIApplicationStateActive) {
-        [self resetApplicationBadge];
-        [self updateLastSeenTime];
-    }
-}
-
-
-#pragma mark - NSNotification Helpers
-
-- (void)hookApplicationStateNotes
-{
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)unhookApplicationStateNotes
-{
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
-{
-    // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
-    if (!self.isViewLoaded || !self.view.window) {
-        return;
-    }
-
-    // Reset the badge: the notifications are visible!
-    [self resetApplicationBadge];
-    [self updateLastSeenTime];
-    [self reloadResultsControllerIfNeeded];
-}
-
-- (void)handleApplicationWillResignActiveNote:(NSNotification *)note
-{
-    [self stopSyncTimeoutTimer];
-}
-
-- (void)handleDefaultAccountChangedNote:(NSNotification *)note
-{
-    [self resetApplicationBadge];
-}
-
-
-#pragma mark - Public Methods
-
-- (void)showDetailsForNoteWithID:(NSString *)notificationID
-{
-    Simperium *simperium        = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
-    Notification *notification  = [notesBucket objectForKey:notificationID];
-    
-    if (notification) {
-        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
-        
-        [self showDetailsForNotification:notification];
-    } else {
-        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
-        
-        self.pushNotificationID     = notificationID;
-        self.pushNotificationDate   = [NSDate date];
-        
-        [self startSyncTimeoutTimer];
-    }
-}
-
-
-#pragma mark - Stats Helpers
-
-- (void)startSyncTimeoutTimer
-{
-    // Don't proceed if we're not even connected
-    BOOL isConnected = [[WordPressAppDelegate sharedInstance] connectionAvailable];
-    if (!isConnected) {
-        return;
-    }
-    
-    [self stopSyncTimeoutTimer];
-    [self performSelector:@selector(trackSyncTimeout) withObject:nil afterDelay:NotificationsSyncTimeout];
-}
-
-- (void)stopSyncTimeoutTimer
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(trackSyncTimeout) object:nil];
-}
-
-- (void)trackSyncTimeout
-{
-    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
-    NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
-    
-    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
-}
-
-
-#pragma mark - Helper methods
-
-- (void)resetApplicationBadge
-{
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
-- (void)updateLastSeenTime
-{
-    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
-    if (!note) {
-        return;
-    }
-
-    NSString *bucketName    = NSStringFromClass([Meta class]);
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
-    if (!metadata) {
-        return;
-    }
-
-    metadata.last_seen      = @(note.timestampAsDate.timeIntervalSince1970);
-    [simperium save];
-}
-
-- (void)reloadResultsControllerIfNeeded
-{
-    // Note:
-    // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
-    // Simply calling reloadData doesn't make the FRC recalculate the sections.
-    // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
-    //
-    NSInteger daysElapsed = [[NSCalendar currentCalendar] daysElapsedSinceDate:self.lastReloadDate];
-    if (daysElapsed == 0) {
-        return;
-    }
-    
-    [self reloadResultsController];
-}
-
-- (void)reloadResultsController
-{
-    // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
-    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
-    fetchRequest.predicate = [self predicateForSelectedFilters];
-    
-    /// Refetch + Reload
-    [self.tableViewHandler clearCachedRowHeights];
-    [self.tableViewHandler.resultsController performFetch:nil];
-    [self.tableView reloadData];
-    
-    // Empty State?
-    [self showNoResultsViewIfNeeded];
-    
-    // Don't overwork!
-    self.lastReloadDate = [NSDate date];
-}
-
-- (void)reloadRowForNotificationWithID:(NSManagedObjectID *)noteObjectID
-{
-    // Failsafe
-    if (!noteObjectID) {
-        return;
-    }
-    
-    // Load the Notification and its indexPath
-    NSError *error                  = nil;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:&error];
-    if (error) {
-        DDLogError(@"Error refreshing Notification Row: %@", error);
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (indexPath) {
-        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
-- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
-{
-    // Failsafe!
-    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
-        return false;
-    }
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
-    return indexPath.row == (sectionInfo.numberOfObjects - 1);
-}
-
-- (void)trackAppeared
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
-}
-
-
-#pragma mark - Undelete Mechanism
-
-- (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout
-{
-    // Mark this note as Pending Deletion and Reload
-    self.notificationDeletionBlocks[noteObjectID] = [onTimeout copy];
-    [self reloadRowForNotificationWithID:noteObjectID];
-    
-    // Dispatch the Action block
-    [self performSelector:@selector(performDeletionActionForNoteWithID:) withObject:noteObjectID afterDelay:NotificationsUndoTimeout];
-}
-
-- (void)performDeletionActionForNoteWithID:(NSManagedObjectID *)noteObjectID
-{
-    // Was the Deletion Cancelled?
-    NotificationDeletionActionBlock deletionBlock = self.notificationDeletionBlocks[noteObjectID];
-    if (!deletionBlock) {
-        return;
-    }
-    
-    // Hide the Notification
-    [self.notificationIdsBeingDeleted addObject:noteObjectID];
-    [self reloadResultsController];
-
-    // Hit the Deletion Block
-    deletionBlock(^(BOOL success) {
-        // Cleanup
-        [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
-        [self.notificationIdsBeingDeleted removeObject:noteObjectID];
-        
-        // Error: let's unhide the row
-        if (!success) {
-            [self reloadResultsController];
-        }
-    });
-}
-
-- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID
-{
-    [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
-    [self reloadRowForNotificationWithID:noteObjectID];
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(performDeletionActionForNoteWithID:) object:noteObjectID];
-}
-
-- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
-{
-    return [self.notificationDeletionBlocks objectForKey:noteObjectID] != nil;
-}
-
-
-#pragma mark - Segue Helpers
-
-- (void)showDetailsForNotification:(Notification *)note
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
-    
-    // Mark as Read, if needed
-    if(!note.read.boolValue) {
-        note.read = @(1);
-        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
-    }
-    
-    // Failsafe: Don't push nested!
-    if (self.navigationController.visibleViewController != self) {
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    }
-    
-    if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:note];
-    } else {
-        [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
-    }
 }
 
 
@@ -635,7 +231,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID         = [ReaderDetailViewController classNameWithoutNamespaces];
     Notification *note              = sender;
     __weak __typeof(self) weakSelf  = self;
     
@@ -645,269 +240,19 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
             [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
-        
-    } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderDetailViewController *readerViewController = segue.destinationViewController;
-        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
 
-
-#pragma mark - WPTableViewHandlerDelegate Methods
-
-- (NSManagedObjectContext *)managedObjectContext
+- (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID
 {
-    return [[ContextManager sharedInstance] mainContext];
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    self.notificationDeletionBlocks[noteObjectID] = [deletionBlock copy];
 }
 
-- (NSFetchRequest *)fetchRequest
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID
 {
-    NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-    fetchRequest.predicate          = [self predicateForSelectedFilters];
-    
-    return fetchRequest;
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    return self.notificationDeletionBlocks[noteObjectID];
 }
-
-- (NSPredicate *)predicateForSelectedFilters
-{
-    NSDictionary *filtersMap = @{
-        @(NotificationFilterUnread)     : @" AND (read = NO)",
-        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
-        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
-        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
-                                            NoteTypeLike, NoteTypeCommentLike]
-    };
- 
-    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
-    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
-    
-    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
-}
-
-- (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    // Note:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
- 
-    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
-    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
-    __weak __typeof(self) weakSelf  = self;
-    
-    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
-    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
-    cell.read                       = note.read.boolValue;
-    cell.noticon                    = note.noticon;
-    cell.unapproved                 = note.isUnapprovedComment;
-    cell.markedForDeletion          = isMarkedForDeletion;
-    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
-    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
-    cell.onUndelete                 = ^{
-        [weakSelf cancelDeletionForNoteWithID:note.objectID];
-    };
-
-    [cell downloadIconWithURL:note.iconURL];
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Notification class]);
-}
-
-- (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    // Update Separators:
-    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
-    {
-        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
-    }
-    
-    // Update NoResults View
-    [self showNoResultsViewIfNeeded];
-}
-
-
-#pragma mark - No Results Helpers
-
-- (void)showNoResultsViewIfNeeded
-{
-    // Remove If Needed
-    if (!self.shouldDisplayNoResultsView) {
-        [self.noResultsView removeFromSuperview];
-        
-        // Show filters if we have results
-        [self showFiltersSegmentedControlIfApplicable];
-        
-        return;
-    }
-    
-    // Attach the view
-    WPNoResultsView *noResultsView  = self.noResultsView;
-    if (!noResultsView.superview) {
-        [self.tableView addSubviewWithFadeAnimation:noResultsView];
-    }
-    
-    // Refresh its properties: The user may have signed into WordPress.com
-    noResultsView.titleText         = self.noResultsTitleText;
-    noResultsView.messageText       = self.noResultsMessageText;
-    noResultsView.accessoryView     = self.noResultsAccessoryView;
-    noResultsView.buttonTitle       = self.noResultsButtonText;
-    
-    // Hide the filter header if we're showing the Jetpack prompt
-    [self hideFiltersSegmentedControlIfApplicable];
-}
-
-- (WPNoResultsView *)noResultsView
-{
-    if (!_noResultsView) {
-        _noResultsView          = [WPNoResultsView new];
-        _noResultsView.delegate = self;
-    }
-    return _noResultsView;
-}
-
-- (NSString *)noResultsTitleText
-{
-    if (self.shouldDisplayJetpackMessage) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
-    }
-    
-    NSDictionary *messageMap = @{
-        @(NotificationFilterNone)       : NSLocalizedString(@"No notifications yet", @"Displayed in the Notifications Tab, when there are no notifications"),
-        @(NotificationFilterUnread)     : NSLocalizedString(@"No unread notifications", @"Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-        @(NotificationFilterComment)    : NSLocalizedString(@"No comments notifications", @"Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-        @(NotificationFilterFollow)     : NSLocalizedString(@"No new followers notifications", @"Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-        @(NotificationFilterLike)       : NSLocalizedString(@"No like notifications", @"Displayed in the Notifications Tab, when the Likes Filter shows no notifications"),
-    };
-
-    return messageMap[@(self.filtersSegmentedControl.selectedSegmentIndex)];
-}
-
-- (NSString *)noResultsMessageText
-{
-    NSString *jetpackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
-    return self.shouldDisplayJetpackMessage ? jetpackMessage : nil;
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    return self.shouldDisplayJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
-}
- 
-- (NSString *)noResultsButtonText
-{
-    return self.shouldDisplayJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
-}
- 
-- (BOOL)shouldDisplayJetpackMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
-    
-    return showsJetpackMessage;
-}
-
-- (BOOL)shouldDisplayNoResultsView
-{
-    return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-}
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
-    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
- 
-    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
- 
-    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
-}
-
-
-
-#pragma mark - ABXPromptViewDelegate
-
-- (void)appbotPromptForReview
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[AppRatingUtility appReviewUrl]]];
-    [AppRatingUtility ratedCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptForFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
-    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
-    [AppRatingUtility gaveFeedbackForCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptClose
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
-    [AppRatingUtility declinedToRateCurrentVersion];
-    [self hideRatingView];
-}
-
-- (void)appbotPromptLiked
-{
-    [AppRatingUtility likedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
-}
-
-- (void)appbotPromptDidntLike
-{
-    [AppRatingUtility dislikedCurrentVersion];
-    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
-}
-
-- (void)abxFeedbackDidSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
-}
-
-- (void)abxFeedbackDidntSendFeedback
-{
-    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
-}
-
-
-#pragma mark - Swift Migration Helpers
-
-// Note:
-// Since not all of the ObjC methods are being exposed to Swift, these helpers are added temporarily,
-// just as a workaround during the Swift migration.
-//
-// TODO: Nuke them. JLP 06.30.2016
-//
-
-- (id <ABXPromptViewDelegate>)appbotViewDelegate
-{
-    return self;
-}
-
-- (id <WPTableViewHandlerDelegate>)tableViewHandlerDelegate
-{
-    return self;
-}
-
-- (id <SPBucketDelegate>)simperiumBucketDelegate
-{
-    return self;
-}
-
 
 @end

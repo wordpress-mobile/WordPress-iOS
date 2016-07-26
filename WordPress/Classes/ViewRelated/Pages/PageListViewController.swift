@@ -99,6 +99,14 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
     }
 
+    override func configureSearchController() {
+        super.configureSearchController()
+
+        tableView.tableHeaderView = searchController.searchBar
+
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+    }
+
     private func noResultsTitles() -> [PostListFilter.Status:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()

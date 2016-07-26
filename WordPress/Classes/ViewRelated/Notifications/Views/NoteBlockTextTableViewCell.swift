@@ -65,18 +65,18 @@ import WordPressShared
     public override func awakeFromNib() {
         super.awakeFromNib()
 
-        backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
-        selectionStyle              = .None
+        backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
+        selectionStyle = .None
 
         assert(textView != nil)
-        textView.contentInset       = UIEdgeInsetsZero
+        textView.contentInset = UIEdgeInsetsZero
         textView.textContainerInset = UIEdgeInsetsZero
-        textView.backgroundColor    = UIColor.clearColor()
-        textView.editable           = false
-        textView.selectable         = true
-        textView.dataDetectorTypes  = .None
-        textView.dataSource         = self
-        textView.delegate           = self
+        textView.backgroundColor = UIColor.clearColor()
+        textView.editable = false
+        textView.selectable = true
+        textView.dataDetectorTypes = .None
+        textView.dataSource = self
+        textView.delegate = self
 
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -103,7 +103,7 @@ import WordPressShared
     }
 
     // MARK: - Constants
-    public static let maxWidth            = WPTableViewFixedWidth
+    public static let maxWidth = WPTableViewFixedWidth
     public static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 
     // MARK: - IBOutlets

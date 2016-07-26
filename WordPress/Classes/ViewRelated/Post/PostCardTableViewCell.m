@@ -329,14 +329,21 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
 
     NSURL *url = [post featuredImageURLForDisplay];
-    // if not private create photon url
-    if (![post isPrivate]) {
-        CGSize imageSize = self.postCardImageView.frame.size;
-        url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
-    }
-
     self.postCardImageView.image = nil; // Clear the image so we know its not stale.
-    [self.postCardImageView setImageWithURL:url placeholderImage:nil];
+    CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
+    CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
+    CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
+    if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGSize scaledSize = CGSizeMake(desiredWidth * scale, desiredHeight * scale);
+        url = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:url];
+        NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
+        [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
+    } else {
+        // if not private create photon url
+        url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
+        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
+    }
 }
 
 - (void)configureTitle

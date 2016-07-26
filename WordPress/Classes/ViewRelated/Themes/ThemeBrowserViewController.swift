@@ -60,7 +60,7 @@ public protocol ThemePresenter: class
     func presentViewForTheme(theme: Theme?)
 }
 
-@objc public class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
+@objc public class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
 {
     // MARK: - Properties: must be set by parent
 
@@ -73,10 +73,6 @@ public protocol ThemePresenter: class
     // MARK: - Properties
 
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var searchWrapperView: UIView!
-    @IBOutlet weak var searchWrapperViewHeightConstraint: NSLayoutConstraint!
-
-    private var searchButton: UIBarButtonItem!
 
     /**
      *  @brief      The FRC this VC will use to display filtered content.
@@ -98,16 +94,7 @@ public protocol ThemePresenter: class
         return themesController.fetchedObjects?.count ?? 0
     }
 
-    /**
-     *  @brief      Searching support
-     */
-    private lazy var searchController: WPSearchController = {
-        let searchController = WPSearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-
-        return searchController
-    }()
+    private var searchController: UISearchController!
 
     private var searchName = "" {
         didSet {
@@ -139,6 +126,7 @@ public protocol ThemePresenter: class
 
     private enum Section
     {
+        case Search
         case Info
         case Themes
     }
@@ -215,39 +203,33 @@ public protocol ThemePresenter: class
         WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
 
         fetchThemes()
-        sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
+        sections = themesCount == 0 ? [.Search, .Themes] : [.Search, .Info, .Themes]
 
         configureSearchController()
-        configureSearchButton()
 
         updateActiveTheme()
         setupSyncHelper()
     }
 
-    private func configureSearchButton() {
-        searchButton = UIBarButtonItem(image: UIImage.init(named: "icon-post-search"),
-                                       style: .Plain,
-                                       target: self,
-                                       action: #selector(didTapSearchButton))
-        navigationItem.rightBarButtonItem = searchButton
-    }
-
     private func configureSearchController() {
-        let searchControllerConfigurator = WPSearchControllerConfigurator(searchController: searchController,
-            withSearchWrapperView: searchWrapperView)
-        searchControllerConfigurator.configureSearchControllerAndWrapperView()
+        extendedLayoutIncludesOpaqueBars = true
+        definesPresentationContext = true
 
-        configureSearchBarPlaceholder()
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.dimsBackgroundDuringPresentation = false
+
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+
+        collectionView.registerClass(ThemeBrowserSearchHeaderView.self,
+                                     forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                     withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
+
+        WPStyleGuide.configureSearchBar(searchController.searchBar)
     }
 
-    private func configureSearchBarPlaceholder() {
-        let placeholderText = NSLocalizedString("Search",  comment:"Placeholder text for the themes browser search bar")
-        let placeholderAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.wordPressBlue())
-        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).attributedPlaceholder = attrPlacholderText
-
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor())
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ThemeBrowserViewController.self]).defaultTextAttributes = textAttributes
+    private var searchBarHeight: CGFloat {
+        return CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -262,17 +244,6 @@ public protocol ThemePresenter: class
         super.traitCollectionDidChange(previousTraitCollection)
 
         collectionView?.collectionViewLayout.invalidateLayout()
-
-        if searchController.active {
-            searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
-        }
-    }
-
-    private func heightForSearchWrapperView() -> CGFloat {
-        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
-        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
-        let height = navBarHeight + statusBarHeight
-        return max(height, Styles.minimumSearchHeight)
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -281,7 +252,7 @@ public protocol ThemePresenter: class
         registerForKeyboardNotifications()
 
         if resumingSearch() {
-            beginSearchFor(suspendedSearch, animated: false)
+            beginSearchFor(suspendedSearch)
             suspendedSearch = ""
         }
 
@@ -317,19 +288,30 @@ public protocol ThemePresenter: class
     }
 
     public func keyboardDidShow(notification: NSNotification) {
-        guard let keyboardEnd = notification.userInfo![UIKeyboardFrameEndUserInfoKey]?
-            .CGRectValue, tabBarHeight = tabBarController?.tabBar.bounds.size.height else {
-                return
-        }
+        let keyboardFrame = localKeyboardFrameFromNotification(notification)
+        let keyboardHeight = CGRectGetMaxY(collectionView.frame) - keyboardFrame.origin.y
 
-        let newInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardEnd.height - tabBarHeight, right: 0)
-        collectionView.contentInset = newInsets
-        collectionView.scrollIndicatorInsets = newInsets
+        collectionView.contentInset.bottom = keyboardHeight
+        collectionView.scrollIndicatorInsets.top = searchBarHeight
+        collectionView.scrollIndicatorInsets.bottom = keyboardHeight
     }
 
     public func keyboardWillHide(notification: NSNotification) {
-        collectionView.contentInset = UIEdgeInsetsZero
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsZero
+        let tabBarHeight = tabBarController?.tabBar.bounds.height ?? 0
+
+        collectionView.contentInset.top = topLayoutGuide.length
+        collectionView.contentInset.bottom = tabBarHeight
+        collectionView.scrollIndicatorInsets.top = searchBarHeight
+        collectionView.scrollIndicatorInsets.bottom = tabBarHeight
+    }
+
+    private func localKeyboardFrameFromNotification(notification: NSNotification) -> CGRect {
+        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() else {
+                return .zero
+        }
+
+        // Convert the frame from window coordinates
+        return view.convertRect(keyboardFrame, fromView: nil)
     }
 
     // MARK: - Syncing the list of themes
@@ -432,7 +414,7 @@ public protocol ThemePresenter: class
         if searchController.active {
             collectionView?.reloadData()
         } else {
-            sections = [.Info, .Themes]
+            sections = [.Search, .Info, .Themes]
             collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
@@ -463,7 +445,7 @@ public protocol ThemePresenter: class
 
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
-        case .Info:
+        case .Search, .Info:
             return 0
         case .Themes:
             return themesCount
@@ -485,9 +467,17 @@ public protocol ThemePresenter: class
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionElementKindSectionHeader:
-            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
-            header.presenter = self
-            return header
+            if sections[indexPath.section] == .Search {
+                let searchHeader = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserSearchHeaderView
+
+                searchHeader.searchBar = searchController.searchBar
+
+                return searchHeader
+            } else {
+                let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
+                header.presenter = self
+                return header
+            }
         case UICollectionElementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
             return footer
@@ -515,13 +505,17 @@ public protocol ThemePresenter: class
     // MARK: - UICollectionViewDelegateFlowLayout
 
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
-        guard sections[section] == .Info else {
-            return CGSize.zero
-        }
-        let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
-        let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
+        switch sections[section] {
+        case .Themes:
+            return .zero
+        case .Search:
+                return CGSize(width: 0, height: searchController.searchBar.bounds.height)
+        case .Info:
+            let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
+            let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
 
-        return CGSize(width: 0, height: height)
+            return CGSize(width: 0, height: height)
+        }
     }
 
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -542,78 +536,65 @@ public protocol ThemePresenter: class
         switch sections[section] {
         case .Themes:
             return Styles.themeMargins
-        case .Info:
+        case .Info, .Search:
             return Styles.infoMargins
         }
     }
 
     // MARK: - Search support
 
-    @objc func didTapSearchButton(sender: UIButton) {
-        WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
-        beginSearchFor("", animated: true)
-    }
-
-    private func beginSearchFor(pattern: String, animated: Bool) {
+    private func beginSearchFor(pattern: String) {
         searchController.active = true
         searchController.searchBar.text = pattern
-        searchName = pattern
 
-        if animated {
-            if sections.first == .Info {
-                collectionView?.collectionViewLayout.invalidateLayout()
-                collectionView?.performBatchUpdates({
-                        self.collectionView?.deleteSections(NSIndexSet(index: 0))
-                        self.sections = [.Themes]
-                    }, completion: nil)
-            }
-        } else {
-            self.sections = [.Themes]
-            self.collectionView?.reloadData()
+        searchName = pattern
+    }
+
+    // MARK: - UISearchControllerDelegate
+
+    public func willPresentSearchController(searchController: UISearchController) {
+        if sections[1] == .Info {
+            collectionView?.collectionViewLayout.invalidateLayout()
+            setInfoSectionHidden(true)
         }
     }
 
-    // MARK: - WPSearchControllerDelegate
+    public func didPresentSearchController(searchController: UISearchController) {
+        WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: blog)
+    }
 
-    public func willDismissSearchController(searchController: WPSearchController) {
-
+    public func willDismissSearchController(searchController: UISearchController) {
         searchName = ""
         searchController.searchBar.text = ""
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        searchWrapperViewHeightConstraint.constant = 0
-
-        UIView.animateWithDuration(Styles.searchAnimationDuration,
-            animations: { [weak self] in
-                self?.view.layoutIfNeeded()
-            })
-
-        if sections.first == .Themes {
-            collectionView?.collectionViewLayout.invalidateLayout()
-            collectionView?.performBatchUpdates({
-                self.collectionView?.insertSections(NSIndexSet(index: 0))
-                self.sections = [.Info, .Themes]
-            }, completion: nil)
-        }
     }
 
-    public func presentSearchController(searchController: WPSearchController) {
-        let animated = !resumingSearch()
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
-        searchController.searchBar.becomeFirstResponder()
-
-        if animated {
-            UIView.animateWithDuration(Styles.searchAnimationDuration,
-                animations: { [weak self] in
-                    self?.view.layoutIfNeeded()
-                })
+    public func didDismissSearchController(searchController: UISearchController) {
+        if sections[1] == .Themes {
+            setInfoSectionHidden(false)
         }
+
+        collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
-    // MARK: - WPSearchResultsUpdating
+    private func setInfoSectionHidden(hidden: Bool) {
+        let hide = {
+            self.collectionView?.deleteSections(NSIndexSet(index: 1))
+            self.sections = [.Search, .Themes]
+        }
 
-    public func updateSearchResultsForSearchController(searchController: WPSearchController) {
+        let show = {
+            self.collectionView?.insertSections(NSIndexSet(index: 1))
+            self.sections = [.Search, .Info, .Themes]
+        }
+
+        collectionView.performBatchUpdates({
+            hidden ? hide() : show()
+        }, completion: nil)
+    }
+
+    // MARK: - UISearchResultsUpdating
+
+    public func updateSearchResultsForSearchController(searchController: UISearchController) {
         searchName = searchController.searchBar.text ?? ""
     }
 
@@ -729,7 +710,6 @@ public protocol ThemePresenter: class
         }
 
         suspendedSearch = searchName
-        searchController.active = false
         presentingTheme = theme
         let webViewController = ThemeWebViewController(theme: theme, url: url)
 
@@ -743,7 +723,13 @@ public protocol ThemePresenter: class
         }
         webViewController.navigationItem.rightBarButtonItems = buttons
 
-        navigationController?.pushViewController(webViewController, animated:true)
+        if searchController.active {
+            searchController.dismissViewControllerAnimated(true, completion: {
+                self.navigationController?.pushViewController(webViewController, animated:true)
+            })
+        } else {
+            navigationController?.pushViewController(webViewController, animated:true)
+        }
     }
 
     public func activatePresentingTheme() {
