@@ -184,7 +184,7 @@ class NotificationsViewController : UITableViewController
         if let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController {
             detailsViewController.setupWithNotification(note)
             detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
-                self.showUndelete(note.objectID, onTimeout: onUndoTimeout)
+                self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
             }
         }
 
@@ -460,7 +460,7 @@ extension NotificationsViewController
     }
 
     func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
-        notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+        notificationDeletionBlocks.removeValueForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
