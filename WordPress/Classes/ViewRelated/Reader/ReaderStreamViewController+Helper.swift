@@ -29,9 +29,13 @@ extension ReaderStreamViewController
     /// - Returns: An unconfigured instance of a ReaderStreamHeader.
     ///
     public class func headerForStream(topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
-        if ReaderHelpers.topicIsFollowing(topic) || ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
+        if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
+        }
+
+        if ReaderHelpers.topicIsFollowing(topic) && Feature.enabled(.ReaderMenu) {
+            return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil).first as! ReaderFollowedSitesStreamHeader
         }
 
         // if tag
