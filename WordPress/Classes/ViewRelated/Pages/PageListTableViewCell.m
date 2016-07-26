@@ -7,7 +7,6 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelTopMarginConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomMarginConstraint;
 
@@ -55,15 +54,8 @@
 {
     CGFloat width = 0.0;
     CGFloat titleMargin = CGRectGetMinX(self.titleLabel.frame);
-    // FIXME: Ideally we'd check `self.maxIPadWidthConstraint.isActive` but that
-    // property is iOS 8 only. When iOS 7 support is ended update this and check
-    // the constraint.
-    if ([UIDevice isPad]) {
-        width = self.maxIPadWidthConstraint.constant;
-    } else {
-        width = size.width;
-        width -= (CGRectGetMinX(self.pageContentView.frame) * 2);
-    }
+    width = size.width;
+    width -= (CGRectGetMinX(self.pageContentView.frame) * 2);
     width -= titleMargin;
     return width;
 }
