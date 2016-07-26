@@ -13,7 +13,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIView *separatorView;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSArray *suggestions;
 @property (nonatomic, strong) NSString *searchText;
 @property (nonatomic, strong) NSMutableArray *searchResults;
@@ -25,12 +24,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark Public methods
 
-- (instancetype)initWithSiteID:(NSNumber *)siteID
+- (instancetype)init
 {    
     self = [super initWithFrame:CGRectZero];
     if (self) {
-        _siteID = siteID;
-        _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
         _enabled = YES;
         _searchResults = [[NSMutableArray alloc] init];
@@ -293,7 +290,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (NSArray *)suggestions
 {
-    if (!_suggestions) {
+    if (!_suggestions && _siteID != nil) {
         _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
     }
     return _suggestions;
