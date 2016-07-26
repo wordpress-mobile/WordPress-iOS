@@ -21,6 +21,13 @@ class WPSplitViewController: UISplitViewController {
         return .LightContent
     }
 
+    override func overrideTraitCollectionForChildViewController(childViewController: UIViewController) -> UITraitCollection? {
+        guard let collection = super.overrideTraitCollectionForChildViewController(childViewController) else { return nil }
+
+        let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
+        return UITraitCollection(traitsFromCollections: [collection, overrideCollection])
+    }
+
     override var viewControllers: [UIViewController] {
         didSet {
             // Ensure that each top level navigation controller has
