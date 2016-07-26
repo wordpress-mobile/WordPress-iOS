@@ -327,16 +327,18 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         self.itemsLoadingLabel.hidden = NO;
         
         __weak __typeof__(self) weakSelf = self;
+        __weak __typeof__(menu) weakMenu = menu;
+
         void(^successBlock)(NSArray<MenuItem *> *) = ^(NSArray<MenuItem *> *defaultItems) {
             weakSelf.itemsLoadingLabel.hidden = YES;
             
-            BOOL menuEqualToSelectedMenu = weakSelf.selectedMenuLocation.menu == menu;
+            BOOL menuEqualToSelectedMenu = weakSelf.selectedMenuLocation.menu == weakMenu;
             if (defaultItems.count) {
                 NSOrderedSet *items = [NSOrderedSet orderedSetWithArray:defaultItems];
-                menu.items = items;
+                weakMenu.items = items;
                 if (menuEqualToSelectedMenu) {
                     weakSelf.itemsViewController.menu = nil;
-                    weakSelf.itemsViewController.menu = menu;
+                    weakSelf.itemsViewController.menu = weakMenu;
                 }
             } else {
                 if (menuEqualToSelectedMenu) {

@@ -24,21 +24,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
+    @IBOutlet var authorsFilterView : UIView!
+    @IBOutlet var searchWrapperView: UIView!
+    @IBOutlet var headerStackView: UIStackView!
+
     // MARK: - GUI
 
     private let animatedBox = WPAnimatedBox()
-
-    // MARK: - Initializers & deinitializers
-
-    deinit {
-        PrivateSiteURLProtocol.unregisterPrivateSiteURLProtocol()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        PrivateSiteURLProtocol.registerPrivateSiteURLProtocol()
-    }
 
     // MARK: - Convenience constructors
 
@@ -157,6 +149,15 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
     }
 
+    override func configureSearchController() {
+        super.configureSearchController()
+
+        searchWrapperView.addSubview(searchController.searchBar)
+        tableView.tableHeaderView = headerStackView
+
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+    }
+
     private func noResultsTitles() -> [PostListFilter.Status:String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
@@ -202,8 +203,12 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
         if !filterSettings.canFilterByAuthor() {
-            authorsFilterViewHeightConstraint?.constant = 0
-            authorFilterSegmentedControl.hidden = true
+            authorsFilterView.removeFromSuperview()
+
+            headerStackView.frame.size.height = searchController.searchBar.frame.height
+
+            // Required to update the size of the table header view
+            tableView.tableHeaderView = headerStackView
         }
 
         if filterSettings.currentPostAuthorFilter() == .Mine {
@@ -311,7 +316,24 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return self.dynamicType.postCardRestoreCellRowHeight
         }
 
+        // To work around a bug (https://github.com/wordpress-mobile/WordPress-iOS/issues/3844) where
+        // the table footer view would animate over cells, we'll only return estimated heights
+        // for cells that aren't in the visible area of the view.
+        let cellHeight = heightForEmptyCell
+        if cellHeight > 0 {
+            let visibleCellCount = Int(ceil(tableView.bounds.height / cellHeight))
+            if indexPath.row < visibleCellCount {
+                return self.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            }
+        }
+
         return self.dynamicType.postCardEstimatedRowHeight
+    }
+
+    private var heightForEmptyCell: CGFloat {
+        let size = textCellForLayout.sizeThatFits(CGSizeMake(tableView.bounds.width, CGFloat.max))
+
+        return size.height
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

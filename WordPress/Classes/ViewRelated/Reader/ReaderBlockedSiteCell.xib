@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,6 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ysV-mc-MQ9" id="VTN-SK-j2Y">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwd-Kl-XE5">
@@ -33,7 +33,7 @@
                             <constraint firstAttribute="bottom" secondItem="rJY-ty-wZw" secondAttribute="bottom" id="fDp-e1-tf7"/>
                             <constraint firstItem="rJY-ty-wZw" firstAttribute="leading" secondItem="KcP-7c-oak" secondAttribute="leading" constant="14" id="ttN-d9-8Ad"/>
                             <constraint firstItem="rJY-ty-wZw" firstAttribute="top" secondItem="KcP-7c-oak" secondAttribute="top" id="uhg-5N-UUi"/>
-                            <constraint firstAttribute="width" constant="600" id="veg-0O-Jpa"/>
+                            <constraint firstAttribute="width" priority="900" constant="600" id="veg-0O-Jpa"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

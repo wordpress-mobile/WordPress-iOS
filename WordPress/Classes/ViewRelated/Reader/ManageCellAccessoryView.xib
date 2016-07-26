@@ -7,11 +7,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" horizontalHuggingPriority="750" id="iN0-l3-epB" customClass="ManageCellAccessoryView" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="108" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="90" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qkN-9k-3iZ">
-                    <rect key="frame" x="94" y="12" width="20" height="20"/>
+                    <rect key="frame" x="76" y="12" width="20" height="20"/>
                     <color key="tintColor" red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="8Fx-pF-XVw"/>
@@ -19,7 +19,7 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-oo-VG5">
-                    <rect key="frame" x="8" y="5.5" width="78" height="32"/>
+                    <rect key="frame" x="10" y="6" width="58" height="32"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="Manage">
                         <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -35,7 +35,7 @@
                 <constraint firstItem="qkN-9k-3iZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GMf-IR-3qX"/>
                 <constraint firstItem="qkN-9k-3iZ" firstAttribute="leading" secondItem="e8r-oo-VG5" secondAttribute="trailing" constant="8" id="OYa-i8-tTO"/>
                 <constraint firstItem="e8r-oo-VG5" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="WjP-DO-fEZ"/>
-                <constraint firstItem="e8r-oo-VG5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="XU6-Nn-RMK"/>
+                <constraint firstItem="e8r-oo-VG5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="750" constant="8" id="XU6-Nn-RMK"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

@@ -31,7 +31,6 @@ public class LanguageViewController : UITableViewController
 
         // Setup tableView
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -65,17 +64,13 @@ public class LanguageViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return footerText
     }
 
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title = footerText
-        return headerView
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
-
-
 
     // MARK: - UITableViewDelegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

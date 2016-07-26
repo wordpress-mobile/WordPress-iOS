@@ -124,7 +124,11 @@ int ddLogLevel = DDLogLevelInfo;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
-    [self showWelcomeScreenIfNeededAnimated:NO];
+
+    [self showWelcomeScreenABTestIfNeeded];
+
+    // TODO: Restore this method when the NUX A/B test is over. - aerych, 2016-06-28
+    // [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
@@ -351,7 +355,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Analytics
     [self configureAnalytics];
-    
+
     // Start Simperium
     [self loginSimperium];
     
@@ -497,9 +501,19 @@ int ddLogLevel = DDLogLevelInfo;
     return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
 }
 
+// Only call this method when launching the app. At any other time the signin screen
+// should be shown by calling `showWelcomeScreenIfNeededAnimated:`
+- (void)showWelcomeScreenABTestIfNeeded
+{
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+        return;
+    }
+    [SigninHelpers loadABTestThenShowSigninController];
+}
+
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
     
@@ -525,6 +539,10 @@ int ddLogLevel = DDLogLevelInfo;
     UINavigationController *presentedViewController = (UINavigationController *)self.window.rootViewController.presentedViewController;
     if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
         return NO;
+    }
+
+    if ([presentedViewController isKindOfClass:[NUXNavigationController class]]) {
+        return YES;
     }
 
     // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
@@ -587,9 +605,10 @@ int ddLogLevel = DDLogLevelInfo;
     
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
-    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
-    
-    // SVProgressHUD styles    
+    // Search
+    [WPStyleGuide configureSearchAppearance];
+
+    // SVProgressHUD styles
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
     [SVProgressHUD setFont:[WPFontManager systemRegularFontOfSize:18.0]];
@@ -937,9 +956,14 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)setupWordPressExtensions
 {
+    // Default Account
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     [accountService setupAppExtensionsWithDefaultAccount];
+
+    // Settings
+    NSInteger maxImageSize = [[MediaSettings new] maxImageSizeSetting];
+    [ShareExtensionService configureShareExtensionMaximumMediaDimension:maxImageSize];
 }
 
 

@@ -12,18 +12,12 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Public Methods
     public func downloadImageWithURL(url: NSURL?) {
-        if url == imageURL {
-            return
-        }
-
         let success = { (image: UIImage) in
             self.blockImageView.image = image
             self.blockImageView.displayWithSpringAnimation()
         }
 
         blockImageView.downloadImage(url, placeholderImage: nil, success: success, failure: nil)
-
-        imageURL = url
     }
 
     // MARK: - View Methods
@@ -32,12 +26,9 @@ import WordPressShared.WPStyleGuide
         selectionStyle = .None
     }
 
-    // MARK: - Private
-    private var imageURL:               NSURL?
-
     // MARK: - Helpers
     private typealias Styles = WPStyleGuide.Notifications
 
     // MARK: - IBOutlets
-    @IBOutlet weak var blockImageView:  UIImageView!
+    @IBOutlet weak var blockImageView: UIImageView!
 }

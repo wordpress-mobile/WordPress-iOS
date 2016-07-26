@@ -49,26 +49,26 @@ import WordPressShared.WPStyleGuide
     public override func awakeFromNib() {
         super.awakeFromNib()
 
-        accessoryType                   = .DisclosureIndicator
+        accessoryType = .DisclosureIndicator
 
-        backgroundColor                 = Style.blockBackgroundColor
-        headerTitleLabel.font           = Style.headerTitleBoldFont
-        headerTitleLabel.textColor      = Style.headerTitleColor
-        headerDetailsLabel.font         = Style.headerDetailsRegularFont
-        headerDetailsLabel.textColor    = Style.headerDetailsColor
-        gravatarImageView.image         = Style.gravatarPlaceholderImage
+        backgroundColor = Style.blockBackgroundColor
+        headerTitleLabel.font = Style.headerTitleBoldFont
+        headerTitleLabel.textColor = Style.headerTitleColor
+        headerDetailsLabel.font = Style.headerDetailsRegularFont
+        headerDetailsLabel.textColor = Style.headerDetailsColor
+        gravatarImageView.image = Style.gravatarPlaceholderImage
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+            gravatarImageView.updateConstraint(.Width, constant: gravatarImageSizePad.height)
         }
     }
 
     // MARK: - Overriden Methods
     public override func refreshSeparators() {
-        separatorsView.bottomVisible    = true
-        separatorsView.bottomInsets     = UIEdgeInsetsZero
+        separatorsView.bottomVisible = true
+        separatorsView.bottomInsets = UIEdgeInsetsZero
     }
 
 
@@ -76,11 +76,11 @@ import WordPressShared.WPStyleGuide
     private typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private
-    private let gravatarImageSizePad:               CGSize      = CGSize(width: 36.0, height: 36.0)
-    private var gravatarURL:                        NSURL?
+    private let gravatarImageSizePad = CGSize(width: 36.0, height: 36.0)
+    private var gravatarURL: NSURL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var headerTitleLabel:    UILabel!
-    @IBOutlet private weak var headerDetailsLabel:  UILabel!
+    @IBOutlet private weak var gravatarImageView: UIImageView!
+    @IBOutlet private weak var headerTitleLabel: UILabel!
+    @IBOutlet private weak var headerDetailsLabel: UILabel!
 }

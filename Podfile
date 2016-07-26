@@ -10,9 +10,9 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.5.9'
+  pod 'WordPress-iOS-Shared', '0.6.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.4'
 
   target 'WordPress' do
     # ---------------------
@@ -47,10 +47,10 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
-    pod 'WPMediaPicker', '~> 0.9.2'
-    pod 'WordPress-iOS-Editor', '1.6.3'
-    pod 'WordPressCom-Analytics-iOS', '0.1.15'
-    pod 'WordPressCom-Stats-iOS', '0.7.4'
+    pod 'WPMediaPicker', '~> 0.10.1'
+    pod 'WordPress-iOS-Editor', '1.8'
+    pod 'WordPressCom-Analytics-iOS', '0.1.16'
+    pod 'WordPressCom-Stats-iOS', '0.7.6'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.4'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.6'
   end
 
 end

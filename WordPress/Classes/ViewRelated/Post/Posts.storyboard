@@ -1,64 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Posts-->
         <scene sceneID="7XV-DO-KP5">
             <objects>
-                <viewController storyboardIdentifier="PostListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VTO-0U-HpP" customClass="PostListViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostListViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VTO-0U-HpP" customClass="PostListViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rUe-TB-81b"/>
                         <viewControllerLayoutGuide type="bottom" id="AIH-s0-RTt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Zhd-4n-wcm">
-                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kl8-s3-Dv4">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" id="zVg-7h-v5z"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESQ-oX-ZqN">
-                                        <rect key="frame" x="0.0" y="43" width="600" height="1"/>
-                                        <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="4Sy-We-JMj"/>
-                                        </constraints>
-                                    </view>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-72-iKA">
-                                        <rect key="frame" x="160" y="8" width="280" height="29"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="280" id="4I1-mY-hd0"/>
-                                        </constraints>
-                                        <segments>
-                                            <segment title="Only Me"/>
-                                            <segment title="Everyone"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="handleAuthorFilterChanged:" destination="VTO-0U-HpP" eventType="valueChanged" id="q2z-tP-54k"/>
-                                        </connections>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="2zZ-72-iKA" secondAttribute="centerX" constant="-0.5" id="3PO-xC-h2M"/>
-                                    <constraint firstItem="ESQ-oX-ZqN" firstAttribute="leading" secondItem="9at-tM-m4A" secondAttribute="leading" id="EkC-Du-0w6"/>
-                                    <constraint firstAttribute="height" constant="44" id="KUd-OB-pfW"/>
-                                    <constraint firstAttribute="bottom" secondItem="ESQ-oX-ZqN" secondAttribute="bottom" id="LQ5-GJ-0XZ"/>
-                                    <constraint firstAttribute="centerY" secondItem="2zZ-72-iKA" secondAttribute="centerY" id="uve-eW-3Xv"/>
-                                    <constraint firstAttribute="trailing" secondItem="ESQ-oX-ZqN" secondAttribute="trailing" id="zJx-BR-zvI"/>
-                                </constraints>
-                            </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
-                                <rect key="frame" x="0.0" y="44" width="600" height="492"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <connections>
                                     <segue destination="zOz-bT-2ph" kind="embed" id="m8J-kl-Bnz"/>
                                 </connections>
@@ -66,19 +26,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="9at-tM-m4A" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="C6h-83-Wk3"/>
-                            <constraint firstItem="Kl8-s3-Dv4" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="GP4-eX-EG8"/>
-                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="9at-tM-m4A" secondAttribute="bottom" id="O34-iY-MtY"/>
-                            <constraint firstItem="AIH-s0-RTt" firstAttribute="top" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="g65-gl-KUt"/>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="142-xs-2mp"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="CxD-qt-v2d"/>
                             <constraint firstAttribute="trailing" secondItem="cnu-9z-5GZ" secondAttribute="trailing" id="hEd-mB-ZfB"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="phA-Qk-kzl"/>
-                            <constraint firstAttribute="trailing" secondItem="Kl8-s3-Dv4" secondAttribute="trailing" id="rhu-Tp-z3F"/>
-                            <constraint firstItem="rUe-TB-81b" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="top" id="sDR-Lv-r7y"/>
-                            <constraint firstAttribute="trailing" secondItem="9at-tM-m4A" secondAttribute="trailing" id="wcq-af-Gp2"/>
-                            <constraint firstItem="9at-tM-m4A" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="bottom" id="xbf-DL-e4c"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Posts" id="Pj8-QK-H8z"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -88,12 +42,10 @@
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
                         <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
                         <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
-                        <outlet property="authorsFilterViewHeightConstraint" destination="KUd-OB-pfW" id="qbe-pV-Ymo"/>
                         <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>
+                        <outlet property="headerStackView" destination="PF5-eU-KAv" id="7PN-bA-mdX"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
-                        <outlet property="searchButton" destination="odC-V9-68g" id="FbP-8x-HyD"/>
-                        <outlet property="searchWrapperView" destination="Kl8-s3-Dv4" id="Wgb-yM-577"/>
-                        <outlet property="searchWrapperViewHeightConstraint" destination="zVg-7h-v5z" id="asS-kR-2Xn"/>
+                        <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -112,16 +64,6 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="odC-V9-68g">
-                            <rect key="frame" x="0.0" y="0.0" width="40" height="44"/>
-                            <state key="normal" image="icon-post-search">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="highlighted" image="icon-post-search-highlight"/>
-                            <connections>
-                                <action selector="handleSearchButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="jbr-TQ-q2r"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
                             <rect key="frame" x="40" y="0.0" width="40" height="44"/>
                             <state key="normal" image="icon-post-add">
@@ -134,6 +76,49 @@
                         </button>
                     </subviews>
                 </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" id="PF5-eU-KAv">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
+                            <rect key="frame" x="0.0" y="44" width="600" height="44"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESQ-oX-ZqN">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="4Sy-We-JMj"/>
+                                    </constraints>
+                                </view>
+                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-72-iKA">
+                                    <rect key="frame" x="160" y="8" width="280" height="29"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="280" id="4I1-mY-hd0"/>
+                                    </constraints>
+                                    <segments>
+                                        <segment title="Only Me"/>
+                                        <segment title="Everyone"/>
+                                    </segments>
+                                    <connections>
+                                        <action selector="handleAuthorFilterChanged:" destination="VTO-0U-HpP" eventType="valueChanged" id="q2z-tP-54k"/>
+                                    </connections>
+                                </segmentedControl>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="centerX" secondItem="2zZ-72-iKA" secondAttribute="centerX" constant="-0.5" id="3PO-xC-h2M"/>
+                                <constraint firstItem="ESQ-oX-ZqN" firstAttribute="leading" secondItem="9at-tM-m4A" secondAttribute="leading" id="EkC-Du-0w6"/>
+                                <constraint firstAttribute="height" constant="44" id="KUd-OB-pfW"/>
+                                <constraint firstAttribute="bottom" secondItem="ESQ-oX-ZqN" secondAttribute="bottom" id="LQ5-GJ-0XZ"/>
+                                <constraint firstAttribute="centerY" secondItem="2zZ-72-iKA" secondAttribute="centerY" id="uve-eW-3Xv"/>
+                                <constraint firstAttribute="trailing" secondItem="ESQ-oX-ZqN" secondAttribute="trailing" id="zJx-BR-zvI"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                </stackView>
             </objects>
             <point key="canvasLocation" x="519" y="318"/>
         </scene>
@@ -142,7 +127,7 @@
             <objects>
                 <tableViewController id="zOz-bT-2ph" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -164,7 +149,5 @@
         <image name="icon-nav-chevron" width="14" height="8"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
-        <image name="icon-post-search" width="22" height="22"/>
-        <image name="icon-post-search-highlight" width="22" height="22"/>
     </resources>
 </document>

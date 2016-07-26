@@ -14,8 +14,12 @@ import WordPressComAnalytics
 ///         new content to be synced without interrupting the UI until desired.
 ///   - Row height is cached and 'layout cells' are used to calculate height.
 ///
-@objc public class ReaderStreamViewController : UIViewController
+@objc public class ReaderStreamViewController : UIViewController, UIViewControllerRestoration
 {
+
+    static let restorableTopicPathKey: String = "RestorableTopicPathKey"
+
+
     // MARK: - Properties
 
     private var tableView: UITableView!
@@ -151,10 +155,52 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - State Restoration
+
+
+    public static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObjectForKey(restorableTopicPathKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+        guard let topic = service.findWithPath(path) else {
+            return nil
+        }
+
+        topic.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContextAndWait(context)
+
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.readerTopic = topic
+        return controller
+    }
+
+
+    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        if let topic = readerTopic {
+            topic.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
+            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
+        }
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+
     // MARK: - LifeCycle Methods
+
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
+    public override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
+        restorationClass = self.dynamicType
+
+        return super.awakeAfterUsingCoder(aDecoder)
     }
 
 
@@ -524,6 +570,17 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
+        if let topic = readerTopic, properties = topicPropertyForStats() {
+            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+
+            // Disable pull to refresh for search topics.
+            // Searches are a snap shot in time, and ephemeral. There should be no
+            // need to refresh.
+            if ReaderHelpers.isTopicSearchTopic(topic) {
+                tableViewController.refreshControl = nil
+            }
+        }
+
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let account = service.defaultWordPressComAccount()
@@ -555,10 +612,6 @@ import WordPressComAnalytics
                 selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
                 name: ReaderPostMenu.BlockSiteNotification,
                 object: nil)
-        }
-
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
         }
     }
 
@@ -1617,6 +1670,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             unblockSiteForPost(post)
             return
+        }
+
+        if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
+            WPAppAnalytics.track(.ReaderSearchResultTapped)
         }
 
         var controller: ReaderDetailViewController

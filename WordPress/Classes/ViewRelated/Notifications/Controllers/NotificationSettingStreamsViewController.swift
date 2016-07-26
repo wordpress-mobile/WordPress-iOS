@@ -54,8 +54,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
 
@@ -107,16 +105,12 @@ public class NotificationSettingStreamsViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title = footerForStream(streamAtSection(section))
-        return headerView
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return footerForStream(streamAtSection(section))
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let title = footerForStream(streamAtSection(section))
-        let width = view.frame.width
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: width)
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
