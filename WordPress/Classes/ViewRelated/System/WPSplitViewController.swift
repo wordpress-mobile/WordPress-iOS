@@ -55,19 +55,31 @@ class WPSplitViewController: UISplitViewController {
 
         if let navigationController = viewController as? UINavigationController,
             let rootViewController = navigationController.viewControllers.first,
-            let detailProvider = rootViewController as? WPSplitViewControllerDetailProvider,
-            let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self) {
+            let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
 
-            // Ensure it's wrapped in a navigation controller
-            if detailViewController is UINavigationController {
-                initialViewControllers.append(detailViewController)
-            } else {
-                initialViewControllers.append(UINavigationController(rootViewController: detailViewController))
-            }
+            navigationController.delegate = self
+
+            initialViewControllers.append(detailViewController)
 
             viewControllers = initialViewControllers
         }
     }
+
+    func initialDetailViewControllerForPrimaryViewController(viewController: UIViewController) -> UIViewController? {
+        guard let detailProvider = viewController as? WPSplitViewControllerDetailProvider,
+        let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self)  else {
+            return nil
+        }
+
+        // Ensure it's wrapped in a navigation controller
+        if detailViewController is UINavigationController {
+            return detailViewController
+        } else {
+            return UINavigationController(rootViewController: detailViewController)
+        }
+    }
+
+    private var primaryNavigationControllerStackHasBeenModified = false
 }
 
 extension WPSplitViewController: UISplitViewControllerDelegate {
@@ -79,11 +91,23 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
      */
     func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
         guard let primaryNavigationController = primaryViewController as? UINavigationController else {
+            assertionFailure("Split view's primary view controller should be a navigation controller!")
             return nil
         }
 
+        // Grab all but the root view controller from the primary navigation stack,
+        // and pop it back.
         let viewControllers = Array(primaryNavigationController.viewControllers.dropFirst())
         primaryNavigationController.popToRootViewControllerAnimated(false)
+
+        // If we have no detail view controllers, try and fetch the primary view controller's
+        // initial detail view controller.
+        if viewControllers.count == 0 {
+            if let primaryViewController = primaryNavigationController.viewControllers.first,
+                let initialDetailViewController = initialDetailViewControllerForPrimaryViewController(primaryViewController) {
+                return initialDetailViewController
+            }
+        }
 
         if let firstViewController = viewControllers.first as? UINavigationController {
             // If it's already a navigation controller, just return it
@@ -95,9 +119,28 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             return navigationController
         }
     }
+
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        // If the user hasn't modified the navigation stack, then show the root view controller initially.
+        // In a horizontally compact size class this means we can collapse to show the root
+        // view controller, instead of having the detail view controller pushed onto the stack.
+        if let navigationController = primaryViewController as? UINavigationController where !primaryNavigationControllerStackHasBeenModified {
+            navigationController.popToRootViewControllerAnimated(false)
+            return true
+        }
+
+        return false
+    }
+}
+
+extension WPSplitViewController: UINavigationControllerDelegate {
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        primaryNavigationControllerStackHasBeenModified = true
+    }
 }
 
 extension UIViewController {
+    /// Convenience method
     var splitViewControllerIsCollapsed: Bool {
         return splitViewController?.collapsed ?? true
     }
@@ -105,5 +148,9 @@ extension UIViewController {
 
 @objc
 protocol WPSplitViewControllerDetailProvider {
+    /**
+     * View controllers that implement this method can return a view controller
+     * to automatically populate the detail pane of the split view with.
+     */
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController?
 }
