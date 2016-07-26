@@ -218,6 +218,119 @@ extension NotificationsViewController
 
         performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
+
+    /// Will display an Undelete button on top of a given notification.
+    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// will (supposedly) get deleted.
+    ///
+    /// -   Parameters:
+    ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
+    ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
+    ///
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+        // Mark this note as Pending Deletichroon and Reload
+        setDeletionBlock(onTimeout, forNoteObjectID: noteObjectID)
+        reloadRowForNotificationWithID(noteObjectID)
+
+        // Dispatch the Action block
+        performSelector(#selector(deleteNoteWithID), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
+    }
+}
+
+
+/// Notifications Deletion Mechanism
+///
+extension NotificationsViewController
+{
+    func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
+        // Was the Deletion Cancelled?
+        guard let deletionBlock = deletionBlockForNoteWithID(noteObjectID) else {
+            return
+        }
+
+        // Hide the Notification
+        notificationIdsBeingDeleted.addObject(noteObjectID)
+        reloadResultsController()
+
+        // Hit the Deletion Block
+        deletionBlock { success in
+            // Cleanup
+            self.notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+            self.notificationIdsBeingDeleted.removeObject(noteObjectID)
+
+            // Error: let's unhide the row
+            if success == false {
+                self.reloadResultsController()
+            }
+        }
+    }
+
+    func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
+        notificationDeletionBlocks.removeObjectForKey(noteObjectID)
+        reloadRowForNotificationWithID(noteObjectID)
+
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
+    }
+
+    func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
+        return notificationDeletionBlocks[noteObjectID] != nil
+    }
+}
+
+
+
+// MARK: - WPTableViewHandler Helpers
+//
+extension NotificationsViewController
+{
+    func reloadResultsControllerIfNeeded() {
+        // Note:
+        // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
+        // Simply calling reloadData doesn't make the FRC recalculate the sections.
+        // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
+        //
+        let daysElapsed = NSCalendar.currentCalendar().daysElapsedSinceDate(lastReloadDate)
+        guard daysElapsed != 0 else {
+            return
+        }
+
+        reloadResultsController()
+    }
+
+    func reloadResultsController() {
+        // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
+        let fetchRequest = tableViewHandler.resultsController.fetchRequest
+        fetchRequest.predicate = predicateForSelectedFilters()
+
+        /// Refetch + Reload
+        tableViewHandler.clearCachedRowHeights()
+        _ = try? tableViewHandler.resultsController.performFetch()
+        tableView.reloadData()
+
+        // Empty State?
+        showNoResultsViewIfNeeded()
+
+        // Don't overwork!
+        lastReloadDate = NSDate()
+    }
+
+    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
+        // Failsafe
+        guard let noteObjectID = noteObjectID else {
+            return
+        }
+
+        // Load the Notification and its indexPath
+        do {
+            let note = try simperium.managedObjectContext().existingObjectWithID(noteObjectID)
+
+            if let indexPath = tableViewHandler.resultsController.indexPathForObject(note) {
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }
+        } catch {
+            DDLogSwift.logError("Error refreshing Notification Row \(error)")
+        }
+    }
 }
 
 
@@ -665,6 +778,7 @@ private extension NotificationsViewController
     enum Syncing {
         static let pushMaxWait      = NSTimeInterval(1)
         static let syncTimeout      = NSTimeInterval(10)
+        static let undoTimeout      = NSTimeInterval(4)
     }
 
     enum Ratings {

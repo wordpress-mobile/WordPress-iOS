@@ -32,8 +32,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static CGFloat const NoteEstimatedHeight                = 70;
-static NSTimeInterval NotificationsUndoTimeout          = 4;
+static CGFloat const NoteEstimatedHeight = 70;
 
 
 
@@ -135,115 +134,6 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
-}
-
-
-#pragma mark - Helper methods
-
-- (void)reloadResultsControllerIfNeeded
-{
-    // Note:
-    // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
-    // Simply calling reloadData doesn't make the FRC recalculate the sections.
-    // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
-    //
-    NSInteger daysElapsed = [[NSCalendar currentCalendar] daysElapsedSinceDate:self.lastReloadDate];
-    if (daysElapsed == 0) {
-        return;
-    }
-    
-    [self reloadResultsController];
-}
-
-- (void)reloadResultsController
-{
-    // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
-    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
-    fetchRequest.predicate = [self predicateForSelectedFilters];
-    
-    /// Refetch + Reload
-    [self.tableViewHandler clearCachedRowHeights];
-    [self.tableViewHandler.resultsController performFetch:nil];
-    [self.tableView reloadData];
-    
-    // Empty State?
-    [self showNoResultsViewIfNeeded];
-    
-    // Don't overwork!
-    self.lastReloadDate = [NSDate date];
-}
-
-- (void)reloadRowForNotificationWithID:(NSManagedObjectID *)noteObjectID
-{
-    // Failsafe
-    if (!noteObjectID) {
-        return;
-    }
-    
-    // Load the Notification and its indexPath
-    NSError *error                  = nil;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:&error];
-    if (error) {
-        DDLogError(@"Error refreshing Notification Row: %@", error);
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (indexPath) {
-        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
-
-#pragma mark - Undelete Mechanism
-
-- (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout
-{
-    // Mark this note as Pending Deletion and Reload
-    self.notificationDeletionBlocks[noteObjectID] = [onTimeout copy];
-    [self reloadRowForNotificationWithID:noteObjectID];
-    
-    // Dispatch the Action block
-    [self performSelector:@selector(performDeletionActionForNoteWithID:) withObject:noteObjectID afterDelay:NotificationsUndoTimeout];
-}
-
-- (void)performDeletionActionForNoteWithID:(NSManagedObjectID *)noteObjectID
-{
-    // Was the Deletion Cancelled?
-    NotificationDeletionActionBlock deletionBlock = self.notificationDeletionBlocks[noteObjectID];
-    if (!deletionBlock) {
-        return;
-    }
-    
-    // Hide the Notification
-    [self.notificationIdsBeingDeleted addObject:noteObjectID];
-    [self reloadResultsController];
-
-    // Hit the Deletion Block
-    deletionBlock(^(BOOL success) {
-        // Cleanup
-        [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
-        [self.notificationIdsBeingDeleted removeObject:noteObjectID];
-        
-        // Error: let's unhide the row
-        if (!success) {
-            [self reloadResultsController];
-        }
-    });
-}
-
-- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID
-{
-    [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
-    [self reloadRowForNotificationWithID:noteObjectID];
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(performDeletionActionForNoteWithID:) object:noteObjectID];
-}
-
-- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
-{
-    return [self.notificationDeletionBlocks objectForKey:noteObjectID] != nil;
 }
 
 
@@ -351,6 +241,18 @@ static NSTimeInterval NotificationsUndoTimeout          = 4;
             [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
     }
+}
+
+- (void)setDeletionBlock:(NotificationDeletionActionBlock)deletionBlock forNoteObjectID:(NSManagedObjectID *)noteObjectID
+{
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    self.notificationDeletionBlocks[noteObjectID] = [deletionBlock copy];
+}
+
+- (NotificationDeletionActionBlock)deletionBlockForNoteWithID:(NSManagedObjectID *)noteObjectID
+{
+    // Note: This method is just a temporary workaround. Will be removed in the next PR!. Thank you!
+    return self.notificationDeletionBlocks[noteObjectID];
 }
 
 @end
