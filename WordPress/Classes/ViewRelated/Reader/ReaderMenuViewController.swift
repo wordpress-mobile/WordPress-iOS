@@ -5,8 +5,10 @@ import WordPressShared
 
 /// The menu for the reader.
 ///
-@objc class ReaderMenuViewController : UITableViewController
+@objc class ReaderMenuViewController : UITableViewController, UIViewControllerRestoration
 {
+
+    static let restorationIdentifier = "ReaderMenuViewController"
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
@@ -22,12 +24,37 @@ import WordPressShared
     ///
     /// - Returns: An instance of the controller.
     ///
-    class func controller() -> ReaderMenuViewController {
+    static let sharedInstance: ReaderMenuViewController = {
         return ReaderMenuViewController(style: .Grouped)
+    }()
+
+
+    // MARK: - Restoration Methods
+
+
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return sharedInstance
     }
 
 
     // MARK: - Lifecycle Methods
+
+
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        restorationIdentifier = self.dynamicType.restorationIdentifier
+        restorationClass = self.dynamicType
+    }
+
+
+    required convenience init() {
+        self.init(style: .Grouped)
+    }
+
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
 
     override func viewDidLoad() {
@@ -49,7 +76,6 @@ import WordPressShared
 
 
     func configureTableView() {
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
@@ -235,20 +261,13 @@ import WordPressShared
         return viewModel.numberOfItemsInSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = viewModel.titleForSection(section)
-        let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        header.title = title
-        return header
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = viewModel.titleForSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
-
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let menuItem = viewModel.menuItemAtIndexPath(indexPath)
