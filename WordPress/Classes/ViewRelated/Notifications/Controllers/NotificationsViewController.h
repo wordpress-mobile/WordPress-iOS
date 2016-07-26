@@ -16,15 +16,6 @@
 
 @interface NotificationsViewController : UITableViewController
 
-/**
- *  @brief      Will display an Undelete button on top of a given notification.
- *  @details    On timeout, the destructive action (received via parameter) will be exeuted, and the notification
- *              will (supposedly) get deleted.
- *
- *  @param      noteObjectID        The Core Data ObjectID associated to a given notification.
- *  @param      onTimeout           A "destructive" closure, to be executed after a given timeout.
- */
 
-- (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout;
 
 @end
