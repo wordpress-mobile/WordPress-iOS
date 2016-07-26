@@ -817,13 +817,11 @@ extension NotificationsViewController: SPBucketDelegate
         stopWaitingForNotification()
 
         // Show the details only if NotificationPushMaxWait hasn't elapsed
-        guard let timeElapsed = pushNotificationDate?.timeIntervalSinceNow else {
+        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
             return
         }
 
-        if abs(timeElapsed) <= Syncing.pushMaxWait {
-            showDetailsForNotificationWithID(key)
-        }
+        showDetailsForNotificationWithID(key)
     }
 }
 
