@@ -7,7 +7,6 @@ import WordPressShared
 
 
 
-
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account found in the system.
 ///
@@ -95,7 +94,6 @@ class NotificationsViewController : UITableViewController
         tableViewHandler.updateRowAnimation = .None
     }
 
-
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         tableViewHandler.clearCachedRowHeights()
@@ -174,7 +172,6 @@ class NotificationsViewController : UITableViewController
 
         showDetailsForNotification(note)
     }
-
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         guard let note = sender as? Notification else {
@@ -380,7 +377,6 @@ extension NotificationsViewController
 
         showDetailsForNotification(note)
     }
-
 
     /// Pushes the details for a given Notification Instance.
     ///
@@ -736,6 +732,7 @@ extension NotificationsViewController
     var noResultsAccessoryView: UIView? {
         return shouldDisplayJetpackMessage ? UIImageView(image: UIImage(named: "icon-jetpack-gray")) : nil
     }
+
     var noResultsButtonText: String? {
         return shouldDisplayJetpackMessage ? NSLocalizedString("Learn more", comment: "") : nil
     }
