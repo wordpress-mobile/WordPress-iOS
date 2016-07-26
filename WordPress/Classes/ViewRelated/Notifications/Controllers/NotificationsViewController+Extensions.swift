@@ -99,7 +99,6 @@ class NotificationsViewController : UITableViewController
         tableViewHandler.clearCachedRowHeights()
     }
 
-
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
