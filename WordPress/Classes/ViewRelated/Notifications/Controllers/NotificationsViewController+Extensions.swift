@@ -221,13 +221,8 @@ extension NotificationsViewController
 
     func setupTableView() {
         // Register the cells
-        let nibNames = [ NoteTableViewCell.classNameWithoutNamespaces() ]
-        let bundle = NSBundle.mainBundle()
-
-        for nibName in nibNames {
-            let nib = UINib(nibName: nibName, bundle: bundle)
-            tableView.registerNib(nib, forCellReuseIdentifier: nibName)
-        }
+        let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: NSBundle.mainBundle())
+        tableView.registerNib(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
