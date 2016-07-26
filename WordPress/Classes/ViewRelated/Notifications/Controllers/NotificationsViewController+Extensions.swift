@@ -314,7 +314,6 @@ extension NotificationsViewController
         lastReloadDate = NSDate()
     }
 
-
     func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
         // Failsafe
         guard let noteObjectID = noteObjectID else {
