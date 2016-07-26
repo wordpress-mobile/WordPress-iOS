@@ -72,7 +72,7 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
-    func initialDetailViewControllerForPrimaryViewController(viewController: UIViewController) -> UIViewController? {
+    private func initialDetailViewControllerForPrimaryViewController(viewController: UIViewController) -> UIViewController? {
         guard let detailProvider = viewController as? WPSplitViewControllerDetailProvider,
         let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self)  else {
             return nil

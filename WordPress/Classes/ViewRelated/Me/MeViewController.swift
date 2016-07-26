@@ -85,7 +85,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
 
-        let selectedIndexPath = tableView.indexPathForSelectedRow
+        // After we've reloaded the view model, we'll either reselect the currently
+        // selected table row, or we'll select the first row if the split view
+        // is collapsed.
+        var selectedIndexPath = tableView.indexPathForSelectedRow
+        if selectedIndexPath == nil && !splitViewControllerIsCollapsed {
+            selectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+        }
+
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
         tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
     }
@@ -369,10 +376,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
-        // If the initial detail view controller is going to be presented, highlight
-        // the top row to indicate that it's that section being displayed.
-        tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: false, scrollPosition: .None)
-
         return myProfileViewController
     }
 }
