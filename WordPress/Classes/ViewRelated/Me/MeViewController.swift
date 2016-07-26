@@ -362,6 +362,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        // If the initial detail view controller is going to be presented, highlight
+        // the top row to indicate that it's that section being displayed.
+        tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: false, scrollPosition: .None)
+
         return myProfileViewController
     }
 }
