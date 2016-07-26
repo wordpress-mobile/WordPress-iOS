@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class WPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class WPSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ class WPSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 
     override var viewControllers: [UIViewController] {
         didSet {
-            // Ensure that each top level navigation controller has 
+            // Ensure that each top level navigation controller has
             // `extendedLayoutIncludesOpaqueBars` set to true. Otherwise we
             // see a large tab bar sized gap underneath each view controller.
             for viewController in viewControllers {
@@ -66,6 +66,33 @@ class WPSplitViewController: UISplitViewController, UISplitViewControllerDelegat
             }
 
             viewControllers = initialViewControllers
+        }
+    }
+}
+
+extension WPSplitViewController: UISplitViewControllerDelegate {
+    /** By default, the top view controller from the primary navigation
+     *  controller will be popped and used as the secondary view controller.
+     *  However, we want to ensure the the secondary view controller is a
+     *  navigation controller, so we'll pop off everything but the root view
+     *  controller and wrap it in a navigation controller if necessary.
+     */
+    func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
+        guard let primaryNavigationController = primaryViewController as? UINavigationController else {
+            return nil
+        }
+
+        let viewControllers = Array(primaryNavigationController.viewControllers.dropFirst())
+        primaryNavigationController.popToRootViewControllerAnimated(false)
+
+        if let firstViewController = viewControllers.first as? UINavigationController {
+            // If it's already a navigation controller, just return it
+            return firstViewController
+        } else {
+            let navigationController = UINavigationController()
+            navigationController.viewControllers = viewControllers
+
+            return navigationController
         }
     }
 }
