@@ -85,6 +85,8 @@ class NotificationsViewController : UITableViewController
         setupFiltersSegmentedControl()
         setupNotificationsBucketDelegate()
 
+        startListeningToAccountNotifications()
+
         tableView.reloadData()
     }
 
@@ -127,6 +129,10 @@ class NotificationsViewController : UITableViewController
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         tableViewHandler.clearCachedRowHeights()
     }
+
+
+
+    // MARK: - UITableView Methods
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
@@ -221,7 +227,7 @@ class NotificationsViewController : UITableViewController
 
 // MARK: - User Interface Initialization
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
@@ -287,8 +293,7 @@ extension NotificationsViewController
     func setupRatingsView() {
         precondition(ratingsView != nil)
 
-        let ratingsSize = CGFloat(15.0)
-        let ratingsFont = WPFontManager.systemRegularFontOfSize(ratingsSize)
+        let ratingsFont = WPFontManager.systemRegularFontOfSize(Ratings.fontSize)
 
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
@@ -336,7 +341,7 @@ extension NotificationsViewController
 
 // MARK: - Notifications
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
@@ -355,7 +360,7 @@ extension NotificationsViewController
         nc.removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
     }
 
-    func applicationDidBecomeActive(note: NSNotification) {
+    @objc func applicationDidBecomeActive(note: NSNotification) {
         // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
         guard isViewLoaded() == true && view.window != nil else {
             return
@@ -366,11 +371,11 @@ extension NotificationsViewController
         reloadResultsControllerIfNeeded()
     }
 
-    func applicationWillResignActive(note: NSNotification) {
+    @objc func applicationWillResignActive(note: NSNotification) {
         stopWaitingForNotification()
     }
 
-    func defaultAccountDidChange(note: NSNotification) {
+    @objc func defaultAccountDidChange(note: NSNotification) {
         resetApplicationBadge()
     }
 }
@@ -446,11 +451,11 @@ extension NotificationsViewController
 }
 
 
-/// Notifications Deletion Mechanism
-///
-extension NotificationsViewController
+// MARK: - Notifications Deletion Mechanism
+//
+private extension NotificationsViewController
 {
-    func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
+    @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
         guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
             return
@@ -488,7 +493,7 @@ extension NotificationsViewController
 
 // MARK: - WPTableViewHandler Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func reloadResultsControllerIfNeeded() {
         // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
@@ -661,7 +666,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
 
 
-// MARK - Filter Helpers
+// MARK: - Filter Helpers
 //
 private extension NotificationsViewController
 {
@@ -693,7 +698,7 @@ private extension NotificationsViewController
 
 // MARK: - NoResults Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func showNoResultsViewIfNeeded() {
         // Remove + Show Filters, if needed
@@ -855,7 +860,7 @@ extension NotificationsViewController: SPBucketDelegate
 
 // MARK: - Sync'ing Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func resetApplicationBadge() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
@@ -895,7 +900,7 @@ extension NotificationsViewController
         pushNotificationDate = nil
     }
 
-    func notificationWaitDidTimeout() {
+    @objc func notificationWaitDidTimeout() {
         DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
 
         pushNotificationID = nil
@@ -1001,6 +1006,7 @@ private extension NotificationsViewController
         static let heightFull           = CGFloat(100)
         static let heightZero           = CGFloat(0)
         static let animationDelay       = NSTimeInterval(0.5)
+        static let fontSize             = CGFloat(15.0)
         static let reviewURL            = AppRatingUtility.appReviewUrl()
     }
 }
