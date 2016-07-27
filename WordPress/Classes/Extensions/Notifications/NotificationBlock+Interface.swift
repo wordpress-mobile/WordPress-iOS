@@ -82,7 +82,7 @@ extension NotificationBlock {
     public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
-        if textOverride != nil {
+        if let textOverride = textOverride {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
 
@@ -132,11 +132,11 @@ extension NotificationBlock {
 
         for theMedia in media {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
-            if theMedia.mediaURL == nil {
+            guard let mediaURL = theMedia.mediaURL else {
                 continue
             }
 
-            if let image = mediaMap![theMedia.mediaURL] {
+            if let image = mediaMap![mediaURL] {
                 let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
             }
@@ -190,7 +190,7 @@ extension NotificationBlock {
                                  linksColor : UIColor?) -> NSAttributedString
     {
         // Is it empty?
-        if text == nil {
+        guard let text = text else {
             return NSAttributedString()
         }
 
@@ -220,9 +220,9 @@ extension NotificationBlock {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
 
-            if range.url != nil && linksColor != nil {
-                theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
-                theString.addAttribute(NSForegroundColorAttributeName, value: linksColor!, range: shiftedRange)
+            if let rangeURL = range.url, let linksColor = linksColor {
+                theString.addAttribute(NSLinkAttributeName, value: rangeURL, range: shiftedRange)
+                theString.addAttribute(NSForegroundColorAttributeName, value: linksColor, range: shiftedRange)
             }
         }
 
