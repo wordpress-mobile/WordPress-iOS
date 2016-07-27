@@ -12,7 +12,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
     @IBOutlet private weak var contentBottomConstraint: NSLayoutConstraint!
 
-    public var delegate: ReaderStreamHeaderDelegate?
+    public weak var delegate: ReaderStreamHeaderDelegate?
 
 
     // MARK: - Lifecycle Methods
@@ -33,7 +33,7 @@ import WordPressShared.WPStyleGuide
         titleLabel.text = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
         disclosureIcon.image = Gridicon.iconOfType(.ChevronRight, withSize: disclosureIcon.frame.size)
-        disclosureIcon.tintColor = UIColor(fromRGBAColorWithRed: 199.0, green: 199.0, blue: 204.0, alpha: 1.0)
+        disclosureIcon.tintColor = WPStyleGuide.accessoryDefaultTintColor()
 
         imageView.image = Gridicon.iconOfType(.Cog, withSize: imageView.frame.size)
         imageView.tintColor = UIColor.whiteColor()
@@ -67,7 +67,7 @@ import WordPressShared.WPStyleGuide
 
 
     @IBAction func didTouchDown(sender: UIButton) {
-        innerContentView.backgroundColor = UIColor(fromRGBAColorWithRed: 217.0, green: 217.0, blue: 217.0, alpha: 1.0)
+        innerContentView.backgroundColor = WPStyleGuide.cellDefaultHighlightColor()
     }
 
 
