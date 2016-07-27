@@ -1416,15 +1416,13 @@ import WordPressComAnalytics
 extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
-        guard let topic = readerTopic else {
-            return
-        }
-        // Toggle following for the topic
-        if topic.isKindOfClass(ReaderTagTopic) {
-            toggleFollowingForTag(topic as! ReaderTagTopic)
-        } else if topic.isKindOfClass(ReaderSiteTopic) {
-            toggleFollowingForSite(topic as! ReaderSiteTopic)
-        } else if ReaderHelpers.topicIsFollowing(topic) {
+        if let topic = readerTopic as? ReaderTagTopic {
+            toggleFollowingForTag(topic)
+
+        } else if let topic = readerTopic as? ReaderSiteTopic {
+            toggleFollowingForSite(topic)
+
+        } else if let topic = readerTopic as? ReaderDefaultTopic where ReaderHelpers.topicIsFollowing(topic) {
             showManageSites()
         }
     }
