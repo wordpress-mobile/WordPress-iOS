@@ -128,6 +128,7 @@ extension NotificationDetailsViewController
 ///
 extension NotificationDetailsViewController
 {
+    // TODO: This should be private
     func attachSuggestionsViewIfNeeded() {
         guard shouldAttachSuggestionsView else {
             suggestionsTableView.removeFromSuperview()
@@ -159,6 +160,7 @@ extension NotificationDetailsViewController
 ///
 extension NotificationDetailsViewController
 {
+    // TODO: This should be Private once ready
     func attachEditActionIfNeeded() {
         guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
             return
@@ -192,6 +194,7 @@ extension NotificationDetailsViewController
 ///
 extension NotificationDetailsViewController
 {
+    // TODO: This should be private once ready
     func adjustLayoutConstraintsIfNeeded() {
         // Badge Notifications should be centered, and display no cell separators
         let shouldCenterVertically = note.isBadge
