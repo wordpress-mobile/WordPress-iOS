@@ -138,7 +138,6 @@ static NSInteger HideSearchMinSites = 3;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self configureTableView];
-    [self configureHeaderView];
     [self configureSearchController];
 
     [self registerForAccountChangeNotification];
@@ -156,6 +155,14 @@ static NSInteger HideSearchMinSites = 3;
     [self updateSearchVisibility];
     [self maybeShowNUX];
     [self syncBlogs];
+
+    if (self.selectedBlog) {
+        NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
+        if (blogIndex != NSNotFound) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -234,16 +241,20 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Header methods
 
-- (void)configureHeaderView
+- (UIView *)headerView
 {
-    self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.headerLabel.numberOfLines = 0;
-    self.headerLabel.textAlignment = NSTextAlignmentCenter;
-    self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    self.headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
-    self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-    [self.headerView addSubview:self.headerLabel];
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectZero];
+        _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _headerLabel.numberOfLines = 0;
+        _headerLabel.textAlignment = NSTextAlignmentCenter;
+        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
+        _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+        [_headerView addSubview:_headerLabel];
+    }
+
+    return _headerView;
 }
 
 - (void)updateHeaderSize
@@ -433,7 +444,6 @@ static NSInteger HideSearchMinSites = 3;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor whiteColor];
-    cell.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -508,8 +518,6 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     if (self.tableView.isEditing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
@@ -525,6 +533,8 @@ static NSInteger HideSearchMinSites = 3;
         blog.visible = YES;
         [blogService flagBlogAsLastUsed:blog];
 
+        self.selectedBlog = blog;
+        
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self showViewController:blogDetailsViewController sender:self];
