@@ -4164,11 +4164,11 @@
 				B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */,
 				B5120B391D47D0170059361A /* NotificationDetailsViewController+Internal.h */,
 				B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */,
+				B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */,
 				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
 				B52F8CD71B43260C00D36025 /* NotificationSettingStreamsViewController.swift */,
 				B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */,
 				B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */,
-				B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
