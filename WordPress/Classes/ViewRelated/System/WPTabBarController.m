@@ -190,6 +190,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (blogToOpen) {
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blogToOpen;
+        _blogListViewController.selectedBlog = blogToOpen;
         [_blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
     }
 
