@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import WordPressComAnalytics
 
 class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
@@ -13,6 +14,12 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
     private var cellForLayout : PageListTableViewCell!
+
+    private lazy var sectionFooterSepatatorView : UIView = {
+        let footer = UIView()
+        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        return footer
+    }()
 
     // MARK: - GUI
 
@@ -87,7 +94,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .None
 
         let bundle = NSBundle.mainBundle()
 
@@ -97,6 +103,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
         let restorePageCellNib = UINib(nibName: self.dynamicType.restorePageCellNibName, bundle: bundle)
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
+
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
     override func configureSearchController() {
@@ -251,6 +259,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == tableView.numberOfSections - 1 {
+            return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
+        }
         return CGFloat.min
     }
 
@@ -267,6 +278,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+        if section == tableView.numberOfSections - 1 {
+            return sectionFooterSepatatorView
+        }
         return UIView(frame: CGRectZero)
     }
 
@@ -298,13 +312,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         cell.accessoryType = .None
-        cell.selectionStyle = .None
 
         if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
         } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
+            cell.selectionStyle = .None
             cell.onAction = { [weak self] cell, _, page in
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
