@@ -8,18 +8,18 @@ struct NavigationItemRow : ImmuTableRow {
     let title: String
     let icon: UIImage?
     let action: ImmuTableAction?
-    let showsDisclosureIndicator: Bool
+    let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, showsDisclosureIndicator: Bool = true, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .DisclosureIndicator, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
-        self.showsDisclosureIndicator = showsDisclosureIndicator
+        self.accessoryType = accessoryType
         self.action = action
     }
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
-        cell.accessoryType = showsDisclosureIndicator ? .DisclosureIndicator : .None
+        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -33,13 +33,13 @@ struct BadgeNavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let badgeCount: Int
-    let showsDisclosureIndicator: Bool
+    let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, showsDisclosureIndicator: Bool = true, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .DisclosureIndicator, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
         self.badgeCount = badgeCount
-        self.showsDisclosureIndicator = showsDisclosureIndicator
+        self.accessoryType = accessoryType
         self.action = action
     }
 
@@ -47,7 +47,7 @@ struct BadgeNavigationItemRow: ImmuTableRow {
         let cell = cell as! WPTableViewCellBadge
 
         cell.textLabel?.text = title
-        cell.accessoryType = showsDisclosureIndicator ? .DisclosureIndicator : .None
+        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
         cell.badgeCount = badgeCount
 
