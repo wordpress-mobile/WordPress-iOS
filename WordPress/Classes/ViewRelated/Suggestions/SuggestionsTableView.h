@@ -5,9 +5,10 @@
 @interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
+@property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic) BOOL useTransparentHeader;
 
-- (instancetype)initWithSiteID:(NSNumber *)siteID;
+- (instancetype)init;
 
 
 /**
