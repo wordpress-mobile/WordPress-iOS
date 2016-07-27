@@ -118,11 +118,11 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 // Adapter Class: Multiple Blocks can be mapped to a single view
 @interface NotificationBlockGroup : NSObject
 
-@property (nonatomic, strong, nonnull, readonly) NSArray    *blocks;
+@property (nonatomic, strong, nonnull, readonly) NSArray<NotificationBlock *>   *blocks;
 @property (nonatomic, assign, readonly) NoteBlockGroupType  type;
 
 - (nullable NotificationBlock *)blockOfType:(NoteBlockType)type;
-- (nonnull NSSet *)imageUrlsForBlocksOfTypes:(nonnull NSSet *)types;
+- (nonnull NSSet<NSURL *> *)imageUrlsForBlocksOfTypes:(nonnull NSSet *)types;
 
 @end
 
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
  *
  *  @returns                An array of NSURL instances, mapping to images required by this block.
  */
-- (nonnull NSArray *)imageUrls;
+- (nonnull NSArray<NSURL *> *)imageUrls;
 
 /**
  *	@brief      Returns YES if the associated comment (if any) is approved. NO otherwise.
