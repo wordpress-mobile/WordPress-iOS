@@ -48,8 +48,6 @@
 #import "MixpanelTweaks.h"
 
 #import "NavbarTitleDropdownButton.h"
-#import "NotificationsViewController.h"
-#import "NotificationsViewController+Internal.h"
 #import "NotificationDetailsViewController.h"
 #import "NotificationDetailsViewController+Internal.h"
 #import "SuggestionService.h"
