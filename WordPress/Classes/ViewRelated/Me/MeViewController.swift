@@ -81,20 +81,22 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
 
-        // After we've reloaded the view model, we'll either reselect the currently
-        // selected table row, or we'll select the first row if the split view
-        // is collapsed.
+        // After we've reloaded the view model we should maintain the current
+        // table row selection, or if the split view we're in is not compact
+        // then we'll just select the first item in the table.
+
+        // First, we'll grab the appropriate index path so we can reselect it
+        // after reloading the table
         var selectedIndexPath = tableView.indexPathForSelectedRow
         if selectedIndexPath == nil && !splitViewControllerIsHorizontallyCompact {
             selectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
         }
 
+        // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
-        tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
-    }
 
-    private var splitViewControllerIsHorizontallyCompact: Bool {
-        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
+        // And finally we'll reselect the selected row, if there is one
+        tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
     }
 
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
