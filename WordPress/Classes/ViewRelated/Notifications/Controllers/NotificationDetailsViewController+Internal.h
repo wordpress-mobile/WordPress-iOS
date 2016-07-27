@@ -39,7 +39,13 @@
 // Model
 @property (nonatomic, strong) Notification                  *note;
 
+- (void)openURL:(NSURL *)url;
+
 - (void)reloadData;
+
+- (void)followSiteWithBlock:(NotificationBlock *)block;
+- (void)unfollowSiteWithBlock:(NotificationBlock *)block;
+
 - (void)sendReplyWithBlock:(NotificationBlock *)block content:(NSString *)content;
 - (void)editCommentWithBlock:(NotificationBlock *)block;
 
