@@ -26,7 +26,6 @@ public class CommentsTableViewCell : WPTableViewCell
     }
     public var approved : Bool = false {
         didSet {
-            refreshSeparatorsColor()
             refreshTimestampLabel()
             refreshDetailsLabel()
             refreshBackground()
@@ -63,14 +62,10 @@ public class CommentsTableViewCell : WPTableViewCell
         super.awakeFromNib()
 
         assert(layoutView != nil)
-        assert(separatorsView != nil)
         assert(gravatarImageView != nil)
         assert(detailsLabel != nil)
         assert(timestampImageView != nil)
         assert(timestampLabel != nil)
-
-        separatorsView.bottomVisible = true
-        separatorsView.bottomInsets = separatorInsets
     }
 
     public override func setSelected(selected: Bool, animated: Bool) {
@@ -101,10 +96,6 @@ public class CommentsTableViewCell : WPTableViewCell
 
     private func refreshBackground() {
         backgroundColor = Style.backgroundColor(isApproved: approved)
-    }
-
-    private func refreshSeparatorsColor() {
-        separatorsView.bottomColor = Style.separatorsColor(isApproved: approved)
     }
 
     private func refreshImages() {
@@ -162,9 +153,6 @@ public class CommentsTableViewCell : WPTableViewCell
     // MARK: - Aliases
     typealias Style = WPStyleGuide.Comments
 
-    // MARK: - Private Constants
-    private let separatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
-
     // MARK: - Private Properties
     private var gravatarURL : NSURL?
 
@@ -175,7 +163,6 @@ public class CommentsTableViewCell : WPTableViewCell
 
     // MARK: - IBOutlets
     @IBOutlet private var layoutView            : UIView!
-    @IBOutlet private var separatorsView        : SeparatorsView!
     @IBOutlet private var gravatarImageView     : CircularImageView!
     @IBOutlet private var detailsLabel          : UILabel!
     @IBOutlet private var timestampImageView    : UIImageView!
