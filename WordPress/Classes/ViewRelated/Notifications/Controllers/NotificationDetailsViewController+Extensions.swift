@@ -162,11 +162,7 @@ extension NotificationDetailsViewController
 {
     // TODO: This should be Private once ready
     func attachEditActionIfNeeded() {
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
-            return
-        }
-
-        guard block.isActionOn(NoteActionEditKey) else {
+        guard shouldAttachEditAction else {
             return
         }
 
@@ -175,6 +171,11 @@ extension NotificationDetailsViewController
                                                             style: .Plain,
                                                             target: self,
                                                             action: #selector(editButtonWasPressed))
+    }
+
+    private var shouldAttachEditAction: Bool {
+        let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment)
+        return block?.isActionOn(NoteActionEditKey) ?? false
     }
 
     @IBAction func editButtonWasPressed() {
