@@ -62,7 +62,7 @@ class WPSplitViewController: UISplitViewController {
         var initialViewControllers = [viewController]
 
         if let navigationController = viewController as? UINavigationController,
-            let rootViewController = navigationController.viewControllers.first,
+            let rootViewController = navigationController.viewControllers.last,
             let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
 
             navigationController.delegate = self

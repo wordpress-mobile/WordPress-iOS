@@ -527,7 +527,7 @@ static NSInteger HideSearchMinSites = 3;
 
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
-        [self.navigationController pushViewController:blogDetailsViewController animated:YES];
+        [self showViewController:blogDetailsViewController sender:self];
     }
 }
 
