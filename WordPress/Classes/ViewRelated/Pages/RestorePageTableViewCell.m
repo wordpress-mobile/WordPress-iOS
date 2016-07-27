@@ -20,16 +20,6 @@
     [self applyStyles];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    // Don't respond to taps in margins.
-    if (!CGRectContainsPoint(self.pageContentView.frame, point)) {
-        return nil;
-    }
-    return [super hitTest:point withEvent:event];
-}
-
-
 #pragma mark - Configuration
 
 - (void)applyStyles
