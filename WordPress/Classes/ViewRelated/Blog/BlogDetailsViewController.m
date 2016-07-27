@@ -205,7 +205,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadStats];
 }
 
-
 #pragma mark - Data Model setup
 
 - (NSString *)adminRowTitle
