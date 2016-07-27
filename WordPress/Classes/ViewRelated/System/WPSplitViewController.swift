@@ -146,13 +146,6 @@ extension WPSplitViewController: UINavigationControllerDelegate {
     }
 }
 
-extension UIViewController {
-    /// Convenience method
-    var splitViewControllerIsCollapsed: Bool {
-        return splitViewController?.collapsed ?? true
-    }
-}
-
 @objc
 protocol WPSplitViewControllerDetailProvider {
     /**
