@@ -110,37 +110,37 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
-        let showsDisclosureIndicator = splitViewControllerIsHorizontallyCompact
+        let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .DisclosureIndicator : .None
 
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
             icon: Gridicon.iconOfType(.User),
-            showsDisclosureIndicator: showsDisclosureIndicator,
+            accessoryType: accessoryType,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
             icon: Gridicon.iconOfType(.Cog),
-            showsDisclosureIndicator: showsDisclosureIndicator,
+            accessoryType: accessoryType,
             action: pushAccountSettings())
 
         let appSettings = NavigationItemRow(
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
             icon: Gridicon.iconOfType(.Phone),
-            showsDisclosureIndicator: showsDisclosureIndicator,
+            accessoryType: accessoryType,
             action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             icon: Gridicon.iconOfType(.Bell),
-            showsDisclosureIndicator: showsDisclosureIndicator,
+            accessoryType: accessoryType,
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
             icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
-            showsDisclosureIndicator: showsDisclosureIndicator,
+            accessoryType: accessoryType,
             action: pushHelp())
 
         let logIn = ButtonRow(
