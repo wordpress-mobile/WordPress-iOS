@@ -63,7 +63,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const CompactTitleButtonWidth = 100.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
