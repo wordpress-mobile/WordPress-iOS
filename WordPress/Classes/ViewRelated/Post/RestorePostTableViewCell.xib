@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="cm8-te-h9Y" id="n47-YY-a6J">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gcy-ef-aVi">
@@ -59,44 +59,24 @@
                                     <constraint firstAttribute="bottom" secondItem="5bW-zk-smP" secondAttribute="bottom" id="fd1-Xw-yJ2"/>
                                     <constraint firstItem="5bW-zk-smP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tDg-aX-r9a" secondAttribute="trailing" constant="3" id="iiX-Ba-qGN"/>
                                     <constraint firstItem="5bW-zk-smP" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="lZy-0i-LeW"/>
-                                    <constraint firstAttribute="width" constant="600" id="zH8-kM-TvE"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="zH8-kM-TvE"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="zH8-kM-TvE"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="XWn-76-OyW" secondAttribute="centerX" id="2wV-mH-4yr"/>
                             <constraint firstItem="xvL-vB-zkU" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" constant="-1" id="7VD-3Z-mSf"/>
-                            <constraint firstItem="XWn-76-OyW" firstAttribute="leading" secondItem="gcy-ef-aVi" secondAttribute="leading" constant="6" id="NEt-GT-pbh"/>
+                            <constraint firstItem="XWn-76-OyW" firstAttribute="leading" secondItem="gcy-ef-aVi" secondAttribute="leading" constant="6" id="NEt-GT-pbh">
+                                <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                            </constraint>
                             <constraint firstItem="XWn-76-OyW" firstAttribute="top" secondItem="gcy-ef-aVi" secondAttribute="top" constant="10" id="eJm-2u-3Fj"/>
-                            <constraint firstAttribute="trailing" secondItem="XWn-76-OyW" secondAttribute="trailing" constant="6" id="gJL-pe-U6k"/>
+                            <constraint firstAttribute="trailing" secondItem="XWn-76-OyW" secondAttribute="trailing" constant="6" id="gJL-pe-U6k">
+                                <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                            </constraint>
                             <constraint firstItem="xvL-vB-zkU" firstAttribute="leading" secondItem="XWn-76-OyW" secondAttribute="leading" constant="-1" id="lXP-3e-wIH"/>
                             <constraint firstAttribute="bottom" secondItem="XWn-76-OyW" secondAttribute="bottom" constant="10" id="oMM-ZU-bDR"/>
                             <constraint firstItem="xvL-vB-zkU" firstAttribute="trailing" secondItem="XWn-76-OyW" secondAttribute="trailing" constant="1" id="rmt-Ui-YMc"/>
                             <constraint firstItem="xvL-vB-zkU" firstAttribute="bottom" secondItem="XWn-76-OyW" secondAttribute="bottom" constant="1" id="vo1-d7-zGo"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="2wV-mH-4yr"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="2wV-mH-4yr"/>
-                                <exclude reference="NEt-GT-pbh"/>
-                                <exclude reference="gJL-pe-U6k"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -118,6 +98,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon-post-undo" width="16" height="16"/>
+        <image name="icon-post-undo" width="18" height="18"/>
     </resources>
 </document>
