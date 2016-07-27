@@ -61,7 +61,7 @@ extension NotificationDetailsViewController
         replyTextView.accessibilityIdentifier = "Reply Text"
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
-            guard let block = self?.note.blockGroupOfType(.Comment).blockOfType(.Comment) else {
+            guard let block = self?.note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
                 return
             }
             self?.sendReplyWithBlock(block, content: content)
@@ -71,7 +71,8 @@ extension NotificationDetailsViewController
     }
 
     func setupSuggestionsView() {
-        suggestionsTableView = SuggestionsTableView(siteID: note.metaSiteID)
+        suggestionsTableView = SuggestionsTableView()
+        suggestionsTableView.siteID = note.metaSiteID
         suggestionsTableView.suggestionsDelegate = self
         suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
     }
