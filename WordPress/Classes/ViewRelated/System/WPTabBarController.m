@@ -61,6 +61,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
+@property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
@@ -103,13 +104,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
-        [self setViewControllers:@[self.blogListNavigationController,
+        [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerNavigationController,
                                    self.newPostViewController,
                                    self.meSplitViewController,
                                    self.notificationsNavigationController]];
 
-        [self setSelectedViewController:self.blogListNavigationController];
+        [self setSelectedViewController:self.blogListSplitViewController];
 
         // adds the orange dot on top of the notification tab
         [self addNotificationBadgeIcon];
@@ -296,16 +297,31 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Split View Controllers
 
+- (UISplitViewController *)blogListSplitViewController
+{
+    if (!_blogListSplitViewController) {
+        _blogListSplitViewController = [WPSplitViewController new];
+    }
+
+    [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+
+    _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
+
+    return _blogListSplitViewController;
+}
+
 - (UISplitViewController *)meSplitViewController
 {
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
     }
 
+    [_meSplitViewController configurePrimaryColumnWidth:WPSplitViewControllerPrimaryWidthWide];
+
     [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
 
     _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
-
+    
     return _meSplitViewController;
 }
 
@@ -505,8 +521,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // Don't kick of this auto selecting behavior if the user taps the the active tab as it
         // would break from standard iOS UX
         if (tabBarController.selectedIndex != WPTabNewPost) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+            BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
             if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
                 if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
                     [blogListViewController bypassBlogListViewController];
