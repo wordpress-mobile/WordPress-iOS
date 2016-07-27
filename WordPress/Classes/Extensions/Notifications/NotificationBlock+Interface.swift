@@ -122,9 +122,9 @@ extension NotificationBlock {
     ///
     /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
-    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
+    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
-        if mediaMap == nil || textOverride != nil {
+        if textOverride != nil {
             return nil
         }
 
@@ -136,7 +136,7 @@ extension NotificationBlock {
                 continue
             }
 
-            if let image = mediaMap![mediaURL] {
+            if let image = mediaMap[mediaURL] {
                 let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
             }
