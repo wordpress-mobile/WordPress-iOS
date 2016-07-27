@@ -63,7 +63,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const CompactTitleButtonWidth = 100.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -1244,13 +1244,12 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
-        WPButtonForNavigationBar* button = [WPStyleGuide buttonForBarWithImage:image
+        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                 style:[WPStyleGuide barButtonStyleForDone]
                                                                 target:self
-                                                              selector:@selector(showPreview)];
-        
-        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+                                                                action:@selector(showPreview)];
+        _previewBarButtonItem.accessibilityLabel = buttonTitle;
     }
 	
 	return _previewBarButtonItem;
