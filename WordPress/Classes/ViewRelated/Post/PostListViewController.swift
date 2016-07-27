@@ -108,7 +108,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func forceUpdateCellLayout(cell: PostCardTableViewCell) {
-        // Force a layout pass to ensure that constrants are configured for the
+        // Force a layout pass to ensure that constraints are configured for the
         // proper size class.
         view.addSubview(cell)
         cell.removeFromSuperview()

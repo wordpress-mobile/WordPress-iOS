@@ -48,7 +48,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
@@ -148,17 +147,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (CGFloat)innerWidthForSize:(CGSize)size
 {
-    CGFloat width = 0.0;
+    CGFloat width = size.width;
     CGFloat horizontalMargin = self.headerViewLeftConstraint.constant;
-    // FIXME: Ideally we'd check `self.maxIPadWidthConstraint.isActive` but that
-    // property is iOS 8 only. When iOS 7 support is ended update this and check
-    // the constraint. 
-    if ([UIDevice isPad] && size.width >= self.maxIPadWidthConstraint.constant) {
-        width = self.maxIPadWidthConstraint.constant;
-    } else {
-        width = size.width;
-        horizontalMargin += CGRectGetMinX(self.postContentView.frame);
-    }
+    horizontalMargin += CGRectGetMinX(self.postContentView.frame);
     width -= (horizontalMargin * 2);
     return width;
 }
