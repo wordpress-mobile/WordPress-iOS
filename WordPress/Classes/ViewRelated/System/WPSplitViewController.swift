@@ -45,8 +45,9 @@ class WPSplitViewController: UISplitViewController {
         var detailVC = vc
 
         // Ensure that detail view controllers are wrapped in a navigation controller
-        if !(vc is UINavigationController || collapsed) {
-            detailVC = UINavigationController(rootViewController: vc)
+        // when the split is not collapsed
+        if !collapsed {
+            detailVC = wrapViewControllerInNavigationControllerIfRequired(vc)
         }
 
         super.showDetailViewController(detailVC, sender: self)
@@ -78,12 +79,11 @@ class WPSplitViewController: UISplitViewController {
             return nil
         }
 
-        // Ensure it's wrapped in a navigation controller
-        if detailViewController is UINavigationController {
-            return detailViewController
-        } else {
-            return UINavigationController(rootViewController: detailViewController)
-        }
+        return wrapViewControllerInNavigationControllerIfRequired(detailViewController)
+    }
+
+    private func wrapViewControllerInNavigationControllerIfRequired(viewController: UIViewController) -> UIViewController {
+        return (viewController is UINavigationController) ? viewController : UINavigationController(rootViewController: viewController)
     }
 
     private var primaryNavigationControllerStackHasBeenModified = false
@@ -137,6 +137,12 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         }
 
         return false
+    }
+}
+
+extension UIViewController {
+    var splitViewControllerIsHorizontallyCompact: Bool {
+        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
     }
 }
 
