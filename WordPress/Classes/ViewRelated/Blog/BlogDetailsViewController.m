@@ -175,7 +175,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [self.blogService syncBlog:_blog completionHandler:^() {
         [weakSelf configureTableViewData];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadTableViewPreservingSelection];
     }];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
@@ -201,11 +201,35 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
-    [self.tableView reloadData];
+    [self reloadTableViewPreservingSelection];
     [self preloadStats];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    // Required to update disclosure indicators depending on split view status
+    [self reloadTableViewPreservingSelection];
+}
+
 #pragma mark - Data Model setup
+
+- (void)reloadTableViewPreservingSelection
+{
+    // First, we'll grab the appropriate index path so we can reselect it
+    // after reloading the table
+    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    if (selectedIndexPath == nil && !self.splitViewControllerIsHorizontallyCompact) {
+        selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }
+
+    // Configure and reload table data when appearing to ensure pending comment count is updated
+    [self.tableView reloadData];
+
+    // And finally we'll reselect the selected row, if there is one
+    [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
 
 - (NSString *)adminRowTitle
 {
@@ -411,7 +435,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = [self.splitViewController isCollapsed] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
@@ -423,8 +447,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
@@ -587,7 +609,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
         self.navigationItem.title = self.blog.settings.name;
-        [self.tableView reloadData];
+        [self reloadTableViewPreservingSelection];
     }
 }
 
