@@ -487,6 +487,8 @@ import WordPressComAnalytics
         tableView.tableHeaderView?.hidden = true
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
+        resultsStatusView.buttonTitle = nil
+        resultsStatusView.delegate = nil
 
         let boxView = WPAnimatedBox()
         resultsStatusView.accessoryView = boxView
