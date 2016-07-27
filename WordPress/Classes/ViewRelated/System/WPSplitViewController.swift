@@ -145,17 +145,12 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             // apart at that point.
             viewControllers = Array(primaryNavigationController.viewControllers.suffixFrom(index))
             primaryNavigationController.viewControllers = Array(primaryNavigationController.viewControllers.prefixUpTo(index))
-        } else {
-            // Otherwise, grab all but the root view controller from the primary
-            // navigation stack, and pop it back.
-            viewControllers = Array(primaryNavigationController.viewControllers.dropFirst())
-            primaryNavigationController.popToRootViewControllerAnimated(false)
         }
 
         // If we have no detail view controllers, try and fetch the primary view controller's
         // initial detail view controller.
         if viewControllers.count == 0 {
-            if let primaryViewController = primaryNavigationController.viewControllers.first,
+            if let primaryViewController = primaryNavigationController.viewControllers.last,
                 let initialDetailViewController = initialDetailViewControllerForPrimaryViewController(primaryViewController) {
                 return initialDetailViewController
             }
@@ -202,6 +197,13 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         if dimsDetailViewControllerAutomatically && !collapsed {
             let shouldDim = navigationController.viewControllers.count == 1
             dimDetailViewController(shouldDim)
+        }
+
+        // If the split view isn't collapsed, and we're pushing a new view controller
+        // onto the primary navigation controller, update the detail pane
+        // to show the appropriate initial view controller
+        if !collapsed && navigationController.viewControllers.count > 1 {
+            setInitialPrimaryViewController(navigationController)
         }
     }
 }
