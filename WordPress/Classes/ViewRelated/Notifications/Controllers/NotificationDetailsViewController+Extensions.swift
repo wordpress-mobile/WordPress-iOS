@@ -145,7 +145,7 @@ extension NotificationDetailsViewController
         ])
     }
 
-    var shouldAttachSuggestionsView: Bool {
+    private  var shouldAttachSuggestionsView: Bool {
         guard let siteID = note.metaSiteID else {
             return false
         }
