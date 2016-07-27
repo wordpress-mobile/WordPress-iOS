@@ -102,10 +102,19 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             return nil
         }
 
-        // Grab all but the root view controller from the primary navigation stack,
-        // and pop it back.
-        let viewControllers = Array(primaryNavigationController.viewControllers.dropFirst())
-        primaryNavigationController.popToRootViewControllerAnimated(false)
+        var viewControllers: [UIViewController] = []
+        if let index = primaryNavigationController.viewControllers.indexOf({ $0 is UINavigationController }) {
+            // If there's another navigation controller somewhere in the primary navigation stack
+            // (this is the default behaviour of a collapse), then we'll split the view controllers
+            // apart at that point.
+            viewControllers = Array(primaryNavigationController.viewControllers.suffixFrom(index))
+            primaryNavigationController.viewControllers = Array(primaryNavigationController.viewControllers.prefixUpTo(index))
+        } else {
+            // Otherwise, grab all but the root view controller from the primary
+            // navigation stack, and pop it back.
+            viewControllers = Array(primaryNavigationController.viewControllers.dropFirst())
+            primaryNavigationController.popToRootViewControllerAnimated(false)
+        }
 
         // If we have no detail view controllers, try and fetch the primary view controller's
         // initial detail view controller.
@@ -131,7 +140,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // If the user hasn't modified the navigation stack, then show the root view controller initially.
         // In a horizontally compact size class this means we can collapse to show the root
         // view controller, instead of having the detail view controller pushed onto the stack.
-        if let navigationController = primaryViewController as? UINavigationController where !primaryNavigationControllerStackHasBeenModified {
+        if let navigationController = primaryViewController as? UINavigationController where !primaryNavigationControllerStackHasBeenModified && navigationController.viewControllers.count == 1 {
             navigationController.popToRootViewControllerAnimated(false)
             return true
         }
