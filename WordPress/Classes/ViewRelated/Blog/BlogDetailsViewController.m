@@ -100,7 +100,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -467,42 +467,42 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStylePlain];
     controller.blog = self.blog;
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPostList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:self.blog];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPageList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:self.blog];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPeople
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPlans
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSettings
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSharing
@@ -517,7 +517,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showStats
@@ -526,23 +526,21 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;
-    [self.navigationController pushViewController:statsView animated:YES];
+    [self showDetailViewController:statsView sender:self];
 }
 
 - (void)showThemes
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
-    [self.navigationController pushViewController:viewController
-                                         animated:YES];
+    [self showDetailViewController:viewController sender:self];
 }
 
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
     MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:viewController
-                                         animated:YES];
+    [self showDetailViewController:viewController sender:self];
 }
 
 - (void)showViewSite
@@ -592,6 +590,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         self.navigationItem.title = self.blog.settings.name;
         [self.tableView reloadData];
     }
+}
+
+#pragma mark - WPSplitViewControllerDetailProvider
+
+- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
+{
+    StatsViewController *statsView = [StatsViewController new];
+    statsView.blog = self.blog;
+    statsView.statsService = self.statsService;
+    return statsView;
 }
 
 @end
