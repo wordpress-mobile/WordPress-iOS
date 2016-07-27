@@ -24,10 +24,9 @@ class FeatureFlagTest: XCTestCase {
 
     func testEnsureDisabledFeaturesInProduction() {
         Build.withCurrent(.AppStore) {
-            expect(FeatureFlag.People.enabled).to(beFalse())
+            expect(FeatureFlag.ReaderMenu.enabled).to(beFalse())
         }
     }
-
 }
 
 extension Build {
