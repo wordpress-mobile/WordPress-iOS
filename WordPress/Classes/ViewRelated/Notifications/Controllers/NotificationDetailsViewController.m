@@ -159,7 +159,6 @@ static NSInteger NotificationSectionCount               = 1;
 }
 
 
-
 #pragma mark - Autolayout Helpers
 
 - (NSDictionary *)layoutIdentifierMap
