@@ -32,7 +32,6 @@ extension NotificationDetailsViewController
     func setupTableViewCells() {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
             NoteBlockHeaderTableViewCell.self,
-            NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
