@@ -160,7 +160,7 @@ extension NotificationDetailsViewController
 extension NotificationDetailsViewController
 {
     func attachEditActionIfNeeded() {
-        guard let block = note.blockGroupOfType(.Comment).blockOfType(.Comment) else {
+        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
             return
         }
 
