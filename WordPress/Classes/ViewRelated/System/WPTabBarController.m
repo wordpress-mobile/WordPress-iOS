@@ -305,6 +305,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
 
+    _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
+
     _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
 
     return _blogListSplitViewController;

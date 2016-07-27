@@ -53,6 +53,42 @@ class WPSplitViewController: UISplitViewController {
         super.showDetailViewController(detailVC, sender: self)
     }
 
+
+    private lazy var dimmingView: UIView = {
+        let dimmingView = UIView()
+        dimmingView.backgroundColor = WPStyleGuide.greyDarken30()
+        return dimmingView
+    }()
+
+    /// If set to `true`, the split view will automatically dim the detail
+    /// view controller whenever the primary navigation controller is popped
+    /// back to its root view controller.
+    var dimsDetailViewControllerAutomatically = false
+
+    private let dimmingViewAlpha: CGFloat = 0.5
+    private let dimmingViewAnimationDuration: NSTimeInterval = 0.3
+
+    private func dimDetailViewController(dimmed: Bool) {
+        if dimmed {
+            if let detailViewController = viewControllers.last,
+                let view = detailViewController.view {
+                dimmingView.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(dimmingView)
+                view.pinSubviewToAllEdges(dimmingView)
+                dimmingView.alpha = 0
+                UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
+                    self.dimmingView.alpha = self.dimmingViewAlpha
+                })
+            }
+        } else if dimmingView.superview != nil {
+            UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
+                self.dimmingView.alpha = 0
+                }, completion: { _ in
+                    self.dimmingView.removeFromSuperview()
+            })
+        }
+    }
+
     /** Sets the primary view controller of the split view as specified, and
      *  automatically sets the detail view controller if the primary
      *  conforms to `WPSplitViewControllerDetailProvider` and can vend a
@@ -137,6 +173,10 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
     }
 
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        if dimsDetailViewControllerAutomatically {
+            dimDetailViewController(false)
+        }
+
         // If the user hasn't modified the navigation stack, then show the root view controller initially.
         // In a horizontally compact size class this means we can collapse to show the root
         // view controller, instead of having the detail view controller pushed onto the stack.
@@ -158,6 +198,11 @@ extension UIViewController {
 extension WPSplitViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         primaryNavigationControllerStackHasBeenModified = true
+
+        if dimsDetailViewControllerAutomatically && !collapsed {
+            let shouldDim = navigationController.viewControllers.count == 1
+            dimDetailViewController(shouldDim)
+        }
     }
 }
 
