@@ -89,12 +89,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // selected table row, or we'll select the first row if the split view
         // is collapsed.
         var selectedIndexPath = tableView.indexPathForSelectedRow
-        if selectedIndexPath == nil && !splitViewControllerIsCollapsed {
+        if selectedIndexPath == nil && !splitViewControllerIsHorizontallyCompact {
             selectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
         }
 
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
         tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
+    }
+
+    private var splitViewControllerIsHorizontallyCompact: Bool {
+        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
     }
 
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
@@ -106,7 +110,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
-        let showsDisclosureIndicator = splitViewControllerIsCollapsed
+        let showsDisclosureIndicator = splitViewControllerIsHorizontallyCompact
 
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
