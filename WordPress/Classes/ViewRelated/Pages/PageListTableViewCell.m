@@ -61,7 +61,6 @@
 
 - (void)applyStyles
 {
-    [WPStyleGuide applyPostCardStyle:self];
     [WPStyleGuide applyPageTitleStyle:self.titleLabel];
 }
 
