@@ -24,7 +24,6 @@
 
 - (void)applyStyles
 {
-    [WPStyleGuide applyPostCardStyle:self];
     [WPStyleGuide applyRestorePageLabelStyle:self.restoreLabel];
     [WPStyleGuide applyRestorePageButtonStyle:self.restoreButton];
 }
