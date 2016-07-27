@@ -8,34 +8,64 @@ import WordPressShared
 
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
-/// WordPress.com account found in the system.
+/// WordPress.com account.
 ///
 /// This class relies on both, Simperium and WPTableViewHandler to automatically receive
 /// new Notifications that might be generated, and render them onscreen.
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
-/// given its remote identifier. This is specially useful when dealing with events derived from
-/// interactions with Push Notifications OS banners.
+/// given its remote identifier.
 ///
 class NotificationsViewController : UITableViewController
 {
-    @IBOutlet var tableHeaderView : UIView!
-    @IBOutlet var filtersSegmentedControl : UISegmentedControl!
-    @IBOutlet var ratingsView : ABXPromptView!
-    @IBOutlet var ratingsHeightConstraint : NSLayoutConstraint!
-    var tableViewHandler : WPTableViewHandler!
-    private var noResultsView : WPNoResultsView!
-    private var pushNotificationID : String?
-    private var pushNotificationDate : NSDate?
+    // MARK: - Properties
 
-    // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+    /// TableHeader
+    ///
+    @IBOutlet var tableHeaderView: UIView!
+
+    /// Filtering Segmented Control
+    ///
+    @IBOutlet var filtersSegmentedControl: UISegmentedControl!
+
+    /// Ratings View
+    ///
+    @IBOutlet var ratingsView: ABXPromptView!
+
+    /// Defines the Height of the Ratings View
+    ///
+    @IBOutlet var ratingsHeightConstraint: NSLayoutConstraint!
+
+    /// TableView Handler: Our commander in chief!
+    ///
+    // TODO JLP 7.26.2016: Make this one private once +RowActions has been merged in
+    var tableViewHandler: WPTableViewHandler!
+
+    /// NoResults View
+    ///
+    private var noResultsView: WPNoResultsView!
+
+    /// ID of the Notification that must be pushed, granted that it gets synced before the timeout kicks.
+    ///
+    private var pushNotificationID: String?
+
+    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
+    ///
+    private var pushNotificationDate: NSDate?
+
+    /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+    ///
     private var lastReloadDate = NSDate()
 
-    // Notifications that received a destructive action will allow the user to Undo this action.
-    // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
-    // so that it can be proactively filtered from the list.
+    /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
+    ///
     private var notificationDeletionBlocks = [NSManagedObjectID: NotificationDeletionActionBlock]()
+
+    /// Notifications being deleted are proactively filtered from the list.
+    ///
     private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
+
+    // MARK: - View Lifecycle
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -55,6 +85,8 @@ class NotificationsViewController : UITableViewController
         setupNoResultsView()
         setupFiltersSegmentedControl()
         setupNotificationsBucketDelegate()
+
+        startListeningToAccountNotifications()
 
         tableView.reloadData()
     }
@@ -98,6 +130,10 @@ class NotificationsViewController : UITableViewController
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         tableViewHandler.clearCachedRowHeights()
     }
+
+
+
+    // MARK: - UITableView Methods
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
@@ -177,15 +213,13 @@ class NotificationsViewController : UITableViewController
             return
         }
 
-        if let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController {
-            detailsViewController.setupWithNotification(note)
-            detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
-                self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
-            }
+        guard let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController else {
+            return
         }
 
-        if let readerViewController = segue.destinationViewController as? ReaderDetailViewController {
-            readerViewController.setupWithPostID(note.metaPostID, siteID: note.metaSiteID)
+        detailsViewController.setupWithNotification(note)
+        detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
+            self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
         }
     }
 }
@@ -194,7 +228,7 @@ class NotificationsViewController : UITableViewController
 
 // MARK: - User Interface Initialization
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
@@ -205,9 +239,9 @@ extension NotificationsViewController
         let bucketName = Notification.classNameWithoutNamespaces()
 
         if let overridenName = simperium.bucketOverrides[bucketName] as? String where overridenName != WPNotificationsBucketName {
-            title = "Notifications from [\(overridenName)]"
+            navigationItem.title = "Notifications from [\(overridenName)]"
         } else {
-            title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
+            navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
         }
     }
 
@@ -260,8 +294,7 @@ extension NotificationsViewController
     func setupRatingsView() {
         precondition(ratingsView != nil)
 
-        let ratingsSize = CGFloat(15.0)
-        let ratingsFont = WPFontManager.systemRegularFontOfSize(ratingsSize)
+        let ratingsFont = WPFontManager.systemRegularFontOfSize(Ratings.fontSize)
 
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
@@ -309,7 +342,7 @@ extension NotificationsViewController
 
 // MARK: - Notifications
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
@@ -328,7 +361,7 @@ extension NotificationsViewController
         nc.removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
     }
 
-    func applicationDidBecomeActive(note: NSNotification) {
+    @objc func applicationDidBecomeActive(note: NSNotification) {
         // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
         guard isViewLoaded() == true && view.window != nil else {
             return
@@ -339,11 +372,11 @@ extension NotificationsViewController
         reloadResultsControllerIfNeeded()
     }
 
-    func applicationWillResignActive(note: NSNotification) {
+    @objc func applicationWillResignActive(note: NSNotification) {
         stopWaitingForNotification()
     }
 
-    func defaultAccountDidChange(note: NSNotification) {
+    @objc func defaultAccountDidChange(note: NSNotification) {
         resetApplicationBadge()
     }
 }
@@ -419,11 +452,11 @@ extension NotificationsViewController
 }
 
 
-/// Notifications Deletion Mechanism
-///
-extension NotificationsViewController
+// MARK: - Notifications Deletion Mechanism
+//
+private extension NotificationsViewController
 {
-    func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
+    @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
         guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
             return
@@ -461,7 +494,7 @@ extension NotificationsViewController
 
 // MARK: - WPTableViewHandler Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func reloadResultsControllerIfNeeded() {
         // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
@@ -634,7 +667,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
 
 
 
-// MARK - Filter Helpers
+// MARK: - Filter Helpers
 //
 private extension NotificationsViewController
 {
@@ -666,7 +699,7 @@ private extension NotificationsViewController
 
 // MARK: - NoResults Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func showNoResultsViewIfNeeded() {
         // Remove + Show Filters, if needed
@@ -828,7 +861,7 @@ extension NotificationsViewController: SPBucketDelegate
 
 // MARK: - Sync'ing Helpers
 //
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     func resetApplicationBadge() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
@@ -868,7 +901,7 @@ extension NotificationsViewController
         pushNotificationDate = nil
     }
 
-    func notificationWaitDidTimeout() {
+    @objc func notificationWaitDidTimeout() {
         DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
 
         pushNotificationID = nil
@@ -974,6 +1007,7 @@ private extension NotificationsViewController
         static let heightFull           = CGFloat(100)
         static let heightZero           = CGFloat(0)
         static let animationDelay       = NSTimeInterval(0.5)
+        static let fontSize             = CGFloat(15.0)
         static let reviewURL            = AppRatingUtility.appReviewUrl()
     }
 }
