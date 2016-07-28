@@ -125,6 +125,8 @@ class WPSplitViewController: UISplitViewController {
     private var primaryNavigationControllerStackHasBeenModified = false
 }
 
+// MARK: - UISplitViewControllerDelegate
+
 extension WPSplitViewController: UISplitViewControllerDelegate {
     /** By default, the top view controller from the primary navigation
      *  controller will be popped and used as the secondary view controller.
@@ -184,11 +186,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
     }
 }
 
-extension UIViewController {
-    var splitViewControllerIsHorizontallyCompact: Bool {
-        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
-    }
-}
+// MARK: - UINavigationControllerDelegate
 
 extension WPSplitViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
@@ -207,6 +205,16 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
     }
 }
+
+// MARK: - UIViewController Helpers
+
+extension UIViewController {
+    var splitViewControllerIsHorizontallyCompact: Bool {
+        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
+    }
+}
+
+// MARK: - WPSplitViewControllerDetailProvider Protocol
 
 @objc
 protocol WPSplitViewControllerDetailProvider {

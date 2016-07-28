@@ -188,10 +188,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
     if (blogToOpen) {
-        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blogToOpen;
         _blogListViewController.selectedBlog = blogToOpen;
-        [_blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
     }
 
     return _blogListNavigationController;
@@ -302,13 +299,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_blogListSplitViewController) {
         _blogListSplitViewController = [WPSplitViewController new];
+
+        [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+
+        _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
+
+        _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
     }
-
-    [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
-
-    _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
-
-    _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
 
     return _blogListSplitViewController;
 }
@@ -317,11 +314,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
+
+        [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+
+        _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     }
-
-    [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
-
-    _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     
     return _meSplitViewController;
 }
