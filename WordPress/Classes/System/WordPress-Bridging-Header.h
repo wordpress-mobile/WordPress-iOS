@@ -51,6 +51,7 @@
 #import "NotificationDetailsViewController.h"
 #import "NotificationDetailsViewController+Internal.h"
 #import "SuggestionService.h"
+#import "StatsViewController.h"
 #import "Meta.h"
 #import "Notification.h"
 #import "Notification+Internals.h"
