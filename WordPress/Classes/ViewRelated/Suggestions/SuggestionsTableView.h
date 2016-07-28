@@ -4,10 +4,11 @@
 
 @interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
+@property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
+@property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic) BOOL useTransparentHeader;
 
-- (instancetype)initWithSiteID:(NSNumber *)siteID;
+- (nonnull instancetype)init;
 
 
 /**
@@ -23,7 +24,7 @@
 /**
   Show suggestions for the given word - returns YES if at least one suggestion is being shown
 */
-- (BOOL)showSuggestionsForWord:(NSString *)word;
+- (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
 
 @end
 
@@ -36,12 +37,12 @@
   will call this method to have the UIViewController prompt the appropriate child
   to replace the search term with the suggestion (e.g. at the caret)
 */
-- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text;
+- (void)suggestionsTableView:(nonnull SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(nullable NSString *)suggestion forSearchText:(nonnull NSString *)text;
 
 /**
   When the suggestionsTableView has completed subview layout, the SuggestionsTableView
   will call this method to let the UIViewController know
  */
-- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didChangeTableBounds:(CGRect)bounds;
+- (void)suggestionsTableView:(nonnull SuggestionsTableView *)suggestionsTableView didChangeTableBounds:(CGRect)bounds;
 
 @end

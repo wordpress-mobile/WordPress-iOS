@@ -14,7 +14,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
     static private let statsStoryboardName = "SiteStats"
     static private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
-    static private let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
 
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
     static private let postCardEstimatedRowHeight = CGFloat(100.0)
@@ -203,7 +202,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
-        if !canFilterByAuthor() {
+        if !filterSettings.canFilterByAuthor() {
             authorsFilterView.removeFromSuperview()
 
             headerStackView.frame.size.height = searchController.searchBar.frame.height
@@ -212,7 +211,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             tableView.tableHeaderView = headerStackView
         }
 
-        if currentPostAuthorFilter() == .Mine {
+        if filterSettings.currentPostAuthorFilter() == .Mine {
             authorFilterSegmentedControl.selectedSegmentIndex = 0
         } else {
             authorFilterSegmentedControl.selectedSegmentIndex = 1
@@ -221,8 +220,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override func postTypeToSync() -> String {
-        return PostServiceTypePost
+    override func postTypeToSync() -> PostServiceType {
+        return PostServiceType.Post
     }
 
     override func lastSyncDate() -> NSDate? {
@@ -232,11 +231,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Actions
 
     @IBAction func handleAuthorFilterChanged(sender: AnyObject) {
-        if authorFilterSegmentedControl.selectedSegmentIndex == (Int) (PostAuthorFilter.Mine.rawValue) {
-            setCurrentPostAuthorFilter(.Mine)
-        } else {
-            setCurrentPostAuthorFilter(.Everyone)
+        var authorFilter = PostListFilterSettings.AuthorFilter.Everyone
+        if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
+            authorFilter = .Mine
         }
+        filterSettings.setCurrentPostAuthorFilter(authorFilter)
     }
 
     // MARK: - Data Model Interaction
@@ -275,11 +274,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync())
+        let typePredicate = NSPredicate(format: "postType = %@", PostService.keyForType(postTypeToSync()))
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()
-        let filterPredicate = currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -291,7 +290,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(filterPredicate)
         }
 
-        if shouldShowOnlyMyPosts() {
+        if filterSettings.shouldShowOnlyMyPosts() {
             let myAuthorID = blogUserID() ?? 0
 
             // Brand new local drafts have an authorID of 0.
@@ -414,7 +413,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     private func cellIdentifierForPost(post: Post) -> String {
         var identifier: String
 
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
             identifier = self.dynamicType.postCardImageCellIdentifier
@@ -441,7 +440,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
                 if let postStatus = viewController.post.status {
-                    self?.setFilterWithPostStatus(postStatus)
+                    self?.filterSettings.setFilterWithPostStatus(postStatus)
+                    WPAnalytics.track(.PostListStatusFilterChanged, withProperties: self?.propertiesForAnalytics())
                 }
             }
 
@@ -490,7 +490,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
                 if changesSaved {
                     if let postStatus = viewController.post.status {
-                        self?.setFilterWithPostStatus(postStatus)
+                        self?.filterSettings.setFilterWithPostStatus(postStatus)
                     }
                 }
 
@@ -573,43 +573,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    // MARK: - Filter Related
-
-    override func currentPostAuthorFilter() -> PostAuthorFilter {
-        if !canFilterByAuthor() {
-            // No REST API, so we have to use XMLRPC and can't filter results by author.
-            return .Everyone
-        }
-
-        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.dynamicType.currentPostAuthorFilterKey) {
-            if filter.unsignedIntegerValue == PostAuthorFilter.Everyone.rawValue {
-                return .Everyone
-            }
-        }
-
-        return .Mine
-    }
-
-    override func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
-        guard filter != currentPostAuthorFilter() else {
-            return
-        }
-
-        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
-
-        NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
-        NSUserDefaults.resetStandardUserDefaults()
-
-        recentlyTrashedPostObjectIDs.removeAll()
-        resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingResults()
-        syncItemsWithUserInteraction(false)
-    }
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPostListStatusFilterKey
-    }
-
     // MARK: - InteractivePostViewDelegate
 
     func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
@@ -661,7 +624,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -676,7 +639,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
 
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
 
@@ -688,7 +651,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:
