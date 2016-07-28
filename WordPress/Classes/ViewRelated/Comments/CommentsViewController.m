@@ -141,7 +141,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureTableView
 {
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
