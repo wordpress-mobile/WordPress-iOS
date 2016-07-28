@@ -224,6 +224,8 @@ extension NotificationDetailsViewController
             setupHeaderCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell where blockGroup.type == .Footer:
             setupFooterCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell:
+            setupTextCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockCommentTableViewCell:
@@ -232,8 +234,6 @@ extension NotificationDetailsViewController
             setupActionsCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockImageTableViewCell:
             setupImageCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell:
-            setupTextCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -256,8 +256,8 @@ extension NotificationDetailsViewController
             return
         }
 
-        let media = gravatarBlock?.media.first
-        cell.downloadGravatarWithURL(media?.mediaURL)
+        let mediaURL = gravatarBlock?.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
     }
 
     func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -266,7 +266,6 @@ extension NotificationDetailsViewController
             return
         }
 
-        // Setup the Cell
         cell.attributedText = textBlock.attributedFooterText()
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
@@ -281,14 +280,14 @@ extension NotificationDetailsViewController
         let hasHomeURL = userBlock.metaLinksHome != nil
         let hasHomeTitle = (userBlock.metaTitlesHome?.isEmpty == false) ?? false
 
-        // Setup the Cell
+        // Setup: Properties
         cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.hostname()
         cell.isFollowEnabled = userBlock.isActionEnabled(NoteActionFollowKey)
         cell.isFollowOn = userBlock.isActionOn(NoteActionFollowKey)
 
-        // Setup the Callbacks
+        // Setup: Callbacks
         cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
         }
@@ -302,8 +301,8 @@ extension NotificationDetailsViewController
             return
         }
 
-        let media = userBlock.media.first
-        cell.downloadGravatarWithURL(media?.mediaURL)
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
     }
 
     func setupCommentCell(cell: NoteBlockCommentTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -330,7 +329,7 @@ extension NotificationDetailsViewController
 
         let text = commentBlock.attributedRichText().stringByEmbeddingImageAttachments(mediaRanges)
 
-        // Setup the cell
+        // Setup: Properties
         cell.name                   = userBlock.text
         cell.timestamp              = note.timestampAsDate.shortString()
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.hostname()
@@ -338,7 +337,7 @@ extension NotificationDetailsViewController
         cell.isApproved             = commentBlock.isCommentApproved()
         cell.hasReply               = note.hasReply
 
-        // Setup the Callbacks
+        // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
             guard let rawLink = userBlock.metaLinksHome, let url = NSURL(string: rawLink) else {
                 return
@@ -364,8 +363,8 @@ extension NotificationDetailsViewController
             return
         }
 
-        let media = userBlock.media.first
-        cell.downloadGravatarWithURL(media?.mediaURL)
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
     }
 
     func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -374,7 +373,7 @@ extension NotificationDetailsViewController
             return
         }
 
-        // Setup the cell
+        // Setup: Properties
         cell.isReplyEnabled     = WPDeviceIdentification.isiPad() && commentBlock.isActionOn(NoteActionReplyKey)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(NoteActionLikeKey)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(NoteActionApproveKey)
@@ -383,7 +382,7 @@ extension NotificationDetailsViewController
         cell.isLikeOn           = commentBlock.isActionOn(NoteActionLikeKey)
         cell.isApproveOn        = commentBlock.isActionOn(NoteActionApproveKey)
 
-        // Setup the Callbacks
+        // Setup: Callbacks
         cell.onReplyClick = { [weak self] sender in
             self?.editReplyWithBlock(commentBlock)
         }
@@ -423,8 +422,8 @@ extension NotificationDetailsViewController
             return
         }
 
-        let media = imageBlock.media.first
-        cell.downloadImageWithURL(media?.mediaURL)
+        let mediaURL = imageBlock.media.first?.mediaURL
+        cell.downloadImageWithURL(mediaURL)
     }
 
     func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -440,16 +439,16 @@ extension NotificationDetailsViewController
         // Load the attributedText
         let text = note.isBadge ? textBlock.attributedBadgeText() : textBlock.attributedRichText()
 
-        // Setup the Cell
+        // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
 
-        // Setup the Callbacks
+        // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
             self?.openURL(url)
         }
     }
 
-    func setupSeparators(cell: NoteBlockTableViewCell, forCellAtIndexPath indexPath: NSIndexPath) {
+    func setupSeparators(cell: NoteBlockTableViewCell, indexPath: NSIndexPath) {
         cell.isBadge = note.isBadge
         cell.isLastRow = (indexPath.row >= blockGroups.count - 1)
     }
