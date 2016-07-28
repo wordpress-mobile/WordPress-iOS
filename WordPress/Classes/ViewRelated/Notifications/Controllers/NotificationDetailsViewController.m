@@ -1,4 +1,5 @@
 #import "NotificationDetailsViewController.h"
+#import "NotificationDetailsViewController+Internal.h"
 
 #import "WordPressAppDelegate.h"
 #import <Simperium/Simperium.h>
@@ -48,35 +49,6 @@ static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
 
 
-#pragma mark ==========================================================================================
-#pragma mark Private
-#pragma mark ==========================================================================================
-
-@interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
-
-// Outlets
-@property (nonatomic, strong) IBOutlet UIStackView          *stackView;
-@property (nonatomic, strong) IBOutlet UITableView          *tableView;
-@property (nonatomic, strong) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *topLayoutConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *centerLayoutConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *bottomLayoutConstraint;
-@property (nonatomic, strong) ReplyTextView                 *replyTextView;
-@property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
-
-// Table Helpers
-@property (nonatomic, strong) NSDictionary                  *layoutIdentifierMap;
-@property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
-@property (nonatomic, strong) NSArray                       *blockGroups;
-
-// Helpers
-@property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
-@property (nonatomic, strong) KeyboardDismissHelper         *keyboardManager;
-
-// Model
-@property (nonatomic, strong) Notification                  *note;
-@end
-
 
 #pragma mark ==========================================================================================
 #pragma mark NotificationDetailsViewController
@@ -114,6 +86,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self setupNavigationBar];
     [self setupMainView];
     [self setupTableView];
+    [self setupTableViewCells];
     [self setupMediaDownloader];
     [self setupReplyTextView];
     [self setupSuggestionsView];
@@ -186,102 +159,6 @@ static NSInteger NotificationSectionCount               = 1;
 }
 
 
-#pragma mark - Setup Helpers
-
-- (void)setupNavigationBar
-{
-    // Don't show the notification title in the next-view's back button
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString string]
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:nil
-                                                                            action:nil];
-}
-
-- (void)setupMainView
-{
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-}
-
-- (void)setupTableView
-{
-    // Register Cell Nibs
-    NSArray *cellClassNames = @[
-        NSStringFromClass([NoteBlockHeaderTableViewCell class]),
-        NSStringFromClass([NoteBlockTextTableViewCell class]),
-        NSStringFromClass([NoteBlockActionsTableViewCell class]),
-        NSStringFromClass([NoteBlockCommentTableViewCell class]),
-        NSStringFromClass([NoteBlockImageTableViewCell class]),
-        NSStringFromClass([NoteBlockUserTableViewCell class])
-    ];
-    
-    for (NSString *cellClassName in cellClassNames) {
-        Class cellClass                     = NSClassFromString(cellClassName);
-        NSString *className                 = [cellClass classNameWithoutNamespaces];
-        UINib *tableViewCellNib             = [UINib nibWithNibName:className bundle:[NSBundle mainBundle]];
-        
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass layoutIdentifier]];
-    }
-    
-    // TableView
-    self.tableView.separatorStyle           = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor          = [WPStyleGuide greyLighten30];
-    self.tableView.accessibilityIdentifier  = @"Notification Details Table";
-    self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.keyboardDismissMode      = UIScrollViewKeyboardDismissModeInteractive;
-}
-
-- (void)setupMediaDownloader
-{
-    self.mediaDownloader = [NotificationMediaDownloader new];
-}
-
-- (void)setupReplyTextView
-{
-    __typeof(self) __weak weakSelf = self;
-
-    ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
-    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    replyTextView.accessibilityIdentifier = @"Reply Text";
-    replyTextView.delegate = self;
-    replyTextView.onReply = ^(NSString *content) {
-        NotificationBlock *block = [[weakSelf.note blockGroupOfType:NoteBlockGroupTypeComment] blockOfType:NoteBlockTypeComment];
-        [weakSelf sendReplyWithBlock:block content:content];
-    };
-
-    self.replyTextView = replyTextView;
-}
-
-- (void)setupSuggestionsView
-{
-    self.suggestionsTableView = [SuggestionsTableView new];
-    self.suggestionsTableView.siteID = self.note.metaSiteID;
-    self.suggestionsTableView.suggestionsDelegate = self;
-    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-}
-
-- (void)setupKeyboardManager
-{
-    NSParameterAssert(self.replyTextView);
-    NSParameterAssert(self.bottomLayoutConstraint);
-
-    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
-                                                                  scrollView:self.tableView
-                                                          dismissableControl:self.replyTextView
-                                                      bottomLayoutConstraint:self.bottomLayoutConstraint];
-}
-
-- (void)setupNotificationListeners
-{
-    NSManagedObjectContext *context = self.note.managedObjectContext;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleNotificationChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:context];
-}
-
-
 #pragma mark - Autolayout Helpers
 
 - (NSDictionary *)layoutIdentifierMap
@@ -317,99 +194,6 @@ static NSInteger NotificationSectionCount               = 1;
 }
 
 
-#pragma mark - Reply View Helpers
-
-- (void)attachReplyViewIfNeeded
-{
-    if (self.shouldAttachReplyView == NO) {
-        [self.replyTextView removeFromSuperview];
-        return;
-    }
-
-    [self.stackView addArrangedSubview:self.replyTextView];
-}
-
-- (BOOL)shouldAttachReplyView
-{
-    // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
-    //
-    NotificationBlockGroup *group = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
-    BOOL allowsCommentAction = [[group blockOfType:NoteBlockTypeComment] isActionOn:NoteActionReplyKey];
-
-    return (allowsCommentAction && [WPDeviceIdentification isiPad] == NO);
-}
-
-
-#pragma mark - Suggestions View Helpers
-
-- (void)attachSuggestionsViewIfNeeded
-{
-    if (self.shouldAttachSuggestionsView == NO) {
-        [self.suggestionsTableView removeFromSuperview];
-        return;
-    }
-
-    [self.view addSubview:self.suggestionsTableView];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [self.suggestionsTableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.suggestionsTableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.suggestionsTableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.suggestionsTableView.bottomAnchor constraintEqualToAnchor:self.replyTextView.topAnchor]
-    ]];
-}
-
-- (BOOL)shouldAttachSuggestionsView
-{
-    SuggestionService *suggestionsService = [SuggestionService sharedInstance];
-    return ([self shouldAttachReplyView] && [suggestionsService shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
-}
-
-
-#pragma mark - Edition Helpers
-
-- (void)attachEditActionIfNeeded
-{
-    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
-    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
-    
-    UIBarButtonItem *editBarButton  = nil;
-    
-    if ([block isActionOn:NoteActionEditKey]) {
-        editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(editButtonWasPressed)];
-    }
-    
-    self.navigationItem.rightBarButtonItem = editBarButton;
-}
-
-- (IBAction)editButtonWasPressed
-{
-    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
-    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
-    
-    if ([block isActionOn:NoteActionEditKey]) {
-        [self editCommentWithBlock:block];
-    }
-}
-
-
-#pragma mark - Style Helpers
-
-- (void)adjustLayoutConstraintsIfNeeded
-{
-    // Badge Notifications should be centered, and display no cell separators
-    BOOL shouldCenterVertically = self.note.isBadge;
-
-    self.topLayoutConstraint.active = !shouldCenterVertically;
-    self.bottomLayoutConstraint.active = !shouldCenterVertically;
-    self.centerLayoutConstraint.active = shouldCenterVertically;
-
-    // Lock Scrolling for Badge Notifications
-    self.tableView.scrollEnabled = !shouldCenterVertically;
-}
 
 
 #pragma mark - UIViewController Restoration
@@ -1287,86 +1071,6 @@ static NSInteger NotificationSectionCount               = 1;
     
     // Note: This viewController might not be visible anymore
     [alertController presentFromRootViewController];
-}
-
-
-#pragma mark - Notification Helpers
-
-- (void)handleNotificationChange:(NSNotification *)notification
-{
-    NSSet *updated      = notification.userInfo[NSUpdatedObjectsKey];
-    NSSet *refreshed    = notification.userInfo[NSRefreshedObjectsKey];
-    NSSet *deleted      = notification.userInfo[NSDeletedObjectsKey];
-    
-    // Reload the table, if *our* notification got updated
-    if ([updated containsObject:self.note] || [refreshed containsObject:self.note]) {
-        [self reloadData];
-    }
-    
-    // Dismiss this ViewController if *our* notification... just got deleted
-    if ([deleted containsObject:self.note]) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    self.tableGesturesRecognizer.enabled = true;
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    self.tableGesturesRecognizer.enabled = false;
-}
-
-- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
-{
-    [self.suggestionsTableView showSuggestionsForWord:word];
-}
-
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self.keyboardManager scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.keyboardManager scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
-}
-
-
-#pragma mark - SuggestionsTableViewDelegate
-
-- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
-{
-    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
-    [suggestionsTableView showSuggestionsForWord:@""];
-}
-
-
-#pragma mark - Gestures Recognizer Delegate
-
-- (IBAction)dismissKeyboardIfNeeded:(id)sender
-{
-    // Dismiss the reply field when tapping on the tableView
-    [self.view endEditing:YES];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)oth
-{
-    // Note: the tableViewGestureRecognizer may compete with another GestureRecognizer. Make sure it doesn't get cancelled
-    return YES;
 }
 
 @end
