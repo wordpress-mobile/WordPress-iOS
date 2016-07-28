@@ -170,6 +170,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
 
+    self.clearsSelectionOnViewWillAppear = NO;
+
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -196,6 +198,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    if (self.splitViewControllerIsHorizontallyCompact) {
+        [self animateDeselectionInteractively];
+    }
 
     [self.headerView setBlog:self.blog];
 
