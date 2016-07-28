@@ -148,8 +148,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override internal func postTypeToSync() -> String {
-        return PostServiceTypePage
+    override internal func postTypeToSync() -> PostServiceType {
+        return PostServiceType.Page
     }
 
     override internal func lastSyncDate() -> NSDate? {
@@ -194,7 +194,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         let searchText = currentSearchTerm()
-        let filterPredicate = currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -318,7 +318,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private func cellIdentifierForPage(page: Page) -> String {
         var identifier : String
 
-        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.restorePageCellIdentifier
         } else {
             identifier = self.dynamicType.pageCellIdentifier
@@ -414,12 +414,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         alertController.presentFromRootViewController()
     }
 
-    // MARK: - Filter Related
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPageListStatusFilterKey
-    }
-
     // MARK: - Cell Action Handling
 
     private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
@@ -435,7 +429,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
 
-        let filter = currentPostListFilter().filterType
+        let filter = filterSettings.currentPostListFilter().filterType
 
         if filter == .Trashed {
             alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
@@ -580,7 +574,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -595,7 +589,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
 
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
         return title ?? ""
@@ -606,7 +600,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:
