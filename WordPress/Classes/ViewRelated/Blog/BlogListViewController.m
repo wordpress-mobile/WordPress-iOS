@@ -43,6 +43,8 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 
+@property (nonatomic, strong) BlogDetailsViewController *blogDetailsViewController;
+
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
 
@@ -156,7 +158,9 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
     [self syncBlogs];
 
-    if (self.selectedBlog) {
+    if (self.splitViewControllerIsHorizontallyCompact) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    } else if (self.selectedBlog) {
         NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
         if (blogIndex != NSNotFound) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
@@ -534,11 +538,19 @@ static NSInteger HideSearchMinSites = 3;
         [blogService flagBlogAsLastUsed:blog];
 
         self.selectedBlog = blog;
-        
-        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blog;
-        [self showViewController:blogDetailsViewController sender:self];
     }
+}
+
+- (void)setSelectedBlog:(Blog *)selectedBlog
+{
+    if (selectedBlog != _selectedBlog) {
+        _selectedBlog = selectedBlog;
+
+        self.blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        self.blogDetailsViewController.blog = selectedBlog;
+    }
+
+    [self.navigationController pushViewController:self.blogDetailsViewController animated:[self isViewLoaded]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
