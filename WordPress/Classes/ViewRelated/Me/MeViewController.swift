@@ -50,7 +50,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         handler = ImmuTableViewHandler(takeOver: self)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.reloadViewModel), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.accountDidChange), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
 
         refreshAccountDetails()
 
@@ -60,6 +60,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         HelpshiftUtils.refreshUnreadNotificationCount()
+
+        if splitViewControllerIsHorizontallyCompact {
+            animateDeselectionInteractively()
+        }
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -67,6 +71,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // Required to update the tableview cell disclosure indicators
         reloadViewModel()
+    }
+
+    @objc private func accountDidChange() {
+        reloadViewModel()
+
+        // Reload the detail pane on account change and we're not in a compact split view                                                                                                                                                                                                                                                        
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            let detailViewController = initialDetailViewControllerForSplitView(splitViewController) where !splitViewControllerIsHorizontallyCompact {
+            showDetailViewController(detailViewController, sender: self)
+        }
     }
 
     @objc private func reloadViewModel() {
@@ -378,6 +392,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        // If we're not logged in yet, return an empty VC
+        guard let _ = defaultAccount() else {
+            let viewController = UIViewController()
+            viewController.view.backgroundColor = WPStyleGuide.greyLighten30()
+            return viewController
+        }
+
         return myProfileViewController
     }
 }
