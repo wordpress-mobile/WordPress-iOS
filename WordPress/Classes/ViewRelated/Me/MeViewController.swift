@@ -60,6 +60,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         HelpshiftUtils.refreshUnreadNotificationCount()
+
+        if splitViewControllerIsHorizontallyCompact {
+            animateDeselectionInteractively()
+        }
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
