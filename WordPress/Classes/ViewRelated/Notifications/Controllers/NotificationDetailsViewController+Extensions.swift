@@ -224,8 +224,6 @@ extension NotificationDetailsViewController
             setupHeaderCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell where blockGroup.type == .Footer:
             setupFooterCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell:
-            setupTextCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockCommentTableViewCell:
@@ -234,6 +232,8 @@ extension NotificationDetailsViewController
             setupActionsCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockImageTableViewCell:
             setupImageCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell:
+            setupTextCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
