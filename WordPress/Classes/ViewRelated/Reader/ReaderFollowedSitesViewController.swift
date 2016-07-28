@@ -2,7 +2,9 @@ import Foundation
 import WordPressShared
 import SVProgressHUD
 
-///
+/// Displays the list of sites a user follows in the Reader.  Provides functionality
+/// for following new sites by URL, and unfollowing existing sites via a swipe
+/// gesture.  Followed sites can be tapped to browse their posts.
 ///
 class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration
 {
@@ -40,15 +42,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return controller()
     }
-
-
-//    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
-//        if let topic = readerTopic {
-//            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
-//            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
-//        }
-//        super.encodeRestorableStateWithCoder(coder)
-//    }
 
 
     // MARK: - LifeCycle Methods
