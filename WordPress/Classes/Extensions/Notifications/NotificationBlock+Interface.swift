@@ -210,7 +210,7 @@ extension NotificationBlock {
             shiftedRange.location   += lengthShift
 
             if range.isNoticon {
-                let noticon         = "\(range.value) "
+                let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
