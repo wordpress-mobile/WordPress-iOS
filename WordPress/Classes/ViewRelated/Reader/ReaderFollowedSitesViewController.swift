@@ -201,6 +201,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
             SVProgressHUD.showSuccessWithStatus(success)
             self?.syncSites()
+            self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
@@ -208,6 +209,12 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let description = error.localizedDescription
             self?.promptWithTitle(title, message: description)
         })
+    }
+
+
+    func refreshPostsForFollowedTopic() {
+        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        service.refreshPostsForFollowedTopic()
     }
 
 

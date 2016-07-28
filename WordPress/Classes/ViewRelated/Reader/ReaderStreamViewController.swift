@@ -59,7 +59,6 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
-    private var reloadTableViewBeforeAppearing = false
 
 
     /// Used for fetching content.
@@ -239,10 +238,10 @@ import WordPressComAnalytics
         super.viewWillAppear(animated)
 
         refreshTableHeaderIfNeeded()
-        if reloadTableViewBeforeAppearing {
-            reloadTableViewBeforeAppearing = false
-            tableView.reloadData()
-        }
+
+        // Always reload tableview so any core data changes merged to the child
+        // context are reflected in the list.
+        tableViewHandler.refreshTableViewPreservingOffset()
     }
 
 
@@ -1631,7 +1630,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             // The result is the cells do not show the correct layout on the iPad.
             // HACK: aerych, 2016-06-27
             // Use a generic cell in this situation and reload the table view once its back in a window.
-            reloadTableViewBeforeAppearing = true
             return tableView.dequeueReusableCellWithIdentifier(readerWindowlessCellIdentifier)!
         }
 
