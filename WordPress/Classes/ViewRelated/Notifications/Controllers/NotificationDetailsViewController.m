@@ -279,7 +279,7 @@ static NSInteger NotificationSectionCount               = 1;
     NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypeText)];
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
 
-    [self setupSeparators:cell forCellAtIndexPath:indexPath];
+    [self setupSeparators:cell indexPath:indexPath];
     [self setupCell:cell blockGroup:blockGroup];
     
     return cell;
