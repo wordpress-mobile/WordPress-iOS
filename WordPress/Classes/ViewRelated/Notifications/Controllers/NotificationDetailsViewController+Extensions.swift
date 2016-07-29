@@ -343,11 +343,11 @@ extension NotificationDetailsViewController
                 return
             }
 
-            self?.openURL(homeURL)
+            self?.displayURL(homeURL)
         }
 
         cell.onUrlClick = { [weak self] url in
-            self?.openURL(url)
+            self?.displayURL(url)
         }
 
         cell.onAttachmentClick = { [weak self] attachment in
@@ -444,7 +444,7 @@ extension NotificationDetailsViewController
 
         // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
-            self?.openURL(url)
+            self?.displayURL(url)
         }
     }
 
@@ -483,65 +483,35 @@ extension NotificationDetailsViewController
 ///
 extension NotificationDetailsViewController
 {
-    func openURL(url: NSURL?) {
+    func displayURL(url: NSURL?) {
         guard let url = url else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
 
-        // Attempt to match the URL with any NotificationRange contained within the note, and.. recover the metadata!
+        // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
         //
-        guard let range = note.notificationRangeWithUrl(url) else {
-            displayWebViewWithURL(url)
-            return
-        }
-
-        switch range.type {
-        case .Post:
-            if let postID = range.postID, let siteID = range.siteID {
-                displayReaderWithPostId(postID, siteID: siteID)
-            }
-
-        case .Comment:
-            if let postID = range.postID, let siteID = range.siteID {
-                displayCommentsWithPostId(postID, siteID: siteID)
-            }
-
-        case .Stats:
-            if let blog = blogWithBlogID(range.siteID) where blog.supports(.Stats) {
-                displayStatsWithBlog(blog)
-            }
-
-        case .Follow:
-            if let blog = blogWithBlogID(range.siteID) {
-                displayFollowersWithBlog(blog)
-            }
-
-        case .User:
-            if let siteID = range.siteID {
-                displayBrowseSiteWithID(siteID)
-            }
-
-        default:
+        do {
+            let range = note.notificationRangeWithUrl(url)
+            try displayResourceWithRange(range)
+        } catch {
             displayWebViewWithURL(url)
         }
-
-        tableView.deselectSelectedRowWithAnimation(true)
     }
 
-    func openNotificationSource() {
+    func displayNotificationSource() {
         if let siteID = note.metaSiteID where note.isFollow {
-            displayBrowseSiteWithID(siteID)
+            _ = try? displayStreamWithSiteID(siteID)
             return
         }
 
         if let postID = note.metaPostID, let siteID = note.metaSiteID, let _ = note.metaCommentID {
-            displayCommentsWithPostId(postID, siteID: siteID)
+            _ = try? displayCommentsWithPostId(postID, siteID: siteID)
             return
         }
 
         if let postID = note.metaPostID, let siteID = note.metaSiteID {
-            displayReaderWithPostId(postID, siteID: siteID)
+            _ = try? displayReaderWithPostId(postID, siteID: siteID)
             return
         }
 
@@ -554,28 +524,72 @@ extension NotificationDetailsViewController
     }
 
 
+
+    // MARK: - Displaying Ranges!
+
+    private func displayResourceWithRange(range: NotificationRange?) throws {
+        guard let range = range else {
+            throw DisplayError.MissingParameter
+        }
+
+        switch range.type {
+        case .Post:
+            try displayReaderWithPostId(range.postID, siteID: range.siteID)
+
+        case .Comment:
+            try displayCommentsWithPostId(range.postID, siteID: range.siteID)
+
+        case .Stats:
+            try displayStatsWithSiteID(range.siteID)
+
+        case .Follow:
+            try displayFollowersWithSiteID(range.siteID)
+
+        case .User:
+            try displayStreamWithSiteID(range.siteID)
+
+        default:
+            throw DisplayError.UnsupportedType
+        }
+    }
+
+
     // MARK: - Private Helpers
 
-    private func displayReaderWithPostId(postID: NSNumber, siteID: NSNumber) {
+    private func displayReaderWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
+        guard let postID = postID, let siteID = siteID else {
+            throw DisplayError.MissingParameter
+        }
+
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         navigationController?.pushViewController(readerViewController, animated: true)
     }
 
-    private func displayCommentsWithPostId(postID: NSNumber, siteID: NSNumber) {
+    private func displayCommentsWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
+        guard let postID = postID, let siteID = siteID else {
+            throw DisplayError.MissingParameter
+        }
+
         let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
         commentsViewController.allowsPushingPostDetails = true
         navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
-    private func displayStatsWithBlog(blog: Blog) {
-        precondition(blog.supports(.Stats))
+    private func displayStatsWithSiteID(siteID: NSNumber?) throws {
+        guard let blog = blogWithBlogID(siteID) where blog.supports(.Stats) else {
+            throw DisplayError.MissingParameter
+        }
 
         let statsViewController = StatsViewController()
         statsViewController.blog = blog
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    private func displayFollowersWithBlog(blog: Blog) {
+    private func displayFollowersWithSiteID(siteID: NSNumber?) throws {
+        guard let blog = blogWithBlogID(siteID) else {
+            throw DisplayError.MissingParameter
+        }
+
         let statsViewController = newStatsViewController()
         statsViewController.selectedDate = NSDate()
         statsViewController.statsSection = .Followers
@@ -584,15 +598,19 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
+    private func displayStreamWithSiteID(siteID: NSNumber?) throws {
+        guard let siteID = siteID else {
+            throw DisplayError.MissingParameter
+        }
+
+        let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
+        navigationController?.pushViewController(browseViewController, animated: true)
+    }
+
     private func displayWebViewWithURL(url: NSURL) {
         let webViewController = WPWebViewController.authenticatedWebViewController(url)
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
-    }
-
-    private func displayBrowseSiteWithID(siteID: NSNumber) {
-        let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        navigationController?.pushViewController(browseViewController, animated: true)
     }
 
     private func displayFullscreenImage(image: UIImage) {
@@ -715,6 +733,12 @@ private extension NotificationDetailsViewController
 {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
+    }
+
+    enum DisplayError: ErrorType {
+        case MissingParameter
+        case UnsupportedFeature
+        case UnsupportedType
     }
 
     enum Settings {
