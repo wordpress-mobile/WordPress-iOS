@@ -216,7 +216,6 @@ extension NotificationDetailsViewController
 {
     func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
         // Temporarily force margins for WPTableViewCell hack.
-        // Brent C. Jul/19/2016
         cell.forceCustomCellMargins = true
 
         switch cell {
