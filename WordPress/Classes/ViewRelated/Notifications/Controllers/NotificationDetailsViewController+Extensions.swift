@@ -533,6 +533,9 @@ extension NotificationDetailsViewController
         }
 
         switch range.type {
+        case .Site:
+            try displayStreamWithSiteID(range.siteID)
+
         case .Post:
             try displayReaderWithPostId(range.postID, siteID: range.siteID)
 
