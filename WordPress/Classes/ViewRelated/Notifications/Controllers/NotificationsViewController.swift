@@ -128,7 +128,7 @@ class NotificationsViewController : UITableViewController
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        tableViewHandler.clearCachedRowHeights()
+        tableViewHandler?.clearCachedRowHeights()
     }
 
 
