@@ -414,7 +414,7 @@ extension NotificationsViewController
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
         // Mark as Read, if needed
-        if note.read.boolValue == false {
+        if let isRead = note.read?.boolValue where isRead == false {
             note.read = NSNumber(bool: true)
             ContextManager.sharedInstance().saveContext(note.managedObjectContext)
         }
@@ -626,7 +626,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
         cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
-        cell.read                   = note.read.boolValue
+        cell.read                   = note.read?.boolValue ?? false
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment()
         cell.markedForDeletion      = isMarkedForDeletion

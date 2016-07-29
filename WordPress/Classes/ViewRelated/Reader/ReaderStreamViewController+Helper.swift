@@ -29,9 +29,13 @@ extension ReaderStreamViewController
     /// - Returns: An unconfigured instance of a ReaderStreamHeader.
     ///
     public class func headerForStream(topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
-        if ReaderHelpers.topicIsFollowing(topic) || ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
+        if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
+        }
+
+        if ReaderHelpers.topicIsFollowing(topic) && Feature.enabled(.ReaderMenu) {
+            return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil).first as! ReaderFollowedSitesStreamHeader
         }
 
         // if tag
@@ -63,7 +67,7 @@ extension ReaderStreamViewController
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("Welcome to the reader", comment:"A message title"),
+                title: NSLocalizedString("Welcome to the Reader", comment:"A message title"),
                 message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment:"A message explaining the Following topic in the reader")
             )
         }
