@@ -186,7 +186,7 @@ extension NotificationBlock {
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [String: AnyObject]?,
+                             rangeStylesMap : [NoteRangeType: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
         // Is it empty?
@@ -209,14 +209,14 @@ extension NotificationBlock {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 
-            if range.isNoticon {
+            if range.type == .Noticon {
                 let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
             }
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [String: AnyObject] {
+            if let unwrappedRangeStyle = rangeStylesMap?[range.type] {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
 
@@ -233,35 +233,35 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     private struct Constants {
-        static let subjectRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.subjectBoldStyle,
-            NoteRangeTypePost               : Styles.subjectItalicsStyle,
-            NoteRangeTypeComment            : Styles.subjectItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.subjectQuotedStyle,
-            NoteRangeTypeNoticon            : Styles.subjectNoticonStyle
+        static let subjectRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.subjectBoldStyle,
+            .Post               : Styles.subjectItalicsStyle,
+            .Comment            : Styles.subjectItalicsStyle,
+            .Blockquote         : Styles.subjectQuotedStyle,
+            .Noticon            : Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.headerTitleBoldStyle,
-            NoteRangeTypePost               : Styles.headerTitleContextStyle,
-            NoteRangeTypeComment            : Styles.headerTitleContextStyle
+        static let headerTitleRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.headerTitleBoldStyle,
+            .Post               : Styles.headerTitleContextStyle,
+            .Comment            : Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap = [
-            NoteRangeTypeNoticon            : Styles.blockNoticonStyle
+        static let footerStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .Noticon            : Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap = [
-            NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
-            NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
-            NoteRangeTypeMatch              : Styles.contentBlockMatchStyle
+        static let richRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .Blockquote         : Styles.contentBlockQuotedStyle,
+            .Noticon            : Styles.blockNoticonStyle,
+            .Match              : Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.badgeBoldStyle,
-            NoteRangeTypePost               : Styles.badgeItalicsStyle,
-            NoteRangeTypeComment            : Styles.badgeItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.badgeQuotedStyle
+        static let badgeRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.badgeBoldStyle,
+            .Post               : Styles.badgeItalicsStyle,
+            .Comment            : Styles.badgeItalicsStyle,
+            .Blockquote         : Styles.badgeQuotedStyle
         ]
 
         static let richSubjectCacheKey      = "richSubjectCacheKey"
