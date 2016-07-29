@@ -5,7 +5,7 @@ import WordPressShared
 {
     // MARK: - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
-    public var onAttachmentClick: ((NSTextAttachment) -> Void)?
+    public var onAttachmentClick: (NSTextAttachment -> Void)?
     public var attributedText: NSAttributedString? {
         set {
             textView.attributedText = newValue
