@@ -488,163 +488,114 @@ extension NotificationDetailsViewController
         //  In this step, we attempt to match the URL tapped with any NotificationRange instance, contained in the note,
         //  and thus, recover the metadata!
         //
-        let range = note.notificationRangeWithUrl(url)
-        var success = false
-
-        if range?.isPost ?? false  {
-            success = displayReaderWithPostId(range?.postID, siteID:range?.siteID)
+        guard let range = note.notificationRangeWithUrl(url) else {
+            displayWebViewWithURL(url)
+            return
         }
 
-        if !success && range?.isComment ?? false {
-            success = displayCommentsWithPostId(range?.postID, siteID:range?.siteID)
+        if let postID = range.postID, let siteID = range.siteID where range.isPost {
+            displayReaderWithPostId(postID, siteID: siteID)
+            return
         }
 
-        if !success && range?.isStats ?? false {
-            success = displayStatsWithSiteID(range?.siteID)
+        if let postID = range.postID, let siteID = range.siteID where range.isComment {
+            displayCommentsWithPostId(postID, siteID: siteID)
+            return
         }
 
-        if !success && range?.isFollow ?? false {
-            success = displayFollowersWithSiteID(note.metaSiteID)
+        if let blog = blogWithBlogID(range.siteID) where blog.supports(.Stats) && range.isStats {
+            displayStatsWithBlog(blog)
+            return
         }
 
-        if !success && range?.isUser ?? false {
-            success = displayBrowseSiteWithID(range?.siteID)
+        if let blog = blogWithBlogID(note.metaSiteID) where blog.isHostedAtWPcom && range.isFollow {
+            displayFollowersWithBlog(blog)
+            return
         }
 
-        if !success {
-            success = displayWebViewWithURL(url)
+        if let siteID = range.siteID where range.isUser {
+            displayBrowseSiteWithID(siteID)
+            return
         }
 
-        if !success {
-            tableView.deselectSelectedRowWithAnimation(true)
-        }
+        tableView.deselectSelectedRowWithAnimation(true)
     }
 
     func openNotificationHeader(header: NotificationBlockGroup) {
         precondition(header.type == .Header)
 
-        var success = false
-
-        if note.isFollow{
-            success = displayBrowseSiteWithID(note.metaSiteID)
+        if let siteID = note.metaSiteID where note.isFollow {
+            displayBrowseSiteWithID(siteID)
+            return
         }
 
-        if !success && note.metaCommentID != nil {
-            success = displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.metaCommentID != nil {
+            displayCommentsWithPostId(postID, siteID: siteID)
+            return
         }
 
-        if !success {
-            success = displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
+        if let postID = note.metaPostID, let siteID = note.metaSiteID {
+            displayReaderWithPostId(postID, siteID: siteID)
+            return
         }
 
-        if !success && note.url != nil {
-            let resourceURL = NSURL(string: note.url!)
-            success = displayWebViewWithURL(resourceURL)
+        if let notificationURL = note.url, let resourceURL = NSURL(string: notificationURL) {
+            displayWebViewWithURL(resourceURL)
+            return
         }
 
-        if !success {
-            tableView.deselectSelectedRowWithAnimation(true)
-        }
+        tableView.deselectSelectedRowWithAnimation(true)
     }
 
 
     // MARK: - Helpers
 
-    func displayReaderWithPostId(postID: NSNumber?, siteID: NSNumber?) -> Bool {
-        guard let postID = postID, let siteID = siteID else {
-            return false
-        }
-
+    func displayReaderWithPostId(postID: NSNumber, siteID: NSNumber) {
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         navigationController?.pushViewController(readerViewController, animated: true)
-
-        return true
     }
 
-    func displayCommentsWithPostId(postID: NSNumber?, siteID: NSNumber?) -> Bool {
-        guard let postID = postID, let siteID = siteID else {
-            return false
-        }
-
+    func displayCommentsWithPostId(postID: NSNumber, siteID: NSNumber) {
         let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
         commentsViewController.allowsPushingPostDetails = true
         navigationController?.pushViewController(commentsViewController, animated: true)
-
-        return true
     }
 
-    func displayStatsWithSiteID(siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID else {
-            return false
-        }
-
-        guard let blog = blogWithBlogID(siteID) where blog.supports(.Stats) else {
-            return false
-        }
+    func displayStatsWithBlog(blog: Blog) {
+        precondition(blog.supports(.Stats))
 
         let statsViewController = StatsViewController()
         statsViewController.blog = blog
         navigationController?.pushViewController(statsViewController, animated: true)
-
-        return true
     }
 
-    func displayFollowersWithSiteID(siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID else {
-            return false
-        }
+    func displayFollowersWithBlog(blog: Blog) {
+        precondition(blog.isHostedAtWPcom)
 
-        // Load the blog
-        guard let blog = blogWithBlogID(siteID) where blog.isHostedAtWPcom else {
-            return false
-        }
-
-
-        // Stats ViewController
         let statsViewController = newStatsViewController()
         statsViewController.selectedDate = NSDate()
         statsViewController.statsSection = .Followers
         statsViewController.statsSubSection = .FollowersDotCom
         statsViewController.statsService = newStatsServiceWithBlog(blog)
         navigationController?.pushViewController(statsViewController, animated: true)
-
-        return false
     }
 
-    func displayWebViewWithURL(url: NSURL?) -> Bool {
-        guard let url = url else {
-            return false
-        }
-
+    func displayWebViewWithURL(url: NSURL) {
         let webViewController = WPWebViewController.authenticatedWebViewController(url)
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
-
-        return false
     }
 
-    func displayBrowseSiteWithID(siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID else {
-            return false
-        }
-
+    func displayBrowseSiteWithID(siteID: NSNumber) {
         let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: true)
         navigationController?.pushViewController(browseViewController, animated: true)
-
-        return true
     }
 
-    func displayFullscreenImage(image: UIImage?) -> Bool {
-        guard let image = image else {
-            return false
-        }
-
+    func displayFullscreenImage(image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
         imageViewController.modalTransitionStyle = .CrossDissolve
         imageViewController.modalPresentationStyle = .FullScreen
         presentViewController(imageViewController, animated: true, completion: nil)
-
-        return true
     }
 }
 
@@ -654,7 +605,11 @@ extension NotificationDetailsViewController
 ///
 private extension NotificationDetailsViewController
 {
-    func blogWithBlogID(blogID: NSNumber) -> Blog? {
+    func blogWithBlogID(blogID: NSNumber?) -> Blog? {
+        guard let blogID = blogID else {
+            return nil
+        }
+
         let service = BlogService(managedObjectContext: mainContext)
         return service.blogByBlogId(blogID)
     }
