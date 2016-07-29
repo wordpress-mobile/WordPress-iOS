@@ -272,9 +272,14 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
-- (NSString *)metaLinksHome
+- (NSURL *)metaLinksHome
 {
-    return [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+    NSString *rawLink = [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+    if (!rawLink) {
+        return nil;
+    }
+
+    return [NSURL URLWithString:rawLink];
 }
 
 - (NSString *)metaTitlesHome
