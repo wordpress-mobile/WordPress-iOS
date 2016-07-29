@@ -210,6 +210,251 @@ extension NotificationDetailsViewController
 
 
 
+/// UITableViewCell Subclass Setup
+///
+extension NotificationDetailsViewController
+{
+    func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
+        // Temporarily force margins for WPTableViewCell hack.
+        cell.forceCustomCellMargins = true
+
+        switch cell {
+        case let cell as NoteBlockHeaderTableViewCell:
+            setupHeaderCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell where blockGroup.type == .Footer:
+            setupFooterCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockUserTableViewCell:
+            setupUserCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockCommentTableViewCell:
+            setupCommentCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockActionsTableViewCell:
+            setupActionsCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockImageTableViewCell:
+            setupImageCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell:
+            setupTextCell(cell, blockGroup: blockGroup)
+        default:
+            assertionFailure("NotificationDetails: Please, add support for \(cell)")
+        }
+    }
+
+    func setupHeaderCell(cell: NoteBlockHeaderTableViewCell, blockGroup: NotificationBlockGroup) {
+        // Note:
+        // We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
+        // -   UITableViewCell automatically handles highlight / unhighlight for us
+        // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
+        //
+        let gravatarBlock = blockGroup.blockOfType(.Image)
+        let snippetBlock = blockGroup.blockOfType(.Text)
+
+        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText()
+        cell.headerDetails = snippetBlock?.text
+
+        // Download the Gravatar (If Needed!)
+        guard cell.isLayoutCell() == false else {
+            return
+        }
+
+        let mediaURL = gravatarBlock?.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
+    }
+
+    func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
+        guard let textBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Text Block for Notification [\(note.simperiumKey)")
+            return
+        }
+
+        cell.attributedText = textBlock.attributedFooterText()
+        cell.isTextViewSelectable = false
+        cell.isTextViewClickable = false
+    }
+
+    func setupUserCell(cell: NoteBlockUserTableViewCell, blockGroup: NotificationBlockGroup) {
+        guard let userBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            return
+        }
+
+        let hasHomeURL = userBlock.metaLinksHome != nil
+        let hasHomeTitle = (userBlock.metaTitlesHome?.isEmpty == false) ?? false
+
+        // Setup: Properties
+        cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
+        cell.name = userBlock.text
+        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.hostname()
+        cell.isFollowEnabled = userBlock.isActionEnabled(NoteActionFollowKey)
+        cell.isFollowOn = userBlock.isActionOn(NoteActionFollowKey)
+
+        // Setup: Callbacks
+        cell.onFollowClick = { [weak self] in
+            self?.followSiteWithBlock(userBlock)
+        }
+
+        cell.onUnfollowClick = { [weak self] in
+            self?.unfollowSiteWithBlock(userBlock)
+        }
+
+        // Download the Gravatar (If Needed!)
+        guard cell.isLayoutCell() == false else {
+            return
+        }
+
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
+    }
+
+    func setupCommentCell(cell: NoteBlockCommentTableViewCell, blockGroup: NotificationBlockGroup) {
+        // Note:
+        // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
+        // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
+        //
+        //  -   Font colors are updated.
+        //  -   A left separator is displayed.
+        //
+        guard let commentBlock = blockGroup.blockOfType(.Comment) else {
+            assertionFailure("Missing Comment Block for Notification [\(note.simperiumKey)]")
+            return
+        }
+
+        guard let userBlock = blockGroup.blockOfType(.User) else {
+            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            return
+        }
+
+        // Merge the Attachments with their ranges: [NSRange: UIImage]
+        let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls())
+        let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
+
+        let text = commentBlock.attributedRichText().stringByEmbeddingImageAttachments(mediaRanges)
+
+        // Setup: Properties
+        cell.name                   = userBlock.text
+        cell.timestamp              = note.timestampAsDate.shortString()
+        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.hostname()
+        cell.attributedCommentText  = text.trimTrailingNewlines()
+        cell.isApproved             = commentBlock.isCommentApproved()
+        cell.hasReply               = note.hasReply
+
+        // Setup: Callbacks
+        cell.onDetailsClick = { [weak self] sender in
+            guard let rawLink = userBlock.metaLinksHome, let url = NSURL(string: rawLink) else {
+                return
+            }
+
+            self?.openURL(url)
+        }
+
+        cell.onUrlClick = { [weak self] url in
+            self?.openURL(url)
+        }
+
+        cell.onAttachmentClick = { [weak self] attachment in
+            guard let image = attachment.image else {
+                return
+            }
+
+            self?.displayFullscreenImage(image)
+        }
+
+        // Download the Gravatar (If Needed!)
+        guard cell.isLayoutCell() == false else {
+            return
+        }
+
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
+    }
+
+    func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
+        guard let commentBlock = blockGroup.blockOfType(.Comment) else {
+            assertionFailure("Missing Comment Block for Notification \(note.simperiumKey)")
+            return
+        }
+
+        // Setup: Properties
+        cell.isReplyEnabled     = WPDeviceIdentification.isiPad() && commentBlock.isActionOn(NoteActionReplyKey)
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(NoteActionLikeKey)
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(NoteActionApproveKey)
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(NoteActionTrashKey)
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(NoteActionSpamKey)
+        cell.isLikeOn           = commentBlock.isActionOn(NoteActionLikeKey)
+        cell.isApproveOn        = commentBlock.isActionOn(NoteActionApproveKey)
+
+        // Setup: Callbacks
+        cell.onReplyClick = { [weak self] sender in
+            self?.editReplyWithBlock(commentBlock)
+        }
+
+        cell.onLikeClick = { [weak self] sender in
+            self?.likeCommentWithBlock(commentBlock)
+        }
+
+        cell.onUnlikeClick = { [weak self] sender in
+            self?.unlikeCommentWithBlock(commentBlock)
+        }
+
+        cell.onApproveClick = { [weak self] sender in
+            self?.approveCommentWithBlock(commentBlock)
+        }
+
+        cell.onUnapproveClick = { [weak self] sender in
+            self?.unapproveCommentWithBlock(commentBlock)
+        }
+
+        cell.onTrashClick = { [weak self] sender in
+            self?.trashCommentWithBlock(commentBlock)
+        }
+
+        cell.onSpamClick = { [weak self] sender in
+            self?.spamCommentWithBlock(commentBlock)
+        }
+    }
+
+    func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
+        guard cell.isLayoutCell() == false else {
+            return
+        }
+
+        guard let imageBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Image Block for Notification [\(note.simperiumKey)")
+            return
+        }
+
+        let mediaURL = imageBlock.media.first?.mediaURL
+        cell.downloadImageWithURL(mediaURL)
+    }
+
+    func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
+        guard let textBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Text Block for Notification \(note.simperiumKey)")
+            return
+        }
+
+        // Merge the Attachments with their ranges: [NSRange: UIImage]
+        let mediaMap = mediaDownloader.imagesForUrls(textBlock.imageUrls())
+        let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
+
+        // Load the attributedText
+        let text = note.isBadge ? textBlock.attributedBadgeText() : textBlock.attributedRichText()
+
+        // Setup: Properties
+        cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
+
+        // Setup: Callbacks
+        cell.onUrlClick = { [weak self] url in
+            self?.openURL(url)
+        }
+    }
+
+    func setupSeparators(cell: NoteBlockTableViewCell, indexPath: NSIndexPath) {
+        cell.isBadge = note.isBadge
+        cell.isLastRow = (indexPath.row >= blockGroups.count - 1)
+    }
+}
+
+
+
 /// Notification Helpers
 ///
 extension NotificationDetailsViewController
