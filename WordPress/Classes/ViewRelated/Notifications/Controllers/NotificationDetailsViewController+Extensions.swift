@@ -283,7 +283,7 @@ extension NotificationDetailsViewController
         // Setup: Properties
         cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
         cell.name = userBlock.text
-        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.hostname()
+        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
         cell.isFollowEnabled = userBlock.isActionEnabled(NoteActionFollowKey)
         cell.isFollowOn = userBlock.isActionOn(NoteActionFollowKey)
 
@@ -332,14 +332,14 @@ extension NotificationDetailsViewController
         // Setup: Properties
         cell.name                   = userBlock.text
         cell.timestamp              = note.timestampAsDate.shortString()
-        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.hostname()
+        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimTrailingNewlines()
         cell.isApproved             = commentBlock.isCommentApproved()
         cell.hasReply               = note.hasReply
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
-            guard let rawLink = userBlock.metaLinksHome, let url = NSURL(string: rawLink) else {
+            guard let homeURL = userBlock.metaLinksHome else {
                 return
             }
 
