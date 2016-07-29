@@ -295,18 +295,15 @@ static NSInteger NotificationSectionCount = 1;
     // User Blocks: Push the associated blog, if any
     } else if (group.type == NoteBlockGroupTypeUser) {
         
-        NotificationBlock *block    = [group blockOfType:NoteBlockTypeUser];
-        NSURL *siteURL              = [NSURL URLWithString:block.metaLinksHome];
-        [self openURL:siteURL];
+        NSURL *homeURL = [[group blockOfType:NoteBlockTypeUser] metaLinksHome];
+        [self openURL:homeURL];
 
     // Footer-Level:
     } else if (group.type == NoteBlockGroupTypeFooter) {
 
         // By convention, the last range is the one that always contains the targetURL.
-        NotificationBlock *block    = [group blockOfType:NoteBlockTypeText];
-        NotificationRange *range    = block.ranges.lastObject;
-        
-        [self openURL:range.url];
+        NSURL *targetURL = [[[[group blockOfType:NoteBlockTypeText] ranges] lastObject] url];
+        [self openURL:targetURL];
     }
 }
 
