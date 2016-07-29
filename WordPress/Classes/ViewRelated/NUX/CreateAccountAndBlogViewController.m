@@ -849,6 +849,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         WordPressComServiceSuccessBlock createBlogSuccess = ^(NSDictionary *responseDictionary){
             [WPAnalytics track:WPAnalyticsStatCreatedAccount];
+            [WPAnalytics track:WPAnalyticsStatCreatedSite];
             [operation didSucceed];
 
             NSDictionary *blogOptions = [responseDictionary dictionaryForKey:@"blog_details"];
