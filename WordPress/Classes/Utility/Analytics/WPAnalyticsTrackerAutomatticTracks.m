@@ -203,6 +203,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatCreatedAccount:
             eventName = @"account_created";
             break;
+        case WPAnalyticsStatCreatedSite:
+            eventName = @"site_created";
+            break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"local_library" };
