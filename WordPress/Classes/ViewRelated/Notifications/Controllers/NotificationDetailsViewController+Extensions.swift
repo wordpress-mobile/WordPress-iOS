@@ -548,20 +548,20 @@ extension NotificationDetailsViewController
     }
 
 
-    // MARK: - Helpers
+    // MARK: - Private Helpers
 
-    func displayReaderWithPostId(postID: NSNumber, siteID: NSNumber) {
+    private func displayReaderWithPostId(postID: NSNumber, siteID: NSNumber) {
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         navigationController?.pushViewController(readerViewController, animated: true)
     }
 
-    func displayCommentsWithPostId(postID: NSNumber, siteID: NSNumber) {
+    private func displayCommentsWithPostId(postID: NSNumber, siteID: NSNumber) {
         let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
         commentsViewController.allowsPushingPostDetails = true
         navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
-    func displayStatsWithBlog(blog: Blog) {
+    private func displayStatsWithBlog(blog: Blog) {
         precondition(blog.supports(.Stats))
 
         let statsViewController = StatsViewController()
@@ -569,7 +569,7 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    func displayFollowersWithBlog(blog: Blog) {
+    private func displayFollowersWithBlog(blog: Blog) {
         precondition(blog.isHostedAtWPcom)
 
         let statsViewController = newStatsViewController()
@@ -580,18 +580,18 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    func displayWebViewWithURL(url: NSURL) {
+    private func displayWebViewWithURL(url: NSURL) {
         let webViewController = WPWebViewController.authenticatedWebViewController(url)
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    func displayBrowseSiteWithID(siteID: NSNumber) {
-        let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: true)
+    private func displayBrowseSiteWithID(siteID: NSNumber) {
+        let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
         navigationController?.pushViewController(browseViewController, animated: true)
     }
 
-    func displayFullscreenImage(image: UIImage) {
+    private func displayFullscreenImage(image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
         imageViewController.modalTransitionStyle = .CrossDissolve
         imageViewController.modalPresentationStyle = .FullScreen
