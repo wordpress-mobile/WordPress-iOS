@@ -484,41 +484,46 @@ extension NotificationDetailsViewController
 extension NotificationDetailsViewController
 {
     func openURL(url: NSURL?) {
-        // Attempt to match the URL with any NotificationRange contained within the note, and.. recover the metadata!
-        //
         guard let url = url else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
 
+        // Attempt to match the URL with any NotificationRange contained within the note, and.. recover the metadata!
+        //
         guard let range = note.notificationRangeWithUrl(url) else {
             displayWebViewWithURL(url)
             return
         }
 
-        if let postID = range.postID, let siteID = range.siteID where range.isPost {
-            displayReaderWithPostId(postID, siteID: siteID)
-            return
-        }
+        switch range.type {
+        case .Post:
+            if let postID = range.postID, let siteID = range.siteID {
+                displayReaderWithPostId(postID, siteID: siteID)
+            }
 
-        if let postID = range.postID, let siteID = range.siteID where range.isComment {
-            displayCommentsWithPostId(postID, siteID: siteID)
-            return
-        }
+        case .Comment:
+            if let postID = range.postID, let siteID = range.siteID {
+                displayCommentsWithPostId(postID, siteID: siteID)
+            }
 
-        if let blog = blogWithBlogID(range.siteID) where range.isStats && blog.supports(.Stats) {
-            displayStatsWithBlog(blog)
-            return
-        }
+        case .Stats:
+            if let blog = blogWithBlogID(range.siteID) where blog.supports(.Stats) {
+                displayStatsWithBlog(blog)
+            }
 
-        if let blog = blogWithBlogID(note.metaSiteID) where range.isFollow && blog.isHostedAtWPcom {
-            displayFollowersWithBlog(blog)
-            return
-        }
+        case .Follow:
+            if let blog = blogWithBlogID(note.metaSiteID) where blog.isHostedAtWPcom {
+                displayFollowersWithBlog(blog)
+            }
 
-        if let siteID = range.siteID where range.isUser {
-            displayBrowseSiteWithID(siteID)
-            return
+        case .User:
+            if let siteID = range.siteID {
+                displayBrowseSiteWithID(siteID)
+            }
+
+        default:
+            displayWebViewWithURL(url)
         }
 
         tableView.deselectSelectedRowWithAnimation(true)
@@ -540,7 +545,7 @@ extension NotificationDetailsViewController
             return
         }
 
-        if let notificationURL = note.url, let resourceURL = NSURL(string: notificationURL) {
+        if let resourceURL = note.resourceURL() {
             displayWebViewWithURL(resourceURL)
             return
         }
