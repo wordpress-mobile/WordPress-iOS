@@ -773,6 +773,15 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return NO;
 }
 
+- (NSURL *)resourceURL
+{
+    if (!self.url) {
+        return nil;
+    }
+
+    return [[NSURL alloc] initWithString:self.url];
+}
+
 - (void)didChangeOverrides
 {
     // HACK:

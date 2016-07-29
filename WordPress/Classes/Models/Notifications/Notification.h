@@ -111,6 +111,7 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 - (nullable NotificationBlock *)snippetBlock;
 
 - (BOOL)isUnapprovedComment;
+- (nullable NSURL *)resourceURL;
 
 @end
 

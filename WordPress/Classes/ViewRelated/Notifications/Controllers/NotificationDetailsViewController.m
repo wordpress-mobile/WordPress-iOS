@@ -347,7 +347,6 @@ static NSInteger NotificationSectionCount = 1;
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    
     [WPAppAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
