@@ -500,27 +500,37 @@ extension NotificationDetailsViewController
     }
 
     func displayNotificationSource() {
-        if let siteID = note.metaSiteID where note.isFollow {
-            _ = try? displayStreamWithSiteID(siteID)
+        guard let type = note.type, let resourceURL = note.resourceURL() else {
+            tableView.deselectSelectedRowWithAnimation(true)
             return
         }
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, let _ = note.metaCommentID {
-            _ = try? displayCommentsWithPostId(postID, siteID: siteID)
-            return
-        }
+        do {
+            switch type {
+            case NoteTypeFollow:
+                try displayStreamWithSiteID(note.metaSiteID)
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID {
-            _ = try? displayReaderWithPostId(postID, siteID: siteID)
-            return
-        }
+            case NoteTypeLike:
+                fallthrough
 
-        if let resourceURL = note.resourceURL() {
+            case NoteTypeMatcher:
+                fallthrough
+
+            case NoteTypePost:
+                try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
+
+            case NoteTypeComment:
+                fallthrough
+
+            case NoteTypeCommentLike:
+                try displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
+
+            default:
+                throw DisplayError.UnsupportedType
+            }
+        } catch {
             displayWebViewWithURL(resourceURL)
-            return
         }
-
-        tableView.deselectSelectedRowWithAnimation(true)
     }
 
 
