@@ -162,25 +162,25 @@ PODS:
   - WordPress-iOS-Shared (0.5.9):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.16)
-  - WordPressCom-Stats-iOS (0.7.5):
+  - WordPressCom-Stats-iOS (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.3)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-    - WordPressCom-Stats-iOS/Services (= 0.7.5)
-    - WordPressCom-Stats-iOS/UI (= 0.7.5)
-  - WordPressCom-Stats-iOS/Services (0.7.5):
+    - WordPressCom-Stats-iOS/Services (= 0.7.7)
+    - WordPressCom-Stats-iOS/UI (= 0.7.7)
+  - WordPressCom-Stats-iOS/Services (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.3)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-  - WordPressCom-Stats-iOS/UI (0.7.5):
+  - WordPressCom-Stats-iOS/UI (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.3)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.4):
@@ -220,8 +220,8 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.8)
   - WordPress-iOS-Shared (= 0.5.9)
   - WordPressCom-Analytics-iOS (= 0.1.16)
-  - WordPressCom-Stats-iOS (= 0.7.5)
-  - WordPressCom-Stats-iOS/Services (= 0.7.5)
+  - WordPressCom-Stats-iOS (= 0.7.7)
+  - WordPressCom-Stats-iOS/Services (= 0.7.7)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.4`)
   - WPMediaPicker (~> 0.10.1)
   - wpxmlrpc (~> 0.8)
@@ -283,11 +283,11 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 50a09646fb62af3efdbb56d13ff656272a079066
   WordPress-iOS-Shared: 50a7bd7056b8721e86c3cbe167eab49ef85ec07b
   WordPressCom-Analytics-iOS: 46cbb47a84670f3b8548c8617da939c6b74cfda8
-  WordPressCom-Stats-iOS: 8a8b25ee6362f0758f487d2a21a68300825ea18d
+  WordPressCom-Stats-iOS: 5996ea5bc7ce2096400fdc33e3368b5524f7288a
   WordPressComKit: 0742c47e5b55bff0e6d26d40db9e010404675a73
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: f147b7aeb93d9a4808ce84fd9c38b94e07ee1e0b
+PODFILE CHECKSUM: 5465967d6cf18cb32027121e263c908907ad798d
 
 COCOAPODS: 1.0.1
