@@ -621,9 +621,15 @@ private extension NotificationDetailsViewController
     }
 
     func newStatsViewController() -> StatsViewAllTableViewController {
-        let identifier = StatsViewAllTableViewController.classNameWithoutNamespaces()
-        let bundle = NSBundle(forClass: WPStatsViewController.self)
+        let statsBundle = NSBundle(forClass: WPStatsViewController.self)
+        guard let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle"),
+            let bundle = NSBundle(path: path) else
+        {
+            fatalError("Error loading Stats Bundle")
+        }
+
         let storyboard = UIStoryboard(name: "SiteStats", bundle: bundle)
+        let identifier = StatsViewAllTableViewController.classNameWithoutNamespaces()
         let statsViewController = storyboard.instantiateViewControllerWithIdentifier(identifier)
 
         return statsViewController as! StatsViewAllTableViewController
