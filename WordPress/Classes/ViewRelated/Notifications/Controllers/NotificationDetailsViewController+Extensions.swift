@@ -343,7 +343,7 @@ extension NotificationDetailsViewController
                 return
             }
 
-            self?.openURL(url)
+            self?.openURL(homeURL)
         }
 
         cell.onUrlClick = { [weak self] url in
@@ -484,9 +484,7 @@ extension NotificationDetailsViewController
 extension NotificationDetailsViewController
 {
     func openURL(url: NSURL) {
-        //  NOTE:
-        //  In this step, we attempt to match the URL tapped with any NotificationRange instance, contained in the note,
-        //  and thus, recover the metadata!
+        // Attempt to match the URL with any NotificationRange contained within the note, and.. recover the metadata!
         //
         guard let range = note.notificationRangeWithUrl(url) else {
             displayWebViewWithURL(url)
@@ -521,15 +519,13 @@ extension NotificationDetailsViewController
         tableView.deselectSelectedRowWithAnimation(true)
     }
 
-    func openNotificationHeader(header: NotificationBlockGroup) {
-        precondition(header.type == .Header)
-
+    func openNotificationSource() {
         if let siteID = note.metaSiteID where note.isFollow {
             displayBrowseSiteWithID(siteID)
             return
         }
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.metaCommentID != nil {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, let _ = note.metaCommentID {
             displayCommentsWithPostId(postID, siteID: siteID)
             return
         }
