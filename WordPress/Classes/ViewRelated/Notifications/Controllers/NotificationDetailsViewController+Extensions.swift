@@ -513,7 +513,7 @@ extension NotificationDetailsViewController
             }
 
         case .Follow:
-            if let blog = blogWithBlogID(note.metaSiteID) where blog.isHostedAtWPcom {
+            if let blog = blogWithBlogID(range.siteID) {
                 displayFollowersWithBlog(blog)
             }
 
@@ -576,8 +576,6 @@ extension NotificationDetailsViewController
     }
 
     private func displayFollowersWithBlog(blog: Blog) {
-        precondition(blog.isHostedAtWPcom)
-
         let statsViewController = newStatsViewController()
         statsViewController.selectedDate = NSDate()
         statsViewController.statsSection = .Followers
