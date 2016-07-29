@@ -290,17 +290,17 @@ static NSInteger NotificationSectionCount = 1;
 
     // Header-Level: Push the resource associated with the note
     if (group.type == NoteBlockGroupTypeHeader) {
-        [self openNotificationSource];
+        [self displayNotificationSource];
 
     // User-Level: Push the associated blog, if any
     } else if (group.type == NoteBlockGroupTypeUser) {
         NSURL *targetURL = [[group blockOfType:NoteBlockTypeUser] metaLinksHome];
-        [self openURL:targetURL];
+        [self displayURL:targetURL];
 
     // Footer-Level: By convention, the last range is the one that always contains the targetURL
     } else if (group.type == NoteBlockGroupTypeFooter) {
         NSURL *targetURL = [[[[group blockOfType:NoteBlockTypeText] ranges] lastObject] url];
-        [self openURL:targetURL];
+        [self displayURL:targetURL];
     }
 }
 
