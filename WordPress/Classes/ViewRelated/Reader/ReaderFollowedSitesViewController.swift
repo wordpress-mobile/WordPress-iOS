@@ -274,10 +274,6 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
             return
         }
 
-        if let wpCell = cell as? WPTableViewCell {
-            wpCell.forceCustomCellMargins = true
-        }
-
         cell.accessoryType = .DisclosureIndicator
         cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
 
