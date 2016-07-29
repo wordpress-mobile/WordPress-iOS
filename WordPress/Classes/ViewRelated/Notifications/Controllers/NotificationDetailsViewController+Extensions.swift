@@ -483,9 +483,14 @@ extension NotificationDetailsViewController
 ///
 extension NotificationDetailsViewController
 {
-    func openURL(url: NSURL) {
+    func openURL(url: NSURL?) {
         // Attempt to match the URL with any NotificationRange contained within the note, and.. recover the metadata!
         //
+        guard let url = url else {
+            tableView.deselectSelectedRowWithAnimation(true)
+            return
+        }
+
         guard let range = note.notificationRangeWithUrl(url) else {
             displayWebViewWithURL(url)
             return
@@ -501,12 +506,12 @@ extension NotificationDetailsViewController
             return
         }
 
-        if let blog = blogWithBlogID(range.siteID) where blog.supports(.Stats) && range.isStats {
+        if let blog = blogWithBlogID(range.siteID) where range.isStats && blog.supports(.Stats) {
             displayStatsWithBlog(blog)
             return
         }
 
-        if let blog = blogWithBlogID(note.metaSiteID) where blog.isHostedAtWPcom && range.isFollow {
+        if let blog = blogWithBlogID(note.metaSiteID) where range.isFollow && blog.isHostedAtWPcom {
             displayFollowersWithBlog(blog)
             return
         }
