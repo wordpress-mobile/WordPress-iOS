@@ -49,6 +49,8 @@
 
 #import "NavbarTitleDropdownButton.h"
 #import "NotificationDetailsViewController.h"
+#import "NotificationDetailsViewController+Internal.h"
+#import "SuggestionService.h"
 #import "Meta.h"
 #import "Notification.h"
 #import "Notification+Internals.h"
