@@ -508,22 +508,16 @@ extension NotificationDetailsViewController
             switch type {
             case NoteTypeFollow:
                 try displayStreamWithSiteID(note.metaSiteID)
-
             case NoteTypeLike:
                 fallthrough
-
             case NoteTypeMatcher:
                 fallthrough
-
             case NoteTypePost:
                 try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
-
             case NoteTypeComment:
                 fallthrough
-
             case NoteTypeCommentLike:
                 try displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
-
             default:
                 throw DisplayError.UnsupportedType
             }
@@ -544,22 +538,16 @@ extension NotificationDetailsViewController
         switch range.type {
         case .Site:
             try displayStreamWithSiteID(range.siteID)
-
         case .Post:
             try displayReaderWithPostId(range.postID, siteID: range.siteID)
-
         case .Comment:
             try displayCommentsWithPostId(range.postID, siteID: range.siteID)
-
         case .Stats:
             try displayStatsWithSiteID(range.siteID)
-
         case .Follow:
             try displayFollowersWithSiteID(range.siteID)
-
         case .User:
             try displayStreamWithSiteID(range.siteID)
-
         default:
             throw DisplayError.UnsupportedType
         }
