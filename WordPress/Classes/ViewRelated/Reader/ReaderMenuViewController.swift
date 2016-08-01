@@ -13,6 +13,8 @@ import WordPressShared
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
 
+    var isSyncing = false
+
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
         vm.delegate = self
@@ -61,7 +63,9 @@ import WordPressShared
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Reader", comment: "")
 
+        setupRefreshControl()
         configureTableView()
+        sync()
     }
 
 
@@ -75,6 +79,16 @@ import WordPressShared
     // MARK: - Configuration
 
 
+    func setupRefreshControl() {
+        if refreshControl != nil {
+            return
+        }
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(self.dynamicType.sync), forControlEvents: .ValueChanged)
+    }
+
+
     func configureTableView() {
 
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
@@ -85,6 +99,32 @@ import WordPressShared
 
 
     // MARK: - Instance Methods
+
+
+    /// Sync the Reader's menu
+    ///
+    func sync() {
+        if isSyncing {
+            return
+        }
+
+        isSyncing = true
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.fetchReaderMenuWithSuccess({ [weak self] in
+                self?.cleanupAfterSync()
+            }, failure: { [weak self] (error) in
+                self?.cleanupAfterSync()
+                DDLogSwift.logError("Error syncing menu: \(error)")
+        })
+    }
+
+
+    /// Reset's state after a sync.
+    ///
+    func cleanupAfterSync() {
+        refreshControl?.endRefreshing()
+        isSyncing = false
+    }
 
 
     /// Presents the detail view controller for the specified post on the specified
