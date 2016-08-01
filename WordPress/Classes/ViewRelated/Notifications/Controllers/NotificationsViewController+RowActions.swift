@@ -68,7 +68,7 @@ extension NotificationsViewController
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
             let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] action, path in
-                self?.actionsService.unapproveCommentWithBlock(block, success: nil, failure: nil)
+                self?.actionsService.unapproveCommentWithBlock(block)
                 self?.tableView.setEditing(false, animated: true)
             })
 
@@ -81,7 +81,7 @@ extension NotificationsViewController
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
             let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] action, path in
-                self?.actionsService.approveCommentWithBlock(block, success: nil, failure: nil)
+                self?.actionsService.approveCommentWithBlock(block)
                 self?.tableView.setEditing(false, animated: true)
             })
 
