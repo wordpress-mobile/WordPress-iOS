@@ -709,122 +709,69 @@ extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func followSiteWithBlock(block: NotificationBlock) {
-        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
-            return
-        }
-
-        let service = ReaderSiteService(managedObjectContext: mainContext)
-        service.followSiteWithID(siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionFollowKey)
+        actionsService.followSiteWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(true, forKey: NoteActionFollowKey)
         WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
 
     func unfollowSiteWithBlock(block: NotificationBlock) {
-        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
-            return
-        }
-
-        let service = ReaderSiteService(managedObjectContext: mainContext)
-        service.unfollowSiteWithID(siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionFollowKey)
+        actionsService.unfollowSiteWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(false, forKey: NoteActionFollowKey)
-        WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: siteID)
+        WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
 
     func likeCommentWithBlock(block: NotificationBlock) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
-        if block.isCommentApproved() == false {
-            approveCommentWithBlock(block)
-        }
-
-        // Proceed toggling the Like field
-        let service = CommentService(managedObjectContext: mainContext)
-        service.likeCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionLikeKey)
+        actionsService.likeCommentWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(true, forKey: NoteActionLikeKey)
-        WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: siteID)
+        WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
     func unlikeCommentWithBlock(block: NotificationBlock) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        let service = CommentService(managedObjectContext: mainContext)
-        service.unlikeCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionLikeKey)
+        actionsService.unlikeCommentWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(false, forKey: NoteActionLikeKey)
-        WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: siteID)
+        WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
     func approveCommentWithBlock(block: NotificationBlock) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        let service = CommentService(managedObjectContext: mainContext)
-        service.approveCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionApproveKey)
+        actionsService.approveCommentWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
         tableView.reloadData()
-        WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: siteID)
+        WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
     func unapproveCommentWithBlock(block: NotificationBlock) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        let service = CommentService(managedObjectContext: mainContext)
-        service.unapproveCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
-            block.removeActionOverrideForKey(NoteActionApproveKey)
+        actionsService.unapproveCommentWithBlock(block, success: nil, failure: { [weak self] error in
             self?.reloadData()
-        }
+        })
 
-        block.setActionOverrideValue(false, forKey: NoteActionApproveKey)
         tableView.reloadData()
-        WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: siteID)
+        WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
     func spamCommentWithBlock(block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        // Spam Action
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
-            let service = CommentService(managedObjectContext: mainContext)
+            let service = NotificationActionsService(managedObjectContext: mainContext)
 
-            service.spamCommentWithID(commentID, siteID: siteID, success: {
-                onCompletion(true)
+            service.spamCommentWithBlock(block, success: {
+                onCompletion?(true)
             }, failure: { error in
-                onCompletion(false)
+                onCompletion?(false)
             })
 
-            WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: siteID)
+            WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
         }
 
         // We're thru
@@ -834,22 +781,18 @@ private extension NotificationDetailsViewController
     func trashCommentWithBlock(block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
         // Hit the DeletionRequest Callback
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
-            let service = CommentService(managedObjectContext: mainContext)
+            let service = NotificationActionsService(managedObjectContext: mainContext)
 
-            service.deleteCommentWithID(commentID, siteID: siteID, success: {
-                onCompletion(true)
+            service.trashCommentWithBlock(block, success: {
+                onCompletion?(true)
             }, failure: { error in
-                onCompletion(false)
+                onCompletion?(false)
             })
 
-            WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: siteID)
+            WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: block.metaSiteID)
         }
 
         // We're thru
@@ -1049,6 +992,10 @@ private extension NotificationDetailsViewController
 {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
+    }
+
+    var actionsService: NotificationActionsService {
+        return NotificationActionsService(managedObjectContext: mainContext)
     }
 
     enum DisplayError: ErrorType {
