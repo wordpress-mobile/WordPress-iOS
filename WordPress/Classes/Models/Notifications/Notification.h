@@ -17,15 +17,6 @@ extern NSString * __nonnull NoteActionReplyKey;
 extern NSString * __nonnull NoteActionApproveKey;
 extern NSString * __nonnull NoteActionEditKey;
 
-extern NSString * __nonnull NoteRangeTypeUser;
-extern NSString * __nonnull NoteRangeTypePost;
-extern NSString * __nonnull NoteRangeTypeComment;
-extern NSString * __nonnull NoteRangeTypeStats;
-extern NSString * __nonnull NoteRangeTypeBlockquote;
-extern NSString * __nonnull NoteRangeTypeNoticon;
-extern NSString * __nonnull NoteRangeTypeSite;
-extern NSString * __nonnull NoteRangeTypeMatch;
-
 extern NSString * __nonnull NoteMediaTypeImage;
 
 extern NSString * __nonnull NoteTypeUser;
@@ -55,6 +46,19 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
     NoteBlockGroupTypeSubject  = 200,                       // Blocks: Text  + Text
     NoteBlockGroupTypeHeader   = 300,                       // Blocks: Image + Text
     NoteBlockGroupTypeFooter   = 400                        // Blocks: Text
+};
+
+typedef NS_ENUM(NSInteger, NoteRangeType)
+{
+    NoteRangeTypeUser,
+    NoteRangeTypePost,
+    NoteRangeTypeComment,
+    NoteRangeTypeStats,
+    NoteRangeTypeFollow,
+    NoteRangeTypeBlockquote,
+    NoteRangeTypeNoticon,
+    NoteRangeTypeSite,
+    NoteRangeTypeMatch
 };
 
 
@@ -107,6 +111,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 - (nullable NotificationBlock *)snippetBlock;
 
 - (BOOL)isUnapprovedComment;
+- (nullable NSURL *)resourceURL;
 
 @end
 
@@ -143,7 +148,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign, readonly) NoteBlockType                           type;
 @property (nonatomic, strong, nullable, readonly) NSNumber                      *metaSiteID;
 @property (nonatomic, strong, nullable, readonly) NSNumber                      *metaCommentID;
-@property (nonatomic, strong, nullable, readonly) NSString                      *metaLinksHome;
+@property (nonatomic, strong, nullable, readonly) NSURL                         *metaLinksHome;
 @property (nonatomic, strong, nullable, readonly) NSString                      *metaTitlesHome;
 
 // Overrides
@@ -234,22 +239,13 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @interface NotificationRange : NSObject
 
 @property (nonatomic, assign, readonly) NSRange             range;
-@property (nonatomic, strong,  nonnull, readonly) NSString  *type;
+@property (nonatomic, assign, readonly) NoteRangeType       type;
 @property (nonatomic, strong, nullable, readonly) NSString  *value;
 @property (nonatomic, strong, nullable, readonly) NSURL     *url;
 @property (nonatomic, strong, nullable, readonly) NSNumber  *postID;
 @property (nonatomic, strong, nullable, readonly) NSNumber  *commentID;
 @property (nonatomic, strong, nullable, readonly) NSNumber  *userID;
 @property (nonatomic, strong, nullable, readonly) NSNumber  *siteID;
-
-// Derived Properties
-@property (nonatomic, assign, readonly) BOOL                isUser;
-@property (nonatomic, assign, readonly) BOOL                isPost;
-@property (nonatomic, assign, readonly) BOOL                isComment;
-@property (nonatomic, assign, readonly) BOOL                isFollow;
-@property (nonatomic, assign, readonly) BOOL                isStats;
-@property (nonatomic, assign, readonly) BOOL                isBlockquote;
-@property (nonatomic, assign, readonly) BOOL                isNoticon;
 
 @end
 
