@@ -68,10 +68,9 @@ class WPSplitViewController: UISplitViewController {
     private let dimmingViewAlpha: CGFloat = 0.5
     private let dimmingViewAnimationDuration: NSTimeInterval = 0.3
 
-    private func dimDetailViewController(dimmed: Bool) {
+    private func dimViewController(viewController: UIViewController, dimmed: Bool) {
         if dimmed {
-            if let detailViewController = viewControllers.last,
-                let view = detailViewController.view {
+            if let view = viewController.view {
                 dimmingView.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(dimmingView)
                 view.pinSubviewToAllEdges(dimmingView)
@@ -86,6 +85,12 @@ class WPSplitViewController: UISplitViewController {
                 }, completion: { _ in
                     self.dimmingView.removeFromSuperview()
             })
+        }
+    }
+
+    private func dimDetailViewController(dimmed: Bool) {
+        if let detailViewController = viewControllers.last {
+            dimViewController(detailViewController, dimmed: dimmed)
         }
     }
 
@@ -104,7 +109,7 @@ class WPSplitViewController: UISplitViewController {
             navigationController.delegate = self
 
             initialViewControllers.append(detailViewController)
-
+            initialDetailViewController = detailViewController
             viewControllers = initialViewControllers
         }
     }
@@ -122,7 +127,17 @@ class WPSplitViewController: UISplitViewController {
         return (viewController is UINavigationController) ? viewController : UINavigationController(rootViewController: viewController)
     }
 
-    private var primaryNavigationControllerStackHasBeenModified = false
+    // The initial detail view controller that's displayed
+    // automatically whenever the split view's view controllers are reset.
+    // Used primarily when separating the navigation stack when uncollapsing the split view,
+    // to find the point at which the stack was previously collapsed.
+    private var initialDetailViewController: UIViewController? = nil
+
+    // Used to prevent reloading the detail view controller if the same view
+    // controller is popped and then pushed back onto the navigation controller
+    // (example: a user tapping Back out of a Blog Details VC to the Blog List VC,
+    // and then tapping back into the same blog).
+    private weak var previousTopPrimaryViewController: UIViewController? = nil
 }
 
 // MARK: - UISplitViewControllerDelegate
@@ -141,19 +156,34 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         }
 
         var viewControllers: [UIViewController] = []
+
+        let separateViewControllersAtIndex: (Int -> Void) = { index in
+            viewControllers = Array(primaryNavigationController.viewControllers.suffixFrom(index))
+            primaryNavigationController.viewControllers = Array(primaryNavigationController.viewControllers.prefixUpTo(index))
+        }
+
         if let index = primaryNavigationController.viewControllers.indexOf({ $0 is UINavigationController }) {
             // If there's another navigation controller somewhere in the primary navigation stack
             // (this is the default behaviour of a collapse), then we'll split the view controllers
             // apart at that point.
-            viewControllers = Array(primaryNavigationController.viewControllers.suffixFrom(index))
-            primaryNavigationController.viewControllers = Array(primaryNavigationController.viewControllers.prefixUpTo(index))
+            separateViewControllersAtIndex(index)
+        } else if let index = primaryNavigationController.viewControllers.indexOf({ $0 is WPSplitViewControllerDetailProvider }) {
+            // Otherwise, if there's a detail provider somewhere in the stack
+            separateViewControllersAtIndex(index)
         }
 
         // If we have no detail view controllers, try and fetch the primary view controller's
         // initial detail view controller.
         if viewControllers.count == 0 {
             if let primaryViewController = primaryNavigationController.viewControllers.last,
-                let initialDetailViewController = initialDetailViewControllerForPrimaryViewController(primaryViewController) {
+                let detailViewController = initialDetailViewControllerForPrimaryViewController(primaryViewController) {
+                initialDetailViewController = detailViewController
+                return initialDetailViewController
+            } else {
+                if let initialDetailViewController = initialDetailViewController {
+                    dimViewController(initialDetailViewController, dimmed: true)
+                }
+
                 return initialDetailViewController
             }
         }
@@ -174,11 +204,13 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             dimDetailViewController(false)
         }
 
-        // If the user hasn't modified the navigation stack, then show the root view controller initially.
+        // If the user hasn't modified the navigation stack, (the secondary view
+        // controller is still the initial detail view controller) then
+        // return true to prevent the system pushing the detail view controller
+        // onto the primary stack.
         // In a horizontally compact size class this means we can collapse to show the root
         // view controller, instead of having the detail view controller pushed onto the stack.
-        if let navigationController = primaryViewController as? UINavigationController where !primaryNavigationControllerStackHasBeenModified && navigationController.viewControllers.count == 1 {
-            navigationController.popToRootViewControllerAnimated(false)
+        if secondaryViewController == initialDetailViewController {
             return true
         }
 
@@ -190,18 +222,23 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
 
 extension WPSplitViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        primaryNavigationControllerStackHasBeenModified = true
-
         if dimsDetailViewControllerAutomatically && !collapsed {
             let shouldDim = navigationController.viewControllers.count == 1
             dimDetailViewController(shouldDim)
         }
 
-        // If the split view isn't collapsed, and we're pushing a new view controller
-        // onto the primary navigation controller, update the detail pane
-        // to show the appropriate initial view controller
+        // If the split view isn't collapsed, and we're pushing onto the
+        // primary navigation controller, update the detail pane if necessary
         if !collapsed && navigationController.viewControllers.count > 1 {
-            setInitialPrimaryViewController(navigationController)
+            // If the primary view controller has changed, reset the detail view controller
+            // otherwise, keep the existing detail view controller there.
+            // This allows a user to navigate back into the same item in the
+            // primary view controller, and keep their place in the detail view controller.
+            if previousTopPrimaryViewController != viewController {
+                setInitialPrimaryViewController(navigationController)
+            }
+
+            previousTopPrimaryViewController = viewController
         }
     }
 }
