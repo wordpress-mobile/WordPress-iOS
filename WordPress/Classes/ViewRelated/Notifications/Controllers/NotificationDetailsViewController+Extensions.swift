@@ -5,8 +5,8 @@ import WordPressShared
 
 
 
-/// Setup Helpers
-///
+// MARK: - Setup Helpers
+//
 extension NotificationDetailsViewController
 {
     func setupNavigationBar() {
@@ -97,8 +97,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Reply View Helpers
-///
+// MARK: - Reply View Helpers
+//
 extension NotificationDetailsViewController
 {
     func attachReplyViewIfNeeded() {
@@ -123,8 +123,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Suggestions View Helpers
-///
+// MARK: - Suggestions View Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be private
@@ -155,8 +155,8 @@ extension NotificationDetailsViewController
 }
 
 
-/// Edition Helpers
-///
+// MARK: - Edition Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be Private once ready
@@ -190,8 +190,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Style Helpers
-///
+// MARK: - Style Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be private once ready
@@ -210,8 +210,8 @@ extension NotificationDetailsViewController
 
 
 
-/// UITableViewCell Subclass Setup
-///
+// MARK: - UITableViewCell Subclass Setup
+//
 extension NotificationDetailsViewController
 {
     func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -455,8 +455,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Notification Helpers
-///
+// MARK: - Notification Helpers
+//
 extension NotificationDetailsViewController
 {
     func notificationWasUpdated(notification: NSNotification) {
@@ -478,8 +478,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Resources
-///
+// MARK: - Resources
+//
 extension NotificationDetailsViewController
 {
     func displayURL(url: NSURL?) {
@@ -635,8 +635,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Helpers
-///
+// MARK: - Helpers
+//
 private extension NotificationDetailsViewController
 {
     func blogWithBlogID(blogID: NSNumber?) -> Blog? {
@@ -693,8 +693,8 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate
 
 
 
-/// UIScrollViewDelegate
-///
+// MARK: - UIScrollViewDelegate
+//
 extension NotificationDetailsViewController: UIScrollViewDelegate
 {
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -712,8 +712,8 @@ extension NotificationDetailsViewController: UIScrollViewDelegate
 
 
 
-/// SuggestionsTableViewDelegate
-///
+// MARK: - SuggestionsTableViewDelegate
+//
 extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 {
     public func suggestionsTableView(suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
@@ -724,8 +724,8 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 
 
 
-/// Gestures Recognizer Delegate
-///
+// MARK: - Gestures Recognizer Delegate
+//
 extension NotificationDetailsViewController: UIGestureRecognizerDelegate
 {
     @IBAction public func dismissKeyboardIfNeeded(sender: AnyObject) {
