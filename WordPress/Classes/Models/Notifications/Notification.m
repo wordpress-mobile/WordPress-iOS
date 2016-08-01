@@ -141,6 +141,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         NoteRangeTypeMatchKey       : @(NoteRangeTypeMatch)
     };
 
+    // Note: Fallback to Site Range Type, in the *unknown* scenario.
     NSNumber *type = typeMap[rangeTypeKey];
     return type ? [type integerValue] : NoteRangeTypeSite;
 }
