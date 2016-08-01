@@ -17,15 +17,15 @@ NSString *NoteActionTrashKey            = @"trash-comment";
 NSString *NoteActionLikeKey             = @"like-comment";
 NSString *NoteActionEditKey             = @"approve-comment";
 
-NSString const *NoteRangeTypeUser       = @"user";
-NSString const *NoteRangeTypePost       = @"post";
-NSString const *NoteRangeTypeComment    = @"comment";
-NSString const *NoteRangeTypeStats      = @"stat";
-NSString const *NoteRangeTypeFollow     = @"follow";
-NSString const *NoteRangeTypeBlockquote = @"blockquote";
-NSString const *NoteRangeTypeNoticon    = @"noticon";
-NSString const *NoteRangeTypeSite       = @"site";
-NSString const *NoteRangeTypeMatch      = @"match";
+NSString const *NoteRangeTypeUserKey    = @"user";
+NSString const *NoteRangeTypePostKey    = @"post";
+NSString const *NoteRangeTypeCommentKey = @"comment";
+NSString const *NoteRangeTypeStatsKey   = @"stat";
+NSString const *NoteRangeTypeFollowKey  = @"follow";
+NSString const *NoteRangeTypeBlockquoteKey = @"blockquote";
+NSString const *NoteRangeTypeNoticonKey = @"noticon";
+NSString const *NoteRangeTypeSiteKey    = @"site";
+NSString const *NoteRangeTypeMatchKey   = @"match";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
@@ -87,38 +87,39 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 		NSArray *indices	= [rawRange arrayForKey:NoteIndicesKey];
 		NSInteger location	= [indices.firstObject intValue];
 		NSInteger length	= [indices.lastObject intValue] - location;
-		
+
+        NSString *rawType   = [rawRange stringForKey:NoteTypeKey];
+        rawType             = (rawType == nil && _url != nil) ? (NSString *)NoteRangeTypeSiteKey : rawType;
+        rawType             = rawType ?: [NSString string];
+
+        _type               = [self rangeTypeForKey:rawType];
 		_url                = [NSURL URLWithString:[rawRange stringForKey:NoteUrlKey]];
 		_range              = NSMakeRange(location, length);
-        _type               = [rawRange stringForKey:NoteTypeKey];
         _siteID             = [rawRange numberForKey:NoteSiteIdKey];
 
         //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
-        //  =====
+        //  ======
         //  `id` is coupled with the `type`. Which, in turn, is also duck typed.
         //
         //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
         //      type = site     => id = site_id
-        
-        _type               = (_type == nil && _url != nil) ? (NSString *)NoteRangeTypeSite : _type;
-        _type               = _type ?: [NSString string];
-        
-        if ([_type isEqual:NoteRangeTypePost]) {
+        //
+        if (_type == NoteRangeTypeUser) {
+            _userID         = [rawRange numberForKey:NoteRangeIdKey];
+
+        } else if (_type == NoteRangeTypePost) {
             _postID         = [rawRange numberForKey:NoteRangeIdKey];
             
-        } else if ([_type isEqual:NoteRangeTypeComment]) {
+        } else if (_type == NoteRangeTypeComment) {
             _commentID      = [rawRange numberForKey:NoteRangeIdKey];
             _postID         = [rawRange numberForKey:NotePostIdKey];
-            
-        } else if ([_type isEqual:NoteRangeTypeUser]) {
-            _userID         = [rawRange numberForKey:NoteRangeIdKey];
-            
-        } else if ([_type isEqual:NoteRangeTypeNoticon]) {
+
+        } else if (_type == NoteRangeTypeNoticon) {
             _value          = [rawRange stringForKey:NoteRangeValueKey];
             
-        } else if ([_type isEqual:NoteRangeTypeSite]) {
+        } else if (_type == NoteRangeTypeSite) {
             _siteID         = [rawRange numberForKey:NoteRangeIdKey];
         }
 	}
@@ -126,40 +127,25 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 	return self;
 }
 
-- (BOOL)isUser
+- (NoteRangeType)rangeTypeForKey:(NSString *)rangeTypeKey
 {
-    return [self.type isEqual:NoteRangeTypeUser];
+    NSDictionary *typeMap = @{
+        NoteRangeTypeUserKey        : @(NoteRangeTypeUser),
+        NoteRangeTypePostKey        : @(NoteRangeTypePost),
+        NoteRangeTypeCommentKey     : @(NoteRangeTypeComment),
+        NoteRangeTypeStatsKey       : @(NoteRangeTypeStats),
+        NoteRangeTypeFollowKey      : @(NoteRangeTypeFollow),
+        NoteRangeTypeBlockquoteKey  : @(NoteRangeTypeBlockquote),
+        NoteRangeTypeNoticonKey     : @(NoteRangeTypeNoticon),
+        NoteRangeTypeSiteKey        : @(NoteRangeTypeSite),
+        NoteRangeTypeMatchKey       : @(NoteRangeTypeMatch)
+    };
+
+    // Note: Fallback to Site Range Type, in the *unknown* scenario.
+    NSNumber *type = typeMap[rangeTypeKey];
+    return type ? [type integerValue] : NoteRangeTypeSite;
 }
 
-- (BOOL)isPost
-{
-    return [self.type isEqual:NoteRangeTypePost];
-}
-
-- (BOOL)isComment
-{
-    return [self.type isEqual:NoteRangeTypeComment];
-}
-
-- (BOOL)isFollow
-{
-    return [self.type isEqual:NoteRangeTypeFollow];
-}
-
-- (BOOL)isStats
-{
-    return [self.type isEqual:NoteRangeTypeStats];
-}
-
-- (BOOL)isBlockquote
-{
-    return [self.type isEqual:NoteRangeTypeBlockquote];
-}
-
-- (BOOL)isNoticon
-{
-    return [self.type isEqual:NoteRangeTypeNoticon];
-}
 
 + (NSArray *)rangesFromArray:(NSArray *)rawURL
 {
@@ -272,9 +258,14 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
-- (NSString *)metaLinksHome
+- (NSURL *)metaLinksHome
 {
-    return [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+    NSString *rawLink = [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+    if (!rawLink) {
+        return nil;
+    }
+
+    return [NSURL URLWithString:rawLink];
 }
 
 - (NSString *)metaTitlesHome
@@ -781,6 +772,15 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     }
 
     return NO;
+}
+
+- (NSURL *)resourceURL
+{
+    if (!self.url) {
+        return nil;
+    }
+
+    return [[NSURL alloc] initWithString:self.url];
 }
 
 - (void)didChangeOverrides

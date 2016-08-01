@@ -39,11 +39,7 @@
 // Model
 @property (nonatomic, strong) Notification                  *note;
 
-- (void)openURL:(NSURL *)url;
-
 - (void)reloadData;
-
-- (BOOL)displayFullscreenImage:(UIImage *)image;
 
 - (void)followSiteWithBlock:(NotificationBlock *)block;
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block;
