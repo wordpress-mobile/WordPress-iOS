@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import Simperium
+import SVProgressHUD
 import WordPressShared
 
 
@@ -674,8 +675,323 @@ private extension NotificationDetailsViewController
 
 
 
-/// UITextViewDelegate
-///
+// MARK: - Media Download Helpers
+//
+extension NotificationDetailsViewController
+{
+    func downloadAndResizeMedia(indexPath: NSIndexPath, blockGroup: NotificationBlockGroup) {
+        //  Notes:
+        //  -   We'll *only* download Media for Text and Comment Blocks
+        //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
+        //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
+        //
+        let richBlockTypes = Set(arrayLiteral: [NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue])
+        let imageUrls = blockGroup.imageUrlsForBlocksOfTypes(richBlockTypes)
+
+        let completion = {
+            // Workaround:
+            // Performing the reload call, multiple times, without the UIViewAnimationOptionBeginFromCurrentState might
+            // lead to a state in which the cell remains not visible.
+            //
+            let duration    = NSTimeInterval(0.25)
+            let delay       = NSTimeInterval(0)
+            let options     : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
+
+            UIView.animateWithDuration(duration, delay: delay, options: options, animations: { [weak self] in
+                self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }, completion: nil)
+        }
+
+        mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
+        mediaDownloader.resizeMediaWithIncorrectSize(maxMediaEmbedWidth, completion: completion)
+    }
+
+    var maxMediaEmbedWidth: CGFloat {
+        let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
+        let portraitWidth = WPDeviceIdentification.isiPad() ? WPTableViewFixedWidth : view.bounds.width
+        let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
+
+        return maxWidth
+    }
+}
+
+
+// MARK: - Action Handlers
+//
+private extension NotificationDetailsViewController
+{
+    func followSiteWithBlock(block: NotificationBlock) {
+        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
+            return
+        }
+
+        let service = ReaderSiteService(managedObjectContext: mainContext)
+        service.followSiteWithID(siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionFollowKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(true, forKey: NoteActionFollowKey)
+        WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
+    }
+
+    func unfollowSiteWithBlock(block: NotificationBlock) {
+        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
+            return
+        }
+
+        let service = ReaderSiteService(managedObjectContext: mainContext)
+        service.unfollowSiteWithID(siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionFollowKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(false, forKey: NoteActionFollowKey)
+        WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: siteID)
+    }
+
+    func likeCommentWithBlock(block: NotificationBlock) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
+        if block.isCommentApproved() == false {
+            approveCommentWithBlock(block)
+        }
+
+        // Proceed toggling the Like field
+        let service = CommentService(managedObjectContext: mainContext)
+        service.likeCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionLikeKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(true, forKey: NoteActionLikeKey)
+        WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: siteID)
+    }
+
+    func unlikeCommentWithBlock(block: NotificationBlock) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        let service = CommentService(managedObjectContext: mainContext)
+        service.unlikeCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionLikeKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(false, forKey: NoteActionLikeKey)
+        WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: siteID)
+    }
+
+    func approveCommentWithBlock(block: NotificationBlock) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        let service = CommentService(managedObjectContext: mainContext)
+        service.approveCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionApproveKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
+        tableView.reloadData()
+        WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: siteID)
+    }
+
+    func unapproveCommentWithBlock(block: NotificationBlock) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        let service = CommentService(managedObjectContext: mainContext)
+        service.unapproveCommentWithID(commentID, siteID: siteID, success: nil) { [weak self] error in
+            block.removeActionOverrideForKey(NoteActionApproveKey)
+            self?.reloadData()
+        }
+
+        block.setActionOverrideValue(false, forKey: NoteActionApproveKey)
+        tableView.reloadData()
+        WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: siteID)
+    }
+
+    func spamCommentWithBlock(block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        // Spam Action
+        onDeletionRequestCallback? { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = CommentService(managedObjectContext: mainContext)
+
+            service.spamCommentWithID(commentID, siteID: siteID, success: {
+                onCompletion(true)
+            }, failure: { error in
+                onCompletion(false)
+            })
+
+            WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: siteID)
+        }
+
+        // We're thru
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+
+    func trashCommentWithBlock(block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        // Hit the DeletionRequest Callback
+        onDeletionRequestCallback? { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = CommentService(managedObjectContext: mainContext)
+
+            service.deleteCommentWithID(commentID, siteID: siteID, success: {
+                onCompletion(true)
+            }, failure: { error in
+                onCompletion(false)
+            })
+
+            WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: siteID)
+        }
+
+        // We're thru
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+}
+
+
+
+// MARK: - Replying Comments
+//
+extension NotificationDetailsViewController
+{
+    func editReplyWithBlock(block: NotificationBlock) {
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
+        let editViewController = EditReplyViewController.newReplyViewControllerForSiteID(siteID)
+        editViewController.onCompletion = { (hasNewContent, newContent) in
+            self.dismissViewControllerAnimated(true, completion: {
+                if hasNewContent {
+                    self.sendReplyWithBlock(block, content: newContent)
+                }
+            })
+        }
+
+        let navController = UINavigationController(rootViewController: editViewController)
+        navController.modalPresentationStyle = .FormSheet
+        navController.modalTransitionStyle = .CoverVertical
+        navController.navigationBar.translucent = false
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+    func sendReplyWithBlock(block: NotificationBlock, content: String) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        let service = CommentService(managedObjectContext: mainContext)
+        service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+            SVProgressHUD.showSuccessWithStatus(message)
+        }, failure: { error in
+            self.handleReplyErrorWithBlock(block, content: content)
+        })
+    }
+
+    func handleReplyErrorWithBlock(block: NotificationBlock, content: String) {
+        let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
+                                            comment: "Reply Failure Message")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.sendReplyWithBlock(block, content: content)
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
+    }
+}
+
+
+
+// MARK: - Editing Comments
+//
+extension NotificationDetailsViewController
+{
+    func editCommentWithBlock(block: NotificationBlock) {
+        let editViewController = EditCommentViewController.newEditViewController()
+        editViewController.content = block.text
+        editViewController.onCompletion = { (hasNewContent, newContent) in
+            self.dismissViewControllerAnimated(true, completion: {
+                if hasNewContent {
+                    self.updateCommentWithBlock(block, content: newContent)
+                }
+            })
+        }
+
+        let navController = UINavigationController(rootViewController: editViewController)
+        navController.modalPresentationStyle = .FormSheet
+        navController.modalTransitionStyle = .CoverVertical
+        navController.navigationBar.translucent = false
+
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+    func updateCommentWithBlock(block: NotificationBlock, content: String) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            return
+        }
+
+        // Local Override: Temporary hack until Simperium reflects the REST op
+        block.textOverride = content
+        reloadData()
+
+        // Hit the backend
+        let service = CommentService(managedObjectContext: mainContext)
+        service.updateCommentWithID(commentID, siteID: siteID, content: content, success: nil) { [weak self] error in
+            self?.handleCommentUpdateErrorWithBlock(block, content: content)
+        }
+    }
+
+    func handleCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
+        let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
+                                            comment: "Displayed whenever a Comment Update Fails")
+        let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
+        let retryTitle  = NSLocalizedString("Try Again", comment: "Retry")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(cancelTitle) { action in
+            block.textOverride = nil
+            self.reloadData()
+        }
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.updateCommentWithBlock(block, content: content)
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
+    }
+}
+
+
+
+// MARK: - UITextViewDelegate
+//
 extension NotificationDetailsViewController: ReplyTextViewDelegate
 {
     public func textViewDidBeginEditing(textView: UITextView) {
