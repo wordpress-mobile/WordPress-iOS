@@ -709,7 +709,7 @@ extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func followSiteWithBlock(block: NotificationBlock) {
-        actionsService.followSiteWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.followSiteWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
@@ -717,7 +717,7 @@ private extension NotificationDetailsViewController
     }
 
     func unfollowSiteWithBlock(block: NotificationBlock) {
-        actionsService.unfollowSiteWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.unfollowSiteWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
@@ -725,7 +725,7 @@ private extension NotificationDetailsViewController
     }
 
     func likeCommentWithBlock(block: NotificationBlock) {
-        actionsService.likeCommentWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.likeCommentWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
@@ -733,7 +733,7 @@ private extension NotificationDetailsViewController
     }
 
     func unlikeCommentWithBlock(block: NotificationBlock) {
-        actionsService.unlikeCommentWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.unlikeCommentWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
@@ -741,7 +741,7 @@ private extension NotificationDetailsViewController
     }
 
     func approveCommentWithBlock(block: NotificationBlock) {
-        actionsService.approveCommentWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.approveCommentWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
@@ -750,7 +750,7 @@ private extension NotificationDetailsViewController
     }
 
     func unapproveCommentWithBlock(block: NotificationBlock) {
-        actionsService.unapproveCommentWithBlock(block, success: nil, failure: { [weak self] error in
+        actionsService.unapproveCommentWithBlock(block, failure: { [weak self] error in
             self?.reloadData()
         })
 
