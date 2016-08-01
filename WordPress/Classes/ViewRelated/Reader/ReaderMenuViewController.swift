@@ -12,7 +12,7 @@ import WordPressShared
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
-
+    let readerHasBeenPreviouslyViewedKey = "ReaderHasBeenPreviouslyViewedKey"
     var isSyncing = false
 
     lazy var viewModel: ReaderMenuViewModel = {
@@ -42,10 +42,18 @@ import WordPressShared
     // MARK: - Lifecycle Methods
 
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
     override init(style: UITableViewStyle) {
         super.init(style: style)
         restorationIdentifier = self.dynamicType.restorationIdentifier
         restorationClass = self.dynamicType
+
+        setupRefreshControl()
+        setupAccountChangeNotificationListener()
     }
 
 
@@ -63,9 +71,15 @@ import WordPressShared
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Reader", comment: "")
 
-        setupRefreshControl()
         configureTableView()
-        sync()
+        syncTopics()
+    }
+
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        handleFirstLaunchIfNeeded()
     }
 
 
@@ -85,7 +99,12 @@ import WordPressShared
         }
 
         refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(self.dynamicType.sync), forControlEvents: .ValueChanged)
+        refreshControl?.addTarget(self, action: #selector(self.dynamicType.syncTopics), forControlEvents: .ValueChanged)
+    }
+
+
+    func setupAccountChangeNotificationListener() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dynamicType.handleAccountChanged), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
     }
 
 
@@ -101,9 +120,51 @@ import WordPressShared
     // MARK: - Instance Methods
 
 
+    /// When logged out return the nav stack to the menu
+    ///
+    func handleAccountChanged(notification: NSNotification) {
+        // Return to the root vc.
+        navigationController?.popToRootViewControllerAnimated(false)
+
+        // Clear the flag so Discover will be present and ready to view.
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(readerHasBeenPreviouslyViewedKey)
+
+        // Clean up obsolete content.
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderTopicService(managedObjectContext: context).deleteAllTopics()
+        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+
+        // Sync the menu fresh
+        syncTopics()
+    }
+
+
+    /// The first time the Reader is launched, we want to show the Discover topic,
+    /// not the menu.
+    ///
+    func handleFirstLaunchIfNeeded() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.boolForKey(readerHasBeenPreviouslyViewedKey) == true {
+            return
+        }
+
+        // Wait til the view is loaded, and only proceed if there are topics synced.
+        if !isViewLoaded() || viewModel.numberOfItemsInSection(0) == 0 {
+            return
+        }
+
+        // Show the Discover topic if it exists.
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let topic = service.topicForDiscover() {
+            showPostsForTopic(topic)
+            defaults.setBool(true, forKey: readerHasBeenPreviouslyViewedKey)
+        }
+    }
+
+
     /// Sync the Reader's menu
     ///
-    func sync() {
+    func syncTopics() {
         if isSyncing {
             return
         }
@@ -112,6 +173,7 @@ import WordPressShared
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenuWithSuccess({ [weak self] in
                 self?.cleanupAfterSync()
+                self?.handleFirstLaunchIfNeeded()
             }, failure: { [weak self] (error) in
                 self?.cleanupAfterSync()
                 DDLogSwift.logError("Error syncing menu: \(error)")
@@ -325,8 +387,6 @@ import WordPressShared
             showAddTag()
             return
         }
-
-        // TODO: Remember selection
 
         if let topic = menuItem.topic {
             showPostsForTopic(topic)
