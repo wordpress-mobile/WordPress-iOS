@@ -66,6 +66,56 @@ public class NotificationActionsService: LocalCoreDataService
     }
 
 
+    /// Replies a comment referenced by a given NotificationBlock.
+    ///
+    /// - Parameters:
+    ///     - block: The Notification's Comment Block
+    ///     - content: The Reply's Content
+    ///     - success: Closure block to be executed on completion
+    ///     - failure: Closure block to be executed on failure
+    ///
+    func replyWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            failure?(Error.MissingParameter)
+            return
+        }
+
+        let service = CommentService(managedObjectContext: managedObjectContext)
+        service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+            success?()
+        }, failure: { error in
+            failure?(error)
+        })
+    }
+
+
+    /// Updates a comment referenced by a given NotificationBlock.
+    ///
+    /// - Parameters:
+    ///     - block: The Notification's Comment Block
+    ///     - content: The Comment's New Content
+    ///     - success: Closure block to be executed on completion
+    ///     - failure: Closure block to be executed on failure
+    ///
+    func updateCommentWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+            failure?(Error.MissingParameter)
+            return
+        }
+
+        // Local Override: Temporary hack until Simperium reflects the REST op
+        block.textOverride = content
+
+        // Hit the backend
+        let service = CommentService(managedObjectContext: managedObjectContext)
+        service.updateCommentWithID(commentID, siteID: siteID, content: content, success: {
+            success?()
+        }, failure: { error in
+            failure?(error)
+        })
+    }
+
+
     /// Likes a comment referenced by a given NotificationBlock.
     ///
     /// - Parameters:
