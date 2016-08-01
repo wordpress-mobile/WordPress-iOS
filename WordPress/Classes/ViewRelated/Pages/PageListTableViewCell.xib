@@ -4,6 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Merriweather-Regular.ttf">
+            <string>Merriweather</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -14,55 +19,39 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XtG-U3-A3y">
-                        <rect key="frame" x="15" y="0.0" width="305" height="44"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="rQF-5A-jGg">
-                                <rect key="frame" x="0.0" y="10" width="254" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VPZ-yr-cJj">
-                                <rect key="frame" x="254" y="0.0" width="54" height="43"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="43" id="3OU-Uq-a1V"/>
-                                    <constraint firstAttribute="width" constant="54" id="Smb-26-LSz"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" image="icon-post-actionbar-more">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="onAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="asl-aB-XVB"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Page Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQF-5A-jGg">
+                        <rect key="frame" x="15" y="13" width="254" height="18"/>
+                        <fontDescription key="fontDescription" name="Merriweather" family="Merriweather" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VPZ-yr-cJj">
+                        <rect key="frame" x="269" y="0.0" width="54" height="47"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="rQF-5A-jGg" secondAttribute="bottom" constant="13" id="9nE-Yy-XkF"/>
-                            <constraint firstItem="VPZ-yr-cJj" firstAttribute="top" secondItem="XtG-U3-A3y" secondAttribute="top" id="K0s-MT-gRD"/>
-                            <constraint firstItem="rQF-5A-jGg" firstAttribute="leading" secondItem="XtG-U3-A3y" secondAttribute="leading" id="WhQ-hL-heF"/>
-                            <constraint firstItem="VPZ-yr-cJj" firstAttribute="leading" secondItem="rQF-5A-jGg" secondAttribute="trailing" id="g8I-1V-waz"/>
-                            <constraint firstItem="rQF-5A-jGg" firstAttribute="top" secondItem="XtG-U3-A3y" secondAttribute="top" constant="10" id="kYH-1D-hI7"/>
+                            <constraint firstAttribute="height" constant="47" id="3OU-Uq-a1V"/>
+                            <constraint firstAttribute="width" constant="54" id="Smb-26-LSz"/>
                         </constraints>
-                    </view>
+                        <state key="normal" image="icon-post-actionbar-more">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="onAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="asl-aB-XVB"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="VPZ-yr-cJj" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="18" id="HnQ-0Z-Ac0"/>
-                    <constraint firstAttribute="bottom" secondItem="XtG-U3-A3y" secondAttribute="bottom" id="Oes-sZ-IDx"/>
-                    <constraint firstAttribute="trailing" secondItem="XtG-U3-A3y" secondAttribute="trailing" id="cEw-Ry-D45"/>
-                    <constraint firstItem="XtG-U3-A3y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="jMJ-o2-wS1"/>
-                    <constraint firstItem="XtG-U3-A3y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="mmi-ns-491"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="rQF-5A-jGg" secondAttribute="bottom" constant="3" id="44f-0V-sCs"/>
+                    <constraint firstItem="rQF-5A-jGg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="7Gc-2J-MRU"/>
+                    <constraint firstItem="rQF-5A-jGg" firstAttribute="trailing" secondItem="VPZ-yr-cJj" secondAttribute="leading" id="RLU-wZ-YQJ"/>
+                    <constraint firstItem="VPZ-yr-cJj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lSG-c9-EIu"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="VPZ-yr-cJj" secondAttribute="trailing" constant="-18" id="xAc-P7-tWc"/>
+                    <constraint firstItem="rQF-5A-jGg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="yIh-Cz-VAv"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="menuButton" destination="VPZ-yr-cJj" id="yjZ-Su-mum"/>
-                <outlet property="pageContentView" destination="XtG-U3-A3y" id="Xag-Cn-jck"/>
                 <outlet property="titleLabel" destination="rQF-5A-jGg" id="HkF-g8-kZX"/>
-                <outlet property="titleLabelBottomMarginConstraint" destination="9nE-Yy-XkF" id="zdK-IB-6a0"/>
-                <outlet property="titleLabelTopMarginConstraint" destination="kYH-1D-hI7" id="4gS-Tl-HyR"/>
             </connections>
         </tableViewCell>
     </objects>

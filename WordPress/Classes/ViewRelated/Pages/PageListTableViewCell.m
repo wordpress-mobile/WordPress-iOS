@@ -4,11 +4,8 @@
 
 @interface PageListTableViewCell()
 
-@property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelTopMarginConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomMarginConstraint;
 
 @end
 
@@ -22,40 +19,11 @@
 
 #pragma mark - Accessors
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
-    CGFloat innerWidth = [self innerWidthForSize:size];
-
-    CGFloat availableWidth = innerWidth - CGRectGetWidth(self.menuButton.frame);
-    CGSize availableSize = CGSizeMake(availableWidth, CGFLOAT_MAX);
-
-    // Add up all the things.
-    CGFloat height = self.titleLabelTopMarginConstraint.constant;
-    height += self.titleLabelBottomMarginConstraint.constant;
-    height += [self.titleLabel sizeThatFits:availableSize].height;
-
-    height = MAX(height, CGRectGetHeight(self.menuButton.frame));
-    height += 1; // 1 pixel rule.
-
-    return CGSizeMake(size.width, height);
-}
-
-- (CGFloat)innerWidthForSize:(CGSize)size
-{
-    CGFloat width = 0.0;
-    CGFloat titleMargin = CGRectGetMinX(self.titleLabel.frame);
-    width = size.width;
-    width -= (CGRectGetMinX(self.pageContentView.frame) * 2);
-    width -= titleMargin;
-    return width;
-}
-
 - (void)setPost:(AbstractPost *)post
 {
     [super setPost:post];
     [self configureTitle];
 }
-
 
 #pragma mark - Configuration
 
@@ -69,7 +37,6 @@
     AbstractPost *post = [self.post hasRevision] ? [self.post revision] : self.post;
     NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide pageCellTitleAttributes]];
-    self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
 @end
