@@ -24,8 +24,24 @@ class WPSplitViewController: UISplitViewController {
     override func overrideTraitCollectionForChildViewController(childViewController: UIViewController) -> UITraitCollection? {
         guard let collection = super.overrideTraitCollectionForChildViewController(childViewController) else { return nil }
 
-        let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
-        return UITraitCollection(traitsFromCollections: [collection, overrideCollection])
+        // By default, the detail view controller of a split view is passed the same size class as the split view itself.
+        // However, if the splitview is smaller than full screen (i.e. multitasking is active), a number of our
+        // view controllers will display better if we tell them they're compact even though the split view is regular.
+        if childViewController == viewControllers.last && shouldOverrideDetailViewControllerHorizontalSizeClass {
+            return UITraitCollection(traitsFromCollections: [collection, UITraitCollection(horizontalSizeClass: .Compact)])
+        }
+
+        return collection
+    }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
+        if let _ = overriddenTraitCollectionForDetailViewController,
+            let detailViewController = viewControllers.last {
+                setOverrideTraitCollection(detailViewController.traitCollection, forChildViewController: detailViewController)
+        }
     }
 
     override var viewControllers: [UIViewController] {
@@ -36,9 +52,24 @@ class WPSplitViewController: UISplitViewController {
             for viewController in viewControllers {
                 if let viewController = viewController as? UINavigationController {
                     viewController.extendedLayoutIncludesOpaqueBars = true
+
+                    // Override traits to pass a compact size class if necessary
+                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController, forChildViewController: viewController)
                 }
             }
         }
+    }
+
+    private var shouldOverrideDetailViewControllerHorizontalSizeClass: Bool {
+        return view.frame.width < UIScreen.mainScreen().bounds.width
+    }
+
+    private var overriddenTraitCollectionForDetailViewController: UITraitCollection? {
+        guard let detailViewController = viewControllers.last where shouldOverrideDetailViewControllerHorizontalSizeClass else {
+            return nil
+        }
+
+        return  UITraitCollection(traitsFromCollections: [detailViewController.traitCollection, UITraitCollection(horizontalSizeClass: .Compact)])
     }
 
     override func showDetailViewController(vc: UIViewController, sender: AnyObject?) {
