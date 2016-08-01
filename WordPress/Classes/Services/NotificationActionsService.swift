@@ -25,8 +25,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext)
-        service.followSiteWithID(siteID, success: {
+        siteService.followSiteWithID(siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
             success?()
         }, failure: { error in
@@ -52,8 +51,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext)
-        service.unfollowSiteWithID(siteID, success: {
+        siteService.unfollowSiteWithID(siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
             success?()
         }, failure: { error in
@@ -80,10 +78,11 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+        commentService.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+            DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
+            DDLogSwift.logError("Error while trying to reply comment: \(error)")
             failure?(error)
         })
     }
@@ -107,10 +106,11 @@ public class NotificationActionsService: LocalCoreDataService
         block.textOverride = content
 
         // Hit the backend
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.updateCommentWithID(commentID, siteID: siteID, content: content, success: {
+        commentService.updateCommentWithID(commentID, siteID: siteID, content: content, success: {
+            DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
+            DDLogSwift.logError("Error while trying to update comment: \(error)")
             failure?(error)
         })
     }
@@ -135,8 +135,7 @@ public class NotificationActionsService: LocalCoreDataService
         }
 
         // Proceed toggling the Like field
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.likeCommentWithID(commentID, siteID: siteID, success: {
+        commentService.likeCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
@@ -162,8 +161,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.unlikeCommentWithID(commentID, siteID: siteID, success: {
+        commentService.unlikeCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
@@ -189,8 +187,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.approveCommentWithID(commentID, siteID: siteID, success: {
+        commentService.approveCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
@@ -216,8 +213,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.unapproveCommentWithID(commentID, siteID: siteID, success: {
+        commentService.unapproveCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
@@ -243,8 +239,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.spamCommentWithID(commentID, siteID: siteID, success: {
+        commentService.spamCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
@@ -267,13 +262,24 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        let service = CommentService(managedObjectContext: managedObjectContext)
-        service.deleteCommentWithID(commentID, siteID: siteID, success: {
+        commentService.deleteCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
             success?()
         }, failure: { error in
             DDLogSwift.logError("Error while trying to delete comment: \(error)")
             failure?(error)
         })
+    }
+
+
+
+    // MARK: - Private Helpers
+
+    private var commentService: CommentService {
+        return CommentService(managedObjectContext: managedObjectContext)
+    }
+
+    private var siteService: ReaderSiteService {
+        return ReaderSiteService(managedObjectContext: managedObjectContext)
     }
 }
