@@ -62,6 +62,8 @@
 #import "NSObject+Helpers.h"
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
+#import "EditCommentViewController.h"
+#import "EditReplyViewController.h"
 
 #import "OnePasswordFacade.h"
 
