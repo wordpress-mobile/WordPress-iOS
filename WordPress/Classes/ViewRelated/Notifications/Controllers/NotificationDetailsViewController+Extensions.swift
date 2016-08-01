@@ -814,9 +814,11 @@ extension NotificationDetailsViewController
         let editViewController = EditReplyViewController.newReplyViewControllerForSiteID(siteID)
         editViewController.onCompletion = { (hasNewContent, newContent) in
             self.dismissViewControllerAnimated(true, completion: {
-                if hasNewContent {
-                    self.sendReplyWithBlock(block, content: newContent)
+                guard hasNewContent else {
+                    return
                 }
+                
+                self.sendReplyWithBlock(block, content: newContent)
             })
         }
 
@@ -828,7 +830,7 @@ extension NotificationDetailsViewController
     }
 
     func sendReplyWithBlock(block: NotificationBlock, content: String) {
-        actionsService.replyWithBlock(block, content: content, success: { 
+        actionsService.replyWithBlock(block, content: content, success: {
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
             SVProgressHUD.showSuccessWithStatus(message)
         }, failure: { error in
@@ -864,9 +866,11 @@ extension NotificationDetailsViewController
         editViewController.content = block.text
         editViewController.onCompletion = { (hasNewContent, newContent) in
             self.dismissViewControllerAnimated(true, completion: {
-                if hasNewContent {
-                    self.updateCommentWithBlock(block, content: newContent)
+                guard hasNewContent else {
+                    return
                 }
+
+                self.updateCommentWithBlock(block, content: newContent)
             })
         }
 
