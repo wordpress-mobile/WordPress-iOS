@@ -262,7 +262,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         if section == tableView.numberOfSections - 1 {
             return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
         }
-        return CGFloat.min
+        return 0.0
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
