@@ -3,7 +3,6 @@
 
 @interface RestorePageTableViewCell()
 
-@property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
 
