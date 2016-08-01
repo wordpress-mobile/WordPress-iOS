@@ -179,13 +179,11 @@ extension NotificationDetailsViewController
     }
 
     @IBAction func editButtonWasPressed() {
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
+        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) where block.isActionOn(NoteActionEditKey) else {
             return
         }
 
-        if block.isActionOn(NoteActionEditKey) {
-            editCommentWithBlock(block)
-        }
+        displayCommentEditorWithBlock(block)
     }
 }
 
@@ -384,7 +382,7 @@ extension NotificationDetailsViewController
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] sender in
-            self?.editReplyWithBlock(commentBlock)
+            self?.displayReplyEditorWithBlock(commentBlock)
         }
 
         cell.onLikeClick = { [weak self] sender in
@@ -678,7 +676,7 @@ extension NotificationDetailsViewController
 
         let completion = {
             // Workaround:
-            // Performing the reload call, multiple times, without the UIViewAnimationOptionBeginFromCurrentState might
+            // Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
             let duration    = NSTimeInterval(0.25)
@@ -806,7 +804,7 @@ private extension NotificationDetailsViewController
 //
 extension NotificationDetailsViewController
 {
-    func editReplyWithBlock(block: NotificationBlock) {
+    func displayReplyEditorWithBlock(block: NotificationBlock) {
         guard let siteID = note.metaSiteID else {
             return
         }
@@ -861,7 +859,7 @@ extension NotificationDetailsViewController
 //
 extension NotificationDetailsViewController
 {
-    func editCommentWithBlock(block: NotificationBlock) {
+    func displayCommentEditorWithBlock(block: NotificationBlock) {
         let editViewController = EditCommentViewController.newEditViewController()
         editViewController.content = block.text
         editViewController.onCompletion = { (hasNewContent, newContent) in
