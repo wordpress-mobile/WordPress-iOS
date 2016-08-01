@@ -49,9 +49,11 @@ extension NotificationsViewController
 
             let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] action, path in
                 self?.showUndeleteForNoteWithID(note.objectID) { completion in
-                    self?.trashCommentWithBlock(block) { success in
-                        completion(success)
-                    }
+                    self?.actionsService.trashCommentWithBlock(block, success: {
+                        completion(true)
+                    }, failure: { error in
+                        completion(false)
+                    })
                 }
 
                 self?.tableView.setEditing(false, animated: true)
@@ -66,7 +68,7 @@ extension NotificationsViewController
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
             let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] action, path in
-                self?.unapproveCommentWithBlock(block)
+                self?.actionsService.unapproveCommentWithBlock(block, success: nil, failure: nil)
                 self?.tableView.setEditing(false, animated: true)
             })
 
@@ -79,7 +81,7 @@ extension NotificationsViewController
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
             let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] action, path in
-                self?.approveCommentWithBlock(block)
+                self?.actionsService.approveCommentWithBlock(block, success: nil, failure: nil)
                 self?.tableView.setEditing(false, animated: true)
             })
 
@@ -101,74 +103,5 @@ extension NotificationsViewController
                 self?.tableView.setEditing(false, animated: true)
             }
         }
-    }
-
-
-    /// Trashes a comment referenced by a given NotificationBlock.
-    ///
-    /// - Parameters:
-    ///     - block:        The Notification's Comment Block
-    ///     - completion:   Closure block to be executed on completion
-    ///
-    private func trashCommentWithBlock(block: NotificationBlock, completion: ((success: Bool) -> ())? = nil) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
-
-        service.deleteCommentWithID(block.metaCommentID, siteID: block.metaSiteID, success: {
-            DDLogSwift.logInfo("Successfully deleted comment \(block.metaSiteID).\(block.metaCommentID)")
-            completion?(success: true)
-        },
-        failure: { error in
-            DDLogSwift.logInfo("Error while trying to delete comment: \(error)")
-            completion?(success: false)
-        })
-    }
-
-
-    /// Approves a comment referenced by a given NotificationBlock.
-    ///
-    /// - Parameters:
-    ///     - block:        The Notification's Comment Block
-    ///     - completion:   Closure block to be executed on completion
-    ///
-    private func approveCommentWithBlock(block: NotificationBlock, completion: ((success: Bool) -> ())? = nil) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
-
-        service.approveCommentWithID(block.metaCommentID, siteID: block.metaSiteID, success: {
-            DDLogSwift.logInfo("Successfully approved comment \(block.metaSiteID).\(block.metaCommentID)")
-            completion?(success: true)
-        },
-        failure: { error in
-            DDLogSwift.logInfo("Error while trying to moderate comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionApproveKey)
-            completion?(success: false)
-        })
-
-        block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
-    }
-
-
-    /// Unapproves a comment referenced by a given NotificationBlock.
-    ///
-    /// - Parameters:
-    ///     - block:        The Notification's Comment Block
-    ///     - completion:   Closure block to be executed on completion
-    ///
-    private func unapproveCommentWithBlock(block: NotificationBlock, completion: ((success: Bool) -> ())? = nil) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
-
-        service.unapproveCommentWithID(block.metaCommentID, siteID: block.metaSiteID, success: {
-            DDLogSwift.logInfo("Successfully unapproved comment \(block.metaSiteID).\(block.metaCommentID)")
-            completion?(success: true)
-        },
-        failure: { error in
-            DDLogSwift.logInfo("Error while trying to moderate comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionApproveKey)
-            completion?(success: false)
-        })
-
-        block.setActionOverrideValue(false, forKey: NoteActionApproveKey)
     }
 }
