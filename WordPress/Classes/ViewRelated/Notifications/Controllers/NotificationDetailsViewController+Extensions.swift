@@ -817,7 +817,7 @@ extension NotificationDetailsViewController
                 guard hasNewContent else {
                     return
                 }
-                
+
                 self.sendReplyWithBlock(block, content: newContent)
             })
         }
