@@ -148,12 +148,19 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
 
 /**
-
  Fetch the topic for 'sites I follow' if it exists.
 
  @return A `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderAbstractTopic *)topicForFollowedSites;
+
+/**
+ Fetch the topic for 'Discover' if it exists.
+
+ @return A `ReaderAbstractTopic` instance or nil.
+ */
+- (ReaderAbstractTopic *)topicForDiscover;
+
 
 /**
  Fetch a tag topic for a tag with the specified slug.
