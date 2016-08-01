@@ -828,12 +828,7 @@ extension NotificationDetailsViewController
     }
 
     func sendReplyWithBlock(block: NotificationBlock, content: String) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
-
-        let service = CommentService(managedObjectContext: mainContext)
-        service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+        actionsService.replyWithBlock(block, content: content, success: { 
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
             SVProgressHUD.showSuccessWithStatus(message)
         }, failure: { error in
@@ -884,19 +879,11 @@ extension NotificationDetailsViewController
     }
 
     func updateCommentWithBlock(block: NotificationBlock, content: String) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            return
-        }
+        actionsService.updateCommentWithBlock(block, content: content, success: nil, failure: { error in
+            self.handleCommentUpdateErrorWithBlock(block, content: content)
+        })
 
-        // Local Override: Temporary hack until Simperium reflects the REST op
-        block.textOverride = content
         reloadData()
-
-        // Hit the backend
-        let service = CommentService(managedObjectContext: mainContext)
-        service.updateCommentWithID(commentID, siteID: siteID, content: content, success: nil) { [weak self] error in
-            self?.handleCommentUpdateErrorWithBlock(block, content: content)
-        }
     }
 
     func handleCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
