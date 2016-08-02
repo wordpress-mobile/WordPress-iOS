@@ -162,24 +162,27 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
     class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
         guard let noteURI = coder.decodeObjectForKey(Restoration.noteIdKey) as? NSURL,
-            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(noteURI),
-            let notification = try? context.existingObjectWithID(objectID) else
+            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(noteURI) else
         {
             return nil
         }
 
-        guard let storyboard = coder.decodeObjectForKey(UIStateRestorationViewControllerStoryboardKey) as? UIStoryboard,
-            let vc = storyboard.instantiateViewControllerWithIdentifier(Restoration.restorationIdentifier) as? NotificationDetailsViewController else
-        {
+        let notification = try? context.existingObjectWithID(objectID)
+        guard let restoredNotification = notification as? Notification else {
             return nil
         }
 
-        vc.setupWithNotification(notification)
+        let storyboard = coder.decodeObjectForKey(UIStateRestorationViewControllerStoryboardKey) as? UIStoryboard
+        guard let vc = storyboard?.instantiateViewControllerWithIdentifier(Restoration.restorationIdentifier) as? NotificationDetailsViewController else {
+            return nil
+        }
+
+        vc.setupWithNotification(restoredNotification)
 
         return vc
     }
 
-    func encodeRestorableStateWithCoder(coder: NSCoder) {
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
         coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
         super.encodeRestorableStateWithCoder(coder)
     }
