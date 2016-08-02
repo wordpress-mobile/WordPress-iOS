@@ -1228,14 +1228,11 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_optionsBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(showSettings)];
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:nil target:self action:@selector(showSettings)];
         
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        button.accessibilityLabel = optionsTitle;
-        button.accessibilityIdentifier = @"Options";
-        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _optionsBarButtonItem.accessibilityLabel = optionsTitle;
+        _optionsBarButtonItem.accessibilityIdentifier = @"Options";
     }
     
 	return _optionsBarButtonItem;
