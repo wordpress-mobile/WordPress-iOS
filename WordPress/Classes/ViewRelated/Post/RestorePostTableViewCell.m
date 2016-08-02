@@ -6,8 +6,6 @@
 @interface RestorePostTableViewCell()
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
-@property (nonatomic, strong) IBOutlet UIView *innerContentView;
-@property (nonatomic, strong) IBOutlet UIView *shadowView;
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
@@ -35,15 +33,6 @@
     return [super hitTest:point withEvent:event];
 }
 
-#pragma mark - Accessors
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-    self.innerContentView.backgroundColor = backgroundColor;
-}
-
-
 #pragma mark - Configuration
 
 - (void)applyStyles
@@ -51,7 +40,9 @@
     [WPStyleGuide applyPostCardStyle:self];
     [WPStyleGuide applyRestorePostLabelStyle:self.restoreLabel];
     [WPStyleGuide applyRestorePostButtonStyle:self.restoreButton];
-    self.shadowView.backgroundColor = [WPStyleGuide postCardBorderColor];
+
+    self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
+    self.postContentView.layer.borderWidth = 1.0;
 }
 
 - (void)configureView
