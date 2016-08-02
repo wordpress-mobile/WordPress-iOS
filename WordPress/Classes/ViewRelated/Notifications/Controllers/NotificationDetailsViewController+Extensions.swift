@@ -358,7 +358,7 @@ extension NotificationDetailsViewController
             return false
         }
 
-        return block.isActionOn(NoteActionReplyKey) && !WPDeviceIdentification.isiPad()
+        return block.isActionOn(.Reply) && !WPDeviceIdentification.isiPad()
     }
 }
 
@@ -413,11 +413,11 @@ private extension NotificationDetailsViewController
 
     var shouldAttachEditAction: Bool {
         let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment)
-        return block?.isActionOn(NoteActionEditKey) ?? false
+        return block?.isActionOn(.Edit) ?? false
     }
 
     @objc @IBAction func editButtonWasPressed() {
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) where block.isActionOn(NoteActionEditKey) else {
+        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) where block.isActionOn(.Edit) else {
             return
         }
 
@@ -561,8 +561,8 @@ private extension NotificationDetailsViewController
         cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(NoteActionFollowKey)
-        cell.isFollowOn = userBlock.isActionOn(NoteActionFollowKey)
+        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
+        cell.isFollowOn = userBlock.isActionOn(.Follow)
 
         // Setup: Callbacks
         cell.onFollowClick = { [weak self] in
@@ -651,40 +651,40 @@ private extension NotificationDetailsViewController
         }
 
         // Setup: Properties
-        cell.isReplyEnabled     = WPDeviceIdentification.isiPad() && commentBlock.isActionOn(NoteActionReplyKey)
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(NoteActionLikeKey)
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(NoteActionApproveKey)
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(NoteActionTrashKey)
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(NoteActionSpamKey)
-        cell.isLikeOn           = commentBlock.isActionOn(NoteActionLikeKey)
-        cell.isApproveOn        = commentBlock.isActionOn(NoteActionApproveKey)
+        cell.isReplyEnabled     = WPDeviceIdentification.isiPad() && commentBlock.isActionOn(.Reply)
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
+        cell.isLikeOn           = commentBlock.isActionOn(.Like)
+        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
 
         // Setup: Callbacks
-        cell.onReplyClick = { [weak self] sender in
+        cell.onReplyClick = { [weak self] _ in
             self?.displayReplyEditorWithBlock(commentBlock)
         }
 
-        cell.onLikeClick = { [weak self] sender in
+        cell.onLikeClick = { [weak self] _ in
             self?.likeCommentWithBlock(commentBlock)
         }
 
-        cell.onUnlikeClick = { [weak self] sender in
+        cell.onUnlikeClick = { [weak self] _ in
             self?.unlikeCommentWithBlock(commentBlock)
         }
 
-        cell.onApproveClick = { [weak self] sender in
+        cell.onApproveClick = { [weak self] _ in
             self?.approveCommentWithBlock(commentBlock)
         }
 
-        cell.onUnapproveClick = { [weak self] sender in
+        cell.onUnapproveClick = { [weak self] _ in
             self?.unapproveCommentWithBlock(commentBlock)
         }
 
-        cell.onTrashClick = { [weak self] sender in
+        cell.onTrashClick = { [weak self] _ in
             self?.trashCommentWithBlock(commentBlock)
         }
 
-        cell.onSpamClick = { [weak self] sender in
+        cell.onSpamClick = { [weak self] _ in
             self?.spamCommentWithBlock(commentBlock)
         }
     }
