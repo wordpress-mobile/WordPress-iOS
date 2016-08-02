@@ -17,12 +17,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     static private let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
 
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
-    static private let postCardEstimatedRowHeight = CGFloat(100.0)
-    static private let postCardRestoreCellRowHeight = CGFloat(54.0)
+
+    static private let postCardEstimatedRowHeight = CGFloat(300.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
 
-    @IBOutlet private var textCellForLayout: PostCardTableViewCell!
-    @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
     @IBOutlet var authorsFilterView : UIView!
@@ -92,43 +90,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         title = NSLocalizedString("Posts", comment: "Tile of the screen showing the list of posts for a blog.")
     }
 
-    // MARK: - UITraitEnvironment
-
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        forceUpdateCellLayout(textCellForLayout)
-        forceUpdateCellLayout(imageCellForLayout)
-
-        tableViewHandler.clearCachedRowHeights()
-
-        if let indexPaths = tableView.indexPathsForVisibleRows {
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-        }
-    }
-
-    func forceUpdateCellLayout(cell: PostCardTableViewCell) {
-        // Force a layout pass to ensure that constraints are configured for the
-        // proper size class.
-        view.addSubview(cell)
-        cell.removeFromSuperview()
-    }
-
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
         return self.dynamicType.postListHeightForFooterView
-    }
-
-    override func configureCellsForLayout() {
-
-        let bundle = NSBundle.mainBundle()
-
-        textCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardTextCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
-        forceUpdateCellLayout(textCellForLayout)
-
-        imageCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardImageCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
-        forceUpdateCellLayout(imageCellForLayout)
     }
 
     override func configureTableView() {
@@ -136,6 +101,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .None
+        tableView.estimatedRowHeight = self.dynamicType.postCardEstimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = NSBundle.mainBundle()
 
@@ -310,43 +277,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Table View Handling
 
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let post = postAtIndexPath(indexPath)
-
-        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return self.dynamicType.postCardRestoreCellRowHeight
-        }
-
-        return self.dynamicType.postCardEstimatedRowHeight
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let width = CGRectGetWidth(tableView.bounds)
-        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        let post = postAtIndexPath(indexPath)
-
-        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return self.dynamicType.postCardRestoreCellRowHeight
-        }
-
-        var cell: PostCardTableViewCell
-
-        if post.pathForDisplayImage?.characters.count > 0 {
-            cell = imageCellForLayout
-        } else {
-            cell = textCellForLayout
-        }
-
-        configureCell(cell, atIndexPath: indexPath)
-        let size = cell.sizeThatFits(CGSizeMake(width, CGFloat.max))
-        let height = ceil(size.height)
-
-        return height
-    }
-
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
@@ -390,8 +320,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         interactivePostView.setInteractionDelegate(self)
 
-        let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
-        configurablePostView.configureWithPost(post, forLayoutOnly: layoutOnly)
+        configurablePostView.configureWithPost(post)
     }
 
     private func cellIdentifierForPost(post: Post) -> String {
