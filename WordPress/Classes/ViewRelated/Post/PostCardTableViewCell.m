@@ -19,8 +19,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 @interface PostCardTableViewCell()
 
-@property (nonatomic, strong) IBOutlet UIView *innerContentView;
-@property (nonatomic, strong) IBOutlet UIView *shadowView;
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
 @property (nonatomic, strong) IBOutlet UIView *headerView;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
@@ -105,12 +103,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 #pragma mark - Accessors
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-    self.innerContentView.backgroundColor = backgroundColor;
-}
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     BOOL previouslyHighlighted = self.highlighted;
@@ -143,7 +135,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                           delay:0
                         options:UIViewAnimationCurveEaseInOut
                      animations:^{
-                         self.shadowView.hidden = highlighted;
+                         self.postContentView.layer.borderColor = highlighted ? [[UIColor clearColor] CGColor] : [[WPStyleGuide postCardBorderColor] CGColor];
                          self.alpha = highlighted ? .7f : 1.f;
                          if (highlighted) {
                              CGFloat perspective = IS_IPAD ? -0.00005 : -0.0001;
@@ -188,7 +180,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
-    self.shadowView.backgroundColor = [WPStyleGuide postCardBorderColor];
+    self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
+    self.postContentView.layer.borderWidth = 1.0;
 }
 
 #pragma mark - ConfigurablePostView
