@@ -58,7 +58,7 @@ class NotificationsViewController : UITableViewController
 
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
-    private var notificationDeletionBlocks = [NSManagedObjectID: NotificationDeletionActionBlock]()
+    private var notificationDeletionActions: [NSManagedObjectID: NotificationDeletion.Action] = [:]
 
     /// Notifications being deleted are proactively filtered from the list.
     ///
@@ -443,9 +443,9 @@ extension NotificationsViewController
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
     ///
-    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletion.Action) {
         // Mark this note as Pending Deletichroon and Reload
-        notificationDeletionBlocks[noteObjectID] = onTimeout
+        notificationDeletionActions[noteObjectID] = onTimeout
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
@@ -460,7 +460,7 @@ private extension NotificationsViewController
 {
     @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
-        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
+        guard let deletionBlock = notificationDeletionActions[noteObjectID] else {
             return
         }
 
@@ -470,7 +470,7 @@ private extension NotificationsViewController
 
         // Hit the Deletion Block
         deletionBlock { success in
-            self.notificationDeletionBlocks.removeValueForKey(noteObjectID)
+            self.notificationDeletionActions.removeValueForKey(noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
             // Error: let's unhide the row
@@ -481,14 +481,14 @@ private extension NotificationsViewController
     }
 
     func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
-        notificationDeletionBlocks.removeValueForKey(noteObjectID)
+        notificationDeletionActions.removeValueForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
     func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
-        return notificationDeletionBlocks[noteObjectID] != nil
+        return notificationDeletionActions[noteObjectID] != nil
     }
 }
 
