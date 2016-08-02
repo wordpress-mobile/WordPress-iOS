@@ -504,7 +504,6 @@
 		B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587798519B799EB00E57C5A /* NotificationBlock+Interface.swift */; };
 		B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */; };
 		B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899AE31B422D990075A3D6 /* NotificationSettings.swift */; };
-		B58FD8CE1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58FD8CD1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift */; };
 		B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */; };
 		B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
@@ -1748,7 +1747,6 @@
 		B587798519B799EB00E57C5A /* NotificationBlock+Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "NotificationBlock+Interface.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingDetailsViewController.swift; sourceTree = "<group>"; };
 		B5899AE31B422D990075A3D6 /* NotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationSettings.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		B58FD8CD1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+RowActions.swift"; sourceTree = "<group>"; };
 		B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
 		B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListEditorViewController.swift; sourceTree = "<group>"; };
 		B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
@@ -4161,7 +4159,6 @@
 			isa = PBXGroup;
 			children = (
 				B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */,
-				B58FD8CD1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift */,
 				B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */,
 				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
 				B52F8CD71B43260C00D36025 /* NotificationSettingStreamsViewController.swift */,
@@ -5896,7 +5893,6 @@
 				E647DD051CA71C2B002E54B5 /* UITextField+TextHelper.swift in Sources */,
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
 				E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */,
-				B58FD8CE1C7256DF00E5F6A4 /* NotificationsViewController+RowActions.swift in Sources */,
 				0859DCF71CB847F700EB4069 /* RemoteMenuItem.m in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
