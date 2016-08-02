@@ -5,33 +5,24 @@ import Foundation
 ///
 public class NotificationActionsService: LocalCoreDataService
 {
-    /// Error Types
-    ///
-    public enum Error: ErrorType {
-        case MissingParameter
-    }
-
-
     /// Follows a Site referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Site Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func followSiteWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func followSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         siteService.followSiteWithID(siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to follow site: \(error)")
             block.removeActionOverrideForKey(NoteActionFollowKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(true, forKey: NoteActionFollowKey)
@@ -40,24 +31,22 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Unfollows a Site referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Site Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unfollowSiteWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func unfollowSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         siteService.unfollowSiteWithID(siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unfollow site: \(error)")
             block.removeActionOverrideForKey(NoteActionFollowKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(false, forKey: NoteActionFollowKey)
@@ -66,39 +55,35 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Replies a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - content: The Reply's Content
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter content: The Reply's Content
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func replyCommentWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func replyCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to reply comment: \(error)")
-            failure?(error)
+            completion?(false)
         })
     }
 
 
     /// Updates a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - content: The Comment's New Content
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter content: The Comment's New Content
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func updateCommentWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func updateCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
@@ -108,40 +93,38 @@ public class NotificationActionsService: LocalCoreDataService
         // Hit the backend
         commentService.updateCommentWithID(commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to update comment: \(error)")
-            failure?(error)
+            completion?(false)
         })
     }
 
 
     /// Likes a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func likeCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func likeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
         if block.isCommentApproved() == false {
-            approveCommentWithBlock(block, success: nil, failure: nil)
+            approveCommentWithBlock(block)
         }
 
         // Proceed toggling the Like field
         commentService.likeCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to like comment: \(error)")
             block.removeActionOverrideForKey(NoteActionLikeKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(true, forKey: NoteActionLikeKey)
@@ -150,24 +133,22 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Unlikes a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unlikeCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func unlikeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.unlikeCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unlike comment: \(error)")
             block.removeActionOverrideForKey(NoteActionLikeKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(false, forKey: NoteActionLikeKey)
@@ -176,24 +157,22 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Approves a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func approveCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func approveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.approveCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeActionOverrideForKey(NoteActionApproveKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
@@ -202,24 +181,22 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Unapproves a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unapproveCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func unapproveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.unapproveCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeActionOverrideForKey(NoteActionApproveKey)
-            failure?(error)
+            completion?(false)
         })
 
         block.setActionOverrideValue(false, forKey: NoteActionApproveKey)
@@ -228,46 +205,42 @@ public class NotificationActionsService: LocalCoreDataService
 
     /// Spams a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func spamCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func spamCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.spamCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to mark comment as spam: \(error)")
-            failure?(error)
+            completion?(false)
         })
     }
 
 
     /// Deletes a comment referenced by a given NotificationBlock.
     ///
-    /// - Parameters:
-    ///     - block: The Notification's Comment Block
-    ///     - success: Closure block to be executed on completion
-    ///     - failure: Closure block to be executed on failure
+    /// - Parameter block: The Notification's Comment Block
+    /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func deleteCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func deleteCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
-            failure?(Error.MissingParameter)
+            completion?(false)
             return
         }
 
         commentService.deleteCommentWithID(commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
-            success?()
+            completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to delete comment: \(error)")
-            failure?(error)
+            completion?(false)
         })
     }
 
