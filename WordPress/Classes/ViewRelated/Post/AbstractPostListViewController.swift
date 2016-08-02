@@ -50,6 +50,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return tableViewHandler
     }()
 
+    lazy var estimatedHeightsCache : NSCache = {
+        let estimatedHeightsCache = NSCache()
+        return estimatedHeightsCache
+    }()
+
     lazy var syncHelper : WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
 
@@ -392,6 +397,26 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Table View Handling
 
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
+        // likes to reload rows in a strange way.
+        // It uses the estimated height as a starting value for reloading animations.
+        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
+        // the cell heights during reload animations.
+        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
+        // Brent C. August 2/2016
+        if let height = estimatedHeightsCache.objectForKey(indexPath) as? CGFloat {
+            // Return the previously known height as it was cached via willDisplayCell.
+            return height
+        }
+        // Otherwise return whatever we have set to the tableView explicitly, and ideally a pretty close value.
+        return tableView.estimatedRowHeight
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         assert(false, "You should implement this method in the subclass")
     }
@@ -401,6 +426,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+
+        // Cache the cell's layout height as the currently known height, for estimation.
+        // See estimatedHeightForRowAtIndexPath
+        estimatedHeightsCache.setObject(cell.frame.height, forKey: indexPath)
+
         guard isViewOnScreen() && !isSearching() else {
             return
         }
