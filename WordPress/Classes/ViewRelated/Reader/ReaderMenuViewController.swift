@@ -14,12 +14,29 @@ import WordPressShared
     let manageCellIdentifier = "ManageCellIdentifier"
     let readerHasBeenPreviouslyViewedKey = "ReaderHasBeenPreviouslyViewedKey"
     var isSyncing = false
+    var didSyncTopics = false
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
         vm.delegate = self
         return vm
     }()
+
+    var readerHasBeenPreviouslyViewed: Bool {
+        get {
+            return NSUserDefaults.standardUserDefaults().boolForKey(readerHasBeenPreviouslyViewedKey)
+        }
+
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if newValue {
+                defaults.setBool(true, forKey: readerHasBeenPreviouslyViewedKey)
+            } else {
+                defaults.removeObjectForKey(readerHasBeenPreviouslyViewedKey)
+            }
+            defaults.synchronize()
+        }
+    }
 
 
     /// A convenience method for instantiating the controller.
@@ -53,7 +70,7 @@ import WordPressShared
         restorationClass = self.dynamicType
 
         setupRefreshControl()
-        setupAccountChangeNotificationListener()
+        setupAccountChangeNotificationObserver()
     }
 
 
@@ -103,7 +120,7 @@ import WordPressShared
     }
 
 
-    func setupAccountChangeNotificationListener() {
+    func setupAccountChangeNotificationObserver() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dynamicType.handleAccountChanged), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
     }
 
@@ -127,7 +144,7 @@ import WordPressShared
         navigationController?.popToRootViewControllerAnimated(false)
 
         // Clear the flag so Discover will be present and ready to view.
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(readerHasBeenPreviouslyViewedKey)
+        readerHasBeenPreviouslyViewed = false
 
         // Clean up obsolete content.
         let context = ContextManager.sharedInstance().mainContext
@@ -143,13 +160,12 @@ import WordPressShared
     /// not the menu.
     ///
     func handleFirstLaunchIfNeeded() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if defaults.boolForKey(readerHasBeenPreviouslyViewedKey) == true {
+        if readerHasBeenPreviouslyViewed {
             return
         }
 
         // Wait til the view is loaded, and only proceed if there are topics synced.
-        if !isViewLoaded() || viewModel.numberOfItemsInSection(0) == 0 {
+        if !isViewLoaded() || !didSyncTopics {
             return
         }
 
@@ -157,7 +173,7 @@ import WordPressShared
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         if let topic = service.topicForDiscover() {
             showPostsForTopic(topic)
-            defaults.setBool(true, forKey: readerHasBeenPreviouslyViewedKey)
+            readerHasBeenPreviouslyViewed = true
         }
     }
 
@@ -172,6 +188,7 @@ import WordPressShared
         isSyncing = true
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenuWithSuccess({ [weak self] in
+                self?.didSyncTopics = true
                 self?.cleanupAfterSync()
                 self?.handleFirstLaunchIfNeeded()
             }, failure: { [weak self] (error) in
