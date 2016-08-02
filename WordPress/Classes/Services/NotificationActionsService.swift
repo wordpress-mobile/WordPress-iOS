@@ -72,7 +72,7 @@ public class NotificationActionsService: LocalCoreDataService
     ///     - success: Closure block to be executed on completion
     ///     - failure: Closure block to be executed on failure
     ///
-    func replyWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func replyCommentWithBlock(block: NotificationBlock, content: String, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             failure?(Error.MissingParameter)
             return
@@ -249,14 +249,14 @@ public class NotificationActionsService: LocalCoreDataService
     }
 
 
-    /// Trashes a comment referenced by a given NotificationBlock.
+    /// Deletes a comment referenced by a given NotificationBlock.
     ///
     /// - Parameters:
     ///     - block: The Notification's Comment Block
     ///     - success: Closure block to be executed on completion
     ///     - failure: Closure block to be executed on failure
     ///
-    func trashCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
+    func deleteCommentWithBlock(block: NotificationBlock, success: (() -> Void)? = nil, failure: (ErrorType -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             failure?(Error.MissingParameter)
             return
