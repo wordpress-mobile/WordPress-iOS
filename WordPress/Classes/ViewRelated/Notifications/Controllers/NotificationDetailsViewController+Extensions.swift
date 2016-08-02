@@ -240,9 +240,11 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
             let targetURL = group.blockOfType(.User)?.metaLinksHome
             displayURL(targetURL)
         case .Footer:
-            // Note: By convention, the last range is the one that always contains the targetURL
+            // By convention, the last range is the one that always contains the targetURL
             let targetURL = group.blockOfType(.Text)?.ranges.last?.url
             displayURL(targetURL)
+        default:
+            tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 }
@@ -447,6 +449,8 @@ private extension NotificationDetailsViewController
             return NoteBlockHeaderTableViewCell.layoutIdentifier()
         case .Footer:
             return NoteBlockTextTableViewCell.layoutIdentifier()
+        case .Subject:
+            fallthrough
         case .Text:
             return NoteBlockTextTableViewCell.layoutIdentifier()
         case .Comment:
@@ -466,6 +470,8 @@ private extension NotificationDetailsViewController
             return NoteBlockHeaderTableViewCell.reuseIdentifier()
         case .Footer:
             return NoteBlockTextTableViewCell.reuseIdentifier()
+        case .Subject:
+            fallthrough
         case .Text:
             return NoteBlockTextTableViewCell.reuseIdentifier()
         case .Comment:
