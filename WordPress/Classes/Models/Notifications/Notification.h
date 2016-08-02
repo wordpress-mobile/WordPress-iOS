@@ -9,14 +9,6 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-extern NSString * __nonnull NoteActionFollowKey;
-extern NSString * __nonnull NoteActionLikeKey;
-extern NSString * __nonnull NoteActionSpamKey;
-extern NSString * __nonnull NoteActionTrashKey;
-extern NSString * __nonnull NoteActionReplyKey;
-extern NSString * __nonnull NoteActionApproveKey;
-extern NSString * __nonnull NoteActionEditKey;
-
 extern NSString * __nonnull NoteMediaTypeImage;
 
 extern NSString * __nonnull NoteTypeUser;
@@ -34,6 +26,17 @@ typedef NS_ENUM(NSInteger, NoteBlockType)
     NoteBlockTypeImage,                                     // BlockTypesImage: Includes Badges and Images
     NoteBlockTypeUser,
     NoteBlockTypeComment
+};
+
+typedef NS_ENUM(NSInteger, NoteAction)
+{
+    NoteActionFollow,
+    NoteActionLike,
+    NoteActionSpam,
+    NoteActionTrash,
+    NoteActionReply,
+    NoteActionApprove,
+    NoteActionEdit
 };
 
 typedef NS_ENUM(NSInteger, NoteBlockGroupType)
@@ -192,22 +195,22 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
  *              there's a BG call going on.
  *
  *	@param		value       The local "Temporary" value.
- *	@param		key         The key that should get a temporary 'Override' value
+ *	@param		action      The action that should get a temporary 'Override' value
  */
-- (void)setActionOverrideValue:(nonnull NSNumber *)value forKey:(nonnull NSString *)key;
+- (void)setOverrideValue:(nonnull NSNumber *)value forAction:(NoteAction)action;
 
 /**
  *	@brief      Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
  *
- *	@param		key         The key that should get its overrides removed.
+ *	@param		action      The action that should get its overrides removed.
  */
-- (void)removeActionOverrideForKey:(nonnull NSString *)key;
+- (void)removeOverrideValueForAction:(NoteAction)action;
 
 /**
  *	@brief      Returns the Notification Block status for a given action. If there's any local override,
  *              the (override) value will be returned.
  *
- *	@param		key         The key of the action to check.
+ *	@param		action      The action to check.
  *  @returns                The value for any given action
  */
 - (nullable NSNumber *)actionForKey:(nonnull NSString *)key;
@@ -215,19 +218,19 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 /**
  *	@brief      Returns *true* if a given action is available
  *
- *	@param		key         The key of the action to check.
+ *	@param		action      The action to check.
  *  @returns                True if the action can be performed. False otherwise.
  */
-- (BOOL)isActionEnabled:(nonnull NSString *)key;
+- (BOOL)isActionEnabled:(NoteAction)action;
 
 /**
  *	@brief      Returns *true* if a given action is toggled on. (I.e.: Approval = On, means that the comment
  *              is currently approved).
  *
- *	@param		key         The key of the action to check.
+ *	@param		action      The action to check.
  *  @returns                True if the action is currently "toggled on".
  */
-- (BOOL)isActionOn:(nonnull NSString *)key;
+- (BOOL)isActionOn:(NoteAction)action;
 
 @end
 

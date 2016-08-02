@@ -9,13 +9,13 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString *NoteActionFollowKey           = @"follow";
-NSString *NoteActionReplyKey            = @"replyto-comment";
-NSString *NoteActionApproveKey          = @"approve-comment";
-NSString *NoteActionSpamKey             = @"spam-comment";
-NSString *NoteActionTrashKey            = @"trash-comment";
-NSString *NoteActionLikeKey             = @"like-comment";
-NSString *NoteActionEditKey             = @"approve-comment";
+NSString const *NoteActionFollowKey     = @"follow";
+NSString const *NoteActionReplyKey      = @"replyto-comment";
+NSString const *NoteActionApproveKey    = @"approve-comment";
+NSString const *NoteActionSpamKey       = @"spam-comment";
+NSString const *NoteActionTrashKey      = @"trash-comment";
+NSString const *NoteActionLikeKey       = @"like-comment";
+NSString const *NoteActionEditKey       = @"approve-comment";
 
 NSString const *NoteRangeTypeUserKey    = @"user";
 NSString const *NoteRangeTypePostKey    = @"post";
@@ -310,15 +310,16 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 
 - (BOOL)isCommentApproved
 {
-    return [self isActionOn:NoteActionApproveKey] || ![self isActionEnabled:NoteActionApproveKey];
+    return [self isActionOn:NoteActionApprove] || ![self isActionEnabled:NoteActionApprove];
 }
 
-- (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
+- (void)setOverrideValue:(nonnull NSNumber *)value forAction:(NoteAction)action
 {
     if (!_actionsOverride) {
         _actionsOverride = [NSMutableDictionary dictionary];
     }
-    
+
+    NSString *key = [self keyForAction:action];
     _actionsOverride[key] = value;
     
     [self.parent didChangeOverrides];
@@ -330,8 +331,9 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     [self.parent didChangeOverrides];
 }
 
-- (void)removeActionOverrideForKey:(NSString *)key
+- (void)removeOverrideValueForAction:(NoteAction)action
 {
+    NSString *key = [self keyForAction:action];
     [_actionsOverride removeObjectForKey:key];
     [self.parent didChangeOverrides];
 }
@@ -341,14 +343,32 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return [self.actionsOverride numberForKey:key] ?: [self.actions numberForKey:key];
 }
 
-- (BOOL)isActionEnabled:(NSString *)key
+- (BOOL)isActionEnabled:(NoteAction)action
 {
+    NSString *key = [self keyForAction:action];
     return [self actionForKey:key] != nil;
 }
 
-- (BOOL)isActionOn:(NSString *)key
+- (BOOL)isActionOn:(NoteAction)action
 {
+    NSString *key = [self keyForAction:action];
     return [[self actionForKey:key] boolValue];
+}
+
+- (NSString *)keyForAction:(NoteAction)action
+{
+    // TODO: Nuke This once the data model has been swifted!
+    NSDictionary *keyMap = @{
+        @(NoteActionFollow)     : NoteActionFollowKey,
+        @(NoteActionLike)       : NoteActionLikeKey,
+        @(NoteActionSpam)       : NoteActionSpamKey,
+        @(NoteActionTrash)      : NoteActionTrashKey,
+        @(NoteActionReply)      : NoteActionReplyKey,
+        @(NoteActionApprove)    : NoteActionApproveKey,
+        @(NoteActionEdit)       : NoteActionEditKey
+    };
+
+    return keyMap[@(action)] ?: [NSString string];
 }
 
 - (id)cacheValueForKey:(NSString *)key
@@ -775,7 +795,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     NotificationBlockGroup *group = [self blockGroupOfType:NoteBlockGroupTypeComment];
     if (group && [group blockOfType:NoteBlockTypeComment]) {
         NotificationBlock *block = [group blockOfType:NoteBlockTypeComment];
-        return [block isActionEnabled:NoteActionApproveKey] && ![block isActionOn:NoteActionApproveKey];
+        return [block isActionEnabled:NoteActionApprove] && ![block isActionOn:NoteActionApprove];
     }
 
     return NO;
