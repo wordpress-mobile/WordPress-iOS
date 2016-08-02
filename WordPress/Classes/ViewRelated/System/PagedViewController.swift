@@ -75,6 +75,8 @@ class PagedViewController: UIViewController {
 
             controller.didMoveToParentViewController(self)
         }
+
+        pageControl.numberOfPages = viewControllers.count
     }
 
     @IBAction func pageControlChanged() {
