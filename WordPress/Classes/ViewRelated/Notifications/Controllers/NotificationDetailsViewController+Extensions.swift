@@ -966,7 +966,7 @@ private extension NotificationDetailsViewController
     }
 
     enum Media {
-        static let richBlockTypes   = Set(arrayLiteral: [NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue])
+        static let richBlockTypes   = Set(arrayLiteral: NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue)
         static let duration         = NSTimeInterval(0.25)
         static let delay            = NSTimeInterval(0)
         static let options          : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
