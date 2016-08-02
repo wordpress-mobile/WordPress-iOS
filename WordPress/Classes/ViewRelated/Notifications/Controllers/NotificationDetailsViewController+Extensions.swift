@@ -62,7 +62,7 @@ class NotificationDetailsViewController: UIViewController
     /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
     /// in the eventuallity of a failure.
     ///
-    var onDeletionRequestCallback: NotificationDeletionRequestBlock?
+    var onDeletionRequestCallback: NotificationDeletion.Request?
 
 
     deinit {
@@ -1020,12 +1020,9 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-// TODO: Review + Prettify Undelete Mechanism
-            service.spamCommentWithBlock(block, success: {
-                onCompletion?(true)
-            }, failure: { error in
-                onCompletion?(false)
-            })
+            service.spamCommentWithBlock(block) { success in
+                onCompletion(success)
+            }
 
             WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
         }
@@ -1041,12 +1038,9 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-// TODO: Review + Prettify Undelete Mechanism
-            service.deleteCommentWithBlock(block, success: {
-                onCompletion?(true)
-            }, failure: { error in
-                onCompletion?(false)
-            })
+            service.deleteCommentWithBlock(block) { success in
+                onCompletion(success)
+            }
 
             WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: block.metaSiteID)
         }
@@ -1056,16 +1050,22 @@ private extension NotificationDetailsViewController
     }
 
     func replyCommentWithBlock(block: NotificationBlock, content: String) {
-        actionsService.replyCommentWithBlock(block, content: content, success: {
+        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
+            guard success else {
+                self.displayReplyErrorWithBlock(block, content: content)
+                return
+            }
+
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
             SVProgressHUD.showSuccessWithStatus(message)
-        }, failure: { error in
-            self.displayReplyErrorWithBlock(block, content: content)
         })
     }
 
     func updateCommentWithBlock(block: NotificationBlock, content: String) {
-        actionsService.updateCommentWithBlock(block, content: content, failure: { error in
+        actionsService.updateCommentWithBlock(block, content: content, completion: { success in
+            guard success == false else {
+                return
+            }
             self.displayCommentUpdateErrorWithBlock(block, content: content)
         })
     }
