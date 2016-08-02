@@ -138,6 +138,7 @@
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4645AFC41961E1FB005F7509 /* AppImages.xcassets */; };
 		46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */; };
+		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
 		590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590E873A1CB8205700D1B734 /* PostListViewController.swift */; };
 		591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */; };
 		591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */; };
@@ -1162,6 +1163,8 @@
 		46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+StringFormatting.m"; sourceTree = "<group>"; };
 		4FF2D09CA918F06E4AA3FC5C /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		57329BA77ECCDDB52A0EC61A /* Pods-WordPress_Base-WordPressShareExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPressShareExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
+		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
 		590E873A1CB8205700D1B734 /* PostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
 		591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPostListViewController.swift; sourceTree = "<group>"; };
 		591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayWidgetPrefix.pch; sourceTree = "<group>"; };
@@ -3671,6 +3674,8 @@
 				5D1EBF56187C9B95003393F8 /* Categories */,
 				ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */,
 				ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */,
+				5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */,
+				5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */,
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
 				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
@@ -5956,6 +5961,7 @@
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				B5EFB1C21B31B98E007608A3 /* NotificationsService.swift in Sources */,
+				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
 				B56F4F8F1C6B9358001CEB09 /* SettingsListPickerViewController.swift in Sources */,
 				08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */,
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
