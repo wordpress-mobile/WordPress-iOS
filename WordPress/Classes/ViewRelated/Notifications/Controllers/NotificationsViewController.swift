@@ -37,8 +37,7 @@ class NotificationsViewController : UITableViewController
 
     /// TableView Handler: Our commander in chief!
     ///
-    // TODO JLP 7.26.2016: Make this one private once +RowActions has been merged in
-    var tableViewHandler: WPTableViewHandler!
+    private var tableViewHandler: WPTableViewHandler!
 
     /// NoResults View
     ///
@@ -1053,8 +1052,7 @@ extension NotificationsViewController: ABXPromptViewDelegate
 
 // MARK: - Private Properties
 //
-// TODO: This should be Private once +RowActions has been merged in
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
