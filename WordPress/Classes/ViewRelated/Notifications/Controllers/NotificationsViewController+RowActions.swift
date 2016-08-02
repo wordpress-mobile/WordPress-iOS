@@ -49,7 +49,7 @@ extension NotificationsViewController
 
             let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] action, path in
                 self?.showUndeleteForNoteWithID(note.objectID) { completion in
-                    self?.actionsService.trashCommentWithBlock(block, success: {
+                    self?.actionsService.deleteCommentWithBlock(block, success: {
                         completion(true)
                     }, failure: { error in
                         completion(false)

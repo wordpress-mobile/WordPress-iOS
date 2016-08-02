@@ -778,7 +778,7 @@ private extension NotificationDetailsViewController
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
 // TODO: Review + Prettify Undelete Mechanism
-            service.trashCommentWithBlock(block, success: {
+            service.deleteCommentWithBlock(block, success: {
                 onCompletion?(true)
             }, failure: { error in
                 onCompletion?(false)
@@ -792,7 +792,7 @@ private extension NotificationDetailsViewController
     }
 
     func replyCommentWithBlock(block: NotificationBlock, content: String) {
-        actionsService.replyWithBlock(block, content: content, success: {
+        actionsService.replyCommentWithBlock(block, content: content, success: {
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
             SVProgressHUD.showSuccessWithStatus(message)
         }, failure: { error in
