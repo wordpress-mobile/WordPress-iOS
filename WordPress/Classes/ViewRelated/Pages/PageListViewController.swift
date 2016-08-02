@@ -5,15 +5,13 @@ import WordPressComAnalytics
 class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
 
     private static let pageSectionHeaderHeight = CGFloat(24.0)
-    private static let pageCellEstimatedRowHeight = CGFloat(46.0)
+    private static let pageCellEstimatedRowHeight = CGFloat(47.0)
     private static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
     private static let pageCellIdentifier = "PageCellIdentifier"
     private static let pageCellNibName = "PageListTableViewCell"
     private static let restorePageCellIdentifier = "RestorePageCellIdentifier"
     private static let restorePageCellNibName = "RestorePageTableViewCell"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
-
-    private var cellForLayout : PageListTableViewCell!
 
     private lazy var sectionFooterSepatatorView : UIView = {
         let footer = UIView()
@@ -84,16 +82,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Configuration
 
-    override func configureCellsForLayout() {
-
-        let bundle = NSBundle.mainBundle()
-
-        cellForLayout = bundle.loadNibNamed(self.dynamicType.pageCellNibName, owner: nil, options: nil)[0] as! PageListTableViewCell
-    }
-
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
+        tableView.estimatedRowHeight = self.dynamicType.pageCellEstimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = NSBundle.mainBundle()
 
@@ -228,20 +221,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     func sectionNameKeyPath() -> String {
         return NSStringFromSelector(#selector(Page.sectionIdentifier))
-    }
-
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return self.dynamicType.pageCellEstimatedRowHeight
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let page = pageAtIndexPath(indexPath)
-
-        if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
-            return self.dynamicType.pageCellEstimatedRowHeight
-        }
-
-        return UITableViewAutomaticDimension
     }
 
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
