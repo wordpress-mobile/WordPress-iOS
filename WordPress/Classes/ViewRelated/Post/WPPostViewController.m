@@ -1219,7 +1219,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the live site");
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
                                                                  style:[WPStyleGuide barButtonStyleForDone]
                                                                 target:self
