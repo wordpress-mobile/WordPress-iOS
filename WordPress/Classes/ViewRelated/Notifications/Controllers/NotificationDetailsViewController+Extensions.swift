@@ -6,6 +6,246 @@ import WordPressShared
 
 
 
+/// Renders a given Notification entity, onscreen. Whenever the Notification is remotely updated,
+/// this class will automatically take care of refreshing the UI for you, thanks to Simperium's Awesomeness
+///
+class NotificationDetailsViewController: UIViewController
+{
+    // MARK: - Properties
+
+    /// StackView: Top-Level Entity
+    ///
+    @IBOutlet var stackView: UIStackView!
+
+    /// TableView
+    ///
+    @IBOutlet var tableView: UITableView!
+
+    ///
+    ///
+    @IBOutlet var topLayoutConstraint: NSLayoutConstraint!
+
+    ///
+    ///
+    @IBOutlet var centerLayoutConstraint: NSLayoutConstraint!
+
+    ///
+    ///
+    @IBOutlet var bottomLayoutConstraint: NSLayoutConstraint!
+
+    ///
+    ///
+    @IBOutlet var replyTextView: ReplyTextView!
+
+    ///
+    ///
+    @IBOutlet var suggestionsTableView: SuggestionsTableView!
+
+    ///
+    ///
+    private var mediaDownloader = NotificationMediaDownloader()
+
+    ///
+    ///
+    private var keyboardManager: KeyboardDismissHelper!
+
+    ///
+    ///
+    private var blockGroups = [NotificationBlockGroup]()
+
+    ///
+    ///
+    private var note: Notification!
+
+    /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
+    /// and a closure that will effectively perform the deletion action will be passed over.
+    /// In turn, the Deletion Action block also expects (yet another) block as a parameter, to be called
+    /// in the eventuallity of a failure.
+    ///
+    var onDeletionRequestCallback: NotificationDeletionRequestBlock?
+
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+
+        // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
+        guard isViewLoaded() else {
+            return
+        }
+
+        tableView.delegate = nil
+        tableView.dataSource = nil
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        restorationClass = NotificationDetailsViewController.self
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupNavigationBar()
+        setupMainView()
+        setupTableView()
+        setupTableViewCells()
+        setupReplyTextView()
+        setupSuggestionsView()
+        setupKeyboardManager()
+        setupNotificationListeners()
+
+        AppRatingUtility.incrementSignificantEventForSection("notifications")
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tableView.deselectSelectedRowWithAnimation(true)
+        keyboardManager.startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        keyboardManager.stopListeningToKeyboardNotifications()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        adjustLayoutConstraintsIfNeeded()
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.reloadData()
+        adjustLayoutConstraintsIfNeeded()
+    }
+
+
+    /// Renders the details view, for any given notification
+    ///
+    /// -   Parameter notification: The Notification to display.
+    ///
+    func setupWithNotification(notification: Notification) {
+        note = notification
+
+        loadViewIfNeeded()
+        attachReplyViewIfNeeded()
+        attachSuggestionsViewIfNeeded()
+        attachEditActionIfNeeded()
+        reloadData()
+    }
+
+    private func reloadData() {
+        // Hide the header, if needed
+        var mergedGroups = [NotificationBlockGroup]()
+
+        if let header = note.headerBlockGroup {
+            mergedGroups.append(header)
+        }
+
+        mergedGroups.appendContentsOf(note.bodyBlockGroups)
+        blockGroups = mergedGroups
+
+        // Reload UI
+        title = note.title
+        tableView.reloadData()
+        adjustLayoutConstraintsIfNeeded()
+    }
+}
+
+
+
+/// State Restoration
+///
+extension NotificationDetailsViewController: UIViewControllerRestoration
+{
+    class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        let context = ContextManager.sharedInstance().mainContext
+        guard let noteURI = coder.decodeObjectForKey(Restoration.noteIdKey) as? NSURL,
+            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(noteURI),
+            let notification = try? context.existingObjectWithID(objectID) else
+        {
+            return nil
+        }
+
+        guard let storyboard = coder.decodeObjectForKey(UIStateRestorationViewControllerStoryboardKey) as? UIStoryboard,
+            let vc = storyboard.instantiateViewControllerWithIdentifier(Restoration.restorationIdentifier) as? NotificationDetailsViewController else
+        {
+            return nil
+        }
+
+        vc.setupWithNotification(notification)
+
+        return vc
+    }
+
+    func encodeRestorableStateWithCoder(coder: NSCoder) {
+        coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
+        super.encodeRestorableStateWithCoder(coder)
+    }
+}
+
+
+
+/// UITableView Methods
+///
+extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource
+{
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return Settings.numberOfSections
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return blockGroups.count
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let blockGroup = blockGroupForIndexPath(indexPath)
+        let layoutIdentifier = layoutIdentifierForGroup(blockGroup)
+
+        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier, forIndexPath: indexPath) as? NoteBlockTableViewCell else {
+            fatalError()
+        }
+
+        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
+        setupCell(tableViewCell, blockGroup: blockGroup)
+
+        return tableViewCell.layoutHeightWithWidth(tableView.bounds.width)
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let blockGroup = blockGroupForIndexPath(indexPath)
+        let reuseIdentifier = reuseIdentifierForGroup(blockGroup)
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as? NoteBlockTableViewCell else {
+            fatalError()
+        }
+
+        setupSeparators(cell, indexPath: indexPath)
+        setupCell(cell, blockGroup: blockGroup)
+
+        return cell
+    }
+
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let group = blockGroupForIndexPath(indexPath)
+
+        switch group.type {
+        case .Header:
+            displayNotificationSource()
+        case .User:
+            let targetURL = group.blockOfType(.User)?.metaLinksHome
+            displayURL(targetURL)
+        case .Footer:
+            // Note: By convention, the last range is the one that always contains the targetURL
+            let targetURL = group.blockOfType(.Text)?.ranges.last?.url
+            displayURL(targetURL)
+        }
+    }
+}
+
+
+
 // MARK: - Setup Helpers
 //
 extension NotificationDetailsViewController
@@ -47,11 +287,6 @@ extension NotificationDetailsViewController
             tableView.registerNib(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
             tableView.registerNib(nib, forCellReuseIdentifier: cellClass.layoutIdentifier())
         }
-    }
-
-    func setupMediaDownloader() {
-        // TODO: Nuke this method as soon as the Header is 100% Swift
-        mediaDownloader = NotificationMediaDownloader()
     }
 
     func setupReplyTextView() {
@@ -126,9 +361,8 @@ extension NotificationDetailsViewController
 
 // MARK: - Suggestions View Helpers
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
-    // TODO: This should be private
     func attachSuggestionsViewIfNeeded() {
         guard shouldAttachSuggestionsView else {
             suggestionsTableView.removeFromSuperview()
@@ -145,7 +379,7 @@ extension NotificationDetailsViewController
         ])
     }
 
-    private  var shouldAttachSuggestionsView: Bool {
+    var shouldAttachSuggestionsView: Bool {
         guard let siteID = note.metaSiteID else {
             return false
         }
@@ -158,9 +392,8 @@ extension NotificationDetailsViewController
 
 // MARK: - Edition Helpers
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
-    // TODO: This should be Private once ready
     func attachEditActionIfNeeded() {
         guard shouldAttachEditAction else {
             return
@@ -173,12 +406,12 @@ extension NotificationDetailsViewController
                                                             action: #selector(editButtonWasPressed))
     }
 
-    private var shouldAttachEditAction: Bool {
+    var shouldAttachEditAction: Bool {
         let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment)
         return block?.isActionOn(NoteActionEditKey) ?? false
     }
 
-    @IBAction func editButtonWasPressed() {
+    @objc @IBAction func editButtonWasPressed() {
         guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) where block.isActionOn(NoteActionEditKey) else {
             return
         }
@@ -189,11 +422,10 @@ extension NotificationDetailsViewController
 
 
 
-// MARK: - Style Helpers
+// MARK: - Layout Helpers
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
-    // TODO: This should be private once ready
     func adjustLayoutConstraintsIfNeeded() {
         // Badge Notifications should be centered, and display no cell separators
         let shouldCenterVertically = note.isBadge
@@ -205,13 +437,51 @@ extension NotificationDetailsViewController
         // Lock Scrolling for Badge Notifications
         tableView.scrollEnabled = !shouldCenterVertically
     }
+
+    func layoutIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
+        switch blockGroup.type {
+        case .Header:
+            return NoteBlockHeaderTableViewCell.layoutIdentifier()
+        case .Footer:
+            return NoteBlockTextTableViewCell.layoutIdentifier()
+        case .Text:
+            return NoteBlockTextTableViewCell.layoutIdentifier()
+        case .Comment:
+            return NoteBlockCommentTableViewCell.layoutIdentifier()
+        case .Actions:
+            return NoteBlockActionsTableViewCell.layoutIdentifier()
+        case .Image:
+            return NoteBlockImageTableViewCell.layoutIdentifier()
+        case .User:
+            return NoteBlockUserTableViewCell.layoutIdentifier()
+        }
+    }
+
+    func reuseIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
+        switch blockGroup.type {
+        case .Header:
+            return NoteBlockHeaderTableViewCell.reuseIdentifier()
+        case .Footer:
+            return NoteBlockTextTableViewCell.reuseIdentifier()
+        case .Text:
+            return NoteBlockTextTableViewCell.reuseIdentifier()
+        case .Comment:
+            return NoteBlockCommentTableViewCell.reuseIdentifier()
+        case .Actions:
+            return NoteBlockActionsTableViewCell.reuseIdentifier()
+        case .Image:
+            return NoteBlockImageTableViewCell.reuseIdentifier()
+        case .User:
+            return NoteBlockUserTableViewCell.reuseIdentifier()
+        }
+    }
 }
 
 
 
 // MARK: - UITableViewCell Subclass Setup
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
     func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
         // Temporarily force margins for WPTableViewCell hack.
@@ -626,6 +896,10 @@ extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
+    func blockGroupForIndexPath(indexPath: NSIndexPath) -> NotificationBlockGroup {
+        return blockGroups[indexPath.row]
+    }
+
     func blogWithBlogID(blogID: NSNumber?) -> Blog? {
         guard let blogID = blogID else {
             return nil
@@ -663,7 +937,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Media Download Helpers
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
     func downloadAndResizeMedia(indexPath: NSIndexPath, blockGroup: NotificationBlockGroup) {
         //  Notes:
@@ -694,6 +968,7 @@ extension NotificationDetailsViewController
         return maxWidth
     }
 }
+
 
 
 // MARK: - Action Handlers
@@ -791,7 +1066,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Replying Comments
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
     func displayReplyEditorWithBlock(block: NotificationBlock) {
         guard let siteID = note.metaSiteID else {
@@ -837,7 +1112,7 @@ extension NotificationDetailsViewController
 
 // MARK: - Editing Comments
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
     func displayCommentEditorWithBlock(block: NotificationBlock) {
         let editViewController = EditCommentViewController.newEditViewController()
@@ -886,15 +1161,7 @@ extension NotificationDetailsViewController
 //
 extension NotificationDetailsViewController: ReplyTextViewDelegate
 {
-    public func textViewDidBeginEditing(textView: UITextView) {
-        tableGesturesRecognizer.enabled = true
-    }
-
-    public func textViewDidEndEditing(textView: UITextView) {
-        tableGesturesRecognizer.enabled = false
-    }
-
-    public func textView(textView: UITextView, didTypeWord word: String) {
+    func textView(textView: UITextView, didTypeWord word: String) {
         suggestionsTableView.showSuggestionsForWord(word)
     }
 }
@@ -905,15 +1172,15 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate
 //
 extension NotificationDetailsViewController: UIScrollViewDelegate
 {
-    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         keyboardManager.scrollViewWillBeginDragging(scrollView)
     }
 
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
         keyboardManager.scrollViewDidScroll(scrollView)
     }
 
-    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         keyboardManager.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
     }
 }
@@ -924,27 +1191,12 @@ extension NotificationDetailsViewController: UIScrollViewDelegate
 //
 extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 {
-    public func suggestionsTableView(suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
+    func suggestionsTableView(suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView.replaceTextAtCaret(text, withText: suggestion)
         suggestionsTableView.showSuggestionsForWord(String())
     }
 }
 
-
-
-// MARK: - Gestures Recognizer Delegate
-//
-extension NotificationDetailsViewController: UIGestureRecognizerDelegate
-{
-    @IBAction public func dismissKeyboardIfNeeded(sender: AnyObject) {
-        view.endEditing(true)
-    }
-
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        // Note: the tableViewGestureRecognizer may compete with another GestureRecognizer. Make sure it doesn't get cancelled
-        return true
-    }
-}
 
 
 // MARK: - Private Properties
@@ -966,13 +1218,19 @@ private extension NotificationDetailsViewController
     }
 
     enum Media {
-        static let richBlockTypes   = Set(arrayLiteral: NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue)
-        static let duration         = NSTimeInterval(0.25)
-        static let delay            = NSTimeInterval(0)
-        static let options          : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
+        static let richBlockTypes           = Set(arrayLiteral: NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue)
+        static let duration                 = NSTimeInterval(0.25)
+        static let delay                    = NSTimeInterval(0)
+        static let options                  : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
+    }
+
+    enum Restoration {
+        static let noteIdKey                = Notification.classNameWithoutNamespaces()
+        static let restorationIdentifier    = NotificationDetailsViewController.classNameWithoutNamespaces()
     }
 
     enum Settings {
-        static let expirationFiveMinutes = NSTimeInterval(60 * 5)
+        static let numberOfSections         = 1
+        static let expirationFiveMinutes    = NSTimeInterval(60 * 5)
     }
 }
