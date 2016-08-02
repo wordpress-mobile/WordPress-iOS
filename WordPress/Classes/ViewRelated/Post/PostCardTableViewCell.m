@@ -60,7 +60,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic) CGFloat dateViewLowerMargin;
 @property (nonatomic) CGFloat statusViewHeight;
 @property (nonatomic) CGFloat statusViewLowerMargin;
-@property (nonatomic) BOOL configureForLayoutOnly;
 @property (nonatomic) BOOL didPreserveStartingConstraintConstants;
 @property (nonatomic) ActionBarMode currentActionBarMode;
 
@@ -100,59 +99,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // the cell if needed.
     [self preserveStartingConstraintConstants];
     if (self.post) {
-        [self configureWithPost:self.post forLayoutOnly:self.configureForLayoutOnly];
+        [self configureWithPost:self.post];
     }
 }
 
 #pragma mark - Accessors
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-    CGFloat innerWidth = [self innerWidthForSize:size];
-    CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
-
-    // Add up all the things.
-    CGFloat height = CGRectGetMinY(self.postContentView.frame);
-
-    height += CGRectGetMinY(self.headerView.frame);
-    if (self.headerViewHeightConstraint.constant > 0) {
-        height += self.headerViewHeight;
-        height += self.headerViewLowerMargin;
-    }
-
-    if (self.postCardImageView) {
-        // the image cell xib
-        height += self.postCardImageViewHeightConstraint.constant;
-        height += self.postCardImageViewBottomConstraint.constant;
-    }
-
-    height += [self.titleLabel sizeThatFits:innerSize].height;
-    height += self.titleLowerConstraint.constant;
-
-    height += [self.snippetLabel sizeThatFits:innerSize].height;
-    height += self.snippetLowerConstraint.constant;
-
-    height += CGRectGetHeight(self.dateView.frame);
-    height += self.dateViewLowerConstraint.constant;
-
-    height += self.statusHeightConstraint.constant;
-    height += self.statusViewLowerConstraint.constant;
-
-    height += CGRectGetHeight(self.actionBar.frame);
-
-    height += self.postContentBottomConstraint.constant;
-
-    return CGSizeMake(size.width, height);
-}
-
-- (CGFloat)innerWidthForSize:(CGSize)size
-{
-    CGFloat width = size.width;
-    CGFloat horizontalMargin = self.headerViewLeftConstraint.constant;
-    horizontalMargin += CGRectGetMinX(self.postContentView.frame);
-    width -= (horizontalMargin * 2);
-    return width;
-}
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
@@ -244,13 +195,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureWithPost:(Post *)post
 {
-    [self configureWithPost:post forLayoutOnly:NO];
-}
-
-- (void)configureWithPost:(nonnull Post *)post
-            forLayoutOnly:(BOOL)layoutOnly
-{
-    self.configureForLayoutOnly = layoutOnly;
     self.post = post;
 
     if (!self.didPreserveStartingConstraintConstants) {
@@ -290,12 +234,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.headerView.hidden = NO;
     self.headerViewHeightConstraint.constant = self.headerViewHeight;
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
-
-    // No need to worry about text or image when configuring only layout
-    if (self.configureForLayoutOnly) {
-        return;
-    }
-
     self.authorBlogLabel.text = [self.post blogNameForDisplay];
     self.authorNameLabel.text = [self.post authorNameForDisplay];
     UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
@@ -305,10 +243,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureCardImage
 {
-    if (self.configureForLayoutOnly) {
-        return;
-    }
-
     if (!self.postCardImageView) {
         return;
     }
@@ -401,10 +335,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureMetaButtons
 {
-    if (self.configureForLayoutOnly) {
-        return;
-    }
-
     [self resetMetaButton:self.metaButtonRight];
     [self resetMetaButton:self.metaButtonLeft];
 
@@ -447,10 +377,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureActionBar
 {
-    if (self.configureForLayoutOnly) {
-        return;
-    }
-
     NSString *status = [self.post status];
     if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
         [self configurePublishedActionBar];

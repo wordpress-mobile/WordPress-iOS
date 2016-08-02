@@ -68,12 +68,6 @@
     self.post = post;
 }
 
-- (void)configureWithPost:(Post *)post
-            forLayoutOnly:(BOOL)layoutOnly
-{
-    [self configureWithPost:post];
-}
-
 #pragma mark - InteractivePostView
 
 - (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
