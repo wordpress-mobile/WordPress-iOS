@@ -701,52 +701,32 @@ extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func followSiteWithBlock(block: NotificationBlock) {
-        actionsService.followSiteWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
+        actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
 
     func unfollowSiteWithBlock(block: NotificationBlock) {
-        actionsService.unfollowSiteWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
+        actionsService.unfollowSiteWithBlock(block)
         WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
 
     func likeCommentWithBlock(block: NotificationBlock) {
-        actionsService.likeCommentWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
+        actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
     func unlikeCommentWithBlock(block: NotificationBlock) {
-        actionsService.unlikeCommentWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
+        actionsService.unlikeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
     func approveCommentWithBlock(block: NotificationBlock) {
-        actionsService.approveCommentWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
-        tableView.reloadData()
+        actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
     func unapproveCommentWithBlock(block: NotificationBlock) {
-        actionsService.unapproveCommentWithBlock(block, failure: { [weak self] error in
-            self?.reloadData()
-        })
-
-        tableView.reloadData()
+        actionsService.unapproveCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
