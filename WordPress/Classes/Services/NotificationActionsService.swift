@@ -21,11 +21,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to follow site: \(error)")
-            block.removeActionOverrideForKey(NoteActionFollowKey)
+            block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setActionOverrideValue(true, forKey: NoteActionFollowKey)
+        block.setOverrideValue(true, forAction: .Follow)
     }
 
 
@@ -45,11 +45,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unfollow site: \(error)")
-            block.removeActionOverrideForKey(NoteActionFollowKey)
+            block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setActionOverrideValue(false, forKey: NoteActionFollowKey)
+        block.setOverrideValue(false, forAction: .Follow)
     }
 
 
@@ -123,11 +123,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to like comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionLikeKey)
+            block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setActionOverrideValue(true, forKey: NoteActionLikeKey)
+        block.setOverrideValue(true, forAction: .Like)
     }
 
 
@@ -147,11 +147,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unlike comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionLikeKey)
+            block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setActionOverrideValue(false, forKey: NoteActionLikeKey)
+        block.setOverrideValue(false, forAction: .Like)
     }
 
 
@@ -171,11 +171,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionApproveKey)
+            block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
+        block.setOverrideValue(true, forAction: .Approve)
     }
 
 
@@ -195,11 +195,11 @@ public class NotificationActionsService: LocalCoreDataService
             completion?(true)
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
-            block.removeActionOverrideForKey(NoteActionApproveKey)
+            block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setActionOverrideValue(false, forKey: NoteActionApproveKey)
+        block.setOverrideValue(false, forAction: .Approve)
     }
 
 
