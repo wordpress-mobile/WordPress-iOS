@@ -31,7 +31,8 @@ class WPSplitViewController: UISplitViewController {
             return UITraitCollection(traitsFromCollections: [collection, UITraitCollection(horizontalSizeClass: .Compact)])
         }
 
-        return collection
+        let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
+        return UITraitCollection(traitsFromCollections: [collection, overrideCollection])
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -200,7 +201,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             separateViewControllersAtIndex(index)
         } else if let index = primaryNavigationController.viewControllers.indexOf({ $0 is WPSplitViewControllerDetailProvider }) {
             // Otherwise, if there's a detail provider somewhere in the stack
-            separateViewControllersAtIndex(index)
+            separateViewControllersAtIndex(index + 1)
         }
 
         // If we have no detail view controllers, try and fetch the primary view controller's
@@ -242,6 +243,12 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // In a horizontally compact size class this means we can collapse to show the root
         // view controller, instead of having the detail view controller pushed onto the stack.
         if secondaryViewController == initialDetailViewController {
+            return true
+        }
+
+        if let primaryViewController = primaryViewController as? UINavigationController,
+            let secondaryViewController = secondaryViewController as? UINavigationController {
+            primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
             return true
         }
 
