@@ -21,45 +21,45 @@ class NotificationDetailsViewController: UIViewController
     ///
     @IBOutlet var tableView: UITableView!
 
-    ///
+    /// Pins the StackView to the top of the view
     ///
     @IBOutlet var topLayoutConstraint: NSLayoutConstraint!
 
-    ///
+    /// Pins the StackView at the center of the view
     ///
     @IBOutlet var centerLayoutConstraint: NSLayoutConstraint!
 
-    ///
+    /// Pins the StackView to the bottom of the view
     ///
     @IBOutlet var bottomLayoutConstraint: NSLayoutConstraint!
 
-    ///
+    /// RelpyTextView
     ///
     @IBOutlet var replyTextView: ReplyTextView!
 
-    ///
+    /// Reply Suggestions
     ///
     @IBOutlet var suggestionsTableView: SuggestionsTableView!
 
-    ///
+    /// Embedded Media Downloader
     ///
     private var mediaDownloader = NotificationMediaDownloader()
 
-    ///
+    /// Keyboard Manager: Aids in the Interactive Dismiss Gesture
     ///
     private var keyboardManager: KeyboardDismissHelper!
 
-    ///
-    ///
-    private var blockGroups = [NotificationBlockGroup]()
-
-    ///
+    /// Notification to-be-displayed
     ///
     private var note: Notification!
 
+    /// Arranged collection of groups to render
+    ///
+    private var blockGroups = [NotificationBlockGroup]()
+
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
-    /// In turn, the Deletion Action block also expects (yet another) block as a parameter, to be called
+    /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
     /// in the eventuallity of a failure.
     ///
     var onDeletionRequestCallback: NotificationDeletionRequestBlock?
