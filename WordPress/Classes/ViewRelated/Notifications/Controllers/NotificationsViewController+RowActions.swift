@@ -29,7 +29,7 @@ extension NotificationsViewController
             // so that the UX isn't terrible.
             // We'll (A) return an Empty UITableViewRowAction, and (B) will hide it after a few seconds.
             //
-            stopEditingTableViewAfterDelay()
+            self.tableView.disableEditionAfterDelay()
 
             // Finally: Return a No-OP Row
             let noop = UITableViewRowAction(style: .Normal, title: title, handler: { action, path in })
@@ -90,18 +90,5 @@ extension NotificationsViewController
         }
 
         return actions
-    }
-
-
-
-    // MARK: - Private Helpers
-
-    private func stopEditingTableViewAfterDelay() {
-        let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
-        dispatch_after(delay, dispatch_get_main_queue()) { [weak self] in
-            if self?.tableView.editing == true {
-                self?.tableView.setEditing(false, animated: true)
-            }
-        }
     }
 }
