@@ -161,7 +161,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (ReaderAbstractTopic *)topicForDiscover;
 
-
 /**
  Fetch a tag topic for a tag with the specified slug.
 
