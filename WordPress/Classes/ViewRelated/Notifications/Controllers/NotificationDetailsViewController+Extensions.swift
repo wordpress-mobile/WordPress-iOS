@@ -64,7 +64,7 @@ extension NotificationDetailsViewController
             guard let block = self?.note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
                 return
             }
-            self?.sendReplyWithBlock(block, content: content)
+            self?.replyCommentWithBlock(block, content: content)
         }
 
         self.replyTextView = replyTextView
@@ -671,19 +671,13 @@ extension NotificationDetailsViewController
         //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
         //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
         //
-        let richBlockTypes = Set(arrayLiteral: [NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue])
-        let imageUrls = blockGroup.imageUrlsForBlocksOfTypes(richBlockTypes)
+        let imageUrls = blockGroup.imageUrlsForBlocksOfTypes(Media.richBlockTypes)
 
         let completion = {
-            // Workaround:
-            // Performing the reload call, multiple times, without the .BeginFromCurrentState might
+            // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
-            let duration    = NSTimeInterval(0.25)
-            let delay       = NSTimeInterval(0)
-            let options     : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
-
-            UIView.animateWithDuration(duration, delay: delay, options: options, animations: { [weak self] in
+            UIView.animateWithDuration(Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }, completion: nil)
         }
@@ -762,7 +756,7 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-
+// TODO: Review + Prettify Undelete Mechanism
             service.spamCommentWithBlock(block, success: {
                 onCompletion?(true)
             }, failure: { error in
@@ -783,7 +777,7 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback? { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-
+// TODO: Review + Prettify Undelete Mechanism
             service.trashCommentWithBlock(block, success: {
                 onCompletion?(true)
             }, failure: { error in
@@ -795,6 +789,23 @@ private extension NotificationDetailsViewController
 
         // We're thru
         navigationController?.popToRootViewControllerAnimated(true)
+    }
+
+    func replyCommentWithBlock(block: NotificationBlock, content: String) {
+        actionsService.replyWithBlock(block, content: content, success: {
+            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+            SVProgressHUD.showSuccessWithStatus(message)
+        }, failure: { error in
+            self.displayReplyErrorWithBlock(block, content: content)
+        })
+    }
+
+    func updateCommentWithBlock(block: NotificationBlock, content: String) {
+        actionsService.updateCommentWithBlock(block, content: content, success: nil, failure: { error in
+            self.displayCommentUpdateErrorWithBlock(block, content: content)
+        })
+
+        reloadData()
     }
 }
 
@@ -816,7 +827,7 @@ extension NotificationDetailsViewController
                     return
                 }
 
-                self.sendReplyWithBlock(block, content: newContent)
+                self.replyCommentWithBlock(block, content: newContent)
             })
         }
 
@@ -827,16 +838,7 @@ extension NotificationDetailsViewController
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    func sendReplyWithBlock(block: NotificationBlock, content: String) {
-        actionsService.replyWithBlock(block, content: content, success: {
-            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-            SVProgressHUD.showSuccessWithStatus(message)
-        }, failure: { error in
-            self.handleReplyErrorWithBlock(block, content: content)
-        })
-    }
-
-    func handleReplyErrorWithBlock(block: NotificationBlock, content: String) {
+    func displayReplyErrorWithBlock(block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
                                             comment: "Reply Failure Message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
@@ -845,7 +847,7 @@ extension NotificationDetailsViewController
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.sendReplyWithBlock(block, content: content)
+            self.replyCommentWithBlock(block, content: content)
         }
 
         // Note: This viewController might not be visible anymore
@@ -880,15 +882,7 @@ extension NotificationDetailsViewController
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    func updateCommentWithBlock(block: NotificationBlock, content: String) {
-        actionsService.updateCommentWithBlock(block, content: content, success: nil, failure: { error in
-            self.handleCommentUpdateErrorWithBlock(block, content: content)
-        })
-
-        reloadData()
-    }
-
-    func handleCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
+    func displayCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
                                             comment: "Displayed whenever a Comment Update Fails")
         let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
@@ -991,6 +985,13 @@ private extension NotificationDetailsViewController
         case MissingParameter
         case UnsupportedFeature
         case UnsupportedType
+    }
+
+    enum Media {
+        static let richBlockTypes   = Set(arrayLiteral: [NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue])
+        static let duration         = NSTimeInterval(0.25)
+        static let delay            = NSTimeInterval(0)
+        static let options          : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
     }
 
     enum Settings {
