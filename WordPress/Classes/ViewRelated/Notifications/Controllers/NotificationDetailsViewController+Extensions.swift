@@ -781,11 +781,9 @@ private extension NotificationDetailsViewController
     }
 
     func updateCommentWithBlock(block: NotificationBlock, content: String) {
-        actionsService.updateCommentWithBlock(block, content: content, success: nil, failure: { error in
+        actionsService.updateCommentWithBlock(block, content: content, failure: { error in
             self.displayCommentUpdateErrorWithBlock(block, content: content)
         })
-
-        reloadData()
     }
 }
 

@@ -324,6 +324,12 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     [self.parent didChangeOverrides];
 }
 
+- (void)setTextOverride:(NSString *)textOverride
+{
+    _textOverride = textOverride;
+    [self.parent didChangeOverrides];
+}
+
 - (void)removeActionOverrideForKey:(NSString *)key
 {
     [_actionsOverride removeObjectForKey:key];
