@@ -62,6 +62,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const CompactTitleButtonWidth = 100.0f;
+static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -1174,7 +1175,7 @@ EditImageDetailsViewControllerDelegate
                                                                 selector:@selector(cancelEditing)];
 
     cancelButton.leftSpacing = 0;
-    cancelButton.rightSpacing = 0;
+    cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
 
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
@@ -1195,7 +1196,7 @@ EditImageDetailsViewControllerDelegate
                                                                 selector:@selector(cancelEditing)];
 
     cancelButton.leftSpacing = 0;
-    cancelButton.rightSpacing = 0;
+    cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelXButton = button;
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
