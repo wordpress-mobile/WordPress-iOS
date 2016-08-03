@@ -244,12 +244,22 @@
                 </subviews>
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="b5E-yQ-veP" secondAttribute="trailing" constant="-2" id="5CP-ZE-K8w"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="b5E-yQ-veP" secondAttribute="bottom" constant="3.5" id="O2f-he-2mN"/>
-                    <constraint firstItem="b5E-yQ-veP" firstAttribute="top" secondItem="lmn-sx-Q9M" secondAttribute="topMargin" constant="2" id="TjT-xs-ca9"/>
-                    <constraint firstItem="b5E-yQ-veP" firstAttribute="leading" secondItem="lmn-sx-Q9M" secondAttribute="leadingMargin" constant="-2" id="mGT-Pg-afU"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="b5E-yQ-veP" secondAttribute="trailing" constant="-2" id="5CP-ZE-K8w">
+                        <variation key="widthClass=regular" constant="0.0"/>
+                    </constraint>
+                    <constraint firstAttribute="bottomMargin" secondItem="b5E-yQ-veP" secondAttribute="bottom" constant="4" id="O2f-he-2mN">
+                        <variation key="widthClass=regular" constant="0.0"/>
+                    </constraint>
+                    <constraint firstItem="b5E-yQ-veP" firstAttribute="top" secondItem="lmn-sx-Q9M" secondAttribute="topMargin" constant="2" id="TjT-xs-ca9">
+                        <variation key="widthClass=regular" constant="0.0"/>
+                    </constraint>
+                    <constraint firstItem="b5E-yQ-veP" firstAttribute="leading" secondItem="lmn-sx-Q9M" secondAttribute="leadingMargin" constant="-2" id="mGT-Pg-afU">
+                        <variation key="widthClass=regular" constant="0.0"/>
+                    </constraint>
                 </constraints>
+                <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             </tableViewCellContentView>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
                 <outlet property="actionBar" destination="pkq-mO-MBJ" id="1kC-XT-wKH"/>
                 <outlet property="authorBlogLabel" destination="LUv-id-3Yc" id="amv-hH-UV1"/>
