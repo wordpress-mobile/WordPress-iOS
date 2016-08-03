@@ -7,7 +7,6 @@
 @class SuggestionsTableView;
 @class NotificationMediaDownloader;
 @class KeyboardDismissHelper;
-@class NotificationBlock;
 
 
 
@@ -40,18 +39,5 @@
 @property (nonatomic, strong) Notification                  *note;
 
 - (void)reloadData;
-
-- (void)followSiteWithBlock:(NotificationBlock *)block;
-- (void)unfollowSiteWithBlock:(NotificationBlock *)block;
-- (void)likeCommentWithBlock:(NotificationBlock *)block;
-- (void)unlikeCommentWithBlock:(NotificationBlock *)block;
-- (void)approveCommentWithBlock:(NotificationBlock *)block;
-- (void)unapproveCommentWithBlock:(NotificationBlock *)block;
-- (void)spamCommentWithBlock:(NotificationBlock *)block;
-- (void)trashCommentWithBlock:(NotificationBlock *)block;
-
-- (void)editReplyWithBlock:(NotificationBlock *)block;
-- (void)sendReplyWithBlock:(NotificationBlock *)block content:(NSString *)content;
-- (void)editCommentWithBlock:(NotificationBlock *)block;
 
 @end
