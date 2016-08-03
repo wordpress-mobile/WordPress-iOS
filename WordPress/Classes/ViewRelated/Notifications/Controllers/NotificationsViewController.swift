@@ -681,13 +681,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     func predicateForSelectedFilters() -> NSPredicate {
-        typealias Kind = Notification.Kind
         let filtersMap: [Filter: String] = [
             .None       : "",
             .Unread     : " AND (read = NO)",
-            .Comment    : " AND (type = '\(Kind.Comment.toTypeValue)')",
-            .Follow     : " AND (type = '\(Kind.Follow.toTypeValue)')",
-            .Like       : " AND (type = '\(Kind.Like.toTypeValue)' OR type = '\(Kind.CommentLike.toTypeValue)')"
+            .Comment    : " AND (type = '\(NoteKind.Comment.toTypeValue)')",
+            .Follow     : " AND (type = '\(NoteKind.Follow.toTypeValue)')",
+            .Like       : " AND (type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)')"
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
@@ -1055,6 +1054,8 @@ extension NotificationsViewController: ABXPromptViewDelegate
 //
 private extension NotificationsViewController
 {
+    typealias NoteKind = Notification.Kind
+
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
     }
