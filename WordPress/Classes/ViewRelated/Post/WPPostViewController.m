@@ -1225,7 +1225,10 @@ EditImageDetailsViewControllerDelegate
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
         
-        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:nil target:self action:@selector(showSettings)];
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(showSettings)];
         _optionsBarButtonItem.accessibilityLabel = optionsTitle;
         _optionsBarButtonItem.accessibilityIdentifier = @"Options";
     }
@@ -1273,12 +1276,14 @@ EditImageDetailsViewControllerDelegate
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image target:self selector:@selector(sharePost)];
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
+                                                                        target:self
+                                                                      selector:@selector(sharePost)];
         button.rightSpacing = RightSpacingOnExitNavbarButton;
         
         _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _shareBarButtonItem.accessibilityLabel = title;
-        _shareBarButtonItem.accessibilityIdentifier = title;
+        _shareBarButtonItem.accessibilityIdentifier = @"Share";
     }
     
     return _shareBarButtonItem;
