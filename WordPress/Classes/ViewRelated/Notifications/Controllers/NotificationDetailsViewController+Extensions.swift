@@ -525,7 +525,7 @@ private extension NotificationDetailsViewController
         let gravatarBlock = blockGroup.blockOfType(.Image)
         let snippetBlock = blockGroup.blockOfType(.Text)
 
-        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText()
+        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText
         cell.headerDetails = snippetBlock?.text
 
         // Download the Gravatar (If Needed!)
@@ -543,7 +543,7 @@ private extension NotificationDetailsViewController
             return
         }
 
-        cell.attributedText = textBlock.attributedFooterText()
+        cell.attributedText = textBlock.attributedFooterText
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
     }
@@ -604,7 +604,7 @@ private extension NotificationDetailsViewController
         let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls())
         let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
 
-        let text = commentBlock.attributedRichText().stringByEmbeddingImageAttachments(mediaRanges)
+        let text = commentBlock.attributedRichText.stringByEmbeddingImageAttachments(mediaRanges)
 
         // Setup: Properties
         cell.name                   = userBlock.text
@@ -714,7 +714,7 @@ private extension NotificationDetailsViewController
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ? textBlock.attributedBadgeText() : textBlock.attributedRichText()
+        let text = note.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
