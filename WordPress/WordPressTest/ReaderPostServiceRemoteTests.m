@@ -407,6 +407,11 @@
     XCTAssertNotNil(content);
 
     NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:NO];
+
+    // Verify that the image source was updated with a Photon-friendly sized URL
+    XCTAssertTrue([content rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length > 0);
+    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length == 0);
+    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://i0.wp.com/lanteanartest.files.wordpress.com/2016/07/image217.png?quality=80&resize=1242,2208&ssl=1\""].length > 0);
 }
 
 - (void)testResizeGalleryImageURLsForContentPrivate
@@ -425,7 +430,31 @@
     XCTAssertNotNil(content);
 
     NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:YES];
-    NSLog(@"Result content:\n\n%@", resultContent);
+
+    XCTAssertTrue([content rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length > 0);
+    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length == 0);
+    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=2208.0&w=1242.0\""].length > 0);
 }
+
+- (void)testResizeGalleryImageURLsForContentEmptyString
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:@"" isPrivateSite:NO];
+
+    XCTAssertTrue([resultContent isEqualToString:@""]);
+}
+
+- (void)testResizeGalleryImageURLsForContentNilString
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:nil isPrivateSite:NO];
+
+    XCTAssertTrue([resultContent isEqualToString:@""]);
+}
+
 
 @end
