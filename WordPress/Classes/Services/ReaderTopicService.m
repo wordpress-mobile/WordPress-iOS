@@ -511,6 +511,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderAbstractTopic *)[results firstObject];
 }
 
+- (ReaderAbstractTopic *)topicForDiscover
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/sites/53424024/posts"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for Discover: %@", error);
+        return nil;
+    }
+    return (ReaderAbstractTopic *)[results firstObject];
+}
+
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
                         isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
