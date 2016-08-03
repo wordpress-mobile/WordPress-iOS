@@ -9,24 +9,42 @@ import Simperium
 @objc(Notification)
 class Notification: SPManagedObject
 {
-    ///
+    /// Timestamp As Date Transient Storage.
     ///
     private var cachedTimestampAsDate: NSDate?
 
-    ///
+    /// Subject Blocks Transient Storage.
     ///
     private var cachedSubjectBlockGroup: NotificationBlockGroup?
 
-    ///
+    /// Header Blocks Transient Storage.
     ///
     private var cachedHeaderBlockGroup: NotificationBlockGroup?
 
-    ///
+    /// Body Blocks Transient Storage.
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
-
+    /// Known kinds of Notifications
     ///
+    enum Kind: String {
+        case Comment        = "comment"
+        case CommentLike    = "comment_like"
+        case Follow         = "follow"
+        case Like           = "like"
+        case Matcher        = "automattcher"
+        case Post           = "post"
+        case User           = "user"
+        case Unknown        = "unknown"
+
+        var toTypeValue: String {
+            return rawValue
+        }
+    }
+
+
+
+    /// Nukes any cached values.
     ///
     override func didTurnIntoFault() {
         cachedTimestampAsDate = nil
@@ -43,7 +61,7 @@ class Notification: SPManagedObject
         read = readValue
     }
 
-    ///
+    /// Returns the first BlockGroup of the specified type, if any.
     ///
     func blockGroupOfType(type: NoteBlockGroupType) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.type == type {
@@ -53,7 +71,7 @@ class Notification: SPManagedObject
         return nil
     }
 
-    /// Find in the header as well!
+    /// Attempts to find the Notification Range associated with a given URL.
     ///
     func notificationRangeWithUrl(url: NSURL) -> NotificationRange? {
         var groups = bodyBlockGroups
@@ -78,34 +96,7 @@ class Notification: SPManagedObject
 //
 extension Notification
 {
-    ///
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
-
-    ///
-    ///
-    private enum MetaKeys {
-        static let Ids      = "ids"
-        static let Site     = "site"
-        static let Post     = "post"
-        static let Comment  = "comment"
-        static let Reply    = "reply_comment"
-    }
-
-    ///
+    /// Verifies if the current notification is actually a Badge one.
     ///
     var isBadge: Bool {
         //  Note: This developer does not like duck typing. Sorry about the following snippet.
@@ -120,6 +111,12 @@ extension Notification
         return false
     }
 
+    /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
+    ///
+    var isRepliedComment: Bool {
+        return isComment == true && metaReplyID != nil
+    }
+
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     var isUnapprovedComment: Bool {
@@ -130,13 +127,7 @@ extension Notification
         return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
     }
 
-    ///
-    ///
-    var isRepliedComment: Bool {
-        return isComment == true && metaReplyID != nil
-    }
-
-    ///
+    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
     ///
     var kind: Kind {
         guard let type = type, let kind = Kind(rawValue: type) else {
@@ -144,7 +135,6 @@ extension Notification
         }
         return kind
     }
-
 
     // TODO: Nuke when NotificationBlock is Swifted
     var isComment: Bool {
@@ -176,37 +166,37 @@ extension Notification
         return kind == .Post
     }
 
-    ///
+    /// Returns the Meta ID's collection, if any.
     ///
     private var metaIds: [String: AnyObject]? {
         return meta?[MetaKeys.Ids] as? [String: AnyObject]
     }
 
-    ///
+    /// Comment ID, if any.
     ///
     var metaCommentID: NSNumber? {
         return metaIds?[MetaKeys.Comment] as? NSNumber
     }
 
-    ///
+    /// Post ID, if any.
     ///
     var metaPostID: NSNumber? {
         return metaIds?[MetaKeys.Post] as? NSNumber
     }
 
-    ///
+    /// Comment Reply ID, if any.
     ///
     var metaReplyID: NSNumber? {
         return metaIds?[MetaKeys.Reply] as? NSNumber
     }
 
-    ///
+    /// Site ID, if any.
     ///
     var metaSiteID: NSNumber? {
         return metaIds?[MetaKeys.Site] as? NSNumber
     }
 
-    ///
+    /// Icon URL
     ///
     var iconURL: NSURL? {
         guard let rawIconURL = icon, let iconURL = NSURL(string: rawIconURL) else {
@@ -216,7 +206,7 @@ extension Notification
         return iconURL
     }
 
-    ///
+    /// Associated Resource URL
     ///
     var resourceURL: NSURL? {
         guard let rawURL = url, let resourceURL = NSURL(string: rawURL) else {
@@ -226,7 +216,7 @@ extension Notification
         return resourceURL
     }
 
-    /// If, for whatever reason, the date cannot be parsed, make sure we always return a date.
+    /// Parse the Timestamp as a Cocoa Date Instance.
     ///
     var timestampAsDate: NSDate {
         assert(timestamp != nil, "Notification Timestamp should not be nil [\(simperiumKey)]")
@@ -243,7 +233,7 @@ extension Notification
         return timestampAsDate
     }
 
-    ///
+    /// Returns the Subject Block Group, if any.
     ///
     var subjectBlockGroup: NotificationBlockGroup? {
         if let subjectBlockGroup = cachedSubjectBlockGroup {
@@ -254,7 +244,7 @@ extension Notification
         return cachedSubjectBlockGroup
     }
 
-    ///
+    /// Returns the Header Block Group, if any.
     ///
     var headerBlockGroup: NotificationBlockGroup? {
         if let headerBlockGroup = cachedHeaderBlockGroup {
@@ -265,7 +255,7 @@ extension Notification
         return cachedHeaderBlockGroup
     }
 
-    ///
+    /// Returns the Body Block Groups, if any.
     ///
     var bodyBlockGroups: [NotificationBlockGroup] {
         if let bodyBlockGroups = cachedBodyBlockGroups {
@@ -277,13 +267,13 @@ extension Notification
         return bodyBlockGroups
     }
 
-    ///
+    /// Returns the Subject Block, if any.
     ///
     var subjectBlock: NotificationBlock? {
         return subjectBlockGroup?.blocks.first
     }
 
-    ///
+    /// Returns the Snippet Block, if any.
     ///
     var snippetBlock: NotificationBlock? {
         guard let subjectBlocks = subjectBlockGroup?.blocks where subjectBlocks.count > 1 else {
@@ -291,5 +281,21 @@ extension Notification
         }
 
         return subjectBlocks.last
+    }
+}
+
+
+// MARK: - Private Constants
+//
+private extension Notification
+{
+    /// Meta Field Parsing-Keys
+    ///
+    private enum MetaKeys {
+        static let Ids      = "ids"
+        static let Site     = "site"
+        static let Post     = "post"
+        static let Comment  = "comment"
+        static let Reply    = "reply_comment"
     }
 }

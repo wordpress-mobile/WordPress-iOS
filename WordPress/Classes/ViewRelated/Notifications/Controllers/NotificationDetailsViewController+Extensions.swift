@@ -206,7 +206,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         let blockGroup = blockGroupForIndexPath(indexPath)
         let layoutIdentifier = layoutIdentifierForGroup(blockGroup)
 
-        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier, forIndexPath: indexPath) as? NoteBlockTableViewCell else {
+        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier) as? NoteBlockTableViewCell else {
             fatalError()
         }
 
