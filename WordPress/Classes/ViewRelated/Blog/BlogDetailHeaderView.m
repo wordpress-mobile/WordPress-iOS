@@ -24,6 +24,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
+
+        self.preservesSuperviewLayoutMargins = YES;
+
         [self setupStackView];
         [self setupBlavatarImageView];
         [self setupLabelsStackView];
@@ -58,24 +61,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     stackView.spacing = BlogDetailHeaderViewLabelHorizontalPadding;
     [self addSubview:stackView];
 
-    NSLayoutConstraint *leadingConstraint;
-    NSLayoutConstraint *trailingConstraint;
-
-    if ([WPDeviceIdentification isiPhone]) {
-        // On iPhone, the readable content guide seems to be accurately aligned with the cell's content margins.
-        UILayoutGuide *readableGuide = self.readableContentGuide;
-        leadingConstraint = [stackView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor];
-        trailingConstraint = [stackView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor];
-    } else {
-        // On iPad, the correct readable margins seem to already be inherited via the tableHeaderView
-        // so following this view's readable content guide is not necessary.
-        leadingConstraint = [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor];
-        trailingConstraint = [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor];
-    }
-
     [NSLayoutConstraint activateConstraints:@[
-                                              leadingConstraint,
-                                              trailingConstraint,
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                               [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
                                               ]];
