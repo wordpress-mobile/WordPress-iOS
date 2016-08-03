@@ -1,8 +1,28 @@
 import UIKit
 import WordPressShared
 
+@objc enum WPSplitViewControllerPrimaryColumnWidth: Int {
+    case Default
+    case Narrow
+}
+
 class WPSplitViewController: UISplitViewController {
 
+    var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .Default {
+        didSet {
+            switch wpPrimaryColumnWidth {
+            case .Default:
+                preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
+                minimumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
+                maximumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
+            case .Narrow:
+                let columnWidth: CGFloat = 320
+                preferredPrimaryColumnWidthFraction = UIScreen.mainScreen().bounds.width / columnWidth
+                minimumPrimaryColumnWidth = columnWidth
+                maximumPrimaryColumnWidth = columnWidth
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -10,11 +30,6 @@ class WPSplitViewController: UISplitViewController {
         preferredDisplayMode = .AllVisible
 
         extendedLayoutIncludesOpaqueBars = true
-
-        // Values based on the behaviour of Settings.app
-        preferredPrimaryColumnWidthFraction = 0.38
-        minimumPrimaryColumnWidth = 320
-        maximumPrimaryColumnWidth = 390
     }
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
