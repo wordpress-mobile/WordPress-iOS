@@ -777,24 +777,24 @@ extension NotificationDetailsViewController
     }
 
     func displayNotificationSource() {
-        guard let type = note.type, let resourceURL = note.resourceURL else {
+        guard let resourceURL = note.resourceURL else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
 
         do {
-            switch type {
-            case NoteTypeFollow:
+            switch note.kind {
+            case .Follow:
                 try displayStreamWithSiteID(note.metaSiteID)
-            case NoteTypeLike:
+            case .Like:
                 fallthrough
-            case NoteTypeMatcher:
+            case .Matcher:
                 fallthrough
-            case NoteTypePost:
+            case .Post:
                 try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            case NoteTypeComment:
+            case .Comment:
                 fallthrough
-            case NoteTypeCommentLike:
+            case .CommentLike:
                 try displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
             default:
                 throw DisplayError.UnsupportedType
