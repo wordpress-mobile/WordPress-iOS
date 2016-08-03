@@ -4,7 +4,8 @@ import Simperium
 
 
 
-// MARK: - NSManagedObject Overriden Methods
+// MARK: - Notification Entity
+//
 @objc(Notification)
 class Notification: SPManagedObject
 {
@@ -54,9 +55,12 @@ class Notification: SPManagedObject
 
 
 
-
+// MARK: - Notification Computed Properties
+//
 extension Notification
 {
+    ///
+    ///
     enum Kind: String {
         case Comment        = "comment"
         case CommentLike    = "comment_like"
@@ -66,6 +70,10 @@ extension Notification
         case Post           = "post"
         case User           = "user"
         case Unknown        = "unknown"
+
+        var toTypeValue: String {
+            return rawValue
+        }
     }
 
     ///
