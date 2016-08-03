@@ -27,7 +27,7 @@
 - (NSString *)removeInlineStyles:(NSString *)string;
 - (NSString *)postTitleFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content;
-- (NSString *)fixImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite;
+- (NSString *)resizeGalleryImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite;
 
 @end
 
@@ -391,7 +391,7 @@
     XCTAssertTrue([endpoint hasSuffix:@"q=coffee%20&%20cake"], @"The expected search term was not found");
 }
 
-- (void)testFixImageURLsForContent
+- (void)testResizeGalleryImageURLsForContentPublic
 {
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
@@ -406,9 +406,26 @@
 
     XCTAssertNotNil(content);
 
-    NSString *resultContent = [remoteService fixImageURLsForContent:content isPrivateSite:YES];
-    NSLog(@"Result content:\n\n%@", resultContent);
+    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:NO];
+}
 
+- (void)testResizeGalleryImageURLsForContentPrivate
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"gallery-reader-post-private" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSDictionary *postDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+    XCTAssertNotNil(postDict);
+
+    NSString *content = [postDict stringForKey:@"content"];
+
+    XCTAssertNotNil(content);
+
+    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:YES];
+    NSLog(@"Result content:\n\n%@", resultContent);
 }
 
 @end
