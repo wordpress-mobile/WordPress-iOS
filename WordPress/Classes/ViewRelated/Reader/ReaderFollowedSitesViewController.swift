@@ -243,7 +243,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     func promptWithTitle(title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-        let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
     }
