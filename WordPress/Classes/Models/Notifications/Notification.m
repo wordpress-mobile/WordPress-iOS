@@ -474,26 +474,39 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return group;
 }
 
-+ (NSArray *)blockGroupsFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
++ (NotificationBlockGroup *)subjectGroupFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
+{
+    // Subject: Contains a User + Text Block
+    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
+    if (blocks.count == 0) {
+        return nil;
+    }
+
+    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject];
+}
+
++ (NotificationBlockGroup *)headerGroupFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
+{
+    // Header: Contains a User + Text Block
+    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
+    if (blocks.count == 0) {
+        return nil;
+    }
+
+    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader];
+}
+
++ (NSArray *)bodyGroupsFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
 {
     NSArray *blocks         = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
     NSMutableArray *groups  = [NSMutableArray array];
     
-    // Don't proceed if there are no parsed blocks
     if (blocks.count == 0) {
-        return nil;
+        return groups;
     }
-    
-    // Subject: Contains a User + Text Block
-    if (rawBlocks == notification.subject) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject]];
 
-    // Header: Contains a User + Text Block
-    } else if (rawBlocks == notification.header) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader]];
-        
     // Comment: Contains a User + Comment Block
-    } else if (notification.isComment) {
+    if (notification.isComment) {
         
         //  Note:
         //  I find myself, again, surrounded by the forces of Duck Typing. Comment Notifications are now
@@ -539,7 +552,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         //  -   We can assume that whenever the last block is of the type NoteBlockTypeText, we're dealing with a footer.
         //  -   Whenever we detect such a block, we'll map the NotificationBlock into a NoteBlockGroupTypeFooter group.
         //
-        BOOL canContainFooter           = notification.isFollow || notification.isLike || notification.isCommentLike;
+        BOOL canContainFooter = notification.isFollow || notification.isLike || notification.isCommentLike;
         
         for (NotificationBlock *block in blocks) {
             BOOL isFooter               = canContainFooter && block.type == NoteBlockTypeText && blocks.lastObject == block;
