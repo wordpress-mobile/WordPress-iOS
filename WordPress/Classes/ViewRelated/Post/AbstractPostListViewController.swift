@@ -825,7 +825,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 strongSelf.recentlyTrashedPostObjectIDs.removeAtIndex(index)
 
                 if let indexPath = indexPath {
-                    strongSelf.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    strongSelf.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 }
             }
         }
