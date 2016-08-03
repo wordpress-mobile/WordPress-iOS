@@ -1,12 +1,13 @@
 import Foundation
 import CoreData
 import Simperium
+import SVProgressHUD
 import WordPressShared
 
 
 
-/// Setup Helpers
-///
+// MARK: - Setup Helpers
+//
 extension NotificationDetailsViewController
 {
     func setupNavigationBar() {
@@ -63,7 +64,7 @@ extension NotificationDetailsViewController
             guard let block = self?.note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
                 return
             }
-            self?.sendReplyWithBlock(block, content: content)
+            self?.replyCommentWithBlock(block, content: content)
         }
 
         self.replyTextView = replyTextView
@@ -97,8 +98,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Reply View Helpers
-///
+// MARK: - Reply View Helpers
+//
 extension NotificationDetailsViewController
 {
     func attachReplyViewIfNeeded() {
@@ -123,8 +124,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Suggestions View Helpers
-///
+// MARK: - Suggestions View Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be private
@@ -155,8 +156,8 @@ extension NotificationDetailsViewController
 }
 
 
-/// Edition Helpers
-///
+// MARK: - Edition Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be Private once ready
@@ -178,20 +179,18 @@ extension NotificationDetailsViewController
     }
 
     @IBAction func editButtonWasPressed() {
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
+        guard let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) where block.isActionOn(NoteActionEditKey) else {
             return
         }
 
-        if block.isActionOn(NoteActionEditKey) {
-            editCommentWithBlock(block)
-        }
+        displayCommentEditorWithBlock(block)
     }
 }
 
 
 
-/// Style Helpers
-///
+// MARK: - Style Helpers
+//
 extension NotificationDetailsViewController
 {
     // TODO: This should be private once ready
@@ -210,8 +209,8 @@ extension NotificationDetailsViewController
 
 
 
-/// UITableViewCell Subclass Setup
-///
+// MARK: - UITableViewCell Subclass Setup
+//
 extension NotificationDetailsViewController
 {
     func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -383,7 +382,7 @@ extension NotificationDetailsViewController
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] sender in
-            self?.editReplyWithBlock(commentBlock)
+            self?.displayReplyEditorWithBlock(commentBlock)
         }
 
         cell.onLikeClick = { [weak self] sender in
@@ -455,8 +454,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Notification Helpers
-///
+// MARK: - Notification Helpers
+//
 extension NotificationDetailsViewController
 {
     func notificationWasUpdated(notification: NSNotification) {
@@ -478,8 +477,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Resources
-///
+// MARK: - Resources
+//
 extension NotificationDetailsViewController
 {
     func displayURL(url: NSURL?) {
@@ -623,8 +622,8 @@ extension NotificationDetailsViewController
 
 
 
-/// Helpers
-///
+// MARK: - Helpers
+//
 private extension NotificationDetailsViewController
 {
     func blogWithBlogID(blogID: NSNumber?) -> Blog? {
@@ -662,8 +661,229 @@ private extension NotificationDetailsViewController
 
 
 
-/// UITextViewDelegate
-///
+// MARK: - Media Download Helpers
+//
+extension NotificationDetailsViewController
+{
+    func downloadAndResizeMedia(indexPath: NSIndexPath, blockGroup: NotificationBlockGroup) {
+        //  Notes:
+        //  -   We'll *only* download Media for Text and Comment Blocks
+        //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
+        //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
+        //
+        let imageUrls = blockGroup.imageUrlsForBlocksOfTypes(Media.richBlockTypes)
+
+        let completion = {
+            // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
+            // lead to a state in which the cell remains not visible.
+            //
+            UIView.animateWithDuration(Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
+                self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }, completion: nil)
+        }
+
+        mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
+        mediaDownloader.resizeMediaWithIncorrectSize(maxMediaEmbedWidth, completion: completion)
+    }
+
+    var maxMediaEmbedWidth: CGFloat {
+        let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
+        let portraitWidth = WPDeviceIdentification.isiPad() ? WPTableViewFixedWidth : view.bounds.width
+        let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
+
+        return maxWidth
+    }
+}
+
+
+// MARK: - Action Handlers
+//
+private extension NotificationDetailsViewController
+{
+    func followSiteWithBlock(block: NotificationBlock) {
+        actionsService.followSiteWithBlock(block)
+        WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
+    }
+
+    func unfollowSiteWithBlock(block: NotificationBlock) {
+        actionsService.unfollowSiteWithBlock(block)
+        WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
+    }
+
+    func likeCommentWithBlock(block: NotificationBlock) {
+        actionsService.likeCommentWithBlock(block)
+        WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
+    }
+
+    func unlikeCommentWithBlock(block: NotificationBlock) {
+        actionsService.unlikeCommentWithBlock(block)
+        WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: block.metaSiteID)
+    }
+
+    func approveCommentWithBlock(block: NotificationBlock) {
+        actionsService.approveCommentWithBlock(block)
+        WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: block.metaSiteID)
+    }
+
+    func unapproveCommentWithBlock(block: NotificationBlock) {
+        actionsService.unapproveCommentWithBlock(block)
+        WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: block.metaSiteID)
+    }
+
+    func spamCommentWithBlock(block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        onDeletionRequestCallback? { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = NotificationActionsService(managedObjectContext: mainContext)
+// TODO: Review + Prettify Undelete Mechanism
+            service.spamCommentWithBlock(block, success: {
+                onCompletion?(true)
+            }, failure: { error in
+                onCompletion?(false)
+            })
+
+            WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
+        }
+
+        // We're thru
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+
+    func trashCommentWithBlock(block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        // Hit the DeletionRequest Callback
+        onDeletionRequestCallback? { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = NotificationActionsService(managedObjectContext: mainContext)
+// TODO: Review + Prettify Undelete Mechanism
+            service.deleteCommentWithBlock(block, success: {
+                onCompletion?(true)
+            }, failure: { error in
+                onCompletion?(false)
+            })
+
+            WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: block.metaSiteID)
+        }
+
+        // We're thru
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+
+    func replyCommentWithBlock(block: NotificationBlock, content: String) {
+        actionsService.replyCommentWithBlock(block, content: content, success: {
+            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+            SVProgressHUD.showSuccessWithStatus(message)
+        }, failure: { error in
+            self.displayReplyErrorWithBlock(block, content: content)
+        })
+    }
+
+    func updateCommentWithBlock(block: NotificationBlock, content: String) {
+        actionsService.updateCommentWithBlock(block, content: content, failure: { error in
+            self.displayCommentUpdateErrorWithBlock(block, content: content)
+        })
+    }
+}
+
+
+
+// MARK: - Replying Comments
+//
+extension NotificationDetailsViewController
+{
+    func displayReplyEditorWithBlock(block: NotificationBlock) {
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
+        let editViewController = EditReplyViewController.newReplyViewControllerForSiteID(siteID)
+        editViewController.onCompletion = { (hasNewContent, newContent) in
+            self.dismissViewControllerAnimated(true, completion: {
+                guard hasNewContent else {
+                    return
+                }
+
+                self.replyCommentWithBlock(block, content: newContent)
+            })
+        }
+
+        let navController = UINavigationController(rootViewController: editViewController)
+        navController.modalPresentationStyle = .FormSheet
+        navController.modalTransitionStyle = .CoverVertical
+        navController.navigationBar.translucent = false
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+    func displayReplyErrorWithBlock(block: NotificationBlock, content: String) {
+        let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
+                                            comment: "Reply Failure Message")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.replyCommentWithBlock(block, content: content)
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
+    }
+}
+
+
+
+// MARK: - Editing Comments
+//
+extension NotificationDetailsViewController
+{
+    func displayCommentEditorWithBlock(block: NotificationBlock) {
+        let editViewController = EditCommentViewController.newEditViewController()
+        editViewController.content = block.text
+        editViewController.onCompletion = { (hasNewContent, newContent) in
+            self.dismissViewControllerAnimated(true, completion: {
+                guard hasNewContent else {
+                    return
+                }
+
+                self.updateCommentWithBlock(block, content: newContent)
+            })
+        }
+
+        let navController = UINavigationController(rootViewController: editViewController)
+        navController.modalPresentationStyle = .FormSheet
+        navController.modalTransitionStyle = .CoverVertical
+        navController.navigationBar.translucent = false
+
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+    func displayCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
+        let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
+                                            comment: "Displayed whenever a Comment Update Fails")
+        let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
+        let retryTitle  = NSLocalizedString("Try Again", comment: "Retry")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        alertController.addCancelActionWithTitle(cancelTitle) { action in
+            block.textOverride = nil
+            self.reloadData()
+        }
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.updateCommentWithBlock(block, content: content)
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
+    }
+}
+
+
+
+// MARK: - UITextViewDelegate
+//
 extension NotificationDetailsViewController: ReplyTextViewDelegate
 {
     public func textViewDidBeginEditing(textView: UITextView) {
@@ -681,8 +901,8 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate
 
 
 
-/// UIScrollViewDelegate
-///
+// MARK: - UIScrollViewDelegate
+//
 extension NotificationDetailsViewController: UIScrollViewDelegate
 {
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -700,8 +920,8 @@ extension NotificationDetailsViewController: UIScrollViewDelegate
 
 
 
-/// SuggestionsTableViewDelegate
-///
+// MARK: - SuggestionsTableViewDelegate
+//
 extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 {
     public func suggestionsTableView(suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
@@ -712,8 +932,8 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 
 
 
-/// Gestures Recognizer Delegate
-///
+// MARK: - Gestures Recognizer Delegate
+//
 extension NotificationDetailsViewController: UIGestureRecognizerDelegate
 {
     @IBAction public func dismissKeyboardIfNeeded(sender: AnyObject) {
@@ -735,10 +955,21 @@ private extension NotificationDetailsViewController
         return ContextManager.sharedInstance().mainContext
     }
 
+    var actionsService: NotificationActionsService {
+        return NotificationActionsService(managedObjectContext: mainContext)
+    }
+
     enum DisplayError: ErrorType {
         case MissingParameter
         case UnsupportedFeature
         case UnsupportedType
+    }
+
+    enum Media {
+        static let richBlockTypes   = Set(arrayLiteral: NoteBlockType.Text.rawValue, NoteBlockType.Comment.rawValue)
+        static let duration         = NSTimeInterval(0.25)
+        static let delay            = NSTimeInterval(0)
+        static let options          : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
     }
 
     enum Settings {
