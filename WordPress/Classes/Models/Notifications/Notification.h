@@ -1,5 +1,6 @@
 #import <Simperium/Simperium.h>
 
+@class Notification;
 @class NotificationBlock;
 @class NotificationBlockGroup;
 @class NotificationRange;
@@ -66,60 +67,6 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 
 
 #pragma mark ====================================================================================
-#pragma mark Notification
-#pragma mark ====================================================================================
-
-@interface Notification : SPManagedObject
-
-@property (nonatomic, strong, nullable, readonly) NSString                          *icon;
-@property (nonatomic, strong, nullable, readonly) NSString                          *noticon;
-
-@property (nonatomic, strong, nullable, readwrite) NSNumber                         *read;
-@property (nonatomic, strong, nullable, readonly) NSString                          *timestamp;
-@property (nonatomic, strong, nullable, readonly) NSString                          *type;
-@property (nonatomic, strong, nullable, readonly) NSString                          *url;
-@property (nonatomic, strong, nullable, readonly) NSString                          *title;
-
-// Raw Properties
-@property (nonatomic, strong, nullable, readonly) NSArray                           *subject;
-@property (nonatomic, strong, nullable, readonly) NSArray                           *header;
-@property (nonatomic, strong, nullable, readonly) NSArray                           *body;
-@property (nonatomic, strong, nullable, readonly) NSDictionary                      *meta;
-
-// Derived Properties
-@property (nonatomic, strong, nullable, readonly) NotificationBlockGroup            *subjectBlockGroup;
-@property (nonatomic, strong, nullable, readonly) NotificationBlockGroup            *headerBlockGroup;
-@property (nonatomic, strong,  nonnull, readonly) NSArray<NotificationBlockGroup *> *bodyBlockGroups;
-@property (nonatomic, assign, nullable, readonly) NSNumber                          *metaSiteID;
-@property (nonatomic, assign, nullable, readonly) NSNumber                          *metaPostID;
-@property (nonatomic, strong, nullable, readonly) NSNumber                          *metaCommentID;
-@property (nonatomic, strong, nullable, readonly) NSNumber                          *metaReplyID;
-@property (nonatomic, strong, nullable, readonly) NSURL                             *iconURL;
-@property (nonatomic, strong,  nonnull, readonly) NSDate                            *timestampAsDate;
-
-@property (nonatomic, assign, readonly) BOOL                                        isMatcher;
-@property (nonatomic, assign, readonly) BOOL                                        isComment;
-@property (nonatomic, assign, readonly) BOOL                                        isPost;
-@property (nonatomic, assign, readonly) BOOL                                        isFollow;
-@property (nonatomic, assign, readonly) BOOL                                        isLike;
-@property (nonatomic, assign, readonly) BOOL                                        isCommentLike;
-@property (nonatomic, assign, readonly) BOOL                                        isBadge;
-@property (nonatomic, assign, readonly) BOOL                                        hasReply;
-
-// Helpers
-- (nullable NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
-- (nullable NotificationRange *)notificationRangeWithUrl:(nonnull NSURL *)url;
-
-- (nullable NotificationBlock *)subjectBlock;
-- (nullable NotificationBlock *)snippetBlock;
-
-- (BOOL)isUnapprovedComment;
-- (nullable NSURL *)resourceURL;
-
-@end
-
-
-#pragma mark ====================================================================================
 #pragma mark NotificationBlock
 #pragma mark ====================================================================================
 
@@ -131,6 +78,10 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 
 - (nullable NotificationBlock *)blockOfType:(NoteBlockType)type;
 - (nonnull NSSet<NSURL *> *)imageUrlsForBlocksOfTypes:(nonnull NSSet *)types;
+
+// TODO: Private once Swifted!
++ (nullable NSArray<NotificationBlockGroup *> *)blockGroupsFromArray:(nonnull NSArray *)rawBlocks
+                                                        notification:(nonnull Notification *)notification;
 
 @end
 
