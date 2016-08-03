@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,24 +15,24 @@
                     <rect key="frame" x="140" y="12" width="20" height="20"/>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AoX-vc-zrF">
-                    <rect key="frame" x="6" y="11" width="288" height="22"/>
+                    <rect key="frame" x="7" y="11" width="286" height="22"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBZ-lN-HGt">
-                            <rect key="frame" x="0.0" y="11" width="125" height="1"/>
+                            <rect key="frame" x="0.0" y="11" width="124" height="1"/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="gOn-eC-zhZ"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wKm-Mr-TCA">
-                            <rect key="frame" x="163" y="11" width="125" height="1"/>
+                            <rect key="frame" x="162" y="11" width="124" height="1"/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="k2g-PF-m8U"/>
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-list-footer" translatesAutoresizingMaskIntoConstraints="NO" id="2lx-TZ-H9w">
-                            <rect key="frame" x="133" y="0.0" width="22" height="22"/>
+                            <rect key="frame" x="132" y="0.0" width="22" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="22" id="3hc-zb-3fV"/>
                                 <constraint firstAttribute="height" constant="22" id="cJ3-uM-7zP"/>
@@ -55,19 +56,31 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="AoX-vc-zrF" secondAttribute="bottom" constant="11" id="CZF-8o-geK"/>
-                <constraint firstAttribute="trailing" secondItem="AoX-vc-zrF" secondAttribute="trailing" constant="6" id="ciu-4z-aHt">
-                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
-                </constraint>
+                <constraint firstAttribute="trailing" secondItem="AoX-vc-zrF" secondAttribute="trailing" constant="7" id="ciu-4z-aHt"/>
                 <constraint firstItem="F4q-47-pPM" firstAttribute="centerX" secondItem="AoX-vc-zrF" secondAttribute="centerX" id="oYN-Kz-3Zu"/>
-                <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leading" constant="6" id="znD-ba-XuU">
-                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
-                </constraint>
+                <constraint firstAttribute="trailingMargin" secondItem="AoX-vc-zrF" secondAttribute="trailing" id="s16-Gc-tvU"/>
+                <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leadingMargin" id="yzD-7E-gw6"/>
+                <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leading" constant="7" id="znD-ba-XuU"/>
                 <constraint firstItem="F4q-47-pPM" firstAttribute="centerY" secondItem="AoX-vc-zrF" secondAttribute="centerY" id="zvW-CV-pmP"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="s16-Gc-tvU"/>
+                    <exclude reference="yzD-7E-gw6"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
+                <mask key="constraints">
+                    <exclude reference="ciu-4z-aHt"/>
+                    <include reference="s16-Gc-tvU"/>
+                    <include reference="yzD-7E-gw6"/>
+                    <exclude reference="znD-ba-XuU"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="activityView" destination="F4q-47-pPM" id="zVo-Q1-ggr"/>
                 <outlet property="bannerView" destination="AoX-vc-zrF" id="hSc-aF-tjn"/>
