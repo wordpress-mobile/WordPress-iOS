@@ -44,7 +44,7 @@ extension UITableView
     ///
     /// -   Parameter delay: milliseconds to elapse before edition will be disabled.
     ///
-    public func disableEditionAfterDelay(delay: NSTimeInterval = 0.2) {
+    public func disableEditionAfterDelay(delay: NSTimeInterval = defaultDelay) {
         let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
         dispatch_after(delay, dispatch_get_main_queue()) { [weak self] in
             if self?.editing == true {
@@ -52,4 +52,8 @@ extension UITableView
             }
         }
     }
+
+    /// Default Disable Edition Action Delay
+    ///
+    private static let defaultDelay = NSTimeInterval(0.2)
 }
