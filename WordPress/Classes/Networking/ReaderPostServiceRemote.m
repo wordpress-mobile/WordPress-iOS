@@ -991,17 +991,17 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
     NSMutableString *mcontent = [content mutableCopy];
 
-    static NSRegularExpression *regexTiledGalleryDivs;
+    static NSRegularExpression *regexGalleryImages;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        regexTiledGalleryDivs = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*\\/>" options:NSRegularExpressionCaseInsensitive error:nil];
+        regexGalleryImages = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*\\/>" options:NSRegularExpressionCaseInsensitive error:nil];
     });
 
     CGSize imageSize = [UIApplication  sharedApplication].keyWindow.frame.size;
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
 
-    NSArray *matches = [regexTiledGalleryDivs matchesInString:mcontent options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mcontent length])];
+    NSArray *matches = [regexGalleryImages matchesInString:mcontent options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mcontent length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSString *imageElementString = [mcontent substringWithRange:match.range];
         NSString *srcImageURLString = [self parseValueForAttributeNamed:@"src" inElement:imageElementString];
