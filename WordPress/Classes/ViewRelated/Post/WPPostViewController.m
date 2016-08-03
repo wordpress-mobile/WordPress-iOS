@@ -1273,7 +1273,10 @@ EditImageDetailsViewControllerDelegate
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         
-        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(sharePost)];
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image target:self selector:@selector(sharePost)];
+        button.rightSpacing = RightSpacingOnExitNavbarButton;
+        
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _shareBarButtonItem.accessibilityLabel = title;
         _shareBarButtonItem.accessibilityIdentifier = title;
     }
