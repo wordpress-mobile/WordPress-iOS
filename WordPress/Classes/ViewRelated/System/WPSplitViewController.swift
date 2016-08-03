@@ -23,6 +23,9 @@ class WPSplitViewController: UISplitViewController {
             }
         }
     }
+
+    // MARK: View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,6 +55,10 @@ class WPSplitViewController: UISplitViewController {
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        coordinator.animateAlongsideTransition({ context in
+            self.updateDimmingViewFrame()
+        }, completion: nil)
 
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
         if let _ = overriddenTraitCollectionForDetailViewController,
@@ -88,18 +95,7 @@ class WPSplitViewController: UISplitViewController {
         return  UITraitCollection(traitsFromCollections: [detailViewController.traitCollection, UITraitCollection(horizontalSizeClass: .Compact)])
     }
 
-    override func showDetailViewController(vc: UIViewController, sender: AnyObject?) {
-        var detailVC = vc
-
-        // Ensure that detail view controllers are wrapped in a navigation controller
-        // when the split is not collapsed
-        if !collapsed {
-            detailVC = wrapViewControllerInNavigationControllerIfRequired(vc)
-        }
-
-        super.showDetailViewController(detailVC, sender: self)
-    }
-
+    // MARK: - Dimming support
 
     private lazy var dimmingView: UIView = {
         let dimmingView = UIView()
@@ -115,12 +111,11 @@ class WPSplitViewController: UISplitViewController {
     private let dimmingViewAlpha: CGFloat = 0.5
     private let dimmingViewAnimationDuration: NSTimeInterval = 0.3
 
-    private func dimViewController(viewController: UIViewController, dimmed: Bool) {
+    private func dimDetailViewController(dimmed: Bool) {
         if dimmed {
-            if let view = viewController.view {
-                dimmingView.translatesAutoresizingMaskIntoConstraints = false
+            if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
-                view.pinSubviewToAllEdges(dimmingView)
+                updateDimmingViewFrame()
                 dimmingView.alpha = 0
                 UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
                     self.dimmingView.alpha = self.dimmingViewAlpha
@@ -135,10 +130,24 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
-    private func dimDetailViewController(dimmed: Bool) {
-        if let detailViewController = viewControllers.last {
-            dimViewController(detailViewController, dimmed: dimmed)
+    private func updateDimmingViewFrame() {
+        if let detailView = viewControllers.last?.view where dimmingView.superview != nil {
+            dimmingView.frame = detailView.frame
         }
+    }
+
+    // MARK: - Detail view controller management
+
+    override func showDetailViewController(vc: UIViewController, sender: AnyObject?) {
+        var detailVC = vc
+
+        // Ensure that detail view controllers are wrapped in a navigation controller
+        // when the split is not collapsed
+        if !collapsed {
+            detailVC = wrapViewControllerInNavigationControllerIfRequired(vc)
+        }
+
+        super.showDetailViewController(detailVC, sender: self)
     }
 
     /** Sets the primary view controller of the split view as specified, and
