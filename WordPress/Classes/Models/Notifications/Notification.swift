@@ -9,11 +9,30 @@ import Simperium
 @objc(Notification)
 class Notification: SPManagedObject
 {
+    ///
+    ///
+    private var cachedTimestampAsDate: NSDate?
+
+    ///
+    ///
+    private var cachedSubjectBlockGroup: NotificationBlockGroup?
+
+    ///
+    ///
+    private var cachedHeaderBlockGroup: NotificationBlockGroup?
+
+    ///
+    ///
+    private var cachedBodyBlockGroups: [NotificationBlockGroup]?
+
+
+    ///
+    ///
     override func didTurnIntoFault() {
-        //        timestampAsDate     = nil
-        //        subjectBlockGroup   = nil
-        //        headerBlockGroup    = nil
-        //        bodyBlockGroups     = []
+        cachedTimestampAsDate = nil
+        cachedSubjectBlockGroup = nil
+        cachedHeaderBlockGroup = nil
+        cachedBodyBlockGroups = nil
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
@@ -187,7 +206,6 @@ extension Notification
         return metaIds?[MetaKeys.Site] as? NSNumber
     }
 
-// CACHE PLEASE
     ///
     ///
     var iconURL: NSURL? {
@@ -208,48 +226,55 @@ extension Notification
         return resourceURL
     }
 
-
     /// If, for whatever reason, the date cannot be parsed, make sure we always return a date.
     ///
     var timestampAsDate: NSDate {
         assert(timestamp != nil, "Notification Timestamp should not be nil [\(simperiumKey)]")
 
-        guard let timestamp = timestamp, let date = NSDate.dateWithISO8601String(timestamp) else {
+        if let timestampAsDate = cachedTimestampAsDate {
+            return timestampAsDate
+        }
+        guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
             DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(simperiumKey)]")
             return NSDate()
         }
 
-        return date
+        cachedTimestampAsDate = timestampAsDate
+        return timestampAsDate
     }
 
     ///
     ///
     var subjectBlockGroup: NotificationBlockGroup? {
-        guard let subject = subject, let groups = NotificationBlockGroup.blockGroupsFromArray(subject, notification: self) else {
-            return nil
+        if let subjectBlockGroup = cachedSubjectBlockGroup {
+            return subjectBlockGroup
         }
 
-        return groups.first
+        cachedSubjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, notification: self)
+        return cachedSubjectBlockGroup
     }
 
     ///
     ///
     var headerBlockGroup: NotificationBlockGroup? {
-        guard let header = header, let groups = NotificationBlockGroup.blockGroupsFromArray(header, notification: self) else {
-            return nil
+        if let headerBlockGroup = cachedHeaderBlockGroup {
+            return headerBlockGroup
         }
 
-        return groups.first
+        cachedHeaderBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, notification: self)
+        return cachedHeaderBlockGroup
     }
 
     ///
     ///
     var bodyBlockGroups: [NotificationBlockGroup] {
-        guard let body = body, let groups = NotificationBlockGroup.blockGroupsFromArray(body, notification: self) else {
-            return []
+        if let bodyBlockGroups = cachedBodyBlockGroups {
+            return bodyBlockGroups
         }
 
-        return groups
+        let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, notification: self)
+        cachedBodyBlockGroups = bodyBlockGroups
+        return bodyBlockGroups
     }
 
     ///
