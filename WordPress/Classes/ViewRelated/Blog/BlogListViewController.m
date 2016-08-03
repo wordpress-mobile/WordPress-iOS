@@ -159,15 +159,7 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
     [self syncBlogs];
 
-    if (self.splitViewControllerIsHorizontallyCompact) {
-        [self.tableView deselectSelectedRowWithAnimation:YES];
-    } else if (self.selectedBlog) {
-        NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
-        if (blogIndex != NSNotFound) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
-    }
+    [self updateCurrentBlogSelection];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -188,7 +180,9 @@ static NSInteger HideSearchMinSites = 3;
             // this forces the tableHeaderView to resize
             self.tableView.tableHeaderView = self.headerView;
         }
-    } completion:nil];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateCurrentBlogSelection];
+    }];
 }
 
 - (NSUInteger)numSites
@@ -292,6 +286,21 @@ static NSInteger HideSearchMinSites = 3;
 - (void)selectFirstSite
 {
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
+- (void)updateCurrentBlogSelection
+{
+    if (self.splitViewControllerIsHorizontallyCompact) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    } else {
+        if (self.selectedBlog) {
+            NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
+            if (blogIndex != NSNotFound) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
+                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            }
+        }
+    }
 }
 
 #pragma mark - Configuration
