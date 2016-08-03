@@ -155,8 +155,8 @@ class NotificationDetailsViewController: UIViewController
 
 
 
-/// State Restoration
-///
+// MARK: - State Restoration
+//
 extension NotificationDetailsViewController: UIViewControllerRestoration
 {
     class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
@@ -190,8 +190,8 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
 
 
 
-/// UITableView Methods
-///
+// MARK: - UITableView Methods
+//
 extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource
 {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
