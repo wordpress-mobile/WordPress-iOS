@@ -337,6 +337,12 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
+
+        // If we're not following any sites, reload the table view to ensure the
+        // section header is no longer showing.
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            tableView.reloadData()
+        }
     }
 
 }
