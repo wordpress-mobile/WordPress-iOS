@@ -33,7 +33,8 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDataSource,
                                         NSFetchedResultsControllerDelegate,
                                         UISearchResultsUpdating,
-                                        UISearchControllerDelegate>
+                                        UISearchControllerDelegate,
+                                        WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UITableView *tableView;
@@ -842,6 +843,11 @@ static NSInteger HideSearchMinSites = 3;
     [self.tableView reloadData];
     [self updateEditButton];
     [self maybeShowNUX];
+}
+
+- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
+{
+    return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
 }
 
 @end
