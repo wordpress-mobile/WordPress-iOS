@@ -7,6 +7,7 @@
 #import "ReaderTopicServiceRemote.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+#import "PhotonImageURLHelper.h"
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -697,7 +698,9 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)postContentFromPostDictionary:(NSDictionary *)dict {
     NSString *content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
-    return [self formatContent:content];
+    BOOL isPrivateSite = [self siteIsPrivateFromPostDictionary:dict];
+
+    return [self formatContent:content forPrivateSite:isPrivateSite];
 }
 
 /**
@@ -780,7 +783,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  @param content The post content as a string.
  @return The formatted content.
  */
-- (NSString *)formatContent:(NSString *)content
+- (NSString *)formatContent:(NSString *)content forPrivateSite:(BOOL)isPrivateSite
 {
     if ([self containsVideoPress:content]) {
         content = [self formatVideoPress:content];
@@ -788,6 +791,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
     content = [content stringByReplacingHTMLEmoticonsWithEmoji];
+    content = [self fixImageURLsForContent:content isPrivateSite:isPrivateSite];
 
     return content;
 }
@@ -977,6 +981,42 @@ static const NSUInteger ReaderPostTitleLength = 30;
     }
 
     return mstr;
+}
+
+- (NSString *)fixImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite
+{
+    NSMutableString *mcontent = [content mutableCopy];
+
+    static NSRegularExpression *regexTiledGalleryDivs;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        regexTiledGalleryDivs = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*\\/>" options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+
+    CGSize imageSize = [UIApplication  sharedApplication].keyWindow.frame.size;
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
+
+    NSArray *matches = [regexTiledGalleryDivs matchesInString:mcontent options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mcontent length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        NSString *imageElementString = [mcontent substringWithRange:match.range];
+        NSString *srcImageURLString = [self parseValueForAttributeNamed:@"src" inElement:imageElementString];
+        NSString *originalImageURLString = [self parseValueForAttributeNamed:@"data-orig-file" inElement:imageElementString];
+        NSURL *originalURL = [NSURL URLWithString:originalImageURLString];
+        NSURL *modifiedURL;
+
+        if (isPrivateSite) {
+            modifiedURL = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:originalURL];
+        } else {
+            modifiedURL = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:originalURL];
+        }
+
+        [mcontent replaceOccurrencesOfString:srcImageURLString withString:modifiedURL.absoluteString options:NSLiteralSearch range:NSRangeFromString(mcontent)];
+
+        NSLog(@"Original: %@ Modified: %@", originalURL, modifiedURL);
+    }
+
+    return mcontent;
 }
 
 - (NSString *)parseValueForAttributeNamed:(NSString *)attribute inElement:(NSString *)element
