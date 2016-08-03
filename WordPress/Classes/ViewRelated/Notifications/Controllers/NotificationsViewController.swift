@@ -681,12 +681,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     func predicateForSelectedFilters() -> NSPredicate {
+        typealias Kind = Notification.Kind
         let filtersMap: [Filter: String] = [
             .None       : "",
             .Unread     : " AND (read = NO)",
-            .Comment    : " AND (type = '\(NoteTypeComment)')",
-            .Follow     : " AND (type = '\(NoteTypeFollow)')",
-            .Like       : " AND (type = '\(NoteTypeLike)' OR type = '\(NoteTypeCommentLike)')"
+            .Comment    : " AND (type = '\(Kind.Comment.toTypeValue)')",
+            .Follow     : " AND (type = '\(Kind.Follow.toTypeValue)')",
+            .Like       : " AND (type = '\(Kind.Like.toTypeValue)' OR type = '\(Kind.CommentLike.toTypeValue)')"
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
