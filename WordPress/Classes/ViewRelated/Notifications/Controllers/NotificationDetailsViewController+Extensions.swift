@@ -777,7 +777,7 @@ extension NotificationDetailsViewController
     }
 
     func displayNotificationSource() {
-        guard let type = note.type, let resourceURL = note.resourceURL() else {
+        guard let type = note.type, let resourceURL = note.resourceURL else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
