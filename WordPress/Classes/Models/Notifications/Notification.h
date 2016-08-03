@@ -71,8 +71,9 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 - (nonnull NSSet<NSURL *> *)imageUrlsForBlocksOfTypes:(nonnull NSSet *)types;
 
 // TODO: Private once Swifted!
-+ (nullable NSArray<NotificationBlockGroup *> *)blockGroupsFromArray:(nonnull NSArray *)rawBlocks
-                                                        notification:(nonnull Notification *)notification;
++ (nullable NotificationBlockGroup *)subjectGroupFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
++ (nullable NotificationBlockGroup *)headerGroupFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
++ (nonnull NSArray<NotificationBlockGroup *> *)bodyGroupsFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
 
 @end
 
