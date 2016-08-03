@@ -186,6 +186,18 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
+    // Mark - Layout Methods
+
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        // Need to reload the table alongside a traitCollection change.
+        // This is mainly because we target Reg W and Any H vs all other size classes.
+        // If we transition between the two, the tableView may not update the cell heights accordingly.
+        // Brent C. Aug 3/2016
+        coordinator.animateAlongsideTransition({ context in
+            self.tableView.reloadData()
+            }, completion: nil)
+    }
+
     // MARK: - Sync Methods
 
     override func postTypeToSync() -> String {
