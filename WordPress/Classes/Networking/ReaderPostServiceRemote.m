@@ -791,7 +791,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
     content = [content stringByReplacingHTMLEmoticonsWithEmoji];
-    content = [self fixImageURLsForContent:content isPrivateSite:isPrivateSite];
+    content = [self resizeGalleryImageURLsForContent:content isPrivateSite:isPrivateSite];
 
     return content;
 }
@@ -983,7 +983,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     return mstr;
 }
 
-- (NSString *)fixImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite
+- (NSString *)resizeGalleryImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite
 {
     NSMutableString *mcontent = [content mutableCopy];
 
@@ -1011,7 +1011,10 @@ static const NSUInteger ReaderPostTitleLength = 30;
             modifiedURL = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:originalURL];
         }
 
-        [mcontent replaceOccurrencesOfString:srcImageURLString withString:modifiedURL.absoluteString options:NSLiteralSearch range:NSRangeFromString(mcontent)];
+        [mcontent replaceOccurrencesOfString:srcImageURLString
+                                  withString:modifiedURL.absoluteString
+                                     options:NSLiteralSearch
+                                       range:NSMakeRange(0, mcontent.length)];
 
         NSLog(@"Original: %@ Modified: %@", originalURL, modifiedURL);
     }
