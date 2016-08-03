@@ -12,15 +12,6 @@
 
 extern NSString * __nonnull NoteMediaTypeImage;
 
-extern NSString * __nonnull NoteTypeUser;
-extern NSString * __nonnull NoteTypeComment;
-extern NSString * __nonnull NoteTypeMatcher;
-extern NSString * __nonnull NoteTypePost;
-extern NSString * __nonnull NoteTypeFollow;
-extern NSString * __nonnull NoteTypeLike;
-extern NSString * __nonnull NoteTypeCommentLike;
-
-
 typedef NS_ENUM(NSInteger, NoteBlockType)
 {
     NoteBlockTypeText,
