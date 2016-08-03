@@ -700,7 +700,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSString *content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
     BOOL isPrivateSite = [self siteIsPrivateFromPostDictionary:dict];
 
-    return [self formatContent:content forPrivateSite:isPrivateSite];
+    return [self formatContent:content isPrivateSite:isPrivateSite];
 }
 
 /**
@@ -783,7 +783,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  @param content The post content as a string.
  @return The formatted content.
  */
-- (NSString *)formatContent:(NSString *)content forPrivateSite:(BOOL)isPrivateSite
+- (NSString *)formatContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite
 {
     if ([self containsVideoPress:content]) {
         content = [self formatVideoPress:content];
