@@ -319,7 +319,10 @@
 {
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(sharePost)];
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(sharePost)];
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
         _shareBarButtonItem.accessibilityLabel = title;
         _shareBarButtonItem.accessibilityIdentifier = @"Share";
