@@ -985,6 +985,10 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (NSString *)resizeGalleryImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite
 {
+    if (!content) {
+        return @"";
+    }
+
     NSMutableString *mcontent = [content mutableCopy];
 
     static NSRegularExpression *regexTiledGalleryDivs;
