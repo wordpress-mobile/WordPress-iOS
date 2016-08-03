@@ -147,7 +147,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Rebuild!
         setupDefaultsSection()
 
-        if ReaderHelpers.isLoggedIn() {
+        if ReaderHelpers.isLoggedIn() && listsFetchedResultsController.fetchedObjects?.count > 0 {
             setupListsSection()
         }
 
