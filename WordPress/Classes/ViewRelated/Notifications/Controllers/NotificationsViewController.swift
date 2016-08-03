@@ -966,14 +966,23 @@ extension NotificationsViewController: ABXPromptViewDelegate
 
 // MARK: - Private Properties
 //
-private extension NotificationsViewController
+// TODO: This should be Private once +RowActions has been merged in
+extension NotificationsViewController
 {
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
+    var mainContext: NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+
     var notesBucket: SPBucket {
         return simperium.bucketForName(entityName())
+    }
+
+    var actionsService: NotificationActionsService {
+        return NotificationActionsService(managedObjectContext: mainContext)
     }
 
     enum Filter: Int {
