@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WPButtonForNavigationBar.h"
 
 @interface WPStyleGuide (Posts)
 
@@ -44,6 +45,14 @@
 
 
 + (CGRect)navigationBarButtonRect;
+
++ (CGFloat)spacingBetweeenNavbarButtons;
+
++ (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
+                                            target:(id)target
+                                          selector:(SEL)selector;
+
+
 #pragma mark - Pages
 
 + (void)applyPageTitleStyle:(UILabel *)label;
