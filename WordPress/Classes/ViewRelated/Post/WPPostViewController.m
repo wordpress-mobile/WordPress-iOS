@@ -25,6 +25,7 @@
 #import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 #import "WordPressAppDelegate.h"
+#import "WPButtonForNavigationBar.h"
 #import "WPBlogSelectorButton.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
@@ -1168,8 +1169,17 @@ EditImageDetailsViewControllerDelegate
     UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    _cancelChevronButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-    _cancelChevronButton.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
+
+    cancelButton.leftSpacing = 0;
+    cancelButton.rightSpacing = 0;
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
+    _cancelChevronButton = button;
+
     return _cancelChevronButton;
 }
 
@@ -1180,9 +1190,15 @@ EditImageDetailsViewControllerDelegate
     }
     
     UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
-    
-    _cancelXButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-    _cancelXButton.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
+    WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
+
+    cancelButton.leftSpacing = 0;
+    cancelButton.rightSpacing = 0;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    _cancelXButton = button;
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
 	return _cancelXButton;
 }
 
