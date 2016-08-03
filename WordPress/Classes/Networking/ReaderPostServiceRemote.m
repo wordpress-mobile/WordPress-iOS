@@ -1015,8 +1015,6 @@ static const NSUInteger ReaderPostTitleLength = 30;
                                   withString:modifiedURL.absoluteString
                                      options:NSLiteralSearch
                                        range:NSMakeRange(0, mcontent.length)];
-
-        NSLog(@"Original: %@ Modified: %@", originalURL, modifiedURL);
     }
 
     return mcontent;
