@@ -82,26 +82,26 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
 
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;
-    
+
     // add a bit of padding to the scrollable content
     self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, 10, 0);
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    
+
     self.headerViewController.delegate = self;
     self.detailsViewController.delegate = self;
     self.itemsViewController.delegate = self;
-    
+
     [self setupSaveButtonItem];
     [self setupLoadingView];
     [self setupItemsLoadingLabel];
-    
+
     [self syncWithBlogMenus];
 }
 
@@ -136,7 +136,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [super prepareForSegue:segue sender:sender];
-    
+
     if ([segue.destinationViewController isKindOfClass:[MenuHeaderViewController class]]) {
         _headerViewController = segue.destinationViewController;
     } else if ([segue.destinationViewController isKindOfClass:[MenuItemsViewController class]]) {
@@ -149,16 +149,16 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
+
     [self updateScrollViewContentSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     self.animatesAppearanceAfterSync = YES;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -174,7 +174,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -191,7 +191,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     if (_selectedMenuLocation != selectedMenuLocation) {
         _selectedMenuLocation = selectedMenuLocation;
-        
+
         // Update the default menu option.
         Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
         if ([self defaultMenuEnabledForSelectedLocation]) {
@@ -202,7 +202,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
             defaultMenu.name = NSLocalizedString(@"No Menu", @"Menus selection title for setting a location to not use a menu.");
         }
         [self.headerViewController refreshMenuViewsUsingMenu:defaultMenu];
-        
+
         [self.headerViewController setSelectedLocation:selectedMenuLocation];
         [self.headerViewController setSelectedMenu:selectedMenuLocation.menu];
         [self setViewsWithMenu:selectedMenuLocation.menu];
@@ -249,13 +249,13 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         self.loadingView.titleText = NSLocalizedString(@"No menus available", @"Menus text shown when no menus were available for loading the Menus editor.");
         return;
     }
-    
+
     [self.loadingView removeFromSuperview];
 
     self.headerViewController.blog = self.blog;
     MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
     self.selectedMenuLocation = selectedLocation;
-        
+
     if (!self.animatesAppearanceAfterSync) {
         self.scrollView.alpha = 1.0;
     } else {
@@ -278,32 +278,32 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)createMenu
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusCreatedMenu withBlog:self.blog];
-    
+
     Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
     newMenu.blog = self.blog;
     newMenu.name = [self generateIncrementalMenuName];
     self.selectedMenuLocation.menu = newMenu;
-    
+
     [self.headerViewController addMenu:newMenu];
     [self.headerViewController setSelectedMenu:newMenu];
     [self setViewsWithMenu:newMenu];
-    
+
     [self setNeedsSave:YES forMenu:newMenu significantChanges:YES];
 }
 
 - (void)deleteMenu:(Menu *)menu
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusDeletedMenu withBlog:self.blog];
-    
+
     __weak __typeof(self) weakSelf = self;
-    
+
     Menu *defaultMenu =[Menu defaultMenuForBlog:self.blog];
     self.selectedMenuLocation.menu = defaultMenu;
     [self.headerViewController setSelectedMenu:defaultMenu];
     [self setViewsWithMenu:defaultMenu];
-    
+
     [self.headerViewController removeMenu:menu];
-    
+
     [self.menusService deleteMenu:menu
                           forBlog:self.blog
                           success:^{
@@ -322,16 +322,16 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     Menu *menu = self.selectedMenuLocation.menu;
     if (menu.items.count == 0) {
-        
+
         self.itemsLoadingLabel.text = NSLocalizedString(@"Loading menu...", @"Menus label text displayed when a menu is loading.");
         self.itemsLoadingLabel.hidden = NO;
-        
+
         __weak __typeof__(self) weakSelf = self;
         __weak __typeof__(menu) weakMenu = menu;
 
         void(^successBlock)(NSArray<MenuItem *> *) = ^(NSArray<MenuItem *> *defaultItems) {
             weakSelf.itemsLoadingLabel.hidden = YES;
-            
+
             BOOL menuEqualToSelectedMenu = weakSelf.selectedMenuLocation.menu == weakMenu;
             if (defaultItems.count) {
                 NSOrderedSet *items = [NSOrderedSet orderedSetWithArray:defaultItems];
@@ -347,7 +347,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
             }
         };
         void(^failureBlock)(NSError *) = ^(NSError *error) {
-            weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, pelase check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
+            weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, please check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
         };
         [self.menusService generateDefaultMenuItemsForBlog:self.blog
                                                    success:successBlock
@@ -364,9 +364,9 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         item.name = [MenuItem defaultItemNameLocalized];
         item.type = MenuItemTypePage;
         item.menu = menu;
-        
+
         [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
-        
+
         self.itemsViewController.menu = nil;
         self.itemsViewController.menu = menu;
     }
@@ -405,22 +405,22 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     if (_needsSave != needsSave) {
         _needsSave = needsSave;
-        
+
         self.saveButtonItem.enabled = needsSave;
-        
+
         if (needsSave) {
-            
+
             [self.blog.managedObjectContext.undoManager beginUndoGrouping];
-            
+
             NSString *title = NSLocalizedString(@"Discard", @"Menus button title for cancelling/discarding changes made.");
             UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(discardChangesBarButtonItemPressed:)];
             [self.navigationItem setLeftBarButtonItem:button animated:YES];
             [self.navigationItem setHidesBackButton:YES animated:YES];
-            
+
         } else {
-            
+
             [self.blog.managedObjectContext.undoManager endUndoGrouping];
-            
+
             [self.navigationItem setLeftBarButtonItem:nil animated:YES];
             [self.navigationItem setHidesBackButton:NO animated:YES];
         }
@@ -445,11 +445,11 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     // Clear saving/changes states.
     [self setNeedsSave:NO forMenu:nil significantChanges:NO];
-    
+
     // Trigger the undo.
     [self.blog.managedObjectContext.undoManager undo];
     [self reloadMenusViews];
-    
+
     // Restore the top offset.
     CGPoint offset = self.scrollView.contentOffset;
     offset.y = 0;
@@ -476,7 +476,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
         [numberScanner scanUpToCharactersFromSet:characterSet intoString:NULL];
         [numberScanner scanCharactersFromSet:characterSet intoString:&nameNumberStr];
-        
+
         if ([nameNumberStr integerValue] > highestInteger) {
             highestInteger = [nameNumberStr integerValue];
         }
@@ -530,15 +530,15 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [WPAppAnalytics track:WPAnalyticsStatMenusSavedMenu withBlog:self.blog];
 
     [self.detailsViewController resignFirstResponder];
-    
+
     // Buckle up, we gotta save this Menu!
     Menu *menuToSave = self.updatedMenuForSaving ?: self.selectedMenuLocation.menu;
-    
+
     BOOL defaultMenuEnabled = [self defaultMenuEnabledForSelectedLocation];
-    
+
     // Check if user is trying to save the Default Menu and made changes to it.
     if ([menuToSave isDefaultMenu] && defaultMenuEnabled && self.hasMadeSignificantMenuChanges) {
-        
+
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
         newMenu.blog = self.blog;
@@ -548,24 +548,24 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         } else {
             newMenu.name = menuToSave.name;
         }
-        
+
         Menu *defaultMenu = menuToSave;
         // We'll save the newMenu instead.
         menuToSave = newMenu;
         // Use the items the user customized on the Default Menu as the items on the newMenu to save.
         menuToSave.items = defaultMenu.items;
-        
+
         // Reset the Default Menu.
         defaultMenu.items = nil;
         defaultMenu.name = [Menu defaultMenuName];
-        
+
         // Add and select the new Menu in the UI.
         self.selectedMenuLocation.menu = menuToSave;
         [self.headerViewController addMenu:menuToSave];
         [self.headerViewController setSelectedMenu:menuToSave];
         [self setViewsWithMenu:menuToSave];
     }
-    
+
     self.isSaving = YES;
 
     __weak __typeof(self) weakSelf = self;
@@ -593,7 +593,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         // Ignore, already selected this location.
         return;
     }
-    
+
     if (self.needsSave) {
         [self promptForDiscardingChangesBeforeSelectingADifferentLocation:^{
             [self discardAllChanges];
@@ -612,12 +612,12 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     }
 
     if (self.needsSave && self.hasMadeSignificantMenuChanges) {
-        
+
         [self promptForDiscardingChangesBeforeSelectingADifferentMenu:^{
             [self discardAllChanges];
             [self setSelectedMenu:menu];
         } cancellation:nil];
-        
+
     } else {
         [self setSelectedMenu:menu];
     }
@@ -626,12 +626,12 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)headerViewControllerSelectedForCreatingNewMenu:(MenuHeaderViewController *)headerView
 {
     if (self.needsSave && self.hasMadeSignificantMenuChanges) {
-        
+
         [self promptForDiscardingChangesBeforeCreatingNewMenu:^{
             [self discardAllChanges];
             [self createMenu];
         } cancellation:nil];
-        
+
     } else {
         [self createMenu];
     }
@@ -646,10 +646,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 }
 
 - (void)detailsViewControllerSelectedToDeleteMenu:(MenuDetailsViewController *)detailsViewController
-{    
+{
     __weak __typeof(self) weakSelf = self;
     Menu *menuToDelete = detailsViewController.menu;
-    
+
     NSString *alertTitle = NSLocalizedString(@"Are you sure you want to delete the menu?", @"Menus confirmation text for confirming if a user wants to delete a menu.");
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
                                                                              message:nil
@@ -710,24 +710,24 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     // adjust the scrollView offset to ensure this view is easily viewable
     CGRect viewRectWithinScrollViewWindow = [self.scrollView.window convertRect:view.frame fromView:view.superview];
     CGRect visibleContentRect = [self.scrollView.window convertRect:self.scrollView.frame fromView:self.view];
-    
+
     CGPoint offset = self.scrollView.contentOffset;
-    
+
     visibleContentRect.origin.y += offset.y;
     viewRectWithinScrollViewWindow.origin.y += offset.y;
-    
+
     BOOL updated = NO;
-    
+
     if (viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + ScrollViewOffsetAdjustmentPadding) {
-        
+
         offset.y -= viewRectWithinScrollViewWindow.size.height;
         updated = YES;
-        
+
     } else  if (viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - ScrollViewOffsetAdjustmentPadding) {
         offset.y += viewRectWithinScrollViewWindow.size.height;
         updated = YES;
     }
-    
+
     if (updated) {
         [UIView animateWithDuration:0.25 animations:^{
             self.scrollView.contentOffset = offset;
@@ -755,7 +755,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu location.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
+
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
                                  handler:^(UIAlertAction * _Nonnull action) {
@@ -763,7 +763,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                          confirmationBlock();
                                      }
                                  }];
-    
+
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu location");
     [alert addCancelActionWithTitle:cancelTitle
                             handler:^(UIAlertAction * _Nonnull action) {
@@ -771,7 +771,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                     cancellationBlock();
                                 }
                             }];
-    
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -781,7 +781,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
+
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
                                  handler:^(UIAlertAction * _Nonnull action) {
@@ -789,7 +789,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                          confirmationBlock();
                                      }
                                  }];
-    
+
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu");
     [alert addCancelActionWithTitle:cancelTitle
                             handler:^(UIAlertAction * _Nonnull action) {
@@ -797,7 +797,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                     cancellationBlock();
                                 }
                             }];
-    
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -807,7 +807,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to create a new menu.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
+
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
                                  handler:^(UIAlertAction * _Nonnull action) {
@@ -815,7 +815,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                          confirmationBlock();
                                      }
                                  }];
-    
+
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not createa a new menu.");
     [alert addCancelActionWithTitle:cancelTitle
                             handler:^(UIAlertAction * _Nonnull action) {
@@ -823,7 +823,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                     cancellationBlock();
                                 }
                             }];
-    
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -833,7 +833,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
+
     NSString *confirmationTitle = NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
                                  handler:^(UIAlertAction * _Nonnull action) {
@@ -841,7 +841,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                          confirmationBlock();
                                      }
                                  }];
-    
+
     NSString *cancelTitle = NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.");
     [alert addCancelActionWithTitle:cancelTitle
                             handler:^(UIAlertAction * _Nonnull action) {
@@ -849,7 +849,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                     cancellationBlock();
                                 }
                             }];
-    
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -859,10 +859,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     frame = [self.view.window convertRect:frame toView:self.view];
-    
+
     UIEdgeInsets inset = self.scrollView.contentInset;
     UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
-    
+
     if (frame.origin.y > self.view.frame.size.height) {
         inset.bottom = 0.0;
         scrollInset.bottom = 0.0;
@@ -878,7 +878,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)keyboardWillHideNotification:(NSNotification *)notification
 {
     self.observesKeyboardChanges = NO;
-    
+
     UIEdgeInsets inset = self.scrollView.contentInset;
     UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
     inset.bottom = 0;
