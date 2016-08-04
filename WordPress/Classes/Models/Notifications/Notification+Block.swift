@@ -2,22 +2,22 @@ import Foundation
 
 
 
-//@interface NotificationBlock (Internals)
 //
-// Dynamic Attribute Cache: used internally by the Interface Extension, as an optimization.
-// - (void)setCacheValue:(id)value forKey:(NSString *)key;
-//- (id)cacheValueForKey:(NSString *)key;
 //
-
 extension Notification
 {
     class Block
     {
         ///
         ///
+        typealias MetaKeys  = Notification.MetaKeys
+        typealias BlockKeys = Notification.BlockKeys
+
+        ///
+        ///
         enum Kind {
             case Text
-            case Image  // BlockTypesImage: Includes Badges and Images
+            case Image      // Includes Badges and Images
             case User
             case Comment
         }
@@ -32,33 +32,27 @@ extension Notification
             case Reply
             case Approve
             case Edit
+
+            var toString: String {
+                switch self {
+                case Follow:    return "follow"
+                case Like:      return "like-comment"
+                case Spam:      return "spam-comment"
+                case Trash:     return "trash-comment"
+                case Reply:     return "replyto-comment"
+                case Approve:   return "approve-comment"
+                case Edit:      return "approve-comment"
+                }
+            }
         }
-
-
-        ///
-        ///
-        private(set) var text: String?
-
-        ///
-        ///
-        private(set) var ranges: [NotificationRange]
-
-        ///
-        ///
-        private(set) var media: [NotificationMedia]
-
-        ///
-        ///
-        private(set) var meta: [String: AnyObject]
-
-        ///
-        ///
-        private(set) var actions: [String: AnyObject]
 
         ///
         ///
         private(set) var kind: Kind
 
+        ///
+        ///
+        private(set) var text: String?
 
         ///
         ///
@@ -70,228 +64,229 @@ extension Notification
 
         ///
         ///
+        private(set) var actions: [String: AnyObject]?
+
+        ///
+        ///
+        private var actionsOverride = [Action: Bool]()
+
+        ///
+        ///
+        private(set) var media: [NotificationMedia]
+
+        ///
+        ///
         private weak var parent: Notification?
 
-        //@property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
-        //@property (nonatomic, strong, readwrite) NSMutableDictionary    *dynamicAttributesCache;
+        ///
+        ///
+        private(set) var meta: [String: AnyObject]?
+
+        ///
+        ///
+        private(set) var ranges: [NotificationRange]
+
+
+        ///
+        ///
+        private var dynamicAttributesCache = [String: AnyObject]()
 
 
 
-        init(dictionary: [String: AnyObject]) {
-        //        NSArray *rawRanges          = [rawBlock arrayForKey:NoteRangesKey];
-        //        NSArray *rawMedia           = [rawBlock arrayForKey:NoteMediaKey];
-        //
-        //		_text                       = [rawBlock stringForKey:NoteTextKey];
-        //		_ranges                     = [NotificationRange rangesFromArray:rawRanges];
-        //		_media                      = [NotificationMedia mediaFromArray:rawMedia];
-        //        _meta                       = [rawBlock dictionaryForKey:NoteMetaKey];
-        //        _actions                    = [rawBlock dictionaryForKey:NoteActionsKey];
-        //        _dynamicAttributesCache     = [NSMutableDictionary dictionary];
-            ranges = []
-            media = []
-            meta = [:]
-            actions = [:]
+        ///
+        ///
+        init(dictionary: [String: AnyObject], parent: Notification) {
+            let rawRanges = dictionary[BlockKeys.Ranges] as? [AnyObject]
+            let rawMedia = dictionary[BlockKeys.Media] as? [AnyObject]
+
+            text        = dictionary[BlockKeys.Text] as? String
+            ranges      = NotificationRange.rangesFromArray(rawRanges)
+            media       = NotificationMedia.mediaFromArray(rawMedia)
+            meta        = dictionary[BlockKeys.Meta] as? [String: AnyObject]
+            actions     = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+            self.parent = parent
+
             kind = .Comment
-        }
 
-        var metaSiteID: NSNumber? {
-        //    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteSiteKey];
-            return nil
-        }
+            // Duck Typing code below: Infer block kind based on... stuff. (Sorry)
 
-        var metaCommentID: NSNumber? {
-        //    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
-            return nil
-        }
-
-        var metaLinksHome: NSURL? {
-        //    NSString *rawLink = [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
-        //    if (!rawLink) {
-        //        return nil;
-        //    }
-        //
-        //    return [NSURL URLWithString:rawLink];
-            return nil
-        }
-
-        var metaTitlesHome: String? {
-        //    return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
-            return nil
-        }
-
-
-        /// Finds the first NotificationRange instance that maps to a given URL.
-        ///
-        /// -   Parameter url: The URL mapped by the NotificationRange instance we need to find.
-        /// -   Returns: A NotificationRange instance mapping to a given URL.
-        ///
-        func notificationRangeWithUrl(url: NSURL) -> NotificationRange? {
-//            for range in ranges where range.url.isEqual(url) {
-//                return range
+//            let media = media.first
+//
+//            //  User
+//            if rawBlock[NoteTypeKey].isEqual(NoteTypeUser) {
+//                kind = .User
+//
+//                //  Comments
+//            } else if block.metaCommentID.isEqual(notification.metaCommentID) && block.metaSiteID != nil {
+//                kind = .Comment
+//
+//                //  Images
+//            } else if media?.isImage || media?.isBadge {
+//                kind = .Image
+//
+//                //  Text
+//            } else {
+//                kind = .Text
 //            }
-
-            return nil
         }
 
+        /// Returns the Meta ID's collection, if any.
+        ///
+        private var metaIds: [String: AnyObject]? {
+            return meta?[MetaKeys.Ids] as? [String: AnyObject]
+        }
 
-        /// Finds the first NotificationRange instance that maps to a given CommentID.
+        /// Returns the Meta ID's collection, if any.
         ///
-        /// -   Parameter commentID: The CommentID mapped by the NotificationRange instance we need to find.
-        /// -   Returns: A NotificationRange instance referencing to a given commentID.
+        private var metaLinks: [String: AnyObject]? {
+            return meta?[MetaKeys.Links] as? [String: AnyObject]
+        }
+
         ///
-        func notificationRangeWithCommentId(commentID: NSNumber) -> NotificationRange? {
-        //    for (NotificationRange *range in self.ranges) {
-        //        if ([range.commentID isEqual:commentId]) {
-        //            return range;
-        //        }
-        //    }
-        //
-            return nil
+        ///
+        private var metaTitles: [String: AnyObject]? {
+            return meta?[MetaKeys.Titles] as? [String: AnyObject]
+        }
+
+        ///
+        ///
+        var metaSiteID: NSNumber? {
+            return metaIds?[MetaKeys.Site] as? NSNumber
+        }
+
+        ///
+        ///
+        var metaCommentID: NSNumber? {
+            return metaIds?[MetaKeys.Comment] as? NSNumber
+        }
+
+        ///
+        ///
+        var metaLinksHome: NSURL? {
+            guard let rawLink = metaLinks?[MetaKeys.Home] as? String else {
+                return nil
+            }
+
+            return NSURL(string: rawLink)
+        }
+
+        ///
+        ///
+        var metaTitlesHome: String? {
+            return metaTitles?[MetaKeys.Home] as? String
         }
 
         /// Returns all of the Image URL's referenced by the NotificationMedia instances
         ///
         var imageUrls: [NSURL] {
-        //    NSMutableArray *urls = [NSMutableArray array];
-        //
-        //    for (NotificationMedia *media in self.media) {
-        //        if (media.isImage && media.mediaURL != nil) {
-        //            [urls addObject:media.mediaURL];
-        //        }
-        //    }
-        //
-        //    return urls;
-            return []
+            return media.flatMap {
+                guard $0.isImage && $0.mediaURL != nil else {
+                    return nil
+                }
+
+                return $0.mediaURL
+            }
         }
 
         /// Returns YES if the associated comment (if any) is approved. NO otherwise.
         ///
         var isCommentApproved: Bool {
-        //    return [self isActionOn:NoteActionApprove] || ![self isActionEnabled:NoteActionApprove];
-            return false
+            return isActionOn(.Approve) || !isActionEnabled(.Approve)
         }
 
-        ///**
-        // *	@brief      Allows us to set a local override for a remote value. This is used to fake the UI, while
-        // *              there's a BG call going on.
-        // *
-        // *	@param		value       The local "Temporary" value.
-        // *	@param		action      The action that should get a temporary 'Override' value
-        // */
-        func setOverrideValue(value: NSNumber, forAction action: Action) {
-        //    if (!_actionsOverride) {
-        //        _actionsOverride = [NSMutableDictionary dictionary];
-        //    }
-        //
-        //    NSString *key = [self keyForAction:action];
-        //    _actionsOverride[key] = value;
-        //    [self.parent didChangeOverrides];
+        /// Allows us to set a local override for a remote value. This is used to fake the UI, while
+        /// there's a BG call going on.
+        ///
+        func setOverrideValue(value: Bool, forAction action: Action) {
+            actionsOverride[action] = value
+            parent?.didChangeOverrides()
         }
 
         /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
         ///
         func removeOverrideValueForAction(action: Action) {
-        //    NSString *key = [self keyForAction:action];
-        //    [_actionsOverride removeObjectForKey:key];
-        //    [self.parent didChangeOverrides];
+            actionsOverride.removeValueForKey(action)
+            parent?.didChangeOverrides()
         }
 
         /// Returns the Notification Block status for a given action. If there's any local override,
         /// the (override) value will be returned.
         ///
-        func actionForKey(key: String) -> NSNumber? {
-        //    return [self.actionsOverride numberForKey:key] ?: [self.actions numberForKey:key];
-            return nil
+        private func valueForAction(action: Action) -> Bool? {
+            guard let overrideValue = actionsOverride[action] else {
+                let value = actions?[action.toString] as? NSNumber
+                return value?.boolValue
+            }
+
+            return overrideValue
         }
 
         /// Returns *true* if a given action is available
         ///
         func isActionEnabled(action: Action) -> Bool {
-        //    NSString *key = [self keyForAction:action];
-        //    return [self actionForKey:key] != nil;
-            return false
+            return valueForAction(action) != nil
         }
 
         /// Returns *true* if a given action is toggled on. (I.e.: Approval = On, means that the comment
         /// is currently approved).
         ///
         func isActionOn(action: Action) -> Bool {
-        //    NSString *key = [self keyForAction:action];
-        //    return [[self actionForKey:key] boolValue];
-            return false
+            return valueForAction(action) ?? false
         }
 
-        //- (NSString *)keyForAction:(NoteAction)action
-        //{
-        //    // TODO: Nuke This once the data model has been swifted!
-        //    NSDictionary *keyMap = @{
-        //        @(NoteActionFollow)     : NoteActionFollowKey,
-        //        @(NoteActionLike)       : NoteActionLikeKey,
-        //        @(NoteActionSpam)       : NoteActionSpamKey,
-        //        @(NoteActionTrash)      : NoteActionTrashKey,
-        //        @(NoteActionReply)      : NoteActionReplyKey,
-        //        @(NoteActionApprove)    : NoteActionApproveKey,
-        //        @(NoteActionEdit)       : NoteActionEditKey
-        //    };
-        //
-        //    return keyMap[@(action)] ?: [NSString string];
-        //}
-        //
+        // Dynamic Attribute Cache: used internally by the Interface Extension, as an optimization.
+        ///
         func cacheValueForKey(key: String) -> AnyObject? {
-        //    return self.dynamicAttributesCache[key];
+            return self.dynamicAttributesCache[key]
+        }
+
+        ///
+        ///
+        func setCacheValue(value: AnyObject?, forKey key: String) {
+            guard let value = value else {
+                dynamicAttributesCache.removeValueForKey(key)
+                return
+            }
+
+            dynamicAttributesCache[key] = value
+        }
+
+        /// Finds the first NotificationRange instance that maps to a given URL.
+        ///
+        func notificationRangeWithUrl(url: NSURL) -> NotificationRange? {
+            for range in ranges {
+                if let rangeURL = range.url where rangeURL.isEqual(url) {
+                    return range
+                }
+            }
+
             return nil
         }
 
-        func setCacheValue(value: AnyObject, forKey: String) {
-        //    if (!value) {
-        //        return;
-        //    }
-        //
-        //    self.dynamicAttributesCache[key] = value;
+        /// Finds the first NotificationRange instance that maps to a given CommentID.
+        ///
+        func notificationRangeWithCommentId(commentID: NSNumber) -> NotificationRange? {
+            for range in ranges {
+                if let rangeCommentID = range.commentID where rangeCommentID.isEqual(commentID) {
+                    return range
+                }
+            }
+
+            return nil
         }
 
-        class func blocksFromArray(rawBlocks: [AnyObject], notification: Notification) -> [Block]? {
-        //    if (![rawBlocks isKindOfClass:[NSArray class]]) {
-        //        return nil;
-        //    }
-        //
-        //    NSMutableArray *parsed = [NSMutableArray array];
-        //
-        //    for (NSDictionary *rawDict in rawBlocks) {
-        //        if (![rawDict isKindOfClass:[NSDictionary class]]) {
-        //            continue;
-        //        }
-        //
-        //        NotificationBlock *block    = [[[self class] alloc] initWithDictionary:rawDict];
-        //        block.parent                = notification;
-        //
-        //        //  Duck Typing code below:
-        //        //  Infer block type based on... stuff. (Sorry)
-        //        //
-        //        NotificationMedia *media    = [block.media firstObject];
-        //
-        //        //  User
-        //        if ([rawDict[NoteTypeKey] isEqual:NoteTypeUser]) {
-        //            block.type = NoteBlockTypeUser;
-        //
-        //        //  Comments
-        //        } else if ([block.metaCommentID isEqual:notification.metaCommentID] && block.metaSiteID != nil) {
-        //            block.type = NoteBlockTypeComment;
-        //
-        //        //  Images
-        //        } else if (media.isImage || media.isBadge) {
-        //            block.type = NoteBlockTypeImage;
-        //
-        //        //  Text
-        //        } else {
-        //            block.type = NoteBlockTypeText;
-        //        }
-        //
-        //        [parsed addObject:block];
-        //    }
-        //
-        //    return parsed;
-return nil
+        ///
+        ///
+        class func fromArray(rawBlocks: [AnyObject], notification: Notification) -> [Block]? {
+            let parsed: [Block] = rawBlocks.flatMap({
+                guard let rawBlock = $0 as? [String: AnyObject] else {
+                    return nil
+                }
+
+                return Block(dictionary: rawBlock, parent: notification)
+            })
+
+            return parsed.isEmpty ? nil : parsed
         }
     }
 }
