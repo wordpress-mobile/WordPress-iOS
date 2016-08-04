@@ -2,7 +2,7 @@ import Foundation
 
 
 
-// MARK: - Block Group: Multiple Blocks can be mapped to a single view
+// MARK: - NotificationBlockGroup: Adapter to match 1 View <> 1 BlockGroup
 //
 class NotificationBlockGroup
 {
@@ -12,11 +12,11 @@ class NotificationBlockGroup
         case Text
         case Image
         case User
-        case Comment    // Blocks: User  + Comment
-        case Actions    // Blocks: Comment
-        case Subject    // Blocks: Text  + Text
-        case Header     // Blocks: Image + Text
-        case Footer     // Blocks: Text
+        case Comment
+        case Actions
+        case Subject
+        case Header
+        case Footer
     }
 
     ///
@@ -37,14 +37,14 @@ class NotificationBlockGroup
 
 
 
-// MARK: - Block Group Methods
+// MARK: - Helpers Methods
 //
 extension NotificationBlockGroup
 {
     ///
     ///
     func blockOfKind(kind: NotificationBlock.Kind) -> NotificationBlock? {
-        return self.dynamicType.firstBlockOfKind(kind, fromBlocksArray: blocks)
+        return NotificationBlock.firstBlockOfKind(kind, fromBlocksArray: blocks)
     }
 
     ///
@@ -54,11 +54,17 @@ extension NotificationBlockGroup
         let imageUrls = filtered.flatMap { $0.imageUrls }
         return Set(imageUrls)
     }
+}
 
-    ///
+
+
+// MARK: - Parsers
+//
+extension NotificationBlockGroup
+{
+    /// Subject: Contains a User + Text Block
     ///
     class func subjectGroupFromArray(rawBlocks: [AnyObject], parent: Notification) -> NotificationBlockGroup? {
-        // Subject: Contains a User + Text Block
         guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
             return nil
         }
@@ -66,10 +72,9 @@ extension NotificationBlockGroup
         return NotificationBlockGroup(blocks: blocks, kind: .Subject)
     }
 
-    ///
+    /// Header: Contains a User + Text Block
     ///
     class func headerGroupFromArray(rawBlocks: [AnyObject], parent: Notification) -> NotificationBlockGroup? {
-        // Header: Contains a User + Text Block
         guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
             return nil
         }
@@ -102,30 +107,30 @@ extension NotificationBlockGroup
         //      This snippet is meant to adapt the backend data structure, so that a single NotificationBlockGroup
         //      can be easily mapped against a single UI entity.
         //
-        guard let commentBlock = firstBlockOfKind(.Comment, fromBlocksArray: blocks),
-            let userBlock = firstBlockOfKind(.User, fromBlocksArray: blocks) else
+        guard let commentBlock = NotificationBlock.firstBlockOfKind(.Comment, fromBlocksArray: blocks),
+            let userBlock = NotificationBlock.firstBlockOfKind(.User, fromBlocksArray: blocks) else
         {
             return nil
         }
 
         var groups = [NotificationBlockGroup]()
-        let headerBlocks = [commentBlock, userBlock]
-        let middleBlocks = blocks.filter { headerBlocks.indexOf($0) == nil }
-        let footerBlocks = [commentBlock]
+        let commentBlocks = [commentBlock, userBlock]
+        let middleBlocks  = blocks.filter { commentBlocks.indexOf($0) == nil }
+        let actionsBlocks = [commentBlock]
 
-        // Header Group: Comment + User Blocks
-        let headerGroup = NotificationBlockGroup(blocks: headerBlocks, kind: .Comment)
+        // Comment Group: Comment + User Blocks
+        let headerGroup = NotificationBlockGroup(blocks: commentBlocks, kind: .Comment)
         groups.append(headerGroup)
 
-        // Middle Group: Anything
+        // Middle Group(s): Anything
         for block in middleBlocks {
             let kind = blockGroupKindForBlock(block, parent: parent)
             let group = NotificationBlockGroup(blocks: [block], kind: kind)
             groups.append(group)
         }
 
-        // Footer Group: A copy of the Comment Block (Actions)
-        let footerGroup = NotificationBlockGroup(blocks: footerBlocks, kind: .Actions)
+        // Actions Group: A copy of the Comment Block (Actions)
+        let footerGroup = NotificationBlockGroup(blocks: actionsBlocks, kind: .Actions)
         groups.append(footerGroup)
 
         return groups
@@ -155,15 +160,5 @@ extension NotificationBlockGroup
             case .User:     return .User
             case .Comment:  return .Comment
         }
-    }
-
-    ///
-    ///
-    private class func firstBlockOfKind(kind: NotificationBlock.Kind, fromBlocksArray blocks: [NotificationBlock]) -> NotificationBlock? {
-        for block in blocks where block.kind == kind {
-            return block
-        }
-
-        return nil
     }
 }
