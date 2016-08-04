@@ -13,7 +13,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private static let restorePageCellNibName = "RestorePageTableViewCell"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    private lazy var sectionFooterSepatatorView : UIView = {
+    private lazy var sectionFooterSeparatorView : UIView = {
         let footer = UIView()
         footer.backgroundColor = WPStyleGuide.greyLighten20()
         return footer
@@ -248,7 +248,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
         if section == tableView.numberOfSections - 1 {
-            return sectionFooterSepatatorView
+            return sectionFooterSeparatorView
         }
         return UIView(frame: CGRectZero)
     }
