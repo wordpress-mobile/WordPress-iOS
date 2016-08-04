@@ -142,7 +142,7 @@
     
     NotificationRange *range = block.ranges.firstObject;
     XCTAssertNotNil(range, @"Missing range");
-    XCTAssertEqualObjects(range.type, @"follow", @"Missing follow range");
+    XCTAssertEqual(range.type, NoteRangeTypeFollow, @"Missing follow range");
 }
 
 - (void)testCommentNotificationHasCommentFlagSetToTrue
