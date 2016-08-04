@@ -240,7 +240,7 @@ extension NotificationsViewController
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
-            let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else
+            let block = note.blockGroupOfType(.Comment)?.blockOfKind(.Comment) else
         {
             // Not every single row will have actions: Slight hack so that the UX isn't terrible:
             //  -   First: Return an Empty UITableViewRowAction
