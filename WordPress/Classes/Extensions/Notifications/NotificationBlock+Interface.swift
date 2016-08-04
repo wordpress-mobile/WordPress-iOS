@@ -9,14 +9,14 @@ import WordPressShared.WPStyleGuide
 /// We rely on a cache mechanism, implemented for performance purposes, that will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension NotificationBlock {
+extension Notification.Block {
 
     // MARK: - Public Methods
     //
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
-    public var attributedSubjectText: NSAttributedString {
+    var attributedSubjectText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.subjectRegularStyle,
                 quoteStyles:    Styles.subjectItalicsStyle,
@@ -29,7 +29,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
-    public var attributedSnippetText: NSAttributedString {
+    var attributedSnippetText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles:    nil,
@@ -42,7 +42,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
-    public var attributedHeaderTitleText: NSAttributedString {
+    var attributedHeaderTitleText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles:    nil,
@@ -55,7 +55,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
-    public var attributedFooterText: NSAttributedString {
+    var attributedFooterText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles:    nil,
@@ -68,7 +68,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
     ///
-    public var attributedRichText: NSAttributedString {
+    var attributedRichText: NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if let textOverride = textOverride {
@@ -88,7 +88,7 @@ extension NotificationBlock {
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom
     /// formatting that differs from regular notifications, such as centered texts.
     ///
-    public var attributedBadgeText: NSAttributedString {
+    var attributedBadgeText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.badgeRegularStyle,
                 quoteStyles:    Styles.badgeBoldStyle,
@@ -109,7 +109,7 @@ extension NotificationBlock {
     ///
     /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
-    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
+    func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
         if textOverride != nil {
             return nil
