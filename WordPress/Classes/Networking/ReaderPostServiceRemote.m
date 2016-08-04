@@ -997,13 +997,13 @@ static const NSUInteger ReaderPostTitleLength = 30;
         regexGalleryImages = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*\\/>" options:NSRegularExpressionCaseInsensitive error:nil];
     });
 
-    CGSize imageSize = [UIApplication  sharedApplication].keyWindow.frame.size;
+    CGSize imageSize = [UIApplication sharedApplication].keyWindow.frame.size;
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
 
     NSArray *matches = [regexGalleryImages matchesInString:mcontent options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mcontent length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
-        NSString *imageElementString = [mcontent substringWithRange:match.range];
+        NSMutableString *imageElementString = [[mcontent substringWithRange:match.range] mutableCopy];
         NSString *srcImageURLString = [self parseValueForAttributeNamed:@"src" inElement:imageElementString];
         NSString *originalImageURLString = [self parseValueForAttributeNamed:@"data-orig-file" inElement:imageElementString];
         NSURL *originalURL = [NSURL URLWithString:originalImageURLString];
@@ -1015,10 +1015,15 @@ static const NSUInteger ReaderPostTitleLength = 30;
             modifiedURL = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:originalURL];
         }
 
-        [mcontent replaceOccurrencesOfString:srcImageURLString
-                                  withString:modifiedURL.absoluteString
-                                     options:NSLiteralSearch
-                                       range:NSMakeRange(0, mcontent.length)];
+        // First replace the src attribute of the <img /> element
+        NSLog(@"IMG Tag before: %@", imageElementString);
+        [imageElementString replaceOccurrencesOfString:srcImageURLString
+                                            withString:modifiedURL.absoluteString
+                                               options:NSLiteralSearch
+                                                 range:NSMakeRange(0, imageElementString.length)];
+        NSLog(@"IMG Tag after: %@", imageElementString);
+        // Now update the content blog with the modified <img /> element
+        [mcontent replaceCharactersInRange:match.range withString:imageElementString];
     }
 
     return mcontent;
