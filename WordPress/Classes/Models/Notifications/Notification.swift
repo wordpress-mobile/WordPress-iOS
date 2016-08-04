@@ -268,15 +268,26 @@ extension Notification
 
 // MARK: - Private Constants
 //
-private extension Notification
+extension Notification
 {
     /// Meta Field Parsing-Keys
     ///
-    private enum MetaKeys {
+    enum MetaKeys {
         static let Ids      = "ids"
+        static let Links    = "links"
+        static let Titles   = "titles"
         static let Site     = "site"
         static let Post     = "post"
         static let Comment  = "comment"
         static let Reply    = "reply_comment"
+        static let Home     = "home"
+    }
+
+    enum BlockKeys {
+        static let Meta     = "meta"
+        static let Media    = "media"
+        static let Actions  = "actions"
+        static let Ranges   = "ranges"
+        static let Text     = "text"
     }
 }
