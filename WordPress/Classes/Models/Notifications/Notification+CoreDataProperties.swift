@@ -1,6 +1,9 @@
 import Foundation
 import CoreData
 
+
+// MARK: - Notification Core Data Properties
+//
 extension Notification {
 
     @NSManaged var icon: String?
