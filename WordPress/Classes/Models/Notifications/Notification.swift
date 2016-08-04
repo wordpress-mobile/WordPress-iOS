@@ -15,15 +15,15 @@ class Notification: SPManagedObject
 
     /// Subject Blocks Transient Storage.
     ///
-    private var cachedSubjectBlockGroup: BlockGroup?
+    private var cachedSubjectBlockGroup: NotificationBlockGroup?
 
     /// Header Blocks Transient Storage.
     ///
-    private var cachedHeaderBlockGroup: BlockGroup?
+    private var cachedHeaderBlockGroup: NotificationBlockGroup?
 
     /// Body Blocks Transient Storage.
     ///
-    private var cachedBodyBlockGroups: [BlockGroup]?
+    private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
     /// Known kinds of Notifications
     ///
@@ -63,7 +63,7 @@ class Notification: SPManagedObject
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
-    func blockGroupOfType(kind: BlockGroup.Kind) -> BlockGroup? {
+    func blockGroupOfType(kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
         }
@@ -205,12 +205,12 @@ extension Notification
 
     /// Returns the Subject Block Group, if any.
     ///
-    var subjectBlockGroup: BlockGroup? {
+    var subjectBlockGroup: NotificationBlockGroup? {
         if let subjectBlockGroup = cachedSubjectBlockGroup {
             return subjectBlockGroup
         }
 
-        guard let subject = subject, let subjectBlockGroup = BlockGroup.subjectGroupFromArray(subject, notification: self) else {
+        guard let subject = subject, let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self) else {
             return nil
         }
 
@@ -220,12 +220,12 @@ extension Notification
 
     /// Returns the Header Block Group, if any.
     ///
-    var headerBlockGroup: BlockGroup? {
+    var headerBlockGroup: NotificationBlockGroup? {
         if let headerBlockGroup = cachedHeaderBlockGroup {
             return headerBlockGroup
         }
 
-        guard let header = header, let headerBlockGroup = BlockGroup.headerGroupFromArray(header, notification: self) else {
+        guard let header = header, let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self) else {
             return nil
         }
 
@@ -235,12 +235,12 @@ extension Notification
 
     /// Returns the Body Block Groups, if any.
     ///
-    var bodyBlockGroups: [BlockGroup] {
+    var bodyBlockGroups: [NotificationBlockGroup] {
         if let bodyBlockGroups = cachedBodyBlockGroups {
             return bodyBlockGroups
         }
 
-        guard let body = body, let bodyBlockGroups = BlockGroup.bodyGroupsFromArray(body, notification: self) else {
+        guard let body = body, let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) else {
             return []
         }
 
@@ -250,13 +250,13 @@ extension Notification
 
     /// Returns the Subject Block, if any.
     ///
-    var subjectBlock: Block? {
+    var subjectBlock: NotificationBlock? {
         return subjectBlockGroup?.blocks.first
     }
 
     /// Returns the Snippet Block, if any.
     ///
-    var snippetBlock: Block? {
+    var snippetBlock: NotificationBlock? {
         guard let subjectBlocks = subjectBlockGroup?.blocks where subjectBlocks.count > 1 else {
             return nil
         }
@@ -288,6 +288,7 @@ extension Notification
         static let Media    = "media"
         static let Actions  = "actions"
         static let Ranges   = "ranges"
+        static let Kind     = "type"
         static let Text     = "text"
     }
 }

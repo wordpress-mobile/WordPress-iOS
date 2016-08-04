@@ -5,17 +5,12 @@ import Foundation
 ///
 public class NotificationActionsService: LocalCoreDataService
 {
-    /// Typealiases
-    ///
-    typealias Block = Notification.Block
-
-
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func followSiteWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func followSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
             completion?(false)
             return
@@ -39,7 +34,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unfollowSiteWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func unfollowSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
             completion?(false)
             return
@@ -64,7 +59,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter content: The Reply's Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func replyCommentWithBlock(block: Block, content: String, completion: (Bool -> Void)? = nil) {
+    func replyCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -86,7 +81,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter content: The Comment's New Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func updateCommentWithBlock(block: Block, content: String, completion: (Bool -> Void)? = nil) {
+    func updateCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -111,7 +106,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func likeCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func likeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -141,7 +136,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unlikeCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func unlikeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -165,7 +160,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func approveCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func approveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -189,7 +184,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unapproveCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func unapproveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -213,7 +208,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func spamCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func spamCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -234,7 +229,7 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func deleteCommentWithBlock(block: Block, completion: (Bool -> Void)? = nil) {
+    func deleteCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
         guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
             completion?(false)
             return
