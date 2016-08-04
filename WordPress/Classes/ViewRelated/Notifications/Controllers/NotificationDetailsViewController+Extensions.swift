@@ -79,7 +79,7 @@ class NotificationDetailsViewController: UIViewController
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        restorationClass = NotificationDetailsViewController.self
+        restorationClass = self.dynamicType
     }
 
     override func viewDidLoad() {
@@ -183,8 +183,8 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
         super.encodeRestorableStateWithCoder(coder)
+        coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
     }
 }
 
