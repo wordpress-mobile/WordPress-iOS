@@ -22,27 +22,9 @@ NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
 
 NSString const *NoteTypeUser            = @"user";
-NSString const *NoteTypeComment         = @"comment";
-NSString const *NoteTypeMatcher         = @"automattcher";
-NSString const *NoteTypePost            = @"post";
-NSString const *NoteTypeFollow          = @"follow";
-NSString const *NoteTypeLike            = @"like";
-NSString const *NoteTypeCommentLike     = @"comment_like";
 
-NSString const *NoteMetaKey             = @"meta";
-NSString const *NoteMediaKey            = @"media";
-NSString const *NoteActionsKey          = @"actions";
-NSString const *NoteLinksKey            = @"links";
-NSString const *NoteIdsKey              = @"ids";
-NSString const *NoteRangesKey           = @"ranges";
-NSString const *NoteSiteKey             = @"site";
-NSString const *NoteHomeKey             = @"home";
-NSString const *NoteCommentKey          = @"comment";
-NSString const *NotePostKey             = @"post";
-NSString const *NoteTextKey             = @"text";
 NSString const *NoteTypeKey             = @"type";
 NSString const *NoteUrlKey              = @"url";
-NSString const *NoteTitlesKey           = @"titles";
 NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
@@ -51,7 +33,6 @@ NSString const *NoteRangeIdKey          = @"id";
 NSString const *NoteRangeValueKey       = @"value";
 NSString const *NoteSiteIdKey           = @"site_id";
 NSString const *NotePostIdKey           = @"post_id";
-NSString const *NoteReplyIdKey          = @"reply_comment";
 
 
 
