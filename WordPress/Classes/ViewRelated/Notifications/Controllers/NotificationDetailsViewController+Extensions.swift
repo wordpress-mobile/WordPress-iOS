@@ -412,12 +412,14 @@ private extension NotificationDetailsViewController
     }
 
     var shouldAttachEditAction: Bool {
+        // Note: Approve Action is actually a synonym for 'Edition' (Based on Calypso's basecode)
         let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment)
-        return block?.isActionOn(.Edit) ?? false
+        return block?.isActionOn(.Approve) ?? false
     }
 
     @objc @IBAction func editButtonWasPressed() {
-        guard let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) where block.isActionOn(.Edit) else {
+        // Note: Approve Action is actually a synonym for 'Edition' (Based on Calypso's basecode)
+        guard let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) where block.isActionOn(.Approve) else {
             return
         }
 
