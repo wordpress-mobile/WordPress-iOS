@@ -301,7 +301,7 @@ extension NotificationDetailsViewController
         replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
-            guard let block = self?.note.blockGroupOfType(.Comment)?.blockOfKind(.Comment) else {
+            guard let block = self?.note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else {
                 return
             }
             self?.replyCommentWithBlock(block, content: content)
@@ -354,7 +354,7 @@ extension NotificationDetailsViewController
     var shouldAttachReplyView: Bool {
         // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
         //
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfKind(.Comment) else {
+        guard let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else {
             return false
         }
 
@@ -412,12 +412,12 @@ private extension NotificationDetailsViewController
     }
 
     var shouldAttachEditAction: Bool {
-        let block = note.blockGroupOfType(.Comment)?.blockOfKind(.Comment)
+        let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment)
         return block?.isActionOn(.Edit) ?? false
     }
 
     @objc @IBAction func editButtonWasPressed() {
-        guard let block = note.blockGroupOfType(.Comment)?.blockOfKind(.Comment) where block.isActionOn(.Edit) else {
+        guard let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) where block.isActionOn(.Edit) else {
             return
         }
 
