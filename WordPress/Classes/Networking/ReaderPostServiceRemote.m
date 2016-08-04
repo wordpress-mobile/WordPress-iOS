@@ -994,7 +994,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     static NSRegularExpression *regexGalleryImages;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        regexGalleryImages = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*\\/>" options:NSRegularExpressionCaseInsensitive error:nil];
+        regexGalleryImages = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*data-orig-file[^>]*/>" options:NSRegularExpressionCaseInsensitive error:nil];
     });
 
     CGSize imageSize = [UIApplication sharedApplication].keyWindow.frame.size;
