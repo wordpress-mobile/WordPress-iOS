@@ -12,16 +12,12 @@
 #import "WPTabBarController.h"
 #import "WordPress-Swift.h"
 
-@interface ReaderViewController () <UIViewControllerRestoration>
+@interface ReaderViewController ()
 @property (nonatomic, strong) ReaderStreamViewController *postsViewController;
 @end
 
 @implementation ReaderViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    return [[WPTabBarController sharedInstance] readerViewController];
-}
 
 #pragma mark - Life Cycle
 
