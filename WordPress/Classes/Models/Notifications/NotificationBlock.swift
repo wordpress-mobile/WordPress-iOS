@@ -280,16 +280,35 @@ extension NotificationBlock
 
     ///
     ///
-    class func blocksFromArray(rawBlocks: [AnyObject], parent: Notification) -> [NotificationBlock]? {
-        let parsed: [NotificationBlock] = rawBlocks.flatMap({
+    class func firstBlockOfKind(kind: Kind, fromBlocksArray blocks: [NotificationBlock]) -> NotificationBlock? {
+        for block in blocks where block.kind == kind {
+            return block
+        }
+
+        return nil
+    }
+}
+
+
+
+// MARK: - NotificationBlock Parsers
+//
+extension NotificationBlock
+{
+    ///
+    ///
+    class func blocksFromArray(rawBlocks: [AnyObject]?, parent: Notification) -> [NotificationBlock]? {
+        guard let rawBlocks = rawBlocks where rawBlocks.isEmpty == false else {
+            return nil
+        }
+
+        return rawBlocks.flatMap {
             guard let rawBlock = $0 as? [String: AnyObject] else {
                 return nil
             }
 
             return NotificationBlock(dictionary: rawBlock, parent: parent)
-        })
-
-        return parsed.isEmpty ? nil : parsed
+        }
     }
 }
 
