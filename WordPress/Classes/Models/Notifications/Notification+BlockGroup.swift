@@ -20,14 +20,14 @@ extension Notification
         ///
         ///
         enum Kind {
-            case Text       // = NoteBlockTypeText,
-            case Image      // = NoteBlockTypeImage,
-            case User       // = NoteBlockTypeUser,
-            case Comment    // = NoteBlockTypeComment,      // Blocks: User  + Comment
-            case Actions    // = 100,                       // Blocks: Comment
-            case Subject    // = 200,                       // Blocks: Text  + Text
-            case Header     // = 300,                       // Blocks: Image + Text
-            case Footer     // = 400                        // Blocks: Text
+            case Text
+            case Image
+            case User
+            case Comment    // Blocks: User  + Comment
+            case Actions    // Blocks: Comment
+            case Subject    // Blocks: Text  + Text
+            case Header     // Blocks: Image + Text
+            case Footer     // Blocks: Text
         }
 
 
@@ -41,10 +41,10 @@ extension Notification
 
         ///
         ///
-        func blockOfKind(kind: Kind) -> Block? {
-//            for block in blocks where block.kind == kind {
-//                return block
-//            }
+        func blockOfKind(kind: Block.Kind) -> Block? {
+            for block in blocks where block.kind == kind {
+                return block
+            }
 
             return nil
         }
@@ -52,62 +52,56 @@ extension Notification
         ///
         ///
         func imageUrlsFromBlocksInKindSet(kindSet: Set<Block.Kind>) -> Set<NSURL> {
-            return Set()
-//            let filtered = blocks.filter { kindSet.contains($0.kind) }
-//            let urls = filtered.flatMap { $0.imageUrls }
-//
-//            return urls
+            let filtered = blocks.filter { kindSet.contains($0.kind) }
+            let imageUrls = filtered.flatMap { $0.imageUrls }
+            return Set(imageUrls)
         }
 
         ///
         ///
-        class func subjectGroupFromArray(rawBlocks: [AnyObject]?, notification: Notification) -> BlockGroup? {
+        class func subjectGroupFromArray(rawBlocks: [AnyObject], notification: Notification) -> BlockGroup? {
             // Subject: Contains a User + Text Block
-        //    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
-        //    if (blocks.count == 0) {
-        //        return nil;
-        //    }
-        //
-        //    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject];
-            return nil
+            guard let blocks = Block.fromArray(rawBlocks, notification: notification) else {
+                return nil
+            }
+
+            return BlockGroup(blocks: blocks, kind: .Subject)
         }
 
         ///
         ///
-        class func headerGroupFromArray(rawBlocks: [AnyObject]?, notification: Notification) -> BlockGroup? {
+        class func headerGroupFromArray(rawBlocks: [AnyObject], notification: Notification) -> BlockGroup? {
             // Header: Contains a User + Text Block
-        //    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
-        //    if (blocks.count == 0) {
-        //        return nil;
-        //    }
-        //
-        //    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader];
-            return nil
+            guard let blocks = Block.fromArray(rawBlocks, notification: notification) else {
+                return nil
+            }
+
+            return BlockGroup(blocks: blocks, kind: .Header)
         }
 
         ///
         ///
-        class func bodyGroupsFromArray(rawBlocks: [AnyObject]?, notification: Notification) -> [BlockGroup] {
-        //    NSArray *blocks         = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
-        //    NSMutableArray *groups  = [NSMutableArray array];
-        //
-        //    if (blocks.count == 0) {
-        //        return groups;
-        //    }
-        //
-        //    // Comment: Contains a User + Comment Block
-        //    if (notification.isComment) {
-        //
-        //        //  Note:
-        //        //  I find myself, again, surrounded by the forces of Duck Typing. Comment Notifications are now
-        //        //  required to always render the Actions at the very bottom. This snippet is meant to adapt the backend
-        //        //  data structure, so that a single NotificationBlockGroup can be easily mapped against a single UI entity.
-        //        //
-        //        //  -   NoteBlockGroupTypeComment: NoteBlockTypeComment + NoteBlockTypeUser
-        //        //  -   Anything
-        //        //  -   NoteBlockGroupTypeActions: A copy of the NoteBlockTypeComment block
-        //
-        //        NotificationBlock *commentBlock = [NotificationBlock firstBlockOfType:NoteBlockTypeComment fromBlocksArray:blocks];
+        class func bodyGroupsFromArray(rawBlocks: [AnyObject], notification: Notification) -> [BlockGroup]? {
+            guard let blocks = Block.fromArray(rawBlocks, notification: notification) else {
+                return nil
+            }
+
+
+            var groups = [BlockGroup]()
+
+            // Comment: Contains a User + Comment Block
+            if notification.kind == .Comment {
+                //  Note:
+                //  I find myself, again, surrounded by the forces of Duck Typing. Comment Notifications are now
+                //  required to always render the Actions at the very bottom. This snippet is meant to adapt the backend
+                //  data structure, so that a single NotificationBlockGroup can be easily mapped against a single UI entity.
+                //
+                //  -   NoteBlockGroupTypeComment: NoteBlockTypeComment + NoteBlockTypeUser
+                //  -   Anything
+                //  -   NoteBlockGroupTypeActions: A copy of the NoteBlockTypeComment block
+                //
+
+//                let commentBlock = [NotificationBlock firstBlockOfType:NoteBlockTypeComment fromBlocksArray:blocks];
         //        NotificationBlock *userBlock    = [NotificationBlock firstBlockOfType:NoteBlockTypeUser fromBlocksArray:blocks];
         //        NSArray *commentGroupBlocks     = @[commentBlock, userBlock];
         //        NSArray *actionsGroupBlocks     = @[commentBlock];
@@ -133,27 +127,25 @@ extension Notification
         //        [groups addObject:[NotificationBlockGroup groupWithBlocks:actionsGroupBlocks type:NoteBlockGroupTypeActions]];
         //
         //
-        //    // Rest: 1-1 relationship
-        //    } else {
-        //
-        //        //  More Duck Typing:
-        //        //
-        //        //  -   Notifications of the kind [Follow, Like, CommentLike] may contain a Footer block.
-        //        //  -   We can assume that whenever the last block is of the type NoteBlockTypeText, we're dealing with a footer.
-        //        //  -   Whenever we detect such a block, we'll map the NotificationBlock into a NoteBlockGroupTypeFooter group.
-        //        //
-        //        BOOL canContainFooter = notification.isFollow || notification.isLike || notification.isCommentLike;
-        //
-        //        for (NotificationBlock *block in blocks) {
-        //            BOOL isFooter               = canContainFooter && block.type == NoteBlockTypeText && blocks.lastObject == block;
-        //            NoteBlockGroupType type     = isFooter ? NoteBlockGroupTypeFooter : block.type;
-        //
+            // Rest: 1-1 relationship
+            } else {
+
+                //  More Duck Typing:
+                //
+                //  -   Notifications of the kind [Follow, Like, CommentLike] may contain a Footer block.
+                //  -   We can assume that whenever the last block is of the type NoteBlockTypeText, we're dealing with a footer.
+                //  -   Whenever we detect such a block, we'll map the NotificationBlock into a NoteBlockGroupTypeFooter group.
+                //
+                let canContainFooter = notification.kind == .Follow || notification.kind == .Like || notification.kind == .CommentLike
+
+                for block in blocks {
+//                    let isFooter = canContainFooter && block.kind == .Text && blocks.last == block
+//                    let kind = isFooter ? .Footer : block.kind
         //            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:type]];
-        //        }
-        //    }
-        //
-        //    return groups;
-            return []
+                }
+            }
+
+            return groups
         }
     }
 }
