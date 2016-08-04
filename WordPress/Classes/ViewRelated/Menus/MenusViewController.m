@@ -347,7 +347,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
             }
         };
         void(^failureBlock)(NSError *) = ^(NSError *error) {
-            weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, pelase check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
+            weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, please check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
         };
         [self.menusService generateDefaultMenuItemsForBlog:self.blog
                                                    success:successBlock
