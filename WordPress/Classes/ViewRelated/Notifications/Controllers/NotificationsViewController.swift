@@ -127,8 +127,8 @@ class NotificationsViewController : UITableViewController
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        // Note: We're assuming `tableViewHandler` might be nil. Weird iPad Multitasking flow in which the view
-        // never gets loaded, yet, this method is executed.
+        // Note: We're assuming `tableViewHandler` might be nil. Weird case in which the view
+        // hasn't loaded, yet, but the method is still executed.
         tableViewHandler?.clearCachedRowHeights()
     }
 
