@@ -5,7 +5,10 @@ import Foundation
 ///
 public class NotificationActionsService: LocalCoreDataService
 {
+    /// Typealiases
+    ///
     typealias Block = Notification.Block
+
 
     /// Follows a Site referenced by a given NotificationBlock.
     ///
