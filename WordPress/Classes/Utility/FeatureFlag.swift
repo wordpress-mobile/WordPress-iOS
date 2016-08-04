@@ -2,7 +2,6 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
-    case ReaderMenu
     /// My Sites > Site > People
     /// Development on hold while we focus on Me
     case People
@@ -14,8 +13,6 @@ enum FeatureFlag: Int {
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         switch self {
-        case .ReaderMenu:
-            return build(.Debug)
         case .People, .MyProfile, .AccountSettings:
             return true
         }
