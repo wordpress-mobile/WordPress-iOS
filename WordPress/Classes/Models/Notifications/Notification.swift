@@ -114,7 +114,7 @@ extension Notification
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
     var isRepliedComment: Bool {
-        return isComment == true && metaReplyID != nil
+        return kind == .Comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
@@ -134,36 +134,6 @@ extension Notification
             return .Unknown
         }
         return kind
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isComment: Bool {
-        return kind == .Comment
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isCommentLike: Bool {
-        return kind == .CommentLike
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isFollow: Bool {
-        return kind == .Follow
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isLike: Bool {
-        return kind == .Like
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isMatcher: Bool {
-        return kind == .Matcher
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isPost: Bool {
-        return kind == .Post
     }
 
     /// Returns the Meta ID's collection, if any.
@@ -240,8 +210,12 @@ extension Notification
             return subjectBlockGroup
         }
 
-        cachedSubjectBlockGroup = BlockGroup.subjectGroupFromArray(subject, notification: self)
-        return cachedSubjectBlockGroup
+        guard let subject = subject, let subjectBlockGroup = BlockGroup.subjectGroupFromArray(subject, notification: self) else {
+            return nil
+        }
+
+        cachedSubjectBlockGroup = subjectBlockGroup
+        return subjectBlockGroup
     }
 
     /// Returns the Header Block Group, if any.
@@ -251,8 +225,12 @@ extension Notification
             return headerBlockGroup
         }
 
-        cachedHeaderBlockGroup = BlockGroup.headerGroupFromArray(header, notification: self)
-        return cachedHeaderBlockGroup
+        guard let header = header, let headerBlockGroup = BlockGroup.headerGroupFromArray(header, notification: self) else {
+            return nil
+        }
+
+        cachedHeaderBlockGroup = headerBlockGroup
+        return headerBlockGroup
     }
 
     /// Returns the Body Block Groups, if any.
@@ -262,7 +240,10 @@ extension Notification
             return bodyBlockGroups
         }
 
-        let bodyBlockGroups = BlockGroup.bodyGroupsFromArray(body, notification: self)
+        guard let body = body, let bodyBlockGroups = BlockGroup.bodyGroupsFromArray(body, notification: self) else {
+            return []
+        }
+
         cachedBodyBlockGroups = bodyBlockGroups
         return bodyBlockGroups
     }
