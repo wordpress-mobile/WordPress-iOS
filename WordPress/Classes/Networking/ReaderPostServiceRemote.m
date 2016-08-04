@@ -1016,12 +1016,10 @@ static const NSUInteger ReaderPostTitleLength = 30;
         }
 
         // First replace the src attribute of the <img /> element
-        NSLog(@"IMG Tag before: %@", imageElementString);
         [imageElementString replaceOccurrencesOfString:srcImageURLString
                                             withString:modifiedURL.absoluteString
                                                options:NSLiteralSearch
                                                  range:NSMakeRange(0, imageElementString.length)];
-        NSLog(@"IMG Tag after: %@", imageElementString);
         // Now update the content blog with the modified <img /> element
         [mcontent replaceCharactersInRange:match.range withString:imageElementString];
     }
