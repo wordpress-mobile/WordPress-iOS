@@ -58,26 +58,6 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 
 
 #pragma mark ====================================================================================
-#pragma mark NotificationBlock
-#pragma mark ====================================================================================
-
-// Adapter Class: Multiple Blocks can be mapped to a single view
-@interface NotificationBlockGroup : NSObject
-
-@property (nonatomic, strong, nonnull, readonly) NSArray<NotificationBlock *>   *blocks;
-@property (nonatomic, assign, readonly) NoteBlockGroupType  type;
-
-- (nullable NotificationBlock *)blockOfType:(NoteBlockType)type;
-- (nonnull NSSet<NSURL *> *)imageUrlsForBlocksOfTypes:(nonnull NSSet *)types;
-
-// TODO: Private once Swifted!
-+ (nullable NotificationBlockGroup *)subjectGroupFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
-+ (nullable NotificationBlockGroup *)headerGroupFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
-+ (nonnull NSArray<NotificationBlockGroup *> *)bodyGroupsFromArray:(nullable NSArray *)rawBlocks notification:(nullable Notification *)notification;
-
-@end
-
-
 #pragma mark ====================================================================================
 #pragma mark NotificationBlock
 #pragma mark ====================================================================================
