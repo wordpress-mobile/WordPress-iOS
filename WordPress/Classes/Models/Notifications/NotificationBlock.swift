@@ -2,9 +2,9 @@ import Foundation
 
 
 
-// MARK: - Notification.Block Implementation
+// MARK: - NotificationBlock Implementation
 //
-class NotificationBlock
+class NotificationBlock: Equatable
 {
     ///
     ///
@@ -17,35 +17,18 @@ class NotificationBlock
 
     ///
     ///
-    enum Action {
-        case Follow
-        case Like
-        case Spam
-        case Trash
-        case Reply
-        case Approve
-        case Edit
-
-        var toString: String {
-            switch self {
-            case Follow:    return "follow"
-            case Like:      return "like-comment"
-            case Spam:      return "spam-comment"
-            case Trash:     return "trash-comment"
-            case Reply:     return "replyto-comment"
-            case Approve:   return "approve-comment"
-            case Edit:      return "approve-comment"
-            }
-        }
+    enum Action: String {
+        case Approve    = "approve-comment"
+        case Follow     = "follow"
+        case Like       = "like-comment"
+        case Reply      = "replyto-comment"
+        case Spam       = "spam-comment"
+        case Trash      = "trash-comment"
     }
 
     ///
     ///
-    private(set) var kind: Kind
-
-    ///
-    ///
-    private(set) var actions: [String: AnyObject]?
+    let actions: [String: AnyObject]?
 
     ///
     ///
@@ -57,11 +40,11 @@ class NotificationBlock
 
     ///
     ///
-    private(set) var media: [NotificationMedia]
+    let media: [NotificationMedia]
 
     ///
     ///
-    private(set) var meta: [String: AnyObject]?
+    let meta: [String: AnyObject]?
 
     ///
     ///
@@ -69,11 +52,15 @@ class NotificationBlock
 
     ///
     ///
-    private(set) var ranges: [NotificationRange]
+    let ranges: [NotificationRange]
 
     ///
     ///
-    private(set) var text: String?
+    private let type: String?
+
+    ///
+    ///
+    let text: String?
 
     ///
     ///
@@ -85,40 +72,59 @@ class NotificationBlock
 
     ///
     ///
-    typealias MetaKeys  = Notification.MetaKeys
-    typealias BlockKeys = Notification.BlockKeys
+    private typealias MetaKeys  = Notification.MetaKeys
+
+    //
+    ///
+    private typealias BlockKeys = Notification.BlockKeys
 
 
     ///
     ///
-    init(dictionary: [String: AnyObject], parent: Notification) {
+    init(dictionary: [String: AnyObject], parent note: Notification) {
         let rawRanges = dictionary[BlockKeys.Ranges] as? [AnyObject]
+        let parsedRanges = NotificationRange.rangesFromArray(rawRanges)
+
         let rawMedia = dictionary[BlockKeys.Media] as? [AnyObject]
+        let parsedMedia = NotificationMedia.mediaFromArray(rawMedia)
 
-        text        = dictionary[BlockKeys.Text] as? String
-        ranges      = NotificationRange.rangesFromArray(rawRanges)
-        media       = NotificationMedia.mediaFromArray(rawMedia)
-        meta        = dictionary[BlockKeys.Meta] as? [String: AnyObject]
-        actions     = dictionary[BlockKeys.Actions] as? [String: AnyObject]
-        self.parent = parent
-        self.kind = .Comment
+        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+        media   = parsedMedia
+        meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
+        ranges  = parsedRanges
+        parent  = note
+        type    = dictionary[BlockKeys.RawType] as? String
+        text    = dictionary[BlockKeys.Text] as? String
+    }
+}
 
+
+
+// MARK: - NotificationBlock Computed Properties
+//
+extension NotificationBlock
+{
+    ///
+    ///
+    var kind: Kind {
         // Duck Typing code below: Infer block kind based on... stuff. (Sorry)
         //
-        if (dictionary[BlockKeys.Kind] as? String)?.isEqual("user") ?? false {
-            kind = .User
-
-        } else if metaCommentID!.isEqual(parent.metaCommentID) && metaSiteID != nil {
-            kind = .Comment
-
-        } else if (media.first?.isImage ?? false) || (media.first?.isBadge ?? false) {
-            kind = .Image
-
-        } else {
-            kind = .Text
+        if let rawType = type where rawType.isEqual(BlockKeys.RawTypeUser) {
+            return .User
         }
-    }
 
+        if let commentID = metaCommentID, let parentCommentID = parent?.metaCommentID, let _ = metaSiteID
+            where commentID.isEqual(parentCommentID)
+        {
+            return .Comment
+        }
+
+        if let firstMedia = media.first where firstMedia.isImage || firstMedia.isBadge {
+            return .Image
+        }
+
+        return .Text
+    }
 
     /// Returns all of the Image URL's referenced by the NotificationMedia instances
     ///
@@ -211,7 +217,7 @@ extension NotificationBlock
     ///
     private func valueForAction(action: Action) -> Bool? {
         guard let overrideValue = actionsOverride[action] else {
-            let value = actions?[action.toString] as? NSNumber
+            let value = actions?[action.rawValue] as? NSNumber
             return value?.boolValue
         }
 
@@ -285,4 +291,16 @@ extension NotificationBlock
 
         return parsed.isEmpty ? nil : parsed
     }
+}
+
+
+
+// MARK: - NotificationBlock Equatable Implementation
+//
+func == (lhs: NotificationBlock, rhs: NotificationBlock) -> Bool {
+    return lhs.kind == rhs.kind &&
+        lhs.text == rhs.text &&
+        lhs.parent == rhs.parent &&
+        lhs.ranges.count == rhs.ranges.count &&
+        lhs.media.count == rhs.media.count
 }
