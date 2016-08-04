@@ -9,7 +9,7 @@ import WordPressShared.WPStyleGuide
 /// We rely on a cache mechanism, implemented for performance purposes, that will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension Notification.Block {
+extension NotificationBlock {
 
     // MARK: - Public Methods
     //

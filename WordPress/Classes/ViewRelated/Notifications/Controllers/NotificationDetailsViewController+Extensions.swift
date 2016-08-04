@@ -55,7 +55,7 @@ class NotificationDetailsViewController: UIViewController
 
     /// Arranged collection of groups to render
     ///
-    private var blockGroups = [BlockGroup]()
+    private var blockGroups = [NotificationBlockGroup]()
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
@@ -137,7 +137,7 @@ class NotificationDetailsViewController: UIViewController
 
     private func reloadData() {
         // Hide the header, if needed
-        var mergedGroups = [BlockGroup]()
+        var mergedGroups = [NotificationBlockGroup]()
 
         if let header = note.headerBlockGroup {
             mergedGroups.append(header)
@@ -443,7 +443,7 @@ private extension NotificationDetailsViewController
         tableView.scrollEnabled = !shouldCenterVertically
     }
 
-    func layoutIdentifierForGroup(blockGroup: BlockGroup) -> String {
+    func layoutIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
         switch blockGroup.kind {
         case .Header:
             return NoteBlockHeaderTableViewCell.layoutIdentifier()
@@ -464,7 +464,7 @@ private extension NotificationDetailsViewController
         }
     }
 
-    func reuseIdentifierForGroup(blockGroup: BlockGroup) -> String {
+    func reuseIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
         switch blockGroup.kind {
         case .Header:
             return NoteBlockHeaderTableViewCell.reuseIdentifier()
@@ -492,7 +492,7 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func setupCell(cell: NoteBlockTableViewCell, blockGroup: BlockGroup) {
+    func setupCell(cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
         // Temporarily force margins for WPTableViewCell hack.
         cell.forceCustomCellMargins = true
 
@@ -516,7 +516,7 @@ private extension NotificationDetailsViewController
         }
     }
 
-    func setupHeaderCell(cell: NoteBlockHeaderTableViewCell, blockGroup: BlockGroup) {
+    func setupHeaderCell(cell: NoteBlockHeaderTableViewCell, blockGroup: NotificationBlockGroup) {
         // Note:
         // We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
         // -   UITableViewCell automatically handles highlight / unhighlight for us
@@ -537,7 +537,7 @@ private extension NotificationDetailsViewController
         cell.downloadGravatarWithURL(mediaURL)
     }
 
-    func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: BlockGroup) {
+    func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
             assertionFailure("Missing Text Block for Notification [\(note.simperiumKey)")
             return
@@ -548,7 +548,7 @@ private extension NotificationDetailsViewController
         cell.isTextViewClickable = false
     }
 
-    func setupUserCell(cell: NoteBlockUserTableViewCell, blockGroup: BlockGroup) {
+    func setupUserCell(cell: NoteBlockUserTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let userBlock = blockGroup.blocks.first else {
             assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
             return
@@ -582,7 +582,7 @@ private extension NotificationDetailsViewController
         cell.downloadGravatarWithURL(mediaURL)
     }
 
-    func setupCommentCell(cell: NoteBlockCommentTableViewCell, blockGroup: BlockGroup) {
+    func setupCommentCell(cell: NoteBlockCommentTableViewCell, blockGroup: NotificationBlockGroup) {
         // Note:
         // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
         // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
@@ -644,7 +644,7 @@ private extension NotificationDetailsViewController
         cell.downloadGravatarWithURL(mediaURL)
     }
 
-    func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: BlockGroup) {
+    func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let commentBlock = blockGroup.blockOfKind(.Comment) else {
             assertionFailure("Missing Comment Block for Notification \(note.simperiumKey)")
             return
@@ -689,7 +689,7 @@ private extension NotificationDetailsViewController
         }
     }
 
-    func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: BlockGroup) {
+    func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
         guard cell.isLayoutCell() == false else {
             return
         }
@@ -703,7 +703,7 @@ private extension NotificationDetailsViewController
         cell.downloadImageWithURL(mediaURL)
     }
 
-    func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: BlockGroup) {
+    func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
             assertionFailure("Missing Text Block for Notification \(note.simperiumKey)")
             return
@@ -905,7 +905,7 @@ extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func blockGroupForIndexPath(indexPath: NSIndexPath) -> BlockGroup {
+    func blockGroupForIndexPath(indexPath: NSIndexPath) -> NotificationBlockGroup {
         return blockGroups[indexPath.row]
     }
 
@@ -948,7 +948,7 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func downloadAndResizeMedia(indexPath: NSIndexPath, blockGroup: BlockGroup) {
+    func downloadAndResizeMedia(indexPath: NSIndexPath, blockGroup: NotificationBlockGroup) {
         //  Notes:
         //  -   We'll *only* download Media for Text and Comment Blocks
         //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
@@ -984,37 +984,37 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func followSiteWithBlock(block: Block) {
+    func followSiteWithBlock(block: NotificationBlock) {
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
 
-    func unfollowSiteWithBlock(block: Block) {
+    func unfollowSiteWithBlock(block: NotificationBlock) {
         actionsService.unfollowSiteWithBlock(block)
         WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
 
-    func likeCommentWithBlock(block: Block) {
+    func likeCommentWithBlock(block: NotificationBlock) {
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
-    func unlikeCommentWithBlock(block: Block) {
+    func unlikeCommentWithBlock(block: NotificationBlock) {
         actionsService.unlikeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
-    func approveCommentWithBlock(block: Block) {
+    func approveCommentWithBlock(block: NotificationBlock) {
         actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
-    func unapproveCommentWithBlock(block: Block) {
+    func unapproveCommentWithBlock(block: NotificationBlock) {
         actionsService.unapproveCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
-    func spamCommentWithBlock(block: Block) {
+    func spamCommentWithBlock(block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
         onDeletionRequestCallback? { onCompletion in
@@ -1031,7 +1031,7 @@ private extension NotificationDetailsViewController
         navigationController?.popToRootViewControllerAnimated(true)
     }
 
-    func trashCommentWithBlock(block: Block) {
+    func trashCommentWithBlock(block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
         // Hit the DeletionRequest Callback
@@ -1049,7 +1049,7 @@ private extension NotificationDetailsViewController
         navigationController?.popToRootViewControllerAnimated(true)
     }
 
-    func replyCommentWithBlock(block: Block, content: String) {
+    func replyCommentWithBlock(block: NotificationBlock, content: String) {
         actionsService.replyCommentWithBlock(block, content: content, completion: { success in
             guard success else {
                 self.displayReplyErrorWithBlock(block, content: content)
@@ -1061,7 +1061,7 @@ private extension NotificationDetailsViewController
         })
     }
 
-    func updateCommentWithBlock(block: Block, content: String) {
+    func updateCommentWithBlock(block: NotificationBlock, content: String) {
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
                 return
@@ -1077,7 +1077,7 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func displayReplyEditorWithBlock(block: Block) {
+    func displayReplyEditorWithBlock(block: NotificationBlock) {
         guard let siteID = note.metaSiteID else {
             return
         }
@@ -1100,7 +1100,7 @@ private extension NotificationDetailsViewController
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    func displayReplyErrorWithBlock(block: Block, content: String) {
+    func displayReplyErrorWithBlock(block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
                                             comment: "Reply Failure Message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
@@ -1123,7 +1123,7 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func displayCommentEditorWithBlock(block: Block) {
+    func displayCommentEditorWithBlock(block: NotificationBlock) {
         let editViewController = EditCommentViewController.newEditViewController()
         editViewController.content = block.text
         editViewController.onCompletion = { (hasNewContent, newContent) in
@@ -1144,7 +1144,7 @@ private extension NotificationDetailsViewController
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    func displayCommentUpdateErrorWithBlock(block: Block, content: String) {
+    func displayCommentUpdateErrorWithBlock(block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
                                             comment: "Displayed whenever a Comment Update Fails")
         let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
@@ -1212,9 +1212,6 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 //
 private extension NotificationDetailsViewController
 {
-    typealias Block = Notification.Block
-    typealias BlockGroup = Notification.BlockGroup
-
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
@@ -1230,7 +1227,7 @@ private extension NotificationDetailsViewController
     }
 
     enum Media {
-        static let richBlockTypes           = Set(arrayLiteral: Block.Kind.Text, Block.Kind.Comment)
+        static let richBlockTypes           = Set(arrayLiteral: NotificationBlock.Kind.Text, NotificationBlock.Kind.Comment)
         static let duration                 = NSTimeInterval(0.25)
         static let delay                    = NSTimeInterval(0)
         static let options                  : UIViewAnimationOptions = [.OverrideInheritedDuration, .BeginFromCurrentState]
