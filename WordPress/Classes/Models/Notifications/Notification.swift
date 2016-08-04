@@ -63,7 +63,7 @@ class Notification: SPManagedObject
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
-    func blockGroupOfType(kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
+    func blockGroupOfKind(kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
         }
@@ -120,7 +120,7 @@ extension Notification
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfType(.Comment)?.blockOfKind(.Comment) else {
+        guard let block = blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else {
             return false
         }
 

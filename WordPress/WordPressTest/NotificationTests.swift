@@ -51,7 +51,7 @@ extension NotificationTests
 
     func testBadgeNotificationContainsOneImageBlockGroup() {
         let note = loadBadgeNotification()
-        let group = note.blockGroupOfType(.Image)
+        let group = note.blockGroupOfKind(.Image)
         XCTAssertNotNil(group)
 
         let imageBlock = group!.blocks.first
@@ -181,7 +181,7 @@ extension NotificationTests
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
 
-        let textBlock = note.blockGroupOfType(.Footer)?.blockOfType(.Text)
+        let textBlock = note.blockGroupOfKind(.Footer)?.blockOfType(.Text)
         XCTAssertNotNil(textBlock)
 
         let replyID = note.metaReplyID
