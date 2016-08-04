@@ -15,15 +15,15 @@ class Notification: SPManagedObject
 
     /// Subject Blocks Transient Storage.
     ///
-    private var cachedSubjectBlockGroup: NotificationBlockGroup?
+    private var cachedSubjectBlockGroup: BlockGroup?
 
     /// Header Blocks Transient Storage.
     ///
-    private var cachedHeaderBlockGroup: NotificationBlockGroup?
+    private var cachedHeaderBlockGroup: BlockGroup?
 
     /// Body Blocks Transient Storage.
     ///
-    private var cachedBodyBlockGroups: [NotificationBlockGroup]?
+    private var cachedBodyBlockGroups: [BlockGroup]?
 
     /// Known kinds of Notifications
     ///
@@ -63,8 +63,8 @@ class Notification: SPManagedObject
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
-    func blockGroupOfType(type: NoteBlockGroupType) -> NotificationBlockGroup? {
-        for blockGroup in bodyBlockGroups where blockGroup.type == type {
+    func blockGroupOfType(kind: BlockGroup.Kind) -> BlockGroup? {
+        for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
         }
 
@@ -120,7 +120,7 @@ extension Notification
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
+        guard let block = blockGroupOfType(.Comment)?.blockOfKind(.Comment) else {
             return false
         }
 
@@ -235,47 +235,47 @@ extension Notification
 
     /// Returns the Subject Block Group, if any.
     ///
-    var subjectBlockGroup: NotificationBlockGroup? {
+    var subjectBlockGroup: BlockGroup? {
         if let subjectBlockGroup = cachedSubjectBlockGroup {
             return subjectBlockGroup
         }
 
-        cachedSubjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, notification: self)
+        cachedSubjectBlockGroup = BlockGroup.subjectGroupFromArray(subject, notification: self)
         return cachedSubjectBlockGroup
     }
 
     /// Returns the Header Block Group, if any.
     ///
-    var headerBlockGroup: NotificationBlockGroup? {
+    var headerBlockGroup: BlockGroup? {
         if let headerBlockGroup = cachedHeaderBlockGroup {
             return headerBlockGroup
         }
 
-        cachedHeaderBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, notification: self)
+        cachedHeaderBlockGroup = BlockGroup.headerGroupFromArray(header, notification: self)
         return cachedHeaderBlockGroup
     }
 
     /// Returns the Body Block Groups, if any.
     ///
-    var bodyBlockGroups: [NotificationBlockGroup] {
+    var bodyBlockGroups: [BlockGroup] {
         if let bodyBlockGroups = cachedBodyBlockGroups {
             return bodyBlockGroups
         }
 
-        let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, notification: self)
+        let bodyBlockGroups = BlockGroup.bodyGroupsFromArray(body, notification: self)
         cachedBodyBlockGroups = bodyBlockGroups
         return bodyBlockGroups
     }
 
     /// Returns the Subject Block, if any.
     ///
-    var subjectBlock: NotificationBlock? {
+    var subjectBlock: Block? {
         return subjectBlockGroup?.blocks.first
     }
 
     /// Returns the Snippet Block, if any.
     ///
-    var snippetBlock: NotificationBlock? {
+    var snippetBlock: Block? {
         guard let subjectBlocks = subjectBlockGroup?.blocks where subjectBlocks.count > 1 else {
             return nil
         }
