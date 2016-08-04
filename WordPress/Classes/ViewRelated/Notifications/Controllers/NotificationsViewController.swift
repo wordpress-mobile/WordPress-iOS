@@ -71,6 +71,11 @@ class NotificationsViewController : UITableViewController
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        restorationClass = self.dynamicType
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
