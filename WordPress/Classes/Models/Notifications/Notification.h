@@ -1,7 +1,5 @@
 #import <Simperium/Simperium.h>
 
-@class NotificationRange;
-@class NotificationMedia;
 
 #pragma mark ====================================================================================
 #pragma mark Constants
@@ -57,5 +55,3 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 @property (nonatomic, assign, readonly) BOOL                isBadge;
 
 @end
-
-
