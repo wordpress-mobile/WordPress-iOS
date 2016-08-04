@@ -27,7 +27,6 @@
 #import "WordPressAppDelegate.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPBlogSelectorButton.h"
-#import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
 #import "WPTableViewCell.h"
@@ -63,7 +62,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 100.0f;
+static CGFloat const CompactTitleButtonWidth = 115.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -1177,10 +1176,11 @@ EditImageDetailsViewControllerDelegate
 
     cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
-    
+
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelChevronButton = button;
+
     return _cancelChevronButton;
 }
 
@@ -1197,7 +1197,6 @@ EditImageDetailsViewControllerDelegate
 
     cancelButton.leftSpacing = 0;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
-    
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelXButton = button;
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
@@ -1207,18 +1206,14 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)editBarButtonItem
 {
     if (!_editBarButtonItem) {
-        NSString* buttonTitle = NSLocalizedString(@"Edit",
-                                                  @"Label for the button to edit the current post.");
+        NSString* buttonTitle = NSLocalizedString(@"Edit", @"Label for the button to edit the current post.");
         
-        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(startEditing)];
-        
-        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
-        [editButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
-        [editButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
-        _editBarButtonItem = editButton;
+        _editBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(startEditing)];;
+        [_editBarButtonItem setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
+        [_editBarButtonItem setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
     }
     
 	return _editBarButtonItem;
@@ -1228,14 +1223,14 @@ EditImageDetailsViewControllerDelegate
 {
 	if (!_optionsBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(showSettings)];
-        
         NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        button.accessibilityLabel = optionsTitle;
-        button.accessibilityIdentifier = @"Options";
-        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(showSettings)];
+        _optionsBarButtonItem.accessibilityLabel = optionsTitle;
+        _optionsBarButtonItem.accessibilityIdentifier = @"Options";
     }
     
 	return _optionsBarButtonItem;
@@ -1244,7 +1239,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+        NSString *buttonTitle = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the live site");
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
                                                                  style:[WPStyleGuide barButtonStyleForDone]
                                                                 target:self
@@ -1268,6 +1263,7 @@ EditImageDetailsViewControllerDelegate
         // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
         [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
         [saveButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
+        
         _saveBarButtonItem = saveButton;
     }
 
@@ -1278,14 +1274,16 @@ EditImageDetailsViewControllerDelegate
 {
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(sharePost)];
-
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
-        button.accessibilityLabel = title;
-        button.accessibilityIdentifier = @"Share";
+        
+        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
+                                                                        target:self
+                                                                      selector:@selector(sharePost)];
+        button.rightSpacing = RightSpacingOnExitNavbarButton;
+        
         _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _shareBarButtonItem.accessibilityLabel = title;
+        _shareBarButtonItem.accessibilityIdentifier = @"Share";
     }
     
     return _shareBarButtonItem;
