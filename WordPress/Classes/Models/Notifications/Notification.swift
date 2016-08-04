@@ -273,22 +273,23 @@ extension Notification
     /// Meta Field Parsing-Keys
     ///
     enum MetaKeys {
-        static let Ids      = "ids"
-        static let Links    = "links"
-        static let Titles   = "titles"
-        static let Site     = "site"
-        static let Post     = "post"
-        static let Comment  = "comment"
-        static let Reply    = "reply_comment"
-        static let Home     = "home"
+        static let Ids          = "ids"
+        static let Links        = "links"
+        static let Titles       = "titles"
+        static let Site         = "site"
+        static let Post         = "post"
+        static let Comment      = "comment"
+        static let Reply        = "reply_comment"
+        static let Home         = "home"
     }
 
     enum BlockKeys {
-        static let Meta     = "meta"
-        static let Media    = "media"
-        static let Actions  = "actions"
-        static let Ranges   = "ranges"
-        static let Kind     = "type"
-        static let Text     = "text"
+        static let Meta         = "meta"
+        static let Media        = "media"
+        static let Actions      = "actions"
+        static let Ranges       = "ranges"
+        static let RawType      = "type"
+        static let RawTypeUser  = "user"
+        static let Text         = "text"
     }
 }
