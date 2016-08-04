@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 @property (nonatomic, strong, nullable, readonly) NSNumber  *userID;
 @property (nonatomic, strong, nullable, readonly) NSNumber  *siteID;
 
++ (nonnull NSArray<NotificationRange *> *)rangesFromArray:(nullable NSArray *)rawURL;
+
 @end
 
 
@@ -53,5 +55,7 @@ typedef NS_ENUM(NSInteger, NoteRangeType)
 // Derived Properties
 @property (nonatomic, assign, readonly) BOOL                isImage;
 @property (nonatomic, assign, readonly) BOOL                isBadge;
+
++ (nonnull NSArray<NotificationMedia *> *)mediaFromArray:(nullable NSArray *)rawMedia;
 
 @end
