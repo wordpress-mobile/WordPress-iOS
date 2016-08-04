@@ -52,8 +52,7 @@ class NotificationDetailsViewController: UIViewController
     /// Notification to-be-displayed
     ///
     private var note: Notification!
-typealias Block = Notification.Block
-typealias BlockGroup = Notification.BlockGroup
+
     /// Arranged collection of groups to render
     ///
     private var blockGroups = [BlockGroup]()
@@ -1213,6 +1212,9 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 //
 private extension NotificationDetailsViewController
 {
+    typealias Block = Notification.Block
+    typealias BlockGroup = Notification.BlockGroup
+
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
