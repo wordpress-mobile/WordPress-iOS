@@ -8,14 +8,6 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString const *NoteActionFollowKey     = @"follow";
-NSString const *NoteActionReplyKey      = @"replyto-comment";
-NSString const *NoteActionApproveKey    = @"approve-comment";
-NSString const *NoteActionSpamKey       = @"spam-comment";
-NSString const *NoteActionTrashKey      = @"trash-comment";
-NSString const *NoteActionLikeKey       = @"like-comment";
-NSString const *NoteActionEditKey       = @"approve-comment";
-
 NSString const *NoteRangeTypeUserKey    = @"user";
 NSString const *NoteRangeTypePostKey    = @"post";
 NSString const *NoteRangeTypeCommentKey = @"comment";
