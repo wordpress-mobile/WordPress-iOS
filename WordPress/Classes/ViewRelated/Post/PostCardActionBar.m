@@ -6,7 +6,7 @@
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
-static CGFloat ActionBarMinButtonWidth = 100.0;
+static CGFloat ActionBarMinButtonWidth = 90.0;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
