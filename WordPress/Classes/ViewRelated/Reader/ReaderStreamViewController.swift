@@ -59,7 +59,7 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
-
+    private var shouldPreloadCells = false
 
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -222,6 +222,8 @@ import WordPressComAnalytics
         setupSyncHelper()
         setupResultsStatusView()
 
+        shouldPreloadCells = UIDevice.isPad()
+
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         didSetupView = true
@@ -242,6 +244,13 @@ import WordPressComAnalytics
         // Always reload tableview so any core data changes merged to the child
         // context are reflected in the list.
         tableViewHandler.refreshTableViewPreservingOffset()
+    }
+
+
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        preloadCellsIfNeeded()
     }
 
 
@@ -458,6 +467,34 @@ import WordPressComAnalytics
         footerView.frame = frame
         tableView.tableFooterView = footerView
         footerView.hidden = true
+    }
+
+
+    /// There is an issue where cells do not have the correct trait collection if they are added
+    /// to the table view while the view controller is not visible (the view has no window).
+    /// When this happens cells on the ipad can render full width because they are not
+    /// respecting their intended size class.
+    /// To compensate, preload cells the first time the view appears after its loaded so the correct
+    /// traits are applied.
+    func preloadCellsIfNeeded() {
+        if !shouldPreloadCells || !UIDevice.isPad() {
+            return
+        }
+        shouldPreloadCells = false
+
+        var cell = tableView.dequeueReusableCellWithIdentifier(readerGapMarkerCellReuseIdentifier)!
+        view.addSubview(cell)
+        cell.removeFromSuperview()
+
+        for _ in 1...4 {
+            cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier)!
+            view.addSubview(cell)
+            cell.removeFromSuperview()
+
+            cell = tableView.dequeueReusableCellWithIdentifier(readerCrossPostCellReuseIdentifier)!
+            view.addSubview(cell)
+            cell.removeFromSuperview()
+        }
     }
 
 
