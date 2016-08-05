@@ -44,7 +44,7 @@
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="au3-8f-nAh" secondAttribute="bottom" id="89D-jc-v4X"/>
                     <constraint firstItem="au3-8f-nAh" firstAttribute="trailing" secondItem="dPd-xc-GkE" secondAttribute="leading" id="AiD-9Q-fgp"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dPd-xc-GkE" secondAttribute="trailing" constant="-15" id="C74-Dt-B2F"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dPd-xc-GkE" secondAttribute="trailing" priority="999" constant="-15" id="C74-Dt-B2F"/>
                     <constraint firstItem="dPd-xc-GkE" firstAttribute="height" secondItem="au3-8f-nAh" secondAttribute="height" id="Cla-B1-42i"/>
                     <constraint firstAttribute="bottomMargin" secondItem="dPd-xc-GkE" secondAttribute="bottom" id="UV7-70-RXp"/>
                     <constraint firstItem="dPd-xc-GkE" firstAttribute="top" secondItem="QqJ-JC-nik" secondAttribute="topMargin" id="nw1-vq-uW6"/>

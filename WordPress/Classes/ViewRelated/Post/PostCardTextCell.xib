@@ -233,7 +233,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="Lk7-nZ-b0t" firstAttribute="trailing" secondItem="MWK-lj-FaS" secondAttribute="trailingMargin" constant="2" id="2At-kP-Urm">
+                    <constraint firstItem="Lk7-nZ-b0t" firstAttribute="trailing" secondItem="MWK-lj-FaS" secondAttribute="trailingMargin" priority="999" constant="2" id="2At-kP-Urm">
                         <variation key="widthClass=regular" constant="0.0"/>
                     </constraint>
                     <constraint firstAttribute="leadingMargin" secondItem="Lk7-nZ-b0t" secondAttribute="leading" constant="2" id="2n8-4V-L5z">

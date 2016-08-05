@@ -244,7 +244,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="b5E-yQ-veP" secondAttribute="trailing" constant="-2" id="5CP-ZE-K8w">
+                    <constraint firstAttribute="trailingMargin" secondItem="b5E-yQ-veP" secondAttribute="trailing" priority="999" constant="-2" id="5CP-ZE-K8w">
                         <variation key="widthClass=regular" constant="0.0"/>
                     </constraint>
                     <constraint firstAttribute="bottomMargin" secondItem="b5E-yQ-veP" secondAttribute="bottom" constant="4" id="O2f-he-2mN">

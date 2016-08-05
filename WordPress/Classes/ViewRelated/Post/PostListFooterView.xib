@@ -58,7 +58,7 @@
                 <constraint firstAttribute="bottom" secondItem="AoX-vc-zrF" secondAttribute="bottom" constant="11" id="CZF-8o-geK"/>
                 <constraint firstAttribute="trailing" secondItem="AoX-vc-zrF" secondAttribute="trailing" constant="7" id="ciu-4z-aHt"/>
                 <constraint firstItem="F4q-47-pPM" firstAttribute="centerX" secondItem="AoX-vc-zrF" secondAttribute="centerX" id="oYN-Kz-3Zu"/>
-                <constraint firstAttribute="trailingMargin" secondItem="AoX-vc-zrF" secondAttribute="trailing" id="s16-Gc-tvU"/>
+                <constraint firstAttribute="trailingMargin" secondItem="AoX-vc-zrF" secondAttribute="trailing" priority="999" id="s16-Gc-tvU"/>
                 <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leadingMargin" id="yzD-7E-gw6"/>
                 <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leading" constant="7" id="znD-ba-XuU"/>
                 <constraint firstItem="F4q-47-pPM" firstAttribute="centerY" secondItem="AoX-vc-zrF" secondAttribute="centerY" id="zvW-CV-pmP"/>
