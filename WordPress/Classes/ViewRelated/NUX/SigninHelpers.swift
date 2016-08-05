@@ -3,13 +3,14 @@ import NSURL_IDN
 import WordPressComAnalytics
 import Mixpanel
 
-
 /// A collection of helper methods for NUX.
 ///
 @objc class SigninHelpers: NSObject
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
     private static let JoinABTestTimeoutInSeconds: NSTimeInterval = 2
+
+    @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
     // MARK: - AB test related methods
 
