@@ -243,7 +243,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     func promptWithTitle(title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-        let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
     }
@@ -337,6 +337,12 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
+
+        // If we're not following any sites, reload the table view to ensure the
+        // section header is no longer showing.
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            tableView.reloadData()
+        }
     }
 
 }

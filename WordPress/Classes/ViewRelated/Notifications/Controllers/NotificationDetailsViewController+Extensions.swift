@@ -79,7 +79,7 @@ class NotificationDetailsViewController: UIViewController
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        restorationClass = NotificationDetailsViewController.self
+        restorationClass = self.dynamicType
     }
 
     override func viewDidLoad() {
@@ -155,8 +155,8 @@ class NotificationDetailsViewController: UIViewController
 
 
 
-/// State Restoration
-///
+// MARK: - State Restoration
+//
 extension NotificationDetailsViewController: UIViewControllerRestoration
 {
     class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
@@ -183,15 +183,15 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
         super.encodeRestorableStateWithCoder(coder)
+        coder.encodeObject(note.objectID.URIRepresentation(), forKey: Restoration.noteIdKey)
     }
 }
 
 
 
-/// UITableView Methods
-///
+// MARK: - UITableView Methods
+//
 extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource
 {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -206,7 +206,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         let blockGroup = blockGroupForIndexPath(indexPath)
         let layoutIdentifier = layoutIdentifierForGroup(blockGroup)
 
-        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier, forIndexPath: indexPath) as? NoteBlockTableViewCell else {
+        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier) as? NoteBlockTableViewCell else {
             fatalError()
         }
 

@@ -35,7 +35,7 @@ import WordPressShared.WPStyleGuide
         disclosureIcon.image = Gridicon.iconOfType(.ChevronRight, withSize: disclosureIcon.frame.size)
         disclosureIcon.tintColor = WPStyleGuide.accessoryDefaultTintColor()
 
-        imageView.image = Gridicon.iconOfType(.Cog, withSize: imageView.frame.size)
+        imageView.image = Gridicon.iconOfType(.Cog)
         imageView.tintColor = UIColor.whiteColor()
     }
 

@@ -32,9 +32,6 @@
                 options[key] = [response valueForKeyPath:sourceKeyPath];
             }
         }
-    } else {
-        //valid default values
-        options[@"software_version"] = @"3.6";
     }
     NSMutableDictionary *valueOptions = [NSMutableDictionary dictionaryWithCapacity:options.count];
     [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
