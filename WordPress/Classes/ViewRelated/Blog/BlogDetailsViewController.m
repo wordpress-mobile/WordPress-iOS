@@ -225,16 +225,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // First, we'll grab the appropriate index path so we can reselect it
     // after reloading the table
-    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath == nil && !self.splitViewControllerIsHorizontallyCompact) {
-        selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    }
+    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow ?: [NSIndexPath indexPathForRow:0 inSection:0];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
 
-    // And finally we'll reselect the selected row, if there is one
-    [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (![self splitViewControllerIsHorizontallyCompact]) {
+        // And finally we'll reselect the selected row, if there is one
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 - (NSString *)adminRowTitle
@@ -441,7 +440,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
-    cell.accessoryType = [self.splitViewController isCollapsed] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
