@@ -101,16 +101,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // First, we'll grab the appropriate index path so we can reselect it
         // after reloading the table
-        var selectedIndexPath = tableView.indexPathForSelectedRow
-        if selectedIndexPath == nil && !splitViewControllerIsHorizontallyCompact {
-            selectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-        }
+        let selectedIndexPath = tableView.indexPathForSelectedRow ?? NSIndexPath(forRow: 0, inSection: 0)
 
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
 
-        // And finally we'll reselect the selected row, if there is one
-        tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
+        if !splitViewControllerIsHorizontallyCompact {
+            // And finally we'll reselect the selected row, if there is one
+            tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
+        }
     }
 
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
