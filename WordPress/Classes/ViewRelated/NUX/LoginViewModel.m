@@ -13,6 +13,7 @@
 #import "OnePasswordFacade.h"
 #import "ReachabilityFacade.h"
 #import "WPWalkthroughOverlayView.h"
+#import "WordPress-Swift.h"
 
 @implementation LoginViewModel
 
@@ -437,6 +438,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)finishedLogin
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SigninHelpers.WPSigninDidFinishNotification object:nil];
+
     [self.presenter dismissLoginView];
 }
 

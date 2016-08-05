@@ -125,6 +125,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                      name:WPAccountDefaultWordPressComAccountChangedNotification
                                                    object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(signinDidFinish:)
+                                                     name:SigninHelpers.WPSigninDidFinishNotification
+                                                   object:nil];
+
         // Watch for application badge number changes
         [[UIApplication sharedApplication] addObserver:self
                                             forKeyPath:WPApplicationIconBadgeNumberKeyPath
@@ -322,6 +327,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     
     return _meSplitViewController;
+}
+
+- (void)reloadSplitViewControllers
+{
+    _blogListNavigationController = nil;
+    _blogListSplitViewController = nil;
+    _meSplitViewController = nil;
+
+    [self setViewControllers:@[self.blogListSplitViewController,
+                               self.readerNavigationController,
+                               self.newPostViewController,
+                               self.meSplitViewController,
+                               self.notificationsNavigationController]];
 }
 
 #pragma mark - Navigation Helpers
@@ -587,6 +605,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
+}
+
+- (void)signinDidFinish:(NSNotification *)notification
+{
+    [self reloadSplitViewControllers];
 }
 
 #pragma mark - Handling Badges
