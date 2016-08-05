@@ -8,18 +8,7 @@ typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
 
 extern NSString * const ReaderSiteServiceErrorDomain;
 
-@class ReaderSite;
-
 @interface ReaderSiteService : LocalCoreDataService
-
-/**
- Get a list of the sites the user follows.
- 
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchFollowedSitesWithSuccess:(void(^)())success
-                              failure:(void(^)(NSError *error))failure;
 
 /**
  Follow a site by its URL.
@@ -77,17 +66,6 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 - (void)unfollowSiteAtURL:(NSString *)siteURL
                   success:(void(^)())success
                   failure:(void(^)(NSError *error))failure;
-
-/**
- Unfollows the specified `ReaderSite`.
-
- @param site The `ReaderSite` to unfollow.
- @param success block called on a successful unfollow.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)unfollowSite:(ReaderSite *)site
-             success:(void(^)())success
-             failure:(void(^)(NSError *error))failure;
 
 /**
  Sync posts for the 'sites I follow endpoint if it exists. Maybe called whenever

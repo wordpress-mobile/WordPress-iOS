@@ -51,7 +51,6 @@
 // View controllers
 #import "RotationAwareNavigationViewController.h"
 #import "LoginViewController.h"
-#import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
