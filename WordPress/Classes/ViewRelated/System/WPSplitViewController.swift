@@ -147,6 +147,8 @@ class WPSplitViewController: UISplitViewController {
             detailVC = wrapViewControllerInNavigationControllerIfRequired(vc)
         }
 
+        detailNavigationStackHasBeenModified = true
+
         super.showDetailViewController(detailVC, sender: self)
     }
 
@@ -166,6 +168,8 @@ class WPSplitViewController: UISplitViewController {
 
             initialViewControllers.append(detailViewController)
             viewControllers = initialViewControllers
+        } else {
+            viewControllers = [viewController, UIViewController()]
         }
     }
 
@@ -179,7 +183,16 @@ class WPSplitViewController: UISplitViewController {
     }
 
     private func wrapViewControllerInNavigationControllerIfRequired(viewController: UIViewController) -> UIViewController {
-        return (viewController is UINavigationController) ? viewController : UINavigationController(rootViewController: viewController)
+        var navigationController: UINavigationController!
+
+        if let viewController = viewController as? UINavigationController {
+            navigationController = viewController
+        } else {
+            navigationController = UINavigationController(rootViewController: viewController)
+        }
+
+        navigationController.delegate = self
+        return navigationController
     }
 
     // Used to prevent reloading the detail view controller if the same view
@@ -187,6 +200,8 @@ class WPSplitViewController: UISplitViewController {
     // (example: a user tapping Back out of a Blog Details VC to the Blog List VC,
     // and then tapping back into the same blog).
     private weak var previousTopPrimaryViewController: UIViewController? = nil
+
+    private var detailNavigationStackHasBeenModified = false
 }
 
 // MARK: - UISplitViewControllerDelegate
@@ -237,6 +252,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             return firstViewController
         } else {
             let navigationController = UINavigationController()
+            navigationController.delegate = self
             navigationController.viewControllers = viewControllers
 
             return navigationController
@@ -261,7 +277,11 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // itself onto the primary navigation controller, which is just weird)
         if let primaryViewController = primaryViewController as? UINavigationController,
             let secondaryViewController = secondaryViewController as? UINavigationController {
-            primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+
+            if detailNavigationStackHasBeenModified {
+                primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+            }
+
             return true
         }
 
@@ -273,11 +293,19 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
 
 extension WPSplitViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if navigationController == viewControllers.first {
+            primaryNavigationController(navigationController, willShowViewController: viewController, animated: animated)
+        } else if navigationController == viewControllers.last {
+            detailNavigationController(navigationController, willShowViewController: viewController, animated: animated)
+        }
+    }
+
+    private func primaryNavigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         dimDetailViewControllerIfNecessary()
 
         // If the split view isn't collapsed, and we're pushing onto the
         // primary navigation controller, update the detail pane if necessary
-        if !collapsed && navigationController.viewControllers.count > 1 {
+        if !isViewHorizontallyCompact() && navigationController.viewControllers.count > 1 {
             // If the primary view controller has changed, reset the detail view controller
             // otherwise, keep the existing detail view controller there.
             // This allows a user to navigate back into the same item in the
@@ -287,6 +315,12 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             }
 
             previousTopPrimaryViewController = viewController
+        }
+    }
+
+    private func detailNavigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if navigationController.viewControllers.count > 1 {
+            detailNavigationStackHasBeenModified = true
         }
     }
 
