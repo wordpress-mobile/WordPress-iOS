@@ -6,7 +6,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
-#import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
