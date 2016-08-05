@@ -267,7 +267,11 @@ public protocol ThemePresenter: class
     }
 
     public override func viewWillDisappear(animated: Bool) {
-        searchController.active = false
+
+        if searchController.active {
+            searchController.active = false
+        }
+
         super.viewWillDisappear(animated)
 
         unregisterForKeyboardNotifications()
