@@ -149,5 +149,36 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
         }
     }
 
-    return features
+    return featuresWithReplacedSupportDescriptions(features)
+}
+
+// We'd like the Support feature for our plans to contain different text (app-specific) to that which the API actually returns.
+// This method finds the relevant features and replaces the text.
+private func featuresWithReplacedSupportDescriptions(features: PlanFeatures) -> PlanFeatures {
+    let freePlanID = 1, premiumPlanID = 1003, businessPlanID = 1008
+
+    let replacementFeatures = [
+        freePlanID: NSLocalizedString("Ask our Happiness Engineers questions in this app, or find answers in our community forum.", comment: "Description of the Support feature of our Free plan"),
+        premiumPlanID: NSLocalizedString("Ask our Happiness Engineers questions in this app anytime you need, or at WordPress.com/help.", comment: "Description of the Support feature of our Premium plan"),
+        businessPlanID: NSLocalizedString("Ask our Happiness Engineers questions in this app anytime you need, or chat with us live at WordPress.com/help.", comment: "Description of the Support feature of our Business plan")
+    ]
+
+    var updatedFeatures: PlanFeatures = [:]
+    for (planID, planFeatures) in features {
+        if !replacementFeatures.keys.contains(planID) {
+            // If it's not one of our target plans, just copy it into the new collection
+            updatedFeatures[planID] = planFeatures
+        } else {
+            // Otherwise, replace the Support feature with our new text
+            updatedFeatures[planID] = planFeatures.map { f in
+                if f.slug == "support" {
+                    return PlanFeature(slug: f.slug, title: f.title, description: replacementFeatures[planID]!, iconURL: f.iconURL)
+                } else {
+                    return f
+                }
+            }
+        }
+    }
+
+    return updatedFeatures
 }
