@@ -236,7 +236,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
 
-    private lazy var myProfileViewController: UIViewController? = {
+    private var myProfileViewController: UIViewController? {
         guard let account = self.defaultAccount() else {
             let error = "Tried to push My Profile without a default account. This shouldn't happen"
             assertionFailure(error)
@@ -245,7 +245,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
 
         return MyProfileViewController(account: account)
-    }()
+    }
 
     private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
@@ -293,6 +293,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
             SigninHelpers.showSigninForJustWPComFromPresenter(self)
         }
     }
@@ -392,11 +393,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
-        // If we're not logged in yet, return an empty VC
+        // If we're not logged in yet, return app settings
         guard let _ = defaultAccount() else {
-            let viewController = UIViewController()
-            viewController.view.backgroundColor = WPStyleGuide.greyLighten30()
-            return viewController
+            return AppSettingsViewController()
         }
 
         return myProfileViewController
