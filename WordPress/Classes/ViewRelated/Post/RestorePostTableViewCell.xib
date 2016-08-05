@@ -67,7 +67,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="XWn-76-OyW" secondAttribute="bottom" constant="4" id="dNy-yP-Cwz">
                         <variation key="widthClass=regular" constant="0.0"/>
                     </constraint>
-                    <constraint firstItem="XWn-76-OyW" firstAttribute="trailing" secondItem="n47-YY-a6J" secondAttribute="trailingMargin" constant="2" id="iUp-40-qkJ">
+                    <constraint firstItem="XWn-76-OyW" firstAttribute="trailing" secondItem="n47-YY-a6J" secondAttribute="trailingMargin" priority="999" constant="2" id="iUp-40-qkJ">
                         <variation key="widthClass=regular" constant="0.0"/>
                     </constraint>
                     <constraint firstAttribute="leadingMargin" secondItem="XWn-76-OyW" secondAttribute="leading" constant="2" id="uTm-ab-WRk">
