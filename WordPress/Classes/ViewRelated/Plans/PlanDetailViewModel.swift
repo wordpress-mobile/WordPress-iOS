@@ -12,6 +12,7 @@ struct PlanDetailViewModel {
     let features: FeaturesViewModel
 
     enum FeaturesViewModel {
+        case NoInternet
         case Loading
         case Error(String)
         case Ready([PlanFeatureGroup])
@@ -29,7 +30,7 @@ struct PlanDetailViewModel {
 
     var tableViewModel: ImmuTable {
         switch features {
-        case .Loading, .Error(_):
+        case .NoInternet, .Loading, .Error(_):
             return ImmuTable.Empty
         case .Ready(let groups):
             return ImmuTable(sections: groups.map { group in
@@ -43,6 +44,11 @@ struct PlanDetailViewModel {
 
     var noResultsViewModel: WPNoResultsView.Model? {
         switch features {
+        case .NoInternet:
+            return WPNoResultsView.Model(
+                title: NSLocalizedString("No Connection", comment: "Title when there is no internet to request plans"),
+                message: NSLocalizedString("An active internet connection is required to view stats", comment: "Active internet requirement message for plans")
+            )
         case .Loading:
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
