@@ -51,7 +51,6 @@
 // View controllers
 #import "RotationAwareNavigationViewController.h"
 #import "LoginViewController.h"
-#import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
@@ -200,15 +199,9 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                if ([Feature enabled: FeatureFlagReaderMenu]) {
-                    [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
-                    [tabBarController showReaderTab];
-                    [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
-                } else {
-                    [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
-                    [tabBarController showReaderTab];
-                    [tabBarController.readerViewController openPost:postId onBlog:blogId];
-                }
+                [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
+                [tabBarController showReaderTab];
+                [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
 
                 returnValue = YES;
             }

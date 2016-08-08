@@ -508,7 +508,7 @@ import WordPressComAnalytics
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
-        if ReaderHelpers.topicIsFollowing(topic) && Feature.enabled(.ReaderMenu) {
+        if ReaderHelpers.topicIsFollowing(topic) {
             resultsStatusView.buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
             resultsStatusView.delegate = self
         } else {
@@ -599,7 +599,6 @@ import WordPressComAnalytics
         managedObjectContext().reset()
 
         configureTitleForTopic()
-        configureNavigationItemForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -636,27 +635,6 @@ import WordPressComAnalytics
         }
 
         title = topic.title
-    }
-
-
-    func configureNavigationItemForTopic() {
-        if Feature.enabled(.ReaderMenu) {
-            return
-        }
-
-        guard let topic = readerTopic else {
-            navigationItem.rightBarButtonItems = nil
-            return
-        }
-        if ReaderHelpers.isTopicSearchTopic(topic) {
-            navigationItem.rightBarButtonItems = nil
-            return
-        }
-        let button = UIBarButtonItem(image: UIImage(named: "icon-post-search"),
-                                     style: .Plain,
-                                     target: self,
-                                     action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
-        navigationItem.rightBarButtonItem = button
     }
 
 

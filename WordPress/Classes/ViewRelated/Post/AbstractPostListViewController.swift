@@ -162,10 +162,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        searchController.active = false
+        if searchController.active {
+            searchController.active = false
+        }
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-
         unregisterForKeyboardNotifications()
     }
 
