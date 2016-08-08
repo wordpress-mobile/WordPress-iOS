@@ -37,8 +37,7 @@ class NotificationsViewController : UITableViewController
 
     /// TableView Handler: Our commander in chief!
     ///
-    // TODO JLP 7.26.2016: Make this one private once +RowActions has been merged in
-    var tableViewHandler: WPTableViewHandler!
+    private var tableViewHandler: WPTableViewHandler!
 
     /// NoResults View
     ///
@@ -228,6 +227,93 @@ class NotificationsViewController : UITableViewController
         detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
             self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
         }
+    }
+}
+
+
+// MARK: - Row Actions
+//
+extension NotificationsViewController
+{
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return .Delete
+    }
+
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
+            let block = note.blockGroupOfType(.Comment)?.blockOfType(.Comment) else
+        {
+            // Not every single row will have actions: Slight hack so that the UX isn't terrible:
+            //  -   First: Return an Empty UITableViewRowAction
+            //  -   Second: Hide it after a few seconds.
+            //
+            tableView.disableEditionAfterDelay()
+
+            return noopRowActions()
+        }
+
+        // Helpers
+        var actions = [UITableViewRowAction]()
+
+        // Comments: Trash
+        if block.isActionEnabled(.Trash) {
+            let title = NSLocalizedString("Trash", comment: "Trashes a comment")
+
+            let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] _ in
+                self?.showUndeleteForNoteWithID(note.objectID) { onCompletion in
+                    self?.actionsService.deleteCommentWithBlock(block) { success in
+                        onCompletion(success)
+                    }
+                }
+
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.errorRed()
+            actions.append(trash)
+        }
+
+        // Comments: Moderation Disabled
+        guard block.isActionEnabled(.Approve) else {
+            return actions
+        }
+
+        // Comments: Unapprove
+        if block.isActionOn(.Approve) {
+            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+
+            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+                self?.actionsService.unapproveCommentWithBlock(block)
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.grey()
+            actions.append(trash)
+
+        // Comments: Approve
+        } else {
+            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+
+            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+                self?.actionsService.approveCommentWithBlock(block)
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.wordPressBlue()
+            actions.append(trash)
+        }
+
+        return actions
+    }
+
+    private func noopRowActions() -> [UITableViewRowAction] {
+        let noop = UITableViewRowAction(style: .Normal, title: title, handler: { _ in })
+        noop.backgroundColor = UIColor.clearColor()
+        return [noop]
     }
 }
 
@@ -971,8 +1057,7 @@ extension NotificationsViewController: ABXPromptViewDelegate
 
 // MARK: - Private Properties
 //
-// TODO: This should be Private once +RowActions has been merged in
-extension NotificationsViewController
+private extension NotificationsViewController
 {
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
