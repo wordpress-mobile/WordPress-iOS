@@ -83,7 +83,7 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isPrivate;
 - (BOOL)supportsStats;
-
++ (NSString *)entityName;
 
 #pragma mark - Unsaved Changes
 

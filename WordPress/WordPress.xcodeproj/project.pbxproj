@@ -137,6 +137,8 @@
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
+		43A694B21D52880200C1B460 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A694B11D52880200C1B460 /* PostService.swift */; };
+		43A694B41D53F3EF00C1B460 /* NSManagedObject+EntityName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A694B31D53F3EF00C1B460 /* NSManagedObject+EntityName.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
@@ -1157,6 +1159,8 @@
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		3C7F96E2BF4BDB333ABE0B89 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
+		43A694B11D52880200C1B460 /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
+		43A694B31D53F3EF00C1B460 /* NSManagedObject+EntityName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+EntityName.swift"; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
@@ -2715,6 +2719,7 @@
 				B5176CBF1CDCE14F0083CF2D /* People Management */,
 				5D42A3D6175E7452005CFF05 /* AbstractPost.h */,
 				5D42A3D7175E7452005CFF05 /* AbstractPost.m */,
+				43A694B31D53F3EF00C1B460 /* NSManagedObject+EntityName.swift */,
 				5D42A3D8175E7452005CFF05 /* BasePost.h */,
 				5D42A3D9175E7452005CFF05 /* BasePost.m */,
 				83418AA811C9FA6E00ACF00C /* Comment.h */,
@@ -3631,6 +3636,7 @@
 				E1D7FF371C74EB0E00E7E5E5 /* PlanService.swift */,
 				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
+				43A694B11D52880200C1B460 /* PostService.swift */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
 				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
@@ -5773,6 +5779,7 @@
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */,
 				B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */,
+				43A694B21D52880200C1B460 /* PostService.swift in Sources */,
 				1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
@@ -5859,6 +5866,7 @@
 				FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */,
 				B56F0F541C3337670076C48D /* AccountSettings.swift in Sources */,
 				08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */,
+				43A694B41D53F3EF00C1B460 /* NSManagedObject+EntityName.swift in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,

@@ -3,8 +3,6 @@ import CoreData
 
 @objc(Post)
 class Post: AbstractPost {
-
-    static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
     // MARK: - Properties

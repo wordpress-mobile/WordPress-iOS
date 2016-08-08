@@ -34,8 +34,9 @@
 
 /**
  Array of custom fields. Each value is a dictionary containing {ID, key, value}
+ // typed Dict to [String : String]. Not sure if that should be [String : AnyObject] -nh
  */
-@property (nonatomic, strong) NSArray *metadata;
+@property (nonatomic, strong) NSArray<NSDictionary<NSString *, id> *> *metadata;
 
 // Featured images?
 // Geolocation?
