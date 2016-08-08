@@ -220,6 +220,7 @@ extension NotificationTests {
         let note = loadBadgeNotification()
         let targetURL = NSURL(string: "http://www.wordpress.com")!
         let range = note.notificationRangeWithUrl(targetURL)
+
         XCTAssertNotNil(range)
     }
 }
