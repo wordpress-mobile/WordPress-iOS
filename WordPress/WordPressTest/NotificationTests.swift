@@ -38,15 +38,19 @@ extension NotificationTests
         let note = loadBadgeNotification()
         XCTAssertNotNil(note.type)
         XCTAssertNotNil(note.noticon)
+        XCTAssertNotNil(note.iconURL)
+        XCTAssertNotNil(note.resourceURL)
         XCTAssertNotNil(note.timestampAsDate)
-        XCTAssertNotNil(note.icon)
-        XCTAssertNotNil(note.url)
     }
 
-    func testBadgeNotificationContainsOneSubjectBlock() {
+    func testBadgeNotificationProperlyLoadsItsSubjectBlock() {
         let note = loadBadgeNotification()
-        XCTAssertNotNil(note.subjectBlock)
-        XCTAssertNotNil(note.subjectBlock!.text)
+        let subjectBlocks = note.subjectBlockGroup!
+        XCTAssert(subjectBlocks.blocks.count == 1)
+
+        let subjectBlock = note.subjectBlockGroup?.blocks.first!
+        XCTAssertNotNil(subjectBlock)
+        XCTAssertEqual(subjectBlock, note.subjectBlock!)
     }
 
     func testBadgeNotificationContainsOneImageBlockGroup() {
@@ -64,6 +68,7 @@ extension NotificationTests
 
     func testLikeNotificationContainsOneSubjectBlock() {
         let note = loadLikeNotification()
+        XCTAssert(note.subjectBlockGroup!.blocks.count == 1)
         XCTAssertNotNil(note.subjectBlock)
         XCTAssertNotNil(note.subjectBlock!.text)
     }
@@ -177,6 +182,11 @@ extension NotificationTests
         XCTAssertNotNil(note.metaCommentID)
     }
 
+    func testCommentNotificationProperlyChecksIfItWasRepliedTo() {
+        let note = loadCommentNotification()
+        XCTAssert(note.isRepliedComment)
+    }
+
     func testFindingNotificationRangeSearchingByReplyCommentID() {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
@@ -189,6 +199,13 @@ extension NotificationTests
 
         let replyRange = textBlock!.notificationRangeWithCommentId(replyID!)
         XCTAssertNotNil(replyRange)
+    }
+
+    func testFindingNotificationRangeSearchingByURL() {
+        let note = loadBadgeNotification()
+        let targetURL = NSURL(string: "http://www.wordpress.com")!
+        let range = note.notificationRangeWithUrl(targetURL)
+        XCTAssertNotNil(range)
     }
 }
 
