@@ -27,8 +27,8 @@ class NotificationTests : XCTestCase {
 
 /// Tests
 ///
-extension NotificationTests
-{
+extension NotificationTests {
+
     func testBadgeNotificationHasBadgeFlagSetToTrue() {
         let note = loadBadgeNotification()
         XCTAssertTrue(note.isBadge)
@@ -66,6 +66,11 @@ extension NotificationTests
         XCTAssertNotNil(media!.mediaURL)
     }
 
+    func testLikeNotificationReturnsTheProperKindValue() {
+        let note = loadLikeNotification()
+        XCTAssert(note.kind == .Like)
+    }
+
     func testLikeNotificationContainsOneSubjectBlock() {
         let note = loadLikeNotification()
         XCTAssert(note.subjectBlockGroup!.blocks.count == 1)
@@ -99,6 +104,11 @@ extension NotificationTests
         let note = loadLikeNotification()
         XCTAssertNotNil(note.metaSiteID)
         XCTAssertNotNil(note.metaPostID)
+    }
+
+    func testFollowerNotificationReturnsTheProperKindValue() {
+        let note = loadFollowerNotification()
+        XCTAssert(note.kind == .Follow)
     }
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
@@ -141,6 +151,11 @@ extension NotificationTests
         let range = block!.ranges.first
         XCTAssertNotNil(range)
         XCTAssertEqual(range!.type, NoteRangeType.Follow)
+    }
+
+    func testCommentNotificationReturnsTheProperKindValue() {
+        let note = loadCommentNotification()
+        XCTAssert(note.kind == .Comment)
     }
 
     func testCommentNotificationHasCommentFlagSetToTrue() {
