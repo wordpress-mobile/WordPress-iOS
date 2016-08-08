@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -20,18 +20,7 @@
                                 <rect key="frame" x="0.0" y="25" width="320" height="9"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="9" id="X0y-jv-BI5"/>
-                                    <constraint firstAttribute="width" constant="600" id="d55-Dd-71E"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="d55-Dd-71E"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="d55-Dd-71E"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzd-gs-nwM">
                                 <rect key="frame" x="104" y="25" width="112" height="9"/>
@@ -62,7 +51,6 @@
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="width" secondItem="Iu5-0g-eH5" secondAttribute="width" constant="4" id="4kB-se-exN"/>
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="centerY" secondItem="mwJ-ag-abH" secondAttribute="centerY" id="50a-Ga-DXU"/>
                             <constraint firstItem="mwJ-ag-abH" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="9GB-lS-8tE"/>
-                            <constraint firstAttribute="width" priority="900" constant="600" id="Fio-tK-HrZ"/>
                             <constraint firstItem="mwJ-ag-abH" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="K6x-SS-1Sk"/>
                             <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="Kh7-xU-0dq"/>
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="height" secondItem="mwJ-ag-abH" secondAttribute="height" id="LRu-tc-Xnt"/>
@@ -75,39 +63,14 @@
                             <constraint firstItem="Iu5-0g-eH5" firstAttribute="centerX" secondItem="srv-7s-DDa" secondAttribute="centerX" id="ubh-zN-r4p"/>
                             <constraint firstItem="Iu5-0g-eH5" firstAttribute="centerY" secondItem="srv-7s-DDa" secondAttribute="centerY" id="wLv-K0-f1H"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Fio-tK-HrZ"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="Fio-tK-HrZ"/>
-                                <exclude reference="qqo-cg-4OR"/>
-                                <exclude reference="tYd-7j-19d"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="NEV-Mu-ne8" firstAttribute="centerX" secondItem="RWc-RJ-5IV" secondAttribute="centerX" id="DDH-v3-nGs"/>
                     <constraint firstItem="NEV-Mu-ne8" firstAttribute="leading" secondItem="RWc-RJ-5IV" secondAttribute="leading" id="FFx-yP-3wf"/>
                     <constraint firstAttribute="bottom" secondItem="NEV-Mu-ne8" secondAttribute="bottom" id="azr-K6-fut"/>
                     <constraint firstAttribute="trailing" secondItem="NEV-Mu-ne8" secondAttribute="trailing" id="jJd-RR-6mH"/>
                     <constraint firstItem="NEV-Mu-ne8" firstAttribute="top" secondItem="RWc-RJ-5IV" secondAttribute="top" id="w7G-La-9lf"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="DDH-v3-nGs"/>
-                    </mask>
-                </variation>
-                <variation key="heightClass=regular-widthClass=regular">
-                    <mask key="constraints">
-                        <include reference="DDH-v3-nGs"/>
-                        <exclude reference="FFx-yP-3wf"/>
-                        <exclude reference="jJd-RR-6mH"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityView" destination="7AJ-lZ-zT3" id="2Sp-Yu-l1o"/>

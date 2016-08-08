@@ -12,7 +12,8 @@ import WordPressComAnalytics
 ///     - Syncing is performed on a derived (background) context.
 ///     - Content is fetched on a child context of the main context.  This allows
 ///         new content to be synced without interrupting the UI until desired.
-///   - Row height is cached and 'layout cells' are used to calculate height.
+///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
+///         are cached via willDisplayCell.
 ///
 @objc public class ReaderStreamViewController : UIViewController, UIViewControllerRestoration
 {
@@ -27,8 +28,6 @@ import WordPressComAnalytics
     private var tableViewHandler: WPTableViewHandler!
     private var syncHelper: WPContentSyncHelper!
     private var tableViewController: UITableViewController!
-    private var cellForLayout: ReaderPostCardCell!
-    private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
 
@@ -42,7 +41,7 @@ import WordPressComAnalytics
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
-    private let estimatedRowHeight = CGFloat(100.0)
+    private let estimatedRowHeight = CGFloat(300.0)
     private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
     private let loadMoreThreashold = 4
@@ -52,11 +51,11 @@ import WordPressComAnalytics
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
+    private let estimatedHeightsCache = NSCache()
     private var isLoggedIn = false
     private var isFeed = false
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: NSIndexPath?
-    private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
 
@@ -215,7 +214,6 @@ import WordPressComAnalytics
         // pull to refresh animation.
         view.userInteractionEnabled = readerTopic != nil
 
-        setupCellsForLayout()
         setupTableView()
         setupFooterView()
         setupTableViewHandler()
@@ -247,7 +245,6 @@ import WordPressComAnalytics
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
 
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: mainContext)
@@ -256,7 +253,6 @@ import WordPressComAnalytics
 
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
 
         // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
         let mainContext = ContextManager.sharedInstance().mainContext
@@ -269,25 +265,6 @@ import WordPressComAnalytics
     }
 
 
-    public override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        // There appears to be a scenario where this method can be called prior to
-        // the view being fully setup in viewDidLoad.
-        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
-        if didSetupView && needsRefreshCachedCellHeightsBeforeLayout {
-            needsRefreshCachedCellHeightsBeforeLayout = false
-
-            let width = view.frame.width
-            tableViewHandler.refreshCachedRowHeightsForWidth(width)
-
-            if let indexPaths = tableView.indexPathsForVisibleRows {
-                tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-            }
-        }
-    }
-
-
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -297,24 +274,6 @@ import WordPressComAnalytics
         if didSetupView {
             refreshTableViewHeaderLayout()
         }
-    }
-
-
-    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        needsRefreshCachedCellHeightsBeforeLayout = true
-    }
-
-
-    // MARK: - Split view support
-
-
-    /// On devices that support split view multitasking there will be an notification
-    /// whenever the size of the split screen is adjusted. We can listen for this
-    /// and refresh cell heights as needed.
-    ///
-    public func handleApplicationDidBecomeActive(notification:NSNotification) {
-        needsRefreshCachedCellHeightsBeforeLayout = true
     }
 
 
@@ -379,6 +338,8 @@ import WordPressComAnalytics
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
+        tableView.estimatedRowHeight = estimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.accessibilityIdentifier = "Reader"
         tableView.separatorStyle = .None
         refreshControl = tableViewController.refreshControl!
@@ -404,7 +365,7 @@ import WordPressComAnalytics
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         tableViewHandler = WPTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = true
+        tableViewHandler.cacheRowHeights = false
         tableViewHandler.updateRowAnimation = .None
         tableViewHandler.delegate = self
     }
@@ -413,30 +374,6 @@ import WordPressComAnalytics
     private func setupSyncHelper() {
         syncHelper = WPContentSyncHelper()
         syncHelper.delegate = self
-    }
-
-
-    private func setupCellsForLayout() {
-        // Construct the layout cells
-        let bundle = NSBundle.mainBundle()
-        if let cell = bundle.loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as? ReaderPostCardCell {
-            cellForLayout = cell
-
-            // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
-            view.addSubview(cellForLayout)
-            cellForLayout.removeFromSuperview()
-        } else {
-            assertionFailure()
-        }
-
-        if let cell = bundle.loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as? ReaderCrossPostCell {
-            crossPostCellForLayout = cell
-
-            view.addSubview(crossPostCellForLayout)
-            crossPostCellForLayout.removeFromSuperview()
-        } else {
-            assertionFailure()
-        }
     }
 
 
@@ -945,7 +882,6 @@ import WordPressComAnalytics
         recentlyBlockedSitePostObjectIDs.addObject(objectID)
         updateAndPerformFetchRequest()
 
-        tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
@@ -954,7 +890,6 @@ import WordPressComAnalytics
             success: nil,
             failure: { [weak self] (error:NSError?) in
                 self?.recentlyBlockedSitePostObjectIDs.removeObject(objectID)
-                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
                 let message = error?.localizedDescription ?? ""
@@ -974,7 +909,6 @@ import WordPressComAnalytics
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
         let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
-        tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
@@ -983,7 +917,6 @@ import WordPressComAnalytics
             success: nil,
             failure: { [weak self] (error:NSError?) in
                 self?.recentlyBlockedSitePostObjectIDs.addObject(objectID)
-                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
                 let message = error?.localizedDescription ?? ""
@@ -1567,17 +1500,22 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     // MARK: - TableView Related
 
     public func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
+        // likes to reload rows in a strange way.
+        // It uses the estimated height as a starting value for reloading animations.
+        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
+        // the cell heights during reload animations.
+        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
+        // Brent C. August 8/2016
+        if let height = estimatedHeightsCache.objectForKey(indexPath) as? CGFloat {
+            // Return the previously known height as it was cached via willDisplayCell.
+            return height
+        }
         return estimatedRowHeight
     }
 
 
     public func tableView(aTableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let width = aTableView.bounds.width
-        return tableView(aTableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-    }
-
-
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             return 0.0
         }
@@ -1592,17 +1530,8 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return blockedRowHeight
         }
 
-        if post.isCrossPost() {
-            configureCrossPostCell(crossPostCellForLayout, atIndexPath: indexPath)
-            let size = crossPostCellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
-            return size.height
-        }
-
-        configureCell(cellForLayout, atIndexPath: indexPath)
-        let size = cellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
-        return size.height
+        return UITableViewAutomaticDimension
     }
-
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if view.window == nil && UIDevice.isPad() {
@@ -1642,6 +1571,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // Cache the cell's layout height as the currently known height, for estimation.
+        // See estimatedHeightForRowAtIndexPath
+        estimatedHeightsCache.setObject(cell.frame.height, forKey: indexPath)
+
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRowsInSection(indexPath.section) - loadMoreThreashold
         if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
@@ -1711,11 +1644,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         let postCell = cell as! ReaderPostCardCell
 
         let post = posts[indexPath.row]
-        let layoutOnly = postCell == cellForLayout
 
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
-        postCell.configureCell(post, layoutOnly: layoutOnly)
+        postCell.configureCell(post)
         postCell.delegate = self
     }
 

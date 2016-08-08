@@ -51,7 +51,6 @@ import WordPressShared
     @IBOutlet private weak var actionButtonViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var cardContentBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var maxIPadWidthConstraint: NSLayoutConstraint!
 
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
@@ -65,7 +64,6 @@ import WordPressShared
     private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
-    private var configureForLayoutOnly = false
 
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
@@ -152,60 +150,6 @@ import WordPressShared
         applyHighlightedEffect(false, animated: false)
     }
 
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        let innerWidth = innerWidthForSize(size)
-        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
-
-        var height = cardContentView.frame.minY
-
-        height += featuredMediaView.frame.minY
-        height += featuredMediaHeightConstraint.constant
-        height += featuredMediaBottomConstraint.constant
-
-        height += titleLabel.sizeThatFits(innerSize).height
-        height += titleLabelBottomConstraint.constant
-
-        height += summaryLabel.sizeThatFits(innerSize).height
-        height += summaryLabelBottomConstraint.constant
-
-        // The attribution view's height constraint is to be less than or equal
-        // to the constant. Skip the math when the constant is zero, but use
-        // the height returned from sizeThatFits otherwise.
-        if attributionHeightConstraint.constant > 0 {
-            height += attributionView.sizeThatFits(innerSize).height
-            height += attributionBottomConstraint.constant
-        }
-
-        // For now, we won't show word counts when showing the attribution view.
-        // By convention, check for a zero height for the bottom constraint constant,
-        // if its greater than zero we're showing the word count.
-        if wordCountBottomConstraint.constant > 0 {
-            height += wordCountLabel.sizeThatFits(innerSize).height
-            height += wordCountBottomConstraint.constant
-        }
-
-        height += actionButtonViewHeightConstraint.constant
-        height += actionButtonViewBottomConstraint.constant
-
-        height += cardContentBottomConstraint.constant
-
-        return CGSize(width: size.width, height: height)
-    }
-
-    private func innerWidthForSize(size: CGSize) -> CGFloat {
-        var width = CGFloat(0.0)
-        var horizontalMargin = headerView.frame.minX
-
-        if UIDevice.isPad() {
-            width = min(size.width, maxIPadWidthConstraint.constant)
-        } else {
-            width = size.width
-            horizontalMargin += cardContentView.frame.minX
-        }
-        width -= (horizontalMargin * 2)
-        return width
-    }
-
 
     // MARK: - Configuration
 
@@ -251,11 +195,6 @@ import WordPressShared
     }
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
-        configureCell(contentProvider, layoutOnly: false)
-    }
-
-    public func configureCell(contentProvider:ReaderPostContentProvider, layoutOnly:Bool) {
-        configureForLayoutOnly = layoutOnly
         self.contentProvider = contentProvider
 
         if !didPreserveStartingConstraintConstants {
@@ -283,7 +222,7 @@ import WordPressShared
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
         let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
-        if !configureForLayoutOnly && url != nil {
+        if url != nil {
             avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
@@ -307,35 +246,33 @@ import WordPressShared
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
             featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
-            if !configureForLayoutOnly {
-                if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
-                    return // Don't reload an image already being displayed.
-                }
-
-                // Always clear the previous image so there is no stale or unexpected image
-                // momentarily visible.
-                featuredImageView.image = nil
-                var url = featuredImageURL
-                let desiredWidth = UIApplication.sharedApplication().keyWindow?.frame.size.width ?? self.featuredMediaView.frame.width
-                let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
-                if !(contentProvider!.isPrivate()) {
-                    url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-                    featuredImageView.setImageWithURL(url, placeholderImage:nil)
-
-                } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                    // private wpcom image needs special handling.
-                    let scale = UIScreen.mainScreen().scale
-                    let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
-                    url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-                    let request = requestForURL(url)
-                    featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
-
-                } else {
-                    // private but not a wpcom hosted image
-                    featuredImageView.setImageWithURL(url, placeholderImage:nil)
-                }
-                currentLoadedCardImageURL = featuredImageURL.absoluteString
+            if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
+                return // Don't reload an image already being displayed.
             }
+
+            // Always clear the previous image so there is no stale or unexpected image
+            // momentarily visible.
+            featuredImageView.image = nil
+            var url = featuredImageURL
+            let desiredWidth = UIApplication.sharedApplication().keyWindow?.frame.size.width ?? self.featuredMediaView.frame.width
+            let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
+            if !(contentProvider!.isPrivate()) {
+                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+
+            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
+                // private wpcom image needs special handling.
+                let scale = UIScreen.mainScreen().scale
+                let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
+                url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
+                let request = requestForURL(url)
+                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+
+            } else {
+                // private but not a wpcom hosted image
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            }
+            currentLoadedCardImageURL = featuredImageURL.absoluteString
 
         } else {
             featuredImageView.image = nil
@@ -470,10 +407,6 @@ import WordPressShared
     }
 
     private func configureActionButtons() {
-        if configureForLayoutOnly {
-            return
-        }
-
         var buttons = [
             actionButtonLeft,
             actionButtonRight

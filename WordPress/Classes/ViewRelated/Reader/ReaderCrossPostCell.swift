@@ -12,7 +12,6 @@ public class ReaderCrossPostCell: UITableViewCell
     @IBOutlet private weak var blavatarImageView: UIImageView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var label: UILabel!
-    @IBOutlet private weak var maxIPadWidthConstraint: NSLayoutConstraint!
 
     public weak var contentProvider: ReaderPostContentProvider?
 
@@ -71,27 +70,6 @@ public class ReaderCrossPostCell: UITableViewCell
         applyHighlightedEffect(false, animated: false)
     }
 
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        let innerWidth = innerWidthForSize(size)
-        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
-
-        var height = cardContentView.frame.minY * 2.0 // Upper and bottom margins
-        height += max(blavatarImageView.frame.size.height, label.sizeThatFits(innerSize).height)
-
-        return CGSize(width: size.width, height: height)
-    }
-
-    private func innerWidthForSize(size: CGSize) -> CGFloat {
-        var width:CGFloat = UIDevice.isPad() ? min(size.width, maxIPadWidthConstraint.constant) : size.width
-        // Subtract the left and right margins.
-        width -= cardContentView.frame.minX * 2.0
-
-        // Subtract the x offset of the label.
-        width -= label.frame.minX
-
-        return width
-    }
-
 
     // MARK: - Appearance
 
@@ -117,18 +95,9 @@ public class ReaderCrossPostCell: UITableViewCell
     // MARK: - Configuration
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
-        configureCell(contentProvider, layoutOnly: false)
-    }
-
-    public func configureCell(contentProvider:ReaderPostContentProvider, layoutOnly:Bool) {
         self.contentProvider = contentProvider
 
         configureLabel()
-
-        if layoutOnly {
-            return
-        }
-
         configureBlavatarImage()
         configureAvatarImageView()
     }
@@ -192,6 +161,7 @@ public class ReaderCrossPostCell: UITableViewCell
         attrText.appendAttributedString(attrSubtitle)
 
         label.attributedText = attrText
+        invalidateIntrinsicContentSize()
     }
 
     private func subDomainNameFromPath(path:String) -> String {
