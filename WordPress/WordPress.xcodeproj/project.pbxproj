@@ -405,7 +405,7 @@
 		B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
 		B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */; };
 		B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */; };
-		B5120B381D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */; };
+		B5120B381D47CC6C0059361A /* NotificationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5120B371D47CC6C0059361A /* NotificationDetailsViewController.swift */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
 		B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5176CC01CDCE1B90083CF2D /* ManagedPerson.swift */; };
 		B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5176CC21CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift */; };
@@ -1632,7 +1632,7 @@
 		B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ShareExtension.swift"; sourceTree = SOURCE_ROOT; };
 		B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteBlogSettings.swift; path = "Remote Objects/RemoteBlogSettings.swift"; sourceTree = "<group>"; };
 		B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPickerViewController.swift; sourceTree = "<group>"; };
-		B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationDetailsViewController+Extensions.swift"; sourceTree = "<group>"; };
+		B5120B371D47CC6C0059361A /* NotificationDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDetailsViewController.swift; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B5176CC01CDCE1B90083CF2D /* ManagedPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedPerson.swift; sourceTree = "<group>"; };
 		B5176CC21CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedPerson+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -4141,7 +4141,7 @@
 			isa = PBXGroup;
 			children = (
 				B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */,
-				B5120B371D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift */,
+				B5120B371D47CC6C0059361A /* NotificationDetailsViewController.swift */,
 				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
 				B52F8CD71B43260C00D36025 /* NotificationSettingStreamsViewController.swift */,
 				B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */,
@@ -5794,7 +5794,7 @@
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
 				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
-				B5120B381D47CC6C0059361A /* NotificationDetailsViewController+Extensions.swift in Sources */,
+				B5120B381D47CC6C0059361A /* NotificationDetailsViewController.swift in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,

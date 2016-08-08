@@ -27,8 +27,8 @@ class NotificationTests : XCTestCase {
 
 /// Tests
 ///
-extension NotificationTests
-{
+extension NotificationTests {
+
     func testBadgeNotificationHasBadgeFlagSetToTrue() {
         let note = loadBadgeNotification()
         XCTAssertTrue(note.isBadge)
@@ -38,15 +38,19 @@ extension NotificationTests
         let note = loadBadgeNotification()
         XCTAssertNotNil(note.type)
         XCTAssertNotNil(note.noticon)
+        XCTAssertNotNil(note.iconURL)
+        XCTAssertNotNil(note.resourceURL)
         XCTAssertNotNil(note.timestampAsDate)
-        XCTAssertNotNil(note.icon)
-        XCTAssertNotNil(note.url)
     }
 
-    func testBadgeNotificationContainsOneSubjectBlock() {
+    func testBadgeNotificationProperlyLoadsItsSubjectBlock() {
         let note = loadBadgeNotification()
-        XCTAssertNotNil(note.subjectBlock)
-        XCTAssertNotNil(note.subjectBlock!.text)
+        let subjectBlocks = note.subjectBlockGroup!
+        XCTAssert(subjectBlocks.blocks.count == 1)
+
+        let subjectBlock = note.subjectBlockGroup?.blocks.first!
+        XCTAssertNotNil(subjectBlock)
+        XCTAssertEqual(subjectBlock, note.subjectBlock!)
     }
 
     func testBadgeNotificationContainsOneImageBlockGroup() {
@@ -62,8 +66,14 @@ extension NotificationTests
         XCTAssertNotNil(media!.mediaURL)
     }
 
+    func testLikeNotificationReturnsTheProperKindValue() {
+        let note = loadLikeNotification()
+        XCTAssert(note.kind == .Like)
+    }
+
     func testLikeNotificationContainsOneSubjectBlock() {
         let note = loadLikeNotification()
+        XCTAssert(note.subjectBlockGroup!.blocks.count == 1)
         XCTAssertNotNil(note.subjectBlock)
         XCTAssertNotNil(note.subjectBlock!.text)
     }
@@ -94,6 +104,11 @@ extension NotificationTests
         let note = loadLikeNotification()
         XCTAssertNotNil(note.metaSiteID)
         XCTAssertNotNil(note.metaPostID)
+    }
+
+    func testFollowerNotificationReturnsTheProperKindValue() {
+        let note = loadFollowerNotification()
+        XCTAssert(note.kind == .Follow)
     }
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
@@ -138,6 +153,11 @@ extension NotificationTests
         XCTAssertEqual(range!.type, NoteRangeType.Follow)
     }
 
+    func testCommentNotificationReturnsTheProperKindValue() {
+        let note = loadCommentNotification()
+        XCTAssert(note.kind == .Comment)
+    }
+
     func testCommentNotificationHasCommentFlagSetToTrue() {
         let note = loadCommentNotification()
         XCTAssertTrue(note.isComment)
@@ -177,6 +197,11 @@ extension NotificationTests
         XCTAssertNotNil(note.metaCommentID)
     }
 
+    func testCommentNotificationProperlyChecksIfItWasRepliedTo() {
+        let note = loadCommentNotification()
+        XCTAssert(note.isRepliedComment)
+    }
+
     func testFindingNotificationRangeSearchingByReplyCommentID() {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
@@ -189,6 +214,13 @@ extension NotificationTests
 
         let replyRange = textBlock!.notificationRangeWithCommentId(replyID!)
         XCTAssertNotNil(replyRange)
+    }
+
+    func testFindingNotificationRangeSearchingByURL() {
+        let note = loadBadgeNotification()
+        let targetURL = NSURL(string: "http://www.wordpress.com")!
+        let range = note.notificationRangeWithUrl(targetURL)
+        XCTAssertNotNil(range)
     }
 }
 
