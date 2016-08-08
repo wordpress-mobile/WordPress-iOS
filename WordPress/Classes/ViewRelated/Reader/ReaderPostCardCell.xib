@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="513" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
             <rect key="frame" x="0.0" y="0.0" width="320" height="445"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
@@ -100,14 +100,14 @@
                                             <constraint firstAttribute="bottom" secondItem="vL4-BG-nfJ" secondAttribute="bottom" id="rFK-Hl-qfe"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="YTV-MW-ksl">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTV-MW-ksl">
                                         <rect key="frame" x="16" y="274" width="288" height="24"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="MNF-NN-mpb">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNF-NN-mpb">
                                         <rect key="frame" x="16" y="304" width="288" height="17"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -233,29 +233,16 @@
                                     <constraint firstItem="l8A-oh-TmY" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="mdd-8z-Bln"/>
                                     <constraint firstItem="aU5-S0-uXT" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="ntL-A5-DRO"/>
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="leading" secondItem="l8A-oh-TmY" secondAttribute="trailing" constant="10" id="pjc-cr-lMu"/>
-                                    <constraint firstAttribute="width" priority="950" constant="600" id="t4d-zR-d9j"/>
                                     <constraint firstAttribute="trailing" secondItem="MNF-NN-mpb" secondAttribute="trailing" constant="16" id="vpN-nS-zeN"/>
                                     <constraint firstItem="aU5-S0-uXT" firstAttribute="top" secondItem="MNF-NN-mpb" secondAttribute="bottom" constant="8" id="wuS-RO-i6c"/>
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="16" id="xiW-3y-5Gv"/>
                                     <constraint firstItem="FV8-lg-7ZL" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="bottom" constant="16" id="yeu-jg-E2o"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="t4d-zR-d9j"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="t4d-zR-d9j"/>
-                                        <exclude reference="jce-cA-MFh"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="Qot-SU-GLn" secondAttribute="top" constant="1" id="1Hd-z8-tVq"/>
-                            <constraint firstAttribute="centerX" secondItem="kha-YG-ZlO" secondAttribute="centerX" id="4B3-WQ-78O"/>
                             <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="tU3-wI-Ijv" secondAttribute="top" constant="8" id="JQX-cQ-cO2"/>
                             <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="Qot-SU-GLn" secondAttribute="leading" constant="1" id="Sd6-H0-mPi"/>
                             <constraint firstItem="kha-YG-ZlO" firstAttribute="trailing" secondItem="Qot-SU-GLn" secondAttribute="trailing" constant="-1" id="Yq1-UC-qeY"/>
@@ -264,18 +251,6 @@
                             <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="tU3-wI-Ijv" secondAttribute="leading" id="je8-pt-542"/>
                             <constraint firstAttribute="bottom" secondItem="kha-YG-ZlO" secondAttribute="bottom" constant="8" id="oS8-JB-YFs"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="4B3-WQ-78O"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="4B3-WQ-78O"/>
-                                <exclude reference="cEe-qB-h1j"/>
-                                <exclude reference="je8-pt-542"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <constraints>
@@ -306,7 +281,6 @@
                 <outlet property="featuredMediaView" destination="FV8-lg-7ZL" id="XvD-Nd-A7E"/>
                 <outlet property="headerView" destination="l8A-oh-TmY" id="Iw0-ga-qZG"/>
                 <outlet property="innerContentView" destination="tU3-wI-Ijv" id="pfV-Ts-HN7"/>
-                <outlet property="maxIPadWidthConstraint" destination="t4d-zR-d9j" id="wtt-JC-KZx"/>
                 <outlet property="menuButton" destination="ZXc-ck-z8k" id="XwZ-mx-Lzg"/>
                 <outlet property="summaryLabel" destination="MNF-NN-mpb" id="LPC-0C-U2v"/>
                 <outlet property="summaryLabelBottomConstraint" destination="wuS-RO-i6c" id="aGS-dl-dh6"/>
@@ -316,7 +290,7 @@
                 <outlet property="wordCountBottomConstraint" destination="jce-cA-MFh" id="yzy-VH-DHI"/>
                 <outlet property="wordCountLabel" destination="eFe-da-xxs" id="kAR-CC-Iyf"/>
             </connections>
-            <point key="canvasLocation" x="354" y="444.5"/>
+            <point key="canvasLocation" x="440" y="445.5"/>
         </tableViewCell>
     </objects>
     <resources>

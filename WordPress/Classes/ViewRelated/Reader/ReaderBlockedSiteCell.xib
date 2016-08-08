@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -23,7 +23,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="rJY-ty-wZw">
                                 <rect key="frame" x="14" y="0.0" width="292" height="43.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -33,24 +33,12 @@
                             <constraint firstAttribute="bottom" secondItem="rJY-ty-wZw" secondAttribute="bottom" id="fDp-e1-tf7"/>
                             <constraint firstItem="rJY-ty-wZw" firstAttribute="leading" secondItem="KcP-7c-oak" secondAttribute="leading" constant="14" id="ttN-d9-8Ad"/>
                             <constraint firstItem="rJY-ty-wZw" firstAttribute="top" secondItem="KcP-7c-oak" secondAttribute="top" id="uhg-5N-UUi"/>
-                            <constraint firstAttribute="width" priority="900" constant="600" id="veg-0O-Jpa"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="veg-0O-Jpa"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="veg-0O-Jpa"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="KcP-7c-oak" secondAttribute="trailing" id="7Jf-hB-z7E"/>
-                    <constraint firstAttribute="centerX" secondItem="KcP-7c-oak" secondAttribute="centerX" id="JJB-C9-3qq"/>
                     <constraint firstItem="KcP-7c-oak" firstAttribute="leading" secondItem="lwd-Kl-XE5" secondAttribute="leading" constant="1" id="KM0-BV-ATK"/>
                     <constraint firstItem="KcP-7c-oak" firstAttribute="trailing" secondItem="lwd-Kl-XE5" secondAttribute="trailing" constant="-1" id="KWd-jk-uVN"/>
                     <constraint firstItem="KcP-7c-oak" firstAttribute="top" secondItem="lwd-Kl-XE5" secondAttribute="top" constant="1" id="X7Q-0f-lQ9"/>
@@ -59,18 +47,6 @@
                     <constraint firstItem="KcP-7c-oak" firstAttribute="bottom" secondItem="lwd-Kl-XE5" secondAttribute="bottom" constant="-1" id="kwq-lK-1jS"/>
                     <constraint firstItem="KcP-7c-oak" firstAttribute="leading" secondItem="VTN-SK-j2Y" secondAttribute="leading" id="vLZ-Ci-Npq"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="JJB-C9-3qq"/>
-                    </mask>
-                </variation>
-                <variation key="heightClass=regular-widthClass=regular">
-                    <mask key="constraints">
-                        <exclude reference="7Jf-hB-z7E"/>
-                        <include reference="JJB-C9-3qq"/>
-                        <exclude reference="vLZ-Ci-Npq"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="label" destination="rJY-ty-wZw" id="gp6-gQ-Bxv"/>
