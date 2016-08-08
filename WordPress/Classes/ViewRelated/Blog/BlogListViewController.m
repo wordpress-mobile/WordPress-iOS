@@ -558,6 +558,11 @@ static NSInteger HideSearchMinSites = 3;
 
         self.blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         self.blogDetailsViewController.blog = selectedBlog;
+
+        if (![self splitViewControllerIsHorizontallyCompact]) {
+            WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+            [self showDetailViewController:[(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitViewController] sender:self];
+        }
     }
 
     [self.navigationController pushViewController:self.blogDetailsViewController animated:[self isViewLoaded]];
