@@ -771,8 +771,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
 
+            // NOTE: `[blog version]` can return nil. If this happens `version` will be `0`
             CGFloat version = [[blog version] floatValue];
-            if (version < [WordPressMinimumVersion floatValue]) {
+            if (version > 0 && version < [WordPressMinimumVersion floatValue]) {
                 if (blog.lastUpdateWarning == nil
                     || [blog.lastUpdateWarning floatValue] < [WordPressMinimumVersion floatValue])
                 {
