@@ -31,8 +31,6 @@
 
 #import "EditPageViewController.h"
 
-#import "FollowedSitesViewController.h"
-
 #import "HelpshiftUtils.h"
 
 #import "InteractivePostView.h"
@@ -86,7 +84,6 @@
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
-#import "ReaderSite.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
 #import "RemoteReaderPost.h"

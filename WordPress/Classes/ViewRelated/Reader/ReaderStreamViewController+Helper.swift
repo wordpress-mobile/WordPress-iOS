@@ -34,7 +34,7 @@ extension ReaderStreamViewController
             return nil
         }
 
-        if ReaderHelpers.topicIsFollowing(topic) && Feature.enabled(.ReaderMenu) {
+        if ReaderHelpers.topicIsFollowing(topic) {
             return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil).first as! ReaderFollowedSitesStreamHeader
         }
 
