@@ -125,7 +125,7 @@ class Notification: SPManagedObject
 extension Notification
 {
     /// Verifies if the current notification is actually a Badge one.
-    ///  Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
+    /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     var isBadge: Bool {
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
@@ -237,10 +237,11 @@ extension Notification
             return subjectBlockGroup
         }
 
-        guard let subject = subject as? [[String: AnyObject]], let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self) else {
+        guard let subject = subject as? [[String: AnyObject]] else {
             return nil
         }
 
+        let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self)
         cachedSubjectBlockGroup = subjectBlockGroup
         return subjectBlockGroup
     }
@@ -252,10 +253,11 @@ extension Notification
             return headerBlockGroup
         }
 
-        guard let header = header as? [[String: AnyObject]], let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self) else {
+        guard let header = header as? [[String: AnyObject]] else {
             return nil
         }
 
+        let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self)
         cachedHeaderBlockGroup = headerBlockGroup
         return headerBlockGroup
     }
@@ -267,10 +269,11 @@ extension Notification
             return bodyBlockGroups
         }
 
-        guard let body = body as? [[String: AnyObject]], let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) else {
+        guard let body = body as? [[String: AnyObject]] else {
             return []
         }
 
+        let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) ?? []
         cachedBodyBlockGroups = bodyBlockGroups
         return bodyBlockGroups
     }
@@ -317,13 +320,13 @@ extension Notification
     /// Meta Parsing Keys
     ///
     private enum MetaKeys {
-        static let Ids          = "ids"
-        static let Links        = "links"
-        static let Titles       = "titles"
-        static let Site         = "site"
-        static let Post         = "post"
-        static let Comment      = "comment"
-        static let Reply        = "reply_comment"
-        static let Home         = "home"
+        static let Ids      = "ids"
+        static let Links    = "links"
+        static let Titles   = "titles"
+        static let Site     = "site"
+        static let Post     = "post"
+        static let Comment  = "comment"
+        static let Reply    = "reply_comment"
+        static let Home     = "home"
     }
 }

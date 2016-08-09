@@ -32,7 +32,11 @@ class NotificationBlock: Equatable
 
     /// Action Override Values
     ///
-    private var actionsOverride = [Action: Bool]()
+    private var actionsOverride = [Action: Bool]() {
+        didSet {
+            parent?.didChangeOverrides()
+        }
+    }
 
     /// Helper used by the +Interface Extension.
     ///
@@ -166,25 +170,23 @@ extension NotificationBlock
     ///
     func setOverrideValue(value: Bool, forAction action: Action) {
         actionsOverride[action] = value
-        parent?.didChangeOverrides()
     }
 
     /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
     ///
     func removeOverrideValueForAction(action: Action) {
         actionsOverride.removeValueForKey(action)
-        parent?.didChangeOverrides()
     }
 
     /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
     ///
     private func valueForAction(action: Action) -> Bool? {
-        guard let overrideValue = actionsOverride[action] else {
-            let value = actions?[action.rawValue] as? NSNumber
-            return value?.boolValue
+        if let overrideValue = actionsOverride[action] {
+            return overrideValue
         }
 
-        return overrideValue
+        let value = actions?[action.rawValue] as? NSNumber
+        return value?.boolValue
     }
 
     /// Returns *true* if a given action is available.
@@ -202,7 +204,7 @@ extension NotificationBlock
     // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
     ///
     func cacheValueForKey(key: String) -> AnyObject? {
-        return self.dynamicAttributesCache[key]
+        return dynamicAttributesCache[key]
     }
 
     /// Stores a specified value within the Dynamic Attributes Cache.
