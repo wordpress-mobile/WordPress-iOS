@@ -74,27 +74,35 @@ class NotificationBlock: Equatable
     ///
     private typealias MetaKeys  = Notification.MetaKeys
 
-    //
-    ///
-    private typealias BlockKeys = Notification.BlockKeys
-
-
     ///
     ///
     init(dictionary: [String: AnyObject], parent note: Notification) {
-        let rawRanges = dictionary[BlockKeys.Ranges] as? [AnyObject]
+        let rawRanges = dictionary[Keys.Ranges] as? [AnyObject]
         let parsedRanges = NotificationRange.rangesFromArray(rawRanges)
 
-        let rawMedia = dictionary[BlockKeys.Media] as? [AnyObject]
+        let rawMedia = dictionary[Keys.Media] as? [AnyObject]
         let parsedMedia = NotificationMedia.mediaFromArray(rawMedia)
 
-        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+        actions = dictionary[Keys.Actions] as? [String: AnyObject]
         media   = parsedMedia
-        meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
+        meta    = dictionary[Keys.Meta] as? [String: AnyObject]
         ranges  = parsedRanges
         parent  = note
-        type    = dictionary[BlockKeys.RawType] as? String
-        text    = dictionary[BlockKeys.Text] as? String
+        type    = dictionary[Keys.RawType] as? String
+        text    = dictionary[Keys.Text] as? String
+    }
+
+
+    /// Block Parsing Keys
+    ///
+    enum Keys {
+        static let Meta         = "meta"
+        static let Media        = "media"
+        static let Actions      = "actions"
+        static let Ranges       = "ranges"
+        static let RawType      = "type"
+        static let RawTypeUser  = "user"
+        static let Text         = "text"
     }
 }
 
@@ -109,7 +117,7 @@ extension NotificationBlock
     var kind: Kind {
         // Duck Typing code below: Infer block kind based on... stuff. (Sorry)
         //
-        if let rawType = type where rawType.isEqual(BlockKeys.RawTypeUser) {
+        if let rawType = type where rawType.isEqual(Keys.RawTypeUser) {
             return .User
         }
 
@@ -119,7 +127,7 @@ extension NotificationBlock
             return .Comment
         }
 
-        if let firstMedia = media.first where firstMedia.isImage || firstMedia.isBadge {
+        if let firstMedia = media.first where firstMedia.kind == .Image || firstMedia.kind == .Badge {
             return .Image
         }
 
@@ -130,7 +138,7 @@ extension NotificationBlock
     ///
     var imageUrls: [NSURL] {
         return media.flatMap {
-            guard $0.isImage && $0.mediaURL != nil else {
+            guard $0.kind == .Image && $0.mediaURL != nil else {
                 return nil
             }
 
