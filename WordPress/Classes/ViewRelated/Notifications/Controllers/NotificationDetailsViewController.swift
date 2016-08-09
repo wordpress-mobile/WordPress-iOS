@@ -815,7 +815,7 @@ extension NotificationDetailsViewController
             throw DisplayError.MissingParameter
         }
 
-        switch range.type {
+        switch range.kind {
         case .Site:
             try displayStreamWithSiteID(range.siteID)
         case .Post:
