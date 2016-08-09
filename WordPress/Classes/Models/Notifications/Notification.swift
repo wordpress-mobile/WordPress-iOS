@@ -9,6 +9,50 @@ import Simperium
 @objc(Notification)
 class Notification: SPManagedObject
 {
+    /// Associated Resource's Icon, as a plain string
+    ///
+    @NSManaged var icon: String?
+
+    /// Noticon resource, associated with this notification
+    ///
+    @NSManaged var noticon: String?
+
+    /// Indicates whether the note was already read, or not
+    ///
+    @NSManaged var read: NSNumber?
+
+    /// Timestamp as a String
+    ///
+    @NSManaged var timestamp: String?
+
+    /// Notification Type
+    ///
+    @NSManaged var type: String?
+
+    /// Associated Resource's URL
+    ///
+    @NSManaged var url: String?
+
+    /// Plain Title ("1 Like" / Etc)
+    ///
+    @NSManaged var title: String?
+
+    /// Raw Subject Blocks
+    ///
+    @NSManaged var subject: [AnyObject]?
+
+    /// Raw Header Blocks
+    ///
+    @NSManaged var header: [AnyObject]?
+
+    /// Raw Body Blocks
+    ///
+    @NSManaged var body: [AnyObject]?
+
+    /// Raw Associated Metadata
+    ///
+    @NSManaged var meta: NSDictionary?
+
     /// Timestamp As Date Transient Storage.
     ///
     private var cachedTimestampAsDate: NSDate?

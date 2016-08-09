@@ -471,7 +471,6 @@
 		B56F4F8F1C6B9358001CEB09 /* SettingsListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F4F8E1C6B9358001CEB09 /* SettingsListPickerViewController.swift */; };
 		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B5722E421D51A28100F40C5E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E401D51A28100F40C5E /* Notification.swift */; };
-		B5722E431D51A28100F40C5E /* Notification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E411D51A28100F40C5E /* Notification+CoreDataProperties.swift */; };
 		B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */; };
 		B57273611B66CCEF000D1C4F /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735E1B66CCEF000D1C4F /* AlertView.swift */; };
 		B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B572735F1B66CCEF000D1C4F /* AlertView.xib */; };
@@ -1706,7 +1705,6 @@
 		B56F4F8E1C6B9358001CEB09 /* SettingsListPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListPickerViewController.swift; sourceTree = "<group>"; };
 		B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
 		B5722E401D51A28100F40C5E /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
-		B5722E411D51A28100F40C5E /* Notification+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertInternalView.swift; sourceTree = "<group>"; };
 		B572735E1B66CCEF000D1C4F /* AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		B572735F1B66CCEF000D1C4F /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
@@ -3813,7 +3811,6 @@
 			isa = PBXGroup;
 			children = (
 				B5722E401D51A28100F40C5E /* Notification.swift */,
-				B5722E411D51A28100F40C5E /* Notification+CoreDataProperties.swift */,
 				B539714F1D537763006135EC /* NotificationBlockGroup.swift */,
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
 				B5CC05F71962186D00975CAC /* Meta.h */,
@@ -5656,7 +5653,6 @@
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
 				B53971521D537B22006135EC /* NotificationBlock.swift in Sources */,
-				B5722E431D51A28100F40C5E /* Notification+CoreDataProperties.swift in Sources */,
 				0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
