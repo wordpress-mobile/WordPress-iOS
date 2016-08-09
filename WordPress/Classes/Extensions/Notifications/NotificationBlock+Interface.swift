@@ -121,12 +121,12 @@ extension NotificationBlock {
 
         for theMedia in media {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
-            guard let mediaURL = theMedia.mediaURL, range = theMedia.range else {
+            guard let mediaURL = theMedia.mediaURL else {
                 continue
             }
 
             if let image = mediaMap[mediaURL] {
-                let rangeValue      = NSValue(range: range)
+                let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
             }
         }
