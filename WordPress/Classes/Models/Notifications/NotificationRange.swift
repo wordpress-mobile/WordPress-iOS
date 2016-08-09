@@ -6,21 +6,7 @@ import Foundation
 //
 class NotificationRange
 {
-    ///
-    ///
-    enum Kind: String {
-        case User       = "user"
-        case Post       = "post"
-        case Comment    = "comment"
-        case Stats      = "stat"
-        case Follow     = "follow"
-        case Blockquote = "blockquote"
-        case Noticon    = "noticon"
-        case Site       = "site"
-        case Match      = "match"
-    }
-
-    ///
+    /// Kind of the Current Range
     ///
     let kind: Kind
 
@@ -97,21 +83,42 @@ class NotificationRange
     }
 
 
-    /// Parses an array of NotificationRange Definitions into NotificationRange Instances
+    /// Given a NotificationBlock Dictionary, will parse all of the NotificationRange associated entities.
     ///
-    class func rangesFromArray(ranges: [[String: AnyObject]]?) -> [NotificationRange]? {
-        return ranges?.flatMap {
+    class func rangesFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationRange] {
+        guard let ranges = dictionary[Keys.BlockRanges] as? [[String: AnyObject]] else {
+            return []
+        }
+
+        return ranges.flatMap {
             return NotificationRange(dictionary: $0)
         }
     }
 }
 
 
-// MARK: - NotificationRange Constants
+// MARK: - NotificationRange Types
 //
-private extension NotificationRange
+extension NotificationRange
 {
-    enum Keys {
+    /// Known kinds of Range
+    ///
+    enum Kind: String {
+        case User       = "user"
+        case Post       = "post"
+        case Comment    = "comment"
+        case Stats      = "stat"
+        case Follow     = "follow"
+        case Blockquote = "blockquote"
+        case Noticon    = "noticon"
+        case Site       = "site"
+        case Match      = "match"
+    }
+
+    /// Parsing Keys
+    ///
+    private enum Keys {
+        static let BlockRanges  = "ranges"
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"

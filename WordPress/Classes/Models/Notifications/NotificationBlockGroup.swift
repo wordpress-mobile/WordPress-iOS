@@ -6,19 +6,6 @@ import Foundation
 //
 class NotificationBlockGroup
 {
-    /// Known Kinds of Block Groups
-    ///
-    enum Kind {
-        case Text
-        case Image
-        case User
-        case Comment
-        case Actions
-        case Subject
-        case Header
-        case Footer
-    }
-
     /// Blocks Array
     ///
     private (set) var blocks: [NotificationBlock]
@@ -89,8 +76,7 @@ extension NotificationBlockGroup
             return nil
         }
 
-        // Non-Comment Scenario:
-        //  -   1-1 Mapping between Blocks <> BlockGroups
+        // Non-Comment Scenario: 1-1 Mapping between Blocks <> BlockGroups
         //
         guard parent.kind == .Comment else {
             let lastBlock = blocks.last
@@ -103,8 +89,8 @@ extension NotificationBlockGroup
         }
 
         // Comment Scenario:
-        //  -   Comment Notifications are required to always render the Actions at the very bottom.
-        //      This snippet is meant to adapt the backend data structure, so that a single NotificationBlockGroup
+        //  -   Required to always render the Actions at the very bottom.
+        //  -   This snippet is meant to adapt the backend data structure, so that a single NotificationBlockGroup
         //      can be easily mapped against a single UI entity.
         //
         guard let commentBlock = NotificationBlock.firstBlockOfKind(.Comment, fromBlocksArray: blocks),
@@ -152,7 +138,7 @@ extension NotificationBlockGroup
             return .Footer
         }
 
-        // Direct Mapping
+        // Direct Mapping: Block.Kind > BlockGroup.Kind
         //
         switch block.kind {
             case .Text:     return .Text
@@ -160,5 +146,24 @@ extension NotificationBlockGroup
             case .User:     return .User
             case .Comment:  return .Comment
         }
+    }
+}
+
+
+// MARK: - NotificationBlockGroup Types
+//
+extension NotificationBlockGroup
+{
+    /// Known Kinds of Block Groups
+    ///
+    enum Kind {
+        case Text
+        case Image
+        case User
+        case Comment
+        case Actions
+        case Subject
+        case Header
+        case Footer
     }
 }
