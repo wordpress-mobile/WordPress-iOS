@@ -121,12 +121,12 @@ extension NotificationBlock {
 
         for theMedia in media {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
-            guard let mediaURL = theMedia.mediaURL else {
+            guard let mediaURL = theMedia.mediaURL, range = theMedia.range else {
                 continue
             }
 
             if let image = mediaMap[mediaURL] {
-                let rangeValue      = NSValue(range: theMedia.range)
+                let rangeValue      = NSValue(range: range)
                 ranges[rangeValue]  = image
             }
         }
@@ -175,7 +175,7 @@ extension NotificationBlock {
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [NoteRangeType: [String: AnyObject]]?,
+                             rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
         // Is it empty?
@@ -198,14 +198,14 @@ extension NotificationBlock {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 
-            if range.type == .Noticon {
+            if range.kind == .Noticon {
                 let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
             }
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] {
+            if let unwrappedRangeStyle = rangeStylesMap?[range.kind] {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
 
@@ -222,7 +222,7 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     private struct Constants {
-        static let subjectRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.subjectBoldStyle,
             .Post               : Styles.subjectItalicsStyle,
             .Comment            : Styles.subjectItalicsStyle,
@@ -230,23 +230,23 @@ extension NotificationBlock {
             .Noticon            : Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.headerTitleBoldStyle,
             .Post               : Styles.headerTitleContextStyle,
             .Comment            : Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Noticon            : Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Blockquote         : Styles.contentBlockQuotedStyle,
             .Noticon            : Styles.blockNoticonStyle,
             .Match              : Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.badgeBoldStyle,
             .Post               : Styles.badgeItalicsStyle,
             .Comment            : Styles.badgeItalicsStyle,
