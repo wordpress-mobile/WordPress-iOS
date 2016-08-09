@@ -104,15 +104,15 @@ extension NotificationRange
     /// Known kinds of Range
     ///
     enum Kind: String {
-        case User       = "user"
-        case Post       = "post"
-        case Comment    = "comment"
-        case Stats      = "stat"
-        case Follow     = "follow"
-        case Blockquote = "blockquote"
-        case Noticon    = "noticon"
-        case Site       = "site"
-        case Match      = "match"
+        case User               = "user"
+        case Post               = "post"
+        case Comment            = "comment"
+        case Stats              = "stat"
+        case Follow             = "follow"
+        case Blockquote         = "blockquote"
+        case Noticon            = "noticon"
+        case Site               = "site"
+        case Match              = "match"
     }
 
     /// Parsing Keys

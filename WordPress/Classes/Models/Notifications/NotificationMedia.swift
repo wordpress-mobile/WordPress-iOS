@@ -67,8 +67,8 @@ extension NotificationMedia
     /// Known kinds of Media Entities
     ///
     enum Kind: String {
-        case Image = "image"
-        case Badge = "badge"
+        case Image              = "image"
+        case Badge              = "badge"
     }
 
     /// Parsing Keys

@@ -8,11 +8,11 @@ class NotificationBlockGroup
 {
     /// Blocks Array
     ///
-    private (set) var blocks: [NotificationBlock]
+    let blocks: [NotificationBlock]
 
     /// Kind of the current Group
     ///
-    private (set) var kind: Kind
+    let kind: Kind
 
     /// Designated Initializer
     ///
