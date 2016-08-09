@@ -69,22 +69,6 @@ class Notification: SPManagedObject
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
-    /// Known kinds of Notifications
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
 
 
 
@@ -141,10 +125,9 @@ class Notification: SPManagedObject
 extension Notification
 {
     /// Verifies if the current notification is actually a Badge one.
+    ///  Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     var isBadge: Bool {
-        //  Note: This developer does not like duck typing. Sorry about the following snippet.
-        //
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
         for block in blocks {
             for media in block.media where media.kind == .Badge {
@@ -310,11 +293,30 @@ extension Notification
 }
 
 
-// MARK: - Private Constants
+// MARK: - Notification Types
 //
-private extension Notification
+extension Notification
 {
-    enum MetaKeys {
+    /// Known kinds of Notifications
+    ///
+    enum Kind: String {
+        case Comment        = "comment"
+        case CommentLike    = "comment_like"
+        case Follow         = "follow"
+        case Like           = "like"
+        case Matcher        = "automattcher"
+        case Post           = "post"
+        case User           = "user"
+        case Unknown        = "unknown"
+
+        var toTypeValue: String {
+            return rawValue
+        }
+    }
+
+    /// Meta Parsing Keys
+    ///
+    private enum MetaKeys {
         static let Ids          = "ids"
         static let Links        = "links"
         static let Titles       = "titles"

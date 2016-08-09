@@ -6,63 +6,19 @@ import Foundation
 //
 class NotificationBlock: Equatable
 {
-    ///
-    ///
-    enum Kind {
-        case Text
-        case Image      // Includes Badges and Images
-        case User
-        case Comment
-    }
-
-    ///
-    ///
-    enum Action: String {
-        case Approve    = "approve-comment"
-        case Follow     = "follow"
-        case Like       = "like-comment"
-        case Reply      = "replyto-comment"
-        case Spam       = "spam-comment"
-        case Trash      = "trash-comment"
-    }
-
-    ///
-    ///
-    let actions: [String: AnyObject]?
-
-    ///
-    ///
-    private var actionsOverride = [Action: Bool]()
-
-    ///
-    ///
-    private var dynamicAttributesCache = [String: AnyObject]()
-
-    ///
+    /// Parsed Media Entities.
     ///
     let media: [NotificationMedia]
 
-    ///
-    ///
-    let meta: [String: AnyObject]?
-
-    ///
-    ///
-    private weak var parent: Notification?
-
-    ///
+    /// Parsed Range Entities.
     ///
     let ranges: [NotificationRange]
 
-    ///
-    ///
-    private let type: String?
-
-    ///
+    /// Block Associated Text.
     ///
     let text: String?
 
-    ///
+    /// Text Override: Local (Ephimeral) Edition.
     ///
     var textOverride: String? {
         didSet {
@@ -70,16 +26,38 @@ class NotificationBlock: Equatable
         }
     }
 
+    /// Available Actions collection.
     ///
+    private let actions: [String: AnyObject]?
+
+    /// Action Override Values
+    ///
+    private var actionsOverride = [Action: Bool]()
+
+    /// Helper used by the +Interface Extension.
+    ///
+    private var dynamicAttributesCache = [String: AnyObject]()
+
+    /// Meta Fields collection.
+    ///
+    private let meta: [String: AnyObject]?
+
+    /// Associated Notification
+    ///
+    private weak var parent: Notification?
+
+    /// Raw Type, expressed as a string.
+    ///
+    private let type: String?
+
+
+    /// Designated Initializer.
     ///
     init(dictionary: [String: AnyObject], parent note: Notification) {
-        let rawRanges   = dictionary[Keys.Ranges] as? [[String: AnyObject]]
-        let rawMedia    = dictionary[Keys.Media] as? [[String: AnyObject]]
-
         actions = dictionary[Keys.Actions] as? [String: AnyObject]
-        media   = NotificationMedia.mediaFromArray(rawMedia) ?? []
+        media   = NotificationMedia.mediaFromBlockDictionary(dictionary)
         meta    = dictionary[Keys.Meta] as? [String: AnyObject]
-        ranges  = NotificationRange.rangesFromArray(rawRanges) ?? []
+        ranges  = NotificationRange.rangesFromBlockDictionary(dictionary)
         parent  = note
         type    = dictionary[Keys.RawType] as? String
         text    = dictionary[Keys.Text] as? String
@@ -92,12 +70,10 @@ class NotificationBlock: Equatable
 //
 extension NotificationBlock
 {
-    ///
+    /// Returns the current Block's Kind. SORRY: Duck Typing code below.
     ///
     var kind: Kind {
-        // Duck Typing code below: Infer block kind based on... stuff. (Sorry)
-        //
-        if let rawType = type where rawType.isEqual(Keys.RawTypeUser) {
+        if let rawType = type where rawType.isEqual(Keys.UserType) {
             return .User
         }
 
@@ -107,14 +83,14 @@ extension NotificationBlock
             return .Comment
         }
 
-        if let firstMedia = media.first where firstMedia.kind == .Image || firstMedia.kind == .Badge {
+        if let firstMedia = media.first where (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
             return .Image
         }
 
         return .Text
     }
 
-    /// Returns all of the Image URL's referenced by the NotificationMedia instances
+    /// Returns all of the Image URL's referenced by the NotificationMedia instances.
     ///
     var imageUrls: [NSURL] {
         return media.flatMap {
@@ -132,6 +108,34 @@ extension NotificationBlock
         return isActionOn(.Approve) || !isActionEnabled(.Approve)
     }
 
+    /// Comment ID, if any.
+    ///
+    var metaCommentID: NSNumber? {
+        return metaIds?[MetaKeys.Comment] as? NSNumber
+    }
+
+    /// Home Site's Link, if any.
+    ///
+    var metaLinksHome: NSURL? {
+        guard let rawLink = metaLinks?[MetaKeys.Home] as? String else {
+            return nil
+        }
+
+        return NSURL(string: rawLink)
+    }
+
+    /// Site ID, if any.
+    ///
+    var metaSiteID: NSNumber? {
+        return metaIds?[MetaKeys.Site] as? NSNumber
+    }
+
+    /// Home Site's Title, if any.
+    ///
+    var metaTitlesHome: String? {
+        return metaTitles?[MetaKeys.Home] as? String
+    }
+
     /// Returns the Meta ID's collection, if any.
     ///
     private var metaIds: [String: AnyObject]? {
@@ -144,38 +148,10 @@ extension NotificationBlock
         return meta?[MetaKeys.Links] as? [String: AnyObject]
     }
 
-    ///
+    /// Returns the Meta Titles collection, if any.
     ///
     private var metaTitles: [String: AnyObject]? {
         return meta?[MetaKeys.Titles] as? [String: AnyObject]
-    }
-
-    ///
-    ///
-    var metaCommentID: NSNumber? {
-        return metaIds?[MetaKeys.Comment] as? NSNumber
-    }
-
-    ///
-    ///
-    var metaLinksHome: NSURL? {
-        guard let rawLink = metaLinks?[MetaKeys.Home] as? String else {
-            return nil
-        }
-
-        return NSURL(string: rawLink)
-    }
-
-    ///
-    ///
-    var metaSiteID: NSNumber? {
-        return metaIds?[MetaKeys.Site] as? NSNumber
-    }
-
-    ///
-    ///
-    var metaTitlesHome: String? {
-        return metaTitles?[MetaKeys.Home] as? String
     }
 }
 
@@ -200,8 +176,7 @@ extension NotificationBlock
         parent?.didChangeOverrides()
     }
 
-    /// Returns the Notification Block status for a given action. If there's any local override,
-    /// the (override) value will be returned.
+    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
     ///
     private func valueForAction(action: Action) -> Bool? {
         guard let overrideValue = actionsOverride[action] else {
@@ -212,26 +187,25 @@ extension NotificationBlock
         return overrideValue
     }
 
-    /// Returns *true* if a given action is available
+    /// Returns *true* if a given action is available.
     ///
     func isActionEnabled(action: Action) -> Bool {
         return valueForAction(action) != nil
     }
 
-    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On, means that the comment
-    /// is currently approved).
+    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
     ///
     func isActionOn(action: Action) -> Bool {
         return valueForAction(action) ?? false
     }
 
-    // Dynamic Attribute Cache: used internally by the Interface Extension, as an optimization.
+    // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
     ///
     func cacheValueForKey(key: String) -> AnyObject? {
         return self.dynamicAttributesCache[key]
     }
 
-    ///
+    /// Stores a specified value within the Dynamic Attributes Cache.
     ///
     func setCacheValue(value: AnyObject?, forKey key: String) {
         guard let value = value else {
@@ -266,7 +240,7 @@ extension NotificationBlock
         return nil
     }
 
-    ///
+    /// Returns the First Block of a specified kind.
     ///
     class func firstBlockOfKind(kind: Kind, fromBlocksArray blocks: [NotificationBlock]) -> NotificationBlock? {
         for block in blocks where block.kind == kind {
@@ -283,7 +257,7 @@ extension NotificationBlock
 //
 extension NotificationBlock
 {
-    ///
+    /// Parses a collection of Block Definitions into NotificationBlock instances. Returns nil if empty.
     ///
     class func blocksFromArray(rawBlocks: [[String: AnyObject]]?, parent: Notification) -> [NotificationBlock]? {
         guard let rawBlocks = rawBlocks where rawBlocks.isEmpty == false else {
@@ -297,21 +271,43 @@ extension NotificationBlock
 }
 
 
-// MARK: - NotificationBlock Constants
+// MARK: - NotificationBlock Types
 //
-private extension NotificationBlock
+extension NotificationBlock
 {
-    enum Keys {
-        static let Meta         = "meta"
-        static let Media        = "media"
-        static let Actions      = "actions"
-        static let Ranges       = "ranges"
-        static let RawType      = "type"
-        static let RawTypeUser  = "user"
-        static let Text         = "text"
+    /// Known kinds of Blocks
+    ///
+    enum Kind {
+        case Text
+        case Image      // Includes Badges and Images
+        case User
+        case Comment
     }
 
-    enum MetaKeys {
+    /// Known kinds of Actions
+    ///
+    enum Action: String {
+        case Approve            = "approve-comment"
+        case Follow             = "follow"
+        case Like               = "like-comment"
+        case Reply              = "replyto-comment"
+        case Spam               = "spam-comment"
+        case Trash              = "trash-comment"
+    }
+
+    /// Parsing Keys
+    ///
+    private enum Keys {
+        static let Meta         = "meta"
+        static let Actions      = "actions"
+        static let RawType      = "type"
+        static let Text         = "text"
+        static let UserType     = "user"
+    }
+
+    /// Meta Parsing Keys
+    ///
+    private enum MetaKeys {
         static let Ids          = "ids"
         static let Links        = "links"
         static let Titles       = "titles"

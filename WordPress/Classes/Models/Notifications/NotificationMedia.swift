@@ -6,14 +6,7 @@ import Foundation
 //
 class NotificationMedia
 {
-    ///
-    ///
-    enum Kind: String {
-        case Image = "image"
-        case Badge = "badge"
-    }
-
-    ///
+    /// Kind of the current Media.
     ///
     let kind: Kind
 
@@ -53,21 +46,35 @@ class NotificationMedia
         }
     }
 
-    /// Parses an array of NotificationMedia Definitions into NotificationMedia Instances
+    /// Given a NotificationBlock Dictionary, will parse all of the NotificationMedia associated entities.
     ///
-    class func mediaFromArray(media: [[String: AnyObject]]?) -> [NotificationMedia]? {
-        return media?.flatMap {
+    class func mediaFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationMedia] {
+        guard let media = dictionary[Keys.BlockMedia] as? [[String: AnyObject]] else {
+            return []
+        }
+
+        return media.flatMap {
             return NotificationMedia(dictionary: $0)
         }
     }
 }
 
 
-// MARK: - NotificationMedia Constants
+// MARK: - NotificationMedia Types
 //
-private extension NotificationMedia
+extension NotificationMedia
 {
-    enum Keys {
+    /// Known kinds of Media Entities
+    ///
+    enum Kind: String {
+        case Image = "image"
+        case Badge = "badge"
+    }
+
+    /// Parsing Keys
+    ///
+    private enum Keys {
+        static let BlockMedia   = "media"
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"
