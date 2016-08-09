@@ -15,15 +15,7 @@ class NotificationRange
 
     ///
     ///
-    private(set) var value: String?
-
-    ///
-    ///
     private(set) var url: NSURL?
-
-    ///
-    ///
-    private(set) var postID: NSNumber?
 
     ///
     ///
@@ -31,11 +23,18 @@ class NotificationRange
 
     ///
     ///
-    private(set) var userID: NSNumber?
+    private(set) var postID: NSNumber?
 
     ///
     ///
     private(set) var siteID: NSNumber?
+
+    ///
+    ///
+    private(set) var userID: NSNumber?
+    ///
+    ///
+    private(set) var value: String?
 
     ///
     ///
@@ -54,16 +53,17 @@ class NotificationRange
 
     ///
     ///
-    init(dictionary: [String: AnyObject]) {
-        if let indices = dictionary[Keys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last
+    init?(dictionary: [String: AnyObject]) {
+        guard let type = dictionary[Keys.RawType] as? String,
+            let indices = dictionary[Keys.Indices] as? [Int],
+            let start = indices.first, let end = indices.last else
         {
-            let length = start - end
-            range = NSMakeRange(start, length)
+            return nil
         }
 
-        let type = dictionary[Keys.RawType] as? String ?? String()
         kind = Kind(rawValue: type) ?? .Site
+        range = NSMakeRange(start, end - start)
+
 
         if let rawURL = dictionary[Keys.URL] as? String {
             url = NSURL(string: rawURL)
@@ -74,23 +74,23 @@ class NotificationRange
         //  ======
         //  `id` is coupled with the `type`. Which, in turn, is also duck typed.
         //
-        //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
+        //      type = post     => id = post_id
         //      type = site     => id = site_id
         //
         switch kind {
-        case .User:
-            userID = dictionary[Keys.Id] as? NSNumber
-        case .Post:
-            postID = dictionary[Keys.Id] as? NSNumber
         case .Comment:
             commentID = dictionary[Keys.Id] as? NSNumber
             postID = dictionary[Keys.PostId] as? NSNumber
         case .Noticon:
             value = dictionary[Keys.Value] as? String
+        case .Post:
+            postID = dictionary[Keys.Id] as? NSNumber
         case .Site:
             siteID = dictionary[Keys.Id] as? NSNumber
+        case .User:
+            userID = dictionary[Keys.Id] as? NSNumber
         default:
             siteID = dictionary[Keys.SiteId] as? NSNumber
         }
