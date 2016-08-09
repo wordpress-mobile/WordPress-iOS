@@ -147,7 +147,7 @@ extension Notification
         //
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
         for block in blocks {
-            for media in block.media where media.isBadge {
+            for media in block.media where media.kind == .Badge {
                 return true
             }
         }
@@ -314,7 +314,7 @@ extension Notification
 //
 extension Notification
 {
-    /// Meta Field Parsing-Keys
+    /// Meta Field Parsing Keys
     ///
     enum MetaKeys {
         static let Ids          = "ids"
@@ -325,15 +325,5 @@ extension Notification
         static let Comment      = "comment"
         static let Reply        = "reply_comment"
         static let Home         = "home"
-    }
-
-    enum BlockKeys {
-        static let Meta         = "meta"
-        static let Media        = "media"
-        static let Actions      = "actions"
-        static let Ranges       = "ranges"
-        static let RawType      = "type"
-        static let RawTypeUser  = "user"
-        static let Text         = "text"
     }
 }
