@@ -3,19 +3,13 @@ import WordPressShared.WPStyleGuide
 
 
 
-/// This class extension implements helper methods to aid formatting a NotificationBlock's payload,
+/// This Extension implements helper methods to aid formatting a NotificationBlock's payload,
 /// for usage in several different spots of the app.
-///
-/// The main goal of this helper Extension is to encapsulate presentation details into a single piece of
-/// code, while preserving a clear sepparation with the Model itself.
-/// We rely on a cache mechanism, implemented for performance purposes, that will get nuked whenever the
+/// For performance purposes, Attributed Strings get temporarily cached... and will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension NotificationBlock {
-
-    // MARK: - Public Methods
-    //
-
+extension NotificationBlock
+{
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     var attributedSubjectText: NSAttributedString {
@@ -26,7 +20,7 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richSubjectCacheKey)
+        return attributedText(MemoizeKeys.subject)
     }
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
@@ -39,7 +33,7 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richSnippetCacheKey)
+        return attributedText(MemoizeKeys.snippet)
     }
 
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
@@ -52,7 +46,7 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richHeaderTitleCacheKey)
+        return attributedText(MemoizeKeys.headerTitle)
     }
 
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
@@ -65,14 +59,14 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richHeaderTitleCacheKey)
+        return attributedText(MemoizeKeys.headerTitle)
     }
 
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
     ///
     var attributedRichText: NSAttributedString {
-        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
-        //  TextOverride is a transient property meant to store, temporarily, the edited text
+        // Operations such as editing a comment cause a lag between the REST and Simperium update.
+        // TextOverride is a transient property meant to store, temporarily, the edited text
         if let textOverride = textOverride {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
@@ -84,7 +78,7 @@ extension NotificationBlock {
                 linksColor:     Styles.blockLinkColor)
         }
 
-        return attributedText(Constants.richTextCacheKey)
+        return attributedText(MemoizeKeys.text)
     }
 
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom
@@ -98,29 +92,27 @@ extension NotificationBlock {
                 linksColor:     Styles.badgeLinkColor)
         }
 
-        return attributedText(Constants.richBadgeCacheKey)
+        return attributedText(MemoizeKeys.badge)
     }
 
 
     /// Given a set of URL's and the Images they reference to, this method will return a Dictionary
     /// with the NSRange's in which the given UIImage's should be injected.
     ///
-    /// This is used to build an Attributed String containing inline images.
+    /// **Note:** If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
     ///
     /// - Parameter mediaMap: A Dictionary mapping asset URL's to the already-downloaded assets
     ///
     /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
     func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
-        // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
-        if textOverride != nil {
+        guard textOverride == nil else {
             return nil
         }
 
         var ranges = [NSValue: UIImage]()
 
         for theMedia in media {
-            // Failsafe: if the mediaURL couldn't be parsed, don't proceed
             guard let mediaURL = theMedia.mediaURL else {
                 continue
             }
@@ -133,11 +125,14 @@ extension NotificationBlock {
 
         return ranges
     }
+}
 
 
-    // MARK: - Private Helpers
-    //
 
+// MARK: - Private Helpers
+//
+extension NotificationBlock
+{
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
@@ -147,15 +142,12 @@ extension NotificationBlock {
     ///            and store its return value in the cache.
     ///
     private func memoize(fn: () -> NSAttributedString) -> String -> NSAttributedString {
-        return {
-            (cacheKey : String) -> NSAttributedString in
+        return { cacheKey in
 
-            // Is it already cached?
             if let cachedSubject = self.cacheValueForKey(cacheKey) as? NSAttributedString {
                 return cachedSubject
             }
 
-            // Store in Cache
             let newValue = fn()
             self.setCacheValue(newValue, forKey: cacheKey)
             return newValue
@@ -178,17 +170,14 @@ extension NotificationBlock {
                              rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
-        // Is it empty?
         guard let text = text else {
             return NSAttributedString()
         }
 
-        // Format the String
         let theString = NSMutableAttributedString(string: text, attributes: attributes)
 
-        // Apply Quotes Styles
-        if let unwrappedQuoteStyles = quoteStyles {
-            theString.applyAttributesToQuotes(unwrappedQuoteStyles)
+        if let quoteStyles = quoteStyles {
+            theString.applyAttributesToQuotes(quoteStyles)
         }
 
         // Apply the Ranges
@@ -205,8 +194,8 @@ extension NotificationBlock {
                 shiftedRange.length += noticon.characters.count
             }
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.kind] {
-                theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
+            if let rangeStyle = rangeStylesMap?[range.kind] {
+                theString.addAttributes(rangeStyle, range: shiftedRange)
             }
 
             if let rangeURL = range.url, let linksColor = linksColor {
@@ -252,13 +241,15 @@ extension NotificationBlock {
             .Comment            : Styles.badgeItalicsStyle,
             .Blockquote         : Styles.badgeQuotedStyle
         ]
-
-        static let richSubjectCacheKey      = "richSubjectCacheKey"
-        static let richSnippetCacheKey      = "richSnippetCacheKey"
-        static let richHeaderTitleCacheKey  = "richHeaderTitleCacheKey"
-        static let richTextCacheKey         = "richTextCacheKey"
-        static let richBadgeCacheKey        = "richBadgeCacheKey"
     }
 
-    private typealias Styles                = WPStyleGuide.Notifications
+    private struct MemoizeKeys {
+        static let subject      = "subject"
+        static let snippet      = "snippet"
+        static let headerTitle  = "headerTitle"
+        static let text         = "text"
+        static let badge        = "badge"
+    }
+
+    private typealias Styles    = WPStyleGuide.Notifications
 }
