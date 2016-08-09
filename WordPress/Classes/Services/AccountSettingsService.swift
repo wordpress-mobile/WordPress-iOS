@@ -159,7 +159,7 @@ class AccountSettingsService {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
-        let results = (try? context.executeFetchRequest(request) as! [ManagedAccountSettings]) ?? []
+        let results = (try? context.executeFetchRequest(request)) as? [ManagedAccountSettings] ?? []
         return results.first
     }
 
