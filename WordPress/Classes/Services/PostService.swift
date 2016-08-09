@@ -5,9 +5,17 @@ class PostService : LocalCoreDataService {
     static let PostServiceDefaultNumberToSync = 40
 
     enum PostType: String {
-        case Any = "any"
-        case Post = "post"
-        case Page = "page"
+        case any = "any"
+        case post = "post"
+        case page = "page"
+        
+        func type() -> AbstractPost.Type {
+            switch self {
+            case .post: return Post.self
+            case .page: return Page.self
+            default: return AbstractPost.self
+            }
+        }
     }
 
     typealias SyncSuccess = ([AbstractPost]) -> Void
@@ -17,37 +25,43 @@ class PostService : LocalCoreDataService {
         self.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
     }
 
-    func createPost(for blog: Blog) -> Post {
+    func create(postType: PostType, blog: Blog) -> AbstractPost? {
+        return create(postType.type(), blog: blog)
+    }
+    
+    func create<T: AbstractPost>(postType: T.Type, blog: Blog) -> T? {
         assert(self.managedObjectContext == blog.managedObjectContext, "Blog's context should be the the same as the service's")
-
-        let post = NSEntityDescription.insertNewObjectForEntityForName(Post.entityName(), inManagedObjectContext: self.managedObjectContext) as! Post
+        
+        guard let post = NSEntityDescription.insertNewObjectForEntityForName(postType.entityName(), inManagedObjectContext: self.managedObjectContext) as? T else {
+            return nil
+        }
+        
         post.blog = blog
         post.remoteStatus = AbstractPostRemoteStatusSync
+        
+        guard let postPost = post as? Post else {
+            return post
+        }
+        
+        postPost.postFormat = blog.settings?.defaultPostFormat
+        postPost.postType = Post.typeDefaultIdentifier
+        
         let postCategoryService = PostCategoryService(managedObjectContext:self.managedObjectContext)
         if let category = postCategoryService.findWithBlogObjectID(blog.objectID, andCategoryID: (blog.settings?.defaultCategoryID)!) {
-            post.addCategoriesObject(category)
+            postPost.addCategoriesObject(category)
         }
-        post.postFormat = blog.settings?.defaultPostFormat
-        post.postType = Post.typeDefaultIdentifier
-        return post
+        
+        return postPost as? T
     }
 
-    func createDraftPost(for blog: Blog) -> Post {
-        let post = self.createPost(for: blog)
+    func createDraftPost(for blog: Blog) -> Post? {
+        guard let post = self.create(Post.self, blog: blog) else { return nil }
         post.remoteStatus = AbstractPostRemoteStatusLocal
         return post
     }
 
-    func createPage(for blog: Blog) -> Page {
-        assert(self.managedObjectContext == blog.managedObjectContext, "Blog's context should be the the same as the service's")
-        let page = NSEntityDescription.insertNewObjectForEntityForName(Page.entityName(), inManagedObjectContext: self.managedObjectContext) as! Page
-        page.blog = blog
-        page.remoteStatus = AbstractPostRemoteStatusSync
-        return page
-    }
-
-    func createDraftPage(for blog: Blog) -> Page {
-        let page = self.createPage(for: blog)
+    func createDraftPage(for blog: Blog) -> Page? {
+        guard let page = self.create(Page.self, blog: blog) else { return nil }
         page.remoteStatus = AbstractPostRemoteStatusLocal
         return page
     }
@@ -88,11 +102,11 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    func syncPosts(ofType type: PostType, for blog: Blog, success: SyncSuccess, failure: SyncFailure) {
-        self.syncPosts(ofType: type, for: blog, options: nil, success: success, failure: failure)
+    func syncPosts(ofType type: PostType, blog: Blog, success: SyncSuccess, failure: SyncFailure) {
+        self.syncPosts(ofType: type, blog: blog, options: nil, success: success, failure: failure)
     }
 
-    func syncPosts(ofType type: PostType, for blog: Blog, options: PostServiceSyncOptions?, success: SyncSuccess, failure: SyncFailure) {
+    func syncPosts(ofType type: PostType, blog: Blog, options: PostServiceSyncOptions?, success: SyncSuccess, failure: SyncFailure) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
             let remoteOptions = self.remoteSyncParameters(for:remote, with:options)
@@ -100,8 +114,10 @@ class PostService : LocalCoreDataService {
                     self.managedObjectContext.performBlock({
                         do {
                             let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID)
-                        } catch {
-                            DDLogSwift.logError("Could not retrieve blog in context %@", error ? String(format: "with error: %@", error) : "")
+//                            self.merge(
+
+                        } catch let error as NSError? {
+                            DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
                         }
                     })
                 }, failure: { (error) in
@@ -110,7 +126,14 @@ class PostService : LocalCoreDataService {
         }
     }
 
-
+    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String], author authorID: Int, blog: Blog, purge: Bool, completion: ([AbstractPost]) -> Void) {
+        let posts = [AbstractPost]
+        for remotePost in remotePosts {
+            var post = self.find(byID: remotePost.postID as Int, blog: blog)
+            
+        }
+    }
+    
     func find(byID postID: Int, blog: Blog) -> AbstractPost? {
         let request = NSFetchRequest(entityName: AbstractPost.entityName())
         request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND postID = %@", blog, postID)
