@@ -72,37 +72,17 @@ class NotificationBlock: Equatable
 
     ///
     ///
-    private typealias MetaKeys  = Notification.MetaKeys
-
-    ///
-    ///
     init(dictionary: [String: AnyObject], parent note: Notification) {
-        let rawRanges = dictionary[Keys.Ranges] as? [AnyObject]
-        let parsedRanges = NotificationRange.rangesFromArray(rawRanges)
-
-        let rawMedia = dictionary[Keys.Media] as? [AnyObject]
-        let parsedMedia = NotificationMedia.mediaFromArray(rawMedia)
+        let rawRanges   = dictionary[Keys.Ranges] as? [[String: AnyObject]]
+        let rawMedia    = dictionary[Keys.Media] as? [[String: AnyObject]]
 
         actions = dictionary[Keys.Actions] as? [String: AnyObject]
-        media   = parsedMedia
+        media   = NotificationMedia.mediaFromArray(rawMedia) ?? []
         meta    = dictionary[Keys.Meta] as? [String: AnyObject]
-        ranges  = parsedRanges
+        ranges  = NotificationRange.rangesFromArray(rawRanges) ?? []
         parent  = note
         type    = dictionary[Keys.RawType] as? String
         text    = dictionary[Keys.Text] as? String
-    }
-
-
-    /// Block Parsing Keys
-    ///
-    enum Keys {
-        static let Meta         = "meta"
-        static let Media        = "media"
-        static let Actions      = "actions"
-        static let Ranges       = "ranges"
-        static let RawType      = "type"
-        static let RawTypeUser  = "user"
-        static let Text         = "text"
     }
 }
 
@@ -305,21 +285,43 @@ extension NotificationBlock
 {
     ///
     ///
-    class func blocksFromArray(rawBlocks: [AnyObject]?, parent: Notification) -> [NotificationBlock]? {
+    class func blocksFromArray(rawBlocks: [[String: AnyObject]]?, parent: Notification) -> [NotificationBlock]? {
         guard let rawBlocks = rawBlocks where rawBlocks.isEmpty == false else {
             return nil
         }
 
         return rawBlocks.flatMap {
-            guard let rawBlock = $0 as? [String: AnyObject] else {
-                return nil
-            }
-
-            return NotificationBlock(dictionary: rawBlock, parent: parent)
+            return NotificationBlock(dictionary: $0, parent: parent)
         }
     }
 }
 
+
+// MARK: - NotificationBlock Constants
+//
+private extension NotificationBlock
+{
+    enum Keys {
+        static let Meta         = "meta"
+        static let Media        = "media"
+        static let Actions      = "actions"
+        static let Ranges       = "ranges"
+        static let RawType      = "type"
+        static let RawTypeUser  = "user"
+        static let Text         = "text"
+    }
+
+    enum MetaKeys {
+        static let Ids          = "ids"
+        static let Links        = "links"
+        static let Titles       = "titles"
+        static let Site         = "site"
+        static let Post         = "post"
+        static let Comment      = "comment"
+        static let Reply        = "reply_comment"
+        static let Home         = "home"
+    }
+}
 
 
 // MARK: - NotificationBlock Equatable Implementation
