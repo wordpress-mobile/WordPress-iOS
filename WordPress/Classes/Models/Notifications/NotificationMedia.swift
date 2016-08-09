@@ -1,10 +1,18 @@
 import Foundation
 
 
+
 // MARK: - NotificationMedia Entity
 //
 class NotificationMedia
 {
+    ///
+    ///
+    enum Kind: String {
+        case Image = "image"
+        case Badge = "badge"
+    }
+
     ///
     ///
     let kind: Kind
@@ -20,14 +28,6 @@ class NotificationMedia
     ///
     ///
     private(set) var size: CGSize?
-
-    ///
-    ///
-    enum Kind: String {
-        case Image = "image"
-        case Badge = "badge"
-    }
-
 
     ///
     ///
@@ -53,25 +53,21 @@ class NotificationMedia
         }
     }
 
+    /// Parses an array of NotificationMedia Definitions into NotificationMedia Instances
     ///
-    ///
-    class func mediaFromArray(media: [AnyObject]?) -> [NotificationMedia] {
-        let media = media ?? []
-        return media.flatMap {
-            guard let dictionary = $0 as? [String: AnyObject] else {
-                return nil
-            }
-
-            return NotificationMedia(dictionary: dictionary)
+    class func mediaFromArray(media: [[String: AnyObject]]?) -> [NotificationMedia]? {
+        return media?.flatMap {
+            return NotificationMedia(dictionary: $0)
         }
     }
+}
 
 
-    // MARK: - Private Helpers
-
-    /// Parsing Keys
-    ///
-    private enum Keys {
+// MARK: - NotificationMedia Constants
+//
+private extension NotificationMedia
+{
+    enum Keys {
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"

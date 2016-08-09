@@ -6,7 +6,7 @@ import Foundation
 //
 class NotificationBlockGroup
 {
-    ///
+    /// Known Kinds of Block Groups
     ///
     enum Kind {
         case Text
@@ -19,15 +19,15 @@ class NotificationBlockGroup
         case Footer
     }
 
-    ///
+    /// Blocks Array
     ///
     private (set) var blocks: [NotificationBlock]
 
-    ///
+    /// Kind of the current Group
     ///
     private (set) var kind: Kind
 
-    ///
+    /// Designated Initializer
     ///
     init(blocks: [NotificationBlock], kind: Kind) {
         self.blocks = blocks
@@ -41,13 +41,13 @@ class NotificationBlockGroup
 //
 extension NotificationBlockGroup
 {
-    ///
+    /// Returns the First Block of a specified kind
     ///
     func blockOfKind(kind: NotificationBlock.Kind) -> NotificationBlock? {
         return NotificationBlock.firstBlockOfKind(kind, fromBlocksArray: blocks)
     }
 
-    ///
+    /// Extracts all of the imageUrl's for the blocks of the specified kinds
     ///
     func imageUrlsFromBlocksInKindSet(kindSet: Set<NotificationBlock.Kind>) -> Set<NSURL> {
         let filtered = blocks.filter { kindSet.contains($0.kind) }
@@ -64,7 +64,7 @@ extension NotificationBlockGroup
 {
     /// Subject: Contains a User + Text Block
     ///
-    class func subjectGroupFromArray(rawBlocks: [AnyObject], parent: Notification) -> NotificationBlockGroup? {
+    class func subjectGroupFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup? {
         guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
             return nil
         }
@@ -74,7 +74,7 @@ extension NotificationBlockGroup
 
     /// Header: Contains a User + Text Block
     ///
-    class func headerGroupFromArray(rawBlocks: [AnyObject], parent: Notification) -> NotificationBlockGroup? {
+    class func headerGroupFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup? {
         guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
             return nil
         }
@@ -82,9 +82,9 @@ extension NotificationBlockGroup
         return NotificationBlockGroup(blocks: blocks, kind: .Header)
     }
 
+    /// Body: May contain different kinds of Groups!
     ///
-    ///
-    class func bodyGroupsFromArray(rawBlocks: [AnyObject], parent: Notification) -> [NotificationBlockGroup]? {
+    class func bodyGroupsFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlockGroup]? {
         guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
             return nil
         }
@@ -136,7 +136,7 @@ extension NotificationBlockGroup
         return groups
     }
 
-    ///
+    /// Returns the associated Block Group Kind for a given block.
     ///
     private class func blockGroupKindForBlock(block: NotificationBlock, parent: Notification, isLastBlock: Bool = false) -> Kind {
         // Reply: Translates into the `You replied to this comment` footer

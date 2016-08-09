@@ -1,10 +1,25 @@
 import Foundation
 
 
+
 // MARK: - NotificationRange Entity
 //
 class NotificationRange
 {
+    ///
+    ///
+    enum Kind: String {
+        case User       = "user"
+        case Post       = "post"
+        case Comment    = "comment"
+        case Stats      = "stat"
+        case Follow     = "follow"
+        case Blockquote = "blockquote"
+        case Noticon    = "noticon"
+        case Site       = "site"
+        case Match      = "match"
+    }
+
     ///
     ///
     let kind: Kind
@@ -35,21 +50,6 @@ class NotificationRange
     ///
     ///
     private(set) var value: String?
-
-    ///
-    ///
-    enum Kind: String {
-        case User       = "user"
-        case Post       = "post"
-        case Comment    = "comment"
-        case Stats      = "stat"
-        case Follow     = "follow"
-        case Blockquote = "blockquote"
-        case Noticon    = "noticon"
-        case Site       = "site"
-        case Match      = "match"
-    }
-
 
     ///
     ///
@@ -97,25 +97,21 @@ class NotificationRange
     }
 
 
+    /// Parses an array of NotificationRange Definitions into NotificationRange Instances
     ///
-    ///
-    class func rangesFromArray(ranges: [AnyObject]?) -> [NotificationRange] {
-        let ranges = ranges ?? []
-        return ranges.flatMap {
-            guard let dictionary = $0 as? [String: AnyObject] else {
-                return nil
-            }
-
-            return NotificationRange(dictionary: dictionary)
+    class func rangesFromArray(ranges: [[String: AnyObject]]?) -> [NotificationRange]? {
+        return ranges?.flatMap {
+            return NotificationRange(dictionary: $0)
         }
     }
+}
 
 
-    // MARK: - Private Helpers
-
-    /// Parsing Keys
-    ///
-    private enum Keys {
+// MARK: - NotificationRange Constants
+//
+private extension NotificationRange
+{
+    enum Keys {
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"
