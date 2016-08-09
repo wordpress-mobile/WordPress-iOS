@@ -254,7 +254,7 @@ extension Notification
             return subjectBlockGroup
         }
 
-        guard let subject = subject, let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self) else {
+        guard let subject = subject as? [[String: AnyObject]], let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self) else {
             return nil
         }
 
@@ -269,7 +269,7 @@ extension Notification
             return headerBlockGroup
         }
 
-        guard let header = header, let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self) else {
+        guard let header = header as? [[String: AnyObject]], let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self) else {
             return nil
         }
 
@@ -284,7 +284,7 @@ extension Notification
             return bodyBlockGroups
         }
 
-        guard let body = body, let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) else {
+        guard let body = body as? [[String: AnyObject]], let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) else {
             return []
         }
 
@@ -312,10 +312,8 @@ extension Notification
 
 // MARK: - Private Constants
 //
-extension Notification
+private extension Notification
 {
-    /// Meta Field Parsing Keys
-    ///
     enum MetaKeys {
         static let Ids          = "ids"
         static let Links        = "links"
