@@ -10,19 +10,20 @@ class NotificationMedia
     ///
     let kind: Kind
 
-    ///
+    /// Text Range Associated!
     ///
     let range: NSRange
 
-    ///
+    /// Resource URL, if any.
     ///
     private(set) var mediaURL: NSURL?
 
-    ///
+    /// Resource Size, if any.
     ///
     private(set) var size: CGSize?
 
-    ///
+
+    /// Designated Initializer.
     ///
     init?(dictionary: [String: AnyObject]) {
         guard let type = dictionary[Keys.RawType] as? String,
@@ -45,7 +46,13 @@ class NotificationMedia
             size = CGSize(width: width.integerValue, height: height.integerValue)
         }
     }
+}
 
+
+// MARK: - NotificationRange Parsers
+//
+extension NotificationMedia
+{
     /// Given a NotificationBlock Dictionary, will parse all of the NotificationMedia associated entities.
     ///
     class func mediaFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationMedia] {
