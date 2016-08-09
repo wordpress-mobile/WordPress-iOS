@@ -11,16 +11,15 @@ class NotificationMedia
 
     ///
     ///
-    let mediaURL: NSURL?
+    let range: NSRange
 
     ///
     ///
-    let size: CGSize?
+    private(set) var mediaURL: NSURL?
 
     ///
     ///
-    let range: NSRange?
-
+    private(set) var size: CGSize?
 
     ///
     ///
@@ -32,17 +31,16 @@ class NotificationMedia
 
     ///
     ///
-    init(dictionary: [String: AnyObject]) {
-
-        let type = dictionary[Keys.RawType] as? String ?? String()
-        kind = Kind(rawValue: type) ?? .Image
-
-        if let indices = dictionary[Keys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last
+    init?(dictionary: [String: AnyObject]) {
+        guard let type = dictionary[Keys.RawType] as? String,
+            let indices = dictionary[Keys.Indices] as? [Int],
+            let start = indices.first, let end = indices.last else
         {
-            let length = start - end
-            range = NSMakeRange(start, length)
+            return nil
         }
+
+        kind = Kind(rawValue: type) ?? .Image
+        range = NSMakeRange(start, end - start)
 
         if let url = dictionary[Keys.URL] as? String {
             mediaURL = NSURL(string: url)
