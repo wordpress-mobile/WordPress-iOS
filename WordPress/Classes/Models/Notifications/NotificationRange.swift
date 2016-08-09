@@ -6,38 +6,40 @@ import Foundation
 //
 class NotificationRange
 {
-    /// Kind of the Current Range
+    /// Kind of the current Range
     ///
     let kind: Kind
 
-    ///
+    /// Text Range Associated!
     ///
     let range: NSRange
 
-    ///
+    /// Resource URL, if any.
     ///
     private(set) var url: NSURL?
 
-    ///
+    /// Comment ID, if any.
     ///
     private(set) var commentID: NSNumber?
 
-    ///
+    /// Post ID, if any.
     ///
     private(set) var postID: NSNumber?
 
-    ///
+    /// Site ID, if any.
     ///
     private(set) var siteID: NSNumber?
 
-    ///
+    /// User ID, if any.
     ///
     private(set) var userID: NSNumber?
-    ///
+
+    /// String Payload, if any.
     ///
     private(set) var value: String?
 
-    ///
+
+    /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
         guard let type = dictionary[Keys.RawType] as? String,
@@ -78,11 +80,17 @@ class NotificationRange
         case .User:
             userID = dictionary[Keys.Id] as? NSNumber
         default:
+// TODO: Should always run?
             siteID = dictionary[Keys.SiteId] as? NSNumber
         }
     }
+}
 
 
+// MARK: - NotificationRange Parsers
+//
+extension NotificationRange
+{
     /// Given a NotificationBlock Dictionary, will parse all of the NotificationRange associated entities.
     ///
     class func rangesFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationRange] {
