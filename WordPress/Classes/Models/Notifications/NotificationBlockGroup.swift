@@ -31,7 +31,7 @@ extension NotificationBlockGroup
     /// Returns the First Block of a specified kind
     ///
     func blockOfKind(kind: NotificationBlock.Kind) -> NotificationBlock? {
-        return self.dynamicType.firstBlockOfKind(kind, from: blocks)
+        return self.dynamicType.blockOfKind(kind, from: blocks)
     }
 
     /// Extracts all of the imageUrl's for the blocks of the specified kinds
@@ -84,9 +84,18 @@ private extension NotificationBlockGroup
 {
     /// Non-Comment Body Groups: 1-1 Mapping between Blocks <> BlockGroups
     ///
+    ///     -   Notifications of the kind [Follow, Like, CommentLike] may contain a Footer block.
+    ///     -   We can assume that whenever the last block is of the type .Text, we're dealing with a footer.
+    ///     -   Whenever we detect such a block, we'll map the NotificationBlock into a .Footer group.
+    ///     -   Footers are visually represented as `View All Followers` / `View All Likers`
+    ///
     class func groupsForNonCommentBodyBlocks(blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
+        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
+        let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
+
         return blocks.map { block in
-            let kind = groupKindForBlock(block, parent: parent, isLastBlock: (block == blocks.last))
+            let isFooter = parentMayContainFooter && block.kind == .Text && blocks.last == block
+            let kind = isFooter ? .Footer : Kind.fromBlockKind(block.kind)
             return NotificationBlockGroup(blocks: [block], kind: kind)
         }
     }
@@ -97,58 +106,41 @@ private extension NotificationBlockGroup
     ///      can be easily mapped against a single UI entity.
     ///
     class func groupsForCommentBodyBlocks(blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
-        guard let comment = firstBlockOfKind(.Comment, from: blocks), let user = firstBlockOfKind(.User, from: blocks) else {
+        guard let comment = blockOfKind(.Comment, from: blocks), let user = blockOfKind(.User, from: blocks) else {
             return []
         }
 
-        var groups = [NotificationBlockGroup]()
+        var groups              = [NotificationBlockGroup]()
+        let commentGroupBlocks  = [comment, user]
+        let middleGroupBlocks   = blocks.filter { return commentGroupBlocks.contains($0) == false }
+        let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
-        groups.append(NotificationBlockGroup(blocks: [comment, user], kind: .Comment))
+        groups.append(NotificationBlockGroup(blocks: commentGroupBlocks, kind: .Comment))
 
         // Middle Group(s): Anything
-        let middle = blocks.filter { return $0 != comment && $0 != user }
+        for block in middleGroupBlocks {
+            // Duck Typing Again:
+            // If the block contains a range that matches with the metaReplyID field, we'll need to render this
+            // with a custom style. Translates into the `You replied to this comment` footer.
+            //
+            var kind = Kind.fromBlockKind(block.kind)
+            if let parentReplyID = parent.metaReplyID where block.notificationRangeWithCommentId(parentReplyID) != nil {
+                kind = .Footer
+            }
 
-        for block in middle {
-            let kind = groupKindForBlock(block, parent: parent)
             groups.append(NotificationBlockGroup(blocks: [block], kind: kind))
         }
 
         // Actions Group: A copy of the Comment Block (Actions)
-        groups.append(NotificationBlockGroup(blocks: [comment], kind: .Actions))
+        groups.append(NotificationBlockGroup(blocks: actionGroupBlocks, kind: .Actions))
 
         return groups
     }
 
-    /// Infers the NotificationBlockGroup.Kind associated to a single Block instance. *SORRY* about the duck typing!!!
-    ///
-    class func groupKindForBlock(block: NotificationBlock, parent: Notification, isLastBlock: Bool = false) -> Kind {
-        // Reply: Translates into the `You replied to this comment` footer
-        //
-        if let parentReplyID = parent.metaReplyID where block.notificationRangeWithCommentId(parentReplyID) != nil {
-            return .Footer
-        }
-
-        // Follow / Likes: Translates into `View All Followers` / `View All Likers` footer
-        //
-        let canContainFooter = parent.kind == .Follow || parent.kind == .Like || parent.kind == .CommentLike
-        if canContainFooter && block.kind == .Text && isLastBlock {
-            return .Footer
-        }
-
-        // Direct Mapping: Block.Kind > BlockGroup.Kind
-        //
-        switch block.kind {
-            case .Text:     return .Text
-            case .Image:    return .Image
-            case .User:     return .User
-            case .Comment:  return .Comment
-        }
-    }
-
     /// Returns the First Block of a specified kind.
     ///
-    class func firstBlockOfKind(kind: NotificationBlock.Kind, from blocks: [NotificationBlock]) -> NotificationBlock? {
+    class func blockOfKind(kind: NotificationBlock.Kind, from blocks: [NotificationBlock]) -> NotificationBlock? {
         for block in blocks where block.kind == kind {
             return block
         }
@@ -173,5 +165,14 @@ extension NotificationBlockGroup
         case Subject
         case Header
         case Footer
+
+        static func fromBlockKind(blockKind: NotificationBlock.Kind) -> Kind {
+            switch blockKind {
+            case .Text:     return .Text
+            case .Image:    return .Image
+            case .User:     return .User
+            case .Comment:  return .Comment
+            }
+        }
     }
 }
