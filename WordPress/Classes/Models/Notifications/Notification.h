@@ -64,5 +64,3 @@ typedef NS_ENUM(NSInteger, NotificationRangeKind)
 + (nonnull NSArray<NotificationMedia *> *)mediaFromArray:(nullable NSArray *)rawMedia;
 
 @end
-
-
