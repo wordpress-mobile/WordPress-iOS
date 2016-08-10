@@ -241,16 +241,6 @@ extension NotificationBlock
 
         return nil
     }
-
-    /// Returns the First Block of a specified kind.
-    ///
-    class func firstBlockOfKind(kind: Kind, fromBlocksArray blocks: [NotificationBlock]) -> NotificationBlock? {
-        for block in blocks where block.kind == kind {
-            return block
-        }
-
-        return nil
-    }
 }
 
 

@@ -6,7 +6,7 @@ import Foundation
 //
 class NotificationBlockGroup
 {
-    /// Blocks Array
+    /// Grouped Blocks
     ///
     let blocks: [NotificationBlock]
 
@@ -31,7 +31,7 @@ extension NotificationBlockGroup
     /// Returns the First Block of a specified kind
     ///
     func blockOfKind(kind: NotificationBlock.Kind) -> NotificationBlock? {
-        return NotificationBlock.firstBlockOfKind(kind, fromBlocksArray: blocks)
+        return self.dynamicType.firstBlockOfKind(kind, from: blocks)
     }
 
     /// Extracts all of the imageUrl's for the blocks of the specified kinds
@@ -51,80 +51,78 @@ extension NotificationBlockGroup
 {
     /// Subject: Contains a User + Text Block
     ///
-    class func subjectGroupFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup? {
-        guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
-            return nil
-        }
-
+    class func groupFromSubject(subject: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup {
+        let blocks = NotificationBlock.blocksFromArray(subject, parent: parent)
         return NotificationBlockGroup(blocks: blocks, kind: .Subject)
     }
 
     /// Header: Contains a User + Text Block
     ///
-    class func headerGroupFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup? {
-        guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
-            return nil
-        }
-
+    class func groupFromHeader(header: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup {
+        let blocks = NotificationBlock.blocksFromArray(header, parent: parent)
         return NotificationBlockGroup(blocks: blocks, kind: .Header)
     }
 
     /// Body: May contain different kinds of Groups!
     ///
-    class func bodyGroupsFromArray(rawBlocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlockGroup]? {
-        guard let blocks = NotificationBlock.blocksFromArray(rawBlocks, parent: parent) else {
-            return nil
+    class func groupsFromBody(body: [[String: AnyObject]], parent: Notification) -> [NotificationBlockGroup] {
+        let blocks = NotificationBlock.blocksFromArray(body, parent: parent)
+
+        switch parent.kind {
+        case .Comment:
+            return groupsForCommentBodyBlocks(blocks, parent: parent)
+        default:
+            return groupsForNonCommentBodyBlocks(blocks, parent: parent)
         }
+    }
+}
 
-        // Non-Comment Scenario: 1-1 Mapping between Blocks <> BlockGroups
-        //
-        guard parent.kind == .Comment else {
-            let lastBlock = blocks.last
 
-            return blocks.map { block in
-                let isLastBlock = (lastBlock == block)
-                let kind = blockGroupKindForBlock(block, parent: parent, isLastBlock: isLastBlock)
-                return NotificationBlockGroup(blocks: [block], kind: kind)
-            }
+// MARK: - Private Parsing Helpers
+//
+private extension NotificationBlockGroup
+{
+    /// Non-Comment Body Groups: 1-1 Mapping between Blocks <> BlockGroups
+    ///
+    class func groupsForNonCommentBodyBlocks(blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
+        return blocks.map { block in
+            let kind = groupKindForBlock(block, parent: parent, isLastBlock: (block == blocks.last))
+            return NotificationBlockGroup(blocks: [block], kind: kind)
         }
+    }
 
-        // Comment Scenario:
-        //  -   Required to always render the Actions at the very bottom.
-        //  -   This snippet is meant to adapt the backend data structure, so that a single NotificationBlockGroup
-        //      can be easily mapped against a single UI entity.
-        //
-        guard let commentBlock = NotificationBlock.firstBlockOfKind(.Comment, fromBlocksArray: blocks),
-            let userBlock = NotificationBlock.firstBlockOfKind(.User, fromBlocksArray: blocks) else
-        {
-            return nil
+    /// Comment Body Blocks:
+    ///  -   Required to always render the Actions at the very bottom.
+    ///  -   This helper is meant to adapt the backend data structure, so that a single NotificationBlockGroup
+    ///      can be easily mapped against a single UI entity.
+    ///
+    class func groupsForCommentBodyBlocks(blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
+        guard let comment = firstBlockOfKind(.Comment, from: blocks), let user = firstBlockOfKind(.User, from: blocks) else {
+            return []
         }
 
         var groups = [NotificationBlockGroup]()
-        let commentBlocks = [commentBlock, userBlock]
-        let middleBlocks  = blocks.filter { commentBlocks.indexOf($0) == nil }
-        let actionsBlocks = [commentBlock]
 
         // Comment Group: Comment + User Blocks
-        let headerGroup = NotificationBlockGroup(blocks: commentBlocks, kind: .Comment)
-        groups.append(headerGroup)
+        groups.append(NotificationBlockGroup(blocks: [comment, user], kind: .Comment))
 
         // Middle Group(s): Anything
-        for block in middleBlocks {
-            let kind = blockGroupKindForBlock(block, parent: parent)
-            let group = NotificationBlockGroup(blocks: [block], kind: kind)
-            groups.append(group)
+        let middle = blocks.filter { return $0 != comment && $0 != user }
+
+        for block in middle {
+            let kind = groupKindForBlock(block, parent: parent)
+            groups.append(NotificationBlockGroup(blocks: [block], kind: kind))
         }
 
         // Actions Group: A copy of the Comment Block (Actions)
-        let footerGroup = NotificationBlockGroup(blocks: actionsBlocks, kind: .Actions)
-        groups.append(footerGroup)
+        groups.append(NotificationBlockGroup(blocks: [comment], kind: .Actions))
 
         return groups
     }
 
-    /// Returns the associated Block Group Kind for a given block.
+    /// Infers the NotificationBlockGroup.Kind associated to a single Block instance. *SORRY* about the duck typing!!!
     ///
-    private class func blockGroupKindForBlock(block: NotificationBlock, parent: Notification, isLastBlock: Bool = false) -> Kind {
+    class func groupKindForBlock(block: NotificationBlock, parent: Notification, isLastBlock: Bool = false) -> Kind {
         // Reply: Translates into the `You replied to this comment` footer
         //
         if let parentReplyID = parent.metaReplyID where block.notificationRangeWithCommentId(parentReplyID) != nil {
@@ -146,6 +144,16 @@ extension NotificationBlockGroup
             case .User:     return .User
             case .Comment:  return .Comment
         }
+    }
+
+    /// Returns the First Block of a specified kind.
+    ///
+    class func firstBlockOfKind(kind: NotificationBlock.Kind, from blocks: [NotificationBlock]) -> NotificationBlock? {
+        for block in blocks where block.kind == kind {
+            return block
+        }
+
+        return nil
     }
 }
 
