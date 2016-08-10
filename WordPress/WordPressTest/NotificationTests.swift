@@ -83,20 +83,20 @@ extension NotificationTests {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfType(.Image)
+        let gravatarBlock = header!.blockOfKind(.Image)
         XCTAssertNotNil(gravatarBlock!.text)
 
         let media = gravatarBlock!.media.first
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfType(.Text)
+        let snippetBlock = header!.blockOfKind(.Text)
         XCTAssertNotNil(snippetBlock!.text)
     }
 
     func testLikeNotificationContainsUserBlocksInTheBody() {
         let note = loadLikeNotification()
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.type == .User)
+            XCTAssertTrue(group.kind == .User)
         }
     }
 
@@ -113,7 +113,7 @@ extension NotificationTests {
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
         let note = loadFollowerNotification()
-        XCTAssertTrue(note.isFollow)
+        XCTAssertTrue(note.kind == .Follow)
     }
 
     func testFollowerNotificationContainsOneSubjectBlock() {
@@ -132,7 +132,7 @@ extension NotificationTests {
 
         // Note: Account for 'View All Followers'
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.type == .User || group.type == .Footer)
+            XCTAssertTrue(group.kind == .User || group.kind == .Footer)
         }
     }
 
@@ -141,7 +141,7 @@ extension NotificationTests {
 
         let lastGroup = note.bodyBlockGroups.last
         XCTAssertNotNil(lastGroup)
-        XCTAssertTrue(lastGroup!.type == .Footer)
+        XCTAssertTrue(lastGroup!.kind == .Footer)
 
         let block = lastGroup!.blocks.first
         XCTAssertNotNil(block)
@@ -150,7 +150,7 @@ extension NotificationTests {
 
         let range = block!.ranges.first
         XCTAssertNotNil(range)
-        XCTAssertEqual(range!.type, NoteRangeType.Follow)
+        XCTAssert(range!.kind == .Follow)
     }
 
     func testCommentNotificationReturnsTheProperKindValue() {
@@ -160,7 +160,7 @@ extension NotificationTests {
 
     func testCommentNotificationHasCommentFlagSetToTrue() {
         let note = loadCommentNotification()
-        XCTAssertTrue(note.isComment)
+        XCTAssertTrue(note.kind == .Comment)
     }
 
     func testCommentNotificationContainsSubjectWithSnippet() {
@@ -178,7 +178,7 @@ extension NotificationTests {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfType(.Image)
+        let gravatarBlock = header!.blockOfKind(.Image)
         XCTAssertNotNil(gravatarBlock)
         XCTAssertNotNil(gravatarBlock!.text)
 
@@ -186,7 +186,7 @@ extension NotificationTests {
         XCTAssertNotNil(media)
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfType(.Text)
+        let snippetBlock = header!.blockOfKind(.Text)
         XCTAssertNotNil(snippetBlock)
         XCTAssertNotNil(snippetBlock!.text)
     }
@@ -206,7 +206,7 @@ extension NotificationTests {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
 
-        let textBlock = note.blockGroupOfKind(.Footer)?.blockOfType(.Text)
+        let textBlock = note.blockGroupOfKind(.Footer)?.blockOfKind(.Text)
         XCTAssertNotNil(textBlock)
 
         let replyID = note.metaReplyID
