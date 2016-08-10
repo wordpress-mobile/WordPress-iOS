@@ -503,13 +503,12 @@
 		B5882C471D5297D1008E0EAA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5882C461D5297D1008E0EAA /* NotificationTests.swift */; };
 		B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */; };
 		B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899AE31B422D990075A3D6 /* NotificationSettings.swift */; };
-		B59328BE1D5A147A00213841 /* NotificationRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59328BD1D5A147A00213841 /* NotificationRange.swift */; };
-		B59328C01D5A14FC00213841 /* NotificationMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59328BF1D5A14FC00213841 /* NotificationMedia.swift */; };
 		B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */; };
 		B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
 		B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
+		B5A70CBB1D5B6D94006A8D17 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A70CBA1D5B6D94006A8D17 /* Notification.m */; };
 		B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
 		B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5AA54D41A8E7510003BDD12 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B5AB733C19901F85005F5044 /* WPNoResultsView+AnimatedBox.m */; };
@@ -1738,13 +1737,13 @@
 		B5882C461D5297D1008E0EAA /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingDetailsViewController.swift; sourceTree = "<group>"; };
 		B5899AE31B422D990075A3D6 /* NotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationSettings.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		B59328BD1D5A147A00213841 /* NotificationRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationRange.swift; sourceTree = "<group>"; };
-		B59328BF1D5A14FC00213841 /* NotificationMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationMedia.swift; sourceTree = "<group>"; };
 		B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
 		B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListEditorViewController.swift; sourceTree = "<group>"; };
 		B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
 		B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rest-site-settings.json"; sourceTree = "<group>"; };
 		B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountToAccount20to21.swift; path = "20-21/AccountToAccount20to21.swift"; sourceTree = "<group>"; };
+		B5A70CB91D5B6D94006A8D17 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		B5A70CBA1D5B6D94006A8D17 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Helpers.swift"; sourceTree = "<group>"; };
 		B5AA54D41A8E7510003BDD12 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B5AB733B19901F85005F5044 /* WPNoResultsView+AnimatedBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNoResultsView+AnimatedBox.h"; sourceTree = "<group>"; };
@@ -3814,8 +3813,8 @@
 				B5722E401D51A28100F40C5E /* Notification.swift */,
 				B539714F1D537763006135EC /* NotificationBlockGroup.swift */,
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
-				B59328BF1D5A14FC00213841 /* NotificationMedia.swift */,
-				B59328BD1D5A147A00213841 /* NotificationRange.swift */,
+				B5A70CB91D5B6D94006A8D17 /* Notification.h */,
+				B5A70CBA1D5B6D94006A8D17 /* Notification.m */,
 				B5CC05F71962186D00975CAC /* Meta.h */,
 				B5CC05F81962186D00975CAC /* Meta.m */,
 				B5899AE31B422D990075A3D6 /* NotificationSettings.swift */,
@@ -5841,7 +5840,6 @@
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
 				E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */,
 				FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */,
-				B59328BE1D5A147A00213841 /* NotificationRange.swift in Sources */,
 				B56F0F541C3337670076C48D /* AccountSettings.swift in Sources */,
 				08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
@@ -6026,7 +6024,6 @@
 				FFB7D0031CEDD27400143C09 /* MockWordPressComRestApi.swift in Sources */,
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
-				B59328C01D5A14FC00213841 /* NotificationMedia.swift in Sources */,
 				08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */,
 				B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */,
 				E142007A1C117A3B00B3B115 /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,
@@ -6062,6 +6059,7 @@
 				E1C3C8531CE467A900D5DB36 /* EmailTypoChecker.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				B5772AC91C9C859D0031F97E /* GravatarServiceRemote.swift in Sources */,
+				B5A70CBB1D5B6D94006A8D17 /* Notification.m in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				FFB0DEAA1D38061B00DD4A50 /* WPImageURLHelper.swift in Sources */,
