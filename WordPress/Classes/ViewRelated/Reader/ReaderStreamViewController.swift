@@ -1529,7 +1529,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if view.window == nil && UIDevice.isPad() {
+        if view.window == nil && WPDeviceIdentification.isiPad() {
             // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
             // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
             // The result is the cells do not show the correct layout on the iPad.
