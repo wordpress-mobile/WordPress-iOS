@@ -34,6 +34,7 @@ abstract_target 'WordPress_Base' do
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
+    pod 'BuddyBuildSDK', '~> 1.0.11'
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
