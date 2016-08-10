@@ -26,7 +26,7 @@ enum PlanListViewModel {
             } else {
                 return WPNoResultsView.Model(
                     title: NSLocalizedString("No connection", comment: ""),
-                  message: NSLocalizedString("An active internet connection is required to view stats", comment: "")
+                  message: NSLocalizedString("An active internet connection is required to view plans", comment: "")
                 )
             }
         }
