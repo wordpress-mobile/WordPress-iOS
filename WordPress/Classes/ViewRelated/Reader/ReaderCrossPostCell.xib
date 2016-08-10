@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,14 +15,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqw-Gu-5jd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                        <rect key="frame" x="-1" y="0.0" width="322" height="64"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pB-wb-r4Y">
-                                <rect key="frame" x="0.0" y="8" width="320" height="48"/>
+                                <rect key="frame" x="0.0" y="8" width="322" height="48"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMb-Gb-gWp">
-                                <rect key="frame" x="16" y="16" width="288" height="32"/>
+                                <rect key="frame" x="16" y="16" width="290" height="32"/>
                                 <subviews>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="odD-xS-y0M">
                                         <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
@@ -40,7 +41,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u3R-Xf-UYr">
-                                        <rect key="frame" x="42" y="0.0" width="246" height="32"/>
+                                        <rect key="frame" x="42" y="0.0" width="248" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -75,12 +76,29 @@
                     </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="leading" secondItem="5qn-1n-3Ik" secondAttribute="leadingMargin" constant="-1" id="G1e-76-U6Q"/>
                     <constraint firstItem="Wqw-Gu-5jd" firstAttribute="top" secondItem="5qn-1n-3Ik" secondAttribute="top" id="KUc-I4-IEJ"/>
-                    <constraint firstAttribute="trailing" secondItem="Wqw-Gu-5jd" secondAttribute="trailing" id="QyC-ij-Muu"/>
+                    <constraint firstAttribute="trailing" secondItem="Wqw-Gu-5jd" secondAttribute="trailing" constant="-1" id="QyC-ij-Muu"/>
                     <constraint firstAttribute="bottom" secondItem="Wqw-Gu-5jd" secondAttribute="bottom" id="cBX-gu-Mzp"/>
-                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="leading" secondItem="5qn-1n-3Ik" secondAttribute="leading" id="xeF-Hp-0xl"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Wqw-Gu-5jd" secondAttribute="trailing" priority="999" constant="-1" id="fR6-TA-Yjt"/>
+                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="leading" secondItem="5qn-1n-3Ik" secondAttribute="leading" constant="-1" id="xeF-Hp-0xl"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="G1e-76-U6Q"/>
+                        <exclude reference="fR6-TA-Yjt"/>
+                    </mask>
+                </variation>
+                <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
+                    <mask key="constraints">
+                        <include reference="G1e-76-U6Q"/>
+                        <exclude reference="QyC-ij-Muu"/>
+                        <include reference="fR6-TA-Yjt"/>
+                        <exclude reference="xeF-Hp-0xl"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
                 <outlet property="avatarImageView" destination="HKf-84-9ay" id="tZr-P9-JcR"/>
                 <outlet property="blavatarImageView" destination="odD-xS-y0M" id="pyw-35-X8J"/>
