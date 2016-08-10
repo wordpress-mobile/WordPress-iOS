@@ -969,13 +969,16 @@ import WordPressComAnalytics
     }
 
 
-    private func unblockSiteForPost(post: ReaderPost, rowIndexPath: NSIndexPath) {
-
+    private func unblockSiteForPost(post: ReaderPost) {
+        guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
+            return
+        }
+        
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
-        tableViewHandler.invalidateCachedRowHeightAtIndexPath(rowIndexPath)
-        tableView.reloadRowsAtIndexPaths([rowIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.flagSiteWithID(post.siteID,
@@ -983,8 +986,8 @@ import WordPressComAnalytics
             success: nil,
             failure: { [weak self] (error:NSError?) in
                 self?.recentlyBlockedSitePostObjectIDs.addObject(objectID)
-                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(rowIndexPath)
-                self?.tableView.reloadRowsAtIndexPaths([rowIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+                self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
                 let message = error?.localizedDescription ?? ""
                 let errorTitle = NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
@@ -1670,7 +1673,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         }
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            unblockSiteForPost(post, rowIndexPath: indexPath)
+            unblockSiteForPost(apost)
             return
         }
 
