@@ -237,13 +237,12 @@ extension Notification
             return subjectBlockGroup
         }
 
-        guard let subject = subject as? [[String: AnyObject]] else {
+        guard let subject = subject as? [[String: AnyObject]] where subject.isEmpty == false else {
             return nil
         }
 
-        let subjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, parent: self)
-        cachedSubjectBlockGroup = subjectBlockGroup
-        return subjectBlockGroup
+        cachedSubjectBlockGroup = NotificationBlockGroup.groupFromSubject(subject, parent: self)
+        return cachedSubjectBlockGroup
     }
 
     /// Returns the Header Block Group, if any.
@@ -253,13 +252,12 @@ extension Notification
             return headerBlockGroup
         }
 
-        guard let header = header as? [[String: AnyObject]] else {
+        guard let header = header as? [[String: AnyObject]] where header.isEmpty == false else {
             return nil
         }
 
-        let headerBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, parent: self)
-        cachedHeaderBlockGroup = headerBlockGroup
-        return headerBlockGroup
+        cachedHeaderBlockGroup = NotificationBlockGroup.groupFromHeader(header, parent: self)
+        return cachedHeaderBlockGroup
     }
 
     /// Returns the Body Block Groups, if any.
@@ -269,13 +267,12 @@ extension Notification
             return bodyBlockGroups
         }
 
-        guard let body = body as? [[String: AnyObject]] else {
+        guard let body = body as? [[String: AnyObject]] where body.isEmpty == false else {
             return []
         }
 
-        let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, parent: self) ?? []
-        cachedBodyBlockGroups = bodyBlockGroups
-        return bodyBlockGroups
+        cachedBodyBlockGroups = NotificationBlockGroup.groupsFromBody(body, parent: self)
+        return cachedBodyBlockGroups ?? []
     }
 
     /// Returns the Subject Block, if any.
