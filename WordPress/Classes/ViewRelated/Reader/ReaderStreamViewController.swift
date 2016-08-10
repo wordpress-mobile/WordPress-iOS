@@ -42,7 +42,6 @@ import WordPressComAnalytics
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
     private let estimatedRowHeight = CGFloat(300.0)
-    private let gapMarkerRowHeight = CGFloat(60.0)
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
@@ -1515,16 +1514,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(aTableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
-            return 0.0
-        }
-
-        let post = posts[indexPath.row]
-
-        if post.isKindOfClass(ReaderGapMarker) {
-            return gapMarkerRowHeight
-        }
-
         return UITableViewAutomaticDimension
     }
 
