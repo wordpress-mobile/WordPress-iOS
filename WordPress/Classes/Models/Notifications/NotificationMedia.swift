@@ -26,8 +26,8 @@ class NotificationMedia
     /// Designated Initializer.
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let type = dictionary[Keys.RawType] as? String,
-            let indices = dictionary[Keys.Indices] as? [Int],
+        guard let type = dictionary[MediaKeys.RawType] as? String,
+            let indices = dictionary[MediaKeys.Indices] as? [Int],
             let start = indices.first, let end = indices.last else
         {
             return nil
@@ -36,12 +36,12 @@ class NotificationMedia
         kind = Kind(rawValue: type) ?? .Image
         range = NSMakeRange(start, end - start)
 
-        if let url = dictionary[Keys.URL] as? String {
+        if let url = dictionary[MediaKeys.URL] as? String {
             mediaURL = NSURL(string: url)
         }
 
-        if let width = dictionary[Keys.Width] as? NSNumber,
-            let height = dictionary[Keys.Height] as? NSNumber
+        if let width = dictionary[MediaKeys.Width] as? NSNumber,
+            let height = dictionary[MediaKeys.Height] as? NSNumber
         {
             size = CGSize(width: width.integerValue, height: height.integerValue)
         }
@@ -56,7 +56,7 @@ extension NotificationMedia
     /// Given a NotificationBlock Dictionary, will parse all of the NotificationMedia associated entities.
     ///
     class func mediaFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationMedia] {
-        guard let media = dictionary[Keys.BlockMedia] as? [[String: AnyObject]] else {
+        guard let media = dictionary[MediaKeys.BlockMedia] as? [[String: AnyObject]] else {
             return []
         }
 
@@ -80,7 +80,7 @@ extension NotificationMedia
 
     /// Parsing Keys
     ///
-    private enum Keys {
+    private enum MediaKeys {
         static let BlockMedia   = "media"
         static let RawType      = "type"
         static let URL          = "url"

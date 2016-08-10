@@ -42,8 +42,8 @@ class NotificationRange
     /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let type = dictionary[Keys.RawType] as? String,
-            let indices = dictionary[Keys.Indices] as? [Int],
+        guard let type = dictionary[RangeKeys.RawType] as? String,
+            let indices = dictionary[RangeKeys.Indices] as? [Int],
             let start = indices.first, let end = indices.last else
         {
             return nil
@@ -53,7 +53,7 @@ class NotificationRange
         range = NSMakeRange(start, end - start)
 
 
-        if let rawURL = dictionary[Keys.URL] as? String {
+        if let rawURL = dictionary[RangeKeys.URL] as? String {
             url = NSURL(string: rawURL)
         }
 
@@ -69,19 +69,19 @@ class NotificationRange
         //
         switch kind {
         case .Comment:
-            commentID = dictionary[Keys.Id] as? NSNumber
-            postID = dictionary[Keys.PostId] as? NSNumber
+            commentID = dictionary[RangeKeys.Id] as? NSNumber
+            postID = dictionary[RangeKeys.PostId] as? NSNumber
         case .Noticon:
-            value = dictionary[Keys.Value] as? String
+            value = dictionary[RangeKeys.Value] as? String
         case .Post:
-            postID = dictionary[Keys.Id] as? NSNumber
+            postID = dictionary[RangeKeys.Id] as? NSNumber
         case .Site:
-            siteID = dictionary[Keys.Id] as? NSNumber
+            siteID = dictionary[RangeKeys.Id] as? NSNumber
         case .User:
-            userID = dictionary[Keys.Id] as? NSNumber
+            userID = dictionary[RangeKeys.Id] as? NSNumber
         default:
 // TODO: Should always run?
-            siteID = dictionary[Keys.SiteId] as? NSNumber
+            siteID = dictionary[RangeKeys.SiteId] as? NSNumber
         }
     }
 }
@@ -94,7 +94,7 @@ extension NotificationRange
     /// Given a NotificationBlock Dictionary, will parse all of the NotificationRange associated entities.
     ///
     class func rangesFromBlockDictionary(dictionary: [String: AnyObject]) -> [NotificationRange] {
-        guard let ranges = dictionary[Keys.BlockRanges] as? [[String: AnyObject]] else {
+        guard let ranges = dictionary[RangeKeys.BlockRanges] as? [[String: AnyObject]] else {
             return []
         }
 
@@ -125,7 +125,7 @@ extension NotificationRange
 
     /// Parsing Keys
     ///
-    private enum Keys {
+    private enum RangeKeys {
         static let BlockRanges  = "ranges"
         static let RawType      = "type"
         static let URL          = "url"
