@@ -3,7 +3,6 @@
 
 @interface RestorePageTableViewCell()
 
-@property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
 
@@ -20,21 +19,10 @@
     [self applyStyles];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    // Don't respond to taps in margins.
-    if (!CGRectContainsPoint(self.pageContentView.frame, point)) {
-        return nil;
-    }
-    return [super hitTest:point withEvent:event];
-}
-
-
 #pragma mark - Configuration
 
 - (void)applyStyles
 {
-    [WPStyleGuide applyPostCardStyle:self];
     [WPStyleGuide applyRestorePageLabelStyle:self.restoreLabel];
     [WPStyleGuide applyRestorePageButtonStyle:self.restoreButton];
 }
