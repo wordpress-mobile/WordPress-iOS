@@ -101,9 +101,8 @@ private extension NotificationBlockGroup
     }
 
     /// Comment Body Blocks:
-    ///  -   Required to always render the Actions at the very bottom.
-    ///  -   This helper is meant to adapt the backend data structure, so that a single NotificationBlockGroup
-    ///      can be easily mapped against a single UI entity.
+    ///     -   Required to always render the Actions at the very bottom.
+    ///     -   Adapter: a single NotificationBlockGroup can be easily mapped against a single UI entity.
     ///
     class func groupsForCommentBodyBlocks(blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
         guard let comment = blockOfKind(.Comment, from: blocks), let user = blockOfKind(.User, from: blocks) else {
