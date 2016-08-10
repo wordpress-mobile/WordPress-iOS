@@ -259,14 +259,10 @@ extension NotificationBlock
 //
 extension NotificationBlock
 {
-    /// Parses a collection of Block Definitions into NotificationBlock instances. Returns nil if empty.
+    /// Parses a collection of Block Definitions into NotificationBlock instances.
     ///
-    class func blocksFromArray(rawBlocks: [[String: AnyObject]]?, parent: Notification) -> [NotificationBlock]? {
-        guard let rawBlocks = rawBlocks where rawBlocks.isEmpty == false else {
-            return nil
-        }
-
-        return rawBlocks.flatMap {
+    class func blocksFromArray(blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
+        return blocks.flatMap {
             return NotificationBlock(dictionary: $0, parent: parent)
         }
     }
