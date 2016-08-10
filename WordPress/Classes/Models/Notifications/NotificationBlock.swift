@@ -58,13 +58,13 @@ class NotificationBlock: Equatable
     /// Designated Initializer.
     ///
     init(dictionary: [String: AnyObject], parent note: Notification) {
-        actions = dictionary[Keys.Actions] as? [String: AnyObject]
+        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
         media   = NotificationMedia.mediaFromBlockDictionary(dictionary)
-        meta    = dictionary[Keys.Meta] as? [String: AnyObject]
+        meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromBlockDictionary(dictionary)
         parent  = note
-        type    = dictionary[Keys.RawType] as? String
-        text    = dictionary[Keys.Text] as? String
+        type    = dictionary[BlockKeys.RawType] as? String
+        text    = dictionary[BlockKeys.Text] as? String
     }
 }
 
@@ -77,7 +77,7 @@ extension NotificationBlock
     /// Returns the current Block's Kind. SORRY: Duck Typing code below.
     ///
     var kind: Kind {
-        if let rawType = type where rawType.isEqual(Keys.UserType) {
+        if let rawType = type where rawType.isEqual(BlockKeys.UserType) {
             return .User
         }
 
@@ -299,7 +299,7 @@ extension NotificationBlock
 
     /// Parsing Keys
     ///
-    private enum Keys {
+    private enum BlockKeys {
         static let Meta         = "meta"
         static let Actions      = "actions"
         static let RawType      = "type"
