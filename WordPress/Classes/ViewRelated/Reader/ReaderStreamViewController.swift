@@ -42,7 +42,6 @@ import WordPressComAnalytics
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
     private let estimatedRowHeight = CGFloat(300.0)
-    private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
     private let loadMoreThreashold = 4
 
@@ -1524,10 +1523,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         if post.isKindOfClass(ReaderGapMarker) {
             return gapMarkerRowHeight
-        }
-
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            return blockedRowHeight
         }
 
         return UITableViewAutomaticDimension
