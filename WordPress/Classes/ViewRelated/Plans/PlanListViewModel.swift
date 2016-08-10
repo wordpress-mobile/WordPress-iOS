@@ -16,11 +16,19 @@ enum PlanListViewModel {
         case .Ready(_):
             return nil
         case .Error(_):
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Oops", comment: ""),
-                message: NSLocalizedString("There was an error loading plans", comment: ""),
-                buttonTitle: NSLocalizedString("Contact support", comment: "")
-            )
+            let appDelegate = WordPressAppDelegate.sharedInstance()
+            if appDelegate.connectionAvailable {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading plans", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            } else {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("No connection", comment: ""),
+                  message: NSLocalizedString("An active internet connection is required to view plans", comment: "")
+                )
+            }
         }
     }
 
