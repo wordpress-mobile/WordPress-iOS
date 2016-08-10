@@ -26,8 +26,7 @@ class NotificationMedia
     /// Designated Initializer.
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let type = dictionary[MediaKeys.RawType] as? String,
-            let indices = dictionary[MediaKeys.Indices] as? [Int],
+        guard let type = dictionary[MediaKeys.RawType] as? String, let indices = dictionary[MediaKeys.Indices] as? [Int],
             let start = indices.first, let end = indices.last else
         {
             return nil
@@ -40,9 +39,7 @@ class NotificationMedia
             mediaURL = NSURL(string: url)
         }
 
-        if let width = dictionary[MediaKeys.Width] as? NSNumber,
-            let height = dictionary[MediaKeys.Height] as? NSNumber
-        {
+        if let width = dictionary[MediaKeys.Width] as? NSNumber, let height = dictionary[MediaKeys.Height] as? NSNumber {
             size = CGSize(width: width.integerValue, height: height.integerValue)
         }
     }

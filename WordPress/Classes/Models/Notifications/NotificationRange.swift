@@ -42,8 +42,7 @@ class NotificationRange
     /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let type = dictionary[RangeKeys.RawType] as? String,
-            let indices = dictionary[RangeKeys.Indices] as? [Int],
+        guard let type = dictionary[RangeKeys.RawType] as? String, let indices = dictionary[RangeKeys.Indices] as? [Int],
             let start = indices.first, let end = indices.last else
         {
             return nil
@@ -52,15 +51,13 @@ class NotificationRange
         kind = Kind(rawValue: type) ?? .Site
         range = NSMakeRange(start, end - start)
 
-
         if let rawURL = dictionary[RangeKeys.URL] as? String {
             url = NSURL(string: rawURL)
         }
 
-
         //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
         //  ======
-        //  `id` is coupled with the `type`. Which, in turn, is also duck typed.
+        //  `id` is coupled with the `kind`. Which, in turn, is also duck typed.
         //
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
