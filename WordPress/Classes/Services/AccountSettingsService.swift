@@ -165,12 +165,12 @@ class AccountSettingsService {
 
     private func createAccountSettings(userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccountWithUserID(userID) else {
+        guard let account = accountService.findAccountWithUserID(userID),
+        let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as? ManagedAccountSettings else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 
-        let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as! ManagedAccountSettings
         managedSettings.updateWith(settings)
         managedSettings.account = account
     }
