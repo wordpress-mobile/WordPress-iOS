@@ -212,7 +212,11 @@ extension BlogSettings
     ///
     var commentsSorting : CommentsSorting {
         get {
-            return CommentsSorting(rawValue: commentsSortOrder as! Int) ?? .Ascending
+            guard let sortOrder = commentsSortOrder as Int?,
+                sorting = CommentsSorting(rawValue: sortOrder) else {
+                    return .Ascending
+            }
+            return sorting
         }
         set {
             commentsSortOrder = newValue.rawValue
