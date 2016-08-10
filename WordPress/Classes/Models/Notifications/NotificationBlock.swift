@@ -58,10 +58,13 @@ class NotificationBlock: Equatable
     /// Designated Initializer.
     ///
     init(dictionary: [String: AnyObject], parent note: Notification) {
+        let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
+        let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
+
         actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
-        media   = NotificationMedia.mediaFromBlockDictionary(dictionary)
+        media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
-        ranges  = NotificationRange.rangesFromBlockDictionary(dictionary)
+        ranges  = NotificationRange.rangesFromArray(rawRanges)
         parent  = note
         type    = dictionary[BlockKeys.RawType] as? String
         text    = dictionary[BlockKeys.Text] as? String
@@ -87,7 +90,7 @@ extension NotificationBlock
             return .Comment
         }
 
-        if let firstMedia = media.first where (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
+        if let firstMedia = media.first where (firstMedia.isImage || firstMedia.isBadge) {
             return .Image
         }
 
@@ -98,7 +101,7 @@ extension NotificationBlock
     ///
     var imageUrls: [NSURL] {
         return media.flatMap {
-            guard $0.kind == .Image && $0.mediaURL != nil else {
+            guard $0.isImage && $0.mediaURL != nil else {
                 return nil
             }
 
@@ -286,8 +289,10 @@ extension NotificationBlock
     /// Parsing Keys
     ///
     private enum BlockKeys {
-        static let Meta         = "meta"
         static let Actions      = "actions"
+        static let Media        = "media"
+        static let Meta         = "meta"
+        static let Ranges       = "ranges"
         static let RawType      = "type"
         static let Text         = "text"
         static let UserType     = "user"
