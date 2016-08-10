@@ -38,11 +38,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     lazy var tableViewHandler : WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
 
-        tableViewHandler.cacheRowHeights = true
+        tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
         tableViewHandler.updateRowAnimation = .None
 
         return tableViewHandler
+    }()
+
+    lazy var estimatedHeightsCache : NSCache = {
+        let estimatedHeightsCache = NSCache()
+        return estimatedHeightsCache
     }()
 
     lazy var syncHelper : WPContentSyncHelper = {
@@ -79,7 +84,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     var searchController : UISearchController!
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
-    private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var searchesSyncing = 0
 
     // MARK: - Lifecycle
@@ -89,7 +93,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), forControlEvents: .ValueChanged)
 
-        configureCellsForLayout()
         configureTableView()
         configureFooterView()
         configureNavbar()
@@ -156,7 +159,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         automaticallySyncIfAppropriate()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AbstractPostListViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -170,39 +172,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         unregisterForKeyboardNotifications()
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        needsRefreshCachedCellHeightsBeforeLayout = true
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        if needsRefreshCachedCellHeightsBeforeLayout {
-            needsRefreshCachedCellHeightsBeforeLayout = false
-
-            let width = view.frame.width
-
-            tableViewHandler.refreshCachedRowHeightsForWidth(width)
-            tableView.reloadData()
-        }
-    }
-
-    // MARK: - Multitasking Support
-
-    func handleApplicationDidBecomeActive(notification: NSNotification) {
-        needsRefreshCachedCellHeightsBeforeLayout = true
-    }
-
     // MARK: - Configuration
-
 
     func heightForFooterView() -> CGFloat
     {
         return self.dynamicType.defaultHeightForFooterView
     }
-
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
@@ -220,10 +195,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         navigationItem.titleView = filterButton
         updateFilterTitle()
-    }
-
-    func configureCellsForLayout() {
-        assert(false, "You should implement this method in the subclass")
     }
 
     func configureTableView() {
@@ -405,14 +376,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
     }
 
-    func refreshCachedRowHeightsForTableViewWidth() {
-        let width = CGRectGetWidth(tableView.bounds)
-        tableViewHandler.refreshCachedRowHeightsForWidth(width)
-    }
-
     func updateAndPerformFetchRequestRefreshingResults() {
         updateAndPerformFetchRequest()
-        refreshCachedRowHeightsForTableViewWidth()
         tableView.reloadData()
         refreshResults()
     }
@@ -430,6 +395,26 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - Table View Handling
 
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
+        // likes to reload rows in a strange way.
+        // It uses the estimated height as a starting value for reloading animations.
+        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
+        // the cell heights during reload animations.
+        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
+        // Brent C. August 2/2016
+        if let height = estimatedHeightsCache.objectForKey(indexPath) as? CGFloat {
+            // Return the previously known height as it was cached via willDisplayCell.
+            return height
+        }
+        // Otherwise return whatever we have set to the tableView explicitly, and ideally a pretty close value.
+        return tableView.estimatedRowHeight
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         assert(false, "You should implement this method in the subclass")
     }
@@ -439,6 +424,11 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+
+        // Cache the cell's layout height as the currently known height, for estimation.
+        // See estimatedHeightForRowAtIndexPath
+        estimatedHeightsCache.setObject(cell.frame.height, forKey: indexPath)
+
         guard isViewOnScreen() && !isSearching() else {
             return
         }
@@ -696,7 +686,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     func updateForLocalPostsMatchingSearchText() {
         updateAndPerformFetchRequest()
-        tableViewHandler.clearCachedRowHeights()
         tableView.reloadData()
 
         let filter = filterSettings.currentPostListFilter()
@@ -812,7 +801,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let indexPath = tableViewHandler.resultsController.indexPathForObject(apost)
 
         if let indexPath = indexPath {
-            tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
 
@@ -834,8 +822,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 strongSelf.recentlyTrashedPostObjectIDs.removeAtIndex(index)
 
                 if let indexPath = indexPath {
-                    strongSelf.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
-                    strongSelf.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    strongSelf.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 }
             }
         }
