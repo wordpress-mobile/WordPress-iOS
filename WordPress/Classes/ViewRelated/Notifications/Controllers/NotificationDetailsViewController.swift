@@ -525,7 +525,7 @@ private extension NotificationDetailsViewController
         let gravatarBlock = blockGroup.blockOfType(.Image)
         let snippetBlock = blockGroup.blockOfType(.Text)
 
-        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText
+        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText()
         cell.headerDetails = snippetBlock?.text
 
         // Download the Gravatar (If Needed!)
@@ -543,7 +543,7 @@ private extension NotificationDetailsViewController
             return
         }
 
-        cell.attributedText = textBlock.attributedFooterText
+        cell.attributedText = textBlock.attributedFooterText()
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
     }
@@ -604,7 +604,7 @@ private extension NotificationDetailsViewController
         let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls())
         let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
 
-        let text = commentBlock.attributedRichText.stringByEmbeddingImageAttachments(mediaRanges)
+        let text = commentBlock.attributedRichText().stringByEmbeddingImageAttachments(mediaRanges)
 
         // Setup: Properties
         cell.name                   = userBlock.text
@@ -612,7 +612,7 @@ private extension NotificationDetailsViewController
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimTrailingNewlines()
         cell.isApproved             = commentBlock.isCommentApproved()
-        cell.isRepliedComment       = note.isRepliedComment
+        cell.hasReply               = note.hasReply
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
@@ -714,7 +714,7 @@ private extension NotificationDetailsViewController
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText
+        let text = note.isBadge ? textBlock.attributedBadgeText() : textBlock.attributedRichText()
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
@@ -777,24 +777,24 @@ extension NotificationDetailsViewController
     }
 
     func displayNotificationSource() {
-        guard let resourceURL = note.resourceURL else {
+        guard let type = note.type, let resourceURL = note.resourceURL() else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
 
         do {
-            switch note.kind {
-            case .Follow:
+            switch type {
+            case NoteTypeFollow:
                 try displayStreamWithSiteID(note.metaSiteID)
-            case .Like:
+            case NoteTypeLike:
                 fallthrough
-            case .Matcher:
+            case NoteTypeMatcher:
                 fallthrough
-            case .Post:
+            case NoteTypePost:
                 try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            case .Comment:
+            case NoteTypeComment:
                 fallthrough
-            case .CommentLike:
+            case NoteTypeCommentLike:
                 try displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
             default:
                 throw DisplayError.UnsupportedType
