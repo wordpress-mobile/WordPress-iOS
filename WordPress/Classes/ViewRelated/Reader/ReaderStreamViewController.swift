@@ -1672,7 +1672,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+        if recentlyBlockedSitePostObjectIDs.containsObject(apost.objectID) {
             unblockSiteForPost(apost)
             return
         }
