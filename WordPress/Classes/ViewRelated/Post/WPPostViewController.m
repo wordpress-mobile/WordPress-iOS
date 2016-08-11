@@ -63,7 +63,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const CompactTitleButtonWidth = 150.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -106,10 +106,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIBarButtonItem *cancelChevronButton;
 @property (nonatomic, strong) UIBarButtonItem *currentCancelButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *moreBarButtonItem;
 
 #pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
@@ -830,7 +827,9 @@ EditImageDetailsViewControllerDelegate
         
         PostSharingController *sharingController = [[PostSharingController alloc] init];
         
-        [sharingController sharePost:post fromView:[self shareBarButtonItem].customView inViewController:self];
+        [sharingController sharePost:post
+                   fromBarButtonItem:self.moreBarButtonItem
+                    inViewController:self];
     }
 }
 
@@ -1118,27 +1117,11 @@ EditImageDetailsViewControllerDelegate
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
     if ([self isEditing]) {
-        if (editingChanged) {
-            NSArray* rightBarButtons = @[self.saveBarButtonItem,
-                                         [self optionsBarButtonItem],
-                                         [self previewBarButtonItem]];
-            
-            [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
-        } else {
-            self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
-        }
-
-		BOOL updateEnabled = [self.post canSave];
-        
-		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
+        [self.navigationItem setRightBarButtonItems:@[self.moreBarButtonItem] animated:YES];
 	} else {
-        NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.editBarButtonItem,
-                                                                                  [self previewBarButtonItem]]];
-        
-        if ([self.post isKindOfClass:[Post class]]) {
-            [rightBarButtons addObject:[self shareBarButtonItem]];
-        }
-		
+        NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
+                                                                                  self.editBarButtonItem]];
+
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 	}
 }
@@ -1161,6 +1144,40 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - Custom UI elements
+
+- (UIBarButtonItem *)moreBarButtonItem
+{
+    if (_moreBarButtonItem) {
+        return _moreBarButtonItem;
+    }
+
+    UIImage *image = [Gridicon iconOfType:GridiconTypeEllipsis];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(showMoreSheet)];
+    _moreBarButtonItem = button;
+
+    return _moreBarButtonItem;
+}
+
+- (void)showMoreSheet
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if ([self isEditing]) {
+        [alertController addAction:[self saveAlertAction]];
+        [alertController addAction:[self previewAlertAction]];
+        [alertController addAction:[self optionsAlertAction]];
+    } else {
+        [alertController addAction:[self previewAlertAction]];
+
+        if ([self.post isKindOfClass:[Post class]]) {
+            [alertController addAction:[self shareAlertAction]];
+        }
+    }
+
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Action button to close editor 'More' menu.") handler:nil];
+    alertController.popoverPresentationController.barButtonItem = self.moreBarButtonItem;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 - (UIBarButtonItem*)cancelChevronButton
 {
@@ -1209,7 +1226,6 @@ EditImageDetailsViewControllerDelegate
     if (!_editBarButtonItem) {
         NSString* buttonTitle = NSLocalizedString(@"Edit",
                                                   @"Label for the button to edit the current post.");
-        
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
@@ -1224,75 +1240,7 @@ EditImageDetailsViewControllerDelegate
 	return _editBarButtonItem;
 }
 
-- (UIBarButtonItem *)optionsBarButtonItem
-{
-	if (!_optionsBarButtonItem) {
-        UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(showSettings)];
-        
-        NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
-        button.accessibilityLabel = optionsTitle;
-        button.accessibilityIdentifier = @"Options";
-        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
-    
-	return _optionsBarButtonItem;
-}
-
-- (UIBarButtonItem *)previewBarButtonItem
-{
-	if (!_previewBarButtonItem) {
-        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
-        WPButtonForNavigationBar* button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(showPreview)];
-        
-        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
-    }
-	
-	return _previewBarButtonItem;
-}
-
-- (UIBarButtonItem *)saveBarButtonItem
-{
-    if (!_saveBarButtonItem) {
-        NSString *buttonTitle = [self saveBarButtonItemTitle];
-
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                       style:[WPStyleGuide barButtonStyleForDone]
-                                                                      target:self
-                                                                      action:@selector(saveAction)];
-        
-        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
-        [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
-        [saveButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
-        _saveBarButtonItem = saveButton;
-    }
-
-	return _saveBarButtonItem;
-}
-
-- (UIBarButtonItem *)shareBarButtonItem
-{
-    if (!_shareBarButtonItem) {
-        UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                target:self
-                                                              selector:@selector(sharePost)];
-
-        NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
-        button.accessibilityLabel = title;
-        button.accessibilityIdentifier = @"Share";
-        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
-    
-    return _shareBarButtonItem;
-}
-
-- (NSString*)saveBarButtonItemTitle
+- (NSString*)saveButtonTitle
 {
     NSString *buttonTitle = nil;
     
@@ -1352,6 +1300,7 @@ EditImageDetailsViewControllerDelegate
 {
     if (!_blogPickerButton) {
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, RegularTitleButtonWidth , RegularTitleButtonHeight) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
+
         [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
@@ -1376,6 +1325,47 @@ EditImageDetailsViewControllerDelegate
     }
     
     return _uploadStatusButton;
+}
+
+#pragma mark - More Action Sheet Actions
+
+- (UIAlertAction *)saveAlertAction
+{
+    UIAlertAction *saveAction = [UIAlertAction actionWithTitle:[self saveButtonTitle]
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           [self saveAction];
+                                                       }];
+    saveAction.enabled = [self.post canSave];
+
+    return saveAction;
+}
+
+- (UIAlertAction *)shareAlertAction
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.")
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self sharePost];
+                                  }];
+}
+
+- (UIAlertAction *)previewAlertAction
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Preview", @"Title of button to preview the content of post or page on the  live site")
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self showPreview];
+                                  }];
+}
+
+- (UIAlertAction *)optionsAlertAction
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.")
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self showSettings];
+                                  }];
 }
 
 # pragma mark - Model State Methods
@@ -1554,7 +1544,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)logSavePostStats
 {
-    NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
+    NSString *buttonTitle = [self saveButtonTitle];
     
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
