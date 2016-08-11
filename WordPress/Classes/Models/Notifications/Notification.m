@@ -65,6 +65,15 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 
 
 #pragma mark ====================================================================================
+#pragma mark Notification: Private Methods
+#pragma mark ====================================================================================
+
+@interface Notification (Internals)
+- (void)didChangeOverrides;
+@end
+
+
+#pragma mark ====================================================================================
 #pragma mark NotificationRange
 #pragma mark ====================================================================================
 
@@ -312,6 +321,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 
     NSString *key = [self keyForAction:action];
     _actionsOverride[key] = value;
+    
     [self.parent didChangeOverrides];
 }
 
@@ -474,39 +484,26 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return group;
 }
 
-+ (NotificationBlockGroup *)subjectGroupFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
-{
-    // Subject: Contains a User + Text Block
-    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
-    if (blocks.count == 0) {
-        return nil;
-    }
-
-    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject];
-}
-
-+ (NotificationBlockGroup *)headerGroupFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
-{
-    // Header: Contains a User + Text Block
-    NSArray *blocks = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
-    if (blocks.count == 0) {
-        return nil;
-    }
-
-    return [NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader];
-}
-
-+ (NSArray *)bodyGroupsFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
++ (NSArray *)blockGroupsFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
 {
     NSArray *blocks         = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
     NSMutableArray *groups  = [NSMutableArray array];
     
+    // Don't proceed if there are no parsed blocks
     if (blocks.count == 0) {
-        return groups;
+        return nil;
     }
+    
+    // Subject: Contains a User + Text Block
+    if (rawBlocks == notification.subject) {
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject]];
 
+    // Header: Contains a User + Text Block
+    } else if (rawBlocks == notification.header) {
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader]];
+        
     // Comment: Contains a User + Comment Block
-    if (notification.isComment) {
+    } else if (notification.isComment) {
         
         //  Note:
         //  I find myself, again, surrounded by the forces of Duck Typing. Comment Notifications are now
@@ -552,7 +549,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         //  -   We can assume that whenever the last block is of the type NoteBlockTypeText, we're dealing with a footer.
         //  -   Whenever we detect such a block, we'll map the NotificationBlock into a NoteBlockGroupTypeFooter group.
         //
-        BOOL canContainFooter = notification.isFollow || notification.isLike || notification.isCommentLike;
+        BOOL canContainFooter           = notification.isFollow || notification.isLike || notification.isCommentLike;
         
         for (NotificationBlock *block in blocks) {
             BOOL isFooter               = canContainFooter && block.type == NoteBlockTypeText && blocks.lastObject == block;
@@ -563,6 +560,263 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     }
     
     return groups;
+}
+
+@end
+
+
+
+#pragma mark ====================================================================================
+#pragma mark Notification
+#pragma mark ====================================================================================
+
+@interface Notification ()
+@property (nonatomic, strong) NSDate                    *date;
+@property (nonatomic, strong) NSURL                     *iconURL;
+@property (nonatomic, strong) NotificationBlockGroup    *subjectBlockGroup;
+@property (nonatomic, strong) NotificationBlockGroup    *headerBlockGroup;
+@property (nonatomic, strong) NSArray                   *bodyBlockGroups;
+@end
+
+
+@implementation Notification
+
+@dynamic header;
+@dynamic body;
+@dynamic ghostData;
+@dynamic simperiumKey;
+@dynamic icon;
+@dynamic noticon;
+@dynamic meta;
+@dynamic read;
+@dynamic subject;
+@dynamic timestamp;
+@dynamic type;
+@dynamic url;
+@dynamic title;
+
+@synthesize date                = _date;
+@synthesize iconURL             = _iconURL;
+@synthesize subjectBlockGroup   = _subjectBlockGroup;
+@synthesize headerBlockGroup    = _headerBlockGroup;
+@synthesize bodyBlockGroups     = _bodyBlockGroups;
+
+
+#pragma mark - NSManagedObject Overriden Methods
+
+- (void)didTurnIntoFault
+{
+    _date               = nil;
+    _iconURL            = nil;
+    _subjectBlockGroup  = nil;
+    _headerBlockGroup   = nil;
+    _bodyBlockGroups    = nil;
+}
+
+
+#pragma mark - Derived Properties
+
+- (NSURL *)iconURL
+{
+    if (!_iconURL) {
+        _iconURL = [NSURL URLWithString:self.icon];
+    }
+    return _iconURL;
+}
+
+- (NSDate *)timestampAsDate
+{
+    if (!_date) {
+        NSAssert(self.timestamp, @"Notification Timestamp should not be nil [%@]", self.simperiumKey);
+        if (self.timestamp) {
+            _date = [NSDate dateWithISO8601String:self.timestamp];
+        }
+        
+        //  Failsafe:
+        //  If, for whatever reason, the date cannot be parsed, make sure we always return a date.
+        //  Otherwise notification-grouping might fail
+        //
+        if (_date == nil) {
+            DDLogError(@"Error: couldn't parse date [%@] for notification with id [%@]", self.timestamp, self.simperiumKey);
+            _date = [NSDate date];
+        }
+    }
+    
+    return self.date;
+}
+
+- (NotificationBlockGroup *)subjectBlockGroup
+{
+    if (!_subjectBlockGroup) {
+        _subjectBlockGroup = [[NotificationBlockGroup blockGroupsFromArray:self.subject notification:self] firstObject];
+    }
+
+    return _subjectBlockGroup;
+}
+
+- (NotificationBlockGroup *)headerBlockGroup
+{
+    if (!_headerBlockGroup) {
+        _headerBlockGroup = [[NotificationBlockGroup blockGroupsFromArray:self.header notification:self] firstObject];
+    }
+    
+    return _headerBlockGroup;
+}
+
+- (NSArray *)bodyBlockGroups
+{
+    if (!_bodyBlockGroups) {
+        _bodyBlockGroups = [NotificationBlockGroup blockGroupsFromArray:self.body notification:self];
+    }
+    
+    return _bodyBlockGroups;
+}
+
+- (NSNumber *)metaSiteID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteSiteKey];
+}
+
+- (NSNumber *)metaPostID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NotePostKey];
+}
+
+- (NSNumber *)metaCommentID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
+}
+
+- (NSNumber *)metaReplyID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteReplyIdKey];
+}
+
+- (BOOL)isMatcher
+{
+    return [self.type isEqual:NoteTypeMatcher];
+}
+
+- (BOOL)isComment
+{
+    return [self.type isEqual:NoteTypeComment];
+}
+
+- (BOOL)isPost
+{
+    return [self.type isEqual:NoteTypePost];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteTypeFollow];
+}
+
+- (BOOL)isLike
+{
+    return [self.type isEqual:NoteTypeLike];
+}
+
+- (BOOL)isCommentLike
+{
+    return [self.type isEqual:NoteTypeCommentLike];
+}
+
+- (BOOL)isBadge
+{
+    //  Note:
+    //  This developer does not like duck typing. Sorry about the following snippet.
+    //
+    for (NotificationBlockGroup *group in self.bodyBlockGroups) {
+        for (NotificationBlock *block in group.blocks) {
+            for (NotificationMedia *media in block.media) {
+                if (media.isBadge) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasReply
+{
+    return self.isComment && self.metaReplyID != nil;
+}
+
+
+#pragma mark - Comment Helpers
+
+- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type
+{
+    for (NotificationBlockGroup *blockGroup in self.bodyBlockGroups) {
+        if (blockGroup.type == type) {
+            return blockGroup;
+        }
+    }
+    return nil;
+}
+
+- (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
+{
+    // Find in Header + Body please!
+    NSMutableArray *groups = [NSMutableArray array];
+    [groups addObjectsFromArray:self.bodyBlockGroups];
+    if (self.headerBlockGroup) {
+        [groups addObject:self.headerBlockGroup];
+    }
+    
+    for (NotificationBlockGroup *group in groups) {
+        for (NotificationBlock *block in group.blocks) {
+            NotificationRange *range = [block notificationRangeWithUrl:url];
+            if (range) {
+                return range;
+            }
+        }
+    }
+    return nil;
+}
+
+- (NotificationBlock *)subjectBlock
+{
+    return self.subjectBlockGroup.blocks.firstObject;
+}
+
+- (NotificationBlock *)snippetBlock
+{
+    NSArray *subjectBlocks = self.subjectBlockGroup.blocks;
+    return (subjectBlocks.count > 1) ? subjectBlocks.lastObject : nil;
+}
+
+// Check if this note is a comment and in 'unapproved' status
+- (BOOL)isUnapprovedComment
+{
+    NotificationBlockGroup *group = [self blockGroupOfType:NoteBlockGroupTypeComment];
+    if (group && [group blockOfType:NoteBlockTypeComment]) {
+        NotificationBlock *block = [group blockOfType:NoteBlockTypeComment];
+        return [block isActionEnabled:NoteActionApprove] && ![block isActionOn:NoteActionApprove];
+    }
+
+    return NO;
+}
+
+- (NSURL *)resourceURL
+{
+    if (!self.url) {
+        return nil;
+    }
+
+    return [[NSURL alloc] initWithString:self.url];
+}
+
+- (void)didChangeOverrides
+{
+    // HACK:
+    // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
+    // Helpful when dealing with non-CoreData backed attributes.
+    //
+    self.read = self.read;
 }
 
 @end
