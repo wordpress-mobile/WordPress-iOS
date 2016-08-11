@@ -34,7 +34,6 @@
 #import "WPTabBarController.h"
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
-#import "WPTooltip.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
@@ -55,8 +54,6 @@ NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNo
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
-NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
-NSString* const FormatBarOnboardingWasShown = @"FormatBarOnboardingWasShown";
 
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
@@ -344,9 +341,6 @@ EditImageDetailsViewControllerDelegate
         [self.navigationController.navigationBar addSubview:self.mediaProgressView];
         if (self.isEditing) {
             [self setNeedsStatusBarAppearanceUpdate];
-        } else {
-            // View appeared in preview mode, show the edit button onboarding hint if needed
-            [self showEditButtonOnboarding];
         }
     }
 
@@ -596,58 +590,6 @@ EditImageDetailsViewControllerDelegate
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-#pragma mark - Onboarding
-
-/**
- *	@brief      Sets the edit button tooltip's displayed/not displayed state
- *	@details    Sets a flag in NSUserDefaults designating that the edit button's
- *              tooltip was displayed already.
- *
- *	@param      BOOL    YES if the edit button tooltip was shown
- */
-- (void)setEditButtonOnboardingShown:(BOOL)wasShown
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:wasShown forKey:EditButtonOnboardingWasShown];
-    [defaults synchronize];
-}
-
-/**
- *	@brief      Was the edit button tooltip already displayed?
- *	@details    Returns YES if the edit button tooltip was already displayed to the
- *              user, otherwise NO.
- */
-- (BOOL)wasEditButtonOnboardingShown
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:EditButtonOnboardingWasShown];
-    return NO;
-}
-
-/**
- *	@brief      Displays the tooltop for the edit button
- *	@details    This method triggers the display of the navbar edit button tooltip only if the
- *              it was NOT shown already.
- */
-- (void)showEditButtonOnboarding
-{
-    if (!self.wasEditButtonOnboardingShown) {
-        CGFloat xValue = CGRectGetMaxX(self.view.frame) - [WPStyleGuide navigationBarButtonRect].size.width;
-        if (IS_IPAD) {
-            xValue -= 20.0;
-        } else {
-            xValue -= 10.0;
-        }
-        CGRect targetFrame = CGRectMake(xValue, 0.0, [WPStyleGuide navigationBarButtonRect].size.width, 0.0);
-        NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
-        
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [WPTooltip displayTooltipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
-        });
-        [self setEditButtonOnboardingShown:YES];
-    }
 }
 
 #pragma mark - Actions

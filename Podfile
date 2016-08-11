@@ -20,7 +20,6 @@ abstract_target 'WordPress_Base' do
     # ---------------------
     pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'3.1.0'
-    pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
