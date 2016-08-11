@@ -159,20 +159,23 @@ class AccountSettingsService {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
-        let results = (try? context.executeFetchRequest(request)) as? [ManagedAccountSettings] ?? []
+        guard let results = (try? context.executeFetchRequest(request)) as? [ManagedAccountSettings] else {
+            return nil
+        }
         return results.first
     }
 
     private func createAccountSettings(userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccountWithUserID(userID),
-        let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as? ManagedAccountSettings else {
+        guard let account = accountService.findAccountWithUserID(userID) else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 
-        managedSettings.updateWith(settings)
-        managedSettings.account = account
+        if let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as? ManagedAccountSettings {
+            managedSettings.updateWith(settings)
+            managedSettings.account = account
+        }
     }
 
     enum Errors: ErrorType {
