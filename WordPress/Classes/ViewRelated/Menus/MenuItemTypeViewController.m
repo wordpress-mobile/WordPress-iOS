@@ -50,7 +50,7 @@
     // Add default types.
     [self addDefaultItemTypesForBlog:blog];
     [self updateSelectedItemTypeView];
-    
+
     // Sync the available postTypes for blog
     __weak __typeof__(self) weakSelf = self;
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
@@ -83,7 +83,7 @@
 {
     MenuItemTypeSelectionView *firstTypeView = [self addTypeView:MenuItemTypePage blog:blog];
     firstTypeView.designIgnoresDrawingTopBorder = YES;
-    
+
     [self addTypeView:MenuItemTypeCustom blog:blog];
     [self addTypeView:MenuItemTypeCategory blog:blog];
     [self addTypeView:MenuItemTypeTag blog:blog];
