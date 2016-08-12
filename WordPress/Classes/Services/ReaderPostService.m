@@ -67,12 +67,17 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
+    // Don't pass the algorithm if at the start of the results
+    NSString *reqAlgorithm = offset == 0 ? nil : topic.algorithm;
+
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                algorithm:reqAlgorithm
                                     count:[self numberToSyncForTopic:topic]
                                    offset:offset
-                                  success:^(NSArray<RemoteReaderPost *> *posts) {
+                                  success:^(NSArray<RemoteReaderPost *> *posts, NSString *algorithm) {
+                                      [self updateTopic:topicObjectID withAlgorithm:algorithm];
 
                                       [self mergePosts:posts
                                         rankedLessThan:rank
@@ -88,18 +93,38 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                   }];
 }
 
+
+- (void)updateTopic:(NSManagedObjectID *)topicID withAlgorithm:(NSString *)algorithm
+{
+    NSError *error;
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicID error:&error];
+    topic.algorithm = algorithm;
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+
 - (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
            deletingEarlier:(BOOL)deleteEarlier
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure
 {
+    // Don't pass the algorithm if fetching a brand new list.
+    NSString *reqAlgorithm = [date isEqualToDate:[NSDate date]] ? nil : topic.algorithm;
+
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                algorithm:reqAlgorithm
                                     count:[self numberToSyncForTopic:topic]
                                    before:date
-                                  success:^(NSArray *posts) {
+                                  success:^(NSArray *posts, NSString *algorithm) {
+
+                                      // Save any returned algorithm on the topic for use when requesting more posts.
+                                      NSError *error;
+                                      ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+                                      readerTopic.algorithm = algorithm;
 
                                       // Construct a rank from the date provided
                                       NSNumber *rank = @([date timeIntervalSinceReferenceDate]);
@@ -981,6 +1006,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.permaLink = remotePost.permalink;
     post.postID = remotePost.postID;
     post.postTitle = remotePost.postTitle;
+    post.railcar = remotePost.railcar;
     post.score = remotePost.score;
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;

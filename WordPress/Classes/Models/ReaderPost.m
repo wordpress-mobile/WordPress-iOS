@@ -55,6 +55,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic wordCount;
 @dynamic readingTime;
 @dynamic crossPostMeta;
+@dynamic railcar;
 
 
 - (BOOL)isCrossPost
