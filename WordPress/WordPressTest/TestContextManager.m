@@ -2,11 +2,6 @@
 #import "ContextManager-Internals.h"
 
 
-@interface ContextManager (Internals)
-- (void)internalSaveContext:(NSManagedObjectContext *)context;
-@end
-
-
 
 @implementation TestContextManager
 
@@ -101,15 +96,6 @@
         self.testExpectation = nil;
     } else {
         NSLog(@"No test expectation present for context save");
-    }
-}
-
-- (void)internalSaveContext:(NSManagedObjectContext *)context
-{
-    @try {
-        [super internalSaveContext:context];
-    } @catch (NSException *exception) {
-        NSLog(@"## Exception:\n%@", exception);
     }
 }
 
