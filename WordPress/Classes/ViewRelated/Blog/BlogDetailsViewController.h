@@ -2,10 +2,19 @@
 
 @class Blog;
 
+typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionStats,
+    BlogDetailsSubsectionPosts,
+    BlogDetailsSubsectionCustomize,
+    BlogDetailsSubsectionThemes
+};
+
 @interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration> {
     
 }
 
 @property (nonatomic, strong) Blog *blog;
+
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 
 @end
