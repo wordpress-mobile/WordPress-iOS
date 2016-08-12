@@ -16,11 +16,11 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (3.4.1)
-  - AMPopTip (0.10.2)
   - Automattic-Tracks-iOS (0.1.0):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
+  - BuddyBuildSDK (1.0.11)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -75,7 +75,7 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.1):
     - FormatterKit/Resources
   - Gridicons (0.2)
-  - Helpshift (5.5.1)
+  - Helpshift (5.6.2)
   - HockeySDK (3.8.6):
     - HockeySDK/AllFeaturesLib (= 3.8.6)
   - HockeySDK/AllFeaturesLib (3.8.6)
@@ -161,7 +161,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.0)
   - WordPress-iOS-Shared (0.6.0):
     - CocoaLumberjack (~> 2.2.0)
-  - WordPressCom-Analytics-iOS (0.1.16)
+  - WordPressCom-Analytics-iOS (0.1.17)
   - WordPressCom-Stats-iOS (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -191,15 +191,15 @@ PODS:
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.1)
   - AFNetworking (= 3.1.0)
-  - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.0`)
+  - BuddyBuildSDK (~> 1.0.11)
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
   - DTCoreText (= 1.6.16)
   - Expecta (= 1.0.5)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.2)
-  - Helpshift (~> 5.5.1)
+  - Helpshift (~> 5.6.2)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.3.0)
   - Mixpanel (= 2.9.4)
@@ -219,7 +219,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-iOS-Editor (= 1.8)
   - WordPress-iOS-Shared (= 0.6.0)
-  - WordPressCom-Analytics-iOS (= 0.1.16)
+  - WordPressCom-Analytics-iOS (= 0.1.17)
   - WordPressCom-Stats-iOS (= 0.7.7)
   - WordPressCom-Stats-iOS/Services (= 0.7.7)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.4`)
@@ -252,8 +252,8 @@ SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
-  AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
   Automattic-Tracks-iOS: 5b76290a74355cc8be18e5177b4af58774a63a46
+  BuddyBuildSDK: d5398183a8b50432d5cefeb1080f02b8c9b3928a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
@@ -262,7 +262,7 @@ SPEC CHECKSUMS:
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
-  Helpshift: 1b89b3632bf46af10d2c9d9f448e64a0ccf667ec
+  Helpshift: aadcbbe47f67deb96552503333774b29bdda19d5
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: e126cf9ea6e916cba0b9105eafea701741789e4c
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
@@ -282,12 +282,12 @@ SPEC CHECKSUMS:
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
   WordPress-iOS-Editor: 50a09646fb62af3efdbb56d13ff656272a079066
   WordPress-iOS-Shared: f799334b41f3af509ccb76d7970f8c74a7716f14
-  WordPressCom-Analytics-iOS: 46cbb47a84670f3b8548c8617da939c6b74cfda8
+  WordPressCom-Analytics-iOS: 02c94167d80f43684bdc83cf8df2f4b6fc0909ba
   WordPressCom-Stats-iOS: 5996ea5bc7ce2096400fdc33e3368b5524f7288a
   WordPressComKit: 0742c47e5b55bff0e6d26d40db9e010404675a73
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 1ee0217fb4564424404d4f41d7fa0c737b1060e6
+PODFILE CHECKSUM: fa1c27a07566f8c1b5c9ca64bc4250e163307e05
 
 COCOAPODS: 1.0.1

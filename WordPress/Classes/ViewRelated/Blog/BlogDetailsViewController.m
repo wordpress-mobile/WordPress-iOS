@@ -26,7 +26,6 @@ static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
-NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
 
@@ -207,8 +206,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
+
     [self reloadTableViewPreservingSelection];
-    [self preloadStats];
+    [self preloadBlogData];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -396,7 +396,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([Feature enabled:FeatureFlagPeople] && [self.blog supports:BlogFeaturePeople]) {
+    if ([self.blog supports:BlogFeaturePeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[Gridicon iconOfType:GridiconTypeUser]
                                                      callback:^{
@@ -421,6 +421,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
+    headerWrapper.preservesSuperviewLayoutMargins = YES;
     self.tableView.tableHeaderView = headerWrapper;
 
     // Blog detail header view
@@ -503,17 +504,58 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Private methods
 
-- (void)preloadStats
+
+- (void)preloadBlogData
 {
-    NSString *oauthToken = self.blog.authToken;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
     
-    if (isOnWifi && oauthToken) { // only preload on wifi
+    // only preload on wifi
+    if (isOnWifi) {
+        [self preloadStats];
+        [self preloadPosts];
+        [self preloadPages];
+    }
+}
+
+- (void)preloadStats
+{
+    NSString *oauthToken = self.blog.authToken;
+    
+    if (oauthToken) {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }
+}
+
+- (void)preloadPosts
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
     
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [filterSettings authorIDFilter];
+    options.purgesLocalSync = YES;
+    
+    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
+}
+
+- (void)preloadPages
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
+
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [filterSettings authorIDFilter];
+    options.purgesLocalSync = YES;
+
+    [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
 }
 
 - (void)showComments

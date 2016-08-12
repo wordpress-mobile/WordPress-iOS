@@ -17,8 +17,8 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         // when it's fetched again it would create a different api object.
         // FIXME: not thread safe
         // @koke 2016-01-21
-        if let remote = remotes.objectForKey(api) {
-            return remote as! AccountSettingsRemote
+        if let remote = remotes.objectForKey(api) as? AccountSettingsRemote {
+            return remote
         } else {
             let remote = AccountSettingsRemote(wordPressComRestApi: api)
             remotes.setObject(remote, forKey: api)
