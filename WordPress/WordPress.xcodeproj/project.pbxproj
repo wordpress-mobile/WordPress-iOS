@@ -5562,7 +5562,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rake lint";
+			shellScript = "if [ -z $BUDDYBUILD_ENABLED ]\nthen\n    echo \"Didn't detect Buddybuild - linting\"\n    rake lint\nelse\n    echo \"Detected Buddybuild – skipping lint step\"\nfi\n";
 		};
 		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6861,10 +6861,11 @@
 					LOOKBACK_ENABLED,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					ALPHA_BUILD,
+					BUDDYBUILD_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
@@ -7236,7 +7237,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "381be51c-8c04-446c-9a30-3b9f81a1ede9";
+				PROVISIONING_PROFILE = "d1ede4bc-9608-491b-b398-4162cff48242";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				WPCOM_SCHEME = wpalpha;
@@ -7295,6 +7296,7 @@
 					INTERNAL_BUILD,
 					LOOKBACK_ENABLED,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+					HOCKEYAPP_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
