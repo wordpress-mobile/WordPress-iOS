@@ -6,7 +6,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
-#import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
@@ -506,6 +505,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
+        return nil;
+    }
+    return (ReaderAbstractTopic *)[results firstObject];
+}
+
+- (ReaderAbstractTopic *)topicForDiscover
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/sites/53424024/posts"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for Discover: %@", error);
         return nil;
     }
     return (ReaderAbstractTopic *)[results firstObject];

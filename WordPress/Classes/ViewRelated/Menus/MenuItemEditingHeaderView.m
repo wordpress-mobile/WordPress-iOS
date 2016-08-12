@@ -22,9 +22,9 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+
     self.backgroundColor = [UIColor clearColor];
 
     [self setupStackView];
@@ -40,29 +40,29 @@
     margins.right = margin;
     margins.top = margin;
     margins.bottom = margin;
-    
+
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.spacing = MenusDesignDefaultContentSpacing;
-    
+
     [self addSubview:stackView];
-    
+
     NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
     topConstraint.priority = UILayoutPriorityDefaultHigh;
     _stackViewTopConstraint  = topConstraint;
-    
+
     NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
     bottomConstraint.priority = UILayoutPriorityDefaultHigh;
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               topConstraint,
                                               bottomConstraint,
                                               [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
                                               ]];
-    
+
     _stackView = stackView;
 }
 
@@ -73,7 +73,7 @@
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];
     iconView.tintColor = [UIColor whiteColor];
-    
+
     NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
     widthConstraint.active = YES;
     _iconView = iconView;
@@ -87,12 +87,12 @@
     UIView *textFieldContainerView = [[UIView alloc] init];
     textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     textFieldContainerView.backgroundColor = [UIColor whiteColor];
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:textFieldContainerView];
-    
+
     _textFieldContainerView = textFieldContainerView;
-    
+
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
     // Margins for the textFieldContainerView inset the textField.
@@ -103,9 +103,9 @@
     margins.right = MenusDesignDefaultContentSpacing / 4.0;
     margins.bottom = margins.top;
     textFieldContainerView.layoutMargins = margins;
-    
+
     UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
-    
+
     UITextField *textField = [[UITextField alloc] init];
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     textField.delegate = self;
@@ -119,10 +119,10 @@
     textField.backgroundColor = [UIColor clearColor];
     [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
+
     [textFieldContainerView addSubview:textField];
     _textField = textField;
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [textField.topAnchor constraintEqualToAnchor:marginGuide.topAnchor],
                                               [textField.leadingAnchor constraintEqualToAnchor:marginGuide.leadingAnchor],
@@ -145,11 +145,11 @@
 - (void)setNeedsTopConstraintsUpdateForStatusBarAppearence:(BOOL)hidden
 {
     if (hidden) {
-        
+
         self.stackViewTopConstraint.constant = [self defaultStackDesignMargin];
-        
+
     } else  {
-        
+
         self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
 }
@@ -167,7 +167,7 @@
     if (_item != item) {
         _item = item;
     }
-    
+
     self.textField.text = item.name;
     self.itemType = item.type;
     [self setNeedsDisplay];
@@ -179,7 +179,7 @@
     const CGRect iconRect = [self convertRect:self.iconView.frame fromView:self.iconView.superview];
     const CGFloat arrowDrawingInsetX = 3.0;
     const CGFloat arrowDrawingHeight = 10.0;
-    
+
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);

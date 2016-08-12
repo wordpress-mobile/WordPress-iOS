@@ -20,11 +20,10 @@ abstract_target 'WordPress_Base' do
     # ---------------------
     pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'3.1.0'
-    pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.5.1'
+    pod 'Helpshift', '~> 5.6.2'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
@@ -34,6 +33,7 @@ abstract_target 'WordPress_Base' do
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
+    pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
@@ -49,7 +49,7 @@ abstract_target 'WordPress_Base' do
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8'
-    pod 'WordPressCom-Analytics-iOS', '0.1.16'
+    pod 'WordPressCom-Analytics-iOS', '0.1.17'
     pod 'WordPressCom-Stats-iOS', '0.7.7'
     pod 'wpxmlrpc', '~> 0.8'
     

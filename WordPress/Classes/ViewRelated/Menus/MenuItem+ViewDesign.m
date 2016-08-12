@@ -9,7 +9,7 @@ CGFloat const MenusDesignItemIconSize = 18.0;
 + (UIImage *)iconImageForItemType:(NSString *)itemType
 {
     UIImage *image = nil;
-    
+
     if ([itemType isEqualToString:MenuItemTypePage]) {
         image = [Gridicon iconOfType:GridiconTypePages];
     } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
@@ -19,7 +19,7 @@ CGFloat const MenusDesignItemIconSize = 18.0;
     } else if ([itemType isEqualToString:MenuItemTypeTag]) {
         image = [Gridicon iconOfType:GridiconTypeTag];
     }
-    
+
     return image ?: [Gridicon iconOfType:GridiconTypePosts];
 }
 

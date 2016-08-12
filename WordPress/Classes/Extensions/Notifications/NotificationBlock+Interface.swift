@@ -82,7 +82,7 @@ extension NotificationBlock {
     public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
-        if textOverride != nil {
+        if let textOverride = textOverride {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
 
@@ -122,21 +122,21 @@ extension NotificationBlock {
     ///
     /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
-    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
+    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
-        if mediaMap == nil || textOverride != nil {
+        if textOverride != nil {
             return nil
         }
 
         var ranges = [NSValue: UIImage]()
 
-        for theMedia in media as! [NotificationMedia] {
+        for theMedia in media {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
-            if theMedia.mediaURL == nil {
+            guard let mediaURL = theMedia.mediaURL else {
                 continue
             }
 
-            if let image = mediaMap![theMedia.mediaURL] {
+            if let image = mediaMap[mediaURL] {
                 let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
             }
@@ -186,11 +186,11 @@ extension NotificationBlock {
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [String: AnyObject]?,
+                             rangeStylesMap : [NoteRangeType: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
         // Is it empty?
-        if text == nil {
+        guard let text = text else {
             return NSAttributedString()
         }
 
@@ -205,24 +205,24 @@ extension NotificationBlock {
         // Apply the Ranges
         var lengthShift = 0
 
-        for range in ranges as! [NotificationRange] {
+        for range in ranges {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 
-            if range.isNoticon {
-                let noticon         = "\(range.value) "
+            if range.type == .Noticon {
+                let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
             }
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [String: AnyObject] {
+            if let unwrappedRangeStyle = rangeStylesMap?[range.type] {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
 
-            if range.url != nil && linksColor != nil {
-                theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
-                theString.addAttribute(NSForegroundColorAttributeName, value: linksColor!, range: shiftedRange)
+            if let rangeURL = range.url, let linksColor = linksColor {
+                theString.addAttribute(NSLinkAttributeName, value: rangeURL, range: shiftedRange)
+                theString.addAttribute(NSForegroundColorAttributeName, value: linksColor, range: shiftedRange)
             }
         }
 
@@ -233,35 +233,35 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     private struct Constants {
-        static let subjectRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.subjectBoldStyle,
-            NoteRangeTypePost               : Styles.subjectItalicsStyle,
-            NoteRangeTypeComment            : Styles.subjectItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.subjectQuotedStyle,
-            NoteRangeTypeNoticon            : Styles.subjectNoticonStyle
+        static let subjectRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.subjectBoldStyle,
+            .Post               : Styles.subjectItalicsStyle,
+            .Comment            : Styles.subjectItalicsStyle,
+            .Blockquote         : Styles.subjectQuotedStyle,
+            .Noticon            : Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.headerTitleBoldStyle,
-            NoteRangeTypePost               : Styles.headerTitleContextStyle,
-            NoteRangeTypeComment            : Styles.headerTitleContextStyle
+        static let headerTitleRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.headerTitleBoldStyle,
+            .Post               : Styles.headerTitleContextStyle,
+            .Comment            : Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap = [
-            NoteRangeTypeNoticon            : Styles.blockNoticonStyle
+        static let footerStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .Noticon            : Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap = [
-            NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
-            NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
-            NoteRangeTypeMatch              : Styles.contentBlockMatchStyle
+        static let richRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .Blockquote         : Styles.contentBlockQuotedStyle,
+            .Noticon            : Styles.blockNoticonStyle,
+            .Match              : Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.badgeBoldStyle,
-            NoteRangeTypePost               : Styles.badgeItalicsStyle,
-            NoteRangeTypeComment            : Styles.badgeItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.badgeQuotedStyle
+        static let badgeRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+            .User               : Styles.badgeBoldStyle,
+            .Post               : Styles.badgeItalicsStyle,
+            .Comment            : Styles.badgeItalicsStyle,
+            .Blockquote         : Styles.badgeQuotedStyle
         ]
 
         static let richSubjectCacheKey      = "richSubjectCacheKey"

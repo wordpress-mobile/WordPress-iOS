@@ -1,10 +1,11 @@
 import Foundation
+import WordPressShared
 import WordPressComAnalytics
 
 class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
 
     private static let pageSectionHeaderHeight = CGFloat(24.0)
-    private static let pageCellEstimatedRowHeight = CGFloat(44.0)
+    private static let pageCellEstimatedRowHeight = CGFloat(47.0)
     private static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
     private static let pageCellIdentifier = "PageCellIdentifier"
     private static let pageCellNibName = "PageListTableViewCell"
@@ -12,7 +13,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private static let restorePageCellNibName = "RestorePageTableViewCell"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    private var cellForLayout : PageListTableViewCell!
+    private lazy var sectionFooterSeparatorView : UIView = {
+        let footer = UIView()
+        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        return footer
+    }()
 
     // MARK: - GUI
 
@@ -77,17 +82,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Configuration
 
-    override func configureCellsForLayout() {
-
-        let bundle = NSBundle.mainBundle()
-
-        cellForLayout = bundle.loadNibNamed(self.dynamicType.pageCellNibName, owner: nil, options: nil)[0] as! PageListTableViewCell
-    }
-
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .None
+        tableView.estimatedRowHeight = self.dynamicType.pageCellEstimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = NSBundle.mainBundle()
 
@@ -97,6 +96,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
         let restorePageCellNib = UINib(nibName: self.dynamicType.restorePageCellNibName, bundle: bundle)
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
+
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
     override func configureSearchController() {
@@ -148,8 +149,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override internal func postTypeToSync() -> String {
-        return PostServiceTypePage
+    override internal func postTypeToSync() -> PostServiceType {
+        return PostServiceType.Page
     }
 
     override internal func lastSyncDate() -> NSDate? {
@@ -194,7 +195,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         let searchText = currentSearchTerm()
-        let filterPredicate = currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -222,36 +223,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return NSStringFromSelector(#selector(Page.sectionIdentifier))
     }
 
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return self.dynamicType.pageCellEstimatedRowHeight
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-
-        let page = pageAtIndexPath(indexPath)
-
-        if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
-            return self.dynamicType.pageCellEstimatedRowHeight
-        }
-
-        let width = tableView.bounds.width
-        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        configureCell(cellForLayout, atIndexPath: indexPath)
-        let size = cellForLayout.sizeThatFits(CGSizeMake(width, CGFloat.max))
-        let height = ceil(size.height)
-
-        return height
-    }
-
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.dynamicType.pageSectionHeaderHeight
     }
 
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        if section == tableView.numberOfSections - 1 {
+            return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
+        }
+        return 0.0
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
@@ -267,6 +247,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+        if section == tableView.numberOfSections - 1 {
+            return sectionFooterSeparatorView
+        }
         return UIView(frame: CGRectZero)
     }
 
@@ -281,6 +264,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
+            return windowlessCell
+        }
+
         let page = pageAtIndexPath(indexPath)
 
         let identifier = cellIdentifierForPage(page)
@@ -298,13 +285,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         cell.accessoryType = .None
-        cell.selectionStyle = .None
 
         if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
         } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
+            cell.selectionStyle = .None
             cell.onAction = { [weak self] cell, _, page in
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
@@ -318,7 +305,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private func cellIdentifierForPage(page: Page) -> String {
         var identifier : String
 
-        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.restorePageCellIdentifier
         } else {
             identifier = self.dynamicType.pageCellIdentifier
@@ -414,12 +401,6 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         alertController.presentFromRootViewController()
     }
 
-    // MARK: - Filter Related
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPageListStatusFilterKey
-    }
-
     // MARK: - Cell Action Handling
 
     private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
@@ -435,7 +416,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
 
-        let filter = currentPostListFilter().filterType
+        let filter = filterSettings.currentPostListFilter().filterType
 
         if filter == .Trashed {
             alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
@@ -580,7 +561,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -595,7 +576,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
 
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
         return title ?? ""
@@ -606,7 +587,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:
