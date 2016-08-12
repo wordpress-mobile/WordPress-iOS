@@ -25,7 +25,8 @@
 - (void)tearDown
 {
     [super tearDown];
-    
+
+    [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
 }
 
@@ -140,10 +141,10 @@
 
 - (Blog *)newBlog
 {
-    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-                                                       inManagedObjectContext:self.testContextManager.mainContext];
+    NSManagedObjectContext *context = self.testContextManager.mainContext;
+    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
     blog.isHostedAtWPcom = YES;
-    
+
     return blog;
 }
 
