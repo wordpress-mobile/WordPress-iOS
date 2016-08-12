@@ -16,7 +16,6 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (3.4.1)
-  - AMPopTip (0.10.2)
   - Automattic-Tracks-iOS (0.1.0):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
@@ -192,7 +191,6 @@ PODS:
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.1)
   - AFNetworking (= 3.1.0)
-  - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.0`)
   - BuddyBuildSDK (~> 1.0.11)
   - CocoaLumberjack (~> 2.2.0)
@@ -254,7 +252,6 @@ SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
-  AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
   Automattic-Tracks-iOS: 5b76290a74355cc8be18e5177b4af58774a63a46
   BuddyBuildSDK: d5398183a8b50432d5cefeb1080f02b8c9b3928a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
@@ -291,6 +288,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: dc9781aa502822a08e194776afec390394fe7302
+PODFILE CHECKSUM: f05cafce394f51695d6fd1dc03f79c83dafdd8ca
 
 COCOAPODS: 1.0.1
