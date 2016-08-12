@@ -50,7 +50,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         handler = ImmuTableViewHandler(takeOver: self)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.reloadViewModel), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.accountDidChange), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
 
         refreshAccountDetails()
 
@@ -60,7 +60,27 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         HelpshiftUtils.refreshUnreadNotificationCount()
-        animateDeselectionInteractively()
+
+        if splitViewControllerIsHorizontallyCompact {
+            animateDeselectionInteractively()
+        }
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Required to update the tableview cell disclosure indicators
+        reloadViewModel()
+    }
+
+    @objc private func accountDidChange() {
+        reloadViewModel()
+
+        // Reload the detail pane on account change and we're not in a compact split view                                                                                                                                                                                                                                                        
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            let detailViewController = initialDetailViewControllerForSplitView(splitViewController) where !splitViewControllerIsHorizontallyCompact {
+            showDetailViewController(detailViewController, sender: self)
+        }
     }
 
     @objc private func reloadViewModel() {
@@ -74,7 +94,23 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+
+        // After we've reloaded the view model we should maintain the current
+        // table row selection, or if the split view we're in is not compact
+        // then we'll just select the first item in the table.
+
+        // First, we'll grab the appropriate index path so we can reselect it
+        // after reloading the table
+        var selectedIndexPath = tableView.indexPathForSelectedRow
+        if selectedIndexPath == nil && !splitViewControllerIsHorizontallyCompact {
+            selectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+        }
+
+        // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
+
+        // And finally we'll reselect the selected row, if there is one
+        tableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
     }
 
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
@@ -86,30 +122,37 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+        let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .DisclosureIndicator : .None
+
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
             icon: Gridicon.iconOfType(.User),
+            accessoryType: accessoryType,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
             icon: Gridicon.iconOfType(.Cog),
+            accessoryType: accessoryType,
             action: pushAccountSettings())
 
         let appSettings = NavigationItemRow(
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
             icon: Gridicon.iconOfType(.Phone),
+            accessoryType: accessoryType,
             action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             icon: Gridicon.iconOfType(.Bell),
+            accessoryType: accessoryType,
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
             icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
+            accessoryType: accessoryType,
             action: pushHelp())
 
         let logIn = ButtonRow(
@@ -175,20 +218,23 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
 
+    private var myProfileViewController: UIViewController? {
+        guard let account = self.defaultAccount() else {
+            let error = "Tried to push My Profile without a default account. This shouldn't happen"
+            assertionFailure(error)
+            DDLogSwift.logError(error)
+            return nil
+        }
+
+        return MyProfileViewController(account: account)
+    }
+
     private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
-            guard let account = self.defaultAccount() else {
-                let error = "Tried to push My Profile without a default account. This shouldn't happen"
-                assertionFailure(error)
-                DDLogSwift.logError(error)
-                return
+            if let myProfileViewController = self.myProfileViewController {
+                WPAppAnalytics.track(.OpenedMyProfile)
+                self.showDetailViewController(myProfileViewController, sender: self)
             }
-
-            WPAppAnalytics.track(.OpenedMyProfile)
-            guard let controller = MyProfileViewController(account: account) else {
-                return
-            }
-            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -199,7 +245,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.navigationController?.pushViewController(controller, animated: true)
+
+                self.showDetailViewController(controller, sender: self)
             }
         }
     }
@@ -208,26 +255,27 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAppSettings)
             let controller = AppSettingsViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
     func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
             SigninHelpers.showSigninForJustWPComFromPresenter(self)
         }
     }
@@ -323,4 +371,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
         return headerView
     }()
+}
+
+extension MeViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        // If we're not logged in yet, return app settings
+        guard let _ = defaultAccount() else {
+            return AppSettingsViewController()
+        }
+
+        return myProfileViewController
+    }
 }
