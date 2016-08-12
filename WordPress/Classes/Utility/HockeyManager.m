@@ -1,6 +1,6 @@
 #import "HockeyManager.h"
 
-#ifdef INTERNAL_BUILD
+#ifdef HOCKEYAPP_ENABLED
 #import "WordPressAppDelegate.h"
 #import "ApiCredentials.h"
 #import "WPLogger.h"
