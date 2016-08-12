@@ -30,7 +30,7 @@
 {
     self = [super init];
     if (self) {
-        
+
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -40,7 +40,7 @@
         [self setupTextField];
         [self setupCancelLabel];
     }
-    
+
     return self;
 }
 
@@ -48,20 +48,20 @@
 {
     self = [self init];
     if (self) {
-        
+
         NSAssert(_iconView != nil, @"iconView is nil");
-        
+
         _iconView.image = [Gridicon iconOfType:GridiconTypeSearch];
         _iconView.hidden = NO;
-        
+
         NSAssert(_textField != nil, @"textField is nil");
-        
+
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
         NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyDarken10]};
         _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
-    
+
     return self;
 }
 
@@ -74,9 +74,9 @@
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.axis = UILayoutConstraintAxisHorizontal;
     stackView.spacing = spacing;
-    
+
     [self addSubview:stackView];
-    
+
     const CGFloat padding = 3.0;
     NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:padding];
     top.priority = 999;
@@ -102,23 +102,23 @@
         contentView.layer.borderWidth = MenusDesignStrokeWidth * 2;
     }
     contentView.backgroundColor = [UIColor whiteColor];
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
-    
+
     [_stackView addArrangedSubview:contentView];
     _contentView = contentView;
-    
+
     UIStackView *contentStackView = [[UIStackView alloc] init];
     contentStackView.translatesAutoresizingMaskIntoConstraints = NO;
     contentStackView.distribution = UIStackViewDistributionFill;
     contentStackView.alignment = UIStackViewAlignmentFill;
     contentStackView.axis = UILayoutConstraintAxisHorizontal;
-    
+
     const CGFloat spacing = _stackView.spacing;
     contentStackView.spacing = spacing;
-    
+
     [contentView addSubview:contentStackView];
-    
+
     const CGFloat leadingMargin = spacing;
     const CGFloat trailingMargin = spacing / 2.0; // Less on the right as the textField adds it's own margin inset.
     [NSLayoutConstraint activateConstraints:@[
@@ -137,15 +137,15 @@
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.tintColor = [WPStyleGuide greyDarken10];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    
+
     NSAssert(_contentStackView != nil, @"contentStackView is nil");
-    
+
     [_contentStackView addArrangedSubview:iconView];
-    
+
     NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:20.0];
     width.priority = 999;
     width.active = YES;
-    
+
     iconView.hidden = YES;
     _iconView = iconView;
 }
@@ -159,20 +159,20 @@
     textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.opaque = YES;
-    
+
     [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
+
     UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
     textField.font = font;
-    
+
     NSAssert(_contentStackView != nil, @"contentStackView is nil");
-    
+
     [_contentStackView addArrangedSubview:textField];
-    
+
     [textField setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    
+
     _textField = textField;
 }
 
@@ -183,20 +183,20 @@
     label.textColor = [WPStyleGuide greyDarken20];
     label.font = [WPFontManager systemRegularFontOfSize:14.0];
     label.userInteractionEnabled = YES;
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
 
     [_stackView addArrangedSubview:label];
-    
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
     [label addGestureRecognizer:tap];
-    
+
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    
+
     label.hidden = YES;
     label.alpha = 0.0;
-    
+
     _cancelLabel = label;
 }
 
@@ -205,7 +205,7 @@
     if (!self.textObservers) {
         self.textObservers = [NSMutableArray array];
     }
-    
+
     textObserver.textField = self.textField;
     [self.textObservers addObject:textObserver];
 }
@@ -220,26 +220,26 @@
     if ([self.textField isFirstResponder]) {
         return [self.textField resignFirstResponder];
     }
-    
+
     return [super resignFirstResponder];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     [self setNeedsDisplay];
 }
 
 - (void)setCancelLabelHidden:(BOOL)hidden animated:(BOOL)animated
 {
     if (self.cancelLabel.hidden != hidden) {
-        
+
         void(^toggleButton)() = ^() {
             self.cancelLabel.hidden = hidden;
             self.cancelLabel.alpha = hidden ? 0.0 : 1.0;
         };
-        
+
         if (animated) {
             [UIView animateWithDuration:0.20 animations:^{
                 toggleButton();
@@ -272,11 +272,11 @@
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
     for (MenuItemSourceTextBarFieldObserver *textObserver in self.textObservers) {
-        
+
         [textObserver.timer invalidate];
         textObserver.timer = [NSTimer scheduledTimerWithTimeInterval:textObserver.interval target:textObserver selector:@selector(timerFired) userInfo:nil repeats:NO];
     }
-    
+
     [self.delegate sourceTextBar:self didUpdateWithText:textField.text];
 }
 

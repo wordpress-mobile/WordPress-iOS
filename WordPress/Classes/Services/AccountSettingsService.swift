@@ -159,7 +159,9 @@ class AccountSettingsService {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
-        let results = (try? context.executeFetchRequest(request) as! [ManagedAccountSettings]) ?? []
+        guard let results = (try? context.executeFetchRequest(request)) as? [ManagedAccountSettings] else {
+            return nil
+        }
         return results.first
     }
 
@@ -170,9 +172,10 @@ class AccountSettingsService {
             return
         }
 
-        let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as! ManagedAccountSettings
-        managedSettings.updateWith(settings)
-        managedSettings.account = account
+        if let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as? ManagedAccountSettings {
+            managedSettings.updateWith(settings)
+            managedSettings.account = account
+        }
     }
 
     enum Errors: ErrorType {

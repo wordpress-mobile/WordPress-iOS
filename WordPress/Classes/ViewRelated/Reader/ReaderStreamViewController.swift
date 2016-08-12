@@ -59,7 +59,6 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
-    private var reloadTableViewBeforeAppearing = false
 
 
     /// Used for fetching content.
@@ -239,10 +238,10 @@ import WordPressComAnalytics
         super.viewWillAppear(animated)
 
         refreshTableHeaderIfNeeded()
-        if reloadTableViewBeforeAppearing {
-            reloadTableViewBeforeAppearing = false
-            tableView.reloadData()
-        }
+
+        // Always reload tableview so any core data changes merged to the child
+        // context are reflected in the list.
+        tableViewHandler.refreshTableViewPreservingOffset()
     }
 
 
@@ -487,6 +486,8 @@ import WordPressComAnalytics
         tableView.tableHeaderView?.hidden = true
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
+        resultsStatusView.buttonTitle = nil
+        resultsStatusView.delegate = nil
 
         let boxView = WPAnimatedBox()
         resultsStatusView.accessoryView = boxView
@@ -502,10 +503,18 @@ import WordPressComAnalytics
             return
         }
 
+        tableView.tableHeaderView?.hidden = true
         let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
+        if ReaderHelpers.topicIsFollowing(topic) {
+            resultsStatusView.buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
+            resultsStatusView.delegate = self
+        } else {
+            resultsStatusView.buttonTitle = nil
+            resultsStatusView.delegate = nil
+        }
         displayResultsStatus()
     }
 
@@ -590,7 +599,6 @@ import WordPressComAnalytics
         managedObjectContext().reset()
 
         configureTitleForTopic()
-        configureNavigationItemForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -627,23 +635,6 @@ import WordPressComAnalytics
         }
 
         title = topic.title
-    }
-
-
-    func configureNavigationItemForTopic() {
-        guard let topic = readerTopic else {
-            navigationItem.rightBarButtonItems = nil
-            return
-        }
-        if ReaderHelpers.isTopicSearchTopic(topic) {
-            navigationItem.rightBarButtonItems = nil
-            return
-        }
-        let button = UIBarButtonItem(image: UIImage(named: "icon-post-search"),
-                                     style: .Plain,
-                                     target: self,
-                                     action: #selector(ReaderStreamViewController.handleSearchButtonTapped(_:)))
-        navigationItem.rightBarButtonItem = button
     }
 
 
@@ -936,6 +927,12 @@ import WordPressComAnalytics
     }
 
 
+    func showManageSites() {
+        let controller = ReaderFollowedSitesViewController.controller()
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+
     // MARK: - Blocking
 
 
@@ -973,10 +970,13 @@ import WordPressComAnalytics
 
 
     private func unblockSiteForPost(post: ReaderPost) {
+        guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
+            return
+        }
+
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
-        let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
         tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
@@ -1398,11 +1398,14 @@ import WordPressComAnalytics
 extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
-        // Toggle following for the topic
-        if readerTopic!.isKindOfClass(ReaderTagTopic) {
-            toggleFollowingForTag(readerTopic as! ReaderTagTopic)
-        } else if readerTopic!.isKindOfClass(ReaderSiteTopic) {
-            toggleFollowingForSite(readerTopic as! ReaderSiteTopic)
+        if let topic = readerTopic as? ReaderTagTopic {
+            toggleFollowingForTag(topic)
+
+        } else if let topic = readerTopic as? ReaderSiteTopic {
+            toggleFollowingForSite(topic)
+
+        } else if let topic = readerTopic as? ReaderDefaultTopic where ReaderHelpers.topicIsFollowing(topic) {
+            showManageSites()
         }
     }
 }
@@ -1554,6 +1557,9 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            if syncHelper.isSyncing {
+                return
+            }
             displayNoResultsView()
         } else {
             hideResultsStatus()
@@ -1608,7 +1614,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             // The result is the cells do not show the correct layout on the iPad.
             // HACK: aerych, 2016-06-27
             // Use a generic cell in this situation and reload the table view once its back in a window.
-            reloadTableViewBeforeAppearing = true
             return tableView.dequeueReusableCellWithIdentifier(readerWindowlessCellIdentifier)!
         }
 
@@ -1667,8 +1672,8 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            unblockSiteForPost(post)
+        if recentlyBlockedSitePostObjectIDs.containsObject(apost.objectID) {
+            unblockSiteForPost(apost)
             return
         }
 
@@ -1717,4 +1722,12 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         postCell.delegate = self
     }
 
+}
+
+
+extension ReaderStreamViewController : WPNoResultsViewDelegate
+{
+    public func didTapNoResultsView(noResultsView: WPNoResultsView!) {
+        showManageSites()
+    }
 }
