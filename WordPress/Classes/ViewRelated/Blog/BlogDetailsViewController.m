@@ -219,6 +219,34 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self reloadTableViewPreservingSelection];
 }
 
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
+{
+    switch (section) {
+        case BlogDetailsSubsectionStats:
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                        animated:NO
+                                  scrollPosition:UITableViewScrollPositionNone];
+            [self showStats];
+            break;
+        case BlogDetailsSubsectionPosts:
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]
+                                        animated:NO
+                                  scrollPosition:UITableViewScrollPositionNone];
+            [self showPostList];
+            break;
+        case BlogDetailsSubsectionThemes:
+        case BlogDetailsSubsectionCustomize:
+            if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]
+                                            animated:NO
+                                      scrollPosition:UITableViewScrollPositionNone];
+                [self showThemes];
+            }
+            break;
+    }
+
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
