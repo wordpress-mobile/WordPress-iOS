@@ -60,7 +60,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 150.0f;
+static CGFloat const CompactTitleButtonWidth = 125.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -102,6 +102,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIBarButtonItem *cancelXButton;
 @property (nonatomic, strong) UIBarButtonItem *cancelChevronButton;
 @property (nonatomic, strong) UIBarButtonItem *currentCancelButton;
+@property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *moreBarButtonItem;
 
@@ -1059,7 +1060,14 @@ EditImageDetailsViewControllerDelegate
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
     if ([self isEditing]) {
-        [self.navigationItem setRightBarButtonItems:@[self.moreBarButtonItem] animated:YES];
+        if (editingChanged) {
+            [self.navigationItem setRightBarButtonItems:@[self.moreBarButtonItem,
+                                                          self.saveBarButtonItem] animated:YES];
+        } else {
+            self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
+        }
+
+        self.saveBarButtonItem.enabled = [self.post canSave];
 	} else {
         NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
                                                                                   self.editBarButtonItem]];
@@ -1104,13 +1112,11 @@ EditImageDetailsViewControllerDelegate
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[self previewAlertAction]];
+
     if ([self isEditing]) {
-        [alertController addAction:[self saveAlertAction]];
-        [alertController addAction:[self previewAlertAction]];
         [alertController addAction:[self optionsAlertAction]];
     } else {
-        [alertController addAction:[self previewAlertAction]];
-
         if ([self.post isKindOfClass:[Post class]]) {
             [alertController addAction:[self shareAlertAction]];
         }
@@ -1182,7 +1188,26 @@ EditImageDetailsViewControllerDelegate
 	return _editBarButtonItem;
 }
 
-- (NSString*)saveButtonTitle
+- (UIBarButtonItem *)saveBarButtonItem
+{
+    if (!_saveBarButtonItem) {
+        NSString *buttonTitle = [self saveBarButtonItemTitle];
+
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                       style:[WPStyleGuide barButtonStyleForDone]
+                                                                      target:self
+                                                                      action:@selector(saveAction)];
+
+        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
+        [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
+        [saveButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
+        _saveBarButtonItem = saveButton;
+    }
+
+    return _saveBarButtonItem;
+}
+
+- (NSString*)saveBarButtonItemTitle
 {
     NSString *buttonTitle = nil;
     
@@ -1270,18 +1295,6 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - More Action Sheet Actions
-
-- (UIAlertAction *)saveAlertAction
-{
-    UIAlertAction *saveAction = [UIAlertAction actionWithTitle:[self saveButtonTitle]
-                                                         style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           [self saveAction];
-                                                       }];
-    saveAction.enabled = [self.post canSave];
-
-    return saveAction;
-}
 
 - (UIAlertAction *)shareAlertAction
 {
@@ -1486,7 +1499,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)logSavePostStats
 {
-    NSString *buttonTitle = [self saveButtonTitle];
+    NSString *buttonTitle = [self saveBarButtonItemTitle];
     
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
