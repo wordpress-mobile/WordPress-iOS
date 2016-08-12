@@ -763,6 +763,29 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Toolbar options
 
+- (void)showMoreSheet
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[self previewAlertAction]];
+
+    if ([self isEditing]) {
+        [alertController addAction:[self optionsAlertAction]];
+    } else {
+        if ([self.post isKindOfClass:[Post class]]) {
+            [alertController addAction:[self shareAlertAction]];
+        }
+    }
+
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Action button to close editor 'More' menu.") handler:nil];
+    alertController.popoverPresentationController.barButtonItem = self.moreBarButtonItem;
+
+    [self presentViewController:alertController animated:YES completion:^{
+        // Prevents being able to tap on any other nav bar buttons during popover display
+        alertController.popoverPresentationController.passthroughViews = nil;
+    }];
+}
+
 - (void)sharePost
 {
     if ([self.post isKindOfClass:[Post class]]) {
@@ -1106,25 +1129,6 @@ EditImageDetailsViewControllerDelegate
     _moreBarButtonItem = button;
 
     return _moreBarButtonItem;
-}
-
-- (void)showMoreSheet
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[self previewAlertAction]];
-
-    if ([self isEditing]) {
-        [alertController addAction:[self optionsAlertAction]];
-    } else {
-        if ([self.post isKindOfClass:[Post class]]) {
-            [alertController addAction:[self shareAlertAction]];
-        }
-    }
-
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Action button to close editor 'More' menu.") handler:nil];
-    alertController.popoverPresentationController.barButtonItem = self.moreBarButtonItem;
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (UIBarButtonItem*)cancelChevronButton
