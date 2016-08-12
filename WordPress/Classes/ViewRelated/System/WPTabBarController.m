@@ -16,6 +16,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
+#import "UIViewController+SizeClass.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
@@ -430,11 +431,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:WPTabMySites];
-
-    // Check which VC is showing.
-    UIViewController *topVC = self.blogListNavigationController.topViewController;
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
     if ([topVC isKindOfClass:[PostListViewController class]]) {
         Blog *blog = ((PostListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
@@ -444,53 +441,63 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-    blogDetailsViewController.blog = post.blog;
+    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
 
-    PostListViewController *postsViewController = [PostListViewController controllerWithBlog:post.blog];
-
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, postsViewController]];
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
+    }
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:WPTabMySites];
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
+    // Ideally we should just be able to call `showDetailViewForSubsection` on
+    // the blog details VC, as in these other `switch` methods. However, there
+    // seems to be an issue with using `showDetailViewController` when the app
+    // is in the process of coming to the foreground (which happens here, as
+    // switching to stats is one of our 3D Touch app shortcuts) – it doesn't always
+    // do the right thing, and sometimes the VC is displayed modally.
+    // Instead, we'll check the environment we're in and display the VC manually.
+    StatsViewController *statsVC = [StatsViewController new];
+    statsVC.blog = blog;
 
-    StatsViewController *statsViewController = [StatsViewController new];
-    statsViewController.blog = blog;
-
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, statsViewController]];
+    if ([self.blogListSplitViewController isViewHorizontallyCompact]) {
+        [self.blogListNavigationController pushViewController:statsVC animated:NO];
+    } else {
+        [self.blogListSplitViewController showDetailViewController:statsVC sender:self];
+    }
 }
 
 - (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
 {
-    [self showTabForIndex:WPTabMySites];
-    
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
-    
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
-    [viewController presentCustomizeForTheme:[viewController currentTheme]];
+    [self switchMySitesTabToThemesViewForBlog:blog];
+
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    if ([topVC isKindOfClass:[ThemeBrowserViewController class]]) {
+        ThemeBrowserViewController *themeViewController = (ThemeBrowserViewController *)topVC;
+        [themeViewController presentCustomizeForTheme:[themeViewController currentTheme]];
+    }
 }
 
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
 {
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionThemes];
+    }
+}
+
+- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
+{
     [self showTabForIndex:WPTabMySites];
-    
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
-    
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
+
+    BlogListViewController *blogListVC = self.blogListViewController;
+    self.blogListNavigationController.viewControllers = @[blogListVC];
+    [blogListVC setSelectedBlog:blog animated:NO];
 }
 
 - (NSString *)currentlySelectedScreen
@@ -555,20 +562,33 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            if (navController.topViewController == navController.viewControllers.firstObject) {
-                UIViewController *topViewController = navController.topViewController;
-                if ([topViewController.view isKindOfClass:[UITableView class]]) {
-                    UITableView *tableView = (UITableView *)topViewController.view;
-                    CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
-                    [tableView setContentOffset:topOffset animated:YES];
-                } else if ([[topViewController class] conformsToProtocol:@protocol(WPScrollableViewController)]) {
-                    [((id<WPScrollableViewController>)topViewController) scrollViewToTop];
+            [self scrollNavigationControllerContentToTop:navController];
+        } else if ([viewController isKindOfClass:[UISplitViewController class]]) {
+            UISplitViewController *splitViewController = (UISplitViewController *)viewController;
+            for (UIViewController *viewController in splitViewController.viewControllers) {
+                if ([viewController isKindOfClass:[UINavigationController class]]) {
+                    [self scrollNavigationControllerContentToTop:(UINavigationController *)viewController];
                 }
             }
         }
+
     }
 
     return YES;
+}
+
+- (void)scrollNavigationControllerContentToTop:(UINavigationController *)navigationController
+{
+    if (navigationController.topViewController == navigationController.viewControllers.firstObject) {
+        UIViewController *topViewController = navigationController.topViewController;
+        if ([topViewController.view isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView *)topViewController.view;
+            CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
+            [tableView setContentOffset:topOffset animated:YES];
+        } else if ([[topViewController class] conformsToProtocol:@protocol(WPScrollableViewController)]) {
+            [((id<WPScrollableViewController>)topViewController) scrollViewToTop];
+        }
+    }
 }
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID

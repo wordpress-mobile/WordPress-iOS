@@ -553,6 +553,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog
 {
+    [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
+}
+
+- (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
+{
     if (selectedBlog != _selectedBlog) {
         _selectedBlog = selectedBlog;
 
@@ -565,7 +570,7 @@ static NSInteger HideSearchMinSites = 3;
         }
     }
 
-    [self.navigationController pushViewController:self.blogDetailsViewController animated:[self isViewLoaded]];
+    [self.navigationController pushViewController:self.blogDetailsViewController animated:animated];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
