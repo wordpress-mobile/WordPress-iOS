@@ -55,6 +55,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
 @property (nonatomic, strong) ReaderCrossPostMeta *crossPostMeta;
+@property (nonatomic, strong) NSString *railcar;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;
