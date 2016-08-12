@@ -264,6 +264,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
+            return windowlessCell
+        }
+
         let page = pageAtIndexPath(indexPath)
 
         let identifier = cellIdentifierForPage(page)
