@@ -93,25 +93,25 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     self.headerView.item = self.item;
-    
+
     self.headerView.delegate = self;
     self.typeViewController.delegate = self;
     self.sourceViewController.delegate = self;
     self.footerView.delegate = self;
-    
+
     [self.stackView bringSubviewToFront:self.headerView];
-    
+
     [self loadContentLayoutConstraints];
     [self updateLayoutIfNeeded];
-    
+
     self.typeViewController.selectedItemType = self.item.type;
     [self.typeViewController loadPostTypesForBlog:self.blog];
-    
+
     self.sourceViewController.blog = self.blog;
     self.sourceViewController.item = self.item;
 }
@@ -119,7 +119,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
 }
@@ -127,7 +127,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -139,7 +139,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [super prepareForSegue:segue sender:sender];
-    
+
     if ([segue.destinationViewController isKindOfClass:[MenuItemSourceViewController class]]) {
         self.sourceViewController = segue.destinationViewController;
     } else if ([segue.destinationViewController isKindOfClass:[MenuItemTypeViewController class]]) {
@@ -186,16 +186,16 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     if ([WPDeviceIdentification isiPad]) {
         return NO;
     }
-    
+
     BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
-    
+
     if (horizontallyCompact) {
-        
+
         if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
             horizontallyCompact = NO;
         }
     }
-    
+
     return horizontallyCompact;
 }
 
@@ -217,16 +217,16 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     // compactWidthLayout is any screen size in which the width is less than the height (iPhone portrait)
     BOOL compactWidthLayout = [self shouldLayoutForCompactWidth];
     BOOL minimizeLayoutForSourceViewTypying = ![WPDeviceIdentification isiPad] && self.sourceViewIsTyping;
-    
+
     if (minimizeLayoutForSourceViewTypying) {
         // headerView should be hidden while typing within the sourceView, to save screen space (iPhone)
         [self setHeaderViewHidden:YES];
     } else  {
         [self setHeaderViewHidden:NO];
     }
-    
+
     if (![WPDeviceIdentification isiPad]) {
-        
+
         if (!compactWidthLayout) {
             // on iPhone landscape we want to minimize the height of the footer to gain any vertical screen space we can
             self.footerViewHeightConstraint.constant = FooterViewCompactHeight;
@@ -235,13 +235,13 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
             self.footerViewHeightConstraint.constant = FooterViewDefaultHeight;
         }
     }
-    
+
     if (compactWidthLayout || minimizeLayoutForSourceViewTypying) {
-        
+
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
-        
+
     } else  {
-        
+
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
 
@@ -262,10 +262,10 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeView];
     [UIView animateWithDuration:LayoutTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        
+
         [self.typeViewController updateDesignForLayoutChangeIfNeeded];
         [self.contentView layoutIfNeeded];
-        
+
     } completion:nil];
 }
 
@@ -277,16 +277,16 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
     [UIView animateWithDuration:LayoutTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        
+
         [self.contentView layoutIfNeeded];
-        
+
     } completion:nil];
 }
 
 - (void)setContentLayout:(MenuItemEditingViewControllerContentLayout)contentLayout
 {
     if (_contentLayout != contentLayout) {
-    
+
         switch (_contentLayout) {
             case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
             {
@@ -304,9 +304,9 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
                 break;
             }
         }
-        
+
         _contentLayout = contentLayout;
-        
+
         switch (contentLayout) {
             case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
             {
@@ -333,7 +333,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     [self.sourceViewController updateSourceSelectionForItemType:itemType];
     self.headerView.itemType = itemType;
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(TypeViewSelectionBurnDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self transitionLayoutToDisplaySourceView];
     });
@@ -413,7 +413,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     frame = [self.view.window convertRect:frame toView:self.view];
-    
+
     CGFloat constraintConstant;
     if (frame.origin.y > self.view.frame.size.height) {
         constraintConstant = 0.0;
@@ -422,13 +422,13 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     }
     [self.view layoutIfNeeded];
     self.stackViewBottomConstraint.constant = constraintConstant;
-    
+
     NSTimeInterval duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     UIViewAnimationOptions options = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        
+
         [self.view layoutIfNeeded];
-        
+
     } completion:nil];
 }
 
@@ -436,14 +436,14 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     self.stackViewBottomConstraint.constant = 0;
     [self.view layoutIfNeeded];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)keyboardWillShowNotification:(NSNotification *)notification
 {
     [self updateWithKeyboardNotification:notification];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 

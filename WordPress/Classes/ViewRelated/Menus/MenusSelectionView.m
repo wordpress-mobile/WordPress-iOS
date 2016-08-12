@@ -25,7 +25,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
@@ -33,18 +33,18 @@
         // Increase the stroke width on non-retina screens.
         self.layer.borderWidth = MenusDesignStrokeWidth * 2;
     }
-    
+
     _items = [NSMutableArray arrayWithCapacity:5];
     _itemViews = [NSMutableArray array];
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     self.stackView.spacing = 0.0;
-        
+
     self.detailView.delegate = self;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionItemObjectWasUpdatedNotification:) name:MenusSelectionViewItemUpdatedItemObjectNotification object:nil];
 }
 
@@ -68,11 +68,11 @@
 - (void)setSelectedItem:(MenusSelectionItem *)selectedItem
 {
     if (_selectedItem != selectedItem) {
-        
+
         _selectedItem.selected = NO;
         selectedItem.selected = YES;
         _selectedItem = selectedItem;
-        
+
         [self updateDetailsView];
     }
 }
@@ -81,10 +81,10 @@
 {
     [self.items addObject:selectionItem];
     [self insertSelectionItemViewWithItem:selectionItem];
-    
+
     // Ensure the add new  item is at the bottom of the stack
     [self.stackView insertArrangedSubview:self.addNewItemView atIndex:self.stackView.arrangedSubviews.count - 1];
-    
+
     [self updateDetailsView];
 }
 
@@ -95,7 +95,7 @@
     [self.itemViews removeObject:itemView];
     [itemView removeFromSuperview];
     [self.items removeObject:selectionItem];
-    
+
     [self updateDetailsView];
 }
 
@@ -127,7 +127,7 @@
             itemView.hidden = !selectionItemsExpanded;
             itemView.alpha = itemView.hidden ? 0.0 : 1.0;
         }
-        
+
         self.detailView.showsDesignActive = selectionItemsExpanded;
     }
 }
@@ -150,18 +150,18 @@
     MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
     itemView.item = item;
     itemView.delegate = self;
-    
+
     NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:44];
     heightContrainst.priority = UILayoutPriorityDefaultHigh;
     heightContrainst.active = YES;
     itemView.hidden = YES;
-    
+
     [self.itemViews addObject:itemView];
     [self.stackView addArrangedSubview:itemView];
-    
+
     // set the width/trailing anchor equal to the stackView
     [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
-    
+
     // setup ordering to help with any drawing
     MenusSelectionItemView *lastItemView = nil;
     for (MenusSelectionItemView *itemView in self.itemViews) {
@@ -169,7 +169,7 @@
         itemView.previousItemView = lastItemView;
         lastItemView = itemView;
     }
-    
+
     return itemView;
 }
 
@@ -231,9 +231,9 @@
 - (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView
 {
     if (itemView == self.addNewItemView) {
-        
+
         [self.delegate selectionViewSelectedOptionForCreatingNewItem:self];
-        
+
     } else {
 
         [self tellDelegateSelectedItem:itemView.item];
@@ -252,20 +252,20 @@
             break;
         }
     }
-    
+
     if (!haveItem) {
         // no updates needed
         return;
     }
-    
+
     if (updatedItem.selected) {
         // update the detailView
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:updatedItem];
     }
-    
+
     // update any itemViews using this item
     for (MenusSelectionItemView *itemView in self.itemViews) {
-        
+
         if (itemView.item == updatedItem) {
             itemView.item = updatedItem;
             break;

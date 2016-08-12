@@ -22,9 +22,9 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     UIEdgeInsets margins = UIEdgeInsetsZero;
     CGFloat spacing = MenusDesignDefaultContentSpacing;
     // Spacing + tweak for design stroke offset.
@@ -35,15 +35,15 @@
     self.stackView.distribution = UIStackViewDistributionFill;
     self.stackView.alignment = UIStackViewAlignmentCenter;
     self.stackView.spacing = spacing;
-    
+
     [self setupIconView];
     [self setupLabelsStackView];
     [self setupSubtTitleLabel];
     [self setupTitleLabel];
     [self setupAccessoryView];
-    
+
     self.backgroundColor = [UIColor clearColor];
-    
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTapGestureRecognized:)];
     [self addGestureRecognizer:tap];
 }
@@ -67,7 +67,7 @@
     stackView.axis = UILayoutConstraintAxisVertical;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     _labelsStackView = stackView;
-    
+
     [self.stackView addArrangedSubview:stackView];
 }
 
@@ -78,9 +78,9 @@
     label.font = [WPFontManager systemRegularFontOfSize:13.0];
     label.textColor = [WPStyleGuide grey];
     _subTitleLabel = label;
-    
+
     NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
-    
+
     [_labelsStackView addArrangedSubview:label];
 }
 
@@ -94,9 +94,9 @@
     label.minimumScaleFactor = 0.50;
     label.allowsDefaultTighteningForTruncation = YES;
     _titleLabel = label;
-    
+
     NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
-    
+
     [_labelsStackView addArrangedSubview:label];
 }
 
@@ -109,7 +109,7 @@
     [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
     [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
     _accessoryView = accessoryView;
-    
+
     [self.stackView addArrangedSubview:accessoryView];
 }
 
@@ -117,7 +117,7 @@
 {
     if (_showsDesignActive != showsDesignActive) {
         _showsDesignActive = showsDesignActive;
-        
+
         if (showsDesignActive) {
             self.accessoryView.transform = CGAffineTransformMakeScale(1.0, -1.0);
         } else  {
@@ -130,16 +130,16 @@
 {
     NSString *localizedFormat = nil;
     if ([selectedItem isMenuLocation]) {
-        
+
         if (numItemsAvailable > 1) {
             localizedFormat = NSLocalizedString(@"%i menu areas in this theme", @"The number of menu areas available in the theme");
         } else  {
             localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
         }
         self.iconView.image = [Gridicon iconOfType:GridiconTypeLayout];
-        
+
     } else  if ([selectedItem isMenu]) {
-        
+
         if (numItemsAvailable > 1) {
             localizedFormat = NSLocalizedString(@"%i menus available", @"The number of menus on the site and area.");
         } else  {
@@ -147,7 +147,7 @@
         }
         self.iconView.image = [Gridicon iconOfType:GridiconTypeMenus];
     }
-    
+
     [self setTitleText:selectedItem.displayName subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
 }
 
@@ -155,7 +155,7 @@
 {
     self.subTitleLabel.text = subtitle;
     self.titleLabel.text = title;
-    
+
     [self.labelsStackView setNeedsLayout];
     [self.labelsStackView layoutIfNeeded];
 }
