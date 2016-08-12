@@ -30,10 +30,10 @@ static CGFloat const SearchBarHeight = 44.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     [self setupTableView];
     [self setupStackedTableHeaderView];
     [self setupStackView];
@@ -52,7 +52,7 @@ static CGFloat const SearchBarHeight = 44.0;
     inset.top = MenusDesignDefaultContentSpacing / 2.0;
     tableView.contentInset = inset;
     [self.view addSubview:tableView];
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
                                               [tableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
@@ -78,14 +78,14 @@ static CGFloat const SearchBarHeight = 44.0;
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
-    
+
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.bottom = stackView.spacing;
     margins.left = MenusDesignDefaultContentSpacing;
     margins.right = MenusDesignDefaultContentSpacing;
     stackView.layoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
-    
+
     NSAssert(_stackedTableHeaderView != nil, @"stackedTableHeaderView is nil");
     [_stackedTableHeaderView addSubview:stackView];
     // setup the constraints for the stackView
@@ -102,10 +102,10 @@ static CGFloat const SearchBarHeight = 44.0;
 - (void)setupFooterView
 {
     MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
-    
+
     NSAssert(_tableView != nil, @"tableView is nil");
     _tableView.tableFooterView = footerView;
-    
+
     _footerView = footerView;
 }
 
@@ -137,13 +137,13 @@ static CGFloat const SearchBarHeight = 44.0;
         [self.stackedTableHeaderView layoutIfNeeded];
         needsOffsetFix = YES;
     }
-    
+
     // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
     CGRect frame = self.stackView.bounds;
     self.stackedTableHeaderView.frame = frame;
     // reset the tableHeaderView to update the size change
     self.tableView.tableHeaderView = self.stackedTableHeaderView;
-    
+
     if (needsOffsetFix) {
         if (self.tableView.contentOffset.y == 0.0) {
             CGPoint offset = self.tableView.contentOffset;
@@ -163,21 +163,21 @@ static CGFloat const SearchBarHeight = 44.0;
     if (self.searchBar) {
         return;
     }
-    
+
     MenuItemSourceTextBar *searchBar = [[MenuItemSourceTextBar alloc] initAsSearchBar];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.delegate = self;
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:searchBar];
-    
+
     NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:SearchBarHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
-    
+
     [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     _searchBar = searchBar;
-    
+
     __weak MenuItemSourceResultsViewController *weakSelf = self;
     MenuItemSourceTextBarFieldObserver *localSearchObserver = [[MenuItemSourceTextBarFieldObserver alloc] init];
     localSearchObserver.interval = SearchBarFetchRequestUpdateDelay;
@@ -185,7 +185,7 @@ static CGFloat const SearchBarHeight = 44.0;
         [weakSelf searchBarInputChangeDetectedForLocalResultsUpdateWithText:text];
     }];
     [_searchBar addTextObserver:localSearchObserver];
-    
+
     MenuItemSourceTextBarFieldObserver *remoteSearchObserver = [[MenuItemSourceTextBarFieldObserver alloc] init];
     remoteSearchObserver.interval = SearchBarRemoteServiceUpdateDelay;
     [remoteSearchObserver setOnTextChange:^(NSString *text) {
@@ -278,12 +278,12 @@ static CGFloat const SearchBarHeight = 44.0;
 {
     NSFetchRequest *fetchRequest = nil;
     if (!_resultsController && [self managedObjectContext] && (fetchRequest = [self fetchRequest])) {
-        
+
         NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:[self fetechedResultsControllerSectionNameKeyPath] cacheName:nil];
         resultsController.delegate = self;
         _resultsController = resultsController;
     }
-    
+
     return _resultsController;
 }
 
@@ -399,24 +399,24 @@ static CGFloat const SearchBarHeight = 44.0;
         // Not observing scrolling for reaching the end of the tableView.
         return;
     }
-    
+
     if (cell.frame.origin.y < tableView.bounds.size.height) {
         // Cell is already within the frame bounds, no need to observe scrolling.
         return;
     }
-    
+
     NSInteger numSections = self.resultsController.sections.count;
     if (indexPath.section < numSections - 1) {
         // Not observing or not the last section of the tableView.
         return;
     }
-    
+
     NSInteger numRowsInSection = [tableView numberOfRowsInSection:indexPath.section];
     if (indexPath.row < numRowsInSection - 1) {
         // Not the last row in the section.
         return;
     }
-    
+
     // Reached the end of the tableView and will display the last cell from off-screen.
     self.observeUserScrollingForEndOfTableView = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -435,9 +435,9 @@ static CGFloat const SearchBarHeight = 44.0;
     if (!cell) {
         cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
+
     [self configureSourceCell:cell forIndexPath:indexPath];
-    
+
     return cell;
 }
 
