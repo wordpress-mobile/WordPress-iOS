@@ -973,7 +973,7 @@ import WordPressComAnalytics
         guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
             return
         }
-        
+
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
