@@ -129,6 +129,8 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+
     BOOL needsOffsetFix = NO;
     if (!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
