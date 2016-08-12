@@ -319,7 +319,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - TableView Helpers
 
-    func dequeCellForWindowlessTableViewLoadingIfNeeded(tableView: UITableView) -> UITableViewCell? {
+    func dequeCellForWindowlessLoadingIfNeeded(tableView: UITableView) -> UITableViewCell? {
         // As also seen in ReaderStreamViewController:
         // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
         // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.

@@ -307,7 +307,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let windowlessCell = dequeCellForWindowlessTableViewLoadingIfNeeded(tableView) {
+        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
         }
 
