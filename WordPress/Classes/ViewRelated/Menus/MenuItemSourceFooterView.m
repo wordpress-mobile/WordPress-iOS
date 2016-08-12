@@ -40,13 +40,13 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+
         self.backgroundColor = [UIColor whiteColor];
-        
+
         [self setupSourceCell];
         [self setupDrawView];
     }
-    
+
     return self;
 }
 
@@ -85,17 +85,17 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     if (self.isAnimating) {
         return;
     }
-    
+
     self.drawsLabelTextIfNeeded = NO;
-    
+
     [self.beginLoadingAnimationsTimer invalidate];
     self.beginLoadingAnimationsTimer = nil;
     [self.endLoadingAnimationsTimer invalidate];
     self.endLoadingAnimationsTimer = nil;
-    
+
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
-    
+
     // Will begin animations on next runloop incase there are upcoming layout upates in-which the animation won't play.
     NSTimer *timer = [NSTimer timerWithTimeInterval:0.0 target:self selector:@selector(beginCellAnimations) userInfo:nil repeats:NO];
     self.beginLoadingAnimationsTimer = timer;
@@ -108,12 +108,12 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     if (!self.isAnimating) {
         return;
     }
-    
+
     [self.beginLoadingAnimationsTimer invalidate];
     self.beginLoadingAnimationsTimer = nil;
     [self.endLoadingAnimationsTimer invalidate];
     self.endLoadingAnimationsTimer = nil;
-    
+
     self.isAnimating = NO;
     // Let the animation play for just a bit before ending it. This avoids flickering.
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(endCellAnimations) userInfo:nil repeats:NO];
@@ -137,7 +137,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 - (void)endCellAnimations
 {
     self.drawsLabelTextIfNeeded = YES;
-    
+
     [self.sourceCell.layer removeAllAnimations];
     self.sourceCell.hidden = YES;
 }
