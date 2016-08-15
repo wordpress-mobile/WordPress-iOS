@@ -201,7 +201,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     } else {
         mutableProperties = [NSMutableDictionary new];
     }
-    // TrainTracks are specific to the AutomaticTracks tracker.
+    // TrainTracks are specific to the AutomatticTracks tracker.
     // The action property should be the event string for the stat.
     // Other trackers should ignore `WPAnalyticsStatTrainTracksInteract`
     NSString *eventName = [WPAnalyticsTrackerAutomatticTracks eventNameForStat:stat];
