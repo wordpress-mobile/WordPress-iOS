@@ -80,6 +80,8 @@ NSString * const ParamKeyMeta = @"meta";
 NSString * const ParamKeyNumber = @"number";
 NSString * const ParamKeyOffset = @"offset";
 NSString * const ParamKeyOrder = @"order";
+NSString * const ParamKeyDescending = @"DESC";
+NSString * const ParamKeyMetaValue = @"site,feed";
 
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
@@ -98,8 +100,8 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSMutableDictionary *params = [@{
                                      ParamKeyNumber:numberToFetch,
                                      ParamKeyBefore: [DateUtils isoStringFromDate:date],
-                                     ParamKeyOrder: @"DESC",
-                                     ParamKeyMeta:@"site,feed"
+                                     ParamKeyOrder: ParamKeyDescending,
+                                     ParamKeyMeta: ParamKeyMetaValue
                                      } mutableCopy];
     if (algorithm) {
         params[ParamsKeyAlgorithm] = algorithm;
@@ -118,8 +120,8 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSMutableDictionary *params = [@{
                                      ParamKeyNumber:@(count),
                                      ParamKeyOffset: @(offset),
-                                     ParamKeyOrder: @"DESC",
-                                     ParamKeyMeta:@"site,feed"
+                                     ParamKeyOrder: ParamKeyDescending,
+                                     ParamKeyMeta: ParamKeyMetaValue
                                      } mutableCopy];
     if (algorithm) {
         params[ParamsKeyAlgorithm] = algorithm;

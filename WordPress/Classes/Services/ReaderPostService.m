@@ -94,10 +94,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 }
 
 
-- (void)updateTopic:(NSManagedObjectID *)topicID withAlgorithm:(NSString *)algorithm
+- (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm
 {
     NSError *error;
-    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicID error:&error];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
     topic.algorithm = algorithm;
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -111,6 +111,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                    failure:(void (^)(NSError *error))failure
 {
     // Don't pass the algorithm if fetching a brand new list.
+    // When fetching the beginning of a date ordered list the date passed will "now".
+    // If the passed date is equal to the current date we know we're starting from scratch.
     NSString *reqAlgorithm = [date isEqualToDate:[NSDate date]] ? nil : topic.algorithm;
 
     NSManagedObjectID *topicObjectID = topic.objectID;
