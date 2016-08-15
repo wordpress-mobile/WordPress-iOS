@@ -1652,6 +1652,16 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
                 syncHelper.syncMoreContent()
             }
         }
+
+        // Bump the render tracker if necessary.
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+        let railcar = post.railcarDictionary()
+        if post.isKindOfClass(ReaderGapMarker) || railcar == nil || post.rendered {
+            return
+        }
+        post.rendered = true
+        WPAppAnalytics.track(.TrainTracksRender, withProperties: railcar)
     }
 
 
@@ -1679,6 +1689,12 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.ReaderSearchResultTapped)
+
+            // We can use `if let` when `ReaderPost` adopts nullability.
+            let railcard = apost.railcarDictionary()
+            if railcard != nil {
+                WPAppAnalytics.trackTrainTracksInteraction(.ReaderSearchResultTapped, withProperties: railcard)
+            }
         }
 
         var controller: ReaderDetailViewController
