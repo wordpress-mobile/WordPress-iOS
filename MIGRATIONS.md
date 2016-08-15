@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 51
 - @aerych 2016-08-12
-- Added `algoritym` optional string field to `ReaderAbstractTopic`.
+- Added `algorithm` optional string field to `ReaderAbstractTopic`.
 - Added `railcar` optional NSData field to `ReaderPost`.
 - @aerych 2016-08-05
 - Removed `ReaderSite` entity.
