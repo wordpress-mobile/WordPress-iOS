@@ -57,7 +57,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) ReaderCrossPostMeta *crossPostMeta;
 @property (nonatomic, strong) NSString *railcar;
 
-// For use tracking when a post was rendered (displayed) and bumping the train tracks rendered event.
+// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
 @property (nonatomic) BOOL rendered;
 
 - (BOOL)isCrossPost;
