@@ -210,7 +210,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         }
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
-
+        NSDictionary *railcar = [readerPost railcarDictionary];
         // Define success block.
         NSNumber *postID = readerPost.postID;
         NSNumber *siteID = readerPost.siteID;
@@ -222,6 +222,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                               };
                 if (like) {
                     [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                    if (railcar) {
+                        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatReaderArticleLiked withProperties:railcar];
+                    }
                 } else {
                     [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
                 }

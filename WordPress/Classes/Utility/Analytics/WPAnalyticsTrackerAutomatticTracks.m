@@ -30,6 +30,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
 
++ (NSString *)eventNameForStat:(WPAnalyticsStat)stat
+{
+    WPAnalyticsTrackerAutomatticTracks *tracker = [WPAnalyticsTrackerAutomatticTracks new];
+    return [tracker eventPairForStat:stat].eventName;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -795,6 +801,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatThemesSupportAccessed:
             eventName = @"themes_support_accessed";
+            break;
+        case WPAnalyticsStatTrainTracksInteract:
+            eventName = @"traintracks_interact";
+            break;
+        case WPAnalyticsStatTrainTracksRender:
+            eventName = @"traintracks_render";
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             eventName = @"two_factor_code_requested";

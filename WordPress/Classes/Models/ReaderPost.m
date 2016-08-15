@@ -57,6 +57,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic crossPostMeta;
 @dynamic railcar;
 
+@synthesize rendered;
 
 - (BOOL)isCrossPost
 {
@@ -287,6 +288,21 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (BOOL)isCommentCrossPost
 {
     return self.crossPostMeta.commentURL.length > 0;
+}
+
+- (NSDictionary *)railcarDictionary
+{
+    if (!self.railcar) {
+        return nil;
+    }
+
+    NSData *jsonData = [self.railcar dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    if ([jsonObj isKindOfClass:[NSDictionary class]]) {
+        return (NSDictionary *)jsonObj;
+    }
+    return nil;
 }
 
 
