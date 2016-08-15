@@ -50,6 +50,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8'
     pod 'WordPressCom-Analytics-iOS', '0.1.18'
+    pod 'WordPress-Aztec-iOS', '0.1.0'
     pod 'WordPressCom-Stats-iOS', '0.7.6'
     pod 'wpxmlrpc', '~> 0.8'
     

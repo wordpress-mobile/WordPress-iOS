@@ -15,6 +15,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     private static let defaultHeightForFooterView = CGFloat(44.0)
 
+    private let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
+
     var blog : Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
@@ -22,6 +24,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     ///
     var refreshNoResultsView : ((WPNoResultsView) -> ())!
     var tableViewController : UITableViewController!
+    var reloadTableViewBeforeAppearing = false
 
     var tableView : UITableView {
         get {
@@ -95,6 +98,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         configureTableView()
         configureFooterView()
+        configureWindowlessCell()
         configureNavbar()
         configureSearchController()
         configureSearchHelper()
@@ -106,8 +110,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        refreshResults()
 
+        if reloadTableViewBeforeAppearing {
+            reloadTableViewBeforeAppearing = false
+            tableView.reloadData()
+        }
+
+        refreshResults()
         registerForKeyboardNotifications()
     }
 
@@ -219,6 +228,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         tableView.tableFooterView = postListFooterView
     }
 
+    func configureWindowlessCell() {
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
+    }
+
     private func refreshResults() {
         guard isViewLoaded() == true else {
             return
@@ -302,6 +315,22 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         tableView.sendSubviewToBack(noResultsView)
+    }
+
+    // MARK: - TableView Helpers
+
+    func dequeCellForWindowlessLoadingIfNeeded(tableView: UITableView) -> UITableViewCell? {
+        // As also seen in ReaderStreamViewController:
+        // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
+        // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
+        // The result is the cells do not show the correct layouts relative to superview margins.
+        // HACK: kurzee, 2016-07-12
+        // Use a generic cell in this situation and reload the table view once its back in a window.
+        if (tableView.window == nil) {
+            reloadTableViewBeforeAppearing = true
+            return tableView.dequeueReusableCellWithIdentifier(abstractPostWindowlessCellIdenfitier)
+        }
+        return nil
     }
 
     // MARK: - TableViewHandler Delegate Methods
