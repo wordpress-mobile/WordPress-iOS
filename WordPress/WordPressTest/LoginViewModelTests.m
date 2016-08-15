@@ -1712,7 +1712,7 @@ describe(@"LoginFacadeDelegate methods", ^{
             [mockBlogSyncFacade verify];
         });
                 
-        it(@"should dismiss the login view", ^{
+        xit(@"should dismiss the login view", ^{
             [[mockViewModelPresenter expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
