@@ -1016,7 +1016,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         // more than one page. If this happens preserve the *original* sortRank
         // to avoid content jumping around in the UI.
         // Posts from other endpoits will store a date value which shouldn't
-        // change anyway.
+        // change, ergo they should be unaffected.
         post.sortRank = remotePost.sortRank;
     }
 
