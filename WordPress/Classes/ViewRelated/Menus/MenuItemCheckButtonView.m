@@ -21,15 +21,15 @@ static CGFloat const iconPadding = 3.0;
 {
     self = [super init];
     if (self) {
-     
+
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
-        
+
         [self setupIconView];
         [self setupLabel];
     }
-    
+
     return self;
 }
 
@@ -42,7 +42,7 @@ static CGFloat const iconPadding = 3.0;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.alpha = 0.0;
     [self addSubview:iconView];
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [iconView.topAnchor constraintEqualToAnchor:self.topAnchor constant:iconPadding],
                                               [iconView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:iconPadding],
@@ -57,22 +57,22 @@ static CGFloat const iconPadding = 3.0;
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.backgroundColor = [UIColor whiteColor];
-    
+
     NSDictionary *attributes = [self attributesForText];
     label.font = [attributes objectForKey:NSFontAttributeName];
     label.textColor = [WPStyleGuide greyDarken30];
-    
+
     [self addSubview:label];
-    
+
     NSAssert(_iconView != nil, @"iconView is nil");
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [label.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [label.leadingAnchor constraintEqualToAnchor:_iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing / 2.0],
                                               [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                               [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
                                               ]];
-    
+
     _label = label;
 }
 
@@ -107,19 +107,19 @@ static CGFloat const iconPadding = 3.0;
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     if (self.drawsHighlighted) {
         CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
     } else  {
         CGContextSetFillColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     }
-    
+
     CGRect boxRect = CGRectZero;
     boxRect.size.height = rect.size.height;
     boxRect.size.width = boxRect.size.height;
-    
+
     CGContextFillRect(context, boxRect);
-    
+
     CGRect innerBoxRect = CGRectInset(boxRect, 1.0, 1.0);
     CGContextSetFillColorWithColor(context, [self.backgroundColor CGColor]);
     CGContextFillRect(context, innerBoxRect);
@@ -130,7 +130,7 @@ static CGFloat const iconPadding = 3.0;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    
+
     self.touchesBeganLocation = [[touches anyObject] locationInView:self];
     self.drawsHighlighted = YES;
 }
@@ -138,7 +138,7 @@ static CGFloat const iconPadding = 3.0;
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
-    
+
     self.touchesBeganLocation = CGPointZero;
     self.drawsHighlighted = NO;
 }
@@ -146,9 +146,9 @@ static CGFloat const iconPadding = 3.0;
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    
+
     self.drawsHighlighted = NO;
-    
+
     if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, [[touches anyObject] locationInView:self])) {
         self.checked = !self.checked;
         if (self.onChecked) {

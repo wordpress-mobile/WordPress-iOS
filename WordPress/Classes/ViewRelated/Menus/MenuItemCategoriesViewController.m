@@ -34,13 +34,13 @@ static NSString * const CategorySortKey = @"categoryName";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PostCategory entityName]];
     [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
     [fetchRequest setFetchLimit:CategorySyncLimit];
-    
+
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:CategorySortKey
                                                                        ascending:YES
                                                                         selector:@selector(caseInsensitiveCompare:)];
-    
+
     [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortNameDescriptor, nil]];
-    
+
     return fetchRequest;
 }
 
@@ -48,7 +48,7 @@ static NSString * const CategorySortKey = @"categoryName";
 {
     self.displayCategories = [NSMutableArray array];
     [self performResultsControllerFetchRequest];
-    
+
     if (self.displayCategories.count == 0) {
         [self showLoadingSourcesIndicator];
     }
@@ -72,15 +72,15 @@ static NSString * const CategorySortKey = @"categoryName";
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
-    
+
     if ([self itemTypeMatchesSourceItemType] && [self.item.contentID integerValue] == [category.categoryID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
     }
-    
+
     [cell setTitle:category.categoryName];
-    
+
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     [cell setSourceHierarchyIndentation:indentationLevel];
 }
@@ -88,12 +88,12 @@ static NSString * const CategorySortKey = @"categoryName";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    
+
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
     [self setItemSourceWithContentID:category.categoryID name:category.categoryName];
-    
+
     [self deselectVisibleSourceCellsIfNeeded];
-    
+
     MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     selectedCell.sourceSelected = YES;
 }
@@ -104,13 +104,13 @@ static NSString * const CategorySortKey = @"categoryName";
 {
     // Get sorted categories by parent/child relationship
     self.categoryIndentationDict = [NSMutableDictionary dictionary];
-    
+
     // Get sorted categories by parent/child relationship
     WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
     [tree getChildrenFromObjects:self.resultsController.fetchedObjects];
-    
+
     self.displayCategories = [tree getAllObjects];
-    
+
     // Get the indentation level of each category.
     NSMutableDictionary *categoryDict = [NSMutableDictionary dictionary];
     for (PostCategory *category in self.displayCategories) {
@@ -122,7 +122,7 @@ static NSString * const CategorySortKey = @"categoryName";
         [self.categoryIndentationDict setValue:[NSNumber numberWithInteger:indentationLevel]
                                         forKey:[category.categoryID stringValue]];
     }
-    
+
     [self.tableView reloadData];
 }
 
