@@ -490,7 +490,6 @@ import WordPressComAnalytics
         header.delegate = self
 
         tableView.tableHeaderView = header as? UIView
-        refreshTableViewHeaderLayout()
     }
 
 
@@ -592,22 +591,32 @@ import WordPressComAnalytics
     }
 
 
-    /// Refreshes the layout of the header.  Useful in correcting layout issues
-    /// after changing device orientation
+    /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
+    /// to its intrinsic content layout, after major layout changes on the tableView itself.
     ///
     func refreshTableViewHeaderLayout() {
         guard let headerView = tableView.tableHeaderView else {
             return
         }
 
-        headerView.setNeedsLayout()
-        headerView.layoutIfNeeded()
-
-        let height = headerView.sizeThatFits(CGSize(width: tableView.frame.size.width, height: CGFloat.max)).height
-        var frame = headerView.frame
-        frame.size.height = height
-        headerView.frame = frame
-
+        /*  Start with the provided UILayoutFittingCompressedSize to let iOS handle its own calculated
+            value for max/min height.
+         */
+        var fittingSize = UILayoutFittingCompressedSize
+        /*  Set the width to the tableView's width since this is a known width for the tableHeaderView.
+            Otherwise, the layout will try and adopt 'any' width and will likely break based on the how
+            the constraints are set up in the nib.
+         */
+        fittingSize.width = tableView.frame.size.width
+        // Require horizontal fitting as our width is known.
+        // Use the lower fitting size priority as we want to minimize our height according to the layout.
+        let size = headerView.systemLayoutSizeFittingSize(fittingSize,
+                                                          withHorizontalFittingPriority: UILayoutPriorityRequired,
+                                                          verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+        // Update the tableHeaderView itself.
+        var headerFrame = headerView.frame
+        headerFrame.size.height = size.height
+        headerView.frame = headerFrame
         tableView.tableHeaderView = headerView
     }
 
