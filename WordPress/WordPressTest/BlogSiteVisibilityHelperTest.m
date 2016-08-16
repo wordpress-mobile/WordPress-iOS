@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "JetpackState.h"
+#import "ContextManager-Internals.h"
 #import "TestContextManager.h"
 
 @interface BlogSiteVisibilityHelperTest : XCTestCase
@@ -26,6 +27,7 @@
 {
     [super tearDown];
 
+    [ContextManager overrideSharedInstance:nil];
     [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
 }

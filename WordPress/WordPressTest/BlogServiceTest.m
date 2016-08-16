@@ -3,6 +3,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
+#import "ContextManager-Internals.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "TestContextManager.h"
@@ -52,6 +53,8 @@
 
 - (void)tearDown
 {
+    [ContextManager overrideSharedInstance:nil];
+
     self.blogService = nil;
     self.blogServiceMock = nil;
     self.blog = nil;
