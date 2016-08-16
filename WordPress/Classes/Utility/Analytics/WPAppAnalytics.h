@@ -70,6 +70,11 @@ extern NSString * const WPAppAnalyticsKeyIsJetpack;
  */
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID;
 
+/**
+    @brief      Used only for bumping the TrainTracks interaction event. The stat's
+                event name is passed as an "action" property.
+ */
++ (void)trackTrainTracksInteraction:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 
 /**
  *  @brief      Pass-through methods to WPAnalytics
