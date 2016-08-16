@@ -151,6 +151,9 @@ import WordPressShared
         ReaderTopicService(managedObjectContext: context).deleteAllTopics()
         ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
 
+        // Clean up stale search history
+        ReaderSearchSuggestionService(managedObjectContext: context).deleteAllSuggestions()
+
         // Sync the menu fresh
         syncTopics()
     }
