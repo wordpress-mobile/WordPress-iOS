@@ -32,8 +32,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 + (NSString *)eventNameForStat:(WPAnalyticsStat)stat
 {
-    WPAnalyticsTrackerAutomatticTracks *tracker = [WPAnalyticsTrackerAutomatticTracks new];
-    return [tracker eventPairForStat:stat].eventName;
+    return [self eventPairForStat:stat].eventName;
 }
 
 - (instancetype)init
@@ -53,7 +52,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
-    TracksEventPair *eventPair = [self eventPairForStat:stat];
+    TracksEventPair *eventPair = [[self class] eventPairForStat:stat];
     if (!eventPair) {
         DDLogInfo(@"WPAnalyticsStat not supported by WPAnalyticsTrackerAutomatticTracks: %@", @(stat));
         return;
@@ -155,7 +154,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     return _anonymousID;
 }
 
-- (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
++ (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
 {
     NSString *eventName;
     NSDictionary *eventProperties;
