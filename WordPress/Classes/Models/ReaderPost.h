@@ -55,6 +55,10 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
 @property (nonatomic, strong) ReaderCrossPostMeta *crossPostMeta;
+@property (nonatomic, strong) NSString *railcar;
+
+// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
+@property (nonatomic) BOOL rendered;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;
@@ -64,6 +68,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
 - (BOOL)contentIncludesFeaturedImage;
 - (BOOL)isSourceAttributionWPCom;
+- (NSDictionary *)railcarDictionary;
 
 @end
 
