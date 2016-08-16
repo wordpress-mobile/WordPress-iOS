@@ -56,7 +56,6 @@
     [OHHTTPStubs removeAllStubs];
     [ContextManager overrideSharedInstance:nil];
 
-    [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
 }
 

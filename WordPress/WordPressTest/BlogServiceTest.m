@@ -58,7 +58,6 @@
     self.blogService = nil;
     self.blogServiceMock = nil;
     self.blog = nil;
-    [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
     
     [self cleanUpNSUserDefaultValues];
