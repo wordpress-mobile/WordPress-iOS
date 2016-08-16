@@ -63,6 +63,7 @@ void (^createBlog)() = ^{
                              @"readonly": @YES,
                              },
                      };
+    blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:testContextManager.mainContext];
     [testContextManager.mainContext save:nil];
 };
 

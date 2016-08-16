@@ -42,6 +42,8 @@
                                   },
                           };
     self.blog.account = account;
+    self.blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings"
+                                                                       inManagedObjectContext:self.testContextManager.mainContext];
 
     self.blogServiceMock = OCMPartialMock(self.blogService);
     
@@ -53,6 +55,7 @@
     self.blogService = nil;
     self.blogServiceMock = nil;
     self.blog = nil;
+    [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
     
     [self cleanUpNSUserDefaultValues];
