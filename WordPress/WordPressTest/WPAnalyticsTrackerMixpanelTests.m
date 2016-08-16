@@ -79,7 +79,6 @@ beforeEach(^{
 
 afterEach(^{
     [ContextManager overrideSharedInstance:nil];
-    [testContextManager.mainContext reset];
     testContextManager = nil;
 });
 
