@@ -17,7 +17,7 @@
 {
     self.itemView = itemView;
     self.startingOrderedItemViewFrame = itemView.frame;
-    
+
     [self reloadItemViews];
 }
 
@@ -30,7 +30,7 @@
 {
     CGFloat constraintConstValue = self.startingOrderedItemViewFrame.origin.y + vector.y;
     const CGFloat boundsPadding = 20.0;
-    
+
     if (constraintConstValue < -boundsPadding) {
         constraintConstValue = -boundsPadding;
     } else   {
@@ -40,9 +40,9 @@
             constraintConstValue = maxY;
         }
     }
-    
+
     self.topConstraintForVisualTouchUpdates.constant = constraintConstValue;
-    
+
     if ([self.delegate respondsToSelector:@selector(visualOrderingView:animatingVisualItemViewForOrdering:)]) {
         [self.delegate visualOrderingView:self animatingVisualItemViewForOrdering:self.visualOrderingView];
     }
@@ -53,12 +53,12 @@
 - (void)reloadItemViews
 {
     self.topConstraintForVisualTouchUpdates = nil;
-    
+
     [self.visualOrderingView removeFromSuperview];
     self.visualOrderingView = nil;
-    
+
     MenuItem *item = self.itemView.item;
-    
+
     CGRect layoutFrame = [self convertRect:self.itemView.frame fromView:self.itemView.superview];
     MenuItemView *orderingView = [[MenuItemView alloc] init];
     orderingView.item = item;
@@ -66,19 +66,19 @@
     orderingView.drawsLineSeparator = NO;
     orderingView.alpha = 0.65;
     orderingView.userInteractionEnabled = NO;
-    
+
     CALayer *contentLayer = orderingView.contentView.layer;
     contentLayer.shadowColor = [[UIColor blackColor] CGColor];
     contentLayer.shadowOpacity = 0.3;
     contentLayer.shadowRadius = 10.0;
     contentLayer.shadowOffset = CGSizeMake(0, 0);
-    
+
     NSLayoutConstraint *heightConstraint = [orderingView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.active = YES;
-    
+
     [self addSubview:orderingView];
     self.visualOrderingView = orderingView;
-    
+
     NSLayoutConstraint *topConstraint = [orderingView.topAnchor constraintEqualToAnchor:self.topAnchor];
     topConstraint.constant = layoutFrame.origin.y;
     self.topConstraintForVisualTouchUpdates = topConstraint;
