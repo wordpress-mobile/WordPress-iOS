@@ -10,6 +10,7 @@
 #import "JetpackService.h"
 #import "JetpackServiceRemote.h"
 #import "TestContextManager.h"
+#import "ContextManager-Internals.h"
 
 @interface BlogJetpackTest : XCTestCase
 @end
@@ -53,6 +54,8 @@
     _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllStubs];
+    [ContextManager overrideSharedInstance:nil];
+
     [self.testContextManager.mainContext reset];
     self.testContextManager = nil;
 }

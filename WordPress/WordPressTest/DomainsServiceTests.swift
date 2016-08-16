@@ -26,6 +26,8 @@ class DomainsServiceTests : XCTestCase
     override func tearDown() {
         super.tearDown()
 
+        ContextManager.overrideSharedInstance(nil)
+        context.reset()
         OHHTTPStubs.removeAllStubs()
     }
 
