@@ -324,9 +324,4 @@ extension ReaderSearchViewController : ReaderSearchSuggestionsDelegate {
         performSearch()
     }
 
-
-    func clearSuggestionsForSearchController(controller: ReaderSearchSuggestionsViewController) {
-        let service = ReaderSearchSuggestionService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteAllSuggestions()
-    }
 }

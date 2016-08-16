@@ -7,7 +7,6 @@ import WordPressShared
 protocol ReaderSearchSuggestionsDelegate
 {
     func searchSuggestionsController(controller: ReaderSearchSuggestionsViewController, selectedItem: String)
-    func clearSuggestionsForSearchController(controller: ReaderSearchSuggestionsViewController)
 }
 
 
@@ -176,7 +175,9 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let suggestions = tableViewHandler.resultsController.fetchedObjects as! [ReaderSearchSuggestion]
+        guard let suggestions = tableViewHandler.resultsController.fetchedObjects as? [ReaderSearchSuggestion] else {
+            return
+        }
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
         cell.textLabel?.textColor = WPStyleGuide.darkGrey()
