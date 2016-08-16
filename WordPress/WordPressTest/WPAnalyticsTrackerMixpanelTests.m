@@ -6,6 +6,7 @@
 #import "MixpanelProxy.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "TestContextManager.h"
+#import "ContextManager-Internals.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPAccount.h"
@@ -77,6 +78,7 @@ beforeEach(^{
 });
 
 afterEach(^{
+    [ContextManager overrideSharedInstance:nil];
     [testContextManager.mainContext reset];
     testContextManager = nil;
 });
