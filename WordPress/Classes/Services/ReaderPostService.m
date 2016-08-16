@@ -111,7 +111,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                    failure:(void (^)(NSError *error))failure
 {
     // Don't pass the algorithm if fetching a brand new list.
-    // When fetching the beginning of a date ordered list the date passed will "now".
+    // When fetching the beginning of a date ordered list the date passed is "now".
     // If the passed date is equal to the current date we know we're starting from scratch.
     NSString *reqAlgorithm = [date isEqualToDate:[NSDate date]] ? nil : topic.algorithm;
 
