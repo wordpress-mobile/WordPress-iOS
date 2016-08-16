@@ -40,16 +40,6 @@ import WordPressShared.WPStyleGuide
     }
 
 
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        var height = innerContentView.frame.size.height
-        if UIDevice.isPad() && contentIPadTopConstraint != nil {
-            height += contentIPadTopConstraint!.constant
-        }
-        height += contentBottomConstraint.constant
-        return CGSize(width: size.width, height: height)
-    }
-
-
     // MARK: - Configuration
 
 
