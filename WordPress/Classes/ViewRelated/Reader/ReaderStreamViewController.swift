@@ -1253,7 +1253,7 @@ import WordPressComAnalytics
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-
+        let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         syncContext.performBlock {
             guard let topicInContext = (try? syncContext.existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
@@ -1273,8 +1273,7 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                let offset = UInt(topicInContext.posts.count)
-                service.fetchPostsForTopic(topicInContext, atOffset: offset, deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service.fetchPostsForTopic(topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
