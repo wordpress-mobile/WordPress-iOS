@@ -21,7 +21,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self insertSearchBarIfNeeded];
     self.searchBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
@@ -46,10 +46,10 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES
                                                                     selector:@selector(caseInsensitiveCompare:)];
-    
+
     [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
     [fetchRequest setFetchLimit:MenuItemSourceTagSyncLimit];
-    
+
     return fetchRequest;
 }
 
@@ -58,19 +58,19 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     if (self.isSyncing) {
         return;
     }
-    
+
     PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    
+
     [self performResultsControllerFetchRequest];
-    
+
     self.isSyncing = YES;
     [self showLoadingSourcesIndicatorIfEmpty];
-    
+
     void(^stopLoading)() = ^() {
         self.isSyncing = NO;
         [self hideLoadingSourcesIndicator];
     };
-    
+
     [tagService syncTagsForBlog:[self blog]
                          number:@(MenuItemSourceTagSyncLimit)
                          offset:@(0)
@@ -98,24 +98,24 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    
+
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
     [self setItemSourceWithContentID:tag.tagID name:tag.name];
 
     [self deselectVisibleSourceCellsIfNeeded];
-    
+
     MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     selectedCell.sourceSelected = YES;
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
     if (self.isSyncingAdditionalTags || self.syncedAllAvailableTags || [self searchBarInputIsActive]) {
         return;
     }
-    
+
     // Check how many tags are currently loaded
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections lastObject];
     NSUInteger initialCount = [sectionInfo numberOfObjects];
@@ -123,22 +123,22 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
         // Additional tags not available, not limit or remote paging needed.
         return;
     }
-    
+
     // First try and increment the fetchLimit for local results.
     // This also allows the resultsController to load any additional tags synced afterwards.
     self.resultsController.fetchRequest.fetchLimit = self.resultsController.fetchRequest.fetchLimit + MenuItemSourceTagSyncLimit;
     [self performResultsControllerFetchRequest];
-    
+
     sectionInfo = [self.resultsController.sections lastObject];
     NSUInteger countWithLimitIncrease = [sectionInfo numberOfObjects];
     if (countWithLimitIncrease > initialCount) {
         // Additional local results are available for display in the tableView.
         [tableView reloadData];
     }
-    
+
     // Check if any additional tags are available locally based on the fetchLimit increase
     self.syncedAllAvailableTags = countWithLimitIncrease - initialCount < MenuItemSourceTagSyncLimit;
-    
+
     // Show the loading indicator
     self.isSyncing = YES;
     self.isSyncingAdditionalTags = YES;
@@ -148,23 +148,24 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
         self.isSyncingAdditionalTags = NO;
         [self hideLoadingSourcesIndicator];
     };
-    
+
     // Load any additional tags available remotely.
     // This will sync existing tags that may already be available locally, as well as loading additional tags.
     PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [tagService syncTagsForBlog:[self blog]
-                              number:@(MenuItemSourceTagSyncLimit)
-                              offset:@(initialCount)
-                             success:^(NSArray<PostTag *> *tags) {
-                                 
-                                 // If the loaded tags count match the requested number, there is probably more tags available.
-                                 self.syncedAllAvailableTags = tags.count < MenuItemSourceTagSyncLimit;
-                                 stopLoading();
-                                 
-                             } failure:^(NSError *error) {
-                                 stopLoading();
-                                 [self showLoadingErrorMessageForResults];
-                             }];
+                         number:@(MenuItemSourceTagSyncLimit)
+                         offset:@(initialCount)
+                        success:^(NSArray<PostTag *> *tags) {
+
+                            // If the loaded tags count match the requested number, there is probably more tags available.
+                            self.syncedAllAvailableTags = tags.count < MenuItemSourceTagSyncLimit;
+                            stopLoading();
+
+                        }
+                        failure:^(NSError *error) {
+                            stopLoading();
+                            [self showLoadingErrorMessageForResults];
+                        }];
 }
 
 #pragma mark - searching
@@ -174,7 +175,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     NSPredicate *defaultPredicate = [self defaultFetchRequestPredicate];
     NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"name BEGINSWITH[c] %@", searchText];
     NSPredicate *predicate = nil;
-    
+
     if (searchText.length) {
         self.defersFooterViewMessageUpdates = YES;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
@@ -189,7 +190,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
         // same predicate, no update needed
         return;
     }
-    
+
     self.resultsController.fetchRequest.predicate = predicate;
     [self performResultsControllerFetchRequest];
     [self.tableView reloadData];
@@ -201,14 +202,14 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
         self.defersFooterViewMessageUpdates = NO;
         return;
     }
-    
+
     self.defersFooterViewMessageUpdates = NO;
-    
+
     [self showLoadingSourcesIndicator];
     void(^stopLoading)() = ^() {
         [self hideLoadingSourcesIndicator];
     };
-    
+
     if (!self.searchTagService) {
         self.searchTagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     }
@@ -217,7 +218,8 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                                          blog:[self blog]
                                       success:^(NSArray<PostTag *> *tags) {
                                           stopLoading();
-                                      } failure:^(NSError *error) {
+                                      }
+                                      failure:^(NSError *error) {
                                           stopLoading();
                                           [self showLoadingErrorMessageForResults];
                                       }];
