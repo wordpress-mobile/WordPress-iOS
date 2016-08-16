@@ -76,6 +76,11 @@ beforeEach(^{
     mixpanelTracker = [[WPAnalyticsTrackerMixpanel alloc] initWithManagedObjectContext:testContextManager.mainContext mixpanelProxy:mixpanelProxyMock];
 });
 
+afterEach(^{
+    [testContextManager.mainContext reset];
+    testContextManager = nil;
+});
+
 describe(@"beginSession", ^{
     
     it(@"should register the instance token with Mixpanel", ^{
