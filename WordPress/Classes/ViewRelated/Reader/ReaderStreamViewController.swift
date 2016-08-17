@@ -1170,7 +1170,7 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
             }
