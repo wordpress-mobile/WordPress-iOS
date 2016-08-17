@@ -9,8 +9,6 @@
 #import "WordPress-Swift.h"
 #import "PhotonImageURLHelper.h"
 
-CGFloat const ReaderPostServiceRemotOffsetRankCap = 1000000.0;
-
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
 NSString * const PostRESTKeyAuthor = @"author";
@@ -231,19 +229,21 @@ static const NSUInteger ReaderPostTitleLength = 30;
                   }
 
                   // NOTE: If an offset param was specified sortRank will be derived
-                  // from the offset + order of the results.
-                  BOOL rankByOffset = [params objectForKey:@"offset"] != nil;
-                  __block CGFloat offset = [[params numberForKey:@"offset"] floatValue];
+                  // from the offset + order of the results, ONLY if a `before` param
+                  // was not specified.  If a `before` param exists we favor sorting by date.
+                  BOOL rankByOffset = [params objectForKey:ParamKeyOffset] != nil && [params objectForKey:ParamKeyBefore] == nil;
+                  __block CGFloat offset = [[params numberForKey:ParamKeyOffset] floatValue];
                   NSString *algorithm = [responseObject stringForKey:ParamsKeyAlgorithm];
                   NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
                   NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+
                       if (rankByOffset) {
                           RemoteReaderPost *post = [self formatPostDictionary:jsonPost offset:offset];
                           offset++;
                           return post;
                       }
-                      return [self formatPostDictionary:jsonPost];
 
+                      return [self formatPostDictionary:jsonPost];
                   }];
                   success(posts, algorithm);
 
@@ -257,10 +257,9 @@ static const NSUInteger ReaderPostTitleLength = 30;
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict offset:(CGFloat)offset
 {
     RemoteReaderPost *post = [self formatPostDictionary:dict];
-    // Its assumed that sortRank values are in descending order. Since
-    // offsets are ascending, we subtract the offset from an arbitrarily
-    // high value to ensure we get a proper sort order.
-    CGFloat adjustedOffset = ReaderPostServiceRemotOffsetRankCap - offset;
+    // It's assumed that sortRank values are in descending order. Since
+    // offsets are ascending, we store its negative to ensure we get a proper sort order.
+    CGFloat adjustedOffset = -offset;
     post.sortRank = @(adjustedOffset);
     return post;
 }
