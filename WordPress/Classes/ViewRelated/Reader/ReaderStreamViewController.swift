@@ -1285,11 +1285,13 @@ import WordPressComAnalytics
     }
 
 
-    public func cleanupAfterSync() {
+    public func cleanupAfterSync(refresh refresh: Bool = true) {
         syncIsFillingGap = false
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
-        tableViewHandler.refreshTableViewPreservingOffset()
+        if refresh {
+            tableViewHandler.refreshTableViewPreservingOffset()
+        }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
     }
@@ -1437,6 +1439,10 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
         cleanupAfterSync()
     }
 
+
+    public func syncContentFailed() {
+        cleanupAfterSync(refresh: false)
+    }
 }
 
 
@@ -1647,7 +1653,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRowsInSection(indexPath.section) - loadMoreThreashold
         if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
-            if syncHelper.hasMoreContent {
+            if syncHelper.hasMoreContent && !syncHelper.isSyncing {
                 syncHelper.syncMoreContent()
             }
         }
