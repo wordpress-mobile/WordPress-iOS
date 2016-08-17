@@ -970,10 +970,13 @@ import WordPressComAnalytics
 
 
     private func unblockSiteForPost(post: ReaderPost) {
+        guard let indexPath = tableViewHandler.resultsController.indexPathForObject(post) else {
+            return
+        }
+
         let objectID = post.objectID
         recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
-        let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
         tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
@@ -1669,8 +1672,8 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            unblockSiteForPost(post)
+        if recentlyBlockedSitePostObjectIDs.containsObject(apost.objectID) {
+            unblockSiteForPost(apost)
             return
         }
 

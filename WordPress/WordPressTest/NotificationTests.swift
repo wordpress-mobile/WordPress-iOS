@@ -22,12 +22,6 @@ class NotificationTests : XCTestCase {
         // might be retained more than expected, and it may break other core data based tests.
         ContextManager.overrideSharedInstance(nil)
     }
-}
-
-
-/// Tests
-///
-extension NotificationTests {
 
     func testBadgeNotificationHasBadgeFlagSetToTrue() {
         let note = loadBadgeNotification()
@@ -223,14 +217,10 @@ extension NotificationTests {
 
         XCTAssertNotNil(range)
     }
-}
 
 
+    // MARK: - Helpers
 
-/// Helpers
-///
-extension NotificationTests
-{
     var entityName: String {
         return Notification.classNameWithoutNamespaces()
     }
