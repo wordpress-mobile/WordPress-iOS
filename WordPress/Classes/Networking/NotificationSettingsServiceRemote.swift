@@ -145,7 +145,7 @@ public class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
         }
 
         var domain : String {
-            return "NotificationsServiceRemote"
+            return "NotificationSettingsServiceRemote"
         }
     }
 }
