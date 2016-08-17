@@ -738,10 +738,17 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
         let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
+
         var properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
-        WPAppAnalytics.track(WPAnalyticsStat.ReaderArticleOpened, withProperties: properties)
+        WPAppAnalytics.track(.ReaderArticleOpened, withProperties: properties)
+
+        // We can remove the nil check and use `if let` when `ReaderPost` adopts nullibility.
+        let railcar = post?.railcarDictionary()
+        if railcar != nil {
+            WPAppAnalytics.trackTrainTracksInteraction(.ReaderArticleOpened, withProperties: railcar)
+        }
     }
 
 
