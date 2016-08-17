@@ -154,6 +154,25 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return count;
 }
 
+- (void)deleteAllSearchTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSearchTopic classNameWithoutNamespaces]];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderAbstractTopic *topic in results) {
+        [self.managedObjectContext deleteObject:topic];
+    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 - (void)deleteNonMenuTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
