@@ -27,10 +27,10 @@
         [self setupAddButton];
         [self setupOrderingButton];
         [self setupCancelButton];
-        
+
         self.highlighted = NO;
     }
-    
+
     return self;
 }
 
@@ -55,21 +55,21 @@
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
     [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-    
+
     UIEdgeInsets inset = button.contentEdgeInsets;
     inset.left = 6.0;
     inset.right = inset.left;
     button.contentEdgeInsets = inset;
     button.hidden = YES;
-    
+
     [self.accessoryStackView addArrangedSubview:button];
     [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    
+
     NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToAnchor:self.accessoryStackView.heightAnchor];
     heightConstraint.priority = 999;
     heightConstraint.active = YES;
-    
+
     _cancelButton = button;
 }
 
@@ -84,15 +84,15 @@
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
-    
+
     if (highlighted) {
-        
+
         [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.addButton.tintColor = [UIColor whiteColor];
         self.orderingButton.tintColor = [UIColor whiteColor];
-        
+
     } else {
-     
+
         [self.cancelButton setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
         self.addButton.tintColor = [WPStyleGuide wordPressBlue];
         self.orderingButton.tintColor = [WPStyleGuide greyLighten20];
@@ -144,7 +144,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    
+
     UITouch *touch = [touches anyObject];
     self.touchesBeganLocation = [touch locationInView:self];
 }
@@ -158,19 +158,19 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    
+
     UITouch *touch = [touches anyObject];
     if (CGPointEqualToPoint(self.touchesBeganLocation, CGPointZero)) {
         return;
     }
-    
+
     CGPoint endedPoint = [touch locationInView:self];
     if (CGPointEqualToPoint(endedPoint, CGPointZero)) {
         return;
     }
-    
+
     if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, endedPoint)) {
-        
+
         CGRect orderingButttonRect = [self convertRect:self.orderingButton.frame fromView:self.orderingButton.superview];
         if (CGRectContainsPoint(orderingButttonRect, endedPoint)) {
             // Ignore the selection if the touch ended within the ordering button.
@@ -178,7 +178,7 @@
         }
         [self.delegate itemViewSelected:self];
     }
-    
+
     self.touchesBeganLocation = CGPointZero;
 }
 

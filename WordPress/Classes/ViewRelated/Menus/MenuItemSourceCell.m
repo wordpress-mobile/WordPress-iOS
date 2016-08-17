@@ -38,13 +38,13 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+
         self.backgroundColor = [UIColor whiteColor];
-        
+
         [self setupStackView];
         [self setupLabel];
     }
-    
+
     return self;
 }
 
@@ -55,29 +55,29 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentLeading;
     stackView.axis = UILayoutConstraintAxisHorizontal;
-    
+
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = 10.0;
     margins.left = MenusDesignDefaultContentSpacing;
     margins.right = MenusDesignDefaultContentSpacing;
     margins.bottom = 10.0;
-    
+
     stackView.layoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     [self.contentView addSubview:stackView];
-    
+
     _leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
     _topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
     _topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               _topLayoutDefaultConstraint,
                                               _leadingLayoutConstraintForContentViewIndentation,
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
                                               ]];
-    
+
     _stackView = stackView;
 }
 
@@ -91,7 +91,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     _label = label;
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
 }
@@ -99,7 +99,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     [self updateSeparatorInsets];
 }
 
@@ -140,7 +140,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     CGRect rect = [self convertRect:self.label.frame fromView:self.label.superview];
     rect.size.width = self.contentView.frame.size.width - self.stackView.layoutMargins.right;
     rect.size.width -= rect.origin.x;
-    
+
     return rect;
 }
 

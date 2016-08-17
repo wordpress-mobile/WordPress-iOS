@@ -18,7 +18,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self setupLabel];
     [self setupTextBar];
     [self setupCheckButtonView];
@@ -31,7 +31,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
     label.text = [NSLocalizedString(@"Link Address (URL)", @"Menus title label when editing a menu item as a link.") uppercaseString];
     label.textColor = [WPStyleGuide greyDarken10];
     label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
-    
+
     [self.stackView addArrangedSubview:label];
     _label = label;
 }
@@ -45,11 +45,11 @@ static CGFloat const LinkTextBarHeight = 48.0;
     textBar.textField.keyboardType = UIKeyboardTypeURL;
     textBar.delegate = self;
     [self.stackView addArrangedSubview:textBar];
-    
+
     NSLayoutConstraint *heightConstraint = [textBar.heightAnchor constraintEqualToConstant:LinkTextBarHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
-    
+
     [textBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     _textBar = textBar;
 }
@@ -63,10 +63,10 @@ static CGFloat const LinkTextBarHeight = 48.0;
         [weakSelf updateItemLinkTargetOption];
     };
     [self.stackView addArrangedSubview:checkButtonView];
-    
+
     NSLayoutConstraint *heightConstraint = [checkButtonView.heightAnchor constraintEqualToConstant:[checkButtonView preferredHeightForLayout]];
     heightConstraint.active = YES;
-    
+
     _checkButtonView = checkButtonView;
 }
 
@@ -78,9 +78,9 @@ static CGFloat const LinkTextBarHeight = 48.0;
 - (void)setItem:(MenuItem *)item
 {
     [super setItem:item];
-    
+
     self.textBar.textField.text = item.urlStr ?: @"";
-    
+
     if ([self itemTypeMatchesSourceItemType]) {
         self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItemLinkTargetBlank];
     }

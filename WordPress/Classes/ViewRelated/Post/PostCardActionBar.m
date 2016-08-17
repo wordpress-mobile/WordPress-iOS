@@ -6,7 +6,7 @@
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
-static CGFloat ActionBarMinButtonWidth = 100.0;
+static CGFloat ActionBarMinButtonWidth = 90.0;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
@@ -23,11 +23,6 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 #pragma mark - Life Cycle Methods
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -43,13 +38,6 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     }
     return self;
 }
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self setupButtonsIfNeeded];
-}
-
 
 #pragma mark - Setup
 
@@ -74,15 +62,12 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
                                                                  metrics:nil
                                                                    views:views]];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(orientationDidChange:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-
     // Trap double taps to prevent touches from regstering in the parent cell while the bar is animating.
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     tgr.numberOfTapsRequired = 2;
     [self addGestureRecognizer:tgr];
+
+    [self setupButtonsIfNeeded];
 }
 
 - (void)setupConstraints
@@ -279,11 +264,12 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 #pragma mark - Notifications
 
-- (void)orientationDidChange:(NSNotification *)notification
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
+    [super traitCollectionDidChange:previousTraitCollection];
+
     [self setupButtonsIfNeeded];
 }
-
 
 #pragma mark - Accessors
 
