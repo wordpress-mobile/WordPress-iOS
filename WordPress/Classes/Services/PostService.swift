@@ -8,7 +8,7 @@ class PostService : LocalCoreDataService {
         case any = "any"
         case post = "post"
         case page = "page"
-        
+
         func type() -> AbstractPost.Type {
             switch self {
             case .post: return Post.self
@@ -28,29 +28,29 @@ class PostService : LocalCoreDataService {
     func create(postType: PostType?, blog: Blog) -> AbstractPost? {
         return create(postType?.type() ?? Post.self, blog: blog)
     }
-    
+
     func create<T: AbstractPost>(postType: T.Type, blog: Blog) -> T? {
         assert(self.managedObjectContext == blog.managedObjectContext, "Blog's context should be the the same as the service's")
-        
+
         guard let post = NSEntityDescription.insertNewObjectForEntityForName(postType.entityName(), inManagedObjectContext: self.managedObjectContext) as? T else {
             return nil
         }
-        
+
         post.blog = blog
         post.remoteStatus = AbstractPostRemoteStatusSync
-        
+
         guard let postPost = post as? Post else {
             return post
         }
-        
+
         postPost.postFormat = blog.settings?.defaultPostFormat
         postPost.postType = Post.typeDefaultIdentifier
-        
+
         let postCategoryService = PostCategoryService(managedObjectContext:self.managedObjectContext)
         if let category = postCategoryService.findWithBlogObjectID(blog.objectID, andCategoryID: (blog.settings?.defaultCategoryID)!) {
             postPost.addCategoriesObject(category)
         }
-        
+
         return postPost as? T
     }
 
@@ -113,30 +113,41 @@ class PostService : LocalCoreDataService {
             remote.getPostsOfType(type.rawValue, options: remoteOptions, success: { (remotePosts) in
                     self.managedObjectContext.performBlock({
                         do {
-                            let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID)
-//                            self.merge(
-
+                            if let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID) as? Blog {
+                                self.merge(posts: remotePosts,
+                                    type: type,
+                                    statuses: options?.statuses,
+                                    author: options?.authorID as Int?,
+                                    blog: blogInContext,
+                                    purge: options?.purgesLocalSync,
+                                    completion: { (posts) in
+                                        success(posts)
+                                })
+                            }
                         } catch let error as NSError? {
                             DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
                         }
                     })
                 }, failure: { (error) in
-                    // TODO:
+                    self.managedObjectContext.performBlock({
+                        failure(error)
+                    })
             })
         }
     }
 
-    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String], author authorID: Int?, blog: Blog, purge: Bool, completion: ([AbstractPost]) -> Void) {
+    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: Int?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
             if let post = self.find(byID: remotePost.postID as Int, blog: blog) ?? self.create(PostType(rawValue:remotePost.type), blog: blog) {
                 self.update(post, with: remotePost)
                 return post
             }
+            return nil
         }
-        
-        if (purge) {
+
+        if let purge = purge where purge {
             var predicate = NSPredicate(format: "(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", AbstractPostRemoteStatusSync.rawValue, blog)
-            if statuses.count > 0 {
+            if let statuses = statuses where statuses.count > 0 {
                 let statusPredicate = NSPredicate(format: "status IN %@", statuses)
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, statusPredicate])
             }
@@ -144,14 +155,14 @@ class PostService : LocalCoreDataService {
                 let authorPredicate = NSPredicate(format: "authorID IN %@", authorID)
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, authorPredicate])
             }
-            
+
             let request = NSFetchRequest(entityName: type.type().entityName())
             if type == .post {
                 let postTypePredicate = NSPredicate(format: "postType = %@", type.rawValue)
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, postTypePredicate])
             }
             request.predicate = predicate
-            
+
             do {
                 if let existingPosts = try self.managedObjectContext.executeFetchRequest(request) as? [AbstractPost] {
                     let postsToKeep = Set(posts)
@@ -231,7 +242,7 @@ class PostService : LocalCoreDataService {
             }
         }
     }
-    
+
     func remotePost(withPost post: AbstractPost) -> RemotePost {
         let remotePost = RemotePost()
         remotePost.postID = post.postID
@@ -245,7 +256,7 @@ class PostService : LocalCoreDataService {
         remotePost.type = PostType.post.rawValue
         remotePost.authorAvatarURL = post.authorAvatarURL
         remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged
-        
+
         if let pagePost = post as? Page {
             remotePost.parentID = pagePost.parentID
             remotePost.type = PostType.page.rawValue
@@ -255,11 +266,11 @@ class PostService : LocalCoreDataService {
             remotePost.categories = self.remoteCategories(for:postPost)
         }
     }
-    
+
     func remoteCategories(for post: Post) -> [RemotePostCategory]? {
         return post.categories?.map { self.remoteCategory(with: $0) }
     }
-    
+
     func remoteCategory(with category: PostCategory) -> RemotePostCategory {
         let remoteCategory = RemotePostCategory()
         remoteCategory.categoryID = category.categoryID
@@ -267,29 +278,29 @@ class PostService : LocalCoreDataService {
         remoteCategory.parentID = category.parentID
         return remoteCategory
     }
-    
+
     func remoteMetadata(for post: Post) -> [[String: AnyObject]] {
         var metadata: [[String: AnyObject]] = []
         let coordinate = post.geolocation
-        
+
         /*
          This might look more complicated than it should be, but it needs to be that way. - @koke
-         
+
          Depending of the existence of geolocation and ID values, we need to add/update/delete the custom fields:
          - geolocation  &&  ID: update
          - geolocation  && !ID: add
          - !geolocation &&  ID: delete
          - !geolocation && !ID: noop
          */
-        
+
         if post.latitudeID != nil || coordinate != nil {
             var latitudeDictionary: [String: AnyObject] = [:]
             if let latitudeID = post.latitudeID {
                 latitudeDictionary["id"] = latitudeID
             }
             if let c = coordinate {
-                latitudeDictionary["key"] = "geo_latitude";
-                latitudeDictionary["value"] = c.latitude;
+                latitudeDictionary["key"] = "geo_latitude"
+                latitudeDictionary["value"] = c.latitude
             }
             metadata.append(latitudeDictionary)
         }
@@ -299,8 +310,8 @@ class PostService : LocalCoreDataService {
                 longitudeDictionary["id"] = longitudeID
             }
             if let c = coordinate {
-                longitudeDictionary["key"] = "geo_longitude";
-                longitudeDictionary["value"] = c.longitude;
+                longitudeDictionary["key"] = "geo_longitude"
+                longitudeDictionary["value"] = c.longitude
             }
             metadata.append(longitudeDictionary)
         }
@@ -310,8 +321,8 @@ class PostService : LocalCoreDataService {
                 publicDictionary["id"] = publicID
             }
             if coordinate != nil {
-                publicDictionary["key"] = "geo_public";
-                publicDictionary["value"] = 1;
+                publicDictionary["key"] = "geo_public"
+                publicDictionary["value"] = 1
             }
             metadata.append(publicDictionary)
         }
