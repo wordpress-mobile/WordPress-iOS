@@ -148,8 +148,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override internal func postTypeToSync() -> PostServiceType {
-        return PostServiceType.Page
+    override internal func postTypeToSync() -> PostService.PostType {
+        return .page
     }
 
     override internal func lastSyncDate() -> NSDate? {

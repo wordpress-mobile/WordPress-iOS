@@ -684,7 +684,6 @@
 		E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBD919DC7D080071AC1E /* RemotePost.m */; };
 		E1A6DBE119DC7D140071AC1E /* PostServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBDE19DC7D140071AC1E /* PostServiceRemoteREST.m */; };
 		E1A6DBE219DC7D140071AC1E /* PostServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBE019DC7D140071AC1E /* PostServiceRemoteXMLRPC.m */; };
-		E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBE419DC7D230071AC1E /* PostService.m */; };
 		E1A7CA4B1CC9FD7800373E06 /* StoreCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */; };
 		E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8CACA1C22FF7C0038689E /* MeViewController.swift */; };
 		E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -5727,7 +5726,6 @@
 				E1BEEC651C4E3978000B4FA0 /* PaddedLabel.swift in Sources */,
 				E6417B991CA07B9C0084050A /* WPStyleGuide+NUX.swift in Sources */,
 				E6E27D601C613B3C0063F821 /* RemoteSharingButton.swift in Sources */,
-				E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
 				594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */,

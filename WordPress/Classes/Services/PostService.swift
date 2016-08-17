@@ -66,29 +66,30 @@ class PostService : LocalCoreDataService {
         return page
     }
 
-    func get(byId postID: Int, blog: Blog, success: (AbstractPost) -> Void, failure: ((NSError?) -> Void)?) {
+    func get(byId postID: Int, blog: Blog, success: (AbstractPost?) -> Void, failure: ((NSError?) -> Void)?) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
             remote.getPostWithID(postID,
                                  success: { (remotePost: RemotePost?) -> Void in
                                     self.managedObjectContext.performBlock({
-                                        guard let remotePost = remotePost,
-                                        let blogInContext = try? self.managedObjectContext.existingObjectWithID(blogID) as! Blog
-                                        else {
+                                        guard let blogInContext = (try? self.managedObjectContext.existingObjectWithID(blogID)) as? Blog else { return }
+                                        
+                                        guard let remotePost = remotePost else {
                                             if let failure = failure {
                                                 let userInfo = [NSLocalizedDescriptionKey: "Retrieved remote post is nil"]
                                                 failure(NSError(domain: ReaderPostServiceErrorDomain, code: 0, userInfo: userInfo))
                                             }
                                             return
                                         }
-                                        var post = self.find(byID: postID, blog: blogInContext)
-                                        if post == nil {
-                                            post = self.create(.post, blog: blogInContext)
+                                        
+                                        let post = self.find(byID: postID, blog: blogInContext) ?? self.create(.post, blog: blogInContext)
+                                        
+                                        if let post = post {
+                                            self.update(post, with:remotePost)
                                         }
-                                        self.update(post!, with:remotePost)
                                         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
 
-                                        success(post!)
+                                        success(post)
                                     })
                 },
                                  failure: { (error: NSError?) in
@@ -135,6 +136,55 @@ class PostService : LocalCoreDataService {
             })
         }
     }
+    
+    func upload(post: AbstractPost, success: (AbstractPost?) -> Void, failure: (NSError?) -> Void) {
+        let remote = self.remote(for: post.blog)
+        let remotePost = self.remotePost(withPost: post)
+        post.remoteStatus = AbstractPostRemoteStatusPushing
+        ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+        let postObjectID = post.objectID
+        let successBlock: (RemotePost!) -> Void = { post in
+            self.managedObjectContext.performBlock({ 
+                if var postInContext = (try? self.managedObjectContext.existingObjectWithID(postObjectID)) as? AbstractPost {
+                    if let originalPost = postInContext.original where postInContext.isRevision() {
+                        originalPost.applyRevision()
+                        originalPost.deleteRevision()
+                        postInContext = originalPost
+                    }
+                    
+                    self.update(postInContext, with: post)
+                    postInContext.remoteStatus = AbstractPostRemoteStatusSync
+                    let mediaService = MediaService(managedObjectContext: self.managedObjectContext)
+                    for case let media as Media in postInContext.media where media.postID.longLongValue <= 0 {
+                        media.postID = post.postID
+                        mediaService.updateMedia(media, success: nil, failure: nil)
+                    }
+                    ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                    
+                    success(postInContext)
+                    
+                } else {
+                    success(nil)
+                }
+            })
+        }
+        
+        let failureBlock: (NSError?) -> Void = { error in
+            self.managedObjectContext.performBlock({ 
+                if let postInContext = (try? self.managedObjectContext.existingObjectWithID(postObjectID)) as? AbstractPost {
+                    postInContext.remoteStatus = AbstractPostRemoteStatusFailed
+                    ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                }
+                failure(error)
+            })
+        }
+        
+        if post.postID?.longLongValue > 0 {
+            remote?.updatePost(remotePost, success: successBlock, failure: failureBlock)
+        } else {
+            remote?.createPost(remotePost, success: successBlock, failure: failureBlock)
+        }
+    }
 
     func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: Int?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
@@ -176,11 +226,11 @@ class PostService : LocalCoreDataService {
                 DDLogSwift.logError(String("Error fetching existing posts for purging: %@", error))
             }
         }
-        
+
         ContextManager.sharedInstance().saveDerivedContext(self.managedObjectContext)
         completion(posts)
     }
-    
+
     func find(byID postID: Int, blog: Blog) -> AbstractPost? {
         let request = NSFetchRequest(entityName: AbstractPost.entityName())
         request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND postID = %@", blog, postID)
@@ -265,6 +315,8 @@ class PostService : LocalCoreDataService {
             remotePost.tags = postPost.tags?.characters.split(",").map(String.init)
             remotePost.categories = self.remoteCategories(for:postPost)
         }
+        
+        return remotePost
     }
 
     func remoteCategories(for post: Post) -> [RemotePostCategory]? {

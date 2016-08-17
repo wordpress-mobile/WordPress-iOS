@@ -78,7 +78,6 @@
 #import "PostPreviewViewController.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
-#import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostServiceRemote.h"
 #import "PostServiceRemoteREST.h"

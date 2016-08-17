@@ -531,9 +531,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     // MARK: - WPContentSyncHelperDelegate
 
-    internal func postTypeToSync() -> PostServiceType {
+    internal func postTypeToSync() -> PostService.PostType {
         // Subclasses should override.
-        return PostServiceType.Any
+        return .any
     }
 
     func lastSyncDate() -> NSDate? {
@@ -557,41 +557,39 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.purgesLocalSync = true
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
+        postService.syncPosts(ofType: postTypeToSync(),
+            blog: blog,
+            options: options,
             success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                    return
+                guard let strongSelf = self else {
+                        return
                 }
-
+                
                 if posts.count > 0 {
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                 }
-
+                
                 success?(hasMore: filter.hasMore)
-
+                
                 if strongSelf.isSearching() {
                     // If we're currently searching, go ahead and request a sync with the searchText since
                     // an action was triggered to syncContent.
                     strongSelf.syncPostsMatchingSearchText()
                 }
-
+                
             }, failure: {[weak self] (error: NSError?) -> () in
-
+                
                 guard let strongSelf = self,
                     let error = error else {
-                    return
+                        return
                 }
-
+                
                 failure?(error: error)
-
+                
                 if userInteraction == true {
                     strongSelf.handleSyncFailure(error)
                 }
-        })
+            })
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -610,31 +608,30 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                        return
-                }
-
-                if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
-                }
-
-                success?(hasMore: filter.hasMore)
-            }, failure: {[weak self] (error: NSError?) -> () in
-
-                guard let strongSelf = self,
-                    let error = error else {
-                        return
-                }
-
-                failure?(error: error)
-
-                strongSelf.handleSyncFailure(error)
+        postService.syncPosts(ofType: postTypeToSync(),
+                              blog: blog,
+                              options: options,
+                              success: {[weak self] posts in
+                                guard let strongSelf = self else {
+                                        return
+                                }
+                                
+                                if posts.count > 0 {
+                                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                                }
+                                
+                                success?(hasMore: filter.hasMore)
+            },
+                              failure: {[weak self] (error: NSError?) -> () in
+                                
+                                guard let strongSelf = self,
+                                    let error = error else {
+                                        return
+                                }
+                                
+                                failure?(error: error)
+                                
+                                strongSelf.handleSyncFailure(error)
             })
     }
 
@@ -748,16 +745,15 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
-            success: { [weak self] posts in
-                self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error: NSError?) in
-                self?.postsSyncWithSearchEnded()
-            }
-        )
+        postService.syncPosts(ofType: postTypeToSync(),
+                              blog: blog,
+                              options: options,
+                              success: { [weak self] posts in
+                                self?.postsSyncWithSearchEnded()
+            },
+                              failure: { [weak self] (error: NSError?) in
+                                self?.postsSyncWithSearchEnded()
+            })
     }
 
     // MARK: - Actions
@@ -771,7 +767,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
+        
         postService.uploadPost(apost, success: nil) { [weak self] (error: NSError!) in
 
             guard let strongSelf = self else {
