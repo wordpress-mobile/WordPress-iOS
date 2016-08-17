@@ -1,10 +1,11 @@
 import Foundation
+import WordPressShared
 import WordPressComAnalytics
 
 class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
 
     private static let pageSectionHeaderHeight = CGFloat(24.0)
-    private static let pageCellEstimatedRowHeight = CGFloat(44.0)
+    private static let pageCellEstimatedRowHeight = CGFloat(47.0)
     private static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
     private static let pageCellIdentifier = "PageCellIdentifier"
     private static let pageCellNibName = "PageListTableViewCell"
@@ -12,7 +13,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private static let restorePageCellNibName = "RestorePageTableViewCell"
     private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    private var cellForLayout : PageListTableViewCell!
+    private lazy var sectionFooterSeparatorView : UIView = {
+        let footer = UIView()
+        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        return footer
+    }()
 
     // MARK: - GUI
 
@@ -77,17 +82,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Configuration
 
-    override func configureCellsForLayout() {
-
-        let bundle = NSBundle.mainBundle()
-
-        cellForLayout = bundle.loadNibNamed(self.dynamicType.pageCellNibName, owner: nil, options: nil)[0] as! PageListTableViewCell
-    }
-
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .None
+        tableView.estimatedRowHeight = self.dynamicType.pageCellEstimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = NSBundle.mainBundle()
 
@@ -97,6 +96,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
         let restorePageCellNib = UINib(nibName: self.dynamicType.restorePageCellNibName, bundle: bundle)
         tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
+
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
     override func configureSearchController() {
@@ -222,36 +223,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return NSStringFromSelector(#selector(Page.sectionIdentifier))
     }
 
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return self.dynamicType.pageCellEstimatedRowHeight
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-
-        let page = pageAtIndexPath(indexPath)
-
-        if cellIdentifierForPage(page) == self.dynamicType.restorePageCellIdentifier {
-            return self.dynamicType.pageCellEstimatedRowHeight
-        }
-
-        let width = tableView.bounds.width
-        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        configureCell(cellForLayout, atIndexPath: indexPath)
-        let size = cellForLayout.sizeThatFits(CGSizeMake(width, CGFloat.max))
-        let height = ceil(size.height)
-
-        return height
-    }
-
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.dynamicType.pageSectionHeaderHeight
     }
 
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+        if section == tableView.numberOfSections - 1 {
+            return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
+        }
+        return 0.0
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
@@ -267,6 +247,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+        if section == tableView.numberOfSections - 1 {
+            return sectionFooterSeparatorView
+        }
         return UIView(frame: CGRectZero)
     }
 
@@ -281,6 +264,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
+            return windowlessCell
+        }
+
         let page = pageAtIndexPath(indexPath)
 
         let identifier = cellIdentifierForPage(page)
@@ -298,13 +285,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
 
         cell.accessoryType = .None
-        cell.selectionStyle = .None
 
         if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
         } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
+            cell.selectionStyle = .None
             cell.onAction = { [weak self] cell, _, page in
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }

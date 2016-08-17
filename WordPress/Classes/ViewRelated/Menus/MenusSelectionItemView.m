@@ -22,10 +22,10 @@
 {
     self = [super init];
     if (self) {
-        
+
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        
+
         UILabel *label = [[UILabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
         label.backgroundColor = [UIColor clearColor];
@@ -33,24 +33,24 @@
         label.textColor = [WPStyleGuide darkGrey];
         [self addSubview:label];
         _label = label;
-        
+
         UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
         insets.left = MenusDesignDefaultContentSpacing;
         insets.right = MenusDesignDefaultContentSpacing;
-        
+
         [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left].active = YES;
         [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:insets.right].active = YES;
         [label.topAnchor constraintEqualToAnchor:self.topAnchor constant:0].active = YES;
         [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0].active = YES;
-        
+
         _drawsDesignLineSeparator = YES; // defaults to YES
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(itemSelectionChanged:) name:MenusSelectionViewItemChangedSelectedNotification object:nil];
-        
+
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateViewWasSelected)];
         [self addGestureRecognizer:tap];
     }
-    
+
     return self;
 }
 
@@ -74,7 +74,7 @@
 {
     if (_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
-        
+
         [self.previousItemView setNeedsDisplay];
         [self.nextItemView setNeedsDisplay];
         self.drawsDesignLineSeparator = !drawsHighlighted;
@@ -98,25 +98,25 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (self.drawsHighlighted) {
-        
+
         [[WPStyleGuide greyLighten30] set];
         CGContextFillRect(context, rect);
-        
+
     } else  if (self.drawsDesignLineSeparator) {
-        
+
         // draw the line separator
         CGContextSetLineWidth(context, MenusDesignStrokeWidth);
-        
+
         if (self.nextItemView && !self.nextItemView.drawsHighlighted) {
             // draw a line on the bottom
             CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height - (MenusDesignStrokeWidth / 2.0));
             CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
         }
-        
+
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
         CGContextStrokePath(context);
     }
-    
+
     if (self.item.selected) {
         // draw a checkmark
         CGFloat checkStepLength = 10.0;
@@ -125,7 +125,7 @@
         checkOrigin.x -= checkStepLength;
         checkOrigin.y = rect.size.height / 2.0;
         checkOrigin.y += checkStepLength / 2.0;
-        
+
         CGContextSetLineWidth(context, 1.0);
         CGContextMoveToPoint(context, checkOrigin.x, checkOrigin.y);
         CGContextAddLineToPoint(context, checkOrigin.x + checkStepLength, checkOrigin.y - checkStepLength);

@@ -10,6 +10,7 @@
 #import "JetpackService.h"
 #import "JetpackServiceRemote.h"
 #import "TestContextManager.h"
+#import "ContextManager-Internals.h"
 
 @interface BlogJetpackTest : XCTestCase
 @end
@@ -27,7 +28,8 @@
     [super setUp];
     self.testContextManager = [[TestContextManager alloc] init];
     
-    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
+    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+                                                  inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.username = @"admin";
     _blog.url = @"http://test.blog/";
@@ -42,7 +44,8 @@
                               @"readonly": @YES,
                               },
                       };
-    _blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.testContextManager.mainContext];
+    _blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings"
+                                                                   inManagedObjectContext:self.testContextManager.mainContext];
 }
 
 - (void)tearDown {
@@ -51,6 +54,7 @@
     _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllStubs];
+    [ContextManager overrideSharedInstance:nil];
 
     self.testContextManager = nil;
 }
