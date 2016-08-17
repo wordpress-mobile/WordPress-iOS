@@ -140,12 +140,16 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
-// Pods
 
+// Pods
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
 #import <WordPress_AppbotX/ABXPromptView.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
+
+#ifdef BUDDYBUILD_ENABLED
+#import <BuddyBuildSDK/BuddyBuildSDK.h>
+#endif
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
