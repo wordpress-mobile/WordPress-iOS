@@ -3,14 +3,14 @@ import XCTest
 import WordPress
 import OHHTTPStubs
 
-class NotificationsSettingsServiceTests: XCTestCase
+class NotificationSettingsServiceTests: XCTestCase
 {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
     var contextManager      : TestContextManager!
     var remoteApi           : WordPressComRestApi!
-    var service             : NotificationsSettingsService!
+    var service             : NotificationSettingsService!
 
     // MARK: - Constants
     let timeout             = 2.0
@@ -26,7 +26,7 @@ class NotificationsSettingsServiceTests: XCTestCase
 
         contextManager      = TestContextManager()
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        service             = NotificationsSettingsService(managedObjectContext: contextManager.mainContext,
+        service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
                                                            wordPressComRestApi: remoteApi)
 
         stub({ request in

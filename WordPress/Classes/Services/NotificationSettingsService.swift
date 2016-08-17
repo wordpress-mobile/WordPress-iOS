@@ -3,7 +3,7 @@ import Foundation
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
-public class NotificationsSettingsService: LocalCoreDataService
+public class NotificationSettingsService: LocalCoreDataService
 {
     // MARK: - Aliases
     public typealias Channel    = NotificationSettings.Channel
@@ -257,8 +257,8 @@ public class NotificationsSettingsService: LocalCoreDataService
 
 
     // MARK: - Private Computed Properties
-    private var notificationsServiceRemote : NotificationsSettingsServiceRemote? {
-        return NotificationsSettingsServiceRemote(wordPressComRestApi: remoteApi)
+    private var notificationsServiceRemote : NotificationSettingsServiceRemote? {
+        return NotificationSettingsServiceRemote(wordPressComRestApi: remoteApi)
     }
 
     private var blogService : BlogService {
