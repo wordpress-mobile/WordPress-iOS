@@ -1025,7 +1025,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-            
+
+        case WPAnalyticsStatTrainTracksInteract:
+        case WPAnalyticsStatTrainTracksRender:
+            // Do nothing. These events are just for Tracks.
+            break;
+
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
         case WPAnalyticsStatLoginMagicLinkFailed:
