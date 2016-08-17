@@ -103,6 +103,17 @@ import Gridicons
     }
 
 
+    public override func didMoveToParentViewController(parent: UIViewController?) {
+        super.didMoveToParentViewController(parent)
+        if let _ = parent {
+            return
+        }
+        // When the parent is nil then we've been removed from the nav stack.
+        // Clean up any search topics at this point.
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderTopicService(managedObjectContext: context).deleteAllSearchTopics()
+    }
+
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -185,6 +196,8 @@ import Gridicons
             return
         }
 
+        let previousTopic = streamController.readerTopic
+
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
 
@@ -195,6 +208,10 @@ import Gridicons
         // Hide the starting label now that a topic has been set.
         label.hidden = true
         endSearch()
+
+        if let previousTopic = previousTopic {
+            service.deleteTopic(previousTopic)
+        }
     }
 
 
