@@ -3,7 +3,7 @@ import XCTest
 import WordPress
 import OHHTTPStubs
 
-class NotificationsServiceTests : XCTestCase
+class NotificationsSettingsServiceTests: XCTestCase
 {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
