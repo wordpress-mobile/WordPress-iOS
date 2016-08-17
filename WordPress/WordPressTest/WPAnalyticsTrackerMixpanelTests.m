@@ -6,6 +6,7 @@
 #import "MixpanelProxy.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "TestContextManager.h"
+#import "ContextManager-Internals.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPAccount.h"
@@ -63,6 +64,7 @@ void (^createBlog)() = ^{
                              @"readonly": @YES,
                              },
                      };
+    blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:testContextManager.mainContext];
     [testContextManager.mainContext save:nil];
 };
 
@@ -73,6 +75,11 @@ beforeEach(^{
     
     mixpanelProxyMock = [OCMockObject niceMockForClass:[MixpanelProxy class]];
     mixpanelTracker = [[WPAnalyticsTrackerMixpanel alloc] initWithManagedObjectContext:testContextManager.mainContext mixpanelProxy:mixpanelProxyMock];
+});
+
+afterEach(^{
+    [ContextManager overrideSharedInstance:nil];
+    testContextManager = nil;
 });
 
 describe(@"beginSession", ^{

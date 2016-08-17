@@ -13,6 +13,11 @@
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
+#ifdef BUDDYBUILD_ENABLED
+#import <BuddyBuildSDK/BuddyBuildSDK.h>
+#endif
+
+
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
 #import "WPCrashlytics.h"
@@ -131,6 +136,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
+    [self setupBuddyBuild];
 
     return YES;
 }
@@ -171,6 +177,27 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)setupStoreKit
 {
     [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
+}
+
+- (void)setupBuddyBuild
+{
+#ifdef BUDDYBUILD_ENABLED
+    [BuddyBuildSDK setScreenshotAllowedCallback:^BOOL{
+        return NO;
+    }];
+    
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    NSString *username = defaultAccount.username;
+    
+    if (username.length > 0) {
+        [BuddyBuildSDK setUserDisplayNameCallback:^() {
+            return @"Johnny Appleseed";
+        }];
+    }
+    
+    [BuddyBuildSDK setup];
+#endif
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
