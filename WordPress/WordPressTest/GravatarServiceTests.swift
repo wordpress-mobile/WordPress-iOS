@@ -14,6 +14,11 @@ class GravatarServiceTests : XCTestCase
         contextManager = TestContextManager()
     }
 
+    override func tearDown() {
+        super.tearDown()
+        ContextManager.overrideSharedInstance(nil)
+    }
+
     func testServiceInitializerFailsWhenMissingDefaultAccount() {
         let mainContext = contextManager.mainContext
 
