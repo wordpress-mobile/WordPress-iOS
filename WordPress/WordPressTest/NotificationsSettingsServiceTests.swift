@@ -10,7 +10,7 @@ class NotificationsSettingsServiceTests: XCTestCase
     // MARK: - Properties
     var contextManager      : TestContextManager!
     var remoteApi           : WordPressComRestApi!
-    var service             : NotificationsService!
+    var service             : NotificationsSettingsService!
 
     // MARK: - Constants
     let timeout             = 2.0
@@ -26,8 +26,8 @@ class NotificationsSettingsServiceTests: XCTestCase
 
         contextManager      = TestContextManager()
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        service             = NotificationsService(managedObjectContext: contextManager.mainContext,
-                                                   wordPressComRestApi: remoteApi)
+        service             = NotificationsSettingsService(managedObjectContext: contextManager.mainContext,
+                                                           wordPressComRestApi: remoteApi)
 
         stub({ request in
             return request.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil
