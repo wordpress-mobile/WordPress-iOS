@@ -34,7 +34,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *score;
 @property (nonatomic, strong) NSNumber *siteID;
-// Normalizes sorting between score or sortDate depending on the flavor of post.
+// Normalizes sorting between offset or sortDate depending on the flavor of post.
+// Note that this can store a negative value.
 @property (nonatomic, strong) NSNumber *sortRank;
 // Normalizes the date to sort by depending on the flavor of post.
 @property (nonatomic, strong) NSDate *sortDate;
