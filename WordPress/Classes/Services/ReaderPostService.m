@@ -1012,10 +1012,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.sortDate = remotePost.sortDate;
 
     if (!existing) {
-        // Failsafe.  The `read/searc` endpoint might return the same post on
+        // Failsafe.  The `read/search` endpoint might return the same post on
         // more than one page. If this happens preserve the *original* sortRank
         // to avoid content jumping around in the UI.
-        // Posts from other endpoits will store a date value which shouldn't
+        // Posts from other endpoints will store a date value which shouldn't
         // change, ergo they should be unaffected.
         post.sortRank = remotePost.sortRank;
     }
