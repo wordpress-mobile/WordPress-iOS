@@ -55,7 +55,7 @@ public class NotificationSettingsViewController : UIViewController
 
     // MARK: - Service Helpers
     private func reloadSettings() {
-        let service = NotificationsSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         activityIndicatorView.startAnimating()
 
