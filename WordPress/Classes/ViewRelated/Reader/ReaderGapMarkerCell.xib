@@ -46,7 +46,7 @@
                         <constraints>
                             <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="02F-Ob-qUU"/>
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="centerX" secondItem="Iu5-0g-eH5" secondAttribute="centerX" id="1Ti-Kd-lSE"/>
-                            <constraint firstItem="mwJ-ag-abH" firstAttribute="leading" secondItem="NEV-Mu-ne8" secondAttribute="leadingMargin" constant="-1" id="2FI-BB-LzG"/>
+                            <constraint firstItem="mwJ-ag-abH" firstAttribute="leading" secondItem="NEV-Mu-ne8" secondAttribute="leadingMargin" priority="999" constant="-1" id="2FI-BB-LzG"/>
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="width" secondItem="Iu5-0g-eH5" secondAttribute="width" constant="4" id="4kB-se-exN"/>
                             <constraint firstItem="kzd-gs-nwM" firstAttribute="centerY" secondItem="mwJ-ag-abH" secondAttribute="centerY" id="50a-Ga-DXU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mwJ-ag-abH" secondAttribute="trailing" priority="999" constant="-1" id="5ke-Rc-Taa"/>
