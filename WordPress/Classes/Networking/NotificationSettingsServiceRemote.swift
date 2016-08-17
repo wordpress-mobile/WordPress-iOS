@@ -5,7 +5,7 @@ import UIDeviceIdentifier
 /// Note that Notification Sync'ing itself is handled via Simperium, and here we'll deal mostly with the
 /// Settings / Push Notifications API.
 ///
-public class NotificationsSettingsServiceRemote: ServiceRemoteWordPressComREST
+public class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
 {
     /// Designated Initializer. Fails if the remoteApi is nil.
     ///
