@@ -355,10 +355,22 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     override func createPost() {
         if WPPostViewController.isNewEditorEnabled() {
-            createPostInNewEditor()
+            if WPPostViewController.isNativeEditorEnabled() {
+                createPostInNativeEditor()
+            } else {
+                createPostInNewEditor()
+            }
         } else {
             createPostInOldEditor()
         }
+    }
+
+    private func createPostInNativeEditor() {
+        let postViewController = AztecPostViewController()
+        let navController = UINavigationController(rootViewController: postViewController)
+        navController.modalPresentationStyle = .FullScreen
+        presentViewController(navController, animated: true, completion: nil)
+        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
 
     private func createPostInNewEditor() {
@@ -411,6 +423,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
 
         if WPPostViewController.isNewEditorEnabled() {
+            if (WPPostViewController.isNativeEditorEnabled()) {
+                let postViewController = AztecPostViewController()
+                let navController = UINavigationController(rootViewController: postViewController)
+                navController.modalPresentationStyle = .FullScreen
+                presentViewController(navController, animated: true, completion: nil)
+                return
+            }
             let postViewController = WPPostViewController(post: apost, mode: mode)
 
             postViewController.onClose = {[weak self] viewController, changesSaved in
