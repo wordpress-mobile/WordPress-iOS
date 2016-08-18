@@ -5,6 +5,7 @@ import UIKit
     func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
     func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
     optional func syncContentEnded()
+    optional func syncContentFailed()
     optional func hasNoMoreContent()
 }
 
@@ -71,15 +72,16 @@ class WPContentSyncHelper: NSObject {
         isLoadingMore = true
 
         delegate?.syncHelper(self, syncMoreWithSuccess: {
-            [weak self] (hasMore: Bool) -> Void in
+            [weak self] (hasMore: Bool) in
             if let weakSelf = self {
                 weakSelf.hasMoreContent = hasMore
                 weakSelf.syncContentEnded()
             }
         }, failure: {
-            [weak self] (error: NSError) -> Void in
+            [weak self] (error: NSError) in
+            DDLogSwift.logInfo("Error syncing more: \(error)")
             if let weakSelf = self {
-                weakSelf.syncContentEnded()
+                weakSelf.syncContentEnded(error: true)
             }
         })
 
@@ -89,11 +91,15 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Private Methods
 
-    private func syncContentEnded() {
+    private func syncContentEnded(error error: Bool = false) {
         isSyncing = false
         isLoadingMore = false
 
-        delegate?.syncContentEnded?()
+        if error {
+            delegate?.syncContentFailed?()
+        } else {
+            delegate?.syncContentEnded?()
+        }
     }
 
 }

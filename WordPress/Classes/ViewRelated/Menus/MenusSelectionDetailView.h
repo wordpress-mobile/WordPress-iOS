@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol MenusSelectionDetailViewDelegate;
 
 /**
- A detail view encapsulating labels displaying a currently 
+ A detail view encapsulating labels displaying a currently
  selected MenusSelectionItem and a count of available MenusSelectionItems.
  */
 @interface MenusSelectionDetailView : UIView
