@@ -45,6 +45,7 @@
 @property (nonatomic) BOOL isJetpack;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
+@property (nonatomic, strong) NSString *railcar;
 
 // Base Post Model
 @property (nonatomic, strong) NSString *author;

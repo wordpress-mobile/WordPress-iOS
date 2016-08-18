@@ -31,19 +31,19 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+
     self.stackView.layoutMarginsRelativeArrangement = YES;
     UIEdgeInsets margin = [Menu viewDefaultDesignInsets];
     margin.top = 0;
     margin.bottom = 0;
     self.stackView.layoutMargins = margin;
     self.stackView.spacing = 4.0;
-    
+
     [self setupTextField];
     [self setupTextFieldDesignViews];
     [self setupDoneButton];
     [self setupTrashButton];
-    
+
     [self updateTextFieldDesignIconPositioning];
 }
 
@@ -77,19 +77,19 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 }
 
 - (void)setupTextFieldDesignViews
-{    
+{
     UIView *textFieldDesignView = self.textFieldDesignView;
     textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
-    
+
     UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.tintColor = [WPStyleGuide grey];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     _textFieldDesignIcon = imageView;
-    
+
     [textFieldDesignView addSubview:imageView];
-    
+
     NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
     _textFieldDesignIconLeadingConstraint = leadingConstraint;
     [NSLayoutConstraint activateConstraints:@[
@@ -135,7 +135,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     } else  {
         leadingConstant += 6.0; // padding
     }
-    
+
     self.textFieldDesignIconLeadingConstraint.constant = ceilf(leadingConstant);
     [self.textFieldDesignIcon setNeedsLayout];
 }
@@ -143,18 +143,18 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 - (void)showTextFieldEditingState
 {
     [UIView animateWithDuration:TextfieldEditingAnimationDuration animations:^{
-        
+
         self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
         self.textFieldDesignView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-        
+
     } completion:nil];
 }
 
 - (void)hideTextFieldEditingState
 {
     [UIView animateWithDuration:TextfieldEditingAnimationDuration animations:^{
-        
+
         self.textFieldDesignView.backgroundColor = [UIColor clearColor];
         self.doneButton.alpha = 0.0;
 
@@ -164,7 +164,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     [self updateTextFieldDesignIconPositioning];
 }
 
@@ -218,12 +218,12 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 {
     // Update the textField to the set menu name if needed.
     textField.text = self.menu.name;
-    
+
     [self updateTextFieldDesignIconPositioning];
     [UIView animateWithDuration:0.25 animations:^{
         self.textFieldDesignIcon.hidden = NO;
     }];
-    
+
     [self hideTextFieldEditingState];
 }
 

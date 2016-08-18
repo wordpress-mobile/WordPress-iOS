@@ -16,9 +16,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
-    /// - Returns: A Subject Attributed String
-    ///
-    public func attributedSubjectText() -> NSAttributedString {
+    public var attributedSubjectText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.subjectRegularStyle,
                 quoteStyles:    Styles.subjectItalicsStyle,
@@ -31,9 +29,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
-    /// - Returns: A Snippet Attributed String
-    ///
-    public func attributedSnippetText() -> NSAttributedString {
+    public var attributedSnippetText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles:    nil,
@@ -46,9 +42,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
-    /// - Returns: A Header Attributed String
-    ///
-    public func attributedHeaderTitleText() -> NSAttributedString {
+    public var attributedHeaderTitleText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles:    nil,
@@ -61,9 +55,7 @@ extension NotificationBlock {
 
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
-    /// - Returns: A Header Attributed String
-    ///
-    public func attributedFooterText() -> NSAttributedString {
+    public var attributedFooterText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles:    nil,
@@ -74,12 +66,9 @@ extension NotificationBlock {
         return attributedText(Constants.richHeaderTitleCacheKey)
     }
 
-    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and
-    /// NoteBlockCommentTableViewCell.
+    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
     ///
-    /// - Returns: An Attributed String for usage in both, comments and regular cells
-    ///
-    public func attributedRichText() -> NSAttributedString {
+    public var attributedRichText: NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if let textOverride = textOverride {
@@ -99,9 +88,7 @@ extension NotificationBlock {
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom
     /// formatting that differs from regular notifications, such as centered texts.
     ///
-    /// - Returns: An Attributed String for usage in Badge Notifications
-    ///
-    public func attributedBadgeText() -> NSAttributedString {
+    public var attributedBadgeText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.badgeRegularStyle,
                 quoteStyles:    Styles.badgeBoldStyle,

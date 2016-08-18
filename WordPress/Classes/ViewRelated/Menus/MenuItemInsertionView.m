@@ -10,14 +10,14 @@
 {
     self = [super init];
     if (self) {
-                
+
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
-        
+
         self.iconView.tintColor = [WPStyleGuide wordPressBlue];
         self.iconView.image = [Gridicon iconOfType:GridiconTypePlus];
     }
-    
+
     return self;
 }
 
@@ -46,7 +46,7 @@
             text = nil;
             break;
     }
-    
+
     return text;
 }
 
@@ -58,7 +58,7 @@
     } else  {
         color = [WPStyleGuide wordPressBlue];
     }
-    
+
     return color;
 }
 
