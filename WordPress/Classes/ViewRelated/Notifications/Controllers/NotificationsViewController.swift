@@ -193,8 +193,8 @@ class NotificationsViewController : UITableViewController
         }
 
         // Old School Height Calculation
-        let subject = note.subjectBlock()?.attributedSubjectText()
-        let snippet = note.snippetBlock()?.attributedSnippetText()
+        let subject = note.subjectBlock?.attributedSubjectText
+        let snippet = note.snippetBlock?.attributedSnippetText
 
         return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
@@ -517,7 +517,7 @@ extension NotificationsViewController
             navigationController?.popViewControllerAnimated(false)
         }
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.isMatcher == true {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             navigationController?.pushViewController(readerViewController, animated: true)
             return
@@ -689,9 +689,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let filtersMap: [Filter: String] = [
             .None       : "",
             .Unread     : " AND (read = NO)",
-            .Comment    : " AND (type = '\(NoteTypeComment)')",
-            .Follow     : " AND (type = '\(NoteTypeFollow)')",
-            .Like       : " AND (type = '\(NoteTypeLike)' OR type = '\(NoteTypeCommentLike)')"
+            .Comment    : " AND (type = '\(NoteKind.Comment.toTypeValue)')",
+            .Follow     : " AND (type = '\(NoteKind.Follow.toTypeValue)')",
+            .Like       : " AND (type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)')"
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
@@ -717,11 +717,11 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.forceCustomCellMargins = true
-        cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
-        cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
+        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read?.boolValue ?? false
         cell.noticon                = note.noticon
-        cell.unapproved             = note.isUnapprovedComment()
+        cell.unapproved             = note.isUnapprovedComment
         cell.markedForDeletion      = isMarkedForDeletion
         cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
         cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
@@ -1059,6 +1059,8 @@ extension NotificationsViewController: ABXPromptViewDelegate
 //
 private extension NotificationsViewController
 {
+    typealias NoteKind = Notification.Kind
+
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
     }
