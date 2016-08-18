@@ -1092,6 +1092,15 @@ import WordPressComAnalytics
             return
         }
 
+        if ReaderHelpers.isTopicSearchTopic(topic) && topic.posts.count > 0 {
+            // We only perform an initial sync if the topic has no results.
+            // The rest of the time it should just support infinite scroll.
+            // Normal the newly added topic will have no existing posts. The
+            // exception is state restoration of a search topic that was being
+            // viewed when the app was backgrounded.
+            return
+        }
+
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
@@ -1170,7 +1179,7 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
             }
@@ -1253,7 +1262,7 @@ import WordPressComAnalytics
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-
+        let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         syncContext.performBlock {
             guard let topicInContext = (try? syncContext.existingObjectWithID(topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
@@ -1273,8 +1282,7 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                let offset = UInt(topicInContext.posts.count)
-                service.fetchPostsForTopic(topicInContext, atOffset: offset, deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service.fetchPostsForTopic(topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
@@ -1286,11 +1294,13 @@ import WordPressComAnalytics
     }
 
 
-    public func cleanupAfterSync() {
+    public func cleanupAfterSync(refresh refresh: Bool = true) {
         syncIsFillingGap = false
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
-        tableViewHandler.refreshTableViewPreservingOffset()
+        if refresh {
+            tableViewHandler.refreshTableViewPreservingOffset()
+        }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
     }
@@ -1438,6 +1448,10 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
         cleanupAfterSync()
     }
 
+
+    public func syncContentFailed() {
+        cleanupAfterSync(refresh: false)
+    }
 }
 
 
@@ -1648,7 +1662,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRowsInSection(indexPath.section) - loadMoreThreashold
         if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
-            if syncHelper.hasMoreContent {
+            if syncHelper.hasMoreContent && !syncHelper.isSyncing {
                 syncHelper.syncMoreContent()
             }
         }
