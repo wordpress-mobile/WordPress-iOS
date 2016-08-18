@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -36,6 +37,9 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="widthClass=regular" misplaced="YES">
+                                                <rect key="frame" x="0.0" y="0.0" width="230" height="18"/>
+                                            </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="749" text="1 site, 1 follower" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLv-K5-Ki4">
                                             <rect key="frame" x="0.0" y="17" width="246" height="15"/>
@@ -43,10 +47,19 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="widthClass=regular" misplaced="YES">
+                                                <rect key="frame" x="0.0" y="18" width="230" height="15"/>
+                                            </variation>
                                         </label>
                                     </subviews>
+                                    <variation key="widthClass=regular" misplaced="YES">
+                                        <rect key="frame" x="42" y="0.0" width="230" height="32"/>
+                                    </variation>
                                 </stackView>
                             </subviews>
+                            <variation key="widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="16" y="16" width="272" height="32"/>
+                            </variation>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,16 +76,34 @@
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="YPv-Yl-pZz" secondAttribute="top" constant="1" id="CZB-46-q68"/>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="YPv-Yl-pZz" secondAttribute="leading" constant="1" id="Fs5-Ew-Ygm"/>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="bottom" secondItem="YPv-Yl-pZz" secondAttribute="bottom" constant="-1" id="Ifc-0l-Wjp"/>
+                <constraint firstAttribute="trailingMargin" secondItem="iWB-Uw-beb" secondAttribute="trailing" priority="999" id="LJs-8r-0Se"/>
                 <constraint firstAttribute="bottom" secondItem="iWB-Uw-beb" secondAttribute="bottom" priority="750" constant="8" id="TIK-0Z-wok"/>
                 <constraint firstAttribute="trailing" secondItem="iWB-Uw-beb" secondAttribute="trailing" id="bH6-nD-rMm"/>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="lV4-dt-Zjn" secondAttribute="leading" id="hbs-gX-qwe"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="lV4-dt-Zjn" secondAttribute="leadingMargin" id="lhg-UK-ce1"/>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="trailing" secondItem="YPv-Yl-pZz" secondAttribute="trailing" constant="-1" id="sWd-8x-TV3"/>
-                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="lV4-dt-Zjn" secondAttribute="top" id="wni-EB-nsg"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="lV4-dt-Zjn" secondAttribute="top" id="wni-EB-nsg">
+                    <variation key="widthClass=regular" constant="30"/>
+                </constraint>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="LJs-8r-0Se"/>
+                    <exclude reference="lhg-UK-ce1"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
+                <mask key="constraints">
+                    <include reference="LJs-8r-0Se"/>
+                    <exclude reference="bH6-nD-rMm"/>
+                    <exclude reference="hbs-gX-qwe"/>
+                    <include reference="lhg-UK-ce1"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="contentBottomConstraint" destination="TIK-0Z-wok" id="vsW-IM-DIX"/>
                 <outlet property="detailLabel" destination="mLv-K5-Ki4" id="cJz-Lv-f6a"/>
