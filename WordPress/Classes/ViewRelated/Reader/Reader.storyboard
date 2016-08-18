@@ -491,20 +491,7 @@
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="UQY-Uf-csX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="hRX-aQ-2Cd"/>
-                                </constraints>
                                 <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="hRX-aQ-2Cd"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="hRX-aQ-2Cd"/>
-                                    </mask>
-                                </variation>
                                 <connections>
                                     <outlet property="delegate" destination="sKI-JH-RAG" id="fsR-5r-2Md"/>
                                 </connections>
@@ -528,24 +515,27 @@
                             <constraint firstItem="afc-5c-5tF" firstAttribute="width" secondItem="UQY-Uf-csX" secondAttribute="width" constant="-32" id="7H0-0r-9sW"/>
                             <constraint firstItem="PuG-YC-OIC" firstAttribute="top" secondItem="UQY-Uf-csX" secondAttribute="bottom" id="9Py-mf-1gR"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="OVh-zU-bdz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UQY-Uf-csX" secondAttribute="trailing" priority="999" constant="-8" id="Rp5-hV-8Pb"/>
+                            <constraint firstItem="UQY-Uf-csX" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leadingMargin" constant="-8" id="VDG-yu-G7a"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="top" secondItem="KDf-ab-yd0" secondAttribute="bottom" id="Vjr-r9-9fI"/>
                             <constraint firstItem="afc-5c-5tF" firstAttribute="centerY" secondItem="PuG-YC-OIC" secondAttribute="centerY" constant="-64" id="WFt-Iz-74I"/>
                             <constraint firstAttribute="trailing" secondItem="PuG-YC-OIC" secondAttribute="trailing" id="Xy7-kf-4Zi"/>
                             <constraint firstAttribute="trailing" secondItem="UQY-Uf-csX" secondAttribute="trailing" id="ack-5h-tUx"/>
                             <constraint firstItem="afc-5c-5tF" firstAttribute="centerX" secondItem="PuG-YC-OIC" secondAttribute="centerX" id="e4c-Hf-6s0"/>
                             <constraint firstItem="PuG-YC-OIC" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="u5y-Zc-kp9"/>
-                            <constraint firstItem="UQY-Uf-csX" firstAttribute="centerX" secondItem="3Jv-hf-pib" secondAttribute="centerX" id="yZl-bD-QTk"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="yZl-bD-QTk"/>
+                                <exclude reference="Rp5-hV-8Pb"/>
+                                <exclude reference="VDG-yu-G7a"/>
                             </mask>
                         </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
+                        <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES">
                             <mask key="constraints">
                                 <exclude reference="OVh-zU-bdz"/>
+                                <include reference="Rp5-hV-8Pb"/>
+                                <include reference="VDG-yu-G7a"/>
                                 <exclude reference="ack-5h-tUx"/>
-                                <include reference="yZl-bD-QTk"/>
                             </mask>
                         </variation>
                     </view>
