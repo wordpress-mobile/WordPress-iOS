@@ -144,6 +144,21 @@ typedef void (^EditPostCompletionHandler)(WPPostViewController* viewController, 
  */
 + (void)setNewEditorEnabled:(BOOL)isEnabled;
 
+/**
+ *	@brief		Enables the new native editor.
+ *	@details	This is set to NO by default.
+ *
+ *	@param		isAvailable		YES means the new editor will be enabled.
+ */
++ (void)setNativeEditorEnabled:(BOOL)isEnabled;
+
+/**
+ *	@brief		Check if the new editor is enabled.
+ *
+ *	@return		YES if the new editor is enabled, NO otherwise.
+ */
++ (BOOL)isNativeEditorEnabled;
+
 #pragma mark - Misc methods
 
 - (void)didSaveNewPost;
