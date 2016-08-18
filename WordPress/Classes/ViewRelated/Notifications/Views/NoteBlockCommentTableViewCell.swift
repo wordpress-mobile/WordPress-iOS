@@ -28,7 +28,7 @@ import WordPressShared.WPStyleGuide
             refreshSeparators()
         }
     }
-    public var hasReply: Bool = false {
+    public var isRepliedComment: Bool = false {
         didSet {
             refreshSeparators()
         }
@@ -106,7 +106,7 @@ import WordPressShared.WPStyleGuide
         // Bottom Separator
         var bottomInsets = separatorUnapprovedInsets
         if isApproved {
-            bottomInsets = hasReply ? separatorRepliedInsets : separatorApprovedInsets
+            bottomInsets = isRepliedComment ? separatorRepliedInsets : separatorApprovedInsets
         }
 
         separatorsView.bottomVisible = true

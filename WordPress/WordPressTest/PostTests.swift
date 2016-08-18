@@ -5,12 +5,8 @@ import XCTest
 
 class PostTests: XCTestCase {
 
-    private let context: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        context.parentContext = TestContextManager.sharedInstance().mainContext
-
-        return context
-    }()
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext!
 
     private func newTestBlog() -> Blog {
         return NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: context) as! Blog
@@ -33,10 +29,14 @@ class PostTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        contextManager = TestContextManager()
+        context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        context.parentContext = contextManager.mainContext
     }
 
     override func tearDown() {
         context.rollback()
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 

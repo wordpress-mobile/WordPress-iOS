@@ -41,6 +41,7 @@ class NotificationSettingsServiceTests: XCTestCase
     override func tearDown() {
         super.tearDown()
         OHHTTPStubs.removeAllStubs()
+        ContextManager.overrideSharedInstance(nil)
     }
 
 
