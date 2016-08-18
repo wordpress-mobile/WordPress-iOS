@@ -185,6 +185,50 @@ class PostService : LocalCoreDataService {
             remote?.createPost(remotePost, success: successBlock, failure: failureBlock)
         }
     }
+    
+    func delete(post: AbstractPost, success: () -> Void, failure: SyncFailure) {
+        
+        let deleteBlock: () -> Void = {
+            if let postID = post.postID where postID.longLongValue > 0 {
+                let remotePost = self.remotePost(withPost: post)
+                if let remote = self.remote(for: post.blog) {
+                    remote.deletePost(remotePost, success: success, failure: failure)
+                }
+            }
+        }
+        
+        if let original = post.original where post.isRevision() {
+            self.delete(original, success: deleteBlock, failure: failure)
+        } else {
+            deleteBlock()
+        }
+    }
+    
+    func trash(post: AbstractPost, success: () -> Void, failure: SyncFailure) {
+        if post.status == PostStatusTrash {
+            self.delete(post, success: success, failure: failure)
+            return
+        }
+        
+        let trashBlock: () -> Void = {
+            if let status = post.status {
+                post.restorableStatus = status
+            }
+            if let postID = post.postID where postID.longLongValue <= 0  {
+                post.status = PostStatusTrash
+                
+                success()
+                
+                return
+            }
+        }
+        
+        if post.isRevision() {
+            self.trash(post, success: trashBlock, failure: failure)
+        } else {
+            trashBlock()
+        }
+    }
 
     func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: Int?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
