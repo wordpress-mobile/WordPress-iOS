@@ -592,28 +592,34 @@ import WordPressComAnalytics
 
 
     /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
-    /// to its intrinsic content layout, after major layout changes on the tableView itself.
+    /// to its intrinsic content layout, and after major layout changes on the viewcontroller itself.
     ///
     func refreshTableViewHeaderLayout() {
         guard let headerView = tableView.tableHeaderView else {
             return
         }
 
-        /*  Start with the provided UILayoutFittingCompressedSize to let iOS handle its own calculated
-            value for max/min height.
-         */
+        // The tableView may need to layout, run this layout now, if needed.
+        // This ensures the proper margins, such as readable margins, are
+        // inherited and calculated by the headerView.
+        tableView.layoutIfNeeded()
+
+        // Start with the provided UILayoutFittingCompressedSize to let iOS handle its own magic
+        // number for a "compressed" height, meaning we want our fitting size to be the minimal height.
         var fittingSize = UILayoutFittingCompressedSize
-        /*  Set the width to the tableView's width since this is a known width for the tableHeaderView.
-            Otherwise, the layout will try and adopt 'any' width and will likely break based on the how
-            the constraints are set up in the nib.
-         */
+
+        // Set the width to the tableView's width since this is a known width for the headerView.
+        // Otherwise, the layout will try and adopt 'any' width and may break based on the how
+        // the constraints are set up in the nib.
         fittingSize.width = tableView.frame.size.width
-        // Require horizontal fitting as our width is known.
-        // Use the lower fitting size priority as we want to minimize our height according to the layout.
+
+        // Require horizontal fitting since our width is known.
+        // Use the lower fitting size priority as we want to minimize our height consumption
+        // according to the layout's contraints and intrinsic size.
         let size = headerView.systemLayoutSizeFittingSize(fittingSize,
                                                           withHorizontalFittingPriority: UILayoutPriorityRequired,
                                                           verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
-        // Update the tableHeaderView itself.
+        // Update the tableHeaderView itself. Classic.
         var headerFrame = headerView.frame
         headerFrame.size.height = size.height
         headerView.frame = headerFrame
