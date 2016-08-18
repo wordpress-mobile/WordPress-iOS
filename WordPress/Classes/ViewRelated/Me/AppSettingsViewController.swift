@@ -123,7 +123,8 @@ public class AppSettingsViewController: UITableViewController {
             } else {
                 WPAnalytics.track(.EditorToggledOff)
             }
-            WPPostViewController.setNewEditorEnabled(enabled)            
+            WPPostViewController.setNewEditorEnabled(enabled)
+            self.handler.viewModel = self.tableViewModel()
         }
     }
 
