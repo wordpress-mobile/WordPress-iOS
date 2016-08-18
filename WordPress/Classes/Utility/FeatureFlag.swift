@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
+    case NativeEditor
     case ExampleFeature
 
     /// Returns a boolean indicating if the feature is enabled
@@ -9,6 +10,12 @@ enum FeatureFlag: Int {
         switch self {
         case .ExampleFeature:
             return true
+        case .NativeEditor:
+            // At the moment this is only active in debug mode
+            if build(.Debug) {
+                return true
+            }
+            return false
         }
     }
 }
