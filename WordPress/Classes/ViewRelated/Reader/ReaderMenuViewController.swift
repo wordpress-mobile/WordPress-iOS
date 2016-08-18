@@ -69,6 +69,7 @@ import WordPressShared
         restorationIdentifier = self.dynamicType.restorationIdentifier
         restorationClass = self.dynamicType
 
+        cleanupStaleContent(removeAllTopics: false)
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
     }
@@ -136,6 +137,20 @@ import WordPressShared
 
     // MARK: - Instance Methods
 
+    /// Clean up topics that do not belong in the menu and posts that have no topic
+    /// This is merely a convenient place to perform this task.
+    ///
+    func cleanupStaleContent(removeAllTopics removeAll: Bool) {
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+
+        if removeAll {
+            ReaderTopicService(managedObjectContext: context).deleteAllTopics()
+        } else {
+            ReaderTopicService(managedObjectContext: context).deleteNonMenuTopics()
+        }
+    }
+
 
     /// When logged out return the nav stack to the menu
     ///
@@ -147,11 +162,10 @@ import WordPressShared
         readerHasBeenPreviouslyViewed = false
 
         // Clean up obsolete content.
-        let context = ContextManager.sharedInstance().mainContext
-        ReaderTopicService(managedObjectContext: context).deleteAllTopics()
-        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+        cleanupStaleContent(removeAllTopics: true)
 
         // Clean up stale search history
+        let context = ContextManager.sharedInstance().mainContext
         ReaderSearchSuggestionService(managedObjectContext: context).deleteAllSuggestions()
 
         // Sync the menu fresh
