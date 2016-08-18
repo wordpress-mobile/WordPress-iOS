@@ -1092,6 +1092,15 @@ import WordPressComAnalytics
             return
         }
 
+        if ReaderHelpers.isTopicSearchTopic(topic) && topic.posts.count > 0 {
+            // We only perform an initial sync if the topic has no results.
+            // The rest of the time it should just support infinite scroll.
+            // Normal the newly added topic will have no existing posts. The
+            // exception is state restoration of a search topic that was being
+            // viewed when the app was backgrounded.
+            return
+        }
+
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
