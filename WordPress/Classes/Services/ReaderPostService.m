@@ -604,15 +604,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
                 NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
                 overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
-
-                // A strategy to avoid false positives in gap detection is to sync
-                // one extra post. Only remove the extra post if we received a
-                // full set of results. A partial set means we've reached
-                // the end of syncable content.
-                if ([posts count] == [self numberToSyncForTopic:readerTopic]) {
-                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
-                    postsCount = [posts count];
-                }
             }
 
             // Create or update the synced posts.
@@ -732,6 +723,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     // There should only ever be one, but loop over all results just in case.
     for (ReaderGapMarker *marker in results) {
+        DDLogInfo(@"Deleting Gap Marker: %@", marker);
         [self.managedObjectContext deleteObject:marker];
     }
 }
@@ -905,6 +897,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // If the last remaining post is a gap marker, remove it.
     ReaderPost *lastPost = [posts objectAtIndex:maxPosts - 1];
     if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
+        DDLogInfo(@"Deleting Last GapMarker: %@", lastPost);
         [self.managedObjectContext deleteObject:lastPost];
     }
 }
@@ -976,10 +969,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND topic = %@", globalID, topic];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
+    BOOL existing = false;
     if (error) {
         DDLogError(@"Error fetching an existing reader post. - %@", error);
     } else if ([arr count] > 0) {
         post = (ReaderPost *)[arr objectAtIndex:0];
+        existing = true;
     } else {
         post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                              inManagedObjectContext:self.managedObjectContext];
@@ -1015,7 +1010,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.score = remotePost.score;
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;
-    post.sortRank = remotePost.sortRank;
+
+    if (!existing) {
+        // Failsafe.  The `read/search` endpoint might return the same post on
+        // more than one page. If this happens preserve the *original* sortRank
+        // to avoid content jumping around in the UI.
+        // Posts from other endpoints will store a date value which shouldn't
+        // change, ergo they should be unaffected.
+        post.sortRank = remotePost.sortRank;
+    }
+
     post.status = remotePost.status;
     post.summary = remotePost.summary;
     post.tags = remotePost.tags;
