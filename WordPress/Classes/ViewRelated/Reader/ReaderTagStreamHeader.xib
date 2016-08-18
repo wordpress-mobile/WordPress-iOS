@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -62,9 +63,13 @@
             <constraints>
                 <constraint firstItem="w2t-P4-qyc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0AD-OG-fcy"/>
                 <constraint firstItem="yok-SJ-qnw" firstAttribute="trailing" secondItem="w2t-P4-qyc" secondAttribute="trailing" constant="1" id="99P-UK-axt"/>
+                <constraint firstAttribute="trailingMargin" secondItem="w2t-P4-qyc" secondAttribute="trailing" priority="999" id="9uk-ts-bUh"/>
                 <constraint firstAttribute="bottom" secondItem="w2t-P4-qyc" secondAttribute="bottom" priority="750" constant="8" id="A2H-sg-sOi"/>
-                <constraint firstItem="w2t-P4-qyc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DNk-AU-4lT"/>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DNk-AU-4lT">
+                    <variation key="widthClass=regular" constant="30"/>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="w2t-P4-qyc" secondAttribute="trailing" id="Fc1-aY-QAR"/>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="fTW-iO-m0H"/>
                 <constraint firstItem="yok-SJ-qnw" firstAttribute="leading" secondItem="w2t-P4-qyc" secondAttribute="leading" constant="-1" id="m1K-Yo-vPA"/>
                 <constraint firstItem="yok-SJ-qnw" firstAttribute="bottom" secondItem="w2t-P4-qyc" secondAttribute="bottom" constant="1" id="mNZ-mP-G8u"/>
                 <constraint firstItem="yok-SJ-qnw" firstAttribute="top" secondItem="w2t-P4-qyc" secondAttribute="top" constant="-1" id="voQ-Dl-m6W"/>
@@ -73,6 +78,20 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="9uk-ts-bUh"/>
+                    <exclude reference="fTW-iO-m0H"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
+                <mask key="constraints">
+                    <exclude reference="0AD-OG-fcy"/>
+                    <include reference="9uk-ts-bUh"/>
+                    <exclude reference="Fc1-aY-QAR"/>
+                    <include reference="fTW-iO-m0H"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="contentBottomConstraint" destination="A2H-sg-sOi" id="huH-SM-MhD"/>
                 <outlet property="followButton" destination="S0E-MM-cCj" id="PEW-za-Q8v"/>
