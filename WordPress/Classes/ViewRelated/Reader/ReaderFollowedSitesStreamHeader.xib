@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -73,19 +74,37 @@
             </subviews>
             <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="an8-aa-V2Q" firstAttribute="leading" secondItem="Vwe-fC-L9o" secondAttribute="leadingMargin" id="98w-Cr-hzE"/>
                 <constraint firstItem="Xw2-zx-vFl" firstAttribute="trailing" secondItem="an8-aa-V2Q" secondAttribute="trailing" constant="1" id="CSF-Vx-4kG"/>
                 <constraint firstItem="Xw2-zx-vFl" firstAttribute="top" secondItem="an8-aa-V2Q" secondAttribute="top" constant="-1" id="EGu-co-lAP"/>
-                <constraint firstItem="an8-aa-V2Q" firstAttribute="top" secondItem="Vwe-fC-L9o" secondAttribute="top" id="GJO-s2-kO4"/>
+                <constraint firstItem="an8-aa-V2Q" firstAttribute="top" secondItem="Vwe-fC-L9o" secondAttribute="top" id="GJO-s2-kO4">
+                    <variation key="widthClass=regular" constant="30"/>
+                </constraint>
                 <constraint firstItem="an8-aa-V2Q" firstAttribute="leading" secondItem="Vwe-fC-L9o" secondAttribute="leading" id="Qln-Sp-yde"/>
                 <constraint firstAttribute="bottom" secondItem="an8-aa-V2Q" secondAttribute="bottom" priority="750" constant="8" id="XvQ-iE-4Zu"/>
                 <constraint firstItem="Xw2-zx-vFl" firstAttribute="leading" secondItem="an8-aa-V2Q" secondAttribute="leading" constant="-1" id="ipi-zX-V1i"/>
                 <constraint firstItem="Xw2-zx-vFl" firstAttribute="bottom" secondItem="an8-aa-V2Q" secondAttribute="bottom" constant="1" id="mE1-2q-Jtj"/>
-                <constraint firstAttribute="trailing" secondItem="an8-aa-V2Q" secondAttribute="trailing" id="ufO-52-WDZ"/>
+                <constraint firstAttribute="trailingMargin" secondItem="an8-aa-V2Q" secondAttribute="trailing" priority="999" id="ufO-52-WDZ"/>
+                <constraint firstAttribute="trailing" secondItem="an8-aa-V2Q" secondAttribute="trailing" id="wvm-Kl-kg8"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="98w-Cr-hzE"/>
+                    <exclude reference="ufO-52-WDZ"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
+                <mask key="constraints">
+                    <include reference="98w-Cr-hzE"/>
+                    <exclude reference="Qln-Sp-yde"/>
+                    <include reference="ufO-52-WDZ"/>
+                    <exclude reference="wvm-Kl-kg8"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="contentBottomConstraint" destination="XvQ-iE-4Zu" id="kdb-jr-FJV"/>
                 <outlet property="contentButton" destination="EFi-ME-clV" id="8Iy-9r-V7e"/>
