@@ -63,7 +63,7 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     if (MPTweakValue(@"Helpshift Enabled", YES)) {
         [self enableHelpshift];
     } else {
-        [self disableHelpshift];
+        [self disableHelpshiftIfNotAlreadyUsed];
     }
 }
 
@@ -79,8 +79,12 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
-- (void)disableHelpshift
+- (void)disableHelpshiftIfNotAlreadyUsed
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftWasUsed]) {
+        return;
+    }
+    
     DDLogInfo(@"Helpshift Disabled");
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
