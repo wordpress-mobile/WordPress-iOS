@@ -53,11 +53,22 @@ public class AppSettingsViewController: UITableViewController {
         )
 
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
+        var editorRows = [ImmuTableRow]()
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
             value: WPPostViewController.isNewEditorEnabled(),
             onChange: visualEditorChanged()
         )
+        editorRows.append(visualEditor)
+
+        if FeatureFlag.NativeEditor.enabled && WPPostViewController.isNewEditorEnabled() {
+            let nativeEditor = SwitchRow(
+                title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
+                value: WPPostViewController.isNativeEditorEnabled(),
+                onChange: nativeEditorChanged()
+            )
+            editorRows.append(nativeEditor)
+        }
 
         let aboutHeader = NSLocalizedString("About", comment: "Link to About section (contains info about the app)")
         let aboutApp = NavigationItemRow(
@@ -75,9 +86,7 @@ public class AppSettingsViewController: UITableViewController {
                 footerText: nil),
             ImmuTableSection(
                 headerText: editorHeader,
-                rows: [
-                    visualEditor
-                ],
+                rows: editorRows,
                 footerText: nil),
             ImmuTableSection(
                 headerText: aboutHeader,
@@ -114,7 +123,14 @@ public class AppSettingsViewController: UITableViewController {
             } else {
                 WPAnalytics.track(.EditorToggledOff)
             }
-            WPPostViewController.setNewEditorEnabled(enabled)
+            WPPostViewController.setNewEditorEnabled(enabled)            
+        }
+    }
+
+    func nativeEditorChanged() -> Bool -> Void {
+        return {
+            enabled in
+            WPPostViewController.setNativeEditorEnabled(enabled)
         }
     }
 
