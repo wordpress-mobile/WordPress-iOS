@@ -11,6 +11,7 @@ import WordPressShared
     @IBOutlet private weak var descriptionView: UIView!
     @IBOutlet private weak var followCountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
 
     public var delegate: ReaderStreamHeaderDelegate?
     private var defaultBlavatar = "blavatar-default"
@@ -51,6 +52,13 @@ import WordPressShared
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
+
+        if descriptionLabel.attributedText?.length > 0 {
+            // Bottom and top margins should match.
+            descriptionBottomConstraint.constant = descriptionLabel.frame.minY
+        } else {
+            descriptionBottomConstraint.constant = 0
+        }
     }
 
     func configureHeaderImage(siteBlavatar: String?) {
