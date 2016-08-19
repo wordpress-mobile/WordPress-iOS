@@ -46,7 +46,7 @@ abstract_target 'WordPress_Base' do
     pod 'Gridicons', '0.2'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'Simperium', '0.8.15'
+    pod 'Simperium', '0.8.17'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8'
     pod 'WordPressCom-Analytics-iOS', '0.1.16'
