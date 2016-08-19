@@ -46,7 +46,7 @@ extern NSString * const PostStatusDeleted;
 /**
  Used to store the post's status before its sent to the trash.
  */
-@property (nonatomic, strong) NSString *restorableStatus;
+@property (nonatomic, strong, nullable) NSString *restorableStatus;
 @property (nonatomic, weak, readonly, nullable) NSString * statusTitle;
 
 // Revision management

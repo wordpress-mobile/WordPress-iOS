@@ -204,7 +204,7 @@ class PostService : LocalCoreDataService {
         }
     }
     
-    func trash(post: AbstractPost, success: () -> Void, failure: SyncFailure) {
+    func trash(post post: AbstractPost, success: () -> Void, failure: SyncFailure) {
         if post.status == PostStatusTrash {
             self.delete(post, success: success, failure: failure)
             return
@@ -221,13 +221,52 @@ class PostService : LocalCoreDataService {
                 
                 return
             }
+            
+            self.trash(remotePostWith: post, success: success, failure: failure)
         }
         
         if post.isRevision() {
-            self.trash(post, success: trashBlock, failure: failure)
+            self.trash(post: post, success: trashBlock, failure: failure)
         } else {
             trashBlock()
         }
+    }
+    
+    func trash(remotePostWith post: AbstractPost, success: () -> Void, failure: SyncFailure) {
+        let postObjectID = post.objectID
+        let remotePost = self.remotePost(withPost: post)
+        if let remote = self.remote(for: post.blog) {
+            remote.trashPost(remotePost, success: { remotePost in
+                    do {
+                        if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
+                            if remotePost.status == PostStatusDeleted {
+                                self.managedObjectContext.deleteObject(postInContext)
+                            } else {
+                                self.update(postInContext, with: remotePost)
+                            }
+                            ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                        }
+                    } catch let error as NSError? {
+                        DDLogSwift.logError(String("%@", error))
+                    }
+                    success()
+                }, failure: { error in
+                    do {
+                        if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
+                            postInContext.restorableStatus = nil
+                        }
+                    } catch let error as NSError? {
+                        DDLogSwift.logError(String("%@", error))
+                        failure(error)
+                        return
+                    }
+                    failure(nil)
+            })
+        }
+    }
+    
+    func restore(post post: AbstractPost, success: () -> Void, failure: SyncFailure) {
+        
     }
 
     func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: Int?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
