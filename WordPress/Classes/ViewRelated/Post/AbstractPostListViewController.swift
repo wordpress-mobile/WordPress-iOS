@@ -298,7 +298,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = PostService.keyForType(postTypeToSync())
+        properties["type"] = postTypeToSync().rawValue
         properties["filter"] = filterSettings.currentPostListFilter().title
 
         if let dotComID = blog.dotComID {
@@ -526,7 +526,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func numberOfPostsPerSync() -> UInt {
-        return PostServiceDefaultNumberToSync
+        return PostService.DefaultNumberToSync
     }
 
     // MARK: - WPContentSyncHelperDelegate
@@ -768,16 +768,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
-        postService.uploadPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService.upload(apost, success: {_ in }) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
-
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
 
             strongSelf.syncItemsWithUserInteraction(false)
@@ -813,16 +815,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trashPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService.trash(post: apost, success: {}) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
 
             if let index = strongSelf.recentlyTrashedPostObjectIDs.indexOf(postObjectID) {
@@ -848,7 +852,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.restorePost(apost, success: { [weak self] in
+        postService.restore(post: apost, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return
@@ -875,18 +879,19 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
                 strongSelf.promptThatPostRestoredToFilter(filter)
             }
-        }) { [weak self] (error: NSError!) in
+        }) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
-
             strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
     }

@@ -220,8 +220,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override func postTypeToSync() -> PostServiceType {
-        return PostServiceType.Post
+    override func postTypeToSync() -> PostService.PostType {
+        return .post
     }
 
     override func lastSyncDate() -> NSDate? {
@@ -274,7 +274,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", PostService.keyForType(postTypeToSync()))
+        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync().rawValue)
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()

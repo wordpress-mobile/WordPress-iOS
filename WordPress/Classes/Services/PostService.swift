@@ -1,8 +1,8 @@
 import Foundation
 
 class PostService : LocalCoreDataService {
-    static let PostServiceErrorDomain = "PostServiceErrorDomain"
-    static let PostServiceDefaultNumberToSync = 40
+    static let ErrorDomain = "PostServiceErrorDomain"
+    static let DefaultNumberToSync: UInt = 40
 
     enum PostType: String {
         case any = "any"

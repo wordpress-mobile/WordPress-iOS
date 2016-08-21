@@ -382,7 +382,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.upload(apost, success: {_ in }) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
