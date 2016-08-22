@@ -502,6 +502,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    BOOL isNewSelection = (indexPath != tableView.indexPathForSelectedRow);
+    
+    if (isNewSelection) {
+        return indexPath;
+    } else {
+        return nil;
+    }
+}
+
 #pragma mark - Private methods
 
 
