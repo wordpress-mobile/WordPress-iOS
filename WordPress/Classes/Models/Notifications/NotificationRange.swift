@@ -50,6 +50,7 @@ class NotificationRange
 
         kind = Kind(rawValue: type) ?? .Site
         range = NSMakeRange(start, end - start)
+        siteID = dictionary[RangeKeys.SiteId] as? NSNumber
 
         if let rawURL = dictionary[RangeKeys.URL] as? String {
             url = NSURL(string: rawURL)
@@ -77,8 +78,7 @@ class NotificationRange
         case .User:
             userID = dictionary[RangeKeys.Id] as? NSNumber
         default:
-// TODO: Should always run?
-            siteID = dictionary[RangeKeys.SiteId] as? NSNumber
+            break
         }
     }
 }
