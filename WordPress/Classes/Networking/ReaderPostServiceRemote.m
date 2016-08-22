@@ -42,6 +42,7 @@ NSString * const PostRESTKeyName = @"name";
 NSString * const PostRESTKeyNiceName = @"nice_name";
 NSString * const PostRESTKeyPermalink = @"permalink";
 NSString * const PostRESTKeyPostCount = @"post_count";
+NSString * const PostRESTKeyPosts = @"posts";
 NSString * const PostRESTKeyScore = @"score";
 NSString * const PostRESTKeySharingEnabled = @"sharing_enabled";
 NSString * const PostRESTKeySiteID = @"site_ID";
@@ -55,6 +56,7 @@ NSString * const PostRESTKeyTags = @"tags";
 NSString * const POSTRESTKeyTagDisplayName = @"display_name";
 NSString * const PostRESTKeyURL = @"URL";
 NSString * const PostRESTKeyWordCount = @"word_count";
+NSString * const PostRESTKeyRailcar = @"railcar";
 
 // Tag dictionary keys
 NSString * const TagKeyPrimary = @"primaryTag";
@@ -71,6 +73,16 @@ NSString * const CrossPostMetaXCommentPermalink = @"xcomment_original_permalink"
 NSString * const CrossPostMetaXPostOrigin = @"xpost_origin";
 NSString * const CrossPostMetaCommentPrefix = @"comment-";
 
+// Param keys
+NSString * const ParamsKeyAlgorithm = @"algorithm";
+NSString * const ParamKeyBefore = @"before";
+NSString * const ParamKeyMeta = @"meta";
+NSString * const ParamKeyNumber = @"number";
+NSString * const ParamKeyOffset = @"offset";
+NSString * const ParamKeyOrder = @"order";
+NSString * const ParamKeyDescending = @"DESC";
+NSString * const ParamKeyMetaValue = @"site,feed";
+
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
 static const NSUInteger ReaderPostTitleLength = 30;
@@ -78,32 +90,42 @@ static const NSUInteger ReaderPostTitleLength = 30;
 @implementation ReaderPostServiceRemote
 
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
+                     algorithm:(NSString *)algorithm
                          count:(NSUInteger)count
                         before:(NSDate *)date
-                       success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
+                       success:(void (^)(NSArray<RemoteReaderPost *> *posts, NSString *algorithm))success
                        failure:(void (^)(NSError *error))failure
 {
     NSNumber *numberToFetch = @(count);
-    NSDictionary *params = @{@"number":numberToFetch,
-                             @"before": [DateUtils isoStringFromDate:date],
-                             @"order": @"DESC",
-                             @"meta":@"site,feed"
-                             };
+    NSMutableDictionary *params = [@{
+                                     ParamKeyNumber:numberToFetch,
+                                     ParamKeyBefore: [DateUtils isoStringFromDate:date],
+                                     ParamKeyOrder: ParamKeyDescending,
+                                     ParamKeyMeta: ParamKeyMetaValue
+                                     } mutableCopy];
+    if (algorithm) {
+        params[ParamsKeyAlgorithm] = algorithm;
+    }
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
 
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
+                     algorithm:(NSString *)algorithm
                          count:(NSUInteger)count
                         offset:(NSUInteger)offset
-                       success:(void (^)(NSArray<RemoteReaderPost *> *))success
+                       success:(void (^)(NSArray<RemoteReaderPost *> *posts, NSString *algorithm))success
                        failure:(void (^)(NSError *))failure
 {
-    NSDictionary *params = @{@"number": @(count),
-                             @"offset": @(offset),
-                             @"order": @"DESC",
-                             @"meta":@"site,feed"
-                             };
+    NSMutableDictionary *params = [@{
+                                     ParamKeyNumber:@(count),
+                                     ParamKeyOffset: @(offset),
+                                     ParamKeyOrder: ParamKeyDescending,
+                                     ParamKeyMeta: ParamKeyMetaValue
+                                     } mutableCopy];
+    if (algorithm) {
+        params[ParamsKeyAlgorithm] = algorithm;
+    }
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
 
@@ -123,8 +145,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
                       return;
                   }
 
-                  RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
-                  success(post);
+                  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                      // Do all of this work on a background thread, then call success on the main thread.
+                      // Do this to avoid any chance of blocking the UI while parsing.
+                      RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          success(post);
+                      });
+                  });
 
               } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
@@ -195,11 +223,10 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                     withParameters:(NSDictionary *)params
-                           success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
+                           success:(void (^)(NSArray<RemoteReaderPost *> *posts, NSString *algorithm))success
                            failure:(void (^)(NSError *))failure
 {
     NSString *path = [endpoint absoluteString];
-    
     [self.wordPressComRestApi GET:path
            parameters:params
               success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -207,17 +234,47 @@ static const NSUInteger ReaderPostTitleLength = 30;
                       return;
                   }
 
-                  NSArray *jsonPosts = [responseObject arrayForKey:@"posts"];
-                  NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
-                      return [self formatPostDictionary:jsonPost];
-                  }];
-                  success(posts);
+                  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                      // NOTE: Do all of this work on a background thread, then call success on the main thread.
+                      // Do this to avoid any chance of blocking the UI while parsing.
+
+                      // NOTE: If an offset param was specified sortRank will be derived
+                      // from the offset + order of the results, ONLY if a `before` param
+                      // was not specified.  If a `before` param exists we favor sorting by date.
+                      BOOL rankByOffset = [params objectForKey:ParamKeyOffset] != nil && [params objectForKey:ParamKeyBefore] == nil;
+                      __block CGFloat offset = [[params numberForKey:ParamKeyOffset] floatValue];
+                      NSString *algorithm = [responseObject stringForKey:ParamsKeyAlgorithm];
+                      NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
+                      NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+                          if (rankByOffset) {
+                              RemoteReaderPost *post = [self formatPostDictionary:jsonPost offset:offset];
+                              offset++;
+                              return post;
+                          }
+                          return [self formatPostDictionary:jsonPost];
+                      }];
+
+                      // Now call success on the main thread.
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          success(posts, algorithm);
+                      });
+                  });
 
               } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
                       failure(error);
                   }
               }];
+}
+
+- (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict offset:(CGFloat)offset
+{
+    RemoteReaderPost *post = [self formatPostDictionary:dict];
+    // It's assumed that sortRank values are in descending order. Since
+    // offsets are ascending, we store its negative to ensure we get a proper sort order.
+    CGFloat adjustedOffset = -offset;
+    post.sortRank = @(adjustedOffset);
+    return post;
 }
 
 /**
@@ -262,7 +319,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     post.score = [dict numberForKey:PostRESTKeyScore];
     post.siteID = [dict numberForKey:PostRESTKeySiteID];
     post.sortDate = [self sortDateFromPostDictionary:dict];
-    post.sortRank = [self sortRankFromScore:post.score orSortDate:post.sortDate];
+    post.sortRank = @(post.sortDate.timeIntervalSinceReferenceDate);
     post.status = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyStatus]];
     post.summary = [self postSummaryFromPostDictionary:dict orPostContent:post.content];
     post.tags = [self tagsFromPostDictionary:dict];
@@ -286,6 +343,13 @@ static const NSUInteger ReaderPostTitleLength = 30;
     post.isJetpack = [[dict numberForKey:PostRESTKeyIsJetpack] boolValue];
     post.wordCount = [dict numberForKey:PostRESTKeyWordCount];
     post.readingTime = [self readingTimeForWordCount:post.wordCount];
+
+    NSDictionary *railcar = [dict dictionaryForKey:PostRESTKeyRailcar];
+    if (railcar) {
+        NSError *error;
+        NSData *railcarData = [NSJSONSerialization dataWithJSONObject:railcar options:NSJSONWritingPrettyPrinted error:&error];
+        post.railcar = [[NSString alloc] initWithData:railcarData encoding:NSUTF8StringEncoding];
+    }
 
     if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
@@ -731,21 +795,6 @@ static const NSUInteger ReaderPostTitleLength = 30;
 }
 
 /**
- Derive a sort rank from either the score or the sortDate.
- 
- @param score The search score of a post. 
- @param sortDate The sort date of the post.
- @return A numeric sort rank (double) as an NSNumber.
- */
-- (NSNumber *)sortRankFromScore:(NSNumber *)score orSortDate:(NSDate *)sortDate
-{
-    if (score > 0) {
-        return score;
-    }
-    return @(sortDate.timeIntervalSinceReferenceDate);
-}
-
-/**
  Retrives the privacy preference for the post's site.
 
  @param dict A dictionary representing a post object from the REST API.
@@ -769,9 +818,6 @@ static const NSUInteger ReaderPostTitleLength = 30;
         return [dict stringForKey:PostRESTKeySlug];
     }];
 }
-
-
-
 
 
 #pragma mark - Content Formatting and Sanitization
