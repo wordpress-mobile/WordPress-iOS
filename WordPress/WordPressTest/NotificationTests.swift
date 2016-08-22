@@ -49,7 +49,7 @@ class NotificationTests : XCTestCase {
 
     func testBadgeNotificationContainsOneImageBlockGroup() {
         let note = loadBadgeNotification()
-        let group = note.blockGroupOfType(.Image)
+        let group = note.blockGroupOfKind(.Image)
         XCTAssertNotNil(group)
 
         let imageBlock = group!.blocks.first
@@ -77,20 +77,20 @@ class NotificationTests : XCTestCase {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfType(.Image)
+        let gravatarBlock = header!.blockOfKind(.Image)
         XCTAssertNotNil(gravatarBlock!.text)
 
         let media = gravatarBlock!.media.first
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfType(.Text)
+        let snippetBlock = header!.blockOfKind(.Text)
         XCTAssertNotNil(snippetBlock!.text)
     }
 
     func testLikeNotificationContainsUserBlocksInTheBody() {
         let note = loadLikeNotification()
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.type == .User)
+            XCTAssertTrue(group.kind == .User)
         }
     }
 
@@ -107,7 +107,7 @@ class NotificationTests : XCTestCase {
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
         let note = loadFollowerNotification()
-        XCTAssertTrue(note.isFollow)
+        XCTAssertTrue(note.kind == .Follow)
     }
 
     func testFollowerNotificationContainsOneSubjectBlock() {
@@ -126,7 +126,7 @@ class NotificationTests : XCTestCase {
 
         // Note: Account for 'View All Followers'
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.type == .User || group.type == .Footer)
+            XCTAssertTrue(group.kind == .User || group.kind == .Footer)
         }
     }
 
@@ -135,7 +135,7 @@ class NotificationTests : XCTestCase {
 
         let lastGroup = note.bodyBlockGroups.last
         XCTAssertNotNil(lastGroup)
-        XCTAssertTrue(lastGroup!.type == .Footer)
+        XCTAssertTrue(lastGroup!.kind == .Footer)
 
         let block = lastGroup!.blocks.first
         XCTAssertNotNil(block)
@@ -144,7 +144,7 @@ class NotificationTests : XCTestCase {
 
         let range = block!.ranges.first
         XCTAssertNotNil(range)
-        XCTAssertEqual(range!.type, NoteRangeType.Follow)
+        XCTAssert(range!.kind == .Follow)
     }
 
     func testCommentNotificationReturnsTheProperKindValue() {
@@ -154,7 +154,7 @@ class NotificationTests : XCTestCase {
 
     func testCommentNotificationHasCommentFlagSetToTrue() {
         let note = loadCommentNotification()
-        XCTAssertTrue(note.isComment)
+        XCTAssertTrue(note.kind == .Comment)
     }
 
     func testCommentNotificationContainsSubjectWithSnippet() {
@@ -172,7 +172,7 @@ class NotificationTests : XCTestCase {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfType(.Image)
+        let gravatarBlock = header!.blockOfKind(.Image)
         XCTAssertNotNil(gravatarBlock)
         XCTAssertNotNil(gravatarBlock!.text)
 
@@ -180,7 +180,7 @@ class NotificationTests : XCTestCase {
         XCTAssertNotNil(media)
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfType(.Text)
+        let snippetBlock = header!.blockOfKind(.Text)
         XCTAssertNotNil(snippetBlock)
         XCTAssertNotNil(snippetBlock!.text)
     }
@@ -200,7 +200,7 @@ class NotificationTests : XCTestCase {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
 
-        let textBlock = note.blockGroupOfType(.Footer)?.blockOfType(.Text)
+        let textBlock = note.blockGroupOfKind(.Footer)?.blockOfKind(.Text)
         XCTAssertNotNil(textBlock)
 
         let replyID = note.metaReplyID
