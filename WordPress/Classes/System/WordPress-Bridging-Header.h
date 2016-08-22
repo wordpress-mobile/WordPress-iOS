@@ -50,7 +50,6 @@
 #import "StatsViewController.h"
 #import "Meta.h"
 #import "Notification.h"
-#import "Notification+Internals.h"
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
