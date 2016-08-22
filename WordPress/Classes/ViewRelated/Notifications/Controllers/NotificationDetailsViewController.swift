@@ -307,6 +307,8 @@ extension NotificationDetailsViewController
             self?.replyCommentWithBlock(block, content: content)
         }
 
+        replyTextView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Vertical)
+
         self.replyTextView = replyTextView
     }
 
