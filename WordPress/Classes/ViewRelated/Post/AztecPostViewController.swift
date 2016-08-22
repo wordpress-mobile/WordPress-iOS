@@ -1,17 +1,10 @@
 import Foundation
 import UIKit
 import Aztec
+import Gridicons
 
 class AztecPostViewController: UIViewController
 {
-    override func viewDidLoad() {
-        title = NSLocalizedString("Aztec Native Editor", comment: "")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-                                                                target: self,
-                                                                action: #selector(AztecPostViewController.closeAction))
-        view.backgroundColor = UIColor.whiteColor()
-    }
-
     func closeAction(sender: AnyObject) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -119,12 +112,18 @@ class AztecPostViewController: UIViewController
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
-        editor.setHTML(getSampleHTML())
+        editor.setHTML("")
 
         configureConstraints()
         configureNavigationBar()
 
         layoutTextView()
+
+        title = NSLocalizedString("Aztec Native Editor", comment: "")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
+                                                                 target: self,
+                                                                 action: #selector(AztecPostViewController.closeAction))
+        view.backgroundColor = UIColor.whiteColor()
     }
 
 
@@ -256,7 +255,7 @@ class AztecPostViewController: UIViewController
 }
 
 
-extension EditorDemoController : UITextViewDelegate
+extension AztecPostViewController : UITextViewDelegate
 {
     func textViewDidChangeSelection(textView: UITextView) {
         updateFormatBar()
@@ -264,12 +263,12 @@ extension EditorDemoController : UITextViewDelegate
 }
 
 
-extension EditorDemoController : UITextFieldDelegate
+extension AztecPostViewController : UITextFieldDelegate
 {
 
 }
 
-extension EditorDemoController
+extension AztecPostViewController
 {
     enum EditionMode {
         case RichText
@@ -307,7 +306,7 @@ extension EditorDemoController
 }
 
 
-extension EditorDemoController : Aztec.FormatBarDelegate
+extension AztecPostViewController : Aztec.FormatBarDelegate
 {
 
     func handleActionForIdentifier(identifier: String) {
@@ -388,38 +387,42 @@ extension EditorDemoController : Aztec.FormatBarDelegate
         let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_media"), identifier: Aztec.FormattingIdentifier.Media.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.AddImage), identifier: Aztec.FormattingIdentifier.Media.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_bold"), identifier: Aztec.FormattingIdentifier.Bold.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Bold), identifier: Aztec.FormattingIdentifier.Bold.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_italic"), identifier: Aztec.FormattingIdentifier.Italic.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Italic), identifier: Aztec.FormattingIdentifier.Italic.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_underline"), identifier: Aztec.FormattingIdentifier.Underline.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Underline), identifier: Aztec.FormattingIdentifier.Underline.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_strikethrough"), identifier: Aztec.FormattingIdentifier.Strikethrough.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Strikethrough), identifier: Aztec.FormattingIdentifier.Strikethrough.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_quote"), identifier: Aztec.FormattingIdentifier.Blockquote.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Quote), identifier: Aztec.FormattingIdentifier.Blockquote.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_ul"), identifier: Aztec.FormattingIdentifier.Unorderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListUnordered), identifier: Aztec.FormattingIdentifier.Unorderedlist.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_ol"), identifier: Aztec.FormattingIdentifier.Orderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListOrdered), identifier: Aztec.FormattingIdentifier.Orderedlist.rawValue),
             flex,
-            Aztec.FormatBarItem(image: templateImage(named:"icon_format_link"), identifier: Aztec.FormattingIdentifier.Link.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Link), identifier: Aztec.FormattingIdentifier.Link.rawValue),
             flex,
             ]
-        
+
         let toolbar = Aztec.FormatBar()
-        toolbar.tintColor = UIColor.grayColor()
+        //[[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
+        //[[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
+        //[[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
+
+        toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
+        toolbar.tintColor = WPStyleGuide.greyLighten10()
         toolbar.highlightedTintColor = UIColor.blueColor()
         toolbar.selectedTintColor = UIColor.darkGrayColor()
         toolbar.disabledTintColor = UIColor.lightGrayColor()
-        
         toolbar.items = items
         return toolbar
     }
-    
+
     func templateImage(named named: String) -> UIImage {
         return UIImage(named: named)!.imageWithRenderingMode(.AlwaysTemplate)
     }
-    
+
 }
