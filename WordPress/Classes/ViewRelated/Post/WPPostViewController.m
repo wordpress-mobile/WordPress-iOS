@@ -55,6 +55,8 @@ NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNo
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
 
+NSString* const kUserDefaultsNativeEditorEnabled = @"kUserDefaultsNativeEditorEnabled";
+
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
@@ -936,9 +938,29 @@ EditImageDetailsViewControllerDelegate
 }
 
 + (BOOL)isNewEditorEnabled
-{    
+{
     return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorEnabled];
 }
+
++ (BOOL)isNativeEditorEnabled
+{    
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNativeEditorEnabled];
+}
+
++ (void)setNativeEditorEnabled:(BOOL)isEnabled
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isEnabled forKey:kUserDefaultsNativeEditorEnabled];
+    [defaults synchronize];
+}
+
++ (void)isNativeEditorEnabled:(BOOL)isEnabled
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isEnabled forKey:kUserDefaultsNativeEditorEnabled];
+    [defaults synchronize];
+}
+
 
 #pragma mark - Instance Methods
 
