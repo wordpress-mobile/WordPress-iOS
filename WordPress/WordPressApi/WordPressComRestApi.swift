@@ -103,15 +103,17 @@ public class WordPressComRestApi: NSObject
         }
 
         let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+                if let progressUnwrapped = progress {
+                    progressUnwrapped.completedUnitCount = progressUnwrapped.totalUnitCount
+                }
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress?.completedUnitCount = 1
-            }, failure: { [weak progress] (dataTask, error) in
+            }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -148,15 +150,16 @@ public class WordPressComRestApi: NSObject
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
         let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+                if let progressUnwrapped = progress {
+                    progressUnwrapped.completedUnitCount = progressUnwrapped.totalUnitCount
+                }
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
-            }, failure: { [weak progress] (dataTask, error) in
+            }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -230,11 +233,10 @@ public class WordPressComRestApi: NSObject
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
         let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
-            progress.completedUnitCount = progress.totalUnitCount
-
             if let error = error {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
             } else {
+                progress.completedUnitCount = progress.totalUnitCount
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: response as? NSHTTPURLResponse)
                     return
