@@ -200,6 +200,18 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    // MARK: - UITableViewDelegate
+
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        let isNewSelection = (indexPath != tableView.indexPathForSelectedRow)
+
+        if isNewSelection {
+            return indexPath
+        } else {
+            return nil
+        }
+    }
+
     // MARK: - Actions
 
     private func presentGravatarPicker() {
