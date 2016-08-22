@@ -59,7 +59,7 @@ extension NotificationBlock
                 linksColor:     nil)
         }
 
-        return attributedText(MemoizeKeys.headerTitle)
+        return attributedText(MemoizeKeys.footer)
     }
 
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
@@ -247,6 +247,7 @@ extension NotificationBlock
         static let subject      = "subject"
         static let snippet      = "snippet"
         static let headerTitle  = "headerTitle"
+        static let footer       = "footer"
         static let text         = "text"
         static let badge        = "badge"
     }
