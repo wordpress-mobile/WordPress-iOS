@@ -408,9 +408,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             ]
 
         let toolbar = Aztec.FormatBar()
-        //[[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
-        //[[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
-        //[[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
 
         toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
         toolbar.tintColor = WPStyleGuide.greyLighten10()
