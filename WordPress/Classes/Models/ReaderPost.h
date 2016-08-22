@@ -34,7 +34,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *score;
 @property (nonatomic, strong) NSNumber *siteID;
-// Normalizes sorting between score or sortDate depending on the flavor of post.
+// Normalizes sorting between offset or sortDate depending on the flavor of post.
+// Note that this can store a negative value.
 @property (nonatomic, strong) NSNumber *sortRank;
 // Normalizes the date to sort by depending on the flavor of post.
 @property (nonatomic, strong) NSDate *sortDate;
@@ -55,6 +56,10 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
 @property (nonatomic, strong) ReaderCrossPostMeta *crossPostMeta;
+@property (nonatomic, strong) NSString *railcar;
+
+// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
+@property (nonatomic) BOOL rendered;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;
@@ -64,6 +69,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
 - (BOOL)contentIncludesFeaturedImage;
 - (BOOL)isSourceAttributionWPCom;
+- (NSDictionary *)railcarDictionary;
 
 @end
 

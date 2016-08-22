@@ -482,6 +482,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
+        <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="following" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
@@ -537,6 +538,7 @@
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="railcar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="readingTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="siteIconURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -641,12 +643,12 @@
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
-        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="165"/>
+        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
         <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="630"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="645"/>
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
