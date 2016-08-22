@@ -145,8 +145,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
                       return;
                   }
 
-                  RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
-                  success(post);
+                  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                      // Do all of this work on a background thread, then call success on the main thread.
+                      // Do this to avoid any chance of blocking the UI while parsing.
+                      RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          success(post);
+                      });
+                  });
 
               } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
@@ -228,24 +234,31 @@ static const NSUInteger ReaderPostTitleLength = 30;
                       return;
                   }
 
-                  // NOTE: If an offset param was specified sortRank will be derived
-                  // from the offset + order of the results, ONLY if a `before` param
-                  // was not specified.  If a `before` param exists we favor sorting by date.
-                  BOOL rankByOffset = [params objectForKey:ParamKeyOffset] != nil && [params objectForKey:ParamKeyBefore] == nil;
-                  __block CGFloat offset = [[params numberForKey:ParamKeyOffset] floatValue];
-                  NSString *algorithm = [responseObject stringForKey:ParamsKeyAlgorithm];
-                  NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
-                  NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+                  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                      // NOTE: Do all of this work on a background thread, then call success on the main thread.
+                      // Do this to avoid any chance of blocking the UI while parsing.
 
-                      if (rankByOffset) {
-                          RemoteReaderPost *post = [self formatPostDictionary:jsonPost offset:offset];
-                          offset++;
-                          return post;
-                      }
+                      // NOTE: If an offset param was specified sortRank will be derived
+                      // from the offset + order of the results, ONLY if a `before` param
+                      // was not specified.  If a `before` param exists we favor sorting by date.
+                      BOOL rankByOffset = [params objectForKey:ParamKeyOffset] != nil && [params objectForKey:ParamKeyBefore] == nil;
+                      __block CGFloat offset = [[params numberForKey:ParamKeyOffset] floatValue];
+                      NSString *algorithm = [responseObject stringForKey:ParamsKeyAlgorithm];
+                      NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
+                      NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+                          if (rankByOffset) {
+                              RemoteReaderPost *post = [self formatPostDictionary:jsonPost offset:offset];
+                              offset++;
+                              return post;
+                          }
+                          return [self formatPostDictionary:jsonPost];
+                      }];
 
-                      return [self formatPostDictionary:jsonPost];
-                  }];
-                  success(posts, algorithm);
+                      // Now call success on the main thread.
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          success(posts, algorithm);
+                      });
+                  });
 
               } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                   if (failure) {
