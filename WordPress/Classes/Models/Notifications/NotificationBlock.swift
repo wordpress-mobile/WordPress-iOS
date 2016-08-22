@@ -90,7 +90,7 @@ extension NotificationBlock
             return .Comment
         }
 
-        if let firstMedia = media.first where (firstMedia.isImage || firstMedia.isBadge) {
+        if let firstMedia = media.first where (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
             return .Image
         }
 
@@ -101,7 +101,7 @@ extension NotificationBlock
     ///
     var imageUrls: [NSURL] {
         return media.flatMap {
-            guard $0.isImage && $0.mediaURL != nil else {
+            guard $0.kind == .Image && $0.mediaURL != nil else {
                 return nil
             }
 
