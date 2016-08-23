@@ -15,6 +15,7 @@ class ContextManagerTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        contextManager.mainContext.reset()
 
         // Note: We'll force TestContextManager override reset, since, for (unknown reasons) the TestContextManager
         // might be retained more than expected, and it may break other core data based tests.

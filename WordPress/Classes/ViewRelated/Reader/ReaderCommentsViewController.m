@@ -756,6 +756,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __typeof(self) __weak weakSelf = self;
     ReaderPost *post = self.post;
+    NSDictionary *railcar = post.railcarDictionary;
     void (^successBlock)() = ^void() {
         NSMutableDictionary *properties = [NSMutableDictionary dictionary];
         properties[WPAppAnalyticsKeyBlogID] = post.siteID;
@@ -766,7 +767,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
         }
         [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
-
+        if (railcar) {
+            [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
+        }
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };
