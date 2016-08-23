@@ -937,4 +937,8 @@ extension ReaderDetailViewController : UIScrollViewDelegate
         }
     }
 
+    public func scrollViewDidScrollToTop(scrollView: UIScrollView) {
+        setBarsHidden(false)
+    }
+
 }
