@@ -223,13 +223,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     switch (section) {
         case BlogDetailsSubsectionStats:
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+            [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
                                         animated:NO
                                   scrollPosition:UITableViewScrollPositionNone];
             [self showStats];
             break;
         case BlogDetailsSubsectionPosts:
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]
+            [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
                                         animated:NO
                                   scrollPosition:UITableViewScrollPositionNone];
             [self showPostList];
@@ -237,14 +237,26 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
             if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
-                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]
+                [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
                                             animated:NO
                                       scrollPosition:UITableViewScrollPositionNone];
                 [self showThemes];
             }
             break;
     }
+}
 
+- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
+{
+    switch (section) {
+        case BlogDetailsSubsectionStats:
+            return [NSIndexPath indexPathForRow:0 inSection:0];
+        case BlogDetailsSubsectionPosts:
+            return [NSIndexPath indexPathForRow:0 inSection:1];
+        case BlogDetailsSubsectionThemes:
+        case BlogDetailsSubsectionCustomize:
+            return [NSIndexPath indexPathForRow:0 inSection:2];
+    }
 }
 
 #pragma mark - Data Model setup
