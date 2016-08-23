@@ -320,11 +320,17 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let navController : UINavigationController
 
         if EditPageViewController.isNewEditorEnabled() {
-            let postViewController = EditPageViewController(draftForBlog: blog)
+            let postViewController: UIViewController
+            if WPPostViewController.isNativeEditorEnabled() {
+                postViewController = AztecPostViewController()
+                navController = UINavigationController(rootViewController: postViewController)
+            } else {
+                postViewController = EditPageViewController(draftForBlog: blog)
 
-            navController = UINavigationController(rootViewController: postViewController)
-            navController.restorationIdentifier = WPEditorNavigationRestorationID
-            navController.restorationClass = EditPageViewController.self
+                navController = UINavigationController(rootViewController: postViewController)
+                navController.restorationIdentifier = WPEditorNavigationRestorationID
+                navController.restorationClass = EditPageViewController.self
+            }
         } else {
             let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
 
@@ -344,7 +350,12 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
 
         if EditPageViewController.isNewEditorEnabled() {
-            let pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
+            let pageViewController: UIViewController
+            if WPPostViewController.isNativeEditorEnabled() {
+                pageViewController = AztecPostViewController()
+            } else {
+                pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
+            }
 
             navigationController?.pushViewController(pageViewController, animated: true)
         } else {

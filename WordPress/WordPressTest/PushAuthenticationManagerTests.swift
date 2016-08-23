@@ -2,9 +2,9 @@ import Foundation
 import XCTest
 import WordPress
 
-class PushAuthenticationManagerTests : XCTestCase {
+class PushAuthenticationManagerTests: XCTestCase {
 
-    class MockUIAlertControllerProxy : UIAlertControllerProxy {
+    class MockUIAlertControllerProxy: UIAlertControllerProxy {
 
         var titlePassedIn:String?
         var messagePassedIn:String?

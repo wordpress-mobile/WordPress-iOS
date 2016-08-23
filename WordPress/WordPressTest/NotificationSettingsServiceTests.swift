@@ -3,14 +3,14 @@ import XCTest
 import WordPress
 import OHHTTPStubs
 
-class NotificationsServiceTests : XCTestCase
+class NotificationSettingsServiceTests: XCTestCase
 {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
     var contextManager      : TestContextManager!
     var remoteApi           : WordPressComRestApi!
-    var service             : NotificationsService!
+    var service             : NotificationSettingsService!
 
     // MARK: - Constants
     let timeout             = 2.0
@@ -26,8 +26,8 @@ class NotificationsServiceTests : XCTestCase
 
         contextManager      = TestContextManager()
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        service             = NotificationsService(managedObjectContext: contextManager.mainContext,
-                                                   wordPressComRestApi: remoteApi)
+        service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
+                                                           wordPressComRestApi: remoteApi)
 
         stub({ request in
             return request.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil
@@ -41,6 +41,7 @@ class NotificationsServiceTests : XCTestCase
     override func tearDown() {
         super.tearDown()
         OHHTTPStubs.removeAllStubs()
+        ContextManager.overrideSharedInstance(nil)
     }
 
 
