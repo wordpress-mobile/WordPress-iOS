@@ -92,8 +92,20 @@ class AztecPostViewController: UIViewController
         }
     }
 
+    private(set) var blog: Blog
+    private(set) var post: AbstractPost
 
     // MARK: - Lifecycle Methods
+
+    init(post: AbstractPost) {
+        self.blog = post.blog
+        self.post = post
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        preconditionFailure("Aztec Post View Controller must be initialized by code")
+    }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -112,7 +124,8 @@ class AztecPostViewController: UIViewController
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
-        editor.setHTML("")
+        editor.setHTML(post.content ?? "")
+        titleTextField.text = post.postTitle
 
         configureConstraints()
         configureNavigationBar()

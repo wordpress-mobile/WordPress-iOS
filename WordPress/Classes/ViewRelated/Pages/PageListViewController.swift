@@ -322,7 +322,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         if EditPageViewController.isNewEditorEnabled() {
             let postViewController: UIViewController
             if WPPostViewController.isNativeEditorEnabled() {
-                postViewController = AztecPostViewController()
+                let page = PostService.createDraftPageInMainContextForBlog(blog)
+                postViewController = AztecPostViewController(post:page)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
                 postViewController = EditPageViewController(draftForBlog: blog)
@@ -352,7 +353,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         if EditPageViewController.isNewEditorEnabled() {
             let pageViewController: UIViewController
             if WPPostViewController.isNativeEditorEnabled() {
-                pageViewController = AztecPostViewController()
+                pageViewController = AztecPostViewController(post: apost)
             } else {
                 pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
             }
