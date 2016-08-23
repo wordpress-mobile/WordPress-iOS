@@ -116,14 +116,14 @@ class WPSplitViewController: UISplitViewController {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
                 updateDimmingViewFrame()
-                dimmingView.alpha = 0
+                dimmingView.alpha = WPAlphaZero
                 UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
                     self.dimmingView.alpha = self.dimmingViewAlpha
                 })
             }
         } else if dimmingView.superview != nil {
             UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
-                self.dimmingView.alpha = 0
+                self.dimmingView.alpha = WPAlphaZero
                 }, completion: { _ in
                     self.dimmingView.removeFromSuperview()
             })
