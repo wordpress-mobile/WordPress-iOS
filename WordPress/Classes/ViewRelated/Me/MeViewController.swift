@@ -76,7 +76,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc private func accountDidChange() {
         reloadViewModel()
 
-        // Reload the detail pane on account change and we're not in a compact split view
+        // Reload the detail pane if the split view isn't compact
         if let splitViewController = splitViewController as? WPSplitViewController,
             let detailViewController = initialDetailViewControllerForSplitView(splitViewController) where !splitViewControllerIsHorizontallyCompact {
             showDetailViewController(detailViewController, sender: self)
