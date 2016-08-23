@@ -10,17 +10,36 @@ class WPSplitViewController: UISplitViewController {
 
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .Default {
         didSet {
-            switch wpPrimaryColumnWidth {
-            case .Default:
-                preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
-                minimumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
-                maximumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
-            case .Narrow:
-                let columnWidth: CGFloat = 320
-                preferredPrimaryColumnWidthFraction = UIScreen.mainScreen().bounds.width / columnWidth
-                minimumPrimaryColumnWidth = columnWidth
-                maximumPrimaryColumnWidth = columnWidth
+            updateSplitViewForPrimaryColumnWidth()
+        }
+    }
+
+    private enum WPSplitViewControllerNarrowPrimaryColumnWidth: CGFloat {
+        case Portrait = 230
+        case Landscape = 320
+
+        static func widthForInterfaceOrientation(orientation: UIInterfaceOrientation) -> CGFloat {
+            if UIInterfaceOrientationIsPortrait(orientation) {
+                return self.Portrait.rawValue
+            } else {
+                return self.Landscape.rawValue
             }
+        }
+    }
+
+    private func updateSplitViewForPrimaryColumnWidth() {
+        switch wpPrimaryColumnWidth {
+        case .Default:
+            preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
+            minimumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
+            maximumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
+        case .Narrow:
+            let orientation = UIApplication.sharedApplication().statusBarOrientation
+            let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.widthForInterfaceOrientation(orientation)
+
+            preferredPrimaryColumnWidthFraction = UIScreen.mainScreen().bounds.width / columnWidth
+            minimumPrimaryColumnWidth = columnWidth
+            maximumPrimaryColumnWidth = columnWidth
         }
     }
 
@@ -58,6 +77,7 @@ class WPSplitViewController: UISplitViewController {
 
         coordinator.animateAlongsideTransition({ context in
             self.updateDimmingViewFrame()
+            self.updateSplitViewForPrimaryColumnWidth()
         }, completion: nil)
 
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
