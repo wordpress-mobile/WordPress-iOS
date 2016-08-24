@@ -62,13 +62,12 @@ public class WordPressComRestApi: NSObject
     }()
 
     private func uploadSession() -> NSURLSession {
-        //let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         var additionalHeaders: [String : AnyObject] = [:]
-        if let oAuthToken = self.oAuthToken {
+        if let oAuthToken = oAuthToken {
             additionalHeaders["Authorization"] = "Bearer \(oAuthToken)"
         }
-        if let userAgent = self.userAgent {
+        if let userAgent = userAgent {
             additionalHeaders["User-Agent"] = userAgent
         }
         sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
@@ -126,7 +125,7 @@ public class WordPressComRestApi: NSObject
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
                 progress.completedUnitCount = progress.totalUnitCount
-            }, failure: { [weak progress] (dataTask, error) in
+            }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
             }
         )
@@ -255,9 +254,9 @@ public class WordPressComRestApi: NSObject
     }
 
     private func multipartRequestWithURLString(urlString:String, parameters: [String:AnyObject], fileParts: [FilePart], encodedToFileURL fileURL:NSURL) -> NSURLRequest? {
-        //let urlStringWithLocale = appendLocaleIfNeeded(urlString)
+        let urlStringWithLocale = appendLocaleIfNeeded(urlString)
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
-              let url = NSURL(string:urlString, relativeToURL:baseURL)
+              let url = NSURL(string:urlStringWithLocale, relativeToURL:baseURL)
         else {
             return nil
         }
@@ -267,12 +266,10 @@ public class WordPressComRestApi: NSObject
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField:"Content-Type")
         let body = NSMutableData()
 
-        for (key, obj) in parameters {
-            if let text = obj as? String {
-                body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-                body.appendData("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-                body.appendData("\(text)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            }
+        for (key, text) in parameters where text is String {
+            body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("\(text)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
         }
         body.writeToURL(fileURL, atomically:true)
         guard let fileHandle = try? NSFileHandle(forUpdatingURL:fileURL) else {
@@ -282,7 +279,7 @@ public class WordPressComRestApi: NSObject
         for filePart in fileParts {
             let filename = filePart.filename
             let mimeType = filePart.mimeType
-            guard let data = try? NSData(contentsOfURL:filePart.url, options:[NSDataReadingOptions.DataReadingMappedIfSafe]) else {
+            guard let data = try? NSData(contentsOfURL:filePart.url, options:[.DataReadingMappedIfSafe]) else {
                 fileHandle.closeFile()
                 return nil
             }
@@ -303,7 +300,8 @@ public class WordPressComRestApi: NSObject
         // Progress report
         progress.totalUnitCount = 1
         if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
-            let contentLength = Int64(contentLengthString) {
+           let contentLength = Int64(contentLengthString)
+        {
             progress.totalUnitCount = contentLength + 1
         }
         progress.cancellationHandler = {
@@ -316,14 +314,15 @@ public class WordPressComRestApi: NSObject
 
     private func handleResponseWithData(originalData: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
         guard let data = originalData,
-            let httpResponse = urlResponse as? NSHTTPURLResponse,
-            let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
-            where error == nil &&  contentType.hasPrefix("application/json") else {
-                if let unwrappedError = error {
-                    throw convertError(unwrappedError, data: originalData)
-                } else {
-                    throw convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-                }
+              let httpResponse = urlResponse as? NSHTTPURLResponse,
+              let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
+              where error == nil &&  contentType.hasPrefix("application/json")
+        else {
+            if let unwrappedError = error {
+                throw convertError(unwrappedError, data: originalData)
+            } else {
+                throw convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
+            }
         }
 
         let jsonObject: AnyObject
@@ -382,12 +381,12 @@ public class WordPressComRestApi: NSObject
     public static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
 
     private func convertError(error: NSError, data: NSData?) -> NSError {
-        if let data = data {
-            var userInfo:[NSObject:AnyObject] = error.userInfo ?? [:]
-            userInfo[self.dynamicType.WordPressComRestCApiErrorKeyData] = data
-            return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+        guard let data = data else {
+            return error
         }
-        return error
+        var userInfo:[NSObject:AnyObject] = error.userInfo ?? [:]
+        userInfo[self.dynamicType.WordPressComRestCApiErrorKeyData] = data
+        return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
     }
 }
 
