@@ -61,8 +61,8 @@ public class WordPressComRestApi: NSObject
         return sessionManager
     }()
 
-    private lazy var uploadSession: NSURLSession = {
-        let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
+    private func uploadSession() -> NSURLSession {
+        //let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         var additionalHeaders: [String : AnyObject] = [:]
         if let oAuthToken = self.oAuthToken {
@@ -74,7 +74,7 @@ public class WordPressComRestApi: NSObject
         sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
         let uploadSession = NSURLSession(configuration:sessionConfiguration, delegate: self, delegateQueue: nil)
         return uploadSession
-    }()
+    }
 
     public init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.oAuthToken = oAuthToken
@@ -214,8 +214,9 @@ public class WordPressComRestApi: NSObject
             failure(error: error, httpResponse: nil)
             return nil
         }
-        let task = self.uploadSession.uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
-
+        let progress = NSProgress(totalUnitCount: 1)
+        let task = self.uploadSession().uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
+            progress.completedUnitCount = progress.totalUnitCount
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: response, error: error)
@@ -226,7 +227,9 @@ public class WordPressComRestApi: NSObject
         }
         task.resume()
 
-        return createProgresForTask(task)
+        associate(progress, task:task)
+
+        return progress
     }
 
     public func hasCredentials() -> Bool {
@@ -254,9 +257,9 @@ public class WordPressComRestApi: NSObject
     }
 
     private func multipartRequestWithURLString(urlString:String, parameters: [String:AnyObject], fileParts: [FilePart], encodedToFileURL fileURL:NSURL) -> NSURLRequest? {
-        let urlStringWithLocale = appendLocaleIfNeeded(urlString)
+        //let urlStringWithLocale = appendLocaleIfNeeded(urlString)
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
-              let url = NSURL(string:urlStringWithLocale, relativeToURL:baseURL)
+              let url = NSURL(string:urlString, relativeToURL:baseURL)
         else {
             return nil
         }
@@ -298,20 +301,17 @@ public class WordPressComRestApi: NSObject
 
     //MARK: - Progress reporting
 
-    private func createProgresForTask(task: NSURLSessionTask) -> NSProgress {
+    private func associate(progress:NSProgress, task: NSURLSessionTask) {
         // Progress report
-        let progress = NSProgress(parent: NSProgress.currentProgress(), userInfo: nil)
         progress.totalUnitCount = 1
         if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
             let contentLength = Int64(contentLengthString) {
-            progress.totalUnitCount = contentLength
+            progress.totalUnitCount = contentLength + 1
         }
         progress.cancellationHandler = {
             task.cancel()
         }
         ongoingProgress[task] = progress
-
-        return progress
     }
 
     //MARK: - Response handling
@@ -399,7 +399,7 @@ extension WordPressComRestApi: NSURLSessionTaskDelegate, NSURLSessionDelegate {
         guard let progress = ongoingProgress[task] else {
             return
         }
-        progress.totalUnitCount = totalBytesExpectedToSend
+        progress.totalUnitCount = totalBytesExpectedToSend + 1
         progress.completedUnitCount = totalBytesSent
 
         if (totalBytesSent == totalBytesExpectedToSend) {
