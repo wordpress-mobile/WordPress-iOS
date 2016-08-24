@@ -73,32 +73,32 @@ namespace :dependencies do
     CLOBBER << "Pods"
   end
 
-  # namespace :lint do
+  namespace :lint do
 
-  #   task :check do
-  #     if swiftlint_needs_install
-  #       dependency_failed("SwiftLint")
-  #       Rake::Task["dependencies:lint:install"].invoke
-  #     end
-  #   end
+    task :check do
+      if swiftlint_needs_install
+        dependency_failed("SwiftLint")
+        Rake::Task["dependencies:lint:install"].invoke
+      end
+    end
 
-  #   task :install do
-  #     fold("install.swiftlint") do
-  #       puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
-  #       Dir.mktmpdir do |tmpdir|
-  #         sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
-  #         Dir.chdir(tmpdir) do
-  #           sh "git checkout --quiet #{SWIFTLINT_VERSION}"
-  #           sh "git submodule --quiet update --init --recursive"
-  #           FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
-  #           FileUtils.mkdir_p(swiftlint_path)
-  #           sh "make prefix_install PREFIX='#{swiftlint_path}'"
-  #         end
-  #       end
-  #     end
-  #   end
-  #   CLOBBER << "vendor/swiftlint"
-  # end
+    task :install do
+      fold("install.swiftlint") do
+        puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
+        Dir.mktmpdir do |tmpdir|
+          sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
+          Dir.chdir(tmpdir) do
+            sh "git checkout --quiet #{SWIFTLINT_VERSION}"
+            sh "git submodule --quiet update --init --recursive"
+            FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
+            FileUtils.mkdir_p(swiftlint_path)
+            sh "make prefix_install PREFIX='#{swiftlint_path}'"
+          end
+        end
+      end
+    end
+    CLOBBER << "vendor/swiftlint"
+  end
 
 end
 
@@ -119,17 +119,17 @@ task :clean do
   xcodebuild(:clean)
 end
 
-# desc "Checks the source for style errors"
-# task :lint => %w[dependencies:lint:check] do
-#   swiftlint %w[lint --quiet]
-# end
+desc "Checks the source for style errors"
+task :lint => %w[dependencies:lint:check] do
+  swiftlint %w[lint --quiet]
+end
 
-# namespace :lint do
-#   desc "Automatically corrects style errors where possible"
-#   task :autocorrect => %w[dependencies:lint:check] do
-#     swiftlint %w[autocorrect]
-#   end
-# end
+namespace :lint do
+  desc "Automatically corrects style errors where possible"
+  task :autocorrect => %w[dependencies:lint:check] do
+    swiftlint %w[autocorrect]
+  end
+end
 
 namespace :git do
   hooks = %w[pre-commit post-checkout post-merge]
@@ -226,24 +226,24 @@ def pod(args)
   sh(*args)
 end
 
-# def swiftlint_path
-#     "#{PROJECT_DIR}/vendor/swiftlint"
-# end
+def swiftlint_path
+    "#{PROJECT_DIR}/vendor/swiftlint"
+end
 
-# def swiftlint(args)
-#   args = [swiftlint_bin] + args
-#   sh(*args)
-# end
+def swiftlint(args)
+  args = [swiftlint_bin] + args
+  sh(*args)
+end
 
-# def swiftlint_bin
-#     "#{swiftlint_path}/bin/swiftlint"
-# end
+def swiftlint_bin
+    "#{swiftlint_path}/bin/swiftlint"
+end
 
-# def swiftlint_needs_install
-#   return true unless File.exist?(swiftlint_bin)
-#   installed_version = `#{swiftlint_bin} version`.chomp
-#   return (installed_version != SWIFTLINT_VERSION)
-# end
+def swiftlint_needs_install
+  return true unless File.exist?(swiftlint_bin)
+  installed_version = `#{swiftlint_bin} version`.chomp
+  return (installed_version != SWIFTLINT_VERSION)
+end
 
 def xcodebuild(*build_cmds)
   cmd = "xcodebuild"
