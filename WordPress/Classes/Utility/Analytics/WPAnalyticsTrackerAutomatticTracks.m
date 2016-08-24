@@ -30,6 +30,11 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
 
++ (NSString *)eventNameForStat:(WPAnalyticsStat)stat
+{
+    return [self eventPairForStat:stat].eventName;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -47,7 +52,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
-    TracksEventPair *eventPair = [self eventPairForStat:stat];
+    TracksEventPair *eventPair = [[self class] eventPairForStat:stat];
     if (!eventPair) {
         DDLogInfo(@"WPAnalyticsStat not supported by WPAnalyticsTrackerAutomatticTracks: %@", @(stat));
         return;
@@ -149,7 +154,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     return _anonymousID;
 }
 
-- (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
++ (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
 {
     NSString *eventName;
     NSDictionary *eventProperties;
@@ -202,6 +207,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatCreatedAccount:
             eventName = @"account_created";
+            break;
+        case WPAnalyticsStatCreatedSite:
+            eventName = @"site_created";
             break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
@@ -792,6 +800,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatThemesSupportAccessed:
             eventName = @"themes_support_accessed";
+            break;
+        case WPAnalyticsStatTrainTracksInteract:
+            eventName = @"traintracks_interact";
+            break;
+        case WPAnalyticsStatTrainTracksRender:
+            eventName = @"traintracks_render";
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             eventName = @"two_factor_code_requested";

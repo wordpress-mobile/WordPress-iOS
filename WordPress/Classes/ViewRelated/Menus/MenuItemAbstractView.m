@@ -33,18 +33,18 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     self = [super init];
     if (self) {
-        
+
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        
+
         _drawsLineSeparator = YES;
-        
+
         [self setupContentView];
         [self setupStackView];
         [self setupIconView];
         [self setupTextLabel];
     }
-    
+
     return self;
 }
 
@@ -55,14 +55,14 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.tintColor = [self iconTintColor];
     contentView.backgroundColor = [UIColor whiteColor];
-    
+
     [self addSubview:contentView];
     _contentView = contentView;
-    
+
     NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor];
     _constraintForLeadingIndentation = leadingConstraint;
     leadingConstraint.active = YES;
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [contentView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
@@ -74,17 +74,17 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     NSAssert(_contentView != nil, @"contentView is nil");
     [_contentView addSubview:stackView];
-    
+
     [NSLayoutConstraint activateConstraints:@[
                                               [stackView.topAnchor constraintEqualToAnchor:_contentView.topAnchor],
                                               [stackView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor],
                                               [stackView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor]
                                               ]];
-    
+
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = 8.0;
     margins.bottom = 8.0;
@@ -95,7 +95,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentCenter;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
-    
+
     _stackView = stackView;
 }
 
@@ -123,22 +123,22 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     label.textColor = [self textLabelColor];
     label.font = [WPFontManager systemRegularFontOfSize:17.0];
     label.backgroundColor = [UIColor clearColor];
-    
+
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
-    
+
     [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    
+
     _textLabel = label;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     /* Set the preferredMaxLayoutWidth to give a heads up to the constraint resolver.
-       This speeds things up when hiding views such as the accessoryStackView's arranged views.
+     This speeds things up when hiding views such as the accessoryStackView's arranged views.
      */
     self.textLabel.preferredMaxLayoutWidth = self.accessoryStackView.frame.origin.x - self.textLabel.frame.origin.x;
 }
@@ -149,13 +149,13 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     if (_highlighted != highlighted) {
         _highlighted = highlighted;
-        
+
         self.textLabel.textColor = [self textLabelColor];
         self.iconView.tintColor = [self iconTintColor];
         self.contentView.tintColor = [self iconTintColor];
         self.contentView.backgroundColor = [self contentViewBackgroundColor];
         [self.contentView setNeedsDisplay];
-        
+
         [self.delegate itemView:self highlighted:highlighted];
     }
 }
@@ -200,7 +200,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         [self.stackView addArrangedSubview:stackView];
         _accessoryStackView = stackView;
     }
-    
+
     [self.accessoryStackView addArrangedSubview:button];
     [self.accessoryStackView setNeedsLayout];
 }
@@ -210,20 +210,20 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.backgroundColor = [UIColor clearColor];
-    
+
     [button setImage:image forState:UIControlStateNormal];
-    
+
     CGFloat padding = 6.0;
     CGFloat width = MenusDesignItemIconSize + (padding * 2);
     CGFloat height = MenusDesignItemIconSize + (padding * 2);
-    
+
     UIEdgeInsets inset = button.imageEdgeInsets;
     inset.top = padding;
     inset.bottom = padding;
     inset.left = padding;
     inset.right = padding;
     button.imageEdgeInsets = inset;
-    
+
     NSLayoutConstraint *widthConstraint = [button.widthAnchor constraintEqualToConstant:width];
     widthConstraint.priority = 999;
     NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToConstant:height];
@@ -233,7 +233,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
                                               heightConstraint
                                               ]];
     [self addAccessoryButton:button];
-    
+
     return button;
 }
 
@@ -245,7 +245,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     } else  {
         color = [UIColor whiteColor];
     }
-    
+
     return color;
 }
 
@@ -257,7 +257,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     } else  {
         color = [WPStyleGuide darkGrey];
     }
-    
+
     return color;
 }
 
@@ -269,7 +269,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     } else  {
         color = [WPStyleGuide grey];
     }
-    
+
     return color;
 }
 
@@ -309,17 +309,17 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 }
 
 - (void)drawRect:(CGRect)rect
-{    
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     CGRect dashRect = CGRectInset(self.contentView.frame, 8.0, 8.0);
-    
+
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
     CGContextSetLineWidth(context, 1.0);
-    
+
     const CGFloat dashLength = 6.0;
     const CGFloat dashFillPercentage = 60; // Fill % of the line with dashes, rest with white space.
-    
+
     CGFloat(^spacingForLineLength)(CGFloat) = ^ CGFloat (CGFloat lineLength) {
         // Calculate the white spacing needed to fill the full line with dashes
         const CGFloat dashFill = (lineLength * dashFillPercentage) / 100;
@@ -327,14 +327,14 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         //// Uses (dashFill - dashLength) to ensure there is one extra dash to touch the end of the line.
         return ((lineLength - dashFill) * dashLength) / (dashFill - dashLength);
     };
-    
+
     const CGFloat pointOffset = 0.5;
 
     // Draw the dashed lines.
     // First draw the horiztonal top and bottom lines, from left to right.
     CGFloat topBottomDashes[2] = {dashLength, spacingForLineLength(dashRect.size.width)};
     CGContextSetLineDash(context, 0, topBottomDashes, 2);
-    
+
     const CGFloat leftX = dashRect.origin.x - pointOffset;
     const CGFloat rightX = dashRect.origin.x + dashRect.size.width + pointOffset;
     CGContextMoveToPoint(context, leftX, dashRect.origin.y);
@@ -346,7 +346,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     // Second draw the vertical left and right lines, from top to bottom.
     CGFloat leftRightDashes[2] = {dashLength, spacingForLineLength(dashRect.size.height)};
     CGContextSetLineDash(context, 0, leftRightDashes, 2);
-    
+
     const CGFloat topY = dashRect.origin.y - pointOffset;
     const CGFloat bottomY = dashRect.origin.y + dashRect.size.height + pointOffset;
     CGContextMoveToPoint(context, dashRect.origin.x, topY);
@@ -363,14 +363,14 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self.highlighted || !self.drawsLineSeparator) {
         return;
     }
-    
+
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, MenusDesignStrokeWidth);
-    
+
     // draw a line on the bottom
     CGContextMoveToPoint(context, self.stackView.layoutMargins.left, rect.size.height - (MenusDesignStrokeWidth / 2.0));
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
-    
+
     UIColor *borderColor = [WPStyleGuide greyLighten20];
     CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);

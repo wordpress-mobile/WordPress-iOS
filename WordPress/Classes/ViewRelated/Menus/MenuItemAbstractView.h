@@ -68,7 +68,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 
 /**
  Tracker for a stackableView appearing before this view in a stack.
-*/
+ */
 @property (nonatomic, weak, nullable) MenuItemAbstractView *previous;
 
 /**

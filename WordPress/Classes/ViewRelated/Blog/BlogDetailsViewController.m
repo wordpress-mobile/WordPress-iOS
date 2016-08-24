@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
@@ -27,7 +26,6 @@ static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
-NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
 
@@ -166,7 +164,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
 
-    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
@@ -200,21 +197,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     [self.headerView setBlog:self.blog];
-    [self updateHeaderViewConstraintsForTraitCollection:self.traitCollection];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
     [self.tableView reloadData];
-    [self preloadStats];
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [self updateHeaderViewConstraintsForTraitCollection:newCollection];
-    } completion:nil];
+    [self preloadBlogData];
 }
 
 
@@ -352,7 +339,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([Feature enabled:FeatureFlagPeople] && [self.blog supports:BlogFeaturePeople]) {
+    if ([self.blog supports:BlogFeaturePeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[Gridicon iconOfType:GridiconTypeUser]
                                                      callback:^{
@@ -377,54 +364,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
+    headerWrapper.preservesSuperviewLayoutMargins = YES;
     self.tableView.tableHeaderView = headerWrapper;
 
     // Blog detail header view
-    self.headerView = [[BlogDetailHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize)];
-    self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [headerWrapper addSubview:self.headerView];
+    BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [headerWrapper addSubview:headerView];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-    NSDictionary *metrics = @{@"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
-
-    // Constrain the headerView vertically
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_headerView]-(verticalMargin)-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
+    UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [headerView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
+                                              [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
+                                              ]];
+     self.headerView = headerView;
 }
-
-- (void)updateHeaderViewConstraintsForTraitCollection:(UITraitCollection *)traitCollection
-{
-    UIView *headerWrapper = self.tableView.tableHeaderView;
-
-    // We only remove the constraints we've added, not the view's autoresizing constraints
-    [headerWrapper removeConstraints:self.headerViewHorizontalConstraints];
-
-    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact || traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-        NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMarginiPhone)};
-
-        self.headerViewHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views];
-    } else {
-        NSMutableArray *constraints = [NSMutableArray new];
-
-        CGFloat headerWidth = WPTableViewFixedWidth;
-        [constraints addObject:[self.headerView.widthAnchor constraintEqualToConstant:headerWidth]];
-
-        // Center the headerView inside the wrapper
-        [constraints addObject:[self.headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor]];
-
-        self.headerViewHorizontalConstraints = [constraints copy];
-    }
-
-    [headerWrapper addConstraints:self.headerViewHorizontalConstraints];
-    [headerWrapper layoutIfNeeded];
-}
-
 
 #pragma mark - Table view data source
 
@@ -480,43 +436,71 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return WPTableViewDefaultRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
     return detailSection.title;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
+}
+
 #pragma mark - Private methods
+
+
+- (void)preloadBlogData
+{
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
+    
+    // only preload on wifi
+    if (isOnWifi) {
+        [self preloadStats];
+        [self preloadPosts];
+        [self preloadPages];
+    }
+}
 
 - (void)preloadStats
 {
     NSString *oauthToken = self.blog.authToken;
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
-    BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
     
-    if (isOnWifi && oauthToken) { // only preload on wifi
+    if (oauthToken) {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.siteID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }
+}
+
+- (void)preloadPosts
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
     
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [filterSettings authorIDFilter];
+    options.purgesLocalSync = YES;
+    
+    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
+}
+
+- (void)preloadPages
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
+    PostListFilter *filter = [filterSettings currentPostListFilter];
+
+    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+    options.statuses = filter.statuses;
+    options.authorID = [filterSettings authorIDFilter];
+    options.purgesLocalSync = YES;
+
+    [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
 }
 
 - (void)showComments
