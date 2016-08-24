@@ -23,7 +23,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
 
@@ -31,7 +31,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
-    
+
     self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
     self.textLabel.textColor = [WPStyleGuide greyDarken20];
@@ -42,13 +42,13 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 {
     if (_blog != blog) {
         _blog = blog;
-        
+
         [self.locationsView removeAllSelectionItems];
         [self.menusView removeAllSelectionItems];
-        
+
         self.locationsView.selectionType = MenusSelectionViewTypeLocations;
         self.menusView.selectionType = MenusSelectionViewTypeMenus;
-        
+
         if (blog) {
             for (MenuLocation *location in blog.menuLocations) {
                 MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
@@ -114,12 +114,12 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionItem *)item
 {
     if ([item isMenuLocation]) {
-        
+
         MenuLocation *location = item.itemObject;
         [self.delegate headerViewController:self selectedLocation:location];
-        
+
     } else  if ([item isMenu]) {
-        
+
         Menu *menu = item.itemObject;
         [self.delegate headerViewController:self selectedMenu:menu];
     }

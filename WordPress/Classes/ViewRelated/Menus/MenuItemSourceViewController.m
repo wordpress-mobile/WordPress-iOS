@@ -24,9 +24,9 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     _sourceViewControllerCache = [[NSCache alloc] init];
-    
+
     [self setupHeaderView];
 }
 
@@ -34,23 +34,23 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
 {
     MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
     headerView.delegate = self;
-    
+
     [self.stackView addArrangedSubview:headerView];
-    
+
     NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:SourceHeaderViewHeight];
     height.priority = 999;
     height.active = YES;
-    
+
     [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     [headerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    
+
     _headerView = headerView;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     if (IS_IPAD || self.view.frame.size.width > self.view.frame.size.height) {
         [self setHeaderViewHidden:YES];
     } else  {
@@ -102,7 +102,7 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
         [self.sourceViewController removeFromParentViewController];
         self.sourceViewController = nil;
     }
-    
+
     BOOL sourceViewSetupRequired = NO;
     if (!sourceViewController) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
@@ -124,12 +124,12 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
         [self.sourceViewControllerCache setObject:sourceViewController forKey:itemType];
         sourceViewSetupRequired = YES;
     }
-    
+
     [self addChildViewController:sourceViewController];
     [self.stackView addArrangedSubview:sourceViewController.view];
     [sourceViewController didMoveToParentViewController:self];
     self.sourceViewController = sourceViewController;
-    
+
     if (sourceViewSetupRequired) {
         // Set the blog and item after it's been added as an arrangedSubview.
         sourceViewController.blog = self.blog;

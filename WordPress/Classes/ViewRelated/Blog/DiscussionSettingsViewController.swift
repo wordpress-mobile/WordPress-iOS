@@ -48,7 +48,6 @@ public class DiscussionSettingsViewController : UITableViewController
 
     private func setupTableView() {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        tableView.cellLayoutMarginsFollowReadableWidth = false
 
         // Note: We really want to handle 'Unselect' manually.
         // Reason: we always reload previously selected rows.
@@ -127,40 +126,20 @@ public class DiscussionSettingsViewController : UITableViewController
         return cell
     }
 
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let headerText = sections[section].headerText else {
-            return CGFloat.min
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForHeader(headerText, width: tableView.bounds.width)
+    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].headerText
     }
 
-    public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerText = sections[section].headerText else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        footerView.title = headerText
-        return footerView
+    public override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let footerText = sections[section].footerText else {
-            return 0
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: tableView.bounds.width)
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footerText
     }
 
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let footerText = sections[section].footerText else {
-            return nil
-        }
-
-        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title = footerText
-        return footerView
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 

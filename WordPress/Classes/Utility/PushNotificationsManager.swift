@@ -135,7 +135,7 @@ final public class PushNotificationsManager : NSObject
         deviceToken = newToken
 
         // Register against WordPress.com
-        let noteService = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         noteService.registerDeviceForPushNotifications(newToken,
             success: { (deviceId: String) -> () in
@@ -171,7 +171,7 @@ final public class PushNotificationsManager : NSObject
             return
         }
 
-        let noteService = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         noteService.unregisterDeviceForPushNotifications(knownDeviceId,
             success: {

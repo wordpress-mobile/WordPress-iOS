@@ -6,7 +6,19 @@ import WordPressShared
 extension WPStyleGuide
 {
 
-    // MARK: Original Post/Site Attribution Styles.
+    // MARK: - System Defaults
+
+    public class func accessoryDefaultTintColor() -> UIColor {
+        return UIColor(fromRGBAColorWithRed: 199.0, green: 199.0, blue: 204.0, alpha: 1.0)
+    }
+
+
+    public class func cellDefaultHighlightColor() -> UIColor {
+        return UIColor(fromRGBAColorWithRed: 217.0, green: 217.0, blue: 217.0, alpha: 1.0)
+    }
+
+
+    // MARK: - Original Post/Site Attribution Styles.
 
     public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()

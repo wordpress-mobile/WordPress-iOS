@@ -12,12 +12,31 @@ import WordPressShared
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
+    let readerHasBeenPreviouslyViewedKey = "ReaderHasBeenPreviouslyViewedKey"
+    var isSyncing = false
+    var didSyncTopics = false
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
         vm.delegate = self
         return vm
     }()
+
+    var readerHasBeenPreviouslyViewed: Bool {
+        get {
+            return NSUserDefaults.standardUserDefaults().boolForKey(readerHasBeenPreviouslyViewedKey)
+        }
+
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if newValue {
+                defaults.setBool(true, forKey: readerHasBeenPreviouslyViewedKey)
+            } else {
+                defaults.removeObjectForKey(readerHasBeenPreviouslyViewedKey)
+            }
+            defaults.synchronize()
+        }
+    }
 
 
     /// A convenience method for instantiating the controller.
@@ -40,10 +59,19 @@ import WordPressShared
     // MARK: - Lifecycle Methods
 
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
     override init(style: UITableViewStyle) {
         super.init(style: style)
         restorationIdentifier = self.dynamicType.restorationIdentifier
         restorationClass = self.dynamicType
+
+        cleanupStaleContent(removeAllTopics: false)
+        setupRefreshControl()
+        setupAccountChangeNotificationObserver()
     }
 
 
@@ -62,6 +90,14 @@ import WordPressShared
         navigationItem.title = NSLocalizedString("Reader", comment: "")
 
         configureTableView()
+        syncTopics()
+    }
+
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        handleFirstLaunchIfNeeded()
     }
 
 
@@ -75,8 +111,22 @@ import WordPressShared
     // MARK: - Configuration
 
 
+    func setupRefreshControl() {
+        if refreshControl != nil {
+            return
+        }
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(self.dynamicType.syncTopics), forControlEvents: .ValueChanged)
+    }
+
+
+    func setupAccountChangeNotificationObserver() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dynamicType.handleAccountChanged), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+    }
+
+
     func configureTableView() {
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
@@ -86,6 +136,91 @@ import WordPressShared
 
 
     // MARK: - Instance Methods
+
+    /// Clean up topics that do not belong in the menu and posts that have no topic
+    /// This is merely a convenient place to perform this task.
+    ///
+    func cleanupStaleContent(removeAllTopics removeAll: Bool) {
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+
+        if removeAll {
+            ReaderTopicService(managedObjectContext: context).deleteAllTopics()
+        } else {
+            ReaderTopicService(managedObjectContext: context).deleteNonMenuTopics()
+        }
+    }
+
+
+    /// When logged out return the nav stack to the menu
+    ///
+    func handleAccountChanged(notification: NSNotification) {
+        // Return to the root vc.
+        navigationController?.popToRootViewControllerAnimated(false)
+
+        // Clear the flag so Discover will be present and ready to view.
+        readerHasBeenPreviouslyViewed = false
+
+        // Clean up obsolete content.
+        cleanupStaleContent(removeAllTopics: true)
+
+        // Clean up stale search history
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderSearchSuggestionService(managedObjectContext: context).deleteAllSuggestions()
+
+        // Sync the menu fresh
+        syncTopics()
+    }
+
+
+    /// The first time the Reader is launched, we want to show the Discover topic,
+    /// not the menu.
+    ///
+    func handleFirstLaunchIfNeeded() {
+        if readerHasBeenPreviouslyViewed {
+            return
+        }
+
+        // Wait til the view is loaded, and only proceed if there are topics synced.
+        if !isViewLoaded() || !didSyncTopics {
+            return
+        }
+
+        // Show the Discover topic if it exists.
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let topic = service.topicForDiscover() {
+            showPostsForTopic(topic)
+            readerHasBeenPreviouslyViewed = true
+        }
+    }
+
+
+    /// Sync the Reader's menu
+    ///
+    func syncTopics() {
+        if isSyncing {
+            return
+        }
+
+        isSyncing = true
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.fetchReaderMenuWithSuccess({ [weak self] in
+                self?.didSyncTopics = true
+                self?.cleanupAfterSync()
+                self?.handleFirstLaunchIfNeeded()
+            }, failure: { [weak self] (error) in
+                self?.cleanupAfterSync()
+                DDLogSwift.logError("Error syncing menu: \(error)")
+        })
+    }
+
+
+    /// Reset's state after a sync.
+    ///
+    func cleanupAfterSync() {
+        refreshControl?.endRefreshing()
+        isSyncing = false
+    }
 
 
     /// Presents the detail view controller for the specified post on the specified
@@ -116,14 +251,6 @@ import WordPressShared
     ///
     func showReaderSearch() {
         let controller = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
-
-    /// Presents the reader's followed sites vc.
-    ///
-    func showFollowedSites() {
-        let controller = ReaderFollowedSitesViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -262,20 +389,13 @@ import WordPressShared
         return viewModel.numberOfItemsInSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = viewModel.titleForSection(section)
-        let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        header.title = title
-        return header
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(section)
     }
 
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = viewModel.titleForSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
-
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let menuItem = viewModel.menuItemAtIndexPath(indexPath)
@@ -302,8 +422,6 @@ import WordPressShared
             return
         }
 
-        // TODO: Remember selection
-
         if let topic = menuItem.topic {
             showPostsForTopic(topic)
             return
@@ -327,14 +445,6 @@ import WordPressShared
         cell.selectionStyle = .Default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
-
-        if let topic = menuItem.topic where ReaderHelpers.topicIsFollowing(topic) {
-            let accessoryView = ManageCellAccessoryView.createFromNib()
-            accessoryView.onManageTapped = { [weak self] in
-                self?.showFollowedSites()
-            }
-            cell.accessoryView = accessoryView
-        }
     }
 
 

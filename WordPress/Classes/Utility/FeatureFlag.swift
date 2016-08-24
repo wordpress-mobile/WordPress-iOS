@@ -2,22 +2,20 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
-    case ReaderMenu
-    /// My Sites > Site > People
-    /// Development on hold while we focus on Me
-    case People
-    /// Me > My Profile
-    case MyProfile
-    /// Me > Account Settings
-    /// Account Settings already existed prior to 6.0, and included application settings
-    case AccountSettings
+    case NativeEditor
+    case ExampleFeature
+
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         switch self {
-        case .ReaderMenu:
-            return build(.Debug)
-        case .People, .MyProfile, .AccountSettings:
+        case .ExampleFeature:
             return true
+        case .NativeEditor:
+            // At the moment this is only active in debug mode
+            if build(.Debug) {
+                return true
+            }
+            return false
         }
     }
 }

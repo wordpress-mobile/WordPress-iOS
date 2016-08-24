@@ -67,8 +67,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
     @IBAction func reloadTable() {
@@ -151,42 +149,24 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section == firstSectionIndex else {
-            return 0
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForHeader(siteName, width: view.bounds.width)
-    }
-
-    public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard section == firstSectionIndex else {
             return nil
         }
-
-        let headerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        headerView.title    = siteName
-        return headerView
+        return siteName
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let footerText = sections[section].footerText else {
-            return CGFloat.min
-        }
-
-        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+    public override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let footerText = sections[section].footerText else {
-            return nil
-        }
-
-        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title    = footerText
-        return footerView
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footerText
     }
 
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
+    }
 
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
@@ -235,7 +215,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let service = NotificationsService(managedObjectContext: context)
+        let service = NotificationSettingsService(managedObjectContext: context)
 
         service.updateSettings(settings!,
             stream              : stream!,
