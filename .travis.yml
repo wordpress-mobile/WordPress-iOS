@@ -11,6 +11,10 @@ cache:
   - .bundle
 notifications:
   email: true
+install:
+- rake dependencies
+script:
+- rake test
 env:
   global:
     secure: Sw3dwkuh9QjVYvvxcVnVN/wHGlhGjAsJjmEfGfqKMJZusdbNCU6tIZ7nmU2cVHDhozoPG4bHK62FgOmc1PhANyEQLe7eICh+G9djr0VP6Rd4/LLbv052dqpSrshwzFLDHCUvjTfEiJsTbQeuQYX2zQqFqvxV5eOnFkMoG4vK7rQ=
