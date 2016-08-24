@@ -22,10 +22,10 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testGenerateScreenshots() {
         let app = XCUIApplication()
-        
+
         let username1Exist = app.textFields["Email or username"].exists
         let username2Exist = app.textFields["Username / Email"].exists
 
@@ -36,10 +36,10 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.tables.cells.elementBoundByIndex(5).tap()
             app.alerts.elementBoundByIndex(0).collectionViews.buttons.elementBoundByIndex(1).tap()
         }
-        
+
         // Login
         let username = "ENTER-USERNAME-HERE"
-        
+
         if  username1Exist {
             let usernameEmailTextField =  app.textFields["Email or username"]
             usernameEmailTextField.tap()
@@ -50,17 +50,17 @@ class WordPressScreenshotGeneration: XCTestCase {
             usernameEmailTextField.tap()
             usernameEmailTextField.typeText(username)
         }
-        
+
 
         let passwordSecureTextField = app.secureTextFields["Password"]
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText("ENTER-PASSWORD-HERE")
-        
+
         app.buttons["Sign In"].tap()
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["Reader"].tap()
-        
+
         app.tables.staticTexts["Discover"].tap()
         sleep(5)
         snapshot("1-Reader")
@@ -78,7 +78,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get "Post" screenshot
         let otherElements = app.otherElements
         otherElements.elementBoundByIndex(9).tap()
-        
+
         // Dismiss Unsaved Changes Alert if it shows up
         if XCUIApplication().alerts["Unsaved changes."].exists {
             app.alerts["Unsaved changes."].collectionViews.buttons["OK"].tap()
@@ -86,7 +86,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.sheets["You have unsaved changes."].collectionViews.buttons["Discard"].tap()
             otherElements.elementBoundByIndex(9).tap()
         }
-        
+
         // Pull up keyboard
         app.navigationBars["WPPostView"].buttons["Edit"].tap()
         app.staticTexts["We hiked along the Pacific, in the town of"].tap()
