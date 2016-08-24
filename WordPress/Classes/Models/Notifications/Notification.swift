@@ -130,7 +130,7 @@ extension Notification
     var isBadge: Bool {
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
         for block in blocks {
-            for media in block.media where media.isBadge {
+            for media in block.media where media.kind == .Badge {
                 return true
             }
         }
