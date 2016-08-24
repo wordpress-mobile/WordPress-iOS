@@ -76,8 +76,8 @@ class WPSplitViewController: UISplitViewController {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
         coordinator.animateAlongsideTransition({ context in
-            self.updateDimmingViewFrame()
             self.updateSplitViewForPrimaryColumnWidth()
+            self.updateDimmingViewFrame()
         }, completion: nil)
 
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
@@ -151,8 +151,9 @@ class WPSplitViewController: UISplitViewController {
     }
 
     private func updateDimmingViewFrame() {
-        if let detailView = viewControllers.last?.view where dimmingView.superview != nil {
-            dimmingView.frame = detailView.frame
+        if dimmingView.superview != nil {
+            dimmingView.frame = view.frame
+            dimmingView.frame.origin.x = primaryColumnWidth
         }
     }
 
@@ -290,7 +291,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             dimDetailViewController(false)
         }
 
-        // If we had dimmed the detail view controller, then return true so that 
+        // If we had dimmed the detail view controller, then return true so that
         // we discard the detail VCs and just show the primary view controller
         if detailDimmed {
             return true
