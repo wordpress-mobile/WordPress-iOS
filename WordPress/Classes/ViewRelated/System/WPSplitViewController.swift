@@ -19,7 +19,7 @@ class WPSplitViewController: UISplitViewController {
         case Landscape = 320
 
         static func widthForInterfaceOrientation(orientation: UIInterfaceOrientation) -> CGFloat {
-            if UIInterfaceOrientationIsPortrait(orientation) {
+            if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isiPhoneSixPlus() {
                 return self.Portrait.rawValue
             } else {
                 return self.Landscape.rawValue
