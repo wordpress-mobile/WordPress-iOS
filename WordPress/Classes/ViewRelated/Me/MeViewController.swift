@@ -49,6 +49,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 44
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.accountDidChange), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
 

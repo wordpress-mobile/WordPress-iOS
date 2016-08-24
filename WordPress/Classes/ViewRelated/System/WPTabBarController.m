@@ -313,6 +313,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
 
