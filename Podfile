@@ -48,15 +48,14 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.10.1'
-    pod 'WordPress-iOS-Editor', '1.8'
+    pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.18'
-    pod 'WordPress-Aztec-iOS', '0.1.0'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'a6678565b94be670725cafd5ba261a4dfbe383f9'
     pod 'WordPressCom-Stats-iOS', '0.7.6'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
       inherit! :search_paths
-
       pod 'OHHTTPStubs', '~> 4.6.0'
       pod 'OHHTTPStubs/Swift', '~> 4.6.0'
       pod 'OCMock', '3.1.2'

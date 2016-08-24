@@ -167,7 +167,7 @@ extension NotificationBlock
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [NotificationRangeKind: [String: AnyObject]]?,
+                             rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
         guard let text = text else {
@@ -211,7 +211,7 @@ extension NotificationBlock
     // MARK: - Constants
     //
     private struct Constants {
-        static let subjectRangeStylesMap: [NotificationRangeKind: [String: AnyObject]] = [
+        static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.subjectBoldStyle,
             .Post               : Styles.subjectItalicsStyle,
             .Comment            : Styles.subjectItalicsStyle,
@@ -219,23 +219,23 @@ extension NotificationBlock
             .Noticon            : Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap: [NotificationRangeKind: [String: AnyObject]] = [
+        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.headerTitleBoldStyle,
             .Post               : Styles.headerTitleContextStyle,
             .Comment            : Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap: [NotificationRangeKind: [String: AnyObject]] = [
+        static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Noticon            : Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap: [NotificationRangeKind: [String: AnyObject]] = [
+        static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Blockquote         : Styles.contentBlockQuotedStyle,
             .Noticon            : Styles.blockNoticonStyle,
             .Match              : Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap: [NotificationRangeKind: [String: AnyObject]] = [
+        static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.badgeBoldStyle,
             .Post               : Styles.badgeItalicsStyle,
             .Comment            : Styles.badgeItalicsStyle,
