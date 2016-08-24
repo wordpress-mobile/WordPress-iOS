@@ -452,21 +452,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    // Ideally we should just be able to call `showDetailViewForSubsection` on
-    // the blog details VC, as in these other `switch` methods. However, there
-    // seems to be an issue with using `showDetailViewController` when the app
+    // Yes, `dispatch_after` is always a horrible fix. However, there seems to
+    // be an issue with using `showDetailViewController` when the app
     // is in the process of coming to the foreground (which happens here, as
     // switching to stats is one of our 3D Touch app shortcuts) – it doesn't always
     // do the right thing, and sometimes the VC is displayed modally.
-    // Instead, we'll check the environment we're in and display the VC manually.
-    StatsViewController *statsVC = [StatsViewController new];
-    statsVC.blog = blog;
-
-    if ([self.blogListSplitViewController isViewHorizontallyCompact]) {
-        [self.blogListNavigationController pushViewController:statsVC animated:NO];
-    } else {
-        [self.blogListSplitViewController showDetailViewController:statsVC sender:self];
-    }
+    // `dispatch_after` appears to fix that problem.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+        if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+            [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
+        }
+    });
 }
 
 - (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
