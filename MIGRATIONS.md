@@ -4,6 +4,11 @@ This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
 ## WordPress 51
+- @aerych 2016-08-12
+- Added `algorithm` optional string field to `ReaderAbstractTopic`.
+- Added `railcar` optional NSData field to `ReaderPost`.
+- @aerych 2016-08-05
+- Removed `ReaderSite` entity.
 - @aerych 2016-07-19
 - `ReaderAbstractTopic` added `preserveForRestoration` boolean. Indexed. Default `NO`. Not optional.
 

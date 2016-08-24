@@ -43,6 +43,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (NSUInteger)numberOfSubscribedTopics;
 
 /**
+ Deletes all search topics from core data and saves the context.
+ Use to clean-up searches when they are finished.
+ */
+- (void)deleteAllSearchTopics;
+
+/**
  Deletes all topics that do not appear in the menu from core data and saves the context.
  Use to clean-up previewed topics that are lingering in core data.
  */
@@ -148,12 +154,18 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
 
 /**
-
  Fetch the topic for 'sites I follow' if it exists.
 
  @return A `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderAbstractTopic *)topicForFollowedSites;
+
+/**
+ Fetch the topic for 'Discover' if it exists.
+
+ @return A `ReaderAbstractTopic` instance or nil.
+ */
+- (ReaderAbstractTopic *)topicForDiscover;
 
 /**
  Fetch a tag topic for a tag with the specified slug.

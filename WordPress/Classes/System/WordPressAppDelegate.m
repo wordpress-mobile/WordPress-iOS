@@ -13,6 +13,11 @@
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
+#ifdef BUDDYBUILD_ENABLED
+#import <BuddyBuildSDK/BuddyBuildSDK.h>
+#endif
+
+
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
 #import "WPCrashlytics.h"
@@ -51,7 +56,6 @@
 // View controllers
 #import "RotationAwareNavigationViewController.h"
 #import "LoginViewController.h"
-#import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
@@ -132,6 +136,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
+    [self setupBuddyBuild];
 
     return YES;
 }
@@ -174,6 +179,27 @@ int ddLogLevel = DDLogLevelInfo;
     [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
 }
 
+- (void)setupBuddyBuild
+{
+#ifdef BUDDYBUILD_ENABLED
+    [BuddyBuildSDK setScreenshotAllowedCallback:^BOOL{
+        return NO;
+    }];
+    
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    NSString *username = defaultAccount.username;
+    
+    if (username.length > 0) {
+        [BuddyBuildSDK setUserDisplayNameCallback:^() {
+            return @"Johnny Appleseed";
+        }];
+    }
+    
+    [BuddyBuildSDK setup];
+#endif
+}
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     DDLogInfo(@"Application launched with URL: %@", url);
@@ -200,15 +226,9 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                if ([Feature enabled: FeatureFlagReaderMenu]) {
-                    [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
-                    [tabBarController showReaderTab];
-                    [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
-                } else {
-                    [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
-                    [tabBarController showReaderTab];
-                    [tabBarController.readerViewController openPost:postId onBlog:blogId];
-                }
+                [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
+                [tabBarController showReaderTab];
+                [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
 
                 returnValue = YES;
             }

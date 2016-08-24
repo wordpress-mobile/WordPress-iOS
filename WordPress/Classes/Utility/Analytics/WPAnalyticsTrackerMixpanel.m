@@ -706,6 +706,9 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperProperty:@"created_account_on_app_version" toValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
             [self aliasNewUser];
             break;
+        case WPAnalyticsStatCreatedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Site"];
+            break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
             [instructions addSuperPropertyToFlag:@"enabled_new_editor"];
@@ -1022,7 +1025,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-            
+
+        case WPAnalyticsStatTrainTracksInteract:
+        case WPAnalyticsStatTrainTracksRender:
+            // Do nothing. These events are just for Tracks.
+            break;
+
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
         case WPAnalyticsStatLoginMagicLinkFailed:

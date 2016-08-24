@@ -10,7 +10,7 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.5.9'
+  pod 'WordPress-iOS-Shared', '0.6.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.4'
 
@@ -20,11 +20,10 @@ abstract_target 'WordPress_Base' do
     # ---------------------
     pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'3.1.0'
-    pod 'AMPopTip', '~> 0.7'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.5.1'
+    pod 'Helpshift', '~> 5.6.2'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
@@ -34,6 +33,7 @@ abstract_target 'WordPress_Base' do
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
+    pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
@@ -48,9 +48,10 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.15'
     pod 'WPMediaPicker', '~> 0.10.1'
-    pod 'WordPress-iOS-Editor', '1.8'
-    pod 'WordPressCom-Analytics-iOS', '0.1.16'
-    pod 'WordPressCom-Stats-iOS', '0.7.4'
+    pod 'WordPress-iOS-Editor', '1.8.1'
+    pod 'WordPressCom-Analytics-iOS', '0.1.18'
+    pod 'WordPress-Aztec-iOS', '0.1.0'
+    pod 'WordPressCom-Stats-iOS', '0.7.6'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +70,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.4'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.6'
   end
 
 end

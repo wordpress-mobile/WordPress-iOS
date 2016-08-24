@@ -9,8 +9,6 @@
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
-#import "NotificationsViewController.h"
-#import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPageViewController.h"
@@ -50,7 +48,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) ReaderViewController *readerViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
@@ -199,14 +196,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _readerNavigationController;
     }
 
-    self.readerViewController = [[ReaderViewController alloc] init];
     self.readerMenuViewController = [ReaderMenuViewController sharedInstance];
 
-    if ([Feature enabled: FeatureFlagReaderMenu]) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
-    } else {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
-    }
+    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
 
     _readerNavigationController.navigationBar.translucent = NO;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
@@ -326,6 +318,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     UINavigationController *navController;
     if ([WPPostViewController isNewEditorEnabled]) {
+        if ([WPPostViewController isNativeEditorEnabled]) {
+            AztecPostViewController *postViewController = [[AztecPostViewController alloc] init];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: postViewController];
+            navController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:navController animated: YES completion: nil];
+            return;
+        }
         WPPostViewController *editPostViewController;
         if (!options) {
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];

@@ -14,15 +14,12 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
     static private let statsStoryboardName = "SiteStats"
     static private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
-    static private let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
 
     static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
-    static private let postCardEstimatedRowHeight = CGFloat(100.0)
-    static private let postCardRestoreCellRowHeight = CGFloat(54.0)
+
+    static private let postCardEstimatedRowHeight = CGFloat(300.0)
     static private let postListHeightForFooterView = CGFloat(34.0)
 
-    @IBOutlet private var textCellForLayout: PostCardTableViewCell!
-    @IBOutlet private var imageCellForLayout: PostCardTableViewCell!
     @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
 
     @IBOutlet var authorsFilterView : UIView!
@@ -92,43 +89,10 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         title = NSLocalizedString("Posts", comment: "Tile of the screen showing the list of posts for a blog.")
     }
 
-    // MARK: - UITraitEnvironment
-
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        forceUpdateCellLayout(textCellForLayout)
-        forceUpdateCellLayout(imageCellForLayout)
-
-        tableViewHandler.clearCachedRowHeights()
-
-        if let indexPaths = tableView.indexPathsForVisibleRows {
-            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-        }
-    }
-
-    func forceUpdateCellLayout(cell: PostCardTableViewCell) {
-        // Force a layout pass to ensure that constrants are configured for the
-        // proper size class.
-        view.addSubview(cell)
-        cell.removeFromSuperview()
-    }
-
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
         return self.dynamicType.postListHeightForFooterView
-    }
-
-    override func configureCellsForLayout() {
-
-        let bundle = NSBundle.mainBundle()
-
-        textCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardTextCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
-        forceUpdateCellLayout(textCellForLayout)
-
-        imageCellForLayout = bundle.loadNibNamed(self.dynamicType.postCardImageCellNibName, owner: nil, options: nil)[0] as! PostCardTableViewCell
-        forceUpdateCellLayout(imageCellForLayout)
     }
 
     override func configureTableView() {
@@ -136,6 +100,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .None
+        tableView.estimatedRowHeight = self.dynamicType.postCardEstimatedRowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = NSBundle.mainBundle()
 
@@ -203,7 +169,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
-        if !canFilterByAuthor() {
+        if !filterSettings.canFilterByAuthor() {
             authorsFilterView.removeFromSuperview()
 
             headerStackView.frame.size.height = searchController.searchBar.frame.height
@@ -212,17 +178,29 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             tableView.tableHeaderView = headerStackView
         }
 
-        if currentPostAuthorFilter() == .Mine {
+        if filterSettings.currentPostAuthorFilter() == .Mine {
             authorFilterSegmentedControl.selectedSegmentIndex = 0
         } else {
             authorFilterSegmentedControl.selectedSegmentIndex = 1
         }
     }
 
+    // Mark - Layout Methods
+
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        // Need to reload the table alongside a traitCollection change.
+        // This is mainly because we target Reg W and Any H vs all other size classes.
+        // If we transition between the two, the tableView may not update the cell heights accordingly.
+        // Brent C. Aug 3/2016
+        coordinator.animateAlongsideTransition({ context in
+            self.tableView.reloadData()
+            }, completion: nil)
+    }
+
     // MARK: - Sync Methods
 
-    override func postTypeToSync() -> String {
-        return PostServiceTypePost
+    override func postTypeToSync() -> PostServiceType {
+        return PostServiceType.Post
     }
 
     override func lastSyncDate() -> NSDate? {
@@ -232,11 +210,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Actions
 
     @IBAction func handleAuthorFilterChanged(sender: AnyObject) {
-        if authorFilterSegmentedControl.selectedSegmentIndex == (Int) (PostAuthorFilter.Mine.rawValue) {
-            setCurrentPostAuthorFilter(.Mine)
-        } else {
-            setCurrentPostAuthorFilter(.Everyone)
+        var authorFilter = PostListFilterSettings.AuthorFilter.Everyone
+        if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
+            authorFilter = .Mine
         }
+        filterSettings.setCurrentPostAuthorFilter(authorFilter)
     }
 
     // MARK: - Data Model Interaction
@@ -275,11 +253,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync())
+        let typePredicate = NSPredicate(format: "postType = %@", PostService.keyForType(postTypeToSync()))
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()
-        let filterPredicate = currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
@@ -291,7 +269,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(filterPredicate)
         }
 
-        if shouldShowOnlyMyPosts() {
+        if filterSettings.shouldShowOnlyMyPosts() {
             let myAuthorID = blogUserID() ?? 0
 
             // Brand new local drafts have an authorID of 0.
@@ -309,60 +287,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     // MARK: - Table View Handling
-
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let post = postAtIndexPath(indexPath)
-
-        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return self.dynamicType.postCardRestoreCellRowHeight
-        }
-
-        // To work around a bug (https://github.com/wordpress-mobile/WordPress-iOS/issues/3844) where
-        // the table footer view would animate over cells, we'll only return estimated heights
-        // for cells that aren't in the visible area of the view.
-        let cellHeight = heightForEmptyCell
-        if cellHeight > 0 {
-            let visibleCellCount = Int(ceil(tableView.bounds.height / cellHeight))
-            if indexPath.row < visibleCellCount {
-                return self.tableView(tableView, heightForRowAtIndexPath: indexPath)
-            }
-        }
-
-        return self.dynamicType.postCardEstimatedRowHeight
-    }
-
-    private var heightForEmptyCell: CGFloat {
-        let size = textCellForLayout.sizeThatFits(CGSizeMake(tableView.bounds.width, CGFloat.max))
-
-        return size.height
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let width = CGRectGetWidth(tableView.bounds)
-        return self.tableView(tableView, heightForRowAtIndexPath: indexPath, forWidth: width)
-    }
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath, forWidth width: CGFloat) -> CGFloat {
-        let post = postAtIndexPath(indexPath)
-
-        if cellIdentifierForPost(post) == self.dynamicType.postCardRestoreCellIdentifier {
-            return self.dynamicType.postCardRestoreCellRowHeight
-        }
-
-        var cell: PostCardTableViewCell
-
-        if post.pathForDisplayImage?.characters.count > 0 {
-            cell = imageCellForLayout
-        } else {
-            cell = textCellForLayout
-        }
-
-        configureCell(cell, atIndexPath: indexPath)
-        let size = cell.sizeThatFits(CGSizeMake(width, CGFloat.max))
-        let height = ceil(size.height)
-
-        return height
-    }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -383,6 +307,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
+            return windowlessCell
+        }
 
         let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
@@ -407,14 +334,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         interactivePostView.setInteractionDelegate(self)
 
-        let layoutOnly = (cell == imageCellForLayout) || (cell == textCellForLayout)
-        configurablePostView.configureWithPost(post, forLayoutOnly: layoutOnly)
+        configurablePostView.configureWithPost(post)
     }
 
     private func cellIdentifierForPost(post: Post) -> String {
         var identifier: String
 
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && currentPostListFilter().filterType != .Trashed {
+        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
             identifier = self.dynamicType.postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
             identifier = self.dynamicType.postCardImageCellIdentifier
@@ -429,10 +355,22 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     override func createPost() {
         if WPPostViewController.isNewEditorEnabled() {
-            createPostInNewEditor()
+            if WPPostViewController.isNativeEditorEnabled() {
+                createPostInNativeEditor()
+            } else {
+                createPostInNewEditor()
+            }
         } else {
             createPostInOldEditor()
         }
+    }
+
+    private func createPostInNativeEditor() {
+        let postViewController = AztecPostViewController()
+        let navController = UINavigationController(rootViewController: postViewController)
+        navController.modalPresentationStyle = .FullScreen
+        presentViewController(navController, animated: true, completion: nil)
+        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
 
     private func createPostInNewEditor() {
@@ -441,7 +379,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
                 if let postStatus = viewController.post.status {
-                    self?.setFilterWithPostStatus(postStatus)
+                    self?.filterSettings.setFilterWithPostStatus(postStatus)
+                    WPAnalytics.track(.PostListStatusFilterChanged, withProperties: self?.propertiesForAnalytics())
                 }
             }
 
@@ -484,13 +423,20 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
 
         if WPPostViewController.isNewEditorEnabled() {
+            if (WPPostViewController.isNativeEditorEnabled()) {
+                let postViewController = AztecPostViewController()
+                let navController = UINavigationController(rootViewController: postViewController)
+                navController.modalPresentationStyle = .FullScreen
+                presentViewController(navController, animated: true, completion: nil)
+                return
+            }
             let postViewController = WPPostViewController(post: apost, mode: mode)
 
             postViewController.onClose = {[weak self] viewController, changesSaved in
 
                 if changesSaved {
                     if let postStatus = viewController.post.status {
-                        self?.setFilterWithPostStatus(postStatus)
+                        self?.filterSettings.setFilterWithPostStatus(postStatus)
                     }
                 }
 
@@ -573,43 +519,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    // MARK: - Filter Related
-
-    override func currentPostAuthorFilter() -> PostAuthorFilter {
-        if !canFilterByAuthor() {
-            // No REST API, so we have to use XMLRPC and can't filter results by author.
-            return .Everyone
-        }
-
-        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.dynamicType.currentPostAuthorFilterKey) {
-            if filter.unsignedIntegerValue == PostAuthorFilter.Everyone.rawValue {
-                return .Everyone
-            }
-        }
-
-        return .Mine
-    }
-
-    override func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
-        guard filter != currentPostAuthorFilter() else {
-            return
-        }
-
-        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
-
-        NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
-        NSUserDefaults.resetStandardUserDefaults()
-
-        recentlyTrashedPostObjectIDs.removeAll()
-        resetTableViewContentOffset()
-        updateAndPerformFetchRequestRefreshingResults()
-        syncItemsWithUserInteraction(false)
-    }
-
-    override func keyForCurrentListStatusFilter() -> String {
-        return self.dynamicType.currentPostListStatusFilterKey
-    }
-
     // MARK: - InteractivePostViewDelegate
 
     func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
@@ -661,7 +570,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Trashed:
@@ -676,7 +585,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
 
-        let filter = currentPostListFilter()
+        let filter = filterSettings.currentPostListFilter()
         let titles = noResultsTitles()
         let title = titles[filter.filterType]
 
@@ -688,7 +597,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return ""
         }
 
-        let filterType = currentPostListFilter().filterType
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .Draft:

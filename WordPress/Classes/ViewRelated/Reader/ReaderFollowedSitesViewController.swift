@@ -2,7 +2,9 @@ import Foundation
 import WordPressShared
 import SVProgressHUD
 
-///
+/// Displays the list of sites a user follows in the Reader.  Provides functionality
+/// for following new sites by URL, and unfollowing existing sites via a swipe
+/// gesture.  Followed sites can be tapped to browse their posts.
 ///
 class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration
 {
@@ -40,15 +42,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return controller()
     }
-
-
-//    public override func encodeRestorableStateWithCoder(coder: NSCoder) {
-//        if let topic = readerTopic {
-//            // TODO: Mark the topic as restorable and do not purge it during the clean up at launch
-//            coder.encodeObject(topic.path, forKey: self.dynamicType.restorableTopicPathKey)
-//        }
-//        super.encodeRestorableStateWithCoder(coder)
-//    }
 
 
     // MARK: - LifeCycle Methods
@@ -92,7 +85,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
 
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
@@ -202,6 +194,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
             SVProgressHUD.showSuccessWithStatus(success)
             self?.syncSites()
+            self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
@@ -209,6 +202,12 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let description = error.localizedDescription
             self?.promptWithTitle(title, message: description)
         })
+    }
+
+
+    func refreshPostsForFollowedTopic() {
+        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        service.refreshPostsForFollowedTopic()
     }
 
 
@@ -244,7 +243,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     func promptWithTitle(title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-        let alert = UIAlertController(title: title, message: description, preferredStyle: .Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
     }
@@ -300,15 +299,13 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
         return 54.0
     }
 
-
-    func titleForHeaderInSection(section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
         }
-        return " "
+        return nil
     }
-
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
@@ -340,7 +337,12 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
     func tableViewDidChangeContent(tableView: UITableView) {
         configureNoResultsView()
-        tableViewHandler.updateTitleForSection(0)
+
+        // If we're not following any sites, reload the table view to ensure the
+        // section header is no longer showing.
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            tableView.reloadData()
+        }
     }
 
 }

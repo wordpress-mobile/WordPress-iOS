@@ -9,7 +9,6 @@ public class AboutViewController : UITableViewController
         super.viewDidLoad()
 
         setupNavigationItem()
-        setupTableViewFooter()
         setupTableView()
         setupDismissButtonIfNeeded()
     }
@@ -40,16 +39,6 @@ public class AboutViewController : UITableViewController
         tableView.contentInset      = WPTableViewContentInsets
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-    }
-
-    private func setupTableViewFooter() {
-        let calendar                = NSCalendar.currentCalendar()
-        let year                    = calendar.components(.Year, fromDate: NSDate()).year
-
-        let footerView              = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
-        footerView.titleAlignment   = .Center
-        self.footerView             = footerView
     }
 
     private func setupDismissButtonIfNeeded() {
@@ -101,22 +90,18 @@ public class AboutViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let isLastSection = section == (rows.count - 1)
-        if isLastSection == false || footerView == nil {
-            return CGFloat.min
-        }
-
-        let height = WPTableViewSectionHeaderFooterView.heightForFooter(footerView!.title, width: view.frame.width)
-        return height + footerBottomPadding
-    }
-
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section != (rows.count - 1) {
             return nil
         }
+        return footerTitleText
+    }
 
-        return footerView
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
+        if let footerView = view as? UITableViewHeaderFooterView {
+            footerView.textLabel?.textAlignment = .Center
+        }
     }
 
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -175,8 +160,14 @@ public class AboutViewController : UITableViewController
     private let iconBottomPadding   = CGFloat(30)
     private let footerBottomPadding = CGFloat(12)
 
+
+
     // MARK: - Private Properties
-    private var footerView : WPTableViewSectionHeaderFooterView!
+    private lazy var footerTitleText: String = {
+        let calendar = NSCalendar.currentCalendar()
+        let year = calendar.components(.Year, fromDate: NSDate()).year
+        return NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
+    }()
 
     private var rows : [[Row]] {
         let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()

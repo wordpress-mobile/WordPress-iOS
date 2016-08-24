@@ -18,6 +18,7 @@ class ReaderTopicSwiftTest : XCTestCase
 
     override func tearDown() {
         super.tearDown()
+        ContextManager.overrideSharedInstance(nil)
         testContextManager = nil
     }
 
