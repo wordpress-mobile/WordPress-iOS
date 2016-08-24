@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="445"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="444"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="444.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXQ-M1-ujW">
@@ -115,31 +115,45 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aU5-S0-uXT" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
                                 <rect key="frame" x="16" y="329" width="288" height="32"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wnL-zu-NdT" customClass="CircularImageView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ifR-YV-Yg5">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="32"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnL-zu-NdT" customClass="CircularImageView" customModule="WordPress">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="FwS-aQ-ffZ"/>
+                                                    <constraint firstAttribute="height" priority="999" constant="20" id="UWE-B4-ua0"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="V8T-Nn-y1f">
+                                                <rect key="frame" x="28" y="0.0" width="260" height="32"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYq-0d-sFM">
+                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="32"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="FwS-aQ-ffZ"/>
-                                            <constraint firstAttribute="height" constant="20" id="UWE-B4-ua0"/>
+                                            <constraint firstItem="V8T-Nn-y1f" firstAttribute="height" secondItem="ifR-YV-Yg5" secondAttribute="height" id="Tef-QM-4qp"/>
                                         </constraints>
-                                    </imageView>
-                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7BP-z5-EAE" customClass="RichTextView" customModule="WordPress">
-                                        <rect key="frame" x="28" y="-2" width="260" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="wnL-zu-NdT" firstAttribute="top" secondItem="aU5-S0-uXT" secondAttribute="top" id="0Cu-5a-pdj"/>
-                                    <constraint firstAttribute="bottom" secondItem="7BP-z5-EAE" secondAttribute="bottom" id="0EQ-By-B2g"/>
-                                    <constraint firstItem="wnL-zu-NdT" firstAttribute="leading" secondItem="aU5-S0-uXT" secondAttribute="leading" id="8b9-Ha-LqN"/>
-                                    <constraint firstItem="7BP-z5-EAE" firstAttribute="leading" secondItem="aU5-S0-uXT" secondAttribute="leading" constant="28" id="A6l-Dz-kjs"/>
+                                    <constraint firstAttribute="trailing" secondItem="ifR-YV-Yg5" secondAttribute="trailing" id="3SZ-EZ-O6O"/>
+                                    <constraint firstItem="ifR-YV-Yg5" firstAttribute="leading" secondItem="aU5-S0-uXT" secondAttribute="leading" id="ABU-jU-S8a"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="AX2-8k-TwX"/>
-                                    <constraint firstItem="7BP-z5-EAE" firstAttribute="top" secondItem="aU5-S0-uXT" secondAttribute="top" constant="-2" id="Dvr-Jk-KuZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="7BP-z5-EAE" secondAttribute="trailing" id="y8l-yS-Tdk"/>
+                                    <constraint firstItem="ifR-YV-Yg5" firstAttribute="top" secondItem="aU5-S0-uXT" secondAttribute="top" id="Jip-Sb-s0o"/>
+                                    <constraint firstAttribute="bottom" secondItem="ifR-YV-Yg5" secondAttribute="bottom" id="Uhx-AY-gzy"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="imageView" destination="wnL-zu-NdT" id="kGW-ap-bkW"/>
-                                    <outlet property="richTextView" destination="7BP-z5-EAE" id="KB1-na-MIQ"/>
+                                    <outlet property="textLabel" destination="IYq-0d-sFM" id="dlK-Qb-OCR"/>
                                 </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFe-da-xxs">
