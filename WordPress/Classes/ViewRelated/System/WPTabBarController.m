@@ -319,7 +319,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UINavigationController *navController;
     if ([WPPostViewController isNewEditorEnabled]) {
         if ([WPPostViewController isNativeEditorEnabled]) {
-            AztecPostViewController *postViewController = [[AztecPostViewController alloc] init];
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+            Blog *blog = [blogService lastUsedOrFirstBlog];
+            Post *post = [PostService createDraftPostInMainContextForBlog:blog];
+            AztecPostViewController *postViewController = [[AztecPostViewController alloc] initWithPost:post];
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: postViewController];
             navController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:navController animated: YES completion: nil];
