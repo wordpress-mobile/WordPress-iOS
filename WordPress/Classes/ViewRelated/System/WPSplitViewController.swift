@@ -283,14 +283,15 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
     }
 
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
-        let detailDimmed = dimmingView.superview != nil
+        let detailDimmed = isDetailViewDimmed
 
+        // Un-dim the detail view
         if dimsDetailViewControllerAutomatically {
             dimDetailViewController(false)
         }
 
-        // If we've dimmed the detail view controller, then return true so that we
-        // discard it and just show the primary view controller
+        // If we had dimmed the detail view controller, then return true so that 
+        // we discard the detail VCs and just show the primary view controller
         if detailDimmed {
             return true
         }
@@ -309,6 +310,10 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         }
 
         return false
+    }
+
+    private var isDetailViewDimmed: Bool {
+        return dimmingView.superview != nil
     }
 }
 
