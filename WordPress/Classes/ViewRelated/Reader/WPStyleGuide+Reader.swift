@@ -31,13 +31,11 @@ extension WPStyleGuide
         return [
             NSParagraphStyleAttributeName : paragraphStyle,
             NSFontAttributeName : font,
-            NSForegroundColorAttributeName: grey(),
         ]
     }
 
     public class func siteAttributionParagraphAttributes() -> [String: AnyObject] {
         let attributes = NSMutableDictionary(dictionary: originalAttributionParagraphAttributes())
-        attributes.setValue(mediumBlue(), forKey: NSForegroundColorAttributeName)
         return NSDictionary(dictionary: attributes) as! [String: AnyObject]
     }
 

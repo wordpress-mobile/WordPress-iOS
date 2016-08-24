@@ -11,7 +11,7 @@ import WordPressShared
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
 }
 
-@objc public class ReaderPostCardCell: UITableViewCell, RichTextViewDelegate
+@objc public class ReaderPostCardCell: UITableViewCell, ReaderCardDiscoverAttributionViewDelegate
 {
     // MARK: - Properties
 
@@ -151,10 +151,7 @@ import WordPressShared
     // MARK: - Configuration
 
     private func setupAttributionView() {
-        attributionView.richTextView.delegate = self
-        attributionView.richTextView.userInteractionEnabled = true
-        attributionView.richTextView.selectable = true
-        attributionView.richTextView.editable = false
+        attributionView.delegate = self
     }
 
     private func preserveStartingConstraintConstants() {
@@ -549,11 +546,10 @@ import WordPressShared
     }
 
 
-    // MARK: - RichTextView Delegate Methods
+    // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
 
-    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
-        return false
     }
 
 

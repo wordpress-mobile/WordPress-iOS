@@ -70,7 +70,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="www.blogname.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RfN-yk-yXb">
-                                                        <rect key="frame" x="58" y="32" width="498" height="14.5"/>
+                                                        <rect key="frame" x="58" y="32" width="498" height="15"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -159,7 +159,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QjI-iE-tIM">
-                                                        <rect key="frame" x="26" y="1" width="542" height="14.5"/>
+                                                        <rect key="frame" x="26" y="1" width="542" height="15"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -194,38 +194,51 @@
                                                 </constraints>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                                <rect key="frame" x="16" y="398" width="568" height="44"/>
+                                                <rect key="frame" x="16" y="398" width="568" height="20.5"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7CF-n4-qzA" customClass="CircularImageView" customModule="WordPress">
-                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="X6N-vG-hr3">
+                                                        <rect key="frame" x="0.0" y="0.0" width="568" height="20.5"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAQ-jD-BAz" customClass="CircularImageView" customModule="WordPress">
+                                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="20" id="2i8-DL-fkV"/>
+                                                                    <constraint firstAttribute="height" priority="999" constant="20" id="IzH-3N-1dv"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="c2K-XN-Xo5">
+                                                                <rect key="frame" x="28" y="0.0" width="540" height="20.5"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-ci-UB0">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="20.5"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="20" id="CwV-tU-ASe"/>
-                                                            <constraint firstAttribute="width" constant="20" id="icl-6u-jmI"/>
+                                                            <constraint firstItem="c2K-XN-Xo5" firstAttribute="height" secondItem="X6N-vG-hr3" secondAttribute="height" id="fM5-xr-5Ck"/>
                                                         </constraints>
-                                                    </imageView>
-                                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zzx-Ob-0cJ" customClass="RichTextView" customModule="WordPress">
-                                                        <rect key="frame" x="28" y="-2" width="540" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </view>
+                                                    </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="7CF-n4-qzA" secondAttribute="bottom" constant="24" placeholder="YES" id="OnD-Jq-QcE"/>
-                                                    <constraint firstItem="zzx-Ob-0cJ" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" constant="28" id="Stk-Yw-KJD"/>
-                                                    <constraint firstAttribute="trailing" secondItem="zzx-Ob-0cJ" secondAttribute="trailing" id="aDg-p4-65A"/>
-                                                    <constraint firstItem="zzx-Ob-0cJ" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" constant="-2" id="kO3-zA-Xx7"/>
-                                                    <constraint firstItem="7CF-n4-qzA" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="nPq-tp-f3o"/>
-                                                    <constraint firstItem="7CF-n4-qzA" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="sFC-1a-UUL"/>
+                                                    <constraint firstAttribute="bottom" secondItem="X6N-vG-hr3" secondAttribute="bottom" id="3cP-D4-KBG"/>
+                                                    <constraint firstItem="X6N-vG-hr3" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="F9u-Jl-W57"/>
+                                                    <constraint firstItem="X6N-vG-hr3" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="OdI-GT-bqh"/>
+                                                    <constraint firstAttribute="trailing" secondItem="X6N-vG-hr3" secondAttribute="trailing" id="PTA-Qe-T0Z"/>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="tOq-4U-2r6"/>
-                                                    <constraint firstAttribute="bottom" secondItem="zzx-Ob-0cJ" secondAttribute="bottom" id="thI-l0-0Hd"/>
                                                 </constraints>
                                                 <connections>
-                                                    <outlet property="imageView" destination="7CF-n4-qzA" id="YG5-Kx-plB"/>
-                                                    <outlet property="richTextView" destination="zzx-Ob-0cJ" id="fjY-tr-r7X"/>
+                                                    <outlet property="imageView" destination="TAQ-jD-BAz" id="VaQ-fj-5Zv"/>
+                                                    <outlet property="textLabel" destination="I5s-ci-UB0" id="ekY-ts-7Ib"/>
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3tc-Lf-3D1">
-                                                <rect key="frame" x="0.0" y="442" width="600" height="50"/>
+                                                <rect key="frame" x="0.0" y="418.5" width="600" height="73.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="ViT-sA-O9O"/>
@@ -503,7 +516,7 @@
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to find?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afc-5c-5tF">
-                                <rect key="frame" x="16" y="213" width="568" height="26.5"/>
+                                <rect key="frame" x="16" y="213" width="568" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
