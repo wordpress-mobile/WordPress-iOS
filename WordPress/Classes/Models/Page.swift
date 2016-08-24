@@ -20,6 +20,10 @@ class Page: AbstractPost {
         return timeIntervalFormatter
     }()
 
+    override class func entityName() -> String {
+        return "Page"
+    }
+
     /// Section identifier for the page.
     ///
     func sectionIdentifier() -> String {

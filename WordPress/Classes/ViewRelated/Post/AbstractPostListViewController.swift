@@ -557,7 +557,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.purgesLocalSync = true
 
-        postService.syncPosts(ofType: postTypeToSync(),
+        postService.sync(postTypeToSync(),
             blog: blog,
             options: options,
             success: {[weak self] posts in
@@ -608,7 +608,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count
 
-        postService.syncPosts(ofType: postTypeToSync(),
+        postService.sync(postTypeToSync(),
                               blog: blog,
                               options: options,
                               success: {[weak self] posts in
@@ -745,7 +745,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService.syncPosts(ofType: postTypeToSync(),
+        postService.sync(postTypeToSync(),
                               blog: blog,
                               options: options,
                               success: { [weak self] posts in
@@ -815,7 +815,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trash(post: apost, success: {}) { [weak self] error in
+        postService.trash(apost, success: {}) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
@@ -852,7 +852,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.restore(post: apost, success: { [weak self] in
+        postService.restore(apost, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return

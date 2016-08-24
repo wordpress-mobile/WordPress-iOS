@@ -133,7 +133,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[PostService createDraftPostInMainContextForBlog:blog]];
+    return [self initWithPost:[[PostService new] makeDraftPostFor:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -442,7 +442,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - Instance Methods
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPostInMainContextForBlog:blog];
+    return [[PostService new] makeDraftPostFor:blog];
 }
 
 /*
@@ -667,14 +667,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         NSString *postTitle = self.post.original.postTitle;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-        [postService uploadPost:(Post *)self.post
-                        success:^(AbstractPost *post){
-                            self.post = post;
-                            
-                            DDLogInfo(@"post uploaded: %@", postTitle);
-                        } failure:^(NSError *error) {
-                            DDLogError(@"post failed: %@", [error localizedDescription]);
-                        }];
+        [postService upload:(Post *)self.post
+                    success:^(AbstractPost *post){
+                        self.post = post;
+                        
+                        DDLogInfo(@"post uploaded: %@", postTitle);
+                    } failure:^(NSError *error) {
+                        DDLogError(@"post failed: %@", [error localizedDescription]);
+                    }];
     }
 
     [self didSaveNewPost];

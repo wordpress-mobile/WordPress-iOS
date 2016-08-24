@@ -52,7 +52,7 @@
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPageInMainContextForBlog:blog];
+   return [[PostService new] makeDraftPageFor:blog];
 }
 
 #pragma mark - Onboarding

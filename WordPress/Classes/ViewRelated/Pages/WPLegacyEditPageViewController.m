@@ -14,12 +14,12 @@
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[PostService createDraftPageInMainContextForBlog:blog]];
+    return [self initWithPost:[[PostService new] makeDraftPageFor:blog]];
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog
 {
-    return [PostService createDraftPageInMainContextForBlog:blog];
+    return [[PostService new] makeDraftPageFor:blog];
 }
 
 - (void)didSaveNewPost {

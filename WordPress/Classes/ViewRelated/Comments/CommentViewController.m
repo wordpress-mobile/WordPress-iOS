@@ -264,8 +264,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __weak __typeof(self) weakSelf = self;
 
     // when the post is updated, all it's comment will be associated to it, reloading tableView is enough
-    [postService getPostWithID:self.comment.postID
-                       forBlog:self.comment.blog
+    [postService get:self.comment.postID
+                       blog:self.comment.blog
                        success:^(AbstractPost *post) {
                            [weakSelf reloadData];
                        }
