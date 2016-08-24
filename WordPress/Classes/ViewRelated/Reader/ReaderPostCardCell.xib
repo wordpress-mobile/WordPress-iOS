@@ -106,17 +106,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNF-NN-mpb">
-                                <rect key="frame" x="16" y="304" width="288" height="17"/>
+                                <rect key="frame" x="16" y="306" width="288" height="17"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aU5-S0-uXT" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                <rect key="frame" x="16" y="329" width="288" height="32"/>
+                                <rect key="frame" x="16" y="333" width="288" height="26"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ifR-YV-Yg5">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="26"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnL-zu-NdT" customClass="CircularImageView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -125,11 +125,11 @@
                                                     <constraint firstAttribute="height" priority="999" constant="20" id="UWE-B4-ua0"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="V8T-Nn-y1f">
-                                                <rect key="frame" x="28" y="0.0" width="260" height="32"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="260" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="V8T-Nn-y1f">
+                                                <rect key="frame" x="28" y="0.0" width="260" height="26"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYq-0d-sFM">
-                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="32"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="26"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,7 +157,7 @@
                                 </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFe-da-xxs">
-                                <rect key="frame" x="16" y="369" width="70" height="17"/>
+                                <rect key="frame" x="16" y="367" width="70" height="17"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -231,7 +231,7 @@
                             <constraint firstItem="YTV-MW-ksl" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="bottom" constant="12" id="B1V-CZ-VU6"/>
                             <constraint firstItem="eFe-da-xxs" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="E9h-YX-BoE"/>
                             <constraint firstItem="MNF-NN-mpb" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="Hlt-4l-jIo"/>
-                            <constraint firstItem="MNF-NN-mpb" firstAttribute="top" secondItem="YTV-MW-ksl" secondAttribute="bottom" constant="6" id="IDE-wF-Dff"/>
+                            <constraint firstItem="MNF-NN-mpb" firstAttribute="top" secondItem="YTV-MW-ksl" secondAttribute="bottom" constant="8" id="IDE-wF-Dff"/>
                             <constraint firstAttribute="trailing" secondItem="YTV-MW-ksl" secondAttribute="trailing" constant="16" id="OGv-ei-iaQ"/>
                             <constraint firstItem="FV8-lg-7ZL" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" id="OT8-f8-r05"/>
                             <constraint firstItem="l8A-oh-TmY" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="16" id="PUr-vx-aof"/>
@@ -241,12 +241,12 @@
                             <constraint firstAttribute="trailing" secondItem="aU5-S0-uXT" secondAttribute="trailing" constant="16" id="dBn-6B-KEh"/>
                             <constraint firstAttribute="trailing" secondItem="ZXc-ck-z8k" secondAttribute="trailing" constant="16" id="eVH-QX-Sn0"/>
                             <constraint firstItem="eFe-da-xxs" firstAttribute="top" secondItem="aU5-S0-uXT" secondAttribute="bottom" constant="8" id="fOF-Ol-YTK"/>
-                            <constraint firstItem="wHE-hH-7uj" firstAttribute="top" secondItem="eFe-da-xxs" secondAttribute="bottom" constant="8" id="jce-cA-MFh"/>
+                            <constraint firstItem="wHE-hH-7uj" firstAttribute="top" secondItem="eFe-da-xxs" secondAttribute="bottom" constant="10" id="jce-cA-MFh"/>
                             <constraint firstItem="l8A-oh-TmY" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="mdd-8z-Bln"/>
                             <constraint firstItem="aU5-S0-uXT" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="16" id="ntL-A5-DRO"/>
                             <constraint firstItem="ZXc-ck-z8k" firstAttribute="leading" secondItem="l8A-oh-TmY" secondAttribute="trailing" constant="10" id="pjc-cr-lMu"/>
                             <constraint firstAttribute="trailing" secondItem="MNF-NN-mpb" secondAttribute="trailing" constant="16" id="vpN-nS-zeN"/>
-                            <constraint firstItem="aU5-S0-uXT" firstAttribute="top" secondItem="MNF-NN-mpb" secondAttribute="bottom" constant="8" id="wuS-RO-i6c"/>
+                            <constraint firstItem="aU5-S0-uXT" firstAttribute="top" secondItem="MNF-NN-mpb" secondAttribute="bottom" constant="10" id="wuS-RO-i6c"/>
                             <constraint firstItem="ZXc-ck-z8k" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="16" id="xiW-3y-5Gv"/>
                             <constraint firstItem="FV8-lg-7ZL" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="bottom" constant="16" id="yeu-jg-E2o"/>
                         </constraints>

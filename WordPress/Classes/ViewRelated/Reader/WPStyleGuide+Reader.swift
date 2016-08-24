@@ -24,10 +24,8 @@ extension WPStyleGuide
         let fontSize = originalAttributionFontSize()
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
         return [
             NSParagraphStyleAttributeName : paragraphStyle,
             NSFontAttributeName : font,
@@ -62,10 +60,8 @@ extension WPStyleGuide
         let fontSize = Cards.crossPostTitleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
-        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -78,10 +74,8 @@ extension WPStyleGuide
         let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.systemBoldFontOfSize(fontSize)
 
-        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -94,10 +88,8 @@ extension WPStyleGuide
         let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -110,10 +102,8 @@ extension WPStyleGuide
         let fontSize = Cards.titleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
-        let lineHeight = Cards.titleLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -125,10 +115,8 @@ extension WPStyleGuide
         let fontSize = Cards.contentFontSize
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.contentLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -140,13 +128,7 @@ extension WPStyleGuide
         let fontSize = Cards.buttonFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.defaultLineHeight
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
-
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: greyDarken10()
         ]
@@ -156,10 +138,8 @@ extension WPStyleGuide
         let fontSize:CGFloat = Cards.subtextFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
@@ -192,10 +172,8 @@ extension WPStyleGuide
         let fontSize = Cards.contentFontSize
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
         paragraphStyle.alignment = .Center
 
         return [
@@ -320,22 +298,23 @@ extension WPStyleGuide
 
     public struct Cards
     {
-        public static let defaultLineHeight:CGFloat = UIDevice.isPad() ? 26.0 : 22.0
-        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 28.0 : 18.0
-        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 39.0 : 23.0
+        public static let defaultLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
+        public static let titleFontSize:CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
+        public static let titleLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
         public static let contentFontSize:CGFloat = 16.0
+        public static let contentLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
         public static let crossPostTitleFontSize:CGFloat = 16.0
         public static let crossPostSubtitleFontSize:CGFloat = 13.0
-        public static let crossPostLineHeight:CGFloat = 20.0
+        public static let crossPostLineSpacing:CGFloat = 4.0
     }
 
     public struct Detail
     {
-        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 36.0 : 28.0
-        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 45.0 : 35.0
+        public static let titleFontSize:CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 28.0
+        public static let titleLineHeight:CGFloat = WPDeviceIdentification.isiPad() ? 45.0 : 35.0
         public static let contentFontSize:CGFloat = 16.0
         public static let contentLineHeight:CGFloat = 27.0
     }
