@@ -119,16 +119,15 @@ public class WordPressComRestApi: NSObject
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
 
-        let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+        let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
+                progress.completedUnitCount = progress.totalUnitCount
             }, failure: { [weak progress] (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
@@ -164,16 +163,15 @@ public class WordPressComRestApi: NSObject
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
-        let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
+        let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
-            }, failure: { [weak progress] (dataTask, error) in
+                progress.completedUnitCount = progress.totalUnitCount
+            }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
             }
         )
         if let task = task {
