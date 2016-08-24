@@ -65,6 +65,7 @@ import WordPressShared
 
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
+    private let minAttributionBottomConstraintConstant = CGFloat(6.0)
     private let avgWordsPerMinuteRead = 250
     private let minimumMinutesToRead = 2
     private var currentLoadedCardImageURL: String?
@@ -329,7 +330,7 @@ import WordPressShared
     private func configureAttribution() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
             attributionHeightConstraint.constant = 0.0
-            attributionBottomConstraint.constant = 0.0
+            attributionBottomConstraint.constant = minAttributionBottomConstraintConstant
             attributionView.configureView(nil)
         } else {
             attributionView.configureView(contentProvider)
