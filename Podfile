@@ -55,6 +55,7 @@ abstract_target 'WordPress_Base' do
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
+      inherit! :search_paths
       pod 'OHHTTPStubs', '~> 4.6.0'
       pod 'OHHTTPStubs/Swift', '~> 4.6.0'
       pod 'OCMock', '3.1.2'
