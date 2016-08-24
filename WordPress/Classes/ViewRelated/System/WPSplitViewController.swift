@@ -324,6 +324,19 @@ extension WPSplitViewController: UINavigationControllerDelegate {
     }
 
     private func primaryNavigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+
+        if let coordinator = navigationController.topViewController?.transitionCoordinator() {
+            // If the user is popping back to the root view controller using the
+            // interactive pop transition, we need to check whether the gesture
+            // gets cancelled so that we can undim the detail view if necessary.
+            // (i.e. the user begins a back swipe but doesn't go through with it)
+            coordinator.notifyWhenInteractionEndsUsingBlock({ [weak self] context in
+                if context.initiallyInteractive() && context.isCancelled() {
+                    self?.dimDetailViewController(false)
+                }
+            })
+        }
+
         dimDetailViewControllerIfNecessary()
     }
 
