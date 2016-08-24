@@ -12,8 +12,8 @@ cache:
 notifications:
   email: true
 install:
--- bundle install --path vendor/bundle
--- bundle exec rake dependencies
+- bundle install --path vendor/bundle
+- bundle exec rake dependencies
 script:
 - rake test
 env:
