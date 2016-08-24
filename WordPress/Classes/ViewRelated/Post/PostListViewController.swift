@@ -366,7 +366,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     private func createPostInNativeEditor() {
-        let postViewController = AztecPostViewController()
+        let post = PostService.createDraftPostInMainContextForBlog(blog)
+        let postViewController = AztecPostViewController(post:post)
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
         presentViewController(navController, animated: true, completion: nil)
@@ -424,7 +425,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         if WPPostViewController.isNewEditorEnabled() {
             if (WPPostViewController.isNativeEditorEnabled()) {
-                let postViewController = AztecPostViewController()
+                let postViewController = AztecPostViewController(post: apost)
                 let navController = UINavigationController(rootViewController: postViewController)
                 navController.modalPresentationStyle = .FullScreen
                 presentViewController(navController, animated: true, completion: nil)
