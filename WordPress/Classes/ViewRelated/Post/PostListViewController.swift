@@ -366,12 +366,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     private func createPostInNativeEditor() {
-        let post = PostService.createDraftPostInMainContextForBlog(blog)
-        let postViewController = AztecPostViewController(post:post)
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
-        presentViewController(navController, animated: true, completion: nil)
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        if let post = PostService().makeDraftPost(for: blog) {
+            let postViewController = AztecPostViewController(post:post)
+            let navController = UINavigationController(rootViewController: postViewController)
+            navController.modalPresentationStyle = .FullScreen
+            presentViewController(navController, animated: true, completion: nil)
+            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        }
     }
 
     private func createPostInNewEditor() {
