@@ -354,8 +354,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Post Actions
 
     override func createPost() {
-        if WPPostViewController.isNewEditorEnabled() {
-            if WPPostViewController.isNativeEditorEnabled() {
+        let editorSettings = EditorSettings()
+        if editorSettings.visualEditorEnabled {
+            if editorSettings.nativeEditorEnabled {
                 createPostInNativeEditor()
             } else {
                 createPostInNewEditor()
@@ -422,9 +423,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     private func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
-
-        if WPPostViewController.isNewEditorEnabled() {
-            if (WPPostViewController.isNativeEditorEnabled()) {
+        let editorSettings = EditorSettings()
+        if editorSettings.visualEditorEnabled {
+            if editorSettings.nativeEditorEnabled {
                 let postViewController = AztecPostViewController(post: apost)
                 let navController = UINavigationController(rootViewController: postViewController)
                 navController.modalPresentationStyle = .FullScreen
