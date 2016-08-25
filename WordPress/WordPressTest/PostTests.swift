@@ -17,7 +17,7 @@ class PostTests: XCTestCase {
     }
 
     private func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObjectForEntityForName(Post.entityName, inManagedObjectContext: context) as! Post
+        return NSEntityDescription.insertNewObjectForEntityForName(Post.entityName(), inManagedObjectContext: context) as! Post
     }
 
     private func newTestPostCategory() -> PostCategory {
