@@ -45,10 +45,20 @@ private enum ReaderCardDiscoverAttribution : Int {
         // Enable userInteraction on the label by default while userInteraction
         // is toggled on self in attributionAction: didSet for valid actions.
         textLabel.userInteractionEnabled = true
+
+        applyOpaqueBackgroundColors()
     }
 
 
     // MARK: - Configuration
+
+    /**
+     Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
+     */
+    private func applyOpaqueBackgroundColors() {
+        imageView.backgroundColor = UIColor.whiteColor()
+        textLabel.backgroundColor = UIColor.whiteColor()
+    }
 
     public func configureView(contentProvider: ReaderPostContentProvider?) {
         if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.Post {
