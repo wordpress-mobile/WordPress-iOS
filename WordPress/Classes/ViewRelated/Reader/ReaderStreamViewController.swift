@@ -1678,7 +1678,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         let post = posts[indexPath.row]
 
         postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
+        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
         postCell.configureCell(post)
         postCell.delegate = self
     }
