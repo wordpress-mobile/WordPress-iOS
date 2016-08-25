@@ -162,6 +162,10 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     }
     _content = content;
 
+    // Assign an empty attributed string first. This "resets" the text layout
+    // and helps clear up some artifacting and drawing errors in certain edge cases.
+    self.attributedString = [[NSAttributedString alloc] initWithString:@""];
+
     NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
     self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                  options:self.textOptions
