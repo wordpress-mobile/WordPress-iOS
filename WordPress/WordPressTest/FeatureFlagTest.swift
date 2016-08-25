@@ -22,9 +22,11 @@ class FeatureFlagTest: XCTestCase {
         }
     }
 
+    // Add tests for features that should be disabled in production here.
     func testEnsureDisabledFeaturesInProduction() {
         Build.withCurrent(.AppStore) {
-            expect(FeatureFlag.ReaderMenu.enabled).to(beFalse())
+//            Example:
+//            expect(FeatureFlag.[FeatureEnum].enabled).to(beFalse())
         }
     }
 }

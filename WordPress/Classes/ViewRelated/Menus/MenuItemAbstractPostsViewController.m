@@ -17,7 +17,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self insertSearchBarIfNeeded];
 }
 
@@ -50,11 +50,11 @@
     }
 
     [self performResultsControllerFetchRequest];
-    
+
     self.isSyncing = YES;
     [self showLoadingSourcesIndicatorIfEmpty];
     self.additionalPostsAvailableForSync = YES;
-    
+
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     [service syncPostsOfType:[self sourceItemType]
@@ -93,12 +93,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    
+
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     [self setItemSourceWithContentID:post.postID name:[self titleForPost:post]];
     [self deselectVisibleSourceCellsIfNeeded];
-    
+
     MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     selectedCell.sourceSelected = YES;
 }
@@ -143,7 +143,7 @@
     self.isSyncing = YES;
     self.isSyncingAdditionalPosts = YES;
     [self showLoadingSourcesIndicator];
-    
+
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     options.offset = @(self.resultsController.fetchedObjects.count);
@@ -166,7 +166,7 @@
 {
     NSPredicate *defaultPredicate = [self defaultFetchRequestPredicate];
     NSPredicate *predicate = nil;
-    
+
     if (searchText.length) {
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
@@ -182,7 +182,7 @@
         DDLogDebug(@"MenuItemSourcePostView: Updating fetch request with default predicate");
         predicate = defaultPredicate;
     }
-    
+
     self.resultsController.fetchRequest.predicate = predicate;
     [self performResultsControllerFetchRequest];
     [self.tableView reloadData];
@@ -194,14 +194,14 @@
         self.defersFooterViewMessageUpdates = NO;
         return;
     }
-    
+
     self.defersFooterViewMessageUpdates = NO;
-    
+
     [self showLoadingSourcesIndicator];
     void(^stopLoading)() = ^() {
         [self hideLoadingSourcesIndicator];
     };
-    
+
     DDLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];

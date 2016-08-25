@@ -43,6 +43,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (NSUInteger)numberOfSubscribedTopics;
 
 /**
+ Deletes all search topics from core data and saves the context.
+ Use to clean-up searches when they are finished.
+ */
+- (void)deleteAllSearchTopics;
+
+/**
  Deletes all topics that do not appear in the menu from core data and saves the context.
  Use to clean-up previewed topics that are lingering in core data.
  */

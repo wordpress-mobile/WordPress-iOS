@@ -6,7 +6,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
-#import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
@@ -153,6 +152,25 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return 0;
     }
     return count;
+}
+
+- (void)deleteAllSearchTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSearchTopic classNameWithoutNamespaces]];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderAbstractTopic *topic in results) {
+        [self.managedObjectContext deleteObject:topic];
+    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 - (void)deleteNonMenuTopics

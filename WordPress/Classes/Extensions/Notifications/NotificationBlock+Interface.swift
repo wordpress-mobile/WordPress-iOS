@@ -1,24 +1,18 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-/// This class extension implements helper methods to aid formatting a NotificationBlock's payload,
+
+
+/// This Extension implements helper methods to aid formatting a NotificationBlock's payload,
 /// for usage in several different spots of the app.
-///
-/// The main goal of this helper Extension is to encapsulate presentation details into a single piece of
-/// code, while preserving a clear sepparation with the Model itself.
-/// We rely on a cache mechanism, implemented for performance purposes, that will get nuked whenever the
+/// For performance purposes, Attributed Strings get temporarily cached... and will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension NotificationBlock {
-
-    // MARK: - Public Methods
-    //
-
+extension NotificationBlock
+{
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
-    /// - Returns: A Subject Attributed String
-    ///
-    public func attributedSubjectText() -> NSAttributedString {
+    var attributedSubjectText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.subjectRegularStyle,
                 quoteStyles:    Styles.subjectItalicsStyle,
@@ -26,14 +20,12 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richSubjectCacheKey)
+        return attributedText(MemoizeKeys.subject)
     }
 
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
-    /// - Returns: A Snippet Attributed String
-    ///
-    public func attributedSnippetText() -> NSAttributedString {
+    var attributedSnippetText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles:    nil,
@@ -41,14 +33,12 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richSnippetCacheKey)
+        return attributedText(MemoizeKeys.snippet)
     }
 
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
-    /// - Returns: A Header Attributed String
-    ///
-    public func attributedHeaderTitleText() -> NSAttributedString {
+    var attributedHeaderTitleText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles:    nil,
@@ -56,14 +46,12 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richHeaderTitleCacheKey)
+        return attributedText(MemoizeKeys.headerTitle)
     }
 
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
-    /// - Returns: A Header Attributed String
-    ///
-    public func attributedFooterText() -> NSAttributedString {
+    var attributedFooterText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles:    nil,
@@ -71,17 +59,14 @@ extension NotificationBlock {
                 linksColor:     nil)
         }
 
-        return attributedText(Constants.richHeaderTitleCacheKey)
+        return attributedText(MemoizeKeys.footer)
     }
 
-    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and
-    /// NoteBlockCommentTableViewCell.
+    /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
     ///
-    /// - Returns: An Attributed String for usage in both, comments and regular cells
-    ///
-    public func attributedRichText() -> NSAttributedString {
-        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
-        //  TextOverride is a transient property meant to store, temporarily, the edited text
+    var attributedRichText: NSAttributedString {
+        // Operations such as editing a comment cause a lag between the REST and Simperium update.
+        // TextOverride is a transient property meant to store, temporarily, the edited text
         if let textOverride = textOverride {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
@@ -93,15 +78,13 @@ extension NotificationBlock {
                 linksColor:     Styles.blockLinkColor)
         }
 
-        return attributedText(Constants.richTextCacheKey)
+        return attributedText(MemoizeKeys.text)
     }
 
     /// Formats a NotificationBlock for usage into Badge-Type notifications. This contains custom
     /// formatting that differs from regular notifications, such as centered texts.
     ///
-    /// - Returns: An Attributed String for usage in Badge Notifications
-    ///
-    public func attributedBadgeText() -> NSAttributedString {
+    var attributedBadgeText: NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.badgeRegularStyle,
                 quoteStyles:    Styles.badgeBoldStyle,
@@ -109,29 +92,27 @@ extension NotificationBlock {
                 linksColor:     Styles.badgeLinkColor)
         }
 
-        return attributedText(Constants.richBadgeCacheKey)
+        return attributedText(MemoizeKeys.badge)
     }
 
 
     /// Given a set of URL's and the Images they reference to, this method will return a Dictionary
     /// with the NSRange's in which the given UIImage's should be injected.
     ///
-    /// This is used to build an Attributed String containing inline images.
+    /// **Note:** If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
     ///
     /// - Parameter mediaMap: A Dictionary mapping asset URL's to the already-downloaded assets
     ///
     /// - Returns: A Dictionary mapping Text-Ranges in which the UIImage's should be applied
     ///
-    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
-        // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
-        if textOverride != nil {
+    func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]) -> [NSValue: UIImage]? {
+        guard textOverride == nil else {
             return nil
         }
 
         var ranges = [NSValue: UIImage]()
 
         for theMedia in media {
-            // Failsafe: if the mediaURL couldn't be parsed, don't proceed
             guard let mediaURL = theMedia.mediaURL else {
                 continue
             }
@@ -144,11 +125,14 @@ extension NotificationBlock {
 
         return ranges
     }
+}
 
 
-    // MARK: - Private Helpers
-    //
 
+// MARK: - Private Helpers
+//
+extension NotificationBlock
+{
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
@@ -158,15 +142,12 @@ extension NotificationBlock {
     ///            and store its return value in the cache.
     ///
     private func memoize(fn: () -> NSAttributedString) -> String -> NSAttributedString {
-        return {
-            (cacheKey : String) -> NSAttributedString in
+        return { cacheKey in
 
-            // Is it already cached?
             if let cachedSubject = self.cacheValueForKey(cacheKey) as? NSAttributedString {
                 return cachedSubject
             }
 
-            // Store in Cache
             let newValue = fn()
             self.setCacheValue(newValue, forKey: cacheKey)
             return newValue
@@ -186,20 +167,17 @@ extension NotificationBlock {
     ///
     private func textWithStyles(attributes  : [String: AnyObject],
                                 quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [NoteRangeType: [String: AnyObject]]?,
+                             rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
-        // Is it empty?
         guard let text = text else {
             return NSAttributedString()
         }
 
-        // Format the String
         let theString = NSMutableAttributedString(string: text, attributes: attributes)
 
-        // Apply Quotes Styles
-        if let unwrappedQuoteStyles = quoteStyles {
-            theString.applyAttributesToQuotes(unwrappedQuoteStyles)
+        if let quoteStyles = quoteStyles {
+            theString.applyAttributesToQuotes(quoteStyles)
         }
 
         // Apply the Ranges
@@ -209,15 +187,15 @@ extension NotificationBlock {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 
-            if range.type == .Noticon {
+            if range.kind == .Noticon {
                 let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
                 lengthShift         += noticon.characters.count
                 shiftedRange.length += noticon.characters.count
             }
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] {
-                theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
+            if let rangeStyle = rangeStylesMap?[range.kind] {
+                theString.addAttributes(rangeStyle, range: shiftedRange)
             }
 
             if let rangeURL = range.url, let linksColor = linksColor {
@@ -233,7 +211,7 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     private struct Constants {
-        static let subjectRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.subjectBoldStyle,
             .Post               : Styles.subjectItalicsStyle,
             .Comment            : Styles.subjectItalicsStyle,
@@ -241,35 +219,38 @@ extension NotificationBlock {
             .Noticon            : Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.headerTitleBoldStyle,
             .Post               : Styles.headerTitleContextStyle,
             .Comment            : Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Noticon            : Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .Blockquote         : Styles.contentBlockQuotedStyle,
             .Noticon            : Styles.blockNoticonStyle,
             .Match              : Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap: [NoteRangeType: [String: AnyObject]] = [
+        static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
             .User               : Styles.badgeBoldStyle,
             .Post               : Styles.badgeItalicsStyle,
             .Comment            : Styles.badgeItalicsStyle,
             .Blockquote         : Styles.badgeQuotedStyle
         ]
-
-        static let richSubjectCacheKey      = "richSubjectCacheKey"
-        static let richSnippetCacheKey      = "richSnippetCacheKey"
-        static let richHeaderTitleCacheKey  = "richHeaderTitleCacheKey"
-        static let richTextCacheKey         = "richTextCacheKey"
-        static let richBadgeCacheKey        = "richBadgeCacheKey"
     }
 
-    private typealias Styles                = WPStyleGuide.Notifications
+    private struct MemoizeKeys {
+        static let subject      = "subject"
+        static let snippet      = "snippet"
+        static let headerTitle  = "headerTitle"
+        static let footer       = "footer"
+        static let text         = "text"
+        static let badge        = "badge"
+    }
+
+    private typealias Styles    = WPStyleGuide.Notifications
 }

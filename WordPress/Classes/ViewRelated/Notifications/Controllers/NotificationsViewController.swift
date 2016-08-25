@@ -37,8 +37,7 @@ class NotificationsViewController : UITableViewController
 
     /// TableView Handler: Our commander in chief!
     ///
-    // TODO JLP 7.26.2016: Make this one private once +RowActions has been merged in
-    var tableViewHandler: WPTableViewHandler!
+    private var tableViewHandler: WPTableViewHandler!
 
     /// NoResults View
     ///
@@ -58,7 +57,7 @@ class NotificationsViewController : UITableViewController
 
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
-    private var notificationDeletionBlocks = [NSManagedObjectID: NotificationDeletionActionBlock]()
+    private var notificationDeletionActions: [NSManagedObjectID: NotificationDeletion.Action] = [:]
 
     /// Notifications being deleted are proactively filtered from the list.
     ///
@@ -69,6 +68,11 @@ class NotificationsViewController : UITableViewController
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        restorationClass = self.dynamicType
     }
 
     override func viewDidLoad() {
@@ -189,8 +193,8 @@ class NotificationsViewController : UITableViewController
         }
 
         // Old School Height Calculation
-        let subject = note.subjectBlock()?.attributedSubjectText()
-        let snippet = note.snippetBlock()?.attributedSnippetText()
+        let subject = note.subjectBlock?.attributedSubjectText
+        let snippet = note.snippetBlock?.attributedSnippetText
 
         return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
@@ -223,6 +227,93 @@ class NotificationsViewController : UITableViewController
         detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
             self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
         }
+    }
+}
+
+
+// MARK: - Row Actions
+//
+extension NotificationsViewController
+{
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return .Delete
+    }
+
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
+            let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else
+        {
+            // Not every single row will have actions: Slight hack so that the UX isn't terrible:
+            //  -   First: Return an Empty UITableViewRowAction
+            //  -   Second: Hide it after a few seconds.
+            //
+            tableView.disableEditionAfterDelay()
+
+            return noopRowActions()
+        }
+
+        // Helpers
+        var actions = [UITableViewRowAction]()
+
+        // Comments: Trash
+        if block.isActionEnabled(.Trash) {
+            let title = NSLocalizedString("Trash", comment: "Trashes a comment")
+
+            let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] _ in
+                self?.showUndeleteForNoteWithID(note.objectID) { onCompletion in
+                    self?.actionsService.deleteCommentWithBlock(block) { success in
+                        onCompletion(success)
+                    }
+                }
+
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.errorRed()
+            actions.append(trash)
+        }
+
+        // Comments: Moderation Disabled
+        guard block.isActionEnabled(.Approve) else {
+            return actions
+        }
+
+        // Comments: Unapprove
+        if block.isActionOn(.Approve) {
+            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+
+            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+                self?.actionsService.unapproveCommentWithBlock(block)
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.grey()
+            actions.append(trash)
+
+        // Comments: Approve
+        } else {
+            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+
+            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+                self?.actionsService.approveCommentWithBlock(block)
+                self?.tableView.setEditing(false, animated: true)
+            })
+
+            trash.backgroundColor = WPStyleGuide.wordPressBlue()
+            actions.append(trash)
+        }
+
+        return actions
+    }
+
+    private func noopRowActions() -> [UITableViewRowAction] {
+        let noop = UITableViewRowAction(style: .Normal, title: title, handler: { _ in })
+        noop.backgroundColor = UIColor.clearColor()
+        return [noop]
     }
 }
 
@@ -426,7 +517,7 @@ extension NotificationsViewController
             navigationController?.popViewControllerAnimated(false)
         }
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.isMatcher == true {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             navigationController?.pushViewController(readerViewController, animated: true)
             return
@@ -443,9 +534,9 @@ extension NotificationsViewController
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
     ///
-    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletionActionBlock) {
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletion.Action) {
         // Mark this note as Pending Deletichroon and Reload
-        notificationDeletionBlocks[noteObjectID] = onTimeout
+        notificationDeletionActions[noteObjectID] = onTimeout
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
@@ -460,7 +551,7 @@ private extension NotificationsViewController
 {
     @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
-        guard let deletionBlock = notificationDeletionBlocks[noteObjectID] else {
+        guard let deletionBlock = notificationDeletionActions[noteObjectID] else {
             return
         }
 
@@ -470,7 +561,7 @@ private extension NotificationsViewController
 
         // Hit the Deletion Block
         deletionBlock { success in
-            self.notificationDeletionBlocks.removeValueForKey(noteObjectID)
+            self.notificationDeletionActions.removeValueForKey(noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
             // Error: let's unhide the row
@@ -481,14 +572,14 @@ private extension NotificationsViewController
     }
 
     func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
-        notificationDeletionBlocks.removeValueForKey(noteObjectID)
+        notificationDeletionActions.removeValueForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
     func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
-        return notificationDeletionBlocks[noteObjectID] != nil
+        return notificationDeletionActions[noteObjectID] != nil
     }
 }
 
@@ -598,9 +689,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let filtersMap: [Filter: String] = [
             .None       : "",
             .Unread     : " AND (read = NO)",
-            .Comment    : " AND (type = '\(NoteTypeComment)')",
-            .Follow     : " AND (type = '\(NoteTypeFollow)')",
-            .Like       : " AND (type = '\(NoteTypeLike)' OR type = '\(NoteTypeCommentLike)')"
+            .Comment    : " AND (type = '\(NoteKind.Comment.toTypeValue)')",
+            .Follow     : " AND (type = '\(NoteKind.Follow.toTypeValue)')",
+            .Like       : " AND (type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)')"
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
@@ -626,11 +717,11 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.forceCustomCellMargins = true
-        cell.attributedSubject      = note.subjectBlock()?.attributedSubjectText()
-        cell.attributedSnippet      = note.snippetBlock()?.attributedSnippetText()
+        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read?.boolValue ?? false
         cell.noticon                = note.noticon
-        cell.unapproved             = note.isUnapprovedComment()
+        cell.unapproved             = note.isUnapprovedComment
         cell.markedForDeletion      = isMarkedForDeletion
         cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
         cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
@@ -968,12 +1059,22 @@ extension NotificationsViewController: ABXPromptViewDelegate
 //
 private extension NotificationsViewController
 {
+    typealias NoteKind = Notification.Kind
+
     var simperium: Simperium {
         return WordPressAppDelegate.sharedInstance().simperium
     }
 
+    var mainContext: NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+
     var notesBucket: SPBucket {
         return simperium.bucketForName(entityName())
+    }
+
+    var actionsService: NotificationActionsService {
+        return NotificationActionsService(managedObjectContext: mainContext)
     }
 
     enum Filter: Int {
