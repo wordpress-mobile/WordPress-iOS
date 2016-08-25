@@ -18,11 +18,13 @@ import WordPressShared
     // Wrapper views
     @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var cardBorderView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var blogNameButton: UIButton!
+    @IBOutlet private weak var headerBlogButton: UIButton!
+    @IBOutlet private weak var blogNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
@@ -34,6 +36,10 @@ import WordPressShared
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var wordCountLabel: UILabel!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
+    @IBOutlet private weak var actionView: UIView!
+
+    // Helper Views
+    @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
     @IBOutlet private weak var actionButtonRight: UIButton!
@@ -41,31 +47,13 @@ import WordPressShared
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var featuredMediaBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var titleLabelBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var summaryLabelBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var attributionHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var attributionBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var wordCountBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var actionButtonViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var actionButtonViewBottomConstraint: NSLayoutConstraint!
 
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
     private var featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
-    private var featuredMediaBottomConstraintConstant = CGFloat(0.0)
-    private var titleLabelBottomConstraintConstant = CGFloat(0.0)
-    private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
-    private var attributionBottomConstraintConstant = CGFloat(0.0)
-    private var wordCountBottomConstraintConstant = CGFloat(0.0)
-    private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
-
-    private var didPreserveStartingConstraintConstants = false
 
     private let summaryMaxNumberOfLines = 3
-    private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
-    private let minAttributionBottomConstraintConstant = CGFloat(6.0)
     private let avgWordsPerMinuteRead = 250
     private let minimumMinutesToRead = 2
     private var currentLoadedCardImageURL: String?
@@ -95,12 +83,17 @@ import WordPressShared
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-    public var blogNameButtonIsEnabled: Bool {
+    public var headerBlogButtonIsEnabled: Bool {
         get {
-            return blogNameButton.enabled
+            return headerBlogButton.enabled
         }
         set {
-            blogNameButton.enabled = newValue
+            headerBlogButton.enabled = newValue
+            if newValue {
+                blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+            } else {
+                blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+            }
         }
     }
 
@@ -110,28 +103,18 @@ import WordPressShared
     public override func awakeFromNib() {
         super.awakeFromNib()
 
+        // This view is only added to help IB with filling the bottom space of
+        // the cell that is later autosized according to actual content's intrinsicContentSize.
+        // Otherwise, IB will make incorrect size adjustments and/or complain along the way.
+        // We set it to hidden now so that it is not included in the layout.
+        // Brent C. Aug/25/2016
+        interfaceVerticalSizingHelperView.hidden = true
+
         applyStyles()
         createAvatarTapGestureRecognizer()
         setupAttributionView()
     }
 
-    public override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        if didPreserveStartingConstraintConstants {
-            return
-        }
-        // When awakeFromNib is called, constraint constants have the default values for
-        // any w, any h. The constant values for the correct size class are not applied until
-        // the view is first moved to its superview. When this happens, it will override any
-        // value that has been assigned in the interrum.
-        // Preserve starting constraint constants once the view has been added to a window
-        // (thus getting a layout pass) and flag that they've been preserved. Then configure
-        // the cell if needed.
-        preserveStartingConstraintConstants()
-        if contentProvider != nil {
-            configureCell(contentProvider!)
-        }
-    }
 
     /**
         Ignore taps in the card margins
@@ -155,17 +138,6 @@ import WordPressShared
         attributionView.delegate = self
     }
 
-    private func preserveStartingConstraintConstants() {
-        featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
-        titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
-        summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
-        attributionBottomConstraintConstant = attributionBottomConstraint.constant
-        wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
-        actionButtonViewHeightConstraintConstant = actionButtonViewHeightConstraint.constant
-
-        didPreserveStartingConstraintConstants = true
-    }
-
     private func createAvatarTapGestureRecognizer() {
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderPostCardCell.didTapHeaderAvatar(_:)))
         avatarImageView.addGestureRecognizer(tgr)
@@ -179,7 +151,7 @@ import WordPressShared
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
 
-        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
+        WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
@@ -192,10 +164,6 @@ import WordPressShared
     public func configureCell(contentProvider:ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
-        if !didPreserveStartingConstraintConstants {
-            return
-        }
-
         configureHeader()
         configureCardImage()
         configureTitle()
@@ -206,7 +174,7 @@ import WordPressShared
         configureActionButtons()
         configureActionViewHeightIfNeeded()
 
-        setNeedsUpdateConstraints()
+        stackView.layoutIfNeeded()
     }
 
     private func configureHeader() {
@@ -224,9 +192,7 @@ import WordPressShared
         }
 
         let blogName = contentProvider?.blogNameForDisplay()
-        blogNameButton.setTitle(blogName, forState: .Normal)
-        blogNameButton.setTitle(blogName, forState: .Highlighted)
-        blogNameButton.setTitle(blogName, forState: .Disabled)
+        blogNameLabel.text = blogName
 
         var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
         if let author = contentProvider?.authorForDisplay() {
@@ -238,8 +204,9 @@ import WordPressShared
 
     private func configureCardImage() {
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
+
+            featuredMediaView.hidden = false
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
             if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
                 return // Don't reload an image already being displayed.
@@ -272,11 +239,8 @@ import WordPressShared
         } else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
-            featuredMediaHeightConstraint.constant = 0.0
-            featuredMediaBottomConstraint.constant = 0.0
+            featuredMediaView.hidden = true
         }
-
-        featuredMediaView.setNeedsUpdateConstraints()
     }
 
     private func requestForURL(url:NSURL) -> NSURLRequest {
@@ -304,11 +268,10 @@ import WordPressShared
         if let title = contentProvider?.titleForDisplay() {
             let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
-            titleLabelBottomConstraint.constant = titleLabelBottomConstraintConstant
-
+            titleLabel.hidden = false
         } else {
             titleLabel.attributedText = nil
-            titleLabelBottomConstraint.constant = 0.0
+            titleLabel.hidden = true
         }
     }
 
@@ -316,11 +279,10 @@ import WordPressShared
         if let summary = contentProvider?.contentPreviewForDisplay() {
             let attributes = WPStyleGuide.readerCardSummaryAttributes() as! [String: AnyObject]
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
-            summaryLabelBottomConstraint.constant = summaryLabelBottomConstraintConstant
-
+            summaryLabel.hidden = false
         } else {
             summaryLabel.attributedText = nil
-            summaryLabelBottomConstraint.constant = 0.0
+            summaryLabel.hidden = false
         }
 
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
@@ -329,13 +291,11 @@ import WordPressShared
 
     private func configureAttribution() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
-            attributionHeightConstraint.constant = 0.0
-            attributionBottomConstraint.constant = minAttributionBottomConstraintConstant
             attributionView.configureView(nil)
+            attributionView.hidden = true
         } else {
             attributionView.configureView(contentProvider)
-            attributionBottomConstraint.constant = attributionBottomConstraintConstant
-            attributionHeightConstraint.constant = maxAttributionViewHeight
+            attributionView.hidden = false
         }
     }
 
@@ -356,8 +316,8 @@ import WordPressShared
         wordCountLabel.attributedText = nil
 
         // For now, if showing the attribution view do not show the word count label
-        if attributionHeightConstraint.constant > 0 {
-            wordCountBottomConstraint.constant = 0.0
+        if !attributionView.hidden {
+            wordCountLabel.hidden = true
             return
         }
 
@@ -368,9 +328,9 @@ import WordPressShared
         }
 
         if wordCountLabel.attributedText == nil {
-            wordCountBottomConstraint.constant = 0.0
+            wordCountLabel.hidden = true
         } else {
-            wordCountBottomConstraint.constant = wordCountBottomConstraintConstant
+            wordCountLabel.hidden = false
         }
     }
 
@@ -482,9 +442,9 @@ import WordPressShared
 
     private func configureActionViewHeightIfNeeded() {
         if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
-            actionButtonViewHeightConstraint.constant = 0
+            actionView.hidden = true
         } else {
-            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant
+            actionView.hidden = false
         }
     }
 
@@ -503,7 +463,7 @@ import WordPressShared
     // MARK: -
 
     func notifyDelegateHeaderWasTapped() {
-        if blogNameButtonIsEnabled {
+        if headerBlogButtonIsEnabled {
             delegate?.readerCell(self, headerActionForProvider: contentProvider!)
         }
     }
@@ -517,7 +477,7 @@ import WordPressShared
         }
     }
 
-    @IBAction func didTapBlogNameButton(sender: UIButton) {
+    @IBAction func didTapHeaderBlogButton(sender: UIButton) {
         notifyDelegateHeaderWasTapped()
     }
 
@@ -544,6 +504,17 @@ import WordPressShared
         case .Like :
             delegate?.readerCell(self, likeActionForProvider: contentProvider!)
         }
+    }
+
+
+    // MARK: - Custom UI Actions
+
+    @IBAction func blogButtonTouchesDidHighlight(sender: UIButton) {
+        blogNameLabel.highlighted = true
+    }
+
+    @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
+        blogNameLabel.highlighted = false
     }
 
 
