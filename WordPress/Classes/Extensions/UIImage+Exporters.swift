@@ -112,6 +112,16 @@ extension UIImage: ExportableAsset
         }
     }
 
+    func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler)
+    {
+        do {
+            try self.writeToURL(toURL, type:originalUTI()!, compressionQuality:0.9, metadata: nil)
+            successHandler(resultingSize: self.size)
+        } catch let error as NSError {
+            errorHandler(error: error)
+        }
+    }
+
     func originalUTI() -> String? {
         return kUTTypeJPEG as String
     }
