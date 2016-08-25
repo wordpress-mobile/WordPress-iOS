@@ -37,6 +37,7 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -944,7 +945,7 @@ EditImageDetailsViewControllerDelegate
 
 + (BOOL)isNativeEditorEnabled
 {    
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNativeEditorEnabled];
+    return [Feature enabled:FeatureFlagNativeEditor] && [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNativeEditorEnabled];
 }
 
 + (void)setNativeEditorEnabled:(BOOL)isEnabled
