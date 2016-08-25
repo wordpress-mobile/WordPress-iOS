@@ -93,24 +93,39 @@
                          if (thumbnailCallback) {
                              thumbnailCallback(mediaThumbnailURL);
                          }
-                         
-                         [asset exportToURL:mediaURL
-                                  targetUTI:assetUTI
-                          maximumResolution:maximumResolution
-                           stripGeoLocation:stripGeoLocation
-                             successHandler:^(CGSize resultingSize) {
+                         if ([assetUTI isEqual:(__bridge NSString *)kUTTypeGIF]) {
+                             // export original gif
+                             [asset exportOriginalImage:mediaURL successHandler:^(CGSize resultingSize) {
                                  [self createMediaForPost:postObjectID
                                                  mediaURL:mediaURL
                                         mediaThumbnailURL:mediaThumbnailURL
                                                 mediaType:mediaType
                                                 mediaSize:resultingSize
                                                completion:completion];
-                             }
-                               errorHandler:^(NSError *error) {
-                                   if (completion){
-                                       completion(nil, error);
-                                   }
-                               }];
+                             } errorHandler:^(NSError * _Nonnull error) {
+                                 if (completion){
+                                     completion(nil, error);
+                                 }
+                             }];
+                         } else {
+                             [asset exportToURL:mediaURL
+                                      targetUTI:assetUTI
+                              maximumResolution:maximumResolution
+                               stripGeoLocation:stripGeoLocation
+                                 successHandler:^(CGSize resultingSize) {
+                                     [self createMediaForPost:postObjectID
+                                                     mediaURL:mediaURL
+                                            mediaThumbnailURL:mediaThumbnailURL
+                                                    mediaType:mediaType
+                                                    mediaSize:resultingSize
+                                                   completion:completion];
+                                 }
+                                   errorHandler:^(NSError *error) {
+                                       if (completion){
+                                           completion(nil, error);
+                                       }
+                                   }];
+                         }
                      }
                        errorHandler:^(NSError *error) {
                            if (completion){
