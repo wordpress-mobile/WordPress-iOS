@@ -113,7 +113,7 @@ public class NotificationActionsService: LocalCoreDataService
         }
 
         // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
-        if block.isCommentApproved() == false {
+        if block.isCommentApproved == false {
             approveCommentWithBlock(block)
         }
 

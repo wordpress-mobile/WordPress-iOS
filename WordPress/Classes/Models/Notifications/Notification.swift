@@ -69,22 +69,6 @@ class Notification: SPManagedObject
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
-    /// Known kinds of Notifications
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
 
 
 
@@ -107,8 +91,8 @@ class Notification: SPManagedObject
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
-    func blockGroupOfType(type: NoteBlockGroupType) -> NotificationBlockGroup? {
-        for blockGroup in bodyBlockGroups where blockGroup.type == type {
+    func blockGroupOfKind(kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
+        for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
         }
 
@@ -141,13 +125,12 @@ class Notification: SPManagedObject
 extension Notification
 {
     /// Verifies if the current notification is actually a Badge one.
+    /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     var isBadge: Bool {
-        //  Note: This developer does not like duck typing. Sorry about the following snippet.
-        //
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
         for block in blocks {
-            for media in block.media where media.isBadge {
+            for media in block.media where media.kind == .Badge {
                 return true
             }
         }
@@ -158,13 +141,13 @@ extension Notification
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
     var isRepliedComment: Bool {
-        return isComment == true && metaReplyID != nil
+        return kind == .Comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfType(.Comment)?.blockOfType(.Comment) else {
+        guard let block = blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else {
             return false
         }
 
@@ -178,36 +161,6 @@ extension Notification
             return .Unknown
         }
         return kind
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isComment: Bool {
-        return kind == .Comment
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isCommentLike: Bool {
-        return kind == .CommentLike
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isFollow: Bool {
-        return kind == .Follow
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isLike: Bool {
-        return kind == .Like
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isMatcher: Bool {
-        return kind == .Matcher
-    }
-
-    // TODO: Nuke when NotificationBlock is Swifted
-    var isPost: Bool {
-        return kind == .Post
     }
 
     /// Returns the Meta ID's collection, if any.
@@ -284,7 +237,11 @@ extension Notification
             return subjectBlockGroup
         }
 
-        cachedSubjectBlockGroup = NotificationBlockGroup.subjectGroupFromArray(subject, notification: self)
+        guard let subject = subject as? [[String: AnyObject]] where subject.isEmpty == false else {
+            return nil
+        }
+
+        cachedSubjectBlockGroup = NotificationBlockGroup.groupFromSubject(subject, parent: self)
         return cachedSubjectBlockGroup
     }
 
@@ -295,7 +252,11 @@ extension Notification
             return headerBlockGroup
         }
 
-        cachedHeaderBlockGroup = NotificationBlockGroup.headerGroupFromArray(header, notification: self)
+        guard let header = header as? [[String: AnyObject]] where header.isEmpty == false else {
+            return nil
+        }
+
+        cachedHeaderBlockGroup = NotificationBlockGroup.groupFromHeader(header, parent: self)
         return cachedHeaderBlockGroup
     }
 
@@ -306,9 +267,12 @@ extension Notification
             return bodyBlockGroups
         }
 
-        let bodyBlockGroups = NotificationBlockGroup.bodyGroupsFromArray(body, notification: self)
-        cachedBodyBlockGroups = bodyBlockGroups
-        return bodyBlockGroups
+        guard let body = body as? [[String: AnyObject]] where body.isEmpty == false else {
+            return []
+        }
+
+        cachedBodyBlockGroups = NotificationBlockGroup.groupsFromBody(body, parent: self)
+        return cachedBodyBlockGroups ?? []
     }
 
     /// Returns the Subject Block, if any.
@@ -329,17 +293,37 @@ extension Notification
 }
 
 
-// MARK: - Private Constants
+// MARK: - Notification Types
 //
-private extension Notification
+extension Notification
 {
-    /// Meta Field Parsing-Keys
+    /// Known kinds of Notifications
+    ///
+    enum Kind: String {
+        case Comment        = "comment"
+        case CommentLike    = "comment_like"
+        case Follow         = "follow"
+        case Like           = "like"
+        case Matcher        = "automattcher"
+        case Post           = "post"
+        case User           = "user"
+        case Unknown        = "unknown"
+
+        var toTypeValue: String {
+            return rawValue
+        }
+    }
+
+    /// Meta Parsing Keys
     ///
     private enum MetaKeys {
         static let Ids      = "ids"
+        static let Links    = "links"
+        static let Titles   = "titles"
         static let Site     = "site"
         static let Post     = "post"
         static let Comment  = "comment"
         static let Reply    = "reply_comment"
+        static let Home     = "home"
     }
 }
