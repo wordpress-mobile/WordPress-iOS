@@ -28,6 +28,7 @@ public class ReaderCrossPostCell: UITableViewCell
             innerContentView?.backgroundColor = backgroundColor
             cardContentView?.backgroundColor = backgroundColor
             cardBorderView?.backgroundColor = backgroundColor
+            label?.backgroundColor = backgroundColor
         }
     }
 

@@ -111,6 +111,7 @@ import WordPressShared
         interfaceVerticalSizingHelperView.hidden = true
 
         applyStyles()
+        applyOpaqueBackgroundColors()
         createAvatarTapGestureRecognizer()
         setupAttributionView()
     }
@@ -159,6 +160,22 @@ import WordPressShared
 
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
+    }
+
+
+    /**
+        Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
+    */
+    private func applyOpaqueBackgroundColors() {
+        avatarImageView.backgroundColor = UIColor.whiteColor()
+        blogNameLabel.backgroundColor = UIColor.whiteColor()
+        bylineLabel.backgroundColor = UIColor.whiteColor()
+        titleLabel.backgroundColor = UIColor.whiteColor()
+        summaryLabel.backgroundColor = UIColor.whiteColor()
+        tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
+        wordCountLabel.backgroundColor = UIColor.whiteColor()
+        actionButtonLeft.titleLabel?.backgroundColor = UIColor.whiteColor()
+        actionButtonRight.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
