@@ -105,7 +105,7 @@ extension UIImage: ExportableAsset
     {
         let thumbnail = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:targetSize, interpolationQuality:.High)
         do {
-            try self.writeToURL(url, type:kUTTypeJPEG as String, compressionQuality:0.9, metadata:nil)
+            try self.writeToURL(url, type:defaultThumbnailUTI as String, compressionQuality:0.9, metadata:nil)
             successHandler(resultingSize: thumbnail.size)
         } catch let error as NSError {
             errorHandler(error:error)
@@ -115,7 +115,7 @@ extension UIImage: ExportableAsset
     func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler)
     {
         do {
-            try self.writeToURL(toURL, type:originalUTI()!, compressionQuality:0.9, metadata: nil)
+            try self.writeToURL(toURL, type:originalUTI()!, compressionQuality:1.0, metadata: nil)
             successHandler(resultingSize: self.size)
         } catch let error as NSError {
             errorHandler(error: error)
