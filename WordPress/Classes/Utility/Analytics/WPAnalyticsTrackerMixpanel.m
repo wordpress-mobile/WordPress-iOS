@@ -1025,18 +1025,26 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-
         case WPAnalyticsStatTrainTracksInteract:
         case WPAnalyticsStatTrainTracksRender:
             // Do nothing. These events are just for Tracks.
             break;
-
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link exited"];
+            break;
         case WPAnalyticsStatLoginMagicLinkFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link failed"];
+            break;
         case WPAnalyticsStatLoginMagicLinkOpened:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link opened"];
+            break;
         case WPAnalyticsStatLoginMagicLinkRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link requested"];
+            break;
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link succeeded"];
+            break;
 
             // To be implemented
         case WPAnalyticsStatAppUpgraded:
