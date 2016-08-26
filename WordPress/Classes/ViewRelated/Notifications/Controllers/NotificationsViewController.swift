@@ -1094,29 +1094,29 @@ private extension NotificationsViewController
     }
 
     enum Settings {
-        static let estimatedRowHeight   = CGFloat(70)
+        static let estimatedRowHeight = CGFloat(70)
     }
 
     enum Stats {
-        static let networkStatusKey     = "network_status"
-        static let noteTypeKey          = "notification_type"
-        static let noteTypeUnknown      = "unknown"
-        static let sourceKey            = "source"
-        static let sourceValue          = "notifications"
+        static let networkStatusKey = "network_status"
+        static let noteTypeKey = "notification_type"
+        static let noteTypeUnknown = "unknown"
+        static let sourceKey = "source"
+        static let sourceValue = "notifications"
     }
 
     enum Syncing {
-        static let pushMaxWait          = NSTimeInterval(1)
-        static let syncTimeout          = NSTimeInterval(10)
-        static let undoTimeout          = NSTimeInterval(4)
+        static let pushMaxWait = NSTimeInterval(1)
+        static let syncTimeout = NSTimeInterval(10)
+        static let undoTimeout = NSTimeInterval(4)
     }
 
     enum Ratings {
-        static let section              = "notifications"
-        static let heightFull           = CGFloat(100)
-        static let heightZero           = CGFloat(0)
-        static let animationDelay       = NSTimeInterval(0.5)
-        static let fontSize             = CGFloat(15.0)
-        static let reviewURL            = AppRatingUtility.appReviewUrl()
+        static let section = "notifications"
+        static let heightFull = CGFloat(100)
+        static let heightZero = CGFloat(0)
+        static let animationDelay = NSTimeInterval(0.5)
+        static let fontSize = CGFloat(15.0)
+        static let reviewURL = AppRatingUtility.appReviewUrl()
     }
 }
