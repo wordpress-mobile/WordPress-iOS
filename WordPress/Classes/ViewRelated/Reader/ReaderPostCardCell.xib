@@ -15,11 +15,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXQ-M1-ujW">
-                        <rect key="frame" x="-1" y="7" width="322" height="469.5"/>
+                        <rect key="frame" x="-1" y="7" width="322" height="470"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
-                        <rect key="frame" x="0.0" y="8" width="320" height="467.5"/>
+                        <rect key="frame" x="0.0" y="8" width="320" height="468"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="468"/>
@@ -120,7 +120,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
-                                        <rect key="frame" x="0.0" y="276" width="320" height="140.5"/>
+                                        <rect key="frame" x="0.0" y="276" width="320" height="140"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                                 <rect key="frame" x="16" y="0.0" width="288" height="49"/>
@@ -142,23 +142,28 @@
                                                 </subviews>
                                             </stackView>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                                <rect key="frame" x="16" y="59" width="288" height="20.5"/>
+                                                <rect key="frame" x="16" y="59" width="288" height="20"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fLA-6S-IwL">
-                                                        <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fLA-6S-IwL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="288" height="20"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="XUu-fC-Uxe">
                                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" priority="999" constant="20" id="gyO-ef-jnx"/>
-                                                                    <constraint firstAttribute="width" constant="20" id="rXo-se-pG1"/>
-                                                                </constraints>
-                                                            </imageView>
+                                                                <subviews>
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" priority="999" constant="20" id="gyO-ef-jnx"/>
+                                                                            <constraint firstAttribute="width" constant="20" id="rXo-se-pG1"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                </subviews>
+                                                            </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="260" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="cm1-9O-6s6">
-                                                                <rect key="frame" x="28" y="0.0" width="260" height="20.5"/>
+                                                                <rect key="frame" x="28" y="0.0" width="260" height="20"/>
                                                                 <subviews>
                                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="maZ-qu-bdT">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="20.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="20"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -185,14 +190,14 @@
                                                 </connections>
                                             </view>
                                             <label userInteractionEnabled="NO" contentMode="left" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpX-bs-YOa">
-                                                <rect key="frame" x="16" y="89.5" width="288" height="17"/>
+                                                <rect key="frame" x="16" y="89" width="288" height="17"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZc-p0-o3j">
-                                                <rect key="frame" x="16" y="116.5" width="288" height="24"/>
+                                                <rect key="frame" x="16" y="116" width="288" height="24"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
                                                         <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
@@ -260,7 +265,7 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                        <rect key="frame" x="0.0" y="432.5" width="320" height="23.5"/>
+                                        <rect key="frame" x="0.0" y="432" width="320" height="24"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
