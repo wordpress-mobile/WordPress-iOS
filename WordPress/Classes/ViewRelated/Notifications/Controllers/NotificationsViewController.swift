@@ -410,16 +410,8 @@ private extension NotificationsViewController
     func setupFiltersSegmentedControl() {
         precondition(filtersSegmentedControl != nil)
 
-        let titles = [
-            NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered"),
-            NSLocalizedString("Unread", comment: "Filters Unread Notifications"),
-            NSLocalizedString("Comments", comment: "Filters Comments Notifications"),
-            NSLocalizedString("Follows", comment: "Filters Follows Notifications"),
-            NSLocalizedString("Likes", comment: "Filters Likes Notifications")
-        ]
-
-        for (index, title) in titles.enumerate() {
-            filtersSegmentedControl.setTitle(title, forSegmentAtIndex: index)
+        for filter in Filter.allFilters {
+            filtersSegmentedControl.setTitle(filter.title, forSegmentAtIndex: filter.rawValue)
         }
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
@@ -1083,6 +1075,16 @@ private extension NotificationsViewController
         case Comment                    = 2
         case Follow                     = 3
         case Like                       = 4
+
+        var title: String {
+            switch self {
+            case .None:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
+            case .Unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
+            case .Comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
+            case .Follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .Like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            }
+        }
 
         static let sortKey              = "timestamp"
     }
