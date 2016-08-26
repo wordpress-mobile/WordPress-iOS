@@ -127,7 +127,7 @@ class PostService : LocalCoreDataService {
                                 self.merge(posts: remotePosts,
                                     type: type,
                                     statuses: options?.statuses,
-                                    author: options?.authorID as Int?,
+                                    author: options?.authorID,
                                     blog: blogInContext,
                                     purge: options?.purgesLocalSync,
                                     completion: { posts in
@@ -344,7 +344,7 @@ class PostService : LocalCoreDataService {
         post.remoteStatus = AbstractPostRemoteStatusLocal
     }
 
-    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: Int?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
+    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: NSNumber?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
             if let post = self.find(byID: remotePost.postID as Int, blog: blog) ?? self.make(PostType(rawValue:remotePost.type), blog: blog) {
                 self.update(post, with: remotePost)
@@ -360,7 +360,7 @@ class PostService : LocalCoreDataService {
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, statusPredicate])
             }
             if let authorID = authorID {
-                let authorPredicate = NSPredicate(format: "authorID IN %@", authorID)
+                let authorPredicate = NSPredicate(format: "authorID IN %@", [authorID])
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, authorPredicate])
             }
 
