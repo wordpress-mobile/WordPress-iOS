@@ -678,17 +678,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
     }
 
     func predicateForSelectedFilters() -> NSPredicate {
-        let filtersMap: [Filter: String] = [
-            .None       : "",
-            .Unread     : " AND (read = NO)",
-            .Comment    : " AND (type = '\(NoteKind.Comment.toTypeValue)')",
-            .Follow     : " AND (type = '\(NoteKind.Follow.toTypeValue)')",
-            .Like       : " AND (type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)')"
-        ]
-
-        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
-        let condition = filtersMap[filter] ?? String()
-        let format = "NOT (SELF IN %@)" + condition
+        var format = "NOT (SELF IN %@)"
+        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex), let condition = filter.condition {
+            format += " AND \(condition)"
+        }
 
         return NSPredicate(format: format, Array(notificationIdsBeingDeleted))
     }
@@ -1070,11 +1063,21 @@ private extension NotificationsViewController
     }
 
     enum Filter: Int {
-        case None                       = 0
-        case Unread                     = 1
-        case Comment                    = 2
-        case Follow                     = 3
-        case Like                       = 4
+        case None = 0
+        case Unread = 1
+        case Comment = 2
+        case Follow = 3
+        case Like = 4
+
+        var condition: String? {
+            switch self {
+            case .None:     return nil
+            case .Unread:   return "read = NO"
+            case .Comment:  return "type = '\(NoteKind.Comment.toTypeValue)'"
+            case .Follow:   return "type = '\(NoteKind.Follow.toTypeValue)'"
+            case .Like:     return "type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)'"
+            }
+        }
 
         var title: String {
             switch self {
@@ -1086,7 +1089,8 @@ private extension NotificationsViewController
             }
         }
 
-        static let sortKey              = "timestamp"
+        static let sortKey = "timestamp"
+        static let allFilters = [Filter.None, .Unread, .Comment, .Follow, .Like]
     }
 
     enum Settings {
