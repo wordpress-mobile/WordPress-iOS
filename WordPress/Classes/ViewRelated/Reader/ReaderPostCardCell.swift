@@ -103,10 +103,13 @@ import WordPressShared
     public override func awakeFromNib() {
         super.awakeFromNib()
 
-        // This view is only added to help IB with filling the bottom space of
-        // the cell that is later autosized according to actual content's intrinsicContentSize.
+        // This view only exists to help IB with filling in the bottom space of
+        // the cell that is later autosized according to the content's intrinsicContentSize.
         // Otherwise, IB will make incorrect size adjustments and/or complain along the way.
-        // We set it to hidden now so that it is not included in the layout.
+        // This is because most of our subviews actually need to match the exact height of
+        // their instrinsicContentSize.
+        // Set the helper to hidden on awake so that it is not included or calculated in the layout.
+        // Note: Ideally IB would let us have a "Remove at build time" option for views, BUT IT DONT.
         // Brent C. Aug/25/2016
         interfaceVerticalSizingHelperView.hidden = true
 
