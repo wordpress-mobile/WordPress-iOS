@@ -67,7 +67,7 @@ NSString *const SessionCount = @"session_count";
     if ([self didUserCreateAccountOnMobile]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
-        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![[EditorSettings new] visualEditorEnabled])];
     } else if (sessionCount == 0) {
         // First time users whether they have created an account or are signing in have never seen the legacy editor.
         [self setSuperProperty:SeenLegacyEditor toValue:@NO];
