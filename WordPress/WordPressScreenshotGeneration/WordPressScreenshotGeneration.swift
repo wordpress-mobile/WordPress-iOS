@@ -26,8 +26,11 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() {
         let app = XCUIApplication()
 
+        let username1Exist = app.textFields["Email or username"].exists
+        let username2Exist = app.textFields["Username / Email"].exists
+
         // Logout first if needed
-        if !app.textFields["Username / Email"].exists {
+        if !username1Exist && !username2Exist {
             app.tabBars["Main Navigation"].buttons.elementBoundByIndex(3).tap()
             app.tables.elementBoundByIndex(0).swipeUp()
             app.tables.cells.elementBoundByIndex(5).tap()
@@ -35,19 +38,29 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Login
-        let usernameEmailTextField =  app.textFields["Username / Email"]
-        usernameEmailTextField.tap()
-        usernameEmailTextField.typeText("ENTER-USERNAME-HERE")
+        let username = "ENTER-USERNAME-HERE"
+
+        if  username1Exist {
+            let usernameEmailTextField =  app.textFields["Email or username"]
+            usernameEmailTextField.tap()
+            usernameEmailTextField.typeText(username)
+            app.buttons["NEXT"].tap()
+        } else {
+            let usernameEmailTextField =  app.textFields["Username / Email"]
+            usernameEmailTextField.tap()
+            usernameEmailTextField.typeText(username)
+        }
+
 
         let passwordSecureTextField = app.secureTextFields["Password"]
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText("ENTER-PASSWORD-HERE")
 
-        app.buttons.elementBoundByIndex(1).tap()
+        app.buttons["Sign In"].tap()
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["Reader"].tap()
-        app.navigationBars["Blogs I Follow"].buttons["Menu"].tap()
+
         app.tables.staticTexts["Discover"].tap()
         sleep(5)
         snapshot("1-Reader")
@@ -57,16 +70,25 @@ class WordPressScreenshotGeneration: XCTestCase {
         snapshot("2-Notifications")
 
         // Get "Posts" screenshot
-        app.tabBars.buttons.elementBoundByIndex(0).tap()
-        app.tables.staticTexts.elementBoundByIndex(7).tap() // "Blog Posts" cell
+        app.tabBars["Main Navigation"].buttons["My Sites"].tap()
+        app.tables.staticTexts["Blog Posts"].tap()
         sleep(2)
         snapshot("3-BlogPosts")
 
         // Get "Post" screenshot
         let otherElements = app.otherElements
         otherElements.elementBoundByIndex(9).tap()
+
+        // Dismiss Unsaved Changes Alert if it shows up
+        if XCUIApplication().alerts["Unsaved changes."].exists {
+            app.alerts["Unsaved changes."].collectionViews.buttons["OK"].tap()
+            app.navigationBars["WPPostView"].buttons["Cancel"].tap()
+            app.sheets["You have unsaved changes."].collectionViews.buttons["Discard"].tap()
+            otherElements.elementBoundByIndex(9).tap()
+        }
+
         // Pull up keyboard
-        app.navigationBars["WPPostView"].buttons.elementBoundByIndex(4).tap() // "Edit" button
+        app.navigationBars["WPPostView"].buttons["Edit"].tap()
         app.staticTexts["We hiked along the Pacific, in the town of"].tap()
         snapshot("4-PostEditor")
 
@@ -77,7 +99,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.navigationBars.elementBoundByIndex(0).buttons.elementBoundByIndex(0).tap()
         let blah = app.tables.staticTexts
         print(blah.debugDescription)
-        app.tables.staticTexts.elementBoundByIndex(4).tap() // "Stats" cell
+        app.tables.staticTexts.elementBoundByIndex(2).tap() // "Stats" cell
         sleep(5)
         snapshot("5-Stats")
     }

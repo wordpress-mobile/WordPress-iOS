@@ -319,15 +319,13 @@
 {
     if (!_shareBarButtonItem) {
         UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
-        WPButtonForNavigationBar *button = [WPStyleGuide buttonForBarWithImage:image
-                                                                        target:self
-                                                                      selector:@selector(sharePost)];
-        
-        button.rightSpacing = 0.0;
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(sharePost)];
         NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
-        button.accessibilityLabel = title;
-        button.accessibilityIdentifier = @"Share";
-        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _shareBarButtonItem.accessibilityLabel = title;
+        _shareBarButtonItem.accessibilityIdentifier = @"Share";
     }
     
     return _shareBarButtonItem;
