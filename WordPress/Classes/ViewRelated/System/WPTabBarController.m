@@ -317,8 +317,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     UINavigationController *navController;
-    if ([WPPostViewController isNewEditorEnabled]) {
-        if ([WPPostViewController isNativeEditorEnabled]) {
+    EditorSettings *editorSettings = [EditorSettings new];
+    if ([editorSettings visualEditorEnabled]) {
+        if ([editorSettings nativeEditorEnabled]) {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
