@@ -174,7 +174,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
     _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
 
@@ -204,7 +203,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
-    _readerNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
     _readerNavigationController.tabBarItem.title = @"Reader";
@@ -227,7 +225,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _newPostViewController.tabBarItem.title = @"New Post";
     _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
 
-
     return _newPostViewController;
 }
 
@@ -242,7 +239,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
     _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
-    _meNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
     _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -264,7 +260,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UIImage *notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     _notificationsNavigationController.tabBarItem.image = [notificationsTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.selectedImage = notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
