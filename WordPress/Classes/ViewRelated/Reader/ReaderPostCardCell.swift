@@ -302,7 +302,7 @@ import WordPressShared
             summaryLabel.hidden = false
         } else {
             summaryLabel.attributedText = nil
-            summaryLabel.hidden = false
+            summaryLabel.hidden = true
         }
 
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
