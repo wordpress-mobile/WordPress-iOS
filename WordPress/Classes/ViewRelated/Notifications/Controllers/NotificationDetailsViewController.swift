@@ -267,7 +267,6 @@ extension NotificationDetailsViewController
             let nib = UINib(nibName: classname, bundle: NSBundle.mainBundle())
 
             tableView.registerNib(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
-            tableView.registerNib(nib, forCellReuseIdentifier: cellClass.layoutIdentifier())
         }
     }
 
@@ -424,27 +423,6 @@ private extension NotificationDetailsViewController
         tableView.scrollEnabled = !shouldCenterVertically
     }
 
-    func layoutIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
-        switch blockGroup.kind {
-        case .Header:
-            return NoteBlockHeaderTableViewCell.layoutIdentifier()
-        case .Footer:
-            return NoteBlockTextTableViewCell.layoutIdentifier()
-        case .Subject:
-            fallthrough
-        case .Text:
-            return NoteBlockTextTableViewCell.layoutIdentifier()
-        case .Comment:
-            return NoteBlockCommentTableViewCell.layoutIdentifier()
-        case .Actions:
-            return NoteBlockActionsTableViewCell.layoutIdentifier()
-        case .Image:
-            return NoteBlockImageTableViewCell.layoutIdentifier()
-        case .User:
-            return NoteBlockUserTableViewCell.layoutIdentifier()
-        }
-    }
-
     func reuseIdentifierForGroup(blockGroup: NotificationBlockGroup) -> String {
         switch blockGroup.kind {
         case .Header:
@@ -509,11 +487,7 @@ private extension NotificationDetailsViewController
         cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText
         cell.headerDetails = snippetBlock?.text
 
-        // Download the Gravatar (If Needed!)
-        guard cell.isLayoutCell() == false else {
-            return
-        }
-
+        // Download the Gravatar
         let mediaURL = gravatarBlock?.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)
     }
@@ -538,14 +512,12 @@ private extension NotificationDetailsViewController
         let hasHomeURL = userBlock.metaLinksHome != nil
         let hasHomeTitle = (userBlock.metaTitlesHome?.isEmpty == false) ?? false
 
-        // Setup: Properties
         cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
         cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
         cell.isFollowOn = userBlock.isActionOn(.Follow)
 
-        // Setup: Callbacks
         cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
         }
@@ -554,11 +526,7 @@ private extension NotificationDetailsViewController
             self?.unfollowSiteWithBlock(userBlock)
         }
 
-        // Download the Gravatar (If Needed!)
-        guard cell.isLayoutCell() == false else {
-            return
-        }
-
+        // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)
     }
@@ -616,11 +584,7 @@ private extension NotificationDetailsViewController
             self?.displayFullscreenImage(image)
         }
 
-        // Download the Gravatar (If Needed!)
-        guard cell.isLayoutCell() == false else {
-            return
-        }
-
+        // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)
     }
@@ -671,10 +635,6 @@ private extension NotificationDetailsViewController
     }
 
     func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard cell.isLayoutCell() == false else {
-            return
-        }
-
         guard let imageBlock = blockGroup.blocks.first else {
             assertionFailure("Missing Image Block for Notification [\(note.simperiumKey)")
             return
