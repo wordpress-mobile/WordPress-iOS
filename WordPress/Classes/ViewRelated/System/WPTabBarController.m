@@ -176,6 +176,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     _blogListNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
+    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -206,6 +207,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _readerNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
+    _readerNavigationController.tabBarItem.title = @"Reader";
 
     return _readerNavigationController;
 }
@@ -222,6 +224,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _newPostViewController.tabBarItem.image = newPostImage;
     _newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _newPostViewController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    _newPostViewController.tabBarItem.title = @"New Post";
+    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+
 
     return _newPostViewController;
 }
@@ -240,6 +245,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _meNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
     _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+    _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+
 
     return _meNavigationController;
 }
@@ -260,6 +267,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _notificationsNavigationController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+    _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
     return _notificationsNavigationController;
 }
