@@ -32,7 +32,7 @@ public class Tracks
 
     // MARK: - Private Helpers
     private func payloadWithEventName(eventName: String, properties: [String: AnyObject]?) -> [String: AnyObject] {
-        let timestamp   = NSDate().timeIntervalSince1970 * 1000
+        let timestamp   = NSNumber(longLong: Int64(NSDate().timeIntervalSince1970 * 1000))
         let userID      = NSUUID().UUIDString
         let device      = UIDevice.currentDevice()
         let bundle      = NSBundle.mainBundle()

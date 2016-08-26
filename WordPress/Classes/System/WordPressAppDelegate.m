@@ -412,8 +412,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
     
-    [WPPostViewController makeNewEditorAvailable];
-    
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
 
