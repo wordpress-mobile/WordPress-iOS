@@ -200,6 +200,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
         setupSeparators(cell, indexPath: indexPath)
         setupCell(cell, blockGroup: blockGroup)
+        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
 
         return cell
     }
@@ -1181,6 +1182,7 @@ private extension NotificationDetailsViewController
 
     enum Settings {
         static let numberOfSections         = 1
+        static let estimatedRowHeight       = CGFloat(44)
         static let expirationFiveMinutes    = NSTimeInterval(60 * 5)
     }
 }
