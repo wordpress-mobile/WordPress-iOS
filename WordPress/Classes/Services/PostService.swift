@@ -1,5 +1,6 @@
 import Foundation
 
+// manages the creation, saving, updating, and merging of Posts, Pages, and associated data such as comments
 class PostService : LocalCoreDataService {
     static let ErrorDomain = "PostServiceErrorDomain"
     static let DefaultNumberToSync: UInt = 40
@@ -75,6 +76,15 @@ class PostService : LocalCoreDataService {
         return page
     }
 
+    /**
+     Sync a specific post from the API
+
+     - parameters:
+        - postID: The ID of the post to sync
+        - blog: The blog that has the post
+        - success: A success block
+        - failure: A failure block
+     */
     func get(postID: Int, blog: Blog, success: (AbstractPost?) -> Void, failure: ((NSError?) -> Void)?) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
@@ -112,10 +122,37 @@ class PostService : LocalCoreDataService {
         }
     }
 
+    /**
+     Sync an initial batch of posts from the specified blog.
+
+     - note: Please note that success and/or failure are called in the context of the
+     NSManagedObjectContext supplied when the PostService was initialized, and may not
+     run on the main thread.
+
+     - parameters:
+         - postType: The type (post or page) of post to sync
+         - blog: The blog that has the posts.
+         - success: åA success block
+         - failure: A failure block
+     */
     func sync(type: PostType, blog: Blog, success: SuccessPosts, failure: FailureBasic) {
         self.sync(type, blog: blog, options: nil, success: success, failure: failure)
     }
 
+    /**
+     Sync a batch of posts with the specified options from the specified blog.
+
+     - note: Please note that success and/or failure are called in the context of the
+     NSManagedObjectContext supplied when the PostService was initialized, and may not
+     run on the main thread.
+
+     - parameters:
+         - postType: The type (post or page) of post to sync
+         - options: Sync options for specific request parameters.
+         - blog: The blog that has the posts.
+         - success: A success block
+         - failure: A failure block
+    */
     func sync(type: PostType, blog: Blog, options: PostServiceSyncOptions?, success: SuccessPosts?, failure: FailureBasic?) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
@@ -149,7 +186,18 @@ class PostService : LocalCoreDataService {
             })
         }
     }
+    /**
+     Syncs local changes on a post back to the server.
 
+     - parameters:
+        - post: The post or page to upload
+         - success: A success block.  If the post object exists locally (in CoreData) when the upload
+         succeeds, then this block will also return a pointer to the updated local AbstractPost
+         object.  It's important to note this object may not be the same one as the `post` input
+         parameter, since if the input post was a revision, it will no longer exist once the upload
+         succeeds.
+         - failure: A failure block
+     */
     func upload(post: AbstractPost, success: (AbstractPost?) -> Void, failure: (NSError?) -> Void) {
         let remote = self.remote(for: post.blog)
         let remotePost = self.getRemotePost(withPost: post)
@@ -199,6 +247,15 @@ class PostService : LocalCoreDataService {
         }
     }
 
+    /**
+     Attempts to delete the specified post outright vs moving it to the
+     trash folder.
+
+     - parameters:
+         - post: The post or page to delete
+         - success: A success block
+         - failure: A failure block
+     */
     func delete(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
 
         let deleteBlock: SuccessBasic = {
@@ -217,6 +274,15 @@ class PostService : LocalCoreDataService {
         }
     }
 
+    /**
+     Moves the specified post into the trash bin. Does not delete
+     the post unless it was deleted on the server.
+
+     - parameters:
+         - post: The post or page to trash
+         - success: A success block
+         - failure: A failure block
+     */
     func trash(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
         if post.status == PostStatusTrash {
             self.delete(post, success: success, failure: failure)
@@ -278,6 +344,14 @@ class PostService : LocalCoreDataService {
         }
     }
 
+    /**
+     Moves the specified post out of the trash bin.
+
+     - parameters:
+        - post: The post or page to restore
+        - success: A success block
+        - failure: A failure block
+     */
     func restore(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
         let restoreBlock: SuccessBasic = {
             post.status = post.restorableStatus
