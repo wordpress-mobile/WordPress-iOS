@@ -109,17 +109,6 @@ class NotificationDetailsViewController: UIViewController
         keyboardManager.stopListeningToKeyboardNotifications()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        adjustLayoutConstraintsIfNeeded()
-    }
-
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        tableView.reloadData()
-        adjustLayoutConstraintsIfNeeded()
-    }
-
 
     /// Renders the details view, for any given notification
     ///
@@ -202,20 +191,6 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         return blockGroups.count
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let blockGroup = blockGroupForIndexPath(indexPath)
-        let layoutIdentifier = layoutIdentifierForGroup(blockGroup)
-
-        guard let tableViewCell = tableView.dequeueReusableCellWithIdentifier(layoutIdentifier) as? NoteBlockTableViewCell else {
-            fatalError()
-        }
-
-        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
-        setupCell(tableViewCell, blockGroup: blockGroup)
-
-        return tableViewCell.layoutHeightWithWidth(tableView.bounds.width)
-    }
-
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let blockGroup = blockGroupForIndexPath(indexPath)
         let reuseIdentifier = reuseIdentifierForGroup(blockGroup)
@@ -268,6 +243,8 @@ extension NotificationDetailsViewController
     }
 
     func setupTableView() {
+        tableView.estimatedRowHeight        = Settings.estimatedRowHeight
+        tableView.rowHeight                 = UITableViewAutomaticDimension
         tableView.separatorStyle            = .None
         tableView.keyboardDismissMode       = .Interactive
         tableView.backgroundColor           = WPStyleGuide.greyLighten30()
