@@ -61,18 +61,22 @@ public class WordPressComRestApi: NSObject
         return sessionManager
     }()
 
-    private func uploadSession() -> NSURLSession {
-        let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        var additionalHeaders: [String : AnyObject] = [:]
-        if let oAuthToken = oAuthToken {
-            additionalHeaders["Authorization"] = "Bearer \(oAuthToken)"
+    private var uploadSession: NSURLSession {
+        get {
+            let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
+            sessionConfiguration.URLCache = nil
+            sessionConfiguration.requestCachePolicy = .ReloadIgnoringLocalCacheData
+            var additionalHeaders: [String : AnyObject] = [:]
+            if let oAuthToken = self.oAuthToken {
+                additionalHeaders["Authorization"] = "Bearer \(oAuthToken)"
+            }
+            if let userAgent = self.userAgent {
+                additionalHeaders["User-Agent"] = userAgent
+            }
+            sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
+            let uploadSession = NSURLSession(configuration:sessionConfiguration, delegate: self, delegateQueue: nil)
+            return uploadSession
         }
-        if let userAgent = userAgent {
-            additionalHeaders["User-Agent"] = userAgent
-        }
-        sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
-        let uploadSession = NSURLSession(configuration:sessionConfiguration, delegate: self, delegateQueue: nil)
-        return uploadSession
     }
 
     public init(oAuthToken: String? = nil, userAgent: String? = nil) {
@@ -204,19 +208,23 @@ public class WordPressComRestApi: NSObject
                               failure: FailureReponseBlock) -> NSProgress?
     {
         let fileURL = URLForTemporaryFile()
-        guard let request = multipartRequestWithURLString(URLString, parameters: parameters ?? [:], fileParts: fileParts, encodedToFileURL: fileURL) else {
+        guard
+            let request = multipartRequestWithURLString(URLString, parameters: parameters ?? [:], fileParts: fileParts, encodedToFileURL: fileURL)
+        else {
             let error = NSError(domain:String(WordPressComRestApiError),
                                 code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
                                 userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
             failure(error: error, httpResponse: nil)
             return nil
         }
-        let progress = NSProgress(totalUnitCount: 1)
-        let task = self.uploadSession().uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
-            progress.completedUnitCount = progress.totalUnitCount
+        let progress = NSProgress.discreteProgressWithTotalUnitCount(1)
+        let session = uploadSession
+        let task = session.uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
+            session.finishTasksAndInvalidate()
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: response, error: error)
+                progress.completedUnitCount = progress.totalUnitCount
                 success(responseObject: responseObject, httpResponse: response as? NSHTTPURLResponse)
             } catch let error as NSError {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
@@ -224,7 +232,7 @@ public class WordPressComRestApi: NSObject
         }
         task.resume()
 
-        associate(progress, task:task)
+        associate(progress: progress, toTask:task)
 
         return progress
     }
@@ -296,7 +304,7 @@ public class WordPressComRestApi: NSObject
 
     //MARK: - Progress reporting
 
-    private func associate(progress:NSProgress, task: NSURLSessionTask) {
+    private func associate(progress progress:NSProgress, toTask task: NSURLSessionTask) {
         // Progress report
         progress.totalUnitCount = 1
         if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
