@@ -269,7 +269,10 @@ public class WordPressComRestApi: NSObject
         return fileURL
     }
 
-    private func multipartRequestWithURLString(urlString:String, parameters: [String:AnyObject], fileParts: [FilePart], encodedToFileURL fileURL:NSURL) -> NSURLRequest? {
+    private func multipartRequestWithURLString(urlString:String,
+                                               parameters: [String:AnyObject],
+                                               fileParts: [FilePart],
+                                               encodedToFileURL fileURL:NSURL) -> NSURLRequest? {
         let urlStringWithLocale = appendLocaleIfNeeded(urlString)
         guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
               let url = NSURL(string:urlStringWithLocale, relativeToURL:baseURL)
