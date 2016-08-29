@@ -159,7 +159,10 @@ import Foundation
 
     private func renderAttachments() {
         // Nuke old attachments
-        _ = attachmentViews.map { $0.removeFromSuperview() }
+        for view in attachmentViews {
+            view.removeFromSuperview()
+        }
+
         attachmentViews.removeAll(keepCapacity: false)
 
         // Proceed only if needed
