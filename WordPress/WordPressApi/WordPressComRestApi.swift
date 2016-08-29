@@ -281,6 +281,7 @@ public class WordPressComRestApi: NSObject
         }
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
+        request.cachePolicy = .ReloadIgnoringLocalCacheData
         let boundary = NSUUID().UUIDString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField:"Content-Type")
         let body = NSMutableData()
