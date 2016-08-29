@@ -21,6 +21,19 @@ public class WordPressOrgXMLRPCApi: NSObject
         return session
     }()
 
+    private var uploadSession: NSURLSession {
+        get {
+            let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
+            var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate"]
+            if let userAgent = self.userAgent {
+                additionalHeaders["User-Agent"] = userAgent
+            }
+            sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
+            let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+            return session
+        }
+    }
+
     public init(endpoint: NSURL, userAgent: String? = nil) {
         self.endpoint = endpoint
         self.userAgent = userAgent
@@ -123,7 +136,9 @@ public class WordPressOrgXMLRPCApi: NSObject
         }
 
         // Create task
+        let session = uploadSession
         let task = session.uploadTaskWithRequest(request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
+            session.finishTasksAndInvalidate()
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
