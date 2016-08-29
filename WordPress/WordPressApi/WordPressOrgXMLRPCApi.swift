@@ -23,6 +23,9 @@ public class WordPressOrgXMLRPCApi: NSObject
 
     private var uploadSession: NSURLSession {
         get {
+            if #available(iOS 10.0, *) {
+                return self.session
+            }
             let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
             var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate"]
             if let userAgent = self.userAgent {
@@ -138,7 +141,9 @@ public class WordPressOrgXMLRPCApi: NSObject
         // Create task
         let session = uploadSession
         let task = session.uploadTaskWithRequest(request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
-            session.finishTasksAndInvalidate()
+            if session != self.session {
+                session.finishTasksAndInvalidate()
+            }
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
