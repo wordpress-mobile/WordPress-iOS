@@ -209,7 +209,10 @@ public class WordPressComRestApi: NSObject
     {
         let fileURL = URLForTemporaryFile()
         guard
-            let request = multipartRequestWithURLString(URLString, parameters: parameters ?? [:], fileParts: fileParts, encodedToFileURL: fileURL)
+            let request = multipartRequestWithURLString(URLString,
+                                                        parameters: parameters ?? [:],
+                                                        fileParts: fileParts,
+                                                        encodedToFileURL: fileURL)
         else {
             let error = NSError(domain:String(WordPressComRestApiError),
                                 code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
@@ -219,7 +222,11 @@ public class WordPressComRestApi: NSObject
         }
         let progress = NSProgress.discreteProgressWithTotalUnitCount(1)
         let session = uploadSession
+        var referenceToTask: NSURLSessionTask?
         let task = session.uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
+            if let taskToRemove = referenceToTask {
+                self.ongoingProgress.removeValueForKey(taskToRemove)
+            }
             session.finishTasksAndInvalidate()
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
@@ -230,6 +237,7 @@ public class WordPressComRestApi: NSObject
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
             }
         }
+        referenceToTask = task
         task.resume()
 
         associate(progress: progress, toTask:task)
