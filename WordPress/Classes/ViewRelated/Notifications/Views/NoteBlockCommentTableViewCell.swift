@@ -1,19 +1,20 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
+
+class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
 {
-    public typealias EventHandler = ((sender: AnyObject) -> Void)
+    typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    public var onDetailsClick: EventHandler?
+    var onDetailsClick: EventHandler?
 
-    public var attributedCommentText: NSAttributedString? {
+    var attributedCommentText: NSAttributedString? {
         didSet {
             refreshApprovalColors()
         }
     }
-    public var commentText: String? {
+    var commentText: String? {
         set {
             let text = newValue ?? String()
             attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.contentBlockRegularStyle)
@@ -22,18 +23,18 @@ import WordPressShared.WPStyleGuide
             return attributedCommentText?.string
         }
     }
-    public var isApproved: Bool = false {
+    var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
             refreshSeparators()
         }
     }
-    public var isRepliedComment: Bool = false {
+    var isRepliedComment: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    public var name: String? {
+    var name: String? {
         set {
             titleLabel.text  = newValue
         }
@@ -41,12 +42,12 @@ import WordPressShared.WPStyleGuide
             return titleLabel.text
         }
     }
-    public var timestamp: String? {
+    var timestamp: String? {
         didSet {
             refreshDetails()
         }
     }
-    public var site: String? {
+    var site: String? {
         didSet {
             refreshDetails()
         }
@@ -55,13 +56,13 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Public Methods
-    public func downloadGravatarWithURL(url: NSURL?) {
+    func downloadGravatarWithURL(url: NSURL?) {
         let gravatar = url.flatMap { Gravatar($0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
-    public func downloadGravatarWithEmail(email: String?) {
+    func downloadGravatarWithEmail(email: String?) {
         guard let unwrappedEmail = email else {
             gravatarImageView.image = placeholderImage
             return
@@ -72,7 +73,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         // Setup Labels
@@ -98,7 +99,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Approval Color Helpers
-    public override func refreshSeparators() {
+    override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible = !isApproved
         separatorsView.leftColor = Style.blockUnapprovedSideColor
@@ -149,7 +150,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Event Handlers
-    @IBAction public func detailsWasPressed(sender: AnyObject) {
+    @IBAction func detailsWasPressed(sender: AnyObject) {
         onDetailsClick?(sender: sender)
     }
 
