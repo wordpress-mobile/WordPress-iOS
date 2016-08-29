@@ -1,7 +1,8 @@
 import Foundation
 import WordPressShared
 
-@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
+
+public class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
 {
     // MARK: - Public Properties
     public var onUrlClick: (NSURL -> Void)?
@@ -9,7 +10,7 @@ import WordPressShared
     public var attributedText: NSAttributedString? {
         set {
             textView.attributedText = newValue
-            setNeedsLayout()
+            invalidateIntrinsicContentSize()
         }
         get {
             return textView.attributedText
@@ -37,10 +38,6 @@ import WordPressShared
         get {
             return textView.dataDetectorTypes
         }
-    }
-
-    public var labelPadding: UIEdgeInsets {
-        return self.dynamicType.defaultLabelPadding
     }
 
     public var isTextViewSelectable: Bool {
@@ -81,11 +78,6 @@ import WordPressShared
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    public override func layoutSubviews() {
-        // Calculate the TextView's width, before hitting layoutSubviews!
-        textView.preferredMaxLayoutWidth = min(bounds.width, self.dynamicType.maxWidth) - labelPadding.left - labelPadding.right
-        super.layoutSubviews()
-    }
 
     // MARK: - RichTextView Data Source
     public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
@@ -102,8 +94,8 @@ import WordPressShared
         return false
     }
 
+
     // MARK: - Constants
-    public static let maxWidth = WPTableViewFixedWidth
     public static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 
     // MARK: - IBOutlets
