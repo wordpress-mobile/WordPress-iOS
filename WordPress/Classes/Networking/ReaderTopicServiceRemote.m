@@ -142,6 +142,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
                  failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/new", slug];
+    path = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
