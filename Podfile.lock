@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (3.4.1)
-  - Automattic-Tracks-iOS (0.1.0):
+  - Automattic-Tracks-iOS (0.1.1):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -140,17 +140,17 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - Simperium (0.8.15):
-    - Simperium/DiffMatchPach (= 0.8.15)
-    - Simperium/JRSwizzle (= 0.8.15)
-    - Simperium/SocketRocket (= 0.8.15)
-    - Simperium/SPReachability (= 0.8.15)
-    - Simperium/SSKeychain (= 0.8.15)
-  - Simperium/DiffMatchPach (0.8.15)
-  - Simperium/JRSwizzle (0.8.15)
-  - Simperium/SocketRocket (0.8.15)
-  - Simperium/SPReachability (0.8.15)
-  - Simperium/SSKeychain (0.8.15)
+  - Simperium (0.8.17):
+    - Simperium/DiffMatchPach (= 0.8.17)
+    - Simperium/JRSwizzle (= 0.8.17)
+    - Simperium/SocketTrust (= 0.8.17)
+    - Simperium/SPReachability (= 0.8.17)
+    - Simperium/SSKeychain (= 0.8.17)
+  - Simperium/DiffMatchPach (0.8.17)
+  - Simperium/JRSwizzle (0.8.17)
+  - Simperium/SocketTrust (0.8.17)
+  - Simperium/SPReachability (0.8.17)
+  - Simperium/SSKeychain (0.8.17)
   - Specta (1.0.5)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
@@ -163,25 +163,25 @@ PODS:
   - WordPress-iOS-Shared (0.6.0):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.18)
-  - WordPressCom-Stats-iOS (0.7.6):
+  - WordPressCom-Stats-iOS (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.6.0)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-    - WordPressCom-Stats-iOS/Services (= 0.7.6)
-    - WordPressCom-Stats-iOS/UI (= 0.7.6)
-  - WordPressCom-Stats-iOS/Services (0.7.6):
+    - WordPressCom-Stats-iOS/Services (= 0.7.7)
+    - WordPressCom-Stats-iOS/UI (= 0.7.7)
+  - WordPressCom-Stats-iOS/Services (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.6.0)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-  - WordPressCom-Stats-iOS/UI (0.7.6):
+  - WordPressCom-Stats-iOS/UI (0.7.7):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
-    - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.6.0)
+    - NSObject-SafeExpectations (~> 0.0.2)
+    - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.4):
@@ -192,7 +192,7 @@ PODS:
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.1)
   - AFNetworking (= 3.1.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.0`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.1`)
   - BuddyBuildSDK (~> 1.0.11)
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
@@ -213,7 +213,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (~> 4.6.0)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
-  - Simperium (= 0.8.15)
+  - Simperium (= 0.8.17)
   - Specta (= 1.0.5)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
@@ -222,8 +222,8 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.6.0)
   - WordPressCom-Analytics-iOS (= 0.1.18)
-  - WordPressCom-Stats-iOS (= 0.7.6)
-  - WordPressCom-Stats-iOS/Services (= 0.7.6)
+  - WordPressCom-Stats-iOS (= 0.7.7)
+  - WordPressCom-Stats-iOS/Services (= 0.7.7)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.4`)
   - WPMediaPicker (~> 0.10.1)
   - wpxmlrpc (~> 0.8)
@@ -231,7 +231,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.1.0
+    :tag: 0.1.1
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -245,7 +245,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.1.0
+    :tag: 0.1.1
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -260,7 +260,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
-  Automattic-Tracks-iOS: 5b76290a74355cc8be18e5177b4af58774a63a46
+  Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: d5398183a8b50432d5cefeb1080f02b8c9b3928a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 76f6beaff70acf226139582c09c78461597c2b98
@@ -283,7 +283,7 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  Simperium: 8871e8fb7b49bc17eecb8778622482e8cee7277a
+  Simperium: 0111b16b6d72bc598a99e244ef87025ae433b27e
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
@@ -292,11 +292,11 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
   WordPress-iOS-Shared: f799334b41f3af509ccb76d7970f8c74a7716f14
   WordPressCom-Analytics-iOS: f8e3823c3d528d5238bfe6721cd0d67b9e7cc4f6
-  WordPressCom-Stats-iOS: 2689a457fd18268d36266fca76e96dd13e4af991
+  WordPressCom-Stats-iOS: 5996ea5bc7ce2096400fdc33e3368b5524f7288a
   WordPressComKit: 0742c47e5b55bff0e6d26d40db9e010404675a73
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: de64c165c92f8af87b6c18748e03179a72ce0af3
+PODFILE CHECKSUM: a40d257efbcb96bcf7bcf24529e5f7cef2c10844
 
 COCOAPODS: 1.0.1

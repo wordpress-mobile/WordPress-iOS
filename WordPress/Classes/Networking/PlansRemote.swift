@@ -71,7 +71,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
     guard let activePlan = parsedResponse.0 else {
         throw PlansRemote.Error.NoActivePlan
     }
-    let availablePlans = parsedResponse.1.sort()
+    let availablePlans = parsedResponse.1
     return (activePlan, availablePlans)
 }
 
