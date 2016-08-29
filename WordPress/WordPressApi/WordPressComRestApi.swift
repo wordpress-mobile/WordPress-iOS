@@ -264,7 +264,7 @@ public class WordPressComRestApi: NSObject
     }
 
     private func URLForTemporaryFile() -> NSURL {
-        let fileName = "\(NSProcessInfo.processInfo().globallyUniqueString)_file.xmlrpc"
+        let fileName = "\(NSProcessInfo.processInfo().globallyUniqueString)_file.tmp"
         let fileURL = NSURL.fileURLWithPath(NSTemporaryDirectory()).URLByAppendingPathComponent(fileName)
         return fileURL
     }
