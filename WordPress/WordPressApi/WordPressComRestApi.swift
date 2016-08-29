@@ -283,12 +283,14 @@ public class WordPressComRestApi: NSObject
         guard let fileHandle = try? NSFileHandle(forUpdatingURL:fileURL) else {
             return nil
         }
+        defer {
+            fileHandle.closeFile()
+        }
         fileHandle.seekToEndOfFile()
         for filePart in fileParts {
             let filename = filePart.filename
             let mimeType = filePart.mimeType
             guard let data = try? NSData(contentsOfURL:filePart.url, options:[.DataReadingMappedIfSafe]) else {
-                fileHandle.closeFile()
                 return nil
             }
             fileHandle.writeData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -298,7 +300,6 @@ public class WordPressComRestApi: NSObject
             fileHandle.writeData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
         }
         fileHandle.writeData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        fileHandle.closeFile()
         return request
     }
 
