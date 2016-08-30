@@ -178,6 +178,8 @@ extension TodayViewController: NCWidgetProviding {
             }, failureHandler: { error in
                 WPDDLogWrapper.logError("\(error)")
 
+                self.isConfigured = false
+                
                 completionHandler(NCUpdateResult.Failed)
         })
 
