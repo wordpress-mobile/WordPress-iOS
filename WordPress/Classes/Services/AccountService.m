@@ -312,36 +312,37 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     Blog *defaultBlog = [defaultAccount defaultBlog];
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
-        return;
-    }
-
-    // Required Attributes
-    NSNumber *siteId    = defaultBlog.dotComID;
-    NSString *blogName  = defaultBlog.settings.name;
-    
-    // Widget Configuration
-    TodayExtensionService *service = [TodayExtensionService new];
-    
-    if ([service widgetIsConfigured] == false) {
-        BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
-        NSString *oauth2Token       = defaultAccount.authToken;
+        TodayExtensionService *service = [TodayExtensionService new];
+        [service removeTodayWidgetConfiguration];
+    } else {
+        // Required Attributes
+        NSNumber *siteId    = defaultBlog.dotComID;
+        NSString *blogName  = defaultBlog.settings.name;
         
+        // Widget Configuration
+        TodayExtensionService *service = [TodayExtensionService new];
+        
+        if ([service widgetIsConfigured] == false) {
+            BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
+            NSString *oauth2Token       = defaultAccount.authToken;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                TodayExtensionService *service = [TodayExtensionService new];
+                [service configureTodayWidgetWithSiteID:siteId
+                                               blogName:blogName
+                                           siteTimeZone:timeZone
+                                         andOAuth2Token:oauth2Token];
+            });
+        }
+        
+        // Share Extension Configuration
         dispatch_async(dispatch_get_main_queue(), ^{
-            TodayExtensionService *service = [TodayExtensionService new];
-            [service configureTodayWidgetWithSiteID:siteId
-                                           blogName:blogName
-                                       siteTimeZone:timeZone
-                                     andOAuth2Token:oauth2Token];
+            [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
+            [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
+            [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
         });
     }
-    
-    // Share Extension Configuration
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
-        [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
-        [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
-    });
 }
 
 - (void)purgeAccount:(WPAccount *)account
