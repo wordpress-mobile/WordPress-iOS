@@ -203,31 +203,33 @@ public class WordPressComRestApi: NSObject
                               failure: FailureReponseBlock) -> NSProgress?
     {
         let URLString = appendLocaleIfNeeded(URLString)
-        guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
-            let requestURLString = NSURL(string:URLString,
-                                         relativeToURL:baseURL)?.absoluteString else {
-                                            let error = NSError(domain:String(WordPressComRestApiError),
-                                                                code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
-                                                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
-                                            failure(error: error, httpResponse: nil)
-                                            return nil
+        guard
+            let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
+            let requestURLString = NSURL(string:URLString, relativeToURL:baseURL)?.absoluteString
+        else {
+            let error = NSError(domain:String(WordPressComRestApiError),
+                                code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
+                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+            failure(error: error, httpResponse: nil)
+            return nil
         }
         var serializationError: NSError?
         var filePartError: NSError?
-        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
-                                                                                      URLString: requestURLString,
-                                                                                      parameters: parameters,
-                                                                                      constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
-                                                                                        do {
-                                                                                            for filePart in fileParts {
-                                                                                                let url = filePart.url
-                                                                                                try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
-                                                                                            }
-                                                                                        } catch let error as NSError {
-                                                                                            filePartError = error
-                                                                                        }
+        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod(
+            "POST",
+            URLString: requestURLString,
+            parameters: parameters,
+            constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
+                do {
+                    for filePart in fileParts {
+                        let url = filePart.url
+                        try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+                    }
+                } catch let error as NSError {
+                    filePartError = error
+                }
             },
-                                                                                      error: &serializationError
+            error:&serializationError
         )
         if let error = filePartError {
             failure(error: error, httpResponse: nil)
