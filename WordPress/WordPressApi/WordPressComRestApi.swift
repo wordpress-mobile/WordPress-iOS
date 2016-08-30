@@ -37,7 +37,6 @@ public class WordPressComRestApi: NSObject
 
     private let oAuthToken: String?
     private let userAgent: String?
-    private var ongoingProgress = [NSURLSessionTask:NSProgress]()
 
     /**
      Configure whether or not the user's preferred language locale should be appended. Defaults to true.
@@ -45,6 +44,20 @@ public class WordPressComRestApi: NSObject
     public var appendsPreferredLanguageLocale = true
 
     private lazy var sessionManager: AFHTTPSessionManager = {
+        let sessionManager = self.createSessionManager()
+        return sessionManager
+    }()
+
+    private var uploadSessionManager: AFHTTPSessionManager {
+        get {
+            if #available(iOS 10.0, *) {
+                return self.sessionManager
+            }
+            return self.createSessionManager()
+        }
+    }
+
+    private func createSessionManager() -> AFHTTPSessionManager {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         var additionalHeaders: [String : AnyObject] = [:]
@@ -59,24 +72,6 @@ public class WordPressComRestApi: NSObject
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
-    }()
-
-    private var uploadSession: NSURLSession {
-        get {
-            let sessionConfiguration = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-            sessionConfiguration.URLCache = nil
-            sessionConfiguration.requestCachePolicy = .ReloadIgnoringLocalCacheData
-            var additionalHeaders: [String : AnyObject] = [:]
-            if let oAuthToken = self.oAuthToken {
-                additionalHeaders["Authorization"] = "Bearer \(oAuthToken)"
-            }
-            if let userAgent = self.userAgent {
-                additionalHeaders["User-Agent"] = userAgent
-            }
-            sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
-            let uploadSession = NSURLSession(configuration:sessionConfiguration, delegate: self, delegateQueue: nil)
-            return uploadSession
-        }
     }
 
     public init(oAuthToken: String? = nil, userAgent: String? = nil) {
@@ -207,41 +202,71 @@ public class WordPressComRestApi: NSObject
                               success: SuccessResponseBlock,
                               failure: FailureReponseBlock) -> NSProgress?
     {
-        let fileURL = URLForTemporaryFile()
-        guard
-            let request = multipartRequestWithURLString(URLString,
-                                                        parameters: parameters ?? [:],
-                                                        fileParts: fileParts,
-                                                        encodedToFileURL: fileURL)
-        else {
-            let error = NSError(domain:String(WordPressComRestApiError),
-                                code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
-                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+        let URLString = appendLocaleIfNeeded(URLString)
+        guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
+            let requestURLString = NSURL(string:URLString,
+                                         relativeToURL:baseURL)?.absoluteString else {
+                                            let error = NSError(domain:String(WordPressComRestApiError),
+                                                                code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
+                                                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+                                            failure(error: error, httpResponse: nil)
+                                            return nil
+        }
+        var serializationError: NSError?
+        var filePartError: NSError?
+        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
+                                                                                      URLString: requestURLString,
+                                                                                      parameters: parameters,
+                                                                                      constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
+                                                                                        do {
+                                                                                            for filePart in fileParts {
+                                                                                                let url = filePart.url
+                                                                                                try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+                                                                                            }
+                                                                                        } catch let error as NSError {
+                                                                                            filePartError = error
+                                                                                        }
+            },
+                                                                                      error: &serializationError
+        )
+        if let error = filePartError {
             failure(error: error, httpResponse: nil)
             return nil
         }
-        let progress = NSProgress.discreteProgressWithTotalUnitCount(1)
-        let session = uploadSession
-        var referenceToTask: NSURLSessionTask?
-        let task = session.uploadTaskWithRequest(request, fromFile: fileURL) { (data, response, error) in
-            if let taskToRemove = referenceToTask {
-                self.ongoingProgress.removeValueForKey(taskToRemove)
+        if let error = serializationError {
+            failure(error: error, httpResponse: nil)
+            return nil
+        }
+        let progress = NSProgress(totalUnitCount: 1)
+        let progressUpdater = {(taskProgress:NSProgress) in
+            progress.totalUnitCount = taskProgress.totalUnitCount+1
+            progress.completedUnitCount = taskProgress.completedUnitCount
+        }
+        let uploadSessionManager = self.uploadSessionManager
+        let task = uploadSessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
+            // if this manager was created just for uploading let's invalidated it after.
+            if uploadSessionManager != self.sessionManager {
+                uploadSessionManager.invalidateSessionCancelingTasks(false)
             }
-            session.finishTasksAndInvalidate()
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
-            do {
-                let responseObject = try self.handleResponseWithData(data, urlResponse: response, error: error)
-                progress.completedUnitCount = progress.totalUnitCount
-                success(responseObject: responseObject, httpResponse: response as? NSHTTPURLResponse)
-            } catch let error as NSError {
+            if let error = error {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
+            } else {
+                progress.completedUnitCount = progress.totalUnitCount
+                guard let responseObject = result else {
+                    failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: response as? NSHTTPURLResponse)
+                    return
+                }
+                success(responseObject: responseObject, httpResponse: response as? NSHTTPURLResponse)
             }
         }
-        referenceToTask = task
         task.resume()
-
-        associate(progress: progress, toTask:task)
-
+        progress.cancellationHandler = {
+            task.cancel()
+        }
+        if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
+            let size = Int64(sizeString) {
+            progress.totalUnitCount = size
+        }
         return progress
     }
 
@@ -263,167 +288,7 @@ public class WordPressComRestApi: NSObject
         return WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
     }
 
-    private func URLForTemporaryFile() -> NSURL {
-        let fileName = "\(NSProcessInfo.processInfo().globallyUniqueString)_file.tmp"
-        let fileURL = NSURL.fileURLWithPath(NSTemporaryDirectory()).URLByAppendingPathComponent(fileName)
-        return fileURL
-    }
-
-    private func multipartRequestWithURLString(urlString:String,
-                                               parameters: [String:AnyObject],
-                                               fileParts: [FilePart],
-                                               encodedToFileURL fileURL:NSURL) -> NSURLRequest? {
-        let urlStringWithLocale = appendLocaleIfNeeded(urlString)
-        guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
-              let url = NSURL(string:urlStringWithLocale, relativeToURL:baseURL)
-        else {
-            return nil
-        }
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.cachePolicy = .ReloadIgnoringLocalCacheData
-        let boundary = NSUUID().UUIDString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField:"Content-Type")
-        let body = NSMutableData()
-
-        for (key, text) in parameters where text is String {
-            body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            body.appendData("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            body.appendData("\(text)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        }
-        body.writeToURL(fileURL, atomically:true)
-        guard let fileHandle = try? NSFileHandle(forUpdatingURL:fileURL) else {
-            return nil
-        }
-        defer {
-            fileHandle.closeFile()
-        }
-        fileHandle.seekToEndOfFile()
-        for filePart in fileParts {
-            let filename = filePart.filename
-            let mimeType = filePart.mimeType
-            guard let data = try? NSData(contentsOfURL:filePart.url, options:[.DataReadingMappedIfSafe]) else {
-                return nil
-            }
-            fileHandle.writeData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            fileHandle.writeData("Content-Disposition: form-data; name=\"\(filePart.parameterName)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            fileHandle.writeData("Content-Type: \(mimeType)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            fileHandle.writeData(data)
-            fileHandle.writeData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        }
-        fileHandle.writeData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        return request
-    }
-
-    //MARK: - Progress reporting
-
-    private func associate(progress progress:NSProgress, toTask task: NSURLSessionTask) {
-        // Progress report
-        progress.totalUnitCount = 1
-        if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
-           let contentLength = Int64(contentLengthString)
-        {
-            progress.totalUnitCount = contentLength + 1
-        }
-        progress.cancellationHandler = {
-            task.cancel()
-        }
-        ongoingProgress[task] = progress
-    }
-
-    //MARK: - Response handling
-
-    private func handleResponseWithData(originalData: NSData?, urlResponse:NSURLResponse?, error: NSError?) throws -> AnyObject {
-        guard let data = originalData,
-              let httpResponse = urlResponse as? NSHTTPURLResponse,
-              let contentType = httpResponse.allHeaderFields["Content-Type"] as? String
-              where error == nil &&  contentType.hasPrefix("application/json")
-        else {
-            if let unwrappedError = error {
-                throw convertError(unwrappedError, data: originalData)
-            } else {
-                throw convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-            }
-        }
-
-        let jsonObject: AnyObject
-
-        do {
-            jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
-        } catch {
-            throw convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-        }
-        if (200..<300).contains(httpResponse.statusCode) {
-            return jsonObject
-        }
-        if (400...500).contains(httpResponse.statusCode) {
-            throw handleErrorResponseObject(jsonObject, originalData: data)
-        }
-        throw convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-    }
-
-    //MARK: - Error Handling
-
-    private func handleErrorResponseObject(responseObject: AnyObject, originalData:NSData) -> NSError {
-        guard let responseDictionary = responseObject as? [String:AnyObject] else {
-            return convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-        }
-        var errorDictionary:AnyObject? = responseDictionary
-        if let errorArray = responseDictionary["errors"] as? [AnyObject] where errorArray.count > 0 {
-            errorDictionary = errorArray.first
-        }
-        guard let errorEntry = errorDictionary as? [String:AnyObject],
-            let errorCode = errorEntry["error"] as? String,
-            let errorDescription = errorEntry["message"] as? String
-            else {
-                return convertError(WordPressComRestApiError.ResponseSerializationFailed as NSError, data: originalData)
-        }
-
-        let errorsMap = [
-            "invalid_input" : WordPressComRestApiError.InvalidInput,
-            "invalid_token" : WordPressComRestApiError.InvalidToken,
-            "authorization_required" : WordPressComRestApiError.AuthorizationRequired,
-            "upload_error" : WordPressComRestApiError.UploadFailed,
-            "unauthorized" : WordPressComRestApiError.AuthorizationRequired
-        ]
-
-        let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.Unknown
-        var userInfo = [String:AnyObject]()
-        userInfo[WordPressComRestApi.ErrorKeyErrorCode] = errorCode
-        userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = errorDescription
-        let nserror = mappedError as NSError
-        userInfo[NSLocalizedDescriptionKey] = errorDescription
-        return NSError(domain:nserror.domain,
-                               code:nserror.code,
-                               userInfo:userInfo
-        )
-    }
-
     public static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
-
-    private func convertError(error: NSError, data: NSData?) -> NSError {
-        guard let data = data else {
-            return error
-        }
-        var userInfo:[NSObject:AnyObject] = error.userInfo ?? [:]
-        userInfo[self.dynamicType.WordPressComRestCApiErrorKeyData] = data
-        return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
-    }
-}
-
-extension WordPressComRestApi: NSURLSessionTaskDelegate, NSURLSessionDelegate {
-
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        guard let progress = ongoingProgress[task] else {
-            return
-        }
-        progress.totalUnitCount = totalBytesExpectedToSend + 1
-        progress.completedUnitCount = totalBytesSent
-
-        if (totalBytesSent == totalBytesExpectedToSend) {
-            ongoingProgress.removeValueForKey(task)
-        }
-    }
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
