@@ -345,7 +345,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
         case .Link:
             toggleLink()
         case .Media:
-            insertImage()
+            showImagePicker()
         }
         updateFormatBar()
     }
@@ -390,9 +390,18 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
     }
 
 
-    func insertImage() {
-        editor.insertImage(richTextView.selectedRange.location, params: [String : AnyObject]())
+    func showImagePicker() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .PhotoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary) ?? []
+        picker.delegate = self
+        picker.allowsEditing = false
+        picker.navigationBar.translucent = false
+        picker.modalPresentationStyle = .CurrentContext
+
+        presentViewController(picker, animated: true, completion: nil)
     }
+
 
     // MARK: -
 
@@ -434,5 +443,35 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
     func templateImage(named named: String) -> UIImage {
         return UIImage(named: named)!.imageWithRenderingMode(.AlwaysTemplate)
     }
+}
 
+
+extension AztecPostViewController: UINavigationControllerDelegate
+{
+
+}
+
+
+extension AztecPostViewController: UIImagePickerControllerDelegate
+{
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        dismissViewControllerAnimated(true, completion: nil)
+
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+
+        // Insert Image + Reclaim Focus
+        insertImage(image)
+        richTextView.becomeFirstResponder()
+    }
+}
+
+
+private extension AztecPostViewController
+{
+    func insertImage(image: UIImage) {
+        let index = richTextView.positionForCursor()
+        editor.insertImage(image, index: index)
+    }
 }
