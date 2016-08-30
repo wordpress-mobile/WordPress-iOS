@@ -1,6 +1,6 @@
 import Foundation
 
-// manages the creation, saving, updating, and merging of Posts, Pages, and associated data such as comments
+// manages the creation, saving, updating, and merging of posts, pages, and associated data such as comments
 class PostService : LocalCoreDataService {
     static let ErrorDomain = "PostServiceErrorDomain"
     static let DefaultNumberToSync: UInt = 40
@@ -19,27 +19,26 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    typealias SuccessPosts = ([AbstractPost]) -> Void
-    typealias FailureBasic = (NSError?) -> Void
-    typealias SuccessBasic = () -> Void
+    typealias SuccessPostsBlock = ([AbstractPost]) -> Void
+    typealias FailureBlock = (NSError?) -> Void
 
     convenience override init() {
         self.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
     }
 
-    func makePost(for blog: Blog) -> Post? {
+    private func makePost(for blog: Blog) -> Post? {
         return make(type: Post.self, blog: blog)
     }
 
-    func makePage(for blog: Blog) -> Page? {
+    private func makePage(for blog: Blog) -> Page? {
         return make(type: Page.self, blog: blog)
     }
 
-    func make(postType: PostType?, blog: Blog) -> AbstractPost? {
+    private func make(postType: PostType?, blog: Blog) -> AbstractPost? {
         return make(type: postType?.type() ?? Post.self, blog: blog)
     }
 
-    func make<T: AbstractPost>(type postType: T.Type, blog: Blog) -> T? {
+    private func make<T: AbstractPost>(type postType: T.Type, blog: Blog) -> T? {
         assert(self.managedObjectContext == blog.managedObjectContext, "Blog's context should be the the same as the service's")
 
         guard let post = NSEntityDescription.insertNewObjectForEntityForName(postType.entityName(), inManagedObjectContext: self.managedObjectContext) as? T else {
@@ -64,27 +63,46 @@ class PostService : LocalCoreDataService {
         return postPost as? T
     }
 
+    /// Create a draft post
+    ///
+    /// - parameter blog: post will be create for this blog
     func makeDraftPost(for blog: Blog) -> Post? {
         guard let post = self.makePost(for: blog) else { return nil }
         post.remoteStatus = AbstractPostRemoteStatusLocal
         return post
     }
 
+    /// Create a draft page
+    ///
+    /// - parameter blog: page will be created for this blog
     func makeDraftPage(for blog: Blog) -> Page? {
         guard let page = self.makePage(for: blog) else { return nil }
         page.remoteStatus = AbstractPostRemoteStatusLocal
         return page
     }
 
-    /**
-     Sync a specific post from the API
+    ///  Create a draft page for the specified blog using the main context
+    ///
+    ///  - parameter blog: post will be create for this blog
+    @objc(makeDraftPostInMainContextForBlog:)
+    class func makeDraftPostInMainContext(blog blog: Blog) -> Post? {
+        return PostService(managedObjectContext: ContextManager.sharedInstance().mainContext).makeDraftPost(for: blog)
+    }
 
-     - parameters:
-        - postID: The ID of the post to sync
-        - blog: The blog that has the post
-        - success: A success block
-        - failure: A failure block
-     */
+    ///  Create a draft page for the specified blog using the main context
+    ///
+    ///  - parameter blog: page will be create for this blog
+    @objc(makeDraftPageInMainContextForBlog:)
+    class func makeDraftPageInMainContext(blog blog: Blog) -> Page? {
+        return PostService(managedObjectContext: ContextManager.sharedInstance().mainContext).makeDraftPage(for: blog)
+    }
+
+    ///  Sync a specific post from the API
+    ///
+    ///  - parameter postID:  The ID of the post to sync
+    ///  - parameter blog:    The blog that has the post
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
     func get(postID: Int, blog: Blog, success: (AbstractPost?) -> Void, failure: ((NSError?) -> Void)?) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
@@ -122,38 +140,30 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    /**
-     Sync an initial batch of posts from the specified blog.
-
-     - note: Please note that success and/or failure are called in the context of the
-     NSManagedObjectContext supplied when the PostService was initialized, and may not
-     run on the main thread.
-
-     - parameters:
-         - postType: The type (post or page) of post to sync
-         - blog: The blog that has the posts.
-         - success: åA success block
-         - failure: A failure block
-     */
-    func sync(type: PostType, blog: Blog, success: SuccessPosts, failure: FailureBasic) {
+    ///  Sync an initial batch of posts from the specified blog
+    ///  - note: Please note that success and/or failure are called in the context of the
+    ///  NSManagedObjectContext supplied when the PostService was initialized, and may not
+    ///  run on the main thread.
+    ///
+    ///  - parameter type:    The type (post or page) of post to sync
+    ///  - parameter blog:    The blog that has the posts
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
+    func sync(type: PostType, blog: Blog, success: SuccessPostsBlock, failure: FailureBlock) {
         self.sync(type, blog: blog, options: nil, success: success, failure: failure)
     }
 
-    /**
-     Sync a batch of posts with the specified options from the specified blog.
-
-     - note: Please note that success and/or failure are called in the context of the
-     NSManagedObjectContext supplied when the PostService was initialized, and may not
-     run on the main thread.
-
-     - parameters:
-         - postType: The type (post or page) of post to sync
-         - options: Sync options for specific request parameters.
-         - blog: The blog that has the posts.
-         - success: A success block
-         - failure: A failure block
-    */
-    func sync(type: PostType, blog: Blog, options: PostServiceSyncOptions?, success: SuccessPosts?, failure: FailureBasic?) {
+    ///  Sync an initial batch of posts from the specified blog
+    ///  - note: Please note that success and/or failure are called in the context of the
+    ///  NSManagedObjectContext supplied when the PostService was initialized, and may not
+    ///  run on the main thread.
+    ///
+    ///  - parameter type:    The type (post or page) of post to sync
+    ///  - parameter blog:    The blog that has the posts
+    ///  - parameter options: Sync options for specific request parameters
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
+    func sync(type: PostType, blog: Blog, options: PostServiceSyncOptions?, success: SuccessPostsBlock?, failure: FailureBlock?) {
         if let remote = self.remote(for:blog) {
             let blogID = blog.objectID
             let remoteOptions = self.remoteSyncParameters(for:remote, with:options)
@@ -186,18 +196,17 @@ class PostService : LocalCoreDataService {
             })
         }
     }
-    /**
-     Syncs local changes on a post back to the server.
 
-     - parameters:
-        - post: The post or page to upload
-         - success: A success block.  If the post object exists locally (in CoreData) when the upload
-         succeeds, then this block will also return a pointer to the updated local AbstractPost
-         object.  It's important to note this object may not be the same one as the `post` input
-         parameter, since if the input post was a revision, it will no longer exist once the upload
-         succeeds.
-         - failure: A failure block
-     */
+    ///  Syncs local changes on a post back to the server
+    ///  - note: If the post object exists locally (in CoreData) when the upload
+    ///  succeeds, then the success block will also return a pointer to the updated local AbstractPost
+    ///  object.  It's important to note this object may not be the same one as the `post` input
+    ///  parameter, since if the input post was a revision, it will no longer exist once the upload
+    ///  succeeds.
+    ///
+    ///  - parameter post:    The post or page to upload
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
     func upload(post: AbstractPost, success: (AbstractPost?) -> Void, failure: (NSError?) -> Void) {
         let remote = self.remote(for: post.blog)
         let remotePost = self.getRemotePost(withPost: post)
@@ -247,18 +256,15 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    /**
-     Attempts to delete the specified post outright vs moving it to the
-     trash folder.
+    ///  Attempts to delete the specified post outright vs moving it to the
+    ///  trash folder
+    ///
+    ///  - parameter post:    The post or page to delete
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
+    func delete(post: AbstractPost, success: () -> Void, failure: FailureBlock) {
 
-     - parameters:
-         - post: The post or page to delete
-         - success: A success block
-         - failure: A failure block
-     */
-    func delete(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
-
-        let deleteBlock: SuccessBasic = {
+        let deleteBlock: () -> Void = {
             if let postID = post.postID where postID.longLongValue > 0 {
                 let remotePost = self.getRemotePost(withPost: post)
                 if let remote = self.remote(for: post.blog) {
@@ -274,22 +280,19 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    /**
-     Moves the specified post into the trash bin. Does not delete
-     the post unless it was deleted on the server.
-
-     - parameters:
-         - post: The post or page to trash
-         - success: A success block
-         - failure: A failure block
-     */
-    func trash(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
+    ///  Moves the specified post into the trash bin. Does not delete
+    ///  the post unless it was deleted on the server
+    ///
+    ///  - parameter post:    The post or page to trash
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
+    func trash(post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         if post.status == PostStatusTrash {
             self.delete(post, success: success, failure: failure)
             return
         }
 
-        let trashBlock: SuccessBasic = {
+        let trashBlock: () -> Void = {
             if let status = post.status {
                 post.restorableStatus = status
             }
@@ -311,7 +314,7 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    func trashRemotePost(withPost post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
+    private func trashRemotePost(withPost post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         let postObjectID = post.objectID
         let remotePost = self.getRemotePost(withPost: post)
         if let remote = self.remote(for: post.blog) {
@@ -344,16 +347,13 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    /**
-     Moves the specified post out of the trash bin.
-
-     - parameters:
-        - post: The post or page to restore
-        - success: A success block
-        - failure: A failure block
-     */
-    func restore(post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
-        let restoreBlock: SuccessBasic = {
+    ///  Moves the specified post out of the trash bin
+    ///
+    ///  - parameter post:    The post or page to restore
+    ///  - parameter success: A success block
+    ///  - parameter failure: A failure block
+    func restore(post: AbstractPost, success: () -> Void, failure: FailureBlock) {
+        let restoreBlock: () -> Void = {
             post.status = post.restorableStatus
             ContextManager.sharedInstance().saveContext(self.managedObjectContext)
 
@@ -371,7 +371,7 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    func restoreRemotePost(withPost post: AbstractPost, success: SuccessBasic, failure: FailureBasic) {
+    private func restoreRemotePost(withPost post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         let postObjectID = post.objectID
         let remotePost = self.getRemotePost(withPost: post)
         if let restorableStatus = post.restorableStatus {
@@ -414,11 +414,11 @@ class PostService : LocalCoreDataService {
 
     // MARK: - Helpers
 
-    func initialize(draft post: AbstractPost) {
+    private func initialize(draft post: AbstractPost) {
         post.remoteStatus = AbstractPostRemoteStatusLocal
     }
 
-    func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: NSNumber?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
+    private func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: NSNumber?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
             if let post = self.find(byID: remotePost.postID as Int, blog: blog) ?? self.make(PostType(rawValue:remotePost.type), blog: blog) {
                 self.update(post, with: remotePost)
@@ -463,6 +463,12 @@ class PostService : LocalCoreDataService {
         completion(posts)
     }
 
+    ///  Find a post by its post id
+    ///
+    ///  - parameter postID: post id of the desired post
+    ///  - parameter blog:   the blog to which the post belongs
+    ///
+    ///  - returns: AbstractPost if found, nil otherwise
     func find(byID postID: Int, blog: Blog) -> AbstractPost? {
         let request = NSFetchRequest(entityName: AbstractPost.entityName())
         request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND postID = %@", blog, postID as NSNumber)
@@ -470,14 +476,14 @@ class PostService : LocalCoreDataService {
         return posts.first as? AbstractPost
     }
 
-    func remoteSyncParameters(for remote: PostServiceRemote, with options: PostServiceSyncOptions?) -> [String: AnyObject]? {
+    private func remoteSyncParameters(for remote: PostServiceRemote, with options: PostServiceSyncOptions?) -> [String: AnyObject]? {
         guard let options = options else {
             return nil
         }
         return remote.dictionaryWithRemoteOptions(options) as? [String : AnyObject]
     }
 
-    func update(post: AbstractPost, with remotePost: RemotePost) {
+    private func update(post: AbstractPost, with remotePost: RemotePost) {
         let previousPostID = post.postID
         post.postID = remotePost.postID
         post.author = remotePost.authorDisplayName
@@ -525,7 +531,7 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    func getRemotePost(withPost post: AbstractPost) -> RemotePost {
+    private func getRemotePost(withPost post: AbstractPost) -> RemotePost {
         let remotePost = RemotePost()
         remotePost.postID = post.postID
         remotePost.date = post.date_created_gmt
@@ -551,11 +557,11 @@ class PostService : LocalCoreDataService {
         return remotePost
     }
 
-    func remoteCategories(for post: Post) -> [RemotePostCategory]? {
+    private func remoteCategories(for post: Post) -> [RemotePostCategory]? {
         return post.categories?.map { self.remoteCategory(with: $0) }
     }
 
-    func remoteCategory(with category: PostCategory) -> RemotePostCategory {
+    private func remoteCategory(with category: PostCategory) -> RemotePostCategory {
         let remoteCategory = RemotePostCategory()
         remoteCategory.categoryID = category.categoryID
         remoteCategory.name = category.categoryName
@@ -563,7 +569,7 @@ class PostService : LocalCoreDataService {
         return remoteCategory
     }
 
-    func remoteMetadata(for post: Post) -> [[String: AnyObject]] {
+    private func remoteMetadata(for post: Post) -> [[String: AnyObject]] {
         var metadata: [[String: AnyObject]] = []
         let coordinate = post.geolocation
 
@@ -634,14 +640,14 @@ class PostService : LocalCoreDataService {
         }
     }
 
-    func updateComments(for post: AbstractPost) {
+    private func updateComments(for post: AbstractPost) {
         let commentService = CommentService(managedObjectContext: self.managedObjectContext)
         let currentComments = post.mutableSetValueForKey("comments")
         let allComments = commentService.findCommentsWithPostID(post.postID, inBlog: post.blog)
         currentComments.addObjectsFromArray(Array(allComments))
     }
 
-    func dictionary(with key: NSString, in metadata: [[String : AnyObject]]) -> [String : AnyObject]? {
+    private func dictionary(with key: NSString, in metadata: [[String : AnyObject]]) -> [String : AnyObject]? {
         let matchingEntries = metadata.filter {
             $0["key"] as! String == key
         }
@@ -650,7 +656,7 @@ class PostService : LocalCoreDataService {
         return matchingEntries.last
     }
 
-    func remote(for blog: Blog) -> PostServiceRemote? {
+    private func remote(for blog: Blog) -> PostServiceRemote? {
         var remote: PostServiceRemote?
         if blog.supports(.WPComRESTAPI) {
             if let wpComRestApi = blog.wordPressComRestApi() {
@@ -664,10 +670,10 @@ class PostService : LocalCoreDataService {
 }
 
 // MARK: - for Objective-C
-
+// provides a stringly-typed API for use from Objective-C
 extension PostService {
     @objc(syncPostsOfType:withOptions:forBlog:success:failure:)
-    func sync(typeKey: PostServiceType, options: PostServiceSyncOptions?, blog: Blog, success: SuccessPosts?, failure: FailureBasic?) {
+    func sync(typeKey: PostServiceType, options: PostServiceSyncOptions?, blog: Blog, success: SuccessPostsBlock?, failure: FailureBlock?) {
         sync(PostType(rawValue:typeKey as String)!, blog: blog, options: options, success: success, failure: failure)
     }
 }

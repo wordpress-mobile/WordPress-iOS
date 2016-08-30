@@ -1,7 +1,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "AbstractPost.h"
 #import "PageSettingsViewController.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
@@ -14,7 +14,7 @@
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[[PostService new] makeDraftPageFor:blog]];
+    return [self initWithPost:[PostService makeDraftPageInMainContextForBlog:blog]];
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog

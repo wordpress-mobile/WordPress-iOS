@@ -1,5 +1,5 @@
 #import "MenuItemAbstractPostsViewController.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 

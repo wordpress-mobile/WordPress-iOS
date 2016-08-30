@@ -8,7 +8,7 @@
 #import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"

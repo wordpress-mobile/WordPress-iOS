@@ -7,7 +7,7 @@
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "MediaService.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
@@ -133,7 +133,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[[PostService new] makeDraftPostFor:blog]];
+    return [self initWithPost:[PostService makeDraftPostInMainContextForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -442,7 +442,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - Instance Methods
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [[PostService new] makeDraftPostFor:blog];
+    return [PostService makeDraftPostInMainContextForBlog:blog];
 }
 
 /*

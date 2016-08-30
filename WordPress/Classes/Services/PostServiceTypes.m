@@ -1,4 +1,4 @@
-#import "PostService.h"
+#import "PostServiceTypes.h"
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";

@@ -21,7 +21,7 @@
 #import "MediaService.h"
 #import "NSString+Helpers.h"
 #import "PostPreviewViewController.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 #import "WordPressAppDelegate.h"
@@ -1007,7 +1007,7 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [[PostService new] makeDraftPostFor:blog];
+    return [PostService makeDraftPostInMainContextForBlog:blog];
 }
 
 /*

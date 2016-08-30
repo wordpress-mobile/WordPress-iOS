@@ -9,7 +9,7 @@
 #import "NSString+Helpers.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "AbstractPost.h"
 #import "NSDate+WordPressJSON.h"
 #import "WordPress-Swift.h"

@@ -9,7 +9,7 @@
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
 #import "ContextManager.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "WordPress-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN

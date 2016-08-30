@@ -1,7 +1,7 @@
 #import "EditPageViewController.h"
 #import "AbstractPost.h"
 #import "ContextManager.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "Blog.h"
 #import "PageSettingsViewController.h"
 #import "WordPress-Swift.h"
@@ -51,7 +51,7 @@
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-   return [[PostService new] makeDraftPageFor:blog];
+   return [PostService makeDraftPageInMainContextForBlog:blog];
 }
 
 @end
