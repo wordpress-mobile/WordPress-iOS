@@ -168,25 +168,25 @@ class PostService : LocalCoreDataService {
             let blogID = blog.objectID
             let remoteOptions = self.remoteSyncParameters(for:remote, with:options)
             remote.getPostsOfType(type.rawValue, options: remoteOptions, success: { (remotePosts) in
-                    self.managedObjectContext.performBlock({
-                        do {
-                            if let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID) as? Blog {
-                                self.merge(posts: remotePosts,
-                                    type: type,
-                                    statuses: options?.statuses,
-                                    author: options?.authorID,
-                                    blog: blogInContext,
-                                    purge: options?.purgesLocalSync,
-                                    completion: { posts in
-                                        if let success = success {
-                                            success(posts)
-                                        }
-                                })
-                            }
-                        } catch let error as NSError? {
-                            DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
+                self.managedObjectContext.performBlock({
+                    do {
+                        if let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID) as? Blog {
+                            self.merge(posts: remotePosts,
+                                type: type,
+                                statuses: options?.statuses,
+                                author: options?.authorID,
+                                blog: blogInContext,
+                                purge: options?.purgesLocalSync,
+                                completion: { posts in
+                                    if let success = success {
+                                        success(posts)
+                                    }
+                            })
                         }
-                    })
+                    } catch let error as NSError? {
+                        DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
+                    }
+                })
                 }, failure: { (error) in
                     self.managedObjectContext.performBlock({
                         if let failure = failure {
@@ -319,19 +319,19 @@ class PostService : LocalCoreDataService {
         let remotePost = self.getRemotePost(withPost: post)
         if let remote = self.remote(for: post.blog) {
             remote.trashPost(remotePost, success: { remotePost in
-                    do {
-                        if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
-                            if remotePost.status == PostStatusDeleted {
-                                self.managedObjectContext.deleteObject(postInContext)
-                            } else {
-                                self.update(postInContext, with: remotePost)
-                            }
-                            ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                do {
+                    if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
+                        if remotePost.status == PostStatusDeleted {
+                            self.managedObjectContext.deleteObject(postInContext)
+                        } else {
+                            self.update(postInContext, with: remotePost)
                         }
-                    } catch let error as NSError? {
-                        DDLogSwift.logError(String("%@", error))
+                        ContextManager.sharedInstance().saveContext(self.managedObjectContext)
                     }
-                    success()
+                } catch let error as NSError? {
+                    DDLogSwift.logError(String("%@", error))
+                }
+                success()
                 }, failure: { error in
                     do {
                         if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
@@ -396,18 +396,18 @@ class PostService : LocalCoreDataService {
                     DDLogSwift.logError(String("%@", error))
                 }
                 success()
-            }, failure: { error in
-                do {
-                    if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
-                        postInContext.status = PostStatusTrash
-                        ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                }, failure: { error in
+                    do {
+                        if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
+                            postInContext.status = PostStatusTrash
+                            ContextManager.sharedInstance().saveContext(self.managedObjectContext)
+                        }
+                    } catch let error as NSError? {
+                        DDLogSwift.logError(String("%@", error))
+                        failure(error)
+                        return
                     }
-                } catch let error as NSError? {
-                    DDLogSwift.logError(String("%@", error))
-                    failure(error)
-                    return
-                }
-                failure(nil)
+                    failure(nil)
             })
         }
     }
@@ -516,8 +516,8 @@ class PostService : LocalCoreDataService {
 
             if let metadata = remotePost.metadata {
                 if let latitudeDictionary = self.dictionary(with:"geo_latitude", in:metadata),
-                let longitudeDictionary = self.dictionary(with:"geo_longitude", in:metadata),
-                let geoPublicDictionary = self.dictionary(with:"geo_public", in:metadata) {
+                    let longitudeDictionary = self.dictionary(with:"geo_longitude", in:metadata),
+                    let geoPublicDictionary = self.dictionary(with:"geo_public", in:metadata) {
                     let latitude = Double(latitudeDictionary["value"] as! NSNumber)
                     let longitude = Double(longitudeDictionary["value"] as! NSNumber)
                     let coord = CLLocationCoordinate2DMake(latitude, longitude)
