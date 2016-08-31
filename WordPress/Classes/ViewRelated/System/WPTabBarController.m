@@ -137,11 +137,23 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
     [super setSelectedIndex:selectedIndex];
-    if (selectedIndex == WPTabReader) {
-        // Bumping the stat in this method works for cases where the selected tab is
-        // set in response to other feature behavior (e.g. a notifications), and
-        // when set via state restoration.
-        [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
+
+    // Bumping the stat in this method works for cases where the selected tab is
+    // set in response to other feature behavior (e.g. a notifications), and
+    // when set via state restoration.
+    switch (selectedIndex) {
+        case WPTabMe:
+            [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
+            break;
+        case WPTabMySites:
+            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
+            break;
+        case WPTabReader:
+            [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
+            break;
+
+        default:
+            break;
     }
 }
 
