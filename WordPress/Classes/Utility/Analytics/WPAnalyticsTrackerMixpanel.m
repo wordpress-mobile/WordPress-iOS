@@ -1040,8 +1040,16 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginMagicLinkSucceeded:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link succeeded"];
             break;
+        case WPAnalyticsStatMeTabAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me Tab - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_me_tab"];
+            break;
+        case WPAnalyticsStatMySitesTabAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"My Site - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_my_site"];
+            break;
 
-            // To be implemented
+        // To be implemented
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:
