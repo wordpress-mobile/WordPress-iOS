@@ -218,7 +218,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `a6678565b94be670725cafd5ba261a4dfbe383f9`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `c78c858194f57bc8d4b29712b72a38c97af140ab`)
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.6.0)
   - WordPressCom-Analytics-iOS (= 0.1.18)
@@ -236,7 +236,7 @@ EXTERNAL SOURCES:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: a6678565b94be670725cafd5ba261a4dfbe383f9
+    :commit: c78c858194f57bc8d4b29712b72a38c97af140ab
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -250,7 +250,7 @@ CHECKOUT OPTIONS:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: a6678565b94be670725cafd5ba261a4dfbe383f9
+    :commit: c78c858194f57bc8d4b29712b72a38c97af140ab
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -297,6 +297,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: a40d257efbcb96bcf7bcf24529e5f7cef2c10844
+PODFILE CHECKSUM: cf3a0fd696d8ac6c3371f938697a9b9b5db37bd3
 
 COCOAPODS: 1.0.1
