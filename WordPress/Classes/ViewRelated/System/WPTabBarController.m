@@ -141,7 +141,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // Bumping the stat in this method works for cases where the selected tab is
         // set in response to other feature behavior (e.g. a notifications), and
         // when set via state restoration.
-        [WPAnalytics track:WPAnalyticsStatReaderAccessed];
+        [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
     }
 }
 
@@ -483,6 +483,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // Don't kick of this auto selecting behavior if the user taps the the active tab as it
         // would break from standard iOS UX
         if (tabBarController.selectedIndex != WPTabNewPost) {
+            // Bump the accessed stat when switching to the My Sites tab, but not if the tab is tapped when already selected.
+            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
+
             UINavigationController *navController = (UINavigationController *)viewController;
             BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
             if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
@@ -493,7 +496,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabReader && tabBarController.selectedIndex != WPTabReader) {
         // Bump the accessed stat when switching to the reader tab, but not if the tab is tapped when already selected.
-        [WPAnalytics track:WPAnalyticsStatReaderAccessed];
+        [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabMe && tabBarController.selectedIndex != WPTabMe) {
+        // Bump the accessed stat when switching to the My Sites tab, but not if the tab is tapped when already selected.
+        [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
     }
 
     // If the current view controller is selected already and it's at its root then scroll to the top
