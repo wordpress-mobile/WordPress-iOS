@@ -700,7 +700,7 @@ extension NotificationDetailsViewController
 
 // MARK: - Resources
 //
-extension NotificationDetailsViewController
+private extension NotificationDetailsViewController
 {
     func displayURL(url: NSURL?) {
         guard let url = url else {
@@ -750,7 +750,7 @@ extension NotificationDetailsViewController
 
     // MARK: - Displaying Ranges!
 
-    private func displayResourceWithRange(range: NotificationRange?) throws {
+    func displayResourceWithRange(range: NotificationRange?) throws {
         guard let range = range else {
             throw DisplayError.MissingParameter
         }
@@ -776,7 +776,7 @@ extension NotificationDetailsViewController
 
     // MARK: - Private Helpers
 
-    private func displayReaderWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
+    func displayReaderWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
         guard let postID = postID, let siteID = siteID else {
             throw DisplayError.MissingParameter
         }
@@ -785,7 +785,7 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(readerViewController, animated: true)
     }
 
-    private func displayCommentsWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
+    func displayCommentsWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
         guard let postID = postID, let siteID = siteID else {
             throw DisplayError.MissingParameter
         }
@@ -795,7 +795,7 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
-    private func displayStatsWithSiteID(siteID: NSNumber?) throws {
+    func displayStatsWithSiteID(siteID: NSNumber?) throws {
         guard let blog = blogWithBlogID(siteID) where blog.supports(.Stats) else {
             throw DisplayError.MissingParameter
         }
@@ -805,7 +805,7 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    private func displayFollowersWithSiteID(siteID: NSNumber?) throws {
+    func displayFollowersWithSiteID(siteID: NSNumber?) throws {
         guard let blog = blogWithBlogID(siteID) else {
             throw DisplayError.MissingParameter
         }
@@ -818,7 +818,7 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    private func displayStreamWithSiteID(siteID: NSNumber?) throws {
+    func displayStreamWithSiteID(siteID: NSNumber?) throws {
         guard let siteID = siteID else {
             throw DisplayError.MissingParameter
         }
@@ -827,13 +827,13 @@ extension NotificationDetailsViewController
         navigationController?.pushViewController(browseViewController, animated: true)
     }
 
-    private func displayWebViewWithURL(url: NSURL) {
+    func displayWebViewWithURL(url: NSURL) {
         let webViewController = WPWebViewController.authenticatedWebViewController(url)
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
     }
 
-    private func displayFullscreenImage(image: UIImage) {
+    func displayFullscreenImage(image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
         imageViewController.modalTransitionStyle = .CrossDissolve
         imageViewController.modalPresentationStyle = .FullScreen
