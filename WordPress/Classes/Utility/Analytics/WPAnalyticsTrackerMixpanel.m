@@ -435,11 +435,6 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_insights_screen_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_insights_screen_stats"];
             break;
-        case WPAnalyticsStatStatsOpenedWebVersion:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Opened Web Version"];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_web_version_of_stats"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_web_version_of_stats"];
-            break;
         case WPAnalyticsStatStatsPeriodDaysAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Days Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_days_screen_stats"];
