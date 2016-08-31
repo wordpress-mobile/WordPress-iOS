@@ -67,7 +67,7 @@ class PostService : LocalCoreDataService {
     ///
     /// - parameter blog: post will be create for this blog
     func makeDraftPost(for blog: Blog) -> Post? {
-        guard let post = self.makePost(for: blog) else { return nil }
+        guard let post = makePost(for: blog) else { return nil }
         post.remoteStatus = AbstractPostRemoteStatusLocal
         return post
     }
@@ -76,7 +76,7 @@ class PostService : LocalCoreDataService {
     ///
     /// - parameter blog: page will be created for this blog
     func makeDraftPage(for blog: Blog) -> Page? {
-        guard let page = self.makePage(for: blog) else { return nil }
+        guard let page = makePage(for: blog) else { return nil }
         page.remoteStatus = AbstractPostRemoteStatusLocal
         return page
     }
@@ -104,11 +104,11 @@ class PostService : LocalCoreDataService {
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
     func get(postID: Int, blog: Blog, success: (AbstractPost?) -> Void, failure: ((NSError?) -> Void)?) {
-        if let remote = self.remote(for:blog) {
+        if let remote = remote(for:blog) {
             let blogID = blog.objectID
             remote.getPostWithID(postID,
                                  success: { (remotePost: RemotePost?) -> Void in
-                                    self.managedObjectContext.performBlock({
+                                    self.managedObjectContext.performBlock() {
                                         guard let blogInContext = (try? self.managedObjectContext.existingObjectWithID(blogID)) as? Blog else { return }
 
                                         guard let remotePost = remotePost else {
@@ -127,13 +127,13 @@ class PostService : LocalCoreDataService {
                                         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
 
                                         success(post)
-                                    })
+                                    }
                 },
                                  failure: { (error: NSError?) in
                                     if let failure = failure {
-                                        self.managedObjectContext.performBlock({
+                                        self.managedObjectContext.performBlock {
                                             failure(error)
-                                        })
+                                        }
                                     }
                 }
             )
@@ -150,7 +150,7 @@ class PostService : LocalCoreDataService {
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
     func sync(type: PostType, blog: Blog, success: SuccessPostsBlock, failure: FailureBlock) {
-        self.sync(type, blog: blog, options: nil, success: success, failure: failure)
+        sync(type, blog: blog, options: nil, success: success, failure: failure)
     }
 
     ///  Sync an initial batch of posts from the specified blog
@@ -164,35 +164,35 @@ class PostService : LocalCoreDataService {
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
     func sync(type: PostType, blog: Blog, options: PostServiceSyncOptions?, success: SuccessPostsBlock?, failure: FailureBlock?) {
-        if let remote = self.remote(for:blog) {
+        if let remote = remote(for:blog) {
             let blogID = blog.objectID
-            let remoteOptions = self.remoteSyncParameters(for:remote, with:options)
+            let remoteOptions = remoteSyncParameters(for:remote, with:options)
             remote.getPostsOfType(type.rawValue, options: remoteOptions, success: { (remotePosts) in
-                self.managedObjectContext.performBlock({
-                    do {
-                        if let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID) as? Blog {
-                            self.merge(posts: remotePosts,
-                                type: type,
-                                statuses: options?.statuses,
-                                author: options?.authorID,
-                                blog: blogInContext,
-                                purge: options?.purgesLocalSync,
-                                completion: { posts in
-                                    if let success = success {
-                                        success(posts)
-                                    }
-                            })
+                    self.managedObjectContext.performBlock() {
+                        do {
+                            if let blogInContext = try self.managedObjectContext.existingObjectWithID(blogID) as? Blog {
+                                self.merge(posts: remotePosts,
+                                    type: type,
+                                    statuses: options?.statuses,
+                                    author: options?.authorID,
+                                    blog: blogInContext,
+                                    purge: options?.purgesLocalSync,
+                                    completion: { posts in
+                                        if let success = success {
+                                            success(posts)
+                                        }
+                                })
+                            }
+                        } catch let error as NSError? {
+                            DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
                         }
-                    } catch let error as NSError? {
-                        DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
                     }
-                })
                 }, failure: { (error) in
-                    self.managedObjectContext.performBlock({
+                    self.managedObjectContext.performBlock() {
                         if let failure = failure {
                             failure(error)
                         }
-                    })
+                    }
             })
         }
     }
@@ -208,13 +208,13 @@ class PostService : LocalCoreDataService {
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
     func upload(post: AbstractPost, success: (AbstractPost?) -> Void, failure: (NSError?) -> Void) {
-        let remote = self.remote(for: post.blog)
-        let remotePost = self.getRemotePost(withPost: post)
+        let remoteService = remote(for: post.blog)
+        let remotePost = getRemotePost(withPost: post)
         post.remoteStatus = AbstractPostRemoteStatusPushing
         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
         let postObjectID = post.objectID
         let successBlock: (RemotePost!) -> Void = { post in
-            self.managedObjectContext.performBlock({
+            self.managedObjectContext.performBlock() {
                 if var postInContext = (try? self.managedObjectContext.existingObjectWithID(postObjectID)) as? AbstractPost {
                     if let originalPost = postInContext.original where postInContext.isRevision() {
                         originalPost.applyRevision()
@@ -236,23 +236,23 @@ class PostService : LocalCoreDataService {
                 } else {
                     success(nil)
                 }
-            })
+            }
         }
 
         let failureBlock: (NSError?) -> Void = { error in
-            self.managedObjectContext.performBlock({
+            self.managedObjectContext.performBlock() {
                 if let postInContext = (try? self.managedObjectContext.existingObjectWithID(postObjectID)) as? AbstractPost {
                     postInContext.remoteStatus = AbstractPostRemoteStatusFailed
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext)
                 }
                 failure(error)
-            })
+            }
         }
 
         if post.postID?.longLongValue > 0 {
-            remote?.updatePost(remotePost, success: successBlock, failure: failureBlock)
+            remoteService?.updatePost(remotePost, success: successBlock, failure: failureBlock)
         } else {
-            remote?.createPost(remotePost, success: successBlock, failure: failureBlock)
+            remoteService?.createPost(remotePost, success: successBlock, failure: failureBlock)
         }
     }
 
@@ -274,7 +274,7 @@ class PostService : LocalCoreDataService {
         }
 
         if let original = post.original where post.isRevision() {
-            self.delete(original, success: deleteBlock, failure: failure)
+            delete(original, success: deleteBlock, failure: failure)
         } else {
             deleteBlock()
         }
@@ -288,7 +288,7 @@ class PostService : LocalCoreDataService {
     ///  - parameter failure: A failure block
     func trash(post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         if post.status == PostStatusTrash {
-            self.delete(post, success: success, failure: failure)
+            delete(post, success: success, failure: failure)
             return
         }
 
@@ -308,7 +308,7 @@ class PostService : LocalCoreDataService {
         }
 
         if post.isRevision() {
-            self.trash(post, success: trashBlock, failure: failure)
+            trash(post, success: trashBlock, failure: failure)
         } else {
             trashBlock()
         }
@@ -316,8 +316,8 @@ class PostService : LocalCoreDataService {
 
     private func trashRemotePost(withPost post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         let postObjectID = post.objectID
-        let remotePost = self.getRemotePost(withPost: post)
-        if let remote = self.remote(for: post.blog) {
+        let remotePost = getRemotePost(withPost: post)
+        if let remote = remote(for: post.blog) {
             remote.trashPost(remotePost, success: { remotePost in
                 do {
                     if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
@@ -365,7 +365,7 @@ class PostService : LocalCoreDataService {
         }
 
         if let original = post.original where post.isRevision() {
-            self.restore(original, success: restoreBlock, failure: failure)
+            restore(original, success: restoreBlock, failure: failure)
         } else {
             restoreBlock()
         }
@@ -373,7 +373,7 @@ class PostService : LocalCoreDataService {
 
     private func restoreRemotePost(withPost post: AbstractPost, success: () -> Void, failure: FailureBlock) {
         let postObjectID = post.objectID
-        let remotePost = self.getRemotePost(withPost: post)
+        let remotePost = getRemotePost(withPost: post)
         if let restorableStatus = post.restorableStatus {
             remotePost.status = restorableStatus
         } else {
@@ -384,7 +384,7 @@ class PostService : LocalCoreDataService {
             remotePost.status = PostStatusDraft
         }
 
-        if let remote = self.remote(for: post.blog) {
+        if let remote = remote(for: post.blog) {
             remote.restorePost(remotePost, success: { remotePost in
                 do {
                     if let postInContext = try self.managedObjectContext.existingObjectWithID(postObjectID) as? Post {
@@ -420,8 +420,8 @@ class PostService : LocalCoreDataService {
 
     private func merge(posts remotePosts: [RemotePost], type: PostType, statuses: [String]?, author authorID: NSNumber?, blog: Blog, purge: Bool?, completion: ([AbstractPost]) -> Void) {
         let posts: [AbstractPost] = remotePosts.flatMap { remotePost in
-            if let post = self.find(byID: remotePost.postID as Int, blog: blog) ?? self.make(PostType(rawValue:remotePost.type), blog: blog) {
-                self.update(post, with: remotePost)
+            if let post = find(byID: remotePost.postID as Int, blog: blog) ?? make(PostType(rawValue:remotePost.type), blog: blog) {
+                update(post, with: remotePost)
                 return post
             }
             return nil
@@ -501,7 +501,7 @@ class PostService : LocalCoreDataService {
         post.mt_excerpt = remotePost.excerpt
 
         if remotePost.postID != previousPostID {
-            self.updateComments(for:post)
+            updateComments(for:post)
         }
 
         if let pagePost = post as? Page {
@@ -512,12 +512,12 @@ class PostService : LocalCoreDataService {
             postPost.postFormat = remotePost.format
             postPost.tags = (remotePost.tags as! [String]).joinWithSeparator(",")
             postPost.postType = remotePost.type
-            self.update(postPost, withRemoteCategories:remotePost.categories as? [RemotePostCategory])
+            update(postPost, withRemoteCategories:remotePost.categories as? [RemotePostCategory])
 
             if let metadata = remotePost.metadata {
-                if let latitudeDictionary = self.dictionary(with:"geo_latitude", in:metadata),
-                    let longitudeDictionary = self.dictionary(with:"geo_longitude", in:metadata),
-                    let geoPublicDictionary = self.dictionary(with:"geo_public", in:metadata) {
+                if let latitudeDictionary = dictionary(with:"geo_latitude", in:metadata),
+                    let longitudeDictionary = dictionary(with:"geo_longitude", in:metadata),
+                    let geoPublicDictionary = dictionary(with:"geo_public", in:metadata) {
                     let latitude = Double(latitudeDictionary["value"] as! NSNumber)
                     let longitude = Double(longitudeDictionary["value"] as! NSNumber)
                     let coord = CLLocationCoordinate2DMake(latitude, longitude)
@@ -551,14 +551,14 @@ class PostService : LocalCoreDataService {
         } else if let postPost = post as? Post {
             remotePost.format = postPost.postFormat
             remotePost.tags = postPost.tags?.characters.split(",").map(String.init)
-            remotePost.categories = self.remoteCategories(for:postPost)
+            remotePost.categories = remoteCategories(for:postPost)
         }
 
         return remotePost
     }
 
     private func remoteCategories(for post: Post) -> [RemotePostCategory]? {
-        return post.categories?.map { self.remoteCategory(with: $0) }
+        return post.categories?.map { remoteCategory(with: $0) }
     }
 
     private func remoteCategory(with category: PostCategory) -> RemotePostCategory {
