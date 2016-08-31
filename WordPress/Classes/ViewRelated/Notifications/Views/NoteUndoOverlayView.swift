@@ -9,10 +9,10 @@ import WordPressShared
 /// we don't need to duplicate any of the mechanisms already available in NoteTableViewCell, such as
 /// custom cell separators and Height Calculation.
 ///
-@objc public class NoteUndoOverlayView : UIView
+class NoteUndoOverlayView: UIView
 {
     // MARK: - NSCoder
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = Style.noteUndoBackgroundColor
 

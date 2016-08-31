@@ -1,23 +1,23 @@
 import Foundation
 import WordPressShared
 
-@objc public class NoteBlockTableViewCell : WPTableViewCell
+class NoteBlockTableViewCell: WPTableViewCell
 {
     // MARK: - Public Properties
-    public var isBadge: Bool = false {
+    var isBadge: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    public var isLastRow: Bool = false {
+    var isLastRow: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    public var separatorsView = SeparatorsView()
+    var separatorsView = SeparatorsView()
 
     // MARK: - Public Methods
-    public func refreshSeparators() {
+    func refreshSeparators() {
         // Exception: Badges require no separators
         if isBadge {
             separatorsView.bottomVisible = false
@@ -30,21 +30,21 @@ import WordPressShared
 
     }
 
-    public func isLayoutCell() -> Bool {
+    func isLayoutCell() -> Bool {
         return self.dynamicType.layoutIdentifier() == reuseIdentifier
     }
 
-    public class func reuseIdentifier() -> String {
+    class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
 
-    public class func layoutIdentifier() -> String {
+    class func layoutIdentifier() -> String {
         return classNameWithoutNamespaces() + "-Layout"
     }
 
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         backgroundView = separatorsView
     }
