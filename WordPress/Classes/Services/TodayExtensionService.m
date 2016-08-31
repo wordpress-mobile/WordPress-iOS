@@ -48,9 +48,9 @@
                                        error:nil];
 }
 
-- (void)hideTodayWidgetIfNotConfigured
+- (void)hideTodayWidgetIfNotConfigured:(BOOL)hasAccount
 {
-    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    [[NCWidgetController widgetController] setHasContent:hasAccount forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (BOOL)widgetIsConfigured

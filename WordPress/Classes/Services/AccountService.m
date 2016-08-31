@@ -125,7 +125,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-
+    
+    [[WordPressAppDelegate sharedInstance] determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
