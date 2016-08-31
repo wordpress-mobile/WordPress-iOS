@@ -1002,8 +1002,13 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
 {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+
+    BOOL hasAccount = [accountService defaultWordPressComAccount] != nil;
+    
     TodayExtensionService *service = [TodayExtensionService new];
-    [service hideTodayWidgetIfNotConfigured];
+    [service hideTodayWidgetIfNotConfigured:hasAccount];
 }
 
 - (void)removeTodayWidgetConfiguration
