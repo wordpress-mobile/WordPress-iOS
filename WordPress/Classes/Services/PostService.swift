@@ -56,7 +56,8 @@ class PostService : LocalCoreDataService {
         postPost.postType = Post.typeDefaultIdentifier
 
         let postCategoryService = PostCategoryService(managedObjectContext:self.managedObjectContext)
-        if let category = postCategoryService.findWithBlogObjectID(blog.objectID, andCategoryID: (blog.settings?.defaultCategoryID)!) {
+        if let categoryID = blog.settings?.defaultCategoryID,
+            category = postCategoryService.findWithBlogObjectID(blog.objectID, andCategoryID: categoryID) {
             postPost.addCategoriesObject(category)
         }
 
@@ -103,13 +104,15 @@ class PostService : LocalCoreDataService {
     ///  - parameter blog:    The blog that has the post
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
-    func get(postID: Int, blog: Blog, success: (AbstractPost?) -> Void, failure: ((NSError?) -> Void)?) {
+    func get(postID: Int, blog: Blog, success: ((AbstractPost?) -> Void)?, failure: ((NSError?) -> Void)?) {
         if let remote = remote(for:blog) {
             let blogID = blog.objectID
             remote.getPostWithID(postID,
                                  success: { (remotePost: RemotePost?) -> Void in
                                     self.managedObjectContext.performBlock() {
-                                        guard let blogInContext = (try? self.managedObjectContext.existingObjectWithID(blogID)) as? Blog else { return }
+                                        guard let blogInContext = (try? self.managedObjectContext.existingObjectWithID(blogID)) as? Blog else {
+                                            return
+                                        }
 
                                         guard let remotePost = remotePost else {
                                             if let failure = failure {
@@ -126,7 +129,7 @@ class PostService : LocalCoreDataService {
                                         }
                                         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
 
-                                        success(post)
+                                        success?(post)
                                     }
                 },
                                  failure: { (error: NSError?) in
@@ -178,20 +181,16 @@ class PostService : LocalCoreDataService {
                                     blog: blogInContext,
                                     purge: options?.purgesLocalSync,
                                     completion: { posts in
-                                        if let success = success {
-                                            success(posts)
-                                        }
+                                        success?(posts)
                                 })
                             }
                         } catch let error as NSError? {
-                            DDLogSwift.logError(String("Could not retrieve blog in context with error: %@", error))
+                            DDLogSwift.logError("Could not retrieve blog in context with error: \(error)")
                         }
                     }
                 }, failure: { (error) in
                     self.managedObjectContext.performBlock() {
-                        if let failure = failure {
-                            failure(error)
-                        }
+                        failure?(error)
                     }
             })
         }
@@ -207,7 +206,7 @@ class PostService : LocalCoreDataService {
     ///  - parameter post:    The post or page to upload
     ///  - parameter success: A success block
     ///  - parameter failure: A failure block
-    func upload(post: AbstractPost, success: (AbstractPost?) -> Void, failure: (NSError?) -> Void) {
+    func upload(post: AbstractPost, success: ((AbstractPost?) -> Void)?, failure: (NSError?) -> Void) {
         let remoteService = remote(for: post.blog)
         let remotePost = getRemotePost(withPost: post)
         post.remoteStatus = AbstractPostRemoteStatusPushing
@@ -231,10 +230,10 @@ class PostService : LocalCoreDataService {
                     }
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext)
 
-                    success(postInContext)
+                    success?(postInContext)
 
                 } else {
-                    success(nil)
+                    success?(nil)
                 }
             }
         }
@@ -329,7 +328,7 @@ class PostService : LocalCoreDataService {
                         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
                     }
                 } catch let error as NSError? {
-                    DDLogSwift.logError(String("%@", error))
+                    DDLogSwift.logError("\(error)")
                 }
                 success()
                 }, failure: { error in
@@ -338,7 +337,7 @@ class PostService : LocalCoreDataService {
                             postInContext.restorableStatus = nil
                         }
                     } catch let error as NSError? {
-                        DDLogSwift.logError(String("%@", error))
+                        DDLogSwift.logError("\(error)")
                         failure(error)
                         return
                     }
@@ -393,7 +392,7 @@ class PostService : LocalCoreDataService {
                         ContextManager.sharedInstance().saveContext(self.managedObjectContext)
                     }
                 } catch let error as NSError? {
-                    DDLogSwift.logError(String("%@", error))
+                    DDLogSwift.logError("\(error)")
                 }
                 success()
                 }, failure: { error in
@@ -403,7 +402,7 @@ class PostService : LocalCoreDataService {
                             ContextManager.sharedInstance().saveContext(self.managedObjectContext)
                         }
                     } catch let error as NSError? {
-                        DDLogSwift.logError(String("%@", error))
+                        DDLogSwift.logError("\(error)")
                         failure(error)
                         return
                     }
@@ -455,7 +454,7 @@ class PostService : LocalCoreDataService {
                     }
                 }
             } catch let error as NSError? {
-                DDLogSwift.logError(String("Error fetching existing posts for purging: %@", error))
+                DDLogSwift.logError("Error fetching existing posts for purging: \(error)")
             }
         }
 
