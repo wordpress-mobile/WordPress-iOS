@@ -374,6 +374,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
+        case WPAnalyticsStatMeTabAccessed:
+            eventName = @"me_tab_accessed";
+            break;
+        case WPAnalyticsStatMySitesTabAccessed:
+            eventName = @"my_site_tab_accessed";
+            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -743,9 +749,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatStatsPeriodYearsAccessed:
             eventName = @"stats_period_accessed";
             eventProperties = @{ @"period" : @"years" };
-            break;
-        case WPAnalyticsStatStatsOpenedWebVersion:
-            eventName = @"stats_opened_web_version_accessed";
             break;
         case WPAnalyticsStatStatsScrolledToBottom:
             eventName = @"stats_scrolled_to_bottom";
