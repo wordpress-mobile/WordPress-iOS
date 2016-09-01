@@ -864,6 +864,8 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
 }
 
+#pragma mark - WPSplitViewControllerDetailProvider
+
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
     return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
