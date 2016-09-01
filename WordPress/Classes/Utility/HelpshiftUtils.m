@@ -35,7 +35,12 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [[HelpshiftSupport sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
     [HelpshiftCore installForApiKey:[ApiCredentials helpshiftAPIKey] domainName:[ApiCredentials helpshiftDomainName] appID:[ApiCredentials helpshiftAppId]];
-
+    
+    // Lets enable Helpshift by default on startup because the time to get data back from Mixpanel
+    // can result in users who first launch the app being unable to contact us.
+    [[HelpshiftUtils sharedInstance] enableHelpshift];
+    
+    
     // We want to make sure Mixpanel updates the remote variable before we check for the flag
     [[HelpshiftUtils sharedInstance] performSelector:@selector(checkIfHelpshiftShouldBeEnabled)
                                           withObject:nil
@@ -46,31 +51,45 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
-
+    
     BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
-
+    
     if (userHasUsedHelpshift) {
         [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
         return;
     }
-
-    if (MPTweakValue(@"Helpshift Enabled", NO)) {
-        DDLogInfo(@"Helpshift Enabled");
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
-
-        // if the Helpshift is enabled we want to refresh unread count, since the check happens with a delay
-        [HelpshiftUtils refreshUnreadNotificationCount];
+    
+    if (MPTweakValue(@"Helpshift Enabled", YES)) {
+        [self enableHelpshift];
     } else {
-        DDLogInfo(@"Helpshift Disabled");
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
+        [self disableHelpshiftIfNotAlreadyUsed];
     }
+}
+
+- (void)enableHelpshift
+{
+    DDLogInfo(@"Helpshift Enabled");
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
+    [defaults synchronize];
+    
+    // if the Helpshift is enabled we want to refresh unread count, since the check happens with a delay
+    [HelpshiftUtils refreshUnreadNotificationCount];
+}
+
+- (void)disableHelpshiftIfNotAlreadyUsed
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftWasUsed]) {
+        return;
+    }
+    
+    DDLogInfo(@"Helpshift Disabled");
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
+    [defaults synchronize];
 }
 
 + (BOOL)isHelpshiftEnabled

@@ -846,13 +846,21 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSharingPublicizeConnectionAvailableToAllChanged:
             eventName = @"publicize_connection_availability_changed";
             break;
-
-            // to be implemented with Signin refactor
         case WPAnalyticsStatLoginMagicLinkExited:
+            eventName = @"login_magic_link_exited";
+            break;
         case WPAnalyticsStatLoginMagicLinkFailed:
+            eventName = @"login_magic_link_failed";
+            break;
         case WPAnalyticsStatLoginMagicLinkOpened:
+            eventName = @"login_magic_link_opened";
+            break;
         case WPAnalyticsStatLoginMagicLinkRequested:
+            eventName = @"login_magic_link_requested";
+            break;
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+            eventName = @"login_magic_link_succeeded";
+            break;
 
             // to be implemented
         case WPAnalyticsStatDefaultAccountChanged:

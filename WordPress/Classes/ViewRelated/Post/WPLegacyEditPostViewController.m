@@ -59,7 +59,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    BOOL dontRestoreIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
+    BOOL dontRestoreIfNewEditorIsEnabled = [[EditorSettings new] visualEditorEnabled];
     
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;

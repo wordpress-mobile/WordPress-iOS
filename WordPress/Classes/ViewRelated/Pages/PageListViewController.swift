@@ -319,9 +319,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     override func createPost() {
         let navController : UINavigationController
 
-        if EditPageViewController.isNewEditorEnabled() {
+        let editorSettings = EditorSettings()
+        if editorSettings.visualEditorEnabled {
             let postViewController: UIViewController
-            if WPPostViewController.isNativeEditorEnabled(),
+            if editorSettings.nativeEditorEnabled {
                 let page = PostService.makeDraftPageInMainContext(blog: blog) {
                 postViewController = AztecPostViewController(post:page)
                 navController = UINavigationController(rootViewController: postViewController)
@@ -350,9 +351,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     private func editPage(apost: AbstractPost) {
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
 
-        if EditPageViewController.isNewEditorEnabled() {
+        let editorSettings = EditorSettings()
+        if editorSettings.visualEditorEnabled {
             let pageViewController: UIViewController
-            if WPPostViewController.isNativeEditorEnabled() {
+            if editorSettings.nativeEditorEnabled {
                 pageViewController = AztecPostViewController(post: apost)
             } else {
                 pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)

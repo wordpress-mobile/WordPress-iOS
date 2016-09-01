@@ -4,36 +4,36 @@ import WordPressShared.WPStyleGuide
 //  NOTE:
 //  ReplyBezierView is a helper class, used to render the ReplyTextView bubble
 //
-public class ReplyBezierView : UIView
+class ReplyBezierView : UIView
 {
-    public var outerColor = WPStyleGuide.Reply.backgroundColor {
+    var outerColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bezierColor = WPStyleGuide.Reply.separatorColor {
+    var bezierColor = WPStyleGuide.Reply.separatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bezierRadius = CGFloat(5) {
+    var bezierRadius = CGFloat(5) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
+    var insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }
     }
 
     // MARK: - Initializers
-    public required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupView()
     }
 
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
@@ -44,7 +44,7 @@ public class ReplyBezierView : UIView
     }
 
     // MARK: - View Methods
-    public override func drawRect(rect: CGRect) {
+    override func drawRect(rect: CGRect) {
         // Draw the background, while clipping a rounded rect with the given insets
         var bezierRect          = bounds
         bezierRect.origin.x     += insets.left
