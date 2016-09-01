@@ -627,29 +627,29 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count
 
         postService.sync(postTypeToSync(),
-                              blog: blog,
-                              options: options,
-                              success: {[weak self] posts in
-                                guard let strongSelf = self else {
-                                        return
-                                }
-                                
-                                if posts.count > 0 {
-                                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
-                                }
-                                
-                                success?(hasMore: filter.hasMore)
+                         blog: blog,
+                         options: options,
+                         success: {[weak self] posts in
+                            guard let strongSelf = self else {
+                                return
+                            }
+
+                            if posts.count > 0 {
+                                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                            }
+
+                            success?(hasMore: filter.hasMore)
             },
-                              failure: {[weak self] (error: NSError?) -> () in
-                                
-                                guard let strongSelf = self,
-                                    let error = error else {
-                                        return
-                                }
-                                
-                                failure?(error: error)
-                                
-                                strongSelf.handleSyncFailure(error)
+                         failure: {[weak self] (error: NSError?) -> () in
+
+                            guard let strongSelf = self,
+                                let error = error else {
+                                    return
+                            }
+
+                            failure?(error: error)
+
+                            strongSelf.handleSyncFailure(error)
             })
     }
 
@@ -784,13 +784,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        
+
         postService.upload(apost, success: {_ in }) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
-            
+
             if let error = error {
                 if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
                     strongSelf.promptForPassword()

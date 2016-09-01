@@ -149,7 +149,7 @@ class Post: AbstractPost {
     override func hasTags() -> Bool {
         return (tags?.trim().characters.count > 0) ?? false
     }
-    
+
     override class func entityName() -> String {
         return "Post"
     }

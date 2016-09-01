@@ -23,7 +23,7 @@ class PostListFilterSettings: NSObject {
         self.blog = blog
         self.postType = postType
     }
-    
+
     @objc
     convenience init(blog: Blog, postType: PostServiceType) {
         let postType = PostService.PostType(rawValue: postType as String) ?? .post
