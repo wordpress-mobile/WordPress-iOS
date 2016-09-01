@@ -318,28 +318,16 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSNumber *siteId    = defaultBlog.dotComID;
         NSString *blogName  = defaultBlog.settings.name;
         
-        // Widget Configuration
-        TodayExtensionService *service = [TodayExtensionService new];
+        BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
+        NSString *oauth2Token       = defaultAccount.authToken;
         
-        if ([service widgetIsConfigured] == false) {
-            BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-            NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
-            NSString *oauth2Token       = defaultAccount.authToken;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                TodayExtensionService *service = [TodayExtensionService new];
-                [service configureTodayWidgetWithSiteID:siteId
-                                               blogName:blogName
-                                           siteTimeZone:timeZone
-                                         andOAuth2Token:oauth2Token];
-            });
-        }
-        
-        // Share Extension Configuration
         dispatch_async(dispatch_get_main_queue(), ^{
-            [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
-            [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
-            [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
+            TodayExtensionService *service = [TodayExtensionService new];
+            [service configureTodayWidgetWithSiteID:siteId
+                                           blogName:blogName
+                                       siteTimeZone:timeZone
+                                     andOAuth2Token:oauth2Token];
         });
     }
 }
