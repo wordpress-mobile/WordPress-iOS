@@ -64,7 +64,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
-NSInteger const WPStatsTodayWidgetBadRequestErrorCode               = -1011;
 
 /// iTunes Constants
 ///

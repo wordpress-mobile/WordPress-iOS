@@ -52,7 +52,6 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
-extern NSInteger const WPStatsTodayWidgetBadRequestErrorCode;
 
 /// iTunes Constants
 ///
