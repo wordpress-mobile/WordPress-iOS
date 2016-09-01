@@ -26,6 +26,8 @@ static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
+NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
+
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
 
@@ -106,10 +108,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSArray *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @end
 
 @implementation BlogDetailsViewController
+
+#pragma mark - State Restoration
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
@@ -130,12 +135,47 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return nil;
     }
 
+    // If there's already a blog details view controller for this blog in the primary
+    // navigation stack, we'll return that instead of creating a new one.
+    UISplitViewController *splitViewController = [[WPTabBarController sharedInstance] blogListSplitViewController];
+    UINavigationController *navigationController = splitViewController.viewControllers.firstObject;
+    if (navigationController && [navigationController isKindOfClass:[UINavigationController class]]) {
+        BlogDetailsViewController *topViewController = (BlogDetailsViewController *)navigationController.topViewController;
+        if ([topViewController isKindOfClass:[BlogDetailsViewController class]] && topViewController.blog == restoredBlog) {
+            return topViewController;
+        }
+    }
+
     BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
 
     return viewController;
 }
 
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
+
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    UIViewController *detailViewController = splitViewController.topDetailViewController;
+    if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
+        // If the current detail view controller supports state restoration, store the current selection
+        [coder encodeObject:self.selectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
+    }
+
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    NSIndexPath *indexPath = [coder decodeObjectForKey:WPBlogDetailsSelectedIndexPathKey];
+    if (indexPath) {
+        self.selectedIndexPath = indexPath;
+    }
+
+    [super decodeRestorableStateWithCoder:coder];
+}
 
 #pragma mark = Lifecycle Methods
 
@@ -152,12 +192,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         self.restorationClass = [self class];
     }
     return self;
-}
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
-    [super encodeRestorableStateWithCoder:coder];
 }
 
 - (void)viewDidLoad
@@ -200,6 +234,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self animateDeselectionInteractively];
+        self.selectedIndexPath = nil;
     }
 
     [self.headerView setBlog:self.blog];
@@ -259,20 +294,39 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
+#pragma mark - Properties
+
+- (NSIndexPath *)selectedIndexPath
+{
+    if (!_selectedIndexPath) {
+        _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }
+
+    return _selectedIndexPath;
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
 {
     // First, we'll grab the appropriate index path so we can reselect it
     // after reloading the table
-    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow ?: [NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *selectedIndexPath = self.selectedIndexPath;
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
 
     if (![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+        // Try and avoid scrolling if not necessary
+        CGRect cellRect = [self.tableView rectForRowAtIndexPath:selectedIndexPath];
+        BOOL cellIsNotFullyVisible = !CGRectContainsRect(self.tableView.bounds, cellRect);
+        UITableViewScrollPosition scrollPosition = (cellIsNotFullyVisible) ? UITableViewScrollPositionMiddle : UITableViewScrollPositionNone;
+
+        [self.tableView selectRowAtIndexPath:selectedIndexPath
+                                    animated:NO
+                              scrollPosition:scrollPosition];
     }
 }
 
@@ -493,6 +547,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.selectedIndexPath = indexPath;
+
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
@@ -718,6 +774,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;
+
     return statsView;
 }
 

@@ -8,6 +8,9 @@ import WordPressShared
 
 class WPSplitViewController: UISplitViewController {
 
+    static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
+    static let detailNavigationStackModifiedRestorationKey = "WPSplitViewDetailNavigationStackModifiedRestorationKey"
+
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .Default {
         didSet {
             updateSplitViewForPrimaryColumnWidth()
@@ -52,6 +55,18 @@ class WPSplitViewController: UISplitViewController {
         preferredDisplayMode = .AllVisible
 
         extendedLayoutIncludesOpaqueBars = true
+    }
+
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        super.encodeRestorableStateWithCoder(coder)
+
+        coder.encodeBool(detailNavigationStackHasBeenModified, forKey: self.dynamicType.detailNavigationStackModifiedRestorationKey)
+    }
+
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        super.decodeRestorableStateWithCoder(coder)
+
+        detailNavigationStackHasBeenModified = coder.decodeBoolForKey(self.dynamicType.detailNavigationStackModifiedRestorationKey)
     }
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -220,6 +235,7 @@ class WPSplitViewController: UISplitViewController {
             navigationController = UINavigationController(rootViewController: viewController)
         }
 
+        navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
         navigationController.delegate = self
         return navigationController
     }
@@ -277,6 +293,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         } else {
             let navigationController = UINavigationController()
             navigationController.delegate = self
+            navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
             navigationController.viewControllers = viewControllers
 
             return navigationController
