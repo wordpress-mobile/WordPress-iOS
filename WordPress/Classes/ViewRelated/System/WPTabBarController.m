@@ -19,7 +19,13 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
+
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+
+static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
+static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
+
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
@@ -297,6 +303,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_blogListSplitViewController) {
         _blogListSplitViewController = [WPSplitViewController new];
+        _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
         _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
@@ -313,6 +320,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
+        _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
         _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
