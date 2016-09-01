@@ -7,7 +7,7 @@
 
 static NSInteger ActionBarMoreButtonIndex = 999;
 static NSInteger const ActionBarMaxNumButtonsHorizontallyCompact = 3;
-static NSInteger const ActionBarMaxNumButtonsHorizontallyRegular = 6;
+static NSInteger const ActionBarMaxNumButtonsHorizontallyRegular = 4;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
