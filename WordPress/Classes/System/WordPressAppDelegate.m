@@ -422,9 +422,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Configure Extensions
     [self setupWordPressExtensions];
     
-    // Configure Today Widget
-    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
-    
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
 
@@ -999,17 +996,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 
 #pragma mark - Today Extension
-
-- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    BOOL hasAccount = [accountService defaultWordPressComAccount] != nil;
-    
-    TodayExtensionService *service = [TodayExtensionService new];
-    [service hideTodayWidgetIfNotConfigured:hasAccount];
-}
 
 - (void)removeTodayWidgetConfiguration
 {

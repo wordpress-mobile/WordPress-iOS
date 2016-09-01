@@ -48,11 +48,6 @@
                                        error:nil];
 }
 
-- (void)hideTodayWidgetIfNotConfigured:(BOOL)hasAccount
-{
-    [[NCWidgetController widgetController] setHasContent:hasAccount forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-}
-
 - (BOOL)widgetIsConfigured
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
