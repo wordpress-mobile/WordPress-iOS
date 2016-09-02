@@ -5,6 +5,7 @@ import Gridicons
 
 class AztecPostViewController: UIViewController {
     func cancelEditingAction(sender: AnyObject) {
+        cancelEditing()
     }
 
     static let margin = CGFloat(20)
@@ -125,9 +126,11 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-                                                                target: self,
-                                                                action: #selector(AztecPostViewController.closeAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
+            style: .Done,
+            target: self,
+            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
         view.backgroundColor = UIColor.whiteColor()
     }
 
@@ -464,6 +467,76 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
         // Insert Image + Reclaim Focus
         insertImage(image)
         richTextView.becomeFirstResponder()
+    }
+}
+
+// MARK: Cancel/Dismiss Logic
+extension AztecPostViewController {
+    func cancelEditing() {
+
+        if post.canSave() && post.hasUnsavedChanges() {
+            showPostHasChangesAlert()
+        } else {
+            stopEditing()
+//            [self discardChangesAndUpdateGUI];
+        }
+    }
+
+    func stopEditing() {
+        if titleTextField.isFirstResponder() {
+            titleTextField.resignFirstResponder()
+        }
+
+        view.endEditing(true)
+    }
+
+    func showPostHasChangesAlert() {
+        let alertController = UIAlertController(
+            title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
+            message: nil,
+            preferredStyle: .ActionSheet)
+
+        // Button: Keep editing
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
+
+        // Button: Discard
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+            self.discardChanges()
+            // dismiss edit view
+        }
+
+        // Button: Save Draft/Update Draft
+        if post.hasLocalChanges() {
+            if post.hasRemote() {
+                // The post is a local draft or an autosaved draft: Discard or Save
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+                    // Save Draft
+                }
+            } else if post.status == PostStatusDraft {
+                // The post was already a draft
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                    // Save Draft
+                }
+            }
+        }
+
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    func discardChanges() {
+        guard let context = post.managedObjectContext, originalPost = post.original else {
+            return
+        }
+
+        post = originalPost
+        post.deleteRevision()
+
+        // TODO: if we own the post, remove it
+        // post.remove()
+        // post = nil
+
+        ContextManager.sharedInstance().saveContext(context)
     }
 }
 
