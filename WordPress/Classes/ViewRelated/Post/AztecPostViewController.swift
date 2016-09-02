@@ -3,10 +3,8 @@ import UIKit
 import Aztec
 import Gridicons
 
-class AztecPostViewController: UIViewController
-{
-    func closeAction(sender: AnyObject) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+class AztecPostViewController: UIViewController {
+    func cancelEditingAction(sender: AnyObject) {
     }
 
     static let margin = CGFloat(20)
@@ -274,21 +272,18 @@ class AztecPostViewController: UIViewController
 }
 
 
-extension AztecPostViewController : UITextViewDelegate
-{
+extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(textView: UITextView) {
         updateFormatBar()
     }
 }
 
 
-extension AztecPostViewController : UITextFieldDelegate
-{
+extension AztecPostViewController : UITextFieldDelegate {
 
 }
 
-extension AztecPostViewController
-{
+extension AztecPostViewController {
     enum EditionMode {
         case RichText
         case HTML
@@ -452,8 +447,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 }
 
 
-extension AztecPostViewController: UINavigationControllerDelegate
-{
+extension AztecPostViewController: UINavigationControllerDelegate {
 
 }
 
@@ -474,8 +468,7 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
 }
 
 
-private extension AztecPostViewController
-{
+private extension AztecPostViewController {
     func insertImage(image: UIImage) {
         let index = richTextView.positionForCursor()
         editor.insertImage(image, index: index)
