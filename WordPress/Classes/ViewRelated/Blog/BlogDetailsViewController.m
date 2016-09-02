@@ -256,25 +256,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
 {
+    NSIndexPath *indexPath = [self indexPathForSubsection:section];
+
     switch (section) {
         case BlogDetailsSubsectionStats:
-            [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
+            [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
-                                  scrollPosition:UITableViewScrollPositionNone];
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showStats];
             break;
         case BlogDetailsSubsectionPosts:
-            [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
+            [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
-                                  scrollPosition:UITableViewScrollPositionNone];
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showPostList];
             break;
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
             if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
-                [self.tableView selectRowAtIndexPath:[self indexPathForSubsection:section]
+                [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
-                                      scrollPosition:UITableViewScrollPositionNone];
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
                 [self showThemes];
             }
             break;
@@ -319,15 +321,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
 
-        // Try and avoid scrolling if not necessary
-        CGRect cellRect = [self.tableView rectForRowAtIndexPath:selectedIndexPath];
-        BOOL cellIsNotFullyVisible = !CGRectContainsRect(self.tableView.bounds, cellRect);
-        UITableViewScrollPosition scrollPosition = (cellIsNotFullyVisible) ? UITableViewScrollPositionMiddle : UITableViewScrollPositionNone;
-
         [self.tableView selectRowAtIndexPath:selectedIndexPath
                                     animated:NO
-                              scrollPosition:scrollPosition];
+                              scrollPosition:[self optimumScrollPositionForIndexPath:selectedIndexPath]];
     }
+}
+
+- (UITableViewScrollPosition)optimumScrollPositionForIndexPath:(NSIndexPath *)indexPath
+{
+    // Try and avoid scrolling if not necessary
+    CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
+    BOOL cellIsNotFullyVisible = !CGRectContainsRect(self.tableView.bounds, cellRect);
+    return (cellIsNotFullyVisible) ? UITableViewScrollPositionMiddle : UITableViewScrollPositionNone;
 }
 
 - (NSString *)adminRowTitle
