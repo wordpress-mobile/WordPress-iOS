@@ -263,12 +263,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     switch (section) {
         case BlogDetailsSubsectionStats:
+            self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showStats];
             break;
         case BlogDetailsSubsectionPosts:
+            self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
@@ -277,6 +279,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
             if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+                self.restorableSelectedIndexPath = indexPath;
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
                                       scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
