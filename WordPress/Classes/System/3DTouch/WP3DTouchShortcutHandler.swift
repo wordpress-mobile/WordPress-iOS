@@ -12,8 +12,8 @@ public class WP3DTouchShortcutHandler: NSObject
 
         init?(fullType: String) {
             guard let last = fullType.componentsSeparatedByString(".").last else {
-                        return nil
-                    }
+                return nil
+            }
 
             self.init(rawValue: last)
         }
@@ -26,14 +26,13 @@ public class WP3DTouchShortcutHandler: NSObject
     static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
     public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        var handled = false
-
         guard let shortCutType = shortcutItem.type as String? else {
-                    return false
-                }
+            return false
+        }
 
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
+        var handled = false
         switch shortCutType {
             case ShortcutIdentifier.LogIn.type:
                 WPAnalytics.track(.ShortcutLogIn)
