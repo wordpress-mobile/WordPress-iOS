@@ -117,8 +117,11 @@ import WordPressShared
         applyOpaqueBackgroundColors()
         createAvatarTapGestureRecognizer()
         setupAttributionView()
-    }
 
+        // Layout the stackView if needed since layout may be a bit different than
+        // what was expected from the nib layout.
+        stackView.layoutIfNeeded()
+    }
 
     /**
         Ignore taps in the card margins
@@ -193,8 +196,6 @@ import WordPressShared
         configureWordCount()
         configureActionButtons()
         configureActionViewHeightIfNeeded()
-
-        stackView.layoutIfNeeded()
     }
 
     private func configureHeader() {
