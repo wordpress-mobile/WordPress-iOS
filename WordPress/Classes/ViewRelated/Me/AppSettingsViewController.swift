@@ -52,19 +52,20 @@ public class AppSettingsViewController: UITableViewController {
             onChange: mediaRemoveLocationChanged()
         )
 
+        let editorSettings = EditorSettings()
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
-            value: WPPostViewController.isNewEditorEnabled(),
+            value: editorSettings.visualEditorEnabled,
             onChange: visualEditorChanged()
         )
         editorRows.append(visualEditor)
 
-        if FeatureFlag.NativeEditor.enabled && WPPostViewController.isNewEditorEnabled() {
+        if FeatureFlag.NativeEditor.enabled && editorSettings.visualEditorEnabled {
             let nativeEditor = SwitchRow(
                 title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
-                value: WPPostViewController.isNativeEditorEnabled(),
+                value: editorSettings.nativeEditorEnabled,
                 onChange: nativeEditorChanged()
             )
             editorRows.append(nativeEditor)
@@ -123,7 +124,7 @@ public class AppSettingsViewController: UITableViewController {
             } else {
                 WPAnalytics.track(.EditorToggledOff)
             }
-            WPPostViewController.setNewEditorEnabled(enabled)
+            EditorSettings().visualEditorEnabled = enabled
             self.handler.viewModel = self.tableViewModel()
         }
     }
@@ -131,7 +132,7 @@ public class AppSettingsViewController: UITableViewController {
     func nativeEditorChanged() -> Bool -> Void {
         return {
             enabled in
-            WPPostViewController.setNativeEditorEnabled(enabled)
+            EditorSettings().nativeEditorEnabled = enabled
         }
     }
 

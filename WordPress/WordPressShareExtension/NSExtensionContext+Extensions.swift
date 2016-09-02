@@ -33,6 +33,12 @@ extension NSExtensionContext {
         }
     }
 
+    /// Verifies if the Context contains an Image Attachment, or not
+    ///
+    func containsMediaAttachment() -> Bool {
+        return firstItemProviderConformingToTypeIdentifier(Identifier.PublicImage) != nil
+    }
+
 
 
     // MARK: - Private
