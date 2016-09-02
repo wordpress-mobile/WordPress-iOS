@@ -14,7 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) MenuItem *item;
 
 /**
- Toggled which sourceView should display based on the itemType.
+ Toggle whether or not the item type header view is hidden.
+ */
+- (void)setHeaderViewHidden:(BOOL)hidden;
+
+/**
+ Toggle which sourceView should display based on the itemType.
  */
 - (void)updateSourceSelectionForItemType:(NSString *)itemType;
 
