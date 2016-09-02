@@ -374,6 +374,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatMenusSavedMenu:
             eventName = @"menus_saved_menu";
             break;
+        case WPAnalyticsStatMeTabAccessed:
+            eventName = @"me_tab_accessed";
+            break;
+        case WPAnalyticsStatMySitesTabAccessed:
+            eventName = @"my_site_tab_accessed";
+            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -744,9 +750,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"stats_period_accessed";
             eventProperties = @{ @"period" : @"years" };
             break;
-        case WPAnalyticsStatStatsOpenedWebVersion:
-            eventName = @"stats_opened_web_version_accessed";
-            break;
         case WPAnalyticsStatStatsScrolledToBottom:
             eventName = @"stats_scrolled_to_bottom";
             break;
@@ -846,13 +849,21 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSharingPublicizeConnectionAvailableToAllChanged:
             eventName = @"publicize_connection_availability_changed";
             break;
-
-            // to be implemented with Signin refactor
         case WPAnalyticsStatLoginMagicLinkExited:
+            eventName = @"login_magic_link_exited";
+            break;
         case WPAnalyticsStatLoginMagicLinkFailed:
+            eventName = @"login_magic_link_failed";
+            break;
         case WPAnalyticsStatLoginMagicLinkOpened:
+            eventName = @"login_magic_link_opened";
+            break;
         case WPAnalyticsStatLoginMagicLinkRequested:
+            eventName = @"login_magic_link_requested";
+            break;
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+            eventName = @"login_magic_link_succeeded";
+            break;
 
             // to be implemented
         case WPAnalyticsStatDefaultAccountChanged:
