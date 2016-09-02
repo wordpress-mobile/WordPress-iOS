@@ -19,9 +19,9 @@ class AztecPostViewController: UIViewController
     private(set) lazy var richTextView: UITextView = {
         let tv = AztecVisualEditor.createTextView()
 
+        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
-        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         let toolbar = self.createToolbar()
         toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
         toolbar.formatter = self
@@ -109,6 +109,8 @@ class AztecPostViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        WPFontManager.loadMerriweatherFontFamily()
+
         // lazy load the editor
         _ = editor
 
@@ -120,8 +122,11 @@ class AztecPostViewController: UIViewController
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
-        editor.setHTML(post.content ?? "")
         titleTextField.text = post.postTitle
+
+        if let content = post.content {
+            editor.setHTML(content)
+        }
 
         view.setNeedsUpdateConstraints()
         configureNavigationBar()
@@ -215,29 +220,27 @@ class AztecPostViewController: UIViewController
     func keyboardWillShow(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
-            let _: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
             else {
                 return
         }
 
-        htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-
-        richTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        richTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
 
     func keyboardWillHide(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
-            let _: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
             else {
                 return
         }
 
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    private func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
         htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
 
