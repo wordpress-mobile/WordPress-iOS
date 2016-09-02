@@ -134,30 +134,6 @@ import Foundation
     }
 
 
-    // MARK: - Autolayout Helpers
-    public var preferredMaxLayoutWidth: CGFloat = 0 {
-        didSet {
-            invalidateIntrinsicContentSize()
-        }
-    }
-
-    public override func intrinsicContentSize() -> CGSize {
-        let width: CGFloat = (preferredMaxLayoutWidth != 0) ? preferredMaxLayoutWidth : frame.width
-        let size = CGSize(width: width, height: CGFloat.max)
-        return sizeThatFits(size)
-    }
-
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        // Fix: Let's add 1pt extra size. There are few scenarios in which text gets clipped by 1 point
-        let bottomPadding   = CGFloat(1)
-        let maxWidth        = (preferredMaxLayoutWidth != 0) ? min(preferredMaxLayoutWidth, size.width) : size.width
-        let maxSize         = CGSize(width: maxWidth, height: CGFloat.max)
-        let requiredSize    = textView!.sizeThatFits(maxSize)
-        let roundedSize     = CGSize(width: ceil(requiredSize.width), height: ceil(requiredSize.height) + bottomPadding)
-
-        return roundedSize
-    }
-
     // MARK: - Private Methods
     private func setupSubviews() {
         gesturesRecognizer                                  = UITapGestureRecognizer()
@@ -170,6 +146,7 @@ import Foundation
         textView.textContainer.lineFragmentPadding          = 0
         textView.layoutManager.allowsNonContiguousLayout    = false
         textView.editable                                   = editable
+        textView.scrollEnabled                              = false
         textView.dataDetectorTypes                          = dataDetectorTypes
         textView.delegate                                   = self
         textView.gestureRecognizers                         = [gesturesRecognizer]
@@ -182,7 +159,10 @@ import Foundation
 
     private func renderAttachments() {
         // Nuke old attachments
-        _ = attachmentViews.map { $0.removeFromSuperview() }
+        for view in attachmentViews {
+            view.removeFromSuperview()
+        }
+
         attachmentViews.removeAll(keepCapacity: false)
 
         // Proceed only if needed

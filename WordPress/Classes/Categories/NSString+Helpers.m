@@ -198,15 +198,27 @@ static NSString *const Ellipsis =  @"\u2026";
 
     static NSRegularExpression *smiliesRegex;
     static NSRegularExpression *coreEmojiImgRegex;
+    static NSRegularExpression *wpcomSvgSmilies;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
         smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
         coreEmojiImgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?images/core/emoji/[^/]+/.+?.png['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        wpcomSvgSmilies = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-content/mu-plugins/wpcom-smileys/(.+?).svg['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
 
     });
 
     NSArray *matches = [smiliesRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        NSRange range = [match rangeAtIndex:1];
+        NSString *icon = [result substringWithRange:range];
+        NSString *replacement = [replacements objectForKey:icon];
+        if (replacement) {
+            [result replaceCharactersInRange:[match range] withString:replacement];
+        }
+    }
+
+    matches = [wpcomSvgSmilies matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSRange range = [match rangeAtIndex:1];
         NSString *icon = [result substringWithRange:range];
