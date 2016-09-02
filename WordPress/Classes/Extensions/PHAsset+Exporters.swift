@@ -46,6 +46,16 @@ typealias ErrorHandler = (error: NSError) -> ()
                               successHandler: SuccessHandler,
                               errorHandler: ErrorHandler)
 
+    /**
+     Export the original asset without any modification to the specified URL
+
+     - parameter toURL:          the location to export to
+     - parameter successHandler: A handler that will be invoked on success with the resulting resolution of the image.
+     - parameter errorHandler:   A handler that will be invoked when some error occurs.
+
+     */
+    func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler)
+
     func originalUTI() -> String?
 
     /// The MediaType for the asset
@@ -148,6 +158,30 @@ extension PHAsset: ExportableAsset {
                                      options: options)
         { (image, info) in
             completion(image, info)
+        }
+    }
+
+    func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler) {
+        let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
+        let options = PHAssetResourceRequestOptions()
+        options.networkAccessAllowed = true
+        let manager = PHAssetResourceManager.defaultManager()
+        let resources = PHAssetResource.assetResourcesForAsset(self)
+        let filteredResources = resources.filter { (resource) -> Bool in
+            return resource.type == .Photo
+        }
+        if let resource = filteredResources.first {
+            manager.writeDataForAssetResource(resource, toFile: toURL, options: options) { (error) in
+                if let error = error {
+                    errorHandler(error: error)
+                    return
+                }
+                successHandler(resultingSize: pixelSize)
+            }
+        } else {
+            errorHandler(error: self.errorForCode(.FailedToExport,
+                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                ))
         }
     }
 

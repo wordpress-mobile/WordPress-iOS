@@ -42,16 +42,16 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.0'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.1'
     pod 'Gridicons', '0.2'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'Simperium', '0.8.15'
+    pod 'Simperium', '0.8.17'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.18'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'a6678565b94be670725cafd5ba261a4dfbe383f9'
-    pod 'WordPressCom-Stats-iOS', '0.7.6'
+    pod 'WordPressCom-Analytics-iOS', '0.1.19'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'c78c858194f57bc8d4b29712b72a38c97af140ab'
+    pod 'WordPressCom-Stats-iOS', '0.7.7'
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-    pod 'WordPressCom-Stats-iOS/Services', '0.7.6'
+    pod 'WordPressCom-Stats-iOS/Services', '0.7.7'
   end
 
 end
