@@ -26,14 +26,10 @@ public class WP3DTouchShortcutHandler: NSObject
     static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
     public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        guard let shortCutType = shortcutItem.type as String? else {
-            return false
-        }
-
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
         var handled = false
-        switch shortCutType {
+        switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:
                 WPAnalytics.track(.ShortcutLogIn)
                 handled = true
