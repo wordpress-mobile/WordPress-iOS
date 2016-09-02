@@ -108,7 +108,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSArray *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+
+/// Used to restore the tableview selection during state restoration, and
+/// also when switching between a collapsed and expanded split view controller presentation
+@property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
 
 @end
 
@@ -161,7 +164,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIViewController *detailViewController = splitViewController.topDetailViewController;
     if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
         // If the current detail view controller supports state restoration, store the current selection
-        [coder encodeObject:self.selectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
+        [coder encodeObject:self.restorableSelectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
     }
 
     [super encodeRestorableStateWithCoder:coder];
@@ -171,7 +174,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSIndexPath *indexPath = [coder decodeObjectForKey:WPBlogDetailsSelectedIndexPathKey];
     if (indexPath) {
-        self.selectedIndexPath = indexPath;
+        self.restorableSelectedIndexPath = indexPath;
     }
 
     [super decodeRestorableStateWithCoder:coder];
@@ -234,7 +237,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self animateDeselectionInteractively];
-        self.selectedIndexPath = nil;
+        self.restorableSelectedIndexPath = nil;
     }
 
     [self.headerView setBlog:self.blog];
@@ -298,13 +301,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Properties
 
-- (NSIndexPath *)selectedIndexPath
+- (NSIndexPath *)restorableSelectedIndexPath
 {
-    if (!_selectedIndexPath) {
-        _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    if (!_restorableSelectedIndexPath) {
+        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     }
 
-    return _selectedIndexPath;
+    return _restorableSelectedIndexPath;
 }
 
 #pragma mark - Data Model setup
@@ -313,7 +316,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     // First, we'll grab the appropriate index path so we can reselect it
     // after reloading the table
-    NSIndexPath *selectedIndexPath = self.selectedIndexPath;
+    NSIndexPath *selectedIndexPath = self.restorableSelectedIndexPath;
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
@@ -552,7 +555,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedIndexPath = indexPath;
+    self.restorableSelectedIndexPath = indexPath;
 
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
