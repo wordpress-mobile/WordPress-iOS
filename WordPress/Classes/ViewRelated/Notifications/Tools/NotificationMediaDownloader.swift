@@ -7,7 +7,7 @@ import AFNetworking
 /// Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
 /// which will take care of resizing the original image, to fit the new orientation.
 ///
-@objc public class NotificationMediaDownloader : NSObject
+class NotificationMediaDownloader : NSObject
 {
     // MARK: - Public Methods
 
@@ -23,7 +23,7 @@ import AFNetworking
     ///     - maximumWidth: Represents the maximum width that a returned image should have.
     ///     - completion: Is a closure that will get executed once all of the assets are ready
     ///
-    public func downloadMedia(urls urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
+    func downloadMedia(urls urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
         let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
         let group               = dispatch_group_create()
         let shouldHitCompletion = !missingUrls.isEmpty
@@ -69,7 +69,7 @@ import AFNetworking
     ///     - maximumWidth: Represents the maximum width that a returned image should have
     ///     - completion: Is a closure that will get executed just one time, after all of the assets get resized
     ///
-    public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
+    func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
         let group               = dispatch_group_create()
         var shouldHitCompletion = false
 
@@ -105,7 +105,7 @@ import AFNetworking
     ///
     /// - Returns: A dictionary with URL as Key, and Image as Value.
     ///
-    public func imagesForUrls(urls: [NSURL]) -> [NSURL: UIImage] {
+    func imagesForUrls(urls: [NSURL]) -> [NSURL: UIImage] {
         var filtered = [NSURL: UIImage]()
 
         for (url, image) in resizedImagesMap {
@@ -220,7 +220,7 @@ import AFNetworking
 
 
     // MARK: - Public Aliases
-    public typealias SuccessBlock   = (Void -> Void)
+    typealias SuccessBlock          = (Void -> Void)
 
     // MARK: - Private Constants
     private let maximumRetryCount   = 3
