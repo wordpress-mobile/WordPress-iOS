@@ -67,7 +67,7 @@ NSString *const SessionCount = @"session_count";
     if ([self didUserCreateAccountOnMobile]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
-        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![[EditorSettings new] visualEditorEnabled])];
     } else if (sessionCount == 0) {
         // First time users whether they have created an account or are signing in have never seen the legacy editor.
         [self setSuperProperty:SeenLegacyEditor toValue:@NO];
@@ -434,11 +434,6 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Insights Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_insights_screen_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_insights_screen_stats"];
-            break;
-        case WPAnalyticsStatStatsOpenedWebVersion:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Opened Web Version"];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_web_version_of_stats"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_web_version_of_stats"];
             break;
         case WPAnalyticsStatStatsPeriodDaysAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Days Accessed"];
@@ -1025,20 +1020,36 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMenusSavedMenu:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Menus - Menu Saved"];
             break;
-
         case WPAnalyticsStatTrainTracksInteract:
         case WPAnalyticsStatTrainTracksRender:
             // Do nothing. These events are just for Tracks.
             break;
-
             // to be implemented with the sign in refactor
         case WPAnalyticsStatLoginMagicLinkExited:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link exited"];
+            break;
         case WPAnalyticsStatLoginMagicLinkFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link failed"];
+            break;
         case WPAnalyticsStatLoginMagicLinkOpened:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link opened"];
+            break;
         case WPAnalyticsStatLoginMagicLinkRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link requested"];
+            break;
         case WPAnalyticsStatLoginMagicLinkSucceeded:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Magic Link succeeded"];
+            break;
+        case WPAnalyticsStatMeTabAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me Tab - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_me_tab"];
+            break;
+        case WPAnalyticsStatMySitesTabAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"My Site - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_my_site"];
+            break;
 
-            // To be implemented
+        // To be implemented
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:

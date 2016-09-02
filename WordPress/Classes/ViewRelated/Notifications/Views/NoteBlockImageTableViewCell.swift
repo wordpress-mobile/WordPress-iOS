@@ -1,17 +1,18 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc public class NoteBlockImageTableViewCell : NoteBlockTableViewCell
+
+class NoteBlockImageTableViewCell: NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public override var isBadge: Bool {
+    override var isBadge: Bool {
         didSet {
             backgroundColor = isBadge ? Styles.badgeBackgroundColor : Styles.blockBackgroundColor
         }
     }
 
     // MARK: - Public Methods
-    public func downloadImageWithURL(url: NSURL?) {
+    func downloadImageWithURL(url: NSURL?) {
         let success = { (image: UIImage) in
             self.blockImageView.image = image
             self.blockImageView.displayWithSpringAnimation()
@@ -21,7 +22,7 @@ import WordPressShared.WPStyleGuide
     }
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .None
     }

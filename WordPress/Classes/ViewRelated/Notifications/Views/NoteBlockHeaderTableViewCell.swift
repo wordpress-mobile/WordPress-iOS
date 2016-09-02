@@ -1,10 +1,10 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
+class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public var headerTitle: String? {
+    var headerTitle: String? {
         set {
             headerTitleLabel.text  = newValue
         }
@@ -13,7 +13,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    public var attributedHeaderTitle: NSAttributedString? {
+    var attributedHeaderTitle: NSAttributedString? {
         set {
             headerTitleLabel.attributedText  = newValue
         }
@@ -22,7 +22,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    public var headerDetails: String? {
+    var headerDetails: String? {
         set {
             headerDetailsLabel.text = newValue
         }
@@ -33,7 +33,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Public Methods
-    public func downloadGravatarWithURL(url: NSURL?) {
+    func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
@@ -46,7 +46,7 @@ import WordPressShared.WPStyleGuide
     }
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         accessoryType = .DisclosureIndicator
@@ -66,7 +66,7 @@ import WordPressShared.WPStyleGuide
     }
 
     // MARK: - Overriden Methods
-    public override func refreshSeparators() {
+    override func refreshSeparators() {
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = UIEdgeInsetsZero
     }
