@@ -185,7 +185,7 @@ class WPSplitViewController: UISplitViewController {
 
         detailNavigationStackHasBeenModified = true
 
-        super.showDetailViewController(detailVC, sender: self)
+        super.showDetailViewController(detailVC, sender: sender)
     }
 
     var topDetailViewController: UIViewController? {
@@ -237,6 +237,8 @@ class WPSplitViewController: UISplitViewController {
 
         navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
         navigationController.delegate = self
+        navigationController.extendedLayoutIncludesOpaqueBars = true
+
         return navigationController
     }
 
