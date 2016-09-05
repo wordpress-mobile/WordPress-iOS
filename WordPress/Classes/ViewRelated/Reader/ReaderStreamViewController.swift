@@ -1523,6 +1523,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             displayNoResultsView()
         } else {
             hideResultsStatus()
+            tableView.flashScrollIndicators()
         }
     }
 
