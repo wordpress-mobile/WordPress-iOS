@@ -712,7 +712,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;
-    [self showDetailViewController:statsView sender:self];
+
+    // Calling `showDetailViewController:sender:` should do this automatically for us,
+    // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
+    // presents the stats view controller as modal instead of pushing it. As a
+    // workaround for now, we'll manually decide whether to push or use `showDetail`.
+    // @frosty 2016-09-05
+    if (self.splitViewController.isCollapsed) {
+        [self.navigationController pushViewController:statsView animated:YES];
+    } else {
+        [self showDetailViewController:statsView sender:self];
+    }
 }
 
 - (void)showThemes
