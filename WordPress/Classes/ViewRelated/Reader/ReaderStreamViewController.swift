@@ -237,7 +237,7 @@ import WordPressComAnalytics
 
         // Always reload tableview so any core data changes merged to the child
         // context are reflected in the list.
-        reloadTableViewContent()
+        tableViewHandler.refreshTableViewPreservingOffset()
     }
 
 
@@ -1245,30 +1245,10 @@ import WordPressComAnalytics
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         if refresh {
-            reloadTableViewContent()
+            tableViewHandler.refreshTableViewPreservingOffset()
         }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
-    }
-
-
-    // MARK: TableView Helpers
-
-    func reloadTableViewContent() {
-        // Reload the table view to reflect new content.
-        managedObjectContext().reset()
-        updateAndPerformFetchRequest()
-
-        tableView.reloadData()
-
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
-            if syncHelper.isSyncing {
-                return
-            }
-            displayNoResultsView()
-        } else {
-            hideResultsStatus()
-        }
     }
 
 
@@ -1522,6 +1502,27 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     public func tableViewDidChangeContent(tableView: UITableView) {
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             displayNoResultsView()
+        }
+    }
+
+
+    // MARK - Refresh Bookends
+
+    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
+        // Reload the table view to reflect new content.
+        managedObjectContext().reset()
+        updateAndPerformFetchRequest()
+    }
+
+
+    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler) {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            if syncHelper.isSyncing {
+                return
+            }
+            displayNoResultsView()
+        } else {
+            hideResultsStatus()
         }
     }
 

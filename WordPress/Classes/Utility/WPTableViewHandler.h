@@ -17,6 +17,8 @@
 - (void)deletingSelectedRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 - (void)tableViewDidChangeContent:(nonnull UITableView *)tableView;
 - (void)tableViewWillChangeContent:(nonnull UITableView *)tableView;
+- (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(nonnull WPTableViewHandler *)tableViewHandler;
+- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(nonnull WPTableViewHandler *)tableViewHandler;
 
 
 #pragma mark - Proxied UITableViewDelegate Methods.
@@ -106,5 +108,14 @@
  A convenience method for clearing cached row heights and reloading the table view.
  */
 - (void)refreshTableView;
+
+/**
+ Reloads the table, adjusting the table view's content offset so that the currently
+ visible content stays in place.
+ 
+ The caller should update the tableview's content, (i.e. the fetched results)  
+ in the `tableViewHandlerWillRefreshTableViewPreservingOffset:` delegate method.
+ */
+- (void)refreshTableViewPreservingOffset;
 
 @end
