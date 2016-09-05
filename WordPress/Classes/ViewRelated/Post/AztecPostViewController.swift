@@ -11,13 +11,8 @@ class AztecPostViewController: UIViewController
 
     static let margin = CGFloat(20)
 
-    private (set) lazy var editor: AztecVisualEditor = {
-        return AztecVisualEditor(textView: self.richTextView)
-    }()
-
-
-    private(set) lazy var richTextView: UITextView = {
-        let tv = AztecVisualEditor.createTextView()
+    private(set) lazy var richTextView: Aztec.TextView = {
+        let tv = Aztec.TextView(defaultFont: WPFontManager.merriweatherRegularFontOfSize(16))
 
         tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
@@ -111,9 +106,6 @@ class AztecPostViewController: UIViewController
 
         WPFontManager.loadMerriweatherFontFamily()
 
-        // lazy load the editor
-        _ = editor
-
         edgesForExtendedLayout = .None
         navigationController?.navigationBar.translucent = false
 
@@ -125,7 +117,7 @@ class AztecPostViewController: UIViewController
         titleTextField.text = post.postTitle
 
         if let content = post.content {
-            editor.setHTML(content)
+            richTextView.setHTML(content)
         }
 
         view.setNeedsUpdateConstraints()
@@ -255,7 +247,7 @@ class AztecPostViewController: UIViewController
         }
 
         let range = richTextView.selectedRange
-        let identifiers = editor.formatIdentifiersSpanningRange(range)
+        let identifiers = richTextView.formatIdentifiersSpanningRange(range)
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
 
@@ -309,7 +301,7 @@ extension AztecPostViewController
     private func switchToHTML() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
 
-        htmlTextView.text = editor.getHTML()
+        htmlTextView.text = richTextView.getHTML()
 
         view.endEditing(true)
         htmlTextView.hidden = false
@@ -319,7 +311,7 @@ extension AztecPostViewController
     private func switchToRichText() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
 
-        editor.setHTML(htmlTextView.text)
+        richTextView.setHTML(htmlTextView.text)
 
         view.endEditing(true)
         richTextView.hidden = false
@@ -360,42 +352,42 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
     }
 
     func toggleBold() {
-        editor.toggleBold(range: richTextView.selectedRange)
+        richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
     func toggleItalic() {
-        editor.toggleItalic(range: richTextView.selectedRange)
+        richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
     func toggleUnderline() {
-        editor.toggleUnderline(range: richTextView.selectedRange)
+        richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
     func toggleStrikethrough() {
-        editor.toggleStrikethrough(range: richTextView.selectedRange)
+        richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
 
     func toggleOrderedList() {
-        editor.toggleOrderedList(range: richTextView.selectedRange)
+        richTextView.toggleOrderedList(range: richTextView.selectedRange)
     }
 
 
     func toggleUnorderedList() {
-        editor.toggleUnorderedList(range: richTextView.selectedRange)
+        richTextView.toggleUnorderedList(range: richTextView.selectedRange)
     }
 
 
     func toggleBlockquote() {
-        editor.toggleBlockquote(range: richTextView.selectedRange)
+        richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
 
     func toggleLink() {
-        editor.toggleLink(range: richTextView.selectedRange, params: [String : AnyObject]())
+        richTextView.toggleLink(range: richTextView.selectedRange, params: [String : AnyObject]())
     }
 
 
@@ -481,6 +473,6 @@ private extension AztecPostViewController
 {
     func insertImage(image: UIImage) {
         let index = richTextView.positionForCursor()
-        editor.insertImage(image, index: index)
+        richTextView.insertImage(image, index: index)
     }
 }
