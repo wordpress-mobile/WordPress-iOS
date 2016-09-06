@@ -77,7 +77,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
-@property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
 @end
 
@@ -339,12 +338,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    if (self.launchedShortcutItem) {
-        WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
-        [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
-        self.launchedShortcutItem = nil;
-    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
