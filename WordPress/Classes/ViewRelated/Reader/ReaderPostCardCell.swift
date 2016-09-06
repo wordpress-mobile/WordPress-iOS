@@ -173,7 +173,6 @@ import WordPressShared
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     private func applyOpaqueBackgroundColors() {
-        avatarImageView.backgroundColor = UIColor.whiteColor()
         blogNameLabel.backgroundColor = UIColor.whiteColor()
         bylineLabel.backgroundColor = UIColor.whiteColor()
         titleLabel.backgroundColor = UIColor.whiteColor()
@@ -200,16 +199,12 @@ import WordPressShared
 
     private func configureHeader() {
         // Always reset
-        avatarImageView.image = nil
-
         let placeholder = UIImage(named: "post-blavatar-placeholder")
+        avatarImageView.image = placeholder
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
-        if url != nil {
-            avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
-        } else {
-            avatarImageView.image = placeholder
+        if let url = contentProvider?.siteIconForDisplayOfSize(Int(size)) {
+            avatarImageView.setImageWithURL(url)
         }
 
         let blogName = contentProvider?.blogNameForDisplay()
