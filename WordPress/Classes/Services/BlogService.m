@@ -8,7 +8,7 @@
 #import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import "BlogServiceRemoteREST.h"

@@ -3,8 +3,6 @@ import CoreData
 
 @objc(Post)
 class Post: AbstractPost {
-
-    static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
     // MARK: - Properties
@@ -150,6 +148,10 @@ class Post: AbstractPost {
 
     override func hasTags() -> Bool {
         return (tags?.trim().characters.count > 0) ?? false
+    }
+
+    override class func entityName() -> String {
+        return "Post"
     }
 
     // MARK: - BasePost

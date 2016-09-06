@@ -283,7 +283,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = PostService.keyForType(postTypeToSync())
+        properties["type"] = postTypeToSync().rawValue
         properties["filter"] = filterSettings.currentPostListFilter().title
 
         if let dotComID = blog.dotComID {
@@ -546,14 +546,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
 
     func numberOfPostsPerSync() -> UInt {
-        return PostServiceDefaultNumberToSync
+        return PostService.DefaultNumberToSync
     }
 
     // MARK: - WPContentSyncHelperDelegate
 
-    internal func postTypeToSync() -> PostServiceType {
+    internal func postTypeToSync() -> PostService.PostType {
         // Subclasses should override.
-        return PostServiceType.Any
+        return .any
     }
 
     func lastSyncDate() -> NSDate? {
@@ -577,14 +577,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.purgesLocalSync = true
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
+        postService.sync(postTypeToSync(),
+            blog: blog,
+            options: options,
             success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                    return
+                guard let strongSelf = self else {
+                        return
                 }
 
                 if posts.count > 0 {
@@ -598,12 +596,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     // an action was triggered to syncContent.
                     strongSelf.syncPostsMatchingSearchText()
                 }
-
             }, failure: {[weak self] (error: NSError?) -> () in
-
                 guard let strongSelf = self,
                     let error = error else {
-                    return
+                        return
                 }
 
                 failure?(error: error)
@@ -611,7 +607,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 if userInteraction == true {
                     strongSelf.handleSyncFailure(error)
                 }
-        })
+            })
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -630,31 +626,30 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync()
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                        return
-                }
+        postService.sync(postTypeToSync(),
+                         blog: blog,
+                         options: options,
+                         success: {[weak self] posts in
+                            guard let strongSelf = self else {
+                                return
+                            }
 
-                if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
-                }
+                            if posts.count > 0 {
+                                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                            }
 
-                success?(hasMore: filter.hasMore)
-            }, failure: {[weak self] (error: NSError?) -> () in
+                            success?(hasMore: filter.hasMore)
+            },
+                         failure: {[weak self] (error: NSError?) -> () in
 
-                guard let strongSelf = self,
-                    let error = error else {
-                        return
-                }
+                            guard let strongSelf = self,
+                                let error = error else {
+                                    return
+                            }
 
-                failure?(error: error)
+                            failure?(error: error)
 
-                strongSelf.handleSyncFailure(error)
+                            strongSelf.handleSyncFailure(error)
             })
     }
 
@@ -767,16 +762,15 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService.syncPostsOfType(
-            postTypeToSync(),
-            withOptions: options,
-            forBlog: blog,
-            success: { [weak self] posts in
-                self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error: NSError?) in
-                self?.postsSyncWithSearchEnded()
-            }
-        )
+        postService.sync(postTypeToSync(),
+                              blog: blog,
+                              options: options,
+                              success: { [weak self] posts in
+                                self?.postsSyncWithSearchEnded()
+            },
+                              failure: { [weak self] (error: NSError?) in
+                                self?.postsSyncWithSearchEnded()
+            })
     }
 
     // MARK: - Actions
@@ -791,16 +785,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService.upload(apost, success: {_ in }) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
 
             strongSelf.syncItemsWithUserInteraction(false)
@@ -835,16 +831,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trashPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService.trash(apost, success: {}) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
 
             if let index = strongSelf.recentlyTrashedPostObjectIDs.indexOf(postObjectID) {
@@ -869,7 +867,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.restorePost(apost, success: { [weak self] in
+        postService.restore(apost, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return
@@ -896,18 +894,19 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
                 strongSelf.promptThatPostRestoredToFilter(filter)
             }
-        }) { [weak self] (error: NSError!) in
+        }) { [weak self] error in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            if let error = error {
+                if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                    strongSelf.promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
-
             strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
     }

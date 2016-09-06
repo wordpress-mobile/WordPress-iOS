@@ -149,8 +149,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override internal func postTypeToSync() -> PostServiceType {
-        return PostServiceType.Page
+    override internal func postTypeToSync() -> PostService.PostType {
+        return .page
     }
 
     override internal func lastSyncDate() -> NSDate? {
@@ -322,9 +322,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
             let postViewController: UIViewController
-            if editorSettings.nativeEditorEnabled {
-                let page = PostService.createDraftPageInMainContextForBlog(blog)
-                postViewController = AztecPostViewController(post:page)
+            if editorSettings.nativeEditorEnabled,
+                let page = PostService.makeDraftPageInMainContext(blog: blog) {
+                postViewController = AztecPostViewController(post: page)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
                 postViewController = EditPageViewController(draftForBlog: blog)
@@ -383,7 +383,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.upload(apost, success: {_ in }) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {

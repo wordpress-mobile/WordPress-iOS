@@ -9,7 +9,7 @@
 #import "NSString+Helpers.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "AbstractPost.h"
 #import "NSDate+WordPressJSON.h"
 #import "WordPress-Swift.h"
@@ -961,7 +961,7 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:comment.postID inBlog:comment.blog];
+        comment.post = [postService findByID:comment.postID blog:comment.blog];
     }
 }
 

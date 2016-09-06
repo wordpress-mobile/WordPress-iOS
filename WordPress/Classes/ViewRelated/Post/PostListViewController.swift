@@ -199,8 +199,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Sync Methods
 
-    override func postTypeToSync() -> PostServiceType {
-        return PostServiceType.Post
+    override func postTypeToSync() -> PostService.PostType {
+        return .post
     }
 
     override func lastSyncDate() -> NSDate? {
@@ -253,7 +253,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", PostService.keyForType(postTypeToSync()))
+        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync().rawValue)
         predicates.append(typePredicate)
 
         let searchText = currentSearchTerm()
@@ -367,12 +367,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     private func createPostInNativeEditor() {
-        let post = PostService.createDraftPostInMainContextForBlog(blog)
-        let postViewController = AztecPostViewController(post:post)
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
-        presentViewController(navController, animated: true, completion: nil)
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        if let post = PostService.makeDraftPostInMainContext(blog: blog) {
+            let postViewController = AztecPostViewController(post:post)
+            let navController = UINavigationController(rootViewController: postViewController)
+            navController.modalPresentationStyle = .FullScreen
+            presentViewController(navController, animated: true, completion: nil)
+            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        }
     }
 
     private func createPostInNewEditor() {

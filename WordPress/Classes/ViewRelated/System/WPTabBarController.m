@@ -333,7 +333,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             Blog *blog = [blogService lastUsedOrFirstBlog];
-            Post *post = [PostService createDraftPostInMainContextForBlog:blog];
+            Post *post = [PostService makeDraftPostInMainContextForBlog:blog];
             AztecPostViewController *postViewController = [[AztecPostViewController alloc] initWithPost:post];
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: postViewController];
             navController.modalPresentationStyle = UIModalPresentationFullScreen;

@@ -9,7 +9,7 @@ class PostListFilterSettings: NSObject {
     private static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
     let blog: Blog
-    let postType: PostServiceType
+    let postType: PostService.PostType
     private var allPostListFilters: [PostListFilter]?
 
     enum AuthorFilter : UInt {
@@ -19,9 +19,15 @@ class PostListFilterSettings: NSObject {
     /// Initializes a new PostListFilterSettings instance
     /// - Parameter blog: the blog which owns the list of posts
     /// - Parameter postType: the type of post being listed
-    init(blog: Blog, postType: PostServiceType) {
+    init(blog: Blog, postType: PostService.PostType) {
         self.blog = blog
         self.postType = postType
+    }
+
+    @objc
+    convenience init(blog: Blog, postType: PostServiceType) {
+        let postType = PostService.PostType(rawValue: postType as String) ?? .post
+        self.init(blog: blog, postType: postType)
     }
 
     func availablePostListFilters() -> [PostListFilter] {
@@ -83,9 +89,9 @@ class PostListFilterSettings: NSObject {
 
     func keyForCurrentListStatusFilter() -> String {
         switch postType {
-        case .Page:
+        case .page:
             return self.dynamicType.currentPageListStatusFilterKey
-        case .Post:
+        case .post:
             return self.dynamicType.currentPageListStatusFilterKey
         default:
             return ""
@@ -121,7 +127,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType == .Post
+        if postType == .post
         {
             return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
         }
@@ -170,7 +176,7 @@ class PostListFilterSettings: NSObject {
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = PostService.keyForType(postType)
+        properties["type"] = postType.rawValue
         properties["filter"] = currentPostListFilter().title
 
         if let dotComID = blog.dotComID {

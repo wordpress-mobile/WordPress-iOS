@@ -21,7 +21,7 @@
 #import "MediaService.h"
 #import "NSString+Helpers.h"
 #import "PostPreviewViewController.h"
-#import "PostService.h"
+#import "PostServiceTypes.h"
 #import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 #import "WordPressAppDelegate.h"
@@ -937,7 +937,7 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPostInMainContextForBlog:blog];
+    return [PostService makeDraftPostInMainContextForBlog:blog];
 }
 
 /*
@@ -1417,7 +1417,9 @@ EditImageDetailsViewControllerDelegate
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    [postService uploadPost:self.post
+
+    
+    [postService upload:self.post
                     success:^(AbstractPost *post){
                         self.post = post;                        
                         DDLogInfo(@"post uploaded: %@", postTitle);

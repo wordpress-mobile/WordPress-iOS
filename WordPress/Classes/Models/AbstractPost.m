@@ -80,6 +80,10 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return @"";
 }
 
++ (NSString *)entityName {
+    return @"AbstractPost";
+}
+
 #pragma mark - Life Cycle Methods
 
 - (void)awakeFromFetch
