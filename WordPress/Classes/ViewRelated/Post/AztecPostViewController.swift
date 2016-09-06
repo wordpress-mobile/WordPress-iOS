@@ -11,17 +11,12 @@ class AztecPostViewController: UIViewController
 
     static let margin = CGFloat(20)
 
-    private (set) lazy var editor: AztecVisualEditor = {
-        return AztecVisualEditor(textView: self.richTextView)
-    }()
+    private(set) lazy var richTextView: Aztec.TextView = {
+        let tv = Aztec.TextView(defaultFont: WPFontManager.merriweatherRegularFontOfSize(16))
 
-
-    private(set) lazy var richTextView: UITextView = {
-        let tv = AztecVisualEditor.createTextView()
-
+        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
-        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         let toolbar = self.createToolbar()
         toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
         toolbar.formatter = self
@@ -109,8 +104,7 @@ class AztecPostViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // lazy load the editor
-        _ = editor
+        WPFontManager.loadMerriweatherFontFamily()
 
         edgesForExtendedLayout = .None
         navigationController?.navigationBar.translucent = false
@@ -120,8 +114,11 @@ class AztecPostViewController: UIViewController
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
-        editor.setHTML(post.content ?? "")
         titleTextField.text = post.postTitle
+
+        if let content = post.content {
+            richTextView.setHTML(content)
+        }
 
         view.setNeedsUpdateConstraints()
         configureNavigationBar()
@@ -215,29 +212,27 @@ class AztecPostViewController: UIViewController
     func keyboardWillShow(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
-            let _: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
             else {
                 return
         }
 
-        htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-
-        richTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        richTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
 
     func keyboardWillHide(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
-            let _: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
             else {
                 return
         }
 
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    private func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
         htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
 
@@ -252,7 +247,7 @@ class AztecPostViewController: UIViewController
         }
 
         let range = richTextView.selectedRange
-        let identifiers = editor.formatIdentifiersSpanningRange(range)
+        let identifiers = richTextView.formatIdentifiersSpanningRange(range)
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
 
@@ -306,7 +301,7 @@ extension AztecPostViewController
     private func switchToHTML() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
 
-        htmlTextView.text = editor.getHTML()
+        htmlTextView.text = richTextView.getHTML()
 
         view.endEditing(true)
         htmlTextView.hidden = false
@@ -316,7 +311,7 @@ extension AztecPostViewController
     private func switchToRichText() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
 
-        editor.setHTML(htmlTextView.text)
+        richTextView.setHTML(htmlTextView.text)
 
         view.endEditing(true)
         richTextView.hidden = false
@@ -357,42 +352,42 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
     }
 
     func toggleBold() {
-        editor.toggleBold(range: richTextView.selectedRange)
+        richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
     func toggleItalic() {
-        editor.toggleItalic(range: richTextView.selectedRange)
+        richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
     func toggleUnderline() {
-        editor.toggleUnderline(range: richTextView.selectedRange)
+        richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
     func toggleStrikethrough() {
-        editor.toggleStrikethrough(range: richTextView.selectedRange)
+        richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
 
     func toggleOrderedList() {
-        editor.toggleOrderedList(range: richTextView.selectedRange)
+        richTextView.toggleOrderedList(range: richTextView.selectedRange)
     }
 
 
     func toggleUnorderedList() {
-        editor.toggleUnorderedList(range: richTextView.selectedRange)
+        richTextView.toggleUnorderedList(range: richTextView.selectedRange)
     }
 
 
     func toggleBlockquote() {
-        editor.toggleBlockquote(range: richTextView.selectedRange)
+        richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
 
     func toggleLink() {
-        editor.toggleLink(range: richTextView.selectedRange, params: [String : AnyObject]())
+        richTextView.toggleLink(range: richTextView.selectedRange, params: [String : AnyObject]())
     }
 
 
@@ -478,6 +473,6 @@ private extension AztecPostViewController
 {
     func insertImage(image: UIImage) {
         let index = richTextView.positionForCursor()
-        editor.insertImage(image, index: index)
+        richTextView.insertImage(image, index: index)
     }
 }
