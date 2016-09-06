@@ -56,6 +56,8 @@
 
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
+    [service syncPostsOfType:@"asdf" withOptions:nil forBlog:nil success:nil failure:nil];
+
     [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
