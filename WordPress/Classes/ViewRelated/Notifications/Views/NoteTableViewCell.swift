@@ -7,24 +7,24 @@ import WordPressShared
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-@objc public class NoteTableViewCell : WPTableViewCell
+class NoteTableViewCell: WPTableViewCell
 {
     // MARK: - Public Properties
-    public var read: Bool = false {
+    var read: Bool = false {
         didSet {
             if read != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    public var unapproved: Bool = false {
+    var unapproved: Bool = false {
         didSet {
             if unapproved != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    public var markedForDeletion: Bool = false {
+    var markedForDeletion: Bool = false {
         didSet {
             if markedForDeletion != oldValue {
                 refreshSubviewVisibility()
@@ -33,7 +33,7 @@ import WordPressShared
             }
         }
     }
-    public var showsBottomSeparator: Bool {
+    var showsBottomSeparator: Bool {
         set {
             separatorsView.bottomVisible = newValue
         }
@@ -41,7 +41,7 @@ import WordPressShared
             return separatorsView.bottomVisible == false
         }
     }
-    public var attributedSubject: NSAttributedString? {
+    var attributedSubject: NSAttributedString? {
         set {
             subjectLabel.attributedText = newValue
             setNeedsLayout()
@@ -50,7 +50,7 @@ import WordPressShared
             return subjectLabel.attributedText
         }
     }
-    public var attributedSnippet: NSAttributedString? {
+    var attributedSnippet: NSAttributedString? {
         set {
             snippetLabel.attributedText = newValue
             refreshNumberOfLines()
@@ -60,7 +60,7 @@ import WordPressShared
             return snippetLabel.attributedText
         }
     }
-    public var noticon: String? {
+    var noticon: String? {
         set {
             noticonLabel.text = newValue
         }
@@ -68,16 +68,16 @@ import WordPressShared
             return noticonLabel.text
         }
     }
-    public var onUndelete: (Void -> Void)?
+    var onUndelete: (Void -> Void)?
 
 
 
     // MARK: - Public Methods
-    public class func reuseIdentifier() -> String {
+    class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
 
-    public func downloadIconWithURL(url: NSURL?) {
+    func downloadIconWithURL(url: NSURL?) {
         let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
         if isGravatarURL {
             downloadGravatarWithURL(url)
@@ -130,7 +130,7 @@ import WordPressShared
 
 
     // MARK: - UITableViewCell Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
@@ -154,19 +154,19 @@ import WordPressShared
         backgroundView = separatorsView
     }
 
-    public override func layoutSubviews() {
+    override func layoutSubviews() {
         refreshLabelPreferredMaxLayoutWidth()
         refreshBackgrounds()
         super.layoutSubviews()
     }
 
-    public override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(selected: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setSelected(selected, animated: animated)
         refreshBackgrounds()
     }
 
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setHighlighted(highlighted, animated: animated)
         refreshBackgrounds()
@@ -238,7 +238,7 @@ import WordPressShared
 
 
     // MARK: - Public Static Helpers
-    public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
+    class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
 
         // Limit the width (iPad Devices)
         let cellWidth = min(width, Style.maximumCellWidth)
@@ -274,7 +274,7 @@ import WordPressShared
 
 
     // MARK: - Action Handlers
-    @IBAction public func undeleteWasPressed(sender: AnyObject) {
+    @IBAction func undeleteWasPressed(sender: AnyObject) {
         onUndelete?()
     }
 
