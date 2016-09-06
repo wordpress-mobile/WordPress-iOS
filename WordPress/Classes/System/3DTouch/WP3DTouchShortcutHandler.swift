@@ -28,40 +28,32 @@ public class WP3DTouchShortcutHandler: NSObject
     public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
-        var handled = false
         switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:
                 WPAnalytics.track(.ShortcutLogIn)
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.ShortcutNewPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionNotAnimated: true])
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.NewPhotoPost.type:
                 WPAnalytics.track(.ShortcutNewPhotoPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionOpenMediaPicker: true, WPPostViewControllerOptionNotAnimated: true])
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.ShortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.Notifications.type:
                 WPAnalytics.track(.ShortcutNotifications)
                 clearCurrentViewController()
                 tabBarController.showNotificationsTab()
-                handled = true
-                break
+                return true
             default:
-                break
+                return false
         }
-
-        return handled
     }
 
     private func clearCurrentViewController() {
