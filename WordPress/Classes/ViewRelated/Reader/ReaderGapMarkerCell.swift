@@ -19,6 +19,7 @@ public class ReaderGapMarkerCell: UITableViewCell
         // Background styles
         selectedBackgroundView = UIView(frame: innerContentView.frame)
         selectedBackgroundView?.backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
         innerContentView.backgroundColor = WPStyleGuide.greyLighten30()
         tearMaskView.backgroundColor = WPStyleGuide.greyLighten30()
 
