@@ -262,7 +262,9 @@ import WordPressShared
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
         controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
         controller.onValueChanged = { value in
-            self.followTagNamed(value)
+            if value.trim().characters.count > 0 {
+                self.followTagNamed(value.trim())
+            }
         }
         controller.mode = .LowerCaseText
         controller.displaysActionButton = true
