@@ -75,11 +75,11 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.1):
     - FormatterKit/Resources
   - Gridicons (0.2)
-  - Helpshift (5.6.2)
+  - Helpshift (5.7.1)
   - HockeySDK (3.8.6):
     - HockeySDK/AllFeaturesLib (= 3.8.6)
   - HockeySDK/AllFeaturesLib (3.8.6)
-  - Lookback (1.3.0):
+  - Lookback (1.4.1):
     - PDKTZipArchive
   - Mixpanel (2.9.4):
     - Mixpanel/Mixpanel (= 2.9.4)
@@ -200,9 +200,9 @@ DEPENDENCIES:
   - Expecta (= 1.0.5)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.2)
-  - Helpshift (~> 5.6.2)
+  - Helpshift (~> 5.7.1)
   - HockeySDK (~> 3.8.0)
-  - Lookback (= 1.3.0)
+  - Lookback (= 1.4.1)
   - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 4.0.0)
@@ -264,9 +264,9 @@ SPEC CHECKSUMS:
   Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
-  Helpshift: aadcbbe47f67deb96552503333774b29bdda19d5
+  Helpshift: 48ee4b24dc5f0ae7d1dfd8dded6eea327069a014
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
-  Lookback: e126cf9ea6e916cba0b9105eafea701741789e4c
+  Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
@@ -291,6 +291,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: d54bcafa99324ec834634e30654bc6655280fb79
+PODFILE CHECKSUM: 7c94937ae0ddf3713c065bc2c9712444e26ebd6b
 
 COCOAPODS: 1.0.1
