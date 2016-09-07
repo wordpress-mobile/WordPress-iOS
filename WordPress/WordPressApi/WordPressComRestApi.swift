@@ -17,6 +17,7 @@ import AFNetworking
     case AuthorizationRequired
     case UploadFailed
     case RequestSerializationFailed
+    case ResponseSerializationFailed
     case TooManyRequests
     case Unknown
 }
@@ -43,6 +44,20 @@ public class WordPressComRestApi: NSObject
     public var appendsPreferredLanguageLocale = true
 
     private lazy var sessionManager: AFHTTPSessionManager = {
+        let sessionManager = self.createSessionManager()
+        return sessionManager
+    }()
+
+    private var uploadSessionManager: AFHTTPSessionManager {
+        get {
+            if #available(iOS 10.0, *) {
+                return self.sessionManager
+            }
+            return self.createSessionManager()
+        }
+    }
+
+    private func createSessionManager() -> AFHTTPSessionManager {
         let baseURL = NSURL(string:WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         var additionalHeaders: [String : AnyObject] = [:]
@@ -57,7 +72,7 @@ public class WordPressComRestApi: NSObject
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
-    }()
+    }
 
     public init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.oAuthToken = oAuthToken
@@ -102,16 +117,13 @@ public class WordPressComRestApi: NSObject
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
 
-        let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
-                if let progressUnwrapped = progress {
-                    progressUnwrapped.completedUnitCount = progressUnwrapped.totalUnitCount
-                }
+        let task = sessionManager.GET(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
-                progress?.completedUnitCount = 1
+                progress.completedUnitCount = progress.totalUnitCount
             }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
             }
@@ -149,15 +161,13 @@ public class WordPressComRestApi: NSObject
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
-        let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { [weak progress] (dataTask, result) in
-                if let progressUnwrapped = progress {
-                    progressUnwrapped.completedUnitCount = progressUnwrapped.totalUnitCount
-                }
+        let task = sessionManager.POST(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
                     failure(error:WordPressComRestApiError.Unknown as NSError , httpResponse: dataTask.response as? NSHTTPURLResponse)
                     return
                 }
                 success(responseObject: responseObject, httpResponse: dataTask.response as? NSHTTPURLResponse)
+                progress.completedUnitCount = progress.totalUnitCount
             }, failure: { (dataTask, error) in
                 failure(error: error, httpResponse: dataTask?.response as? NSHTTPURLResponse)
             }
@@ -193,31 +203,33 @@ public class WordPressComRestApi: NSObject
                               failure: FailureReponseBlock) -> NSProgress?
     {
         let URLString = appendLocaleIfNeeded(URLString)
-        guard let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
-            let requestURLString = NSURL(string:URLString,
-                                     relativeToURL:baseURL)?.absoluteString else {
+        guard
+            let baseURL = NSURL(string: WordPressComRestApi.apiBaseURLString),
+            let requestURLString = NSURL(string:URLString, relativeToURL:baseURL)?.absoluteString
+        else {
             let error = NSError(domain:String(WordPressComRestApiError),
-                    code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
-                    userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+                                code:WordPressComRestApiError.RequestSerializationFailed.rawValue,
+                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
             failure(error: error, httpResponse: nil)
             return nil
         }
         var serializationError: NSError?
         var filePartError: NSError?
-        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
-          URLString: requestURLString,
-          parameters: parameters,
-          constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
-            do {
-                for filePart in fileParts {
-                    let url = filePart.url
-                    try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod(
+            "POST",
+            URLString: requestURLString,
+            parameters: parameters,
+            constructingBodyWithBlock:{ (formData: AFMultipartFormData ) in
+                do {
+                    for filePart in fileParts {
+                        let url = filePart.url
+                        try formData.appendPartWithFileURL(url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+                    }
+                } catch let error as NSError {
+                    filePartError = error
                 }
-            } catch let error as NSError {
-                filePartError = error
-            }
-          },
-          error: &serializationError
+            },
+            error:&serializationError
         )
         if let error = filePartError {
             failure(error: error, httpResponse: nil)
@@ -232,7 +244,12 @@ public class WordPressComRestApi: NSObject
             progress.totalUnitCount = taskProgress.totalUnitCount+1
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
-        let task = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
+        let uploadSessionManager = self.uploadSessionManager
+        let task = uploadSessionManager.uploadTaskWithStreamedRequest(request, progress: progressUpdater) { (response, result, error) in
+            // if this manager was created just for uploading let's invalidated it after.
+            if uploadSessionManager != self.sessionManager {
+                uploadSessionManager.invalidateSessionCancelingTasks(false)
+            }
             if let error = error {
                 failure(error: error, httpResponse: response as? NSHTTPURLResponse)
             } else {
@@ -249,7 +266,7 @@ public class WordPressComRestApi: NSObject
             task.cancel()
         }
         if let sizeString = request.allHTTPHeaderFields?["Content-Length"],
-           let size = Int64(sizeString) {
+            let size = Int64(sizeString) {
             progress.totalUnitCount = size
         }
         return progress
@@ -272,6 +289,8 @@ public class WordPressComRestApi: NSObject
         }
         return WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
     }
+
+    public static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request

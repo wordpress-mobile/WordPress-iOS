@@ -83,9 +83,9 @@ class PostListFilterSettings: NSObject {
 
     func keyForCurrentListStatusFilter() -> String {
         switch postType {
-        case .Page:
+        case PostServiceTypePage:
             return self.dynamicType.currentPageListStatusFilterKey
-        case .Post:
+        case PostServiceTypePost:
             return self.dynamicType.currentPageListStatusFilterKey
         default:
             return ""
@@ -121,7 +121,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType == .Post
+        if postType == PostServiceTypePost
         {
             return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
         }
@@ -170,7 +170,7 @@ class PostListFilterSettings: NSObject {
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = PostService.keyForType(postType)
+        properties["type"] = postType
         properties["filter"] = currentPostListFilter().title
 
         if let dotComID = blog.dotComID {
