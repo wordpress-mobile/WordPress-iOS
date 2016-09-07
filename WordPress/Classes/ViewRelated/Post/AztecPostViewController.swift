@@ -478,7 +478,7 @@ extension AztecPostViewController {
             showPostHasChangesAlert()
         } else {
             stopEditing()
-//            [self discardChangesAndUpdateGUI];
+            discardChangesAndUpdateGUI()
         }
     }
 
@@ -501,8 +501,7 @@ extension AztecPostViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-            self.discardChanges()
-            // dismiss edit view
+            self.discardChangesAndUpdateGUI()
         }
 
         // Button: Save Draft/Update Draft
@@ -533,10 +532,20 @@ extension AztecPostViewController {
         post.deleteRevision()
 
         // TODO: if we own the post, remove it
-        // post.remove()
-        // post = nil
+        post.remove()
+//        post = nil
 
         ContextManager.sharedInstance().saveContext(context)
+    }
+
+    func discardChangesAndUpdateGUI() {
+        discardChanges()
+
+        if presentingViewController != nil {
+            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
     }
 }
 
