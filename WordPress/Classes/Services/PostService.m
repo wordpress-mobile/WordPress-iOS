@@ -14,6 +14,9 @@
 #import "Media.h"
 #import "WordPress-Swift.h"
 
+PostServiceType const PostServiceTypePost = @"post";
+PostServiceType const PostServiceTypePage = @"page";
+PostServiceType const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 const NSUInteger PostServiceDefaultNumberToSync = 40;
@@ -132,7 +135,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
 
     NSDictionary *remoteOptions = options ? [self remoteSyncParametersDictionaryForRemote:remote withOptions:options] : nil;
-    [remote getPostsOfType:[[self class] keyForType:postType]
+    [remote getPostsOfType:postType
                    options:remoteOptions
                    success:^(NSArray <RemotePost *> *remotePosts) {
                        [self.managedObjectContext performBlock:^{
@@ -143,7 +146,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                return;
                            }
                            [self mergePosts:remotePosts
-                                     ofType:[[self class] keyForType:postType]
+                                     ofType:postType
                                withStatuses:options.statuses
                                    byAuthor:options.authorID
                                     forBlog:blogInContext
@@ -433,7 +436,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
-            if ([remotePost.type isEqualToString:[[self class] keyForType:PostServiceTypePage]]) {
+            if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
                 post = [self createPageForBlog:blog];
             } else {
@@ -458,10 +461,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         }
         
         NSFetchRequest *request;
-        if ([syncPostType isEqualToString:[[self class] keyForType:PostServiceTypeAny]]) {
+        if ([syncPostType isEqualToString:PostServiceTypeAny]) {
             // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-        } else if ([syncPostType isEqualToString:[[self class] keyForType:PostServiceTypePage]]) {
+        } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
             // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
         } else {
@@ -695,23 +698,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
     return [matchingEntries lastObject];
-}
-
-+ (NSString *)keyForType:(PostServiceType)postType {
-    NSString *key;
-    switch (postType) {
-        case PostServiceTypePage:
-            key = @"page";
-            break;
-        case PostServiceTypePost:
-            key = @"post";
-            break;
-        case PostServiceTypeAny:
-        default:
-            key = @"any";
-            break;
-    }
-    return key;
 }
 
 - (id<PostServiceRemote>)remoteForBlog:(Blog *)blog {

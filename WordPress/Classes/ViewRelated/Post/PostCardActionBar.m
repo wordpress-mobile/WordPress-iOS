@@ -6,7 +6,8 @@
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
-static CGFloat ActionBarMinButtonWidth = 90.0;
+static NSInteger const ActionBarMaxNumButtonsHorizontallyCompact = 3;
+static NSInteger const ActionBarMaxNumButtonsHorizontallyRegular = 4;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
@@ -37,6 +38,15 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
         [self setupView];
     }
     return self;
+}
+
+#pragma mark - Layout
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self setupButtonsIfNeeded];
 }
 
 #pragma mark - Setup
@@ -261,16 +271,6 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     [self configureButtons];
 }
 
-
-#pragma mark - Notifications
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    [self setupButtonsIfNeeded];
-}
-
 #pragma mark - Accessors
 
 - (NSInteger)indexOfItem:(PostCardActionBarItem *)item
@@ -280,7 +280,17 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 - (NSInteger)maxButtonsToDisplay
 {
-    return (NSInteger)floor(CGRectGetWidth(self.frame) / ActionBarMinButtonWidth);
+    NSInteger count;
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        count = ActionBarMaxNumButtonsHorizontallyRegular;
+    } else if ( [WPDeviceIdentification isiPhone] && UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        // On iPhone, if we're not horizontally regular, but in landscape orientation, go ahead
+        // and allow the max button count for horizontally regular since we have the screen space.
+        count = ActionBarMaxNumButtonsHorizontallyRegular;
+    } else {
+        count = ActionBarMaxNumButtonsHorizontallyCompact;
+    }
+    return count;
 }
 
 - (BOOL)checkIfShouldShowMoreButton
