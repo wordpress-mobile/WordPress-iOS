@@ -271,7 +271,7 @@ class AztecPostViewController: UIViewController {
 }
 
 
-// MARK: UITextViewDelegate methods
+// MARK: - UITextViewDelegate methods
 extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(textView: UITextView) {
         updateFormatBar()
@@ -282,6 +282,7 @@ extension AztecPostViewController : UITextViewDelegate {
             return
         }
 
+        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         post.content = richTextView.getHTML()
 
         ContextManager.sharedInstance().saveContext(post.managedObjectContext)
@@ -289,7 +290,7 @@ extension AztecPostViewController : UITextViewDelegate {
 }
 
 
-// MARK: UITextFieldDelegate methods
+// MARK: - UITextFieldDelegate methods
 extension AztecPostViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         post.postTitle = textField.text
@@ -298,6 +299,7 @@ extension AztecPostViewController : UITextFieldDelegate {
     }
 }
 
+// MARK: - HTML Mode Switch methods
 extension AztecPostViewController {
     enum EditionMode {
         case RichText
@@ -334,7 +336,7 @@ extension AztecPostViewController {
     }
 }
 
-
+// MARK: -
 extension AztecPostViewController : Aztec.FormatBarDelegate
 {
 
@@ -482,7 +484,7 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
     }
 }
 
-// MARK: Cancel/Dismiss Logic
+// MARK: - Cancel/Dismiss/Persistence Logic
 extension AztecPostViewController {
 
     // TODO: Rip this out and put it into the PostService
