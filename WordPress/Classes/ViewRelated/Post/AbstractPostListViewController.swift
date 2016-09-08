@@ -963,10 +963,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 let index = strongSelf.filterSettings.availablePostListFilters().indexOf(selectedValue as! PostListFilter) {
 
                 strongSelf.filterSettings.setCurrentFilterIndex(index)
-                strongSelf.syncItemsWithUserInteraction(false)
                 strongSelf.dismissViewControllerAnimated(true, completion: nil)
 
                 strongSelf.refreshAndReload()
+                strongSelf.syncItemsWithUserInteraction(false)
 
                 WPAnalytics.track(.PostListStatusFilterChanged, withProperties: strongSelf.propertiesForAnalytics())
             }
