@@ -271,15 +271,31 @@ class AztecPostViewController: UIViewController {
 }
 
 
+// MARK: UITextViewDelegate methods
 extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(textView: UITextView) {
         updateFormatBar()
     }
+
+    func textViewDidChange(textView: UITextView) {
+        guard let richTextView = textView as? Aztec.TextView else {
+            return
+        }
+
+        post.content = richTextView.getHTML()
+
+        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+    }
 }
 
 
+// MARK: UITextFieldDelegate methods
 extension AztecPostViewController : UITextFieldDelegate {
+    func textFieldDidEndEditing(textField: UITextField) {
+        post.postTitle = textField.text
 
+        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+    }
 }
 
 extension AztecPostViewController {
@@ -470,7 +486,7 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
 extension AztecPostViewController {
 
     // TODO: Rip this out and put it into the PostService
-    func createRevisionOfPost() {
+    private func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
             return
         }
@@ -487,7 +503,7 @@ extension AztecPostViewController {
         }
     }
 
-    func cancelEditing() {
+    private func cancelEditing() {
         stopEditing()
 
         if post.canSave() && post.hasUnsavedChanges() {
@@ -497,7 +513,7 @@ extension AztecPostViewController {
         }
     }
 
-    func stopEditing() {
+    private func stopEditing() {
         if titleTextField.isFirstResponder() {
             titleTextField.resignFirstResponder()
         }
@@ -505,7 +521,7 @@ extension AztecPostViewController {
         view.endEditing(true)
     }
 
-    func showPostHasChangesAlert() {
+    private func showPostHasChangesAlert() {
         let alertController = UIAlertController(
             title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
             message: nil,
@@ -538,22 +554,19 @@ extension AztecPostViewController {
         presentViewController(alertController, animated: true, completion: nil)
     }
 
-    func discardChanges() {
+    private func discardChanges() {
         guard let context = post.managedObjectContext, originalPost = post.original else {
             return
         }
 
         post = originalPost
         post.deleteRevision()
-
-        // TODO: if we own the post, remove it
         post.remove()
-//        post = nil
 
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    func discardChangesAndUpdateGUI() {
+    private func discardChangesAndUpdateGUI() {
         discardChanges()
 
         if presentingViewController != nil {
