@@ -10,7 +10,7 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.6.0'
+  pod 'WordPress-iOS-Shared', '0.6.1'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.4'
 
@@ -23,9 +23,9 @@ abstract_target 'WordPress_Base' do
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.6.2'
+    pod 'Helpshift', '~> 5.7.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
@@ -49,8 +49,8 @@ abstract_target 'WordPress_Base' do
     pod 'Simperium', '0.8.17'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.18'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'c78c858194f57bc8d4b29712b72a38c97af140ab'
+    pod 'WordPress-Aztec-iOS', '0.2.0'
+    pod 'WordPressCom-Analytics-iOS', '0.1.19'
     pod 'WordPressCom-Stats-iOS', '0.7.7'
     pod 'wpxmlrpc', '~> 0.8'
     
