@@ -283,7 +283,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func propertiesForAnalytics() -> [String:AnyObject] {
         var properties = [String:AnyObject]()
 
-        properties["type"] = PostService.keyForType(postTypeToSync())
+        properties["type"] = postTypeToSync()
         properties["filter"] = filterSettings.currentPostListFilter().title
 
         if let dotComID = blog.dotComID {
@@ -553,7 +553,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     internal func postTypeToSync() -> PostServiceType {
         // Subclasses should override.
-        return PostServiceType.Any
+        return PostServiceTypeAny
     }
 
     func lastSyncDate() -> NSDate? {
@@ -578,7 +578,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.purgesLocalSync = true
 
         postService.syncPostsOfType(
-            postTypeToSync(),
+            postTypeToSync() as String,
             withOptions: options,
             forBlog: blog,
             success: {[weak self] posts in
@@ -631,7 +631,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count
 
         postService.syncPostsOfType(
-            postTypeToSync(),
+            postTypeToSync() as String,
             withOptions: options,
             forBlog: blog,
             success: {[weak self] posts in
@@ -768,7 +768,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.search = searchText
 
         postService.syncPostsOfType(
-            postTypeToSync(),
+            postTypeToSync() as String,
             withOptions: options,
             forBlog: blog,
             success: { [weak self] posts in
