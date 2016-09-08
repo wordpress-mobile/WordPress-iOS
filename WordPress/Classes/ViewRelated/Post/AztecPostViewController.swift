@@ -113,6 +113,7 @@ class AztecPostViewController: UIViewController {
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
+        createRevisionOfPost()
         titleTextField.text = post.postTitle
 
         if let content = post.content {
@@ -467,12 +468,31 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
 
 // MARK: Cancel/Dismiss Logic
 extension AztecPostViewController {
+
+    // TODO: Rip this out and put it into the PostService
+    func createRevisionOfPost() {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+
+        // Using performBlock: with the AbstractPost on the main context:
+        // Prevents a hang on opening this view on slow and fast devices
+        // by deferring the cloning and UI update.
+        // Slower devices have the effect of the content appearing after
+        // a short delay
+
+        context.performBlockAndWait {
+            self.post = self.post.createRevision()
+            ContextManager.sharedInstance().saveContext(context)
+        }
+    }
+
     func cancelEditing() {
+        stopEditing()
 
         if post.canSave() && post.hasUnsavedChanges() {
             showPostHasChangesAlert()
         } else {
-            stopEditing()
             discardChangesAndUpdateGUI()
         }
     }
