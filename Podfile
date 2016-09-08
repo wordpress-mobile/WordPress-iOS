@@ -23,9 +23,9 @@ abstract_target 'WordPress_Base' do
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.6.2'
+    pod 'Helpshift', '~> 5.7.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.3.0', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
