@@ -309,14 +309,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
     Blog *defaultBlog = [defaultAccount defaultBlog];
+    NSNumber *siteId    = defaultBlog.dotComID;
+    NSString *blogName  = defaultBlog.settings.name;
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         TodayExtensionService *service = [TodayExtensionService new];
         [service removeTodayWidgetConfiguration];
     } else {
         // Required Attributes
-        NSNumber *siteId    = defaultBlog.dotComID;
-        NSString *blogName  = defaultBlog.settings.name;
         
         BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
         NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
@@ -330,6 +330,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                                      andOAuth2Token:oauth2Token];
         });
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
+        [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
+        [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
+    });
 }
 
 - (void)purgeAccount:(WPAccount *)account
