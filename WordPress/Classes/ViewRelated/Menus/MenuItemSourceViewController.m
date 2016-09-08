@@ -47,17 +47,6 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
     _headerView = headerView;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    if (IS_IPAD || self.view.frame.size.width > self.view.frame.size.height) {
-        [self setHeaderViewHidden:YES];
-    } else  {
-        [self setHeaderViewHidden:NO];
-    }
-}
-
 - (void)setHeaderViewHidden:(BOOL)hidden
 {
     if (self.headerView.hidden != hidden) {

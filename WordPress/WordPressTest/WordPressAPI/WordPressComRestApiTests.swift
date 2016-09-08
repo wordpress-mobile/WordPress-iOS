@@ -191,4 +191,38 @@ class WordPressComRestApiTests: XCTestCase {
         )
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
+
+    func testStreamMethodParallelCalls() {
+        stub(isRestAPIMediaNewRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiMedia.json", self.dynamicType)
+            return fixture(stubPath!, headers: ["Content-Type":"application/json"])
+        }
+        guard
+            let mediaPath = OHPathForFile("test-image.jpg", self.dynamicType)
+        else {
+            return
+        }
+        let mediaURL = NSURL(fileURLWithPath:mediaPath)
+        let expectation = self.expectationWithDescription("One callback should be invoked")
+        let api = WordPressComRestApi(oAuthToken:"fakeToken")
+        let filePart = FilePart(parameterName: "media[]", url: mediaURL, filename: "test-image.jpg", mimeType: "image/jpeg")
+        let progress1 = api.multipartPOST(wordPressMediaNewEndpoint, parameters:nil, fileParts:[filePart], success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+                XCTFail("This call should fail")
+            }, failure: { (error, httpResponse) in
+                print(error)
+                XCTAssert(error.domain == NSURLErrorDomain, "The error domain should be NSURLErrorDomain")
+                XCTAssert(error.code == NSURLErrorCancelled, "The error code should be NSURLErrorCancelled")
+            }
+        )
+        progress1?.cancel()
+        api.multipartPOST(wordPressMediaNewEndpoint, parameters:nil, fileParts:[filePart], success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
+            expectation.fulfill()
+
+            }, failure: { (error, httpResponse) in
+                expectation.fulfill()
+                XCTFail("This call should succesful")
+            }
+        )
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+    }
 }
