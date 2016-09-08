@@ -604,6 +604,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
                 NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
                 overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
+
+                // A strategy to avoid false positives in gap detection is to sync
+                // one extra post. Only remove the extra post if we received a
+                // full set of results. A partial set means we've reached
+                // the end of syncable content.
+                if ([posts count] == [self numberToSyncForTopic:readerTopic] && ![ReaderHelpers isTopicSearchTopic:readerTopic]) {
+                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
+                    postsCount = [posts count];
+                }
+
             }
 
             // Create or update the synced posts.

@@ -5,11 +5,10 @@
 @class Blog, Post, Page, AbstractPost;
 @class RemotePost;
 
-typedef NS_ENUM(NSInteger, PostServiceType) {
-    PostServiceTypePost,
-    PostServiceTypePage,
-    PostServiceTypeAny
-};
+typedef NSString * PostServiceType;
+extern PostServiceType const PostServiceTypePost;
+extern PostServiceType const PostServiceTypePage;
+extern PostServiceType const PostServiceTypeAny;
 
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
@@ -23,8 +22,6 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
 
 + (Post *)createDraftPostInMainContextForBlog:(Blog *)blog;
 + (Page *)createDraftPageInMainContextForBlog:(Blog *)blog;
-
-+ (NSString *)keyForType:(PostServiceType)postType;
 
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
