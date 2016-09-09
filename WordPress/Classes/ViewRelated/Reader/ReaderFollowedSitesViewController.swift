@@ -61,7 +61,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = NSLocalizedString("Manage Sites", comment: "Page title for the screen to manage your list of followed sites.")
+        self.title = NSLocalizedString("Manage", comment: "Page title for the screen to manage your list of followed sites.")
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
@@ -302,7 +302,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
-            return NSLocalizedString("Sites", comment: "Section title for sites the user has followed.")
+            return NSLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
         }
         return nil
     }
