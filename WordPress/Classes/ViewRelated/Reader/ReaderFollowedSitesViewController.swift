@@ -24,6 +24,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         return WPNoResultsView(title: title, message: message, accessoryView: nil, buttonTitle: nil)
     }()
 
+    lazy var loadingView: WPNoResultsView = {
+        let title = NSLocalizedString("Fetching sites...", comment:"A short message to inform the user data for their followed sites is being fetched..")
+        return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
+    }()
+
 
     /// Convenience method for instantiating an instance of ReaderFollowedSitesViewController
     ///
@@ -73,8 +78,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        configureNoResultsView()
         syncSites()
+        configureNoResultsView()
     }
 
 
@@ -122,8 +127,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
 
     func configureNoResultsView() {
+        noResultsView.removeFromSuperview()
+        loadingView.removeFromSuperview()
         if let count = tableViewHandler.resultsController.fetchedObjects?.count where count > 0 {
-            noResultsView.removeFromSuperview()
+            return
+        }
+
+        if (isSyncing) {
+            view.addSubview(loadingView)
+            loadingView.centerInSuperview()
         } else {
             view.addSubview(noResultsView)
             noResultsView.centerInSuperview()
@@ -141,14 +153,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         isSyncing = true
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.fetchFollowedSitesWithSuccess({[weak self] in
+            self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
-            self?.isSyncing = false
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not sync sites: \(error)")
+            self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
-            self?.isSyncing = false
+
         })
     }
 
