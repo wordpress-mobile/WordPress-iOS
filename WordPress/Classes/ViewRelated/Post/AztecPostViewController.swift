@@ -3,10 +3,9 @@ import UIKit
 import Aztec
 import Gridicons
 
-class AztecPostViewController: UIViewController
-{
-    func closeAction(sender: AnyObject) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+class AztecPostViewController: UIViewController {
+    func cancelEditingAction(sender: AnyObject) {
+        cancelEditing()
     }
 
     static let margin = CGFloat(20)
@@ -114,6 +113,7 @@ class AztecPostViewController: UIViewController
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
 
+        createRevisionOfPost()
         titleTextField.text = post.postTitle
 
         if let content = post.content {
@@ -124,9 +124,11 @@ class AztecPostViewController: UIViewController
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-                                                                target: self,
-                                                                action: #selector(AztecPostViewController.closeAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
+            style: .Done,
+            target: self,
+            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
         view.backgroundColor = UIColor.whiteColor()
     }
 
@@ -269,21 +271,36 @@ class AztecPostViewController: UIViewController
 }
 
 
-extension AztecPostViewController : UITextViewDelegate
-{
+// MARK: - UITextViewDelegate methods
+extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(textView: UITextView) {
         updateFormatBar()
+    }
+
+    func textViewDidChange(textView: UITextView) {
+        guard let richTextView = textView as? Aztec.TextView else {
+            return
+        }
+
+        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
+        post.content = richTextView.getHTML()
+
+        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
     }
 }
 
 
-extension AztecPostViewController : UITextFieldDelegate
-{
+// MARK: - UITextFieldDelegate methods
+extension AztecPostViewController : UITextFieldDelegate {
+    func textFieldDidEndEditing(textField: UITextField) {
+        post.postTitle = textField.text
 
+        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+    }
 }
 
-extension AztecPostViewController
-{
+// MARK: - HTML Mode Switch methods
+extension AztecPostViewController {
     enum EditionMode {
         case RichText
         case HTML
@@ -319,7 +336,7 @@ extension AztecPostViewController
     }
 }
 
-
+// MARK: -
 extension AztecPostViewController : Aztec.FormatBarDelegate
 {
 
@@ -447,8 +464,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 }
 
 
-extension AztecPostViewController: UINavigationControllerDelegate
-{
+extension AztecPostViewController: UINavigationControllerDelegate {
 
 }
 
@@ -468,9 +484,103 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
     }
 }
 
+// MARK: - Cancel/Dismiss/Persistence Logic
+extension AztecPostViewController {
 
-private extension AztecPostViewController
-{
+    // TODO: Rip this out and put it into the PostService
+    private func createRevisionOfPost() {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+
+        // Using performBlock: with the AbstractPost on the main context:
+        // Prevents a hang on opening this view on slow and fast devices
+        // by deferring the cloning and UI update.
+        // Slower devices have the effect of the content appearing after
+        // a short delay
+
+        context.performBlockAndWait {
+            self.post = self.post.createRevision()
+            ContextManager.sharedInstance().saveContext(context)
+        }
+    }
+
+    private func cancelEditing() {
+        stopEditing()
+
+        if post.canSave() && post.hasUnsavedChanges() {
+            showPostHasChangesAlert()
+        } else {
+            discardChangesAndUpdateGUI()
+        }
+    }
+
+    private func stopEditing() {
+        if titleTextField.isFirstResponder() {
+            titleTextField.resignFirstResponder()
+        }
+
+        view.endEditing(true)
+    }
+
+    private func showPostHasChangesAlert() {
+        let alertController = UIAlertController(
+            title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
+            message: nil,
+            preferredStyle: .ActionSheet)
+
+        // Button: Keep editing
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
+
+        // Button: Discard
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+            self.discardChangesAndUpdateGUI()
+        }
+
+        // Button: Save Draft/Update Draft
+        if post.hasLocalChanges() {
+            if post.hasRemote() {
+                // The post is a local draft or an autosaved draft: Discard or Save
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+                    // Save Draft
+                }
+            } else if post.status == PostStatusDraft {
+                // The post was already a draft
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                    // Save Draft
+                }
+            }
+        }
+
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    private func discardChanges() {
+        guard let context = post.managedObjectContext, originalPost = post.original else {
+            return
+        }
+
+        post = originalPost
+        post.deleteRevision()
+        post.remove()
+
+        ContextManager.sharedInstance().saveContext(context)
+    }
+
+    private func discardChangesAndUpdateGUI() {
+        discardChanges()
+
+        if presentingViewController != nil {
+            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
+    }
+}
+
+
+private extension AztecPostViewController {
     func insertImage(image: UIImage) {
         let index = richTextView.positionForCursor()
         richTextView.insertImage(image, index: index)

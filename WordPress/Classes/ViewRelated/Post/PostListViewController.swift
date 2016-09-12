@@ -368,7 +368,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     private func createPostInNativeEditor() {
         let post = PostService.createDraftPostInMainContextForBlog(blog)
-        let postViewController = AztecPostViewController(post:post)
+        let postViewController = AztecPostViewController(post: post)
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
         presentViewController(navController, animated: true, completion: nil)
