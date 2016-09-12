@@ -516,9 +516,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
             attributionView.hidden = true
         } else {
             attributionView.configureViewWithVerboseSiteAttribution(post!)
-
-            let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapDiscoverAttribution))
-            attributionView.addGestureRecognizer(tgr)
+            attributionView.delegate = self
         }
     }
 
@@ -868,6 +866,15 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     }
 }
 
+// MARK: - ReaderCardDiscoverAttributionView Delegate Methods
+
+extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
+{
+    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
+        didTapDiscoverAttribution()
+    }
+}
+
 
 // MARK: - WPRichTextView Delegate Methods
 
@@ -907,6 +914,8 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
 
 }
 
+
+// MARK: - UIScrollView Delegate Methods
 
 extension ReaderDetailViewController : UIScrollViewDelegate
 {
