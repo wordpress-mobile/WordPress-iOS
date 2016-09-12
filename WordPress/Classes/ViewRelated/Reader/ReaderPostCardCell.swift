@@ -11,7 +11,7 @@ import WordPressShared
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
 }
 
-@objc public class ReaderPostCardCell: UITableViewCell, ReaderCardDiscoverAttributionViewDelegate
+@objc public class ReaderPostCardCell: UITableViewCell
 {
     // MARK: - Properties
 
@@ -534,18 +534,18 @@ import WordPressShared
     }
 
 
-    // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
-
-    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
-        delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
-    }
-
-
     // MARK: - Private Types
 
     private enum CardAction: Int
     {
         case Comment = 1
         case Like
+    }
+}
+
+extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate
+{
+    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
+        delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }
 }
