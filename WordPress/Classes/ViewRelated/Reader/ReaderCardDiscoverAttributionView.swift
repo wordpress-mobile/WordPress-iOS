@@ -38,13 +38,22 @@ private enum ReaderCardDiscoverAttribution : Int {
         // Add a tap gesture for detecting a tap on the label and acting on the current attributionAction.
         //// Ideally this would have independent tappable links but this adds a bit of overrhead for text/link detection
         //// on a UILabel. We might consider migrating to somethnig lik TTTAttributedLabel for more discrete link
-        //// detection via UILabel. Brent C. Aug/23/2016
-        let tap = UITapGestureRecognizer(target: self, action: #selector(ReaderCardDiscoverAttributionView.textLabelTapGesture(_:)))
-        textLabel.addGestureRecognizer(tap)
+        //// detection via UILabel.
+        //// Also, rather than detecting a tap on the whole view, we add it to the label and imageView specifically,
+        //// to avoid accepting taps outside of the label's text content, on display.
+        //// Brent C. Aug/23/2016
+        let selector = #selector(ReaderCardDiscoverAttributionView.textLabelTapGesture(_:))
+        let labelTap = UITapGestureRecognizer(target: self, action: selector)
+        textLabel.addGestureRecognizer(labelTap)
 
-        // Enable userInteraction on the label by default while userInteraction
+        // Also add a tap recognizer on the imageView.
+        let imageTap = UITapGestureRecognizer(target: self, action: selector)
+        imageView.addGestureRecognizer(imageTap)
+
+        // Enable userInteraction on the label/imageView by default while userInteraction
         // is toggled on self in attributionAction: didSet for valid actions.
         textLabel.userInteractionEnabled = true
+        imageView.userInteractionEnabled = true
 
         applyOpaqueBackgroundColors()
     }
