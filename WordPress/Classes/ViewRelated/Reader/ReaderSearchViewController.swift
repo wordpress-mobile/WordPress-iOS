@@ -241,7 +241,7 @@ import Gridicons
 
         // Match the width of the search bar.
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[autoView(==searchBar)]",
-            options: .AlignAllBaseline,
+            options: .AlignAllLastBaseline,
             metrics: nil,
             views: views))
         // Pin below the search bar.

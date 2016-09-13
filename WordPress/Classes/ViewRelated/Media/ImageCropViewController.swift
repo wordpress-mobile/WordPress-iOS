@@ -80,7 +80,7 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
         UIGraphicsEndImageContext()
 
         // Crop
-        guard let clippedImageRef = CGImageCreateWithImageInRect(scaledImage.CGImage, clippingRect.integral) else {
+        guard let clippedImageRef = CGImageCreateWithImageInRect(scaledImage!.CGImage!, clippingRect.integral) else {
             return
         }
 

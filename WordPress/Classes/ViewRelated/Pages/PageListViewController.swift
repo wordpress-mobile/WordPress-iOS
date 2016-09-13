@@ -237,7 +237,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         let sectionInfo = tableViewHandler.resultsController.sections?[section]
         let nibName = String(PageListSectionHeaderView)
-        let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)[0] as! PageListSectionHeaderView
+        let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
         if let sectionInfo = sectionInfo {
             headerView.setTite(sectionInfo.name)
