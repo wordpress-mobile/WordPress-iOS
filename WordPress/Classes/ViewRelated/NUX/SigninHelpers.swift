@@ -338,12 +338,12 @@ import Mixpanel
         var path = siteURL.absoluteString!.lowercaseString
 
         if path.isWordPressComPath() {
-            if siteURL.scheme!.characters.count == 0 {
+            if siteURL.scheme == nil || siteURL.scheme?.characters.count == 0 {
                 path = "https://\(path)"
             } else if path.rangeOfString("http://") != nil {
                 path = path.stringByReplacingOccurrencesOfString("http://", withString: "https://")
             }
-        } else if siteURL.scheme!.characters.count == 0 {
+        } else if siteURL.scheme == nil || siteURL.scheme == nil {
             path = "http://\(path)"
         }
 
