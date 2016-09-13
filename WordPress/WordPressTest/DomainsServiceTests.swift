@@ -33,7 +33,7 @@ class DomainsServiceTests : XCTestCase
 
     private func stubDomainsResponseWithFile(filename: String) {
         stub({ request in
-            return request.URL!.absoluteString.containsString(self.domainsEndpoint) && request.HTTPMethod == "GET"
+            return request.URL!.absoluteString!.containsString(self.domainsEndpoint) && request.HTTPMethod! == "GET"
         }) { _ in
             let stubPath = OHPathForFile(filename, self.dynamicType)
             return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
