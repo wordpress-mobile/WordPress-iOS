@@ -5034,6 +5034,7 @@
 					};
 					8511CFB51C607A7000B7CEED = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					932225A61C7CE50300443B02 = {
@@ -5068,6 +5069,7 @@
 					};
 					FF27168E1CAAC87A0006E2D4 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					FFC3F6F41B0DBF0900EFC359 = {
@@ -6692,6 +6694,7 @@
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6734,6 +6737,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6776,6 +6780,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6819,6 +6824,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -7860,6 +7866,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = Debug;
@@ -7900,6 +7907,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = Release;
@@ -7940,6 +7948,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = "Release-Internal";
@@ -7980,6 +7989,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = "Release-Alpha";
