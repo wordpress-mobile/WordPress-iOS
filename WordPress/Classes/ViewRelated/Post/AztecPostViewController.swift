@@ -12,12 +12,18 @@ class AztecPostViewController: UIViewController
     private var bottomConstraint: NSLayoutConstraint!
 
 
-    private (set) lazy var editor: AztecVisualEditor = {
-        return AztecVisualEditor(textView: self.richTextView)
+    private (set) lazy var editor: Aztec.TextView! = {
+        // TODO:(sendhilp, 9/13/2016) - Fix this
+        return nil
+        //return AztecVisualEditor(textView: self.richTextView)
     }()
 
 
-    private(set) lazy var richTextView: UITextView = {
+    private(set) lazy var richTextView: UITextView! = {
+        // TODO:(sendhilp, 9/13/2016) - Fix this
+        return nil
+
+        /*
         let tv = AztecVisualEditor.createTextView()
         let font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
 
@@ -34,6 +40,7 @@ class AztecPostViewController: UIViewController
         tv.addSubview(self.separatorView)
 
         return tv
+ */
     }()
 
     private(set) lazy var htmlTextView: UITextView = {
@@ -391,7 +398,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
 
     func insertImage() {
-        editor.insertImage(richTextView.selectedRange.location, params: [String : AnyObject]())
+        // TODO:(sendhilp, 9/13/2016) - Fix this
+        //editor.insertImage(richTextView.selectedRange.location, params: [String : AnyObject]())
     }
 
     // MARK: -
