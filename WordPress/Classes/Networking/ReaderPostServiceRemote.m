@@ -52,6 +52,7 @@ NSString * const PostRESTKeySiteURL = @"site_URL";
 NSString * const PostRESTKeySlug = @"slug";
 NSString * const PostRESTKeyStatus = @"status";
 NSString * const PostRESTKeyTitle = @"title";
+NSString * const PostRESTKeyTaggedOn = @"tagged_on";
 NSString * const PostRESTKeyTags = @"tags";
 NSString * const POSTRESTKeyTagDisplayName = @"display_name";
 NSString * const PostRESTKeyURL = @"URL";
@@ -640,6 +641,12 @@ static const NSUInteger ReaderPostTitleLength = 30;
 {
     // Sort date varies depending on the endpoint we're fetching from.
     NSString *sortDate = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
+
+    // Date tagged on is returned by read/tags/%s/posts endpoints.
+    NSString *taggedDate = [dict stringForKey:PostRESTKeyTaggedOn];
+    if (taggedDate != nil) {
+        sortDate = taggedDate;
+    }
 
     // Date liked is returned by the read/liked end point.  Use this for sorting recent likes.
     NSString *likedDate = [dict stringForKey:PostRESTKeyDateLiked];
