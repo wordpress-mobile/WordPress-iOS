@@ -12,7 +12,7 @@ platform :ios, '9.0'
 abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.6.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.4'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :commit => "392d7f3326e613b79502ea556f645be161c31a97"
 
   target 'WordPress' do
     # ---------------------
@@ -43,7 +43,7 @@ abstract_target 'WordPress_Base' do
     # WordPress components
     # --------------------
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.1'
-    pod 'Gridicons', '0.2'
+    pod 'Gridicons', :git => "https://github.com/Automattic/Gridicons-iOS.git", :commit => "8bd04e18eddaaf36810887c94837571e68f7cc24"
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.17'
