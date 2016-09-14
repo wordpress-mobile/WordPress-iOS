@@ -5,6 +5,7 @@ import WordPressShared.WPStyleGuide
 class NoteBlockImageTableViewCell: NoteBlockTableViewCell
 {
     // MARK: - Public Properties
+    private var imageURL: NSURL?
     override var isBadge: Bool {
         didSet {
             backgroundColor = isBadge ? Styles.badgeBackgroundColor : Styles.blockBackgroundColor
@@ -12,13 +13,17 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - Public Methods
-    func downloadImageWithURL(url: NSURL?) {
-        let success = { (image: UIImage) in
-            self.blockImageView.image = image
-            self.blockImageView.displayWithSpringAnimation()
+    func downloadImageIfNeededWithURL(url: NSURL?) {
+        guard imageURL != url else {
+            return
         }
 
-        blockImageView.downloadImage(url, placeholderImage: nil, success: success, failure: nil)
+        imageURL = url
+
+        blockImageView.downloadImage(url, placeholderImage: nil, success: { image in
+            self.blockImageView.image = image
+            self.blockImageView.displayWithSpringAnimation()
+        })
     }
 
     // MARK: - View Methods
