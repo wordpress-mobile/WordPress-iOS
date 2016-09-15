@@ -8,34 +8,12 @@ class AztecPostViewController: UIViewController {
         cancelEditing()
     }
 
-<<<<<<< HEAD
-    private var bottomConstraint: NSLayoutConstraint!
-
-
-    private (set) lazy var editor: Aztec.TextView! = {
-        // TODO:(sendhilp, 9/13/2016) - Fix this
-        return nil
-        //return AztecVisualEditor(textView: self.richTextView)
-    }()
-=======
     static let margin = CGFloat(20)
->>>>>>> origin/develop
 
     private(set) lazy var richTextView: Aztec.TextView = {
         let tv = Aztec.TextView(defaultFont: WPFontManager.merriweatherRegularFontOfSize(16))
 
-<<<<<<< HEAD
-    private(set) lazy var richTextView: UITextView! = {
-        // TODO:(sendhilp, 9/13/2016) - Fix this
-        return nil
-
-        /*
-        let tv = AztecVisualEditor.createTextView()
-        let font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-
-=======
         tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
->>>>>>> origin/develop
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -46,7 +24,6 @@ class AztecPostViewController: UIViewController {
         tv.translatesAutoresizingMaskIntoConstraints = false
 
         return tv
- */
     }()
 
     private(set) lazy var htmlTextView: UITextView = {
@@ -431,11 +408,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
     }
 
 
-<<<<<<< HEAD
-    func insertImage() {
-        // TODO:(sendhilp, 9/13/2016) - Fix this
-        //editor.insertImage(richTextView.selectedRange.location, params: [String : AnyObject]())
-=======
     func showImagePicker() {
         let picker = UIImagePickerController()
         picker.sourceType = .PhotoLibrary
@@ -446,7 +418,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
         picker.modalPresentationStyle = .CurrentContext
 
         presentViewController(picker, animated: true, completion: nil)
->>>>>>> origin/develop
     }
 
 
