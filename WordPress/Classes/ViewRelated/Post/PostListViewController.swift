@@ -193,7 +193,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         // If we transition between the two, the tableView may not update the cell heights accordingly.
         // Brent C. Aug 3/2016
         coordinator.animateAlongsideTransition({ context in
-            self.tableView.reloadData()
+            if self.isViewLoaded() {
+                self.tableView.reloadData()
+            }
             }, completion: nil)
     }
 
