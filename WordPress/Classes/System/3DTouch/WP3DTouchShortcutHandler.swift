@@ -12,8 +12,8 @@ public class WP3DTouchShortcutHandler: NSObject
 
         init?(fullType: String) {
             guard let last = fullType.componentsSeparatedByString(".").last else {
-                        return nil
-                    }
+                return nil
+            }
 
             self.init(rawValue: last)
         }
@@ -26,47 +26,34 @@ public class WP3DTouchShortcutHandler: NSObject
     static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
     public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        var handled = false
-
-        guard let shortCutType = shortcutItem.type as String? else {
-                    return false
-                }
-
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
-        switch shortCutType {
+        switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:
                 WPAnalytics.track(.ShortcutLogIn)
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.ShortcutNewPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionNotAnimated: true])
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.NewPhotoPost.type:
                 WPAnalytics.track(.ShortcutNewPhotoPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionOpenMediaPicker: true, WPPostViewControllerOptionNotAnimated: true])
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.ShortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
-                handled = true
-                break
+                return true
             case ShortcutIdentifier.Notifications.type:
                 WPAnalytics.track(.ShortcutNotifications)
                 clearCurrentViewController()
                 tabBarController.showNotificationsTab()
-                handled = true
-                break
+                return true
             default:
-                break
+                return false
         }
-
-        return handled
     }
 
     private func clearCurrentViewController() {
