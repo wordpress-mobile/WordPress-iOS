@@ -11,7 +11,10 @@ class AztecPostViewController: UIViewController {
     static let margin = CGFloat(20)
 
     private(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: WPFontManager.merriweatherRegularFontOfSize(16))
+        let defaultFont = WPFontManager.merriweatherRegularFontOfSize(16)
+        // TODO: Add a proper defaultMissingImage
+        let defaultMissingImage = UIImage()
+        let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
         tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
