@@ -219,7 +219,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `f40ba3003b6d8949019defb407a8e68db3a91e53`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `d9644ee12963ac3819dfbff55d506004720616f2`)
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.6.1)
   - WordPressCom-Analytics-iOS (= 0.1.19)
@@ -240,7 +240,7 @@ EXTERNAL SOURCES:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: f40ba3003b6d8949019defb407a8e68db3a91e53
+    :commit: d9644ee12963ac3819dfbff55d506004720616f2
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :commit: 392d7f3326e613b79502ea556f645be161c31a97
@@ -257,7 +257,7 @@ CHECKOUT OPTIONS:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: f40ba3003b6d8949019defb407a8e68db3a91e53
+    :commit: d9644ee12963ac3819dfbff55d506004720616f2
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :commit: 392d7f3326e613b79502ea556f645be161c31a97
@@ -295,7 +295,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: 6e2bc76c4201877935122b64ad4afd680d6de050
+  WordPress-Aztec-iOS: f95d7748e72bdd3f82491858a462f19bb6091a32
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
   WordPress-iOS-Shared: ad09acb8508e771f40a06ee64902c6dc4d0d73d0
   WordPressCom-Analytics-iOS: 1b01177ee3f588e984465b5b37ebcbb342836a8d
@@ -304,6 +304,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 63a3011ff480d878d4a87ed9c77fa154337cea7d
+PODFILE CHECKSUM: a62e98a457f9ff4ee1bfe5f44ab9cd62e5cdeab5
 
 COCOAPODS: 1.0.1

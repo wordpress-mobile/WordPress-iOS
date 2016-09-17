@@ -407,7 +407,114 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
 
     func toggleLink() {
-        richTextView.toggleLink(range: richTextView.selectedRange, params: [String : AnyObject]())
+        var linkTitle = ""
+        var linkURL: NSURL? = nil
+        var linkRange = richTextView.selectedRange
+        // Let's check if the current range already has a link assigned to it.
+        if let expandedRange = richTextView.linkFullRange(forRange: richTextView.selectedRange) {
+            linkRange = expandedRange
+            linkURL = richTextView.linkURL(forRange: expandedRange)
+        }
+
+        linkTitle = richTextView.attributedText.attributedSubstringFromRange(linkRange).string
+        showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
+    }
+
+
+    func showLinkDialog(forURL url: NSURL?, title: String?, range: NSRange) {
+
+        let isInsertingNewLink = (url == nil)
+        // TODO: grab link from pasteboard if available
+
+        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment:"Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment:"Label action for updating a link on the editor")
+        let removeButtonTitle = NSLocalizedString("Remove Link", comment:"Label action for removing a link from the editor");
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment:"Cancel button")
+
+        let alertController = UIAlertController(title:insertButtonTitle,
+                                                message:nil,
+                                                preferredStyle:UIAlertControllerStyle.Alert)
+
+        alertController.addTextFieldWithConfigurationHandler({ [weak self]textField in
+            textField.clearButtonMode = UITextFieldViewMode.Always;
+            textField.placeholder = NSLocalizedString("URL", comment:"URL text field placeholder");
+
+            textField.text = url?.absoluteString
+
+            textField.addTarget(self,
+                action:#selector(AztecPostViewController.alertTextFieldDidChange),
+                forControlEvents:UIControlEvents.EditingChanged)
+            })
+
+        alertController.addTextFieldWithConfigurationHandler({ textField in
+            textField.clearButtonMode = UITextFieldViewMode.Always
+            textField.placeholder = NSLocalizedString("Link Name", comment:"Link name field placeholder")
+            textField.secureTextEntry = false
+            textField.autocapitalizationType = UITextAutocapitalizationType.Sentences
+            textField.autocorrectionType = UITextAutocorrectionType.Default
+            textField.spellCheckingType = UITextSpellCheckingType.Default
+
+            textField.text = title
+        })
+
+        let insertAction = UIAlertAction(title:insertButtonTitle,
+                                         style:UIAlertActionStyle.Default,
+                                         handler:{ [weak self]action in
+
+                                            self?.richTextView.becomeFirstResponder()
+                                            let linkURLString = alertController.textFields?.first?.text
+                                            var linkTitle = alertController.textFields?.last?.text
+
+                                            if  linkTitle == nil  || linkTitle!.isEmpty {
+                                                linkTitle = linkURLString
+                                            }
+
+                                            guard
+                                                let urlString = linkURLString,
+                                                let url = NSURL(string:urlString),
+                                                let title = linkTitle
+                                                else {
+                                                    return
+                                            }
+                                            self?.richTextView.setLink(url, title:title, inRange: range)
+            })
+
+        let removeAction = UIAlertAction(title:removeButtonTitle,
+                                         style:UIAlertActionStyle.Destructive,
+                                         handler:{ [weak self] action in
+                                            self?.richTextView.becomeFirstResponder()
+                                            self?.richTextView.removeLink(inRange: range)
+            })
+
+        let cancelAction = UIAlertAction(title: cancelButtonTitle,
+                                         style:UIAlertActionStyle.Cancel,
+                                         handler:{ [weak self]action in
+                                            self?.richTextView.becomeFirstResponder()
+            })
+
+        alertController.addAction(insertAction)
+        if !isInsertingNewLink {
+            alertController.addAction(removeAction)
+        }
+        alertController.addAction(cancelAction)
+
+        // Disabled until url is entered into field
+        if let text = alertController.textFields?.first?.text {
+            insertAction.enabled = !text.isEmpty
+        }
+
+        self.presentViewController(alertController, animated:true, completion:nil)
+    }
+
+    func alertTextFieldDidChange(textField: UITextField) {
+        guard
+            let alertController = presentedViewController as? UIAlertController,
+            let urlFieldText = alertController.textFields?.first?.text,
+            let insertAction = alertController.actions.first
+            else {
+                return
+        }
+
+        insertAction.enabled = !urlFieldText.isEmpty
     }
 
 
