@@ -1,46 +1,45 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-
-class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
+@objc public class NoteBlockActionsTableViewCell : NoteBlockTableViewCell
 {
-    typealias EventHandler = ((sender: AnyObject) -> Void)
+    public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    var onReplyClick: EventHandler?
-    var onLikeClick: EventHandler?
-    var onUnlikeClick: EventHandler?
-    var onApproveClick: EventHandler?
-    var onUnapproveClick: EventHandler?
-    var onTrashClick: EventHandler?
-    var onSpamClick: EventHandler?
+    public var onReplyClick: EventHandler?
+    public var onLikeClick: EventHandler?
+    public var onUnlikeClick: EventHandler?
+    public var onApproveClick: EventHandler?
+    public var onUnapproveClick: EventHandler?
+    public var onTrashClick: EventHandler?
+    public var onSpamClick: EventHandler?
 
-    var isReplyEnabled: Bool = false {
+    public var isReplyEnabled: Bool = false {
         didSet {
             btnReply.hidden = !isReplyEnabled
         }
     }
-    var isLikeEnabled: Bool = false {
+    public var isLikeEnabled: Bool = false {
         didSet {
             btnLike.hidden = !isLikeEnabled
         }
     }
-    var isApproveEnabled: Bool = false {
+    public var isApproveEnabled: Bool = false {
         didSet {
             btnApprove.hidden = !isApproveEnabled
         }
     }
-    var isTrashEnabled: Bool = false {
+    public var isTrashEnabled: Bool = false {
         didSet {
             btnTrash.hidden = !isTrashEnabled
         }
     }
-    var isSpamEnabled: Bool = false {
+    public var isSpamEnabled: Bool = false {
         didSet {
             btnSpam.hidden = !isSpamEnabled
         }
     }
-    var isLikeOn: Bool {
+    public var isLikeOn: Bool {
         set {
             btnLike.selected = newValue
             btnLike.accessibilityLabel = likeAccesibilityLabel
@@ -52,7 +51,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
             return btnLike.selected
         }
     }
-    var isApproveOn: Bool {
+    public var isApproveOn: Bool {
         set {
             btnApprove.selected = newValue
             btnApprove.accessibilityLabel = approveAccesibilityLabel
@@ -68,7 +67,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - View Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         selectionStyle = .None
@@ -109,7 +108,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         btnTrash.accessibilityLabel = trashTitle
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         actionsView.spacing = buttonSpacingForCurrentTraits
     }
@@ -117,27 +116,27 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - IBActions
-    @IBAction func replyWasPressed(sender: AnyObject) {
+    @IBAction public func replyWasPressed(sender: AnyObject) {
         onReplyClick?(sender: sender)
     }
 
-    @IBAction func likeWasPressed(sender: AnyObject) {
+    @IBAction public func likeWasPressed(sender: AnyObject) {
         let onClick = isLikeOn ? onUnlikeClick : onLikeClick
         onClick?(sender: sender)
         isLikeOn = !isLikeOn
     }
 
-    @IBAction func approveWasPressed(sender: AnyObject) {
+    @IBAction public func approveWasPressed(sender: AnyObject) {
         let onClick = isApproveOn ? onUnapproveClick : onApproveClick
         onClick?(sender: sender)
         isApproveOn = !isApproveOn
     }
 
-    @IBAction func trashWasPressed(sender: AnyObject) {
+    @IBAction public func trashWasPressed(sender: AnyObject) {
         onTrashClick?(sender: sender)
     }
 
-    @IBAction func spamWasPressed(sender: AnyObject) {
+    @IBAction public func spamWasPressed(sender: AnyObject) {
         onSpamClick?(sender: sender)
     }
 

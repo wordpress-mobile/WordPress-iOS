@@ -714,29 +714,18 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
         } else {
             // Shows the navbar and footer view
-            let pinToBottom = isScrollViewAtBottom()
-
             navigationController?.setNavigationBarHidden(false, animated: true)
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animateWithDuration(0.3,
                 delay: 0.0,
                 options: [.BeginFromCurrentState, .AllowUserInteraction],
-                animations: {
+                animations: { () -> Void in
                     self.view.layoutIfNeeded()
-                    if pinToBottom {
-                        let y = self.scrollView.contentSize.height - self.scrollView.frame.height
-                        self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
-                    }
-
                 }, completion: nil)
         }
 
     }
 
-
-    func isScrollViewAtBottom() -> Bool {
-        return scrollView.contentOffset.y + scrollView.frame.height == scrollView.contentSize.height
-    }
 
     // MARK: - Analytics
 
@@ -948,16 +937,8 @@ extension ReaderDetailViewController : UIScrollViewDelegate
         }
     }
 
-
     public func scrollViewDidScrollToTop(scrollView: UIScrollView) {
         setBarsHidden(false)
-    }
-
-
-    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if isScrollViewAtBottom() {
-            setBarsHidden(false)
-        }
     }
 
 }

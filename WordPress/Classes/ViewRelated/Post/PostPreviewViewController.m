@@ -338,7 +338,7 @@
         
         PostSharingController *sharingController = [[PostSharingController alloc] init];
         
-        [sharingController sharePost:post fromBarButtonItem:[self shareBarButtonItem] inViewController:self];
+        [sharingController sharePost:post fromView:[self shareBarButtonItem].customView inViewController:self];
     }
 }
 

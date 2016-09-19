@@ -966,7 +966,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 strongSelf.dismissViewControllerAnimated(true, completion: nil)
 
                 strongSelf.refreshAndReload()
-                strongSelf.syncItemsWithUserInteraction(false)
 
                 WPAnalytics.track(.PostListStatusFilterChanged, withProperties: strongSelf.propertiesForAnalytics())
             }
