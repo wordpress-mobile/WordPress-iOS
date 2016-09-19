@@ -343,7 +343,7 @@ import Mixpanel
             } else if path.rangeOfString("http://") != nil {
                 path = path.stringByReplacingOccurrencesOfString("http://", withString: "https://")
             }
-        } else if siteURL.scheme == nil || siteURL.scheme == nil {
+        } else if siteURL.scheme == nil || siteURL.scheme?.characters.count == 0 {
             path = "http://\(path)"
         }
 
