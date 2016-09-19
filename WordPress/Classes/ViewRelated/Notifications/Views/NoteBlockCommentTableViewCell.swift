@@ -1,20 +1,19 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-
-class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
+@objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
-    typealias EventHandler = ((sender: AnyObject) -> Void)
+    public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    var onDetailsClick: EventHandler?
+    public var onDetailsClick: EventHandler?
 
-    var attributedCommentText: NSAttributedString? {
+    public var attributedCommentText: NSAttributedString? {
         didSet {
             refreshApprovalColors()
         }
     }
-    var commentText: String? {
+    public var commentText: String? {
         set {
             let text = newValue ?? String()
             attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.contentBlockRegularStyle)
@@ -23,18 +22,18 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
             return attributedCommentText?.string
         }
     }
-    var isApproved: Bool = false {
+    public var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
             refreshSeparators()
         }
     }
-    var isRepliedComment: Bool = false {
+    public var isRepliedComment: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    var name: String? {
+    public var name: String? {
         set {
             titleLabel.text  = newValue
         }
@@ -42,12 +41,12 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
             return titleLabel.text
         }
     }
-    var timestamp: String? {
+    public var timestamp: String? {
         didSet {
             refreshDetails()
         }
     }
-    var site: String? {
+    public var site: String? {
         didSet {
             refreshDetails()
         }
@@ -56,13 +55,13 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(url: NSURL?) {
+    public func downloadGravatarWithURL(url: NSURL?) {
         let gravatar = url.flatMap { Gravatar($0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
-    func downloadGravatarWithEmail(email: String?) {
+    public func downloadGravatarWithEmail(email: String?) {
         guard let unwrappedEmail = email else {
             gravatarImageView.image = placeholderImage
             return
@@ -73,7 +72,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
 
 
     // MARK: - View Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         // Setup Labels
@@ -99,7 +98,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
 
 
     // MARK: - Approval Color Helpers
-    override func refreshSeparators() {
+    public override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible = !isApproved
         separatorsView.leftColor = Style.blockUnapprovedSideColor
@@ -150,7 +149,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
 
 
     // MARK: - Event Handlers
-    @IBAction func detailsWasPressed(sender: AnyObject) {
+    @IBAction public func detailsWasPressed(sender: AnyObject) {
         onDetailsClick?(sender: sender)
     }
 

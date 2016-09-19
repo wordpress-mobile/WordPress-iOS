@@ -1,16 +1,15 @@
 import Foundation
 import WordPressShared
 
-
-class NoteBlockUserTableViewCell: NoteBlockTableViewCell
+@objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
-    typealias EventHandler = (() -> Void)
+    public typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    var onFollowClick    : EventHandler?
-    var onUnfollowClick  : EventHandler?
+    public var onFollowClick    : EventHandler?
+    public var onUnfollowClick  : EventHandler?
 
-    var isFollowEnabled: Bool {
+    public var isFollowEnabled: Bool {
         set {
             btnFollow.hidden = !newValue
         }
@@ -18,7 +17,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
             return !btnFollow.hidden
         }
     }
-    var isFollowOn: Bool {
+    public var isFollowOn: Bool {
         set {
             btnFollow.selected = newValue
         }
@@ -27,7 +26,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
         }
     }
 
-    var name: String? {
+    public var name: String? {
         set {
             nameLabel.text  = newValue
         }
@@ -35,7 +34,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
             return nameLabel.text
         }
     }
-    var blogTitle: String? {
+    public var blogTitle: String? {
         set {
             blogLabel.text  = newValue
         }
@@ -45,7 +44,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(url: NSURL?) {
+    public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
@@ -58,7 +57,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - View Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         WPStyleGuide.configureFollowButton(btnFollow)
@@ -83,7 +82,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - IBActions
-    @IBAction func followWasPressed(sender: AnyObject) {
+    @IBAction public func followWasPressed(sender: AnyObject) {
         if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
             listener()
         }

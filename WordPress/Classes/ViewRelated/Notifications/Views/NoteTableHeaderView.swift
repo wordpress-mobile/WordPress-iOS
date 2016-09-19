@@ -4,10 +4,10 @@ import WordPressShared
 /// This class renders a view with top and bottom separators, meant to be used as UITableView section
 /// header in NotificationsViewController.
 ///
-class NoteTableHeaderView: UIView
+@objc public class NoteTableHeaderView : UIView
 {
     // MARK: - Public Properties
-    var title: String? {
+    public var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
             let unwrappedTitle = newValue?.uppercaseStringWithLocale(NSLocale.currentLocale()) ?? String()
@@ -20,7 +20,7 @@ class NoteTableHeaderView: UIView
         }
     }
 
-    var separatorColor: UIColor? {
+    public var separatorColor: UIColor? {
         set {
             layoutView.bottomColor = newValue ?? UIColor.clearColor()
             layoutView.topColor = newValue ?? UIColor.clearColor()
@@ -33,16 +33,16 @@ class NoteTableHeaderView: UIView
 
 
     // MARK: - Convenience Initializers
-    convenience init() {
+    public convenience init() {
         self.init(frame: CGRectZero)
     }
 
-    required override init(frame: CGRect) {
+    required override public init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupView()
     }
@@ -78,7 +78,7 @@ class NoteTableHeaderView: UIView
     typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Static Properties
-    static let headerHeight  = CGFloat(26)
+    public static let headerHeight  = CGFloat(26)
 
     // MARK: - Outlets
     @IBOutlet private var contentView: UIView!

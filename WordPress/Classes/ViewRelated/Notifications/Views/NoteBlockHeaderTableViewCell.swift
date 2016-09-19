@@ -1,10 +1,10 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
+@objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    var headerTitle: String? {
+    public var headerTitle: String? {
         set {
             headerTitleLabel.text  = newValue
         }
@@ -13,7 +13,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
         }
     }
 
-    var attributedHeaderTitle: NSAttributedString? {
+    public var attributedHeaderTitle: NSAttributedString? {
         set {
             headerTitleLabel.attributedText  = newValue
         }
@@ -22,7 +22,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
         }
     }
 
-    var headerDetails: String? {
+    public var headerDetails: String? {
         set {
             headerDetailsLabel.text = newValue
         }
@@ -33,7 +33,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(url: NSURL?) {
+    public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
@@ -46,7 +46,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - View Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         accessoryType = .DisclosureIndicator
@@ -66,7 +66,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     }
 
     // MARK: - Overriden Methods
-    override func refreshSeparators() {
+    public override func refreshSeparators() {
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = UIEdgeInsetsZero
     }

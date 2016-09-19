@@ -7,24 +7,24 @@ import WordPressShared
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-class NoteTableViewCell: WPTableViewCell
+@objc public class NoteTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
-    var read: Bool = false {
+    public var read: Bool = false {
         didSet {
             if read != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    var unapproved: Bool = false {
+    public var unapproved: Bool = false {
         didSet {
             if unapproved != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    var markedForDeletion: Bool = false {
+    public var markedForDeletion: Bool = false {
         didSet {
             if markedForDeletion != oldValue {
                 refreshSubviewVisibility()
@@ -33,7 +33,7 @@ class NoteTableViewCell: WPTableViewCell
             }
         }
     }
-    var showsBottomSeparator: Bool {
+    public var showsBottomSeparator: Bool {
         set {
             separatorsView.bottomVisible = newValue
         }
@@ -41,7 +41,7 @@ class NoteTableViewCell: WPTableViewCell
             return separatorsView.bottomVisible == false
         }
     }
-    var attributedSubject: NSAttributedString? {
+    public var attributedSubject: NSAttributedString? {
         set {
             subjectLabel.attributedText = newValue
             setNeedsLayout()
@@ -50,7 +50,7 @@ class NoteTableViewCell: WPTableViewCell
             return subjectLabel.attributedText
         }
     }
-    var attributedSnippet: NSAttributedString? {
+    public var attributedSnippet: NSAttributedString? {
         set {
             snippetLabel.attributedText = newValue
             refreshNumberOfLines()
@@ -60,7 +60,7 @@ class NoteTableViewCell: WPTableViewCell
             return snippetLabel.attributedText
         }
     }
-    var noticon: String? {
+    public var noticon: String? {
         set {
             noticonLabel.text = newValue
         }
@@ -68,16 +68,16 @@ class NoteTableViewCell: WPTableViewCell
             return noticonLabel.text
         }
     }
-    var onUndelete: (Void -> Void)?
+    public var onUndelete: (Void -> Void)?
 
 
 
     // MARK: - Public Methods
-    class func reuseIdentifier() -> String {
+    public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
 
-    func downloadIconWithURL(url: NSURL?) {
+    public func downloadIconWithURL(url: NSURL?) {
         let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
         if isGravatarURL {
             downloadGravatarWithURL(url)
@@ -130,7 +130,7 @@ class NoteTableViewCell: WPTableViewCell
 
 
     // MARK: - UITableViewCell Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
@@ -154,18 +154,19 @@ class NoteTableViewCell: WPTableViewCell
         backgroundView = separatorsView
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
+        refreshLabelPreferredMaxLayoutWidth()
         refreshBackgrounds()
         super.layoutSubviews()
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    public override func setSelected(selected: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setSelected(selected, animated: animated)
         refreshBackgrounds()
     }
 
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    public override func setHighlighted(highlighted: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setHighlighted(highlighted, animated: animated)
         refreshBackgrounds()
@@ -174,6 +175,12 @@ class NoteTableViewCell: WPTableViewCell
 
 
     // MARK: - Private Methods
+    private func refreshLabelPreferredMaxLayoutWidth() {
+        let maxWidthLabel = frame.width - Settings.textInsets.right - subjectLabel.frame.minX
+        subjectLabel.preferredMaxLayoutWidth = maxWidthLabel
+        snippetLabel.preferredMaxLayoutWidth = maxWidthLabel
+    }
+
     private func refreshBackgrounds() {
         // Noticon Background
         if unapproved {
@@ -230,8 +237,44 @@ class NoteTableViewCell: WPTableViewCell
 
 
 
+    // MARK: - Public Static Helpers
+    public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
+
+        // Limit the width (iPad Devices)
+        let cellWidth = min(width, Style.maximumCellWidth)
+        var cellHeight = Settings.textInsets.top + Settings.textInsets.bottom
+
+        // Calculate the maximum label size
+        let maxLabelWidth = cellWidth - Settings.textInsets.left - Settings.textInsets.right
+        let maxLabelSize = CGSize(width: maxLabelWidth, height: CGFloat.max)
+
+        // Helpers
+        let showsSnippet = snippet != nil
+
+        // If we must render a snippet, the maximum subject height will change. Account for that please
+        if let unwrappedSubject = subject {
+            let subjectRect = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                                                    options: .UsesLineFragmentOrigin,
+                                                                    context: nil)
+
+            cellHeight += min(subjectRect.height, Settings.subjectMaximumHeight(showsSnippet))
+        }
+
+        if let unwrappedSubject = snippet {
+            let snippetRect = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                                                    options: .UsesLineFragmentOrigin,
+                                                                    context: nil)
+
+            cellHeight += min(snippetRect.height, Settings.snippetMaximumHeight())
+        }
+
+        return max(cellHeight, Settings.minimumCellHeight)
+    }
+
+
+
     // MARK: - Action Handlers
-    @IBAction func undeleteWasPressed(sender: AnyObject) {
+    @IBAction public func undeleteWasPressed(sender: AnyObject) {
         onUndelete?()
     }
 
@@ -242,6 +285,8 @@ class NoteTableViewCell: WPTableViewCell
 
     // MARK: - Private Settings
     private struct Settings {
+        static let minimumCellHeight = CGFloat(70)
+        static let textInsets = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
         static let separatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
         static let subjectNumberOfLinesWithoutSnippet = 3
         static let subjectNumberOfLinesWithSnippet = 2

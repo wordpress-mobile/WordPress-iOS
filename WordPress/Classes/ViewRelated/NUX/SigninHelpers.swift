@@ -335,15 +335,16 @@ import Mixpanel
             return ""
         }
 
-        var path = siteURL.absoluteString.lowercaseString
+        var path = siteURL.absoluteString!.lowercaseString
+        let isSiteURLSchemeEmpty = siteURL.scheme == nil || siteURL.scheme!.isEmpty
 
         if path.isWordPressComPath() {
-            if siteURL.scheme.characters.count == 0 {
+            if isSiteURLSchemeEmpty {
                 path = "https://\(path)"
             } else if path.rangeOfString("http://") != nil {
                 path = path.stringByReplacingOccurrencesOfString("http://", withString: "https://")
             }
-        } else if siteURL.scheme.characters.count == 0 {
+        } else if isSiteURLSchemeEmpty {
             path = "http://\(path)"
         }
 
@@ -394,7 +395,7 @@ import Mixpanel
             return false
         }
 
-        if url.absoluteString.isEmpty {
+        if url.absoluteString!.isEmpty {
             return false
         }
 

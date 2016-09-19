@@ -77,6 +77,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
+@property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
 @end
 
@@ -338,6 +339,12 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
+    if (self.launchedShortcutItem) {
+        WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
+        [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
+        self.launchedShortcutItem = nil;
+    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -347,20 +354,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
 {
-    NSUserDefaults* standardUserDefaults = [NSUserDefaults standardUserDefaults];
-
-    NSString* const lastSavedStateVersionKey = @"lastSavedStateVersionKey";
-    NSString* lastSavedStateVersion = [standardUserDefaults objectForKey:lastSavedStateVersionKey];
-    NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-    BOOL shouldRestoreApplicationState = NO;
-
-    if (lastSavedStateVersion && [lastSavedStateVersion length] > 0 && [lastSavedStateVersion isEqualToString:currentVersion]) {
-        shouldRestoreApplicationState = self.shouldRestoreApplicationState;;
-    }
-
-    [standardUserDefaults setObject:currentVersion forKey:lastSavedStateVersionKey];
-
-    return shouldRestoreApplicationState;
+    return self.shouldRestoreApplicationState;
 }
 
 - (void)application: (UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler

@@ -1,29 +1,28 @@
 import Foundation
 import WordPressShared
 
-
-class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
+@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
 {
     // MARK: - Public Properties
-    var onUrlClick: (NSURL -> Void)?
-    var onAttachmentClick: (NSTextAttachment -> Void)?
-    var attributedText: NSAttributedString? {
+    public var onUrlClick: (NSURL -> Void)?
+    public var onAttachmentClick: (NSTextAttachment -> Void)?
+    public var attributedText: NSAttributedString? {
         set {
             textView.attributedText = newValue
-            invalidateIntrinsicContentSize()
+            setNeedsLayout()
         }
         get {
             return textView.attributedText
         }
     }
 
-    override var isBadge: Bool {
+    public override var isBadge: Bool {
         didSet {
             backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
         }
     }
 
-    var linkColor: UIColor? {
+    public var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
                 textView.linkTextAttributes = [NSForegroundColorAttributeName : unwrappedLinkColor]
@@ -31,7 +30,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var dataDetectors: UIDataDetectorTypes {
+    public var dataDetectors: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue ?? .None
         }
@@ -40,7 +39,11 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var isTextViewSelectable: Bool {
+    public var labelPadding: UIEdgeInsets {
+        return self.dynamicType.defaultLabelPadding
+    }
+
+    public var isTextViewSelectable: Bool {
         set {
             textView.selectable = newValue
         }
@@ -49,7 +52,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var isTextViewClickable: Bool {
+    public var isTextViewClickable: Bool {
         set {
             textView.userInteractionEnabled = newValue
         }
@@ -59,7 +62,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     }
 
     // MARK: - View Methods
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
@@ -78,25 +81,30 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    public override func layoutSubviews() {
+        // Calculate the TextView's width, before hitting layoutSubviews!
+        textView.preferredMaxLayoutWidth = min(bounds.width, self.dynamicType.maxWidth) - labelPadding.left - labelPadding.right
+        super.layoutSubviews()
+    }
 
     // MARK: - RichTextView Data Source
-    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         onUrlClick?(URL)
         return false
     }
 
-    func textView(textView: UITextView, didPressLink link: NSURL) {
+    public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
     }
 
-    func textView(textView: UITextView, shouldInteractWithTextAttachment textAttachment: NSTextAttachment, inRange characterRange: NSRange) -> Bool {
+    public func textView(textView: UITextView, shouldInteractWithTextAttachment textAttachment: NSTextAttachment, inRange characterRange: NSRange) -> Bool {
         onAttachmentClick?(textAttachment)
         return false
     }
 
-
     // MARK: - Constants
-    static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
+    public static let maxWidth = WPTableViewFixedWidth
+    public static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
