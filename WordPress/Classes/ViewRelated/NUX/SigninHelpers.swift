@@ -64,9 +64,7 @@ import Mixpanel
         let controller = SigninWPComViewController.controller(loginFields)
         controller.restrictSigninToWPCom = true
         controller.dismissBlock = onDismissed
-
-        let navController = NUXNavigationController(rootViewController: controller)
-        return navController
+        return NUXNavigationController(rootViewController: controller)
     }
 
 
