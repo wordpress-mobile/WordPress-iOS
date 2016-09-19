@@ -20,30 +20,30 @@ class GravatarOverlayView : UIView
     override func drawRect(rect: CGRect) {
         super.drawRect(rect)
 
-        let context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()!
 
         // Prevent Ellipse Clipping
         let delta = borderWidth - 1.0
-        let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
+        let ellipseRect = bounds.insetBy(dx: delta, dy: delta)q
 
         // Setup
-        CGContextSaveGState(context!)
-        CGContextSetLineWidth(context!, borderWidth)
-        CGContextSetAllowsAntialiasing(context!, true)
-        CGContextSetShouldAntialias(context!, true)
+        CGContextSaveGState(context)
+        CGContextSetLineWidth(context, borderWidth)
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
 
         // Outer
         outerColor?.setFill()
-        CGContextAddRect(context!, bounds)
-        CGContextAddEllipseInRect(context!, ellipseRect)
-        CGContextEOFillPath(context!)
+        CGContextAddRect(context, bounds)
+        CGContextAddEllipseInRect(context, ellipseRect)
+        CGContextEOFillPath(context)
 
         // Border
         borderColor?.setStroke()
-        CGContextAddEllipseInRect(context!, ellipseRect)
-        CGContextStrokePath(context!)
+        CGContextAddEllipseInRect(context, ellipseRect)
+        CGContextStrokePath(context)
 
         // Wrap Up
-        CGContextRestoreGState(context!)
+        CGContextRestoreGState(context)
     }
 }
