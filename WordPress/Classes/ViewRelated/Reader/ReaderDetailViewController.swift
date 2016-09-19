@@ -448,9 +448,9 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     private func requestForURL(url:NSURL) -> NSURLRequest {
         var requestURL = url
 
-        let absoluteString = requestURL.absoluteString
-        if !absoluteString!.hasPrefix("https") {
-            let sslURL = absoluteString!.stringByReplacingOccurrencesOfString("http", withString: "https")
+        let absoluteString = requestURL.absoluteString ?? ""
+        if !absoluteString.hasPrefix("https") {
+            let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
             requestURL = NSURL(string: sslURL)!
         }
 
