@@ -90,19 +90,17 @@ post_install do |installer_representation|
 #       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
 #   end
 
-  # Does a quick hack to turn off Swift embedding of libraries for extensions
-  # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  # Specify Swift 2.3 Setting!
   #
-  #
-  #
-  #
-
   installer_representation.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['SWIFT_VERSION'] = '2.3'
     end
   end
 
+  # Does a quick hack to turn off Swift embedding of libraries for extensions
+  # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  #
   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressShareExtension/*.xcconfig"
   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressTodayWidget/*.xcconfig"
 
