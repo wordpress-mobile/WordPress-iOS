@@ -133,13 +133,6 @@ PODS:
     - OHHTTPStubs/Core
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
-  - ReactiveCocoa (2.4.7):
-    - ReactiveCocoa/UI (= 2.4.7)
-  - ReactiveCocoa/Core (2.4.7):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.4.7)
-  - ReactiveCocoa/UI (2.4.7):
-    - ReactiveCocoa/Core
   - Simperium (0.8.17):
     - Simperium/DiffMatchPach (= 0.8.17)
     - Simperium/JRSwizzle (= 0.8.17)
@@ -212,7 +205,6 @@ DEPENDENCIES:
   - OHHTTPStubs (~> 4.6.0)
   - OHHTTPStubs/Swift (~> 4.6.0)
   - Reachability (= 3.2)
-  - ReactiveCocoa (~> 2.4.7)
   - Simperium (= 0.8.17)
   - Specta (= 1.0.5)
   - SVProgressHUD (~> 1.1.3)
@@ -276,7 +268,6 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   Simperium: 0111b16b6d72bc598a99e244ef87025ae433b27e
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
@@ -291,6 +282,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 7c94937ae0ddf3713c065bc2c9712444e26ebd6b
+PODFILE CHECKSUM: c14e228c2850d6b1a6f7cc3fee3d0afb620e9585
 
 COCOAPODS: 1.0.1
