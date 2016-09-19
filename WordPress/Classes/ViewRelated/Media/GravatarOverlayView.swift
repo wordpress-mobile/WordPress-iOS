@@ -24,7 +24,7 @@ class GravatarOverlayView : UIView
 
         // Prevent Ellipse Clipping
         let delta = borderWidth - 1.0
-        let ellipseRect = bounds.insetBy(dx: delta, dy: delta)q
+        let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
 
         // Setup
         CGContextSaveGState(context)
