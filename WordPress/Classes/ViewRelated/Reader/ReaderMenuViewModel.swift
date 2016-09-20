@@ -204,7 +204,7 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                var item = ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: abstractTopic)
+                var item = ReaderMenuItem(title: abstractTopic.title, type: .Topic, icon: nil, topic: abstractTopic)
                 if ReaderHelpers.topicIsFollowing(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Followed.rawValue
                     item.icon = Gridicon.iconOfType(.CheckmarkCircle)
