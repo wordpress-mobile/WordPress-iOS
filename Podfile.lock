@@ -15,7 +15,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Alamofire (3.4.1)
+  - Alamofire (3.5.0)
   - Automattic-Tracks-iOS (0.1.1):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
@@ -155,12 +155,13 @@ PODS:
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-Aztec-iOS (0.1.0)
+  - WordPress-Aztec-iOS (0.3.0):
+    - Gridicons (= 0.2)
   - WordPress-iOS-Editor (1.8.1):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.6.0):
+  - WordPress-iOS-Shared (0.6.1):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.18)
   - WordPressCom-Stats-iOS (0.7.7):
@@ -184,7 +185,7 @@ PODS:
     - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
     - WordPressCom-Stats-iOS/Services
-  - WordPressComKit (0.0.4):
+  - WordPressComKit (0.0.5):
     - Alamofire (~> 3.0)
   - WPMediaPicker (0.10.1)
   - wpxmlrpc (0.8.2)
@@ -199,7 +200,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.16)
   - Expecta (= 1.0.5)
   - FormatterKit (~> 1.8.1)
-  - Gridicons (= 0.2)
+  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, commit `8bd04e18eddaaf36810887c94837571e68f7cc24`)
   - Helpshift (~> 5.7.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.4.1)
@@ -218,13 +219,13 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `a6678565b94be670725cafd5ba261a4dfbe383f9`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `7d02c77349245c6e4d3bcdf63a878f90eb4a4e39`)
   - WordPress-iOS-Editor (= 1.8.1)
-  - WordPress-iOS-Shared (= 0.6.0)
+  - WordPress-iOS-Shared (= 0.6.1)
   - WordPressCom-Analytics-iOS (= 0.1.18)
   - WordPressCom-Stats-iOS (= 0.7.7)
   - WordPressCom-Stats-iOS/Services (= 0.7.7)
-  - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.4`)
+  - WordPressComKit (= 0.0.5)
   - WPMediaPicker (~> 0.10.1)
   - wpxmlrpc (~> 0.8)
 
@@ -232,34 +233,34 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.1.1
+  Gridicons:
+    :commit: 8bd04e18eddaaf36810887c94837571e68f7cc24
+    :git: https://github.com/Automattic/Gridicons-iOS.git
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: a6678565b94be670725cafd5ba261a4dfbe383f9
+    :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
-  WordPressComKit:
-    :git: https://github.com/Automattic/WordPressComKit.git
-    :tag: 0.0.4
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.1.1
+  Gridicons:
+    :commit: 8bd04e18eddaaf36810887c94837571e68f7cc24
+    :git: https://github.com/Automattic/Gridicons-iOS.git
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: a6678565b94be670725cafd5ba261a4dfbe383f9
+    :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
-  WordPressComKit:
-    :git: https://github.com/Automattic/WordPressComKit.git
-    :tag: 0.0.4
 
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
+  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
   Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: d5398183a8b50432d5cefeb1080f02b8c9b3928a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
@@ -288,15 +289,15 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: 2d4f65d04e9ce1c319c7893f725aec80a1c6af3f
+  WordPress-Aztec-iOS: 49c682caa55e69bfbe12545dc1f448207060f6f4
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
-  WordPress-iOS-Shared: f799334b41f3af509ccb76d7970f8c74a7716f14
+  WordPress-iOS-Shared: ad09acb8508e771f40a06ee64902c6dc4d0d73d0
   WordPressCom-Analytics-iOS: f8e3823c3d528d5238bfe6721cd0d67b9e7cc4f6
   WordPressCom-Stats-iOS: 5996ea5bc7ce2096400fdc33e3368b5524f7288a
-  WordPressComKit: 0742c47e5b55bff0e6d26d40db9e010404675a73
+  WordPressComKit: 4dc52eebc508b8e056d8bf8e931a7be95d467e3b
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 64a401371b37772c4c89ffa7c7a8ea22755997f9
+PODFILE CHECKSUM: 49904dd5b3e8960ed452b4822abc0632c8f13174
 
 COCOAPODS: 1.0.1
