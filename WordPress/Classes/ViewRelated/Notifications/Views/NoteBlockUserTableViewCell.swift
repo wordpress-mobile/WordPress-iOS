@@ -1,15 +1,16 @@
 import Foundation
 import WordPressShared
 
-@objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
+
+class NoteBlockUserTableViewCell: NoteBlockTableViewCell
 {
-    public typealias EventHandler = (() -> Void)
+    typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    public var onFollowClick    : EventHandler?
-    public var onUnfollowClick  : EventHandler?
+    var onFollowClick    : EventHandler?
+    var onUnfollowClick  : EventHandler?
 
-    public var isFollowEnabled: Bool {
+    var isFollowEnabled: Bool {
         set {
             btnFollow.hidden = !newValue
         }
@@ -17,7 +18,7 @@ import WordPressShared
             return !btnFollow.hidden
         }
     }
-    public var isFollowOn: Bool {
+    var isFollowOn: Bool {
         set {
             btnFollow.selected = newValue
         }
@@ -26,7 +27,7 @@ import WordPressShared
         }
     }
 
-    public var name: String? {
+    var name: String? {
         set {
             nameLabel.text  = newValue
         }
@@ -34,7 +35,7 @@ import WordPressShared
             return nameLabel.text
         }
     }
-    public var blogTitle: String? {
+    var blogTitle: String? {
         set {
             blogLabel.text  = newValue
         }
@@ -44,7 +45,7 @@ import WordPressShared
     }
 
     // MARK: - Public Methods
-    public func downloadGravatarWithURL(url: NSURL?) {
+    func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
@@ -57,7 +58,7 @@ import WordPressShared
     }
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         WPStyleGuide.configureFollowButton(btnFollow)
@@ -82,7 +83,7 @@ import WordPressShared
     }
 
     // MARK: - IBActions
-    @IBAction public func followWasPressed(sender: AnyObject) {
+    @IBAction func followWasPressed(sender: AnyObject) {
         if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
             listener()
         }

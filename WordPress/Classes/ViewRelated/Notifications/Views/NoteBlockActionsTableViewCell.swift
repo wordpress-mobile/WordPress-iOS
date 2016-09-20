@@ -1,45 +1,46 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc public class NoteBlockActionsTableViewCell : NoteBlockTableViewCell
+
+class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 {
-    public typealias EventHandler = ((sender: AnyObject) -> Void)
+    typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    public var onReplyClick: EventHandler?
-    public var onLikeClick: EventHandler?
-    public var onUnlikeClick: EventHandler?
-    public var onApproveClick: EventHandler?
-    public var onUnapproveClick: EventHandler?
-    public var onTrashClick: EventHandler?
-    public var onSpamClick: EventHandler?
+    var onReplyClick: EventHandler?
+    var onLikeClick: EventHandler?
+    var onUnlikeClick: EventHandler?
+    var onApproveClick: EventHandler?
+    var onUnapproveClick: EventHandler?
+    var onTrashClick: EventHandler?
+    var onSpamClick: EventHandler?
 
-    public var isReplyEnabled: Bool = false {
+    var isReplyEnabled: Bool = false {
         didSet {
             btnReply.hidden = !isReplyEnabled
         }
     }
-    public var isLikeEnabled: Bool = false {
+    var isLikeEnabled: Bool = false {
         didSet {
             btnLike.hidden = !isLikeEnabled
         }
     }
-    public var isApproveEnabled: Bool = false {
+    var isApproveEnabled: Bool = false {
         didSet {
             btnApprove.hidden = !isApproveEnabled
         }
     }
-    public var isTrashEnabled: Bool = false {
+    var isTrashEnabled: Bool = false {
         didSet {
             btnTrash.hidden = !isTrashEnabled
         }
     }
-    public var isSpamEnabled: Bool = false {
+    var isSpamEnabled: Bool = false {
         didSet {
             btnSpam.hidden = !isSpamEnabled
         }
     }
-    public var isLikeOn: Bool {
+    var isLikeOn: Bool {
         set {
             btnLike.selected = newValue
             btnLike.accessibilityLabel = likeAccesibilityLabel
@@ -51,7 +52,7 @@ import WordPressShared.WPStyleGuide
             return btnLike.selected
         }
     }
-    public var isApproveOn: Bool {
+    var isApproveOn: Bool {
         set {
             btnApprove.selected = newValue
             btnApprove.accessibilityLabel = approveAccesibilityLabel
@@ -67,7 +68,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         selectionStyle = .None
@@ -108,7 +109,7 @@ import WordPressShared.WPStyleGuide
         btnTrash.accessibilityLabel = trashTitle
     }
 
-    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         actionsView.spacing = buttonSpacingForCurrentTraits
     }
@@ -116,27 +117,27 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - IBActions
-    @IBAction public func replyWasPressed(sender: AnyObject) {
+    @IBAction func replyWasPressed(sender: AnyObject) {
         onReplyClick?(sender: sender)
     }
 
-    @IBAction public func likeWasPressed(sender: AnyObject) {
+    @IBAction func likeWasPressed(sender: AnyObject) {
         let onClick = isLikeOn ? onUnlikeClick : onLikeClick
         onClick?(sender: sender)
         isLikeOn = !isLikeOn
     }
 
-    @IBAction public func approveWasPressed(sender: AnyObject) {
+    @IBAction func approveWasPressed(sender: AnyObject) {
         let onClick = isApproveOn ? onUnapproveClick : onApproveClick
         onClick?(sender: sender)
         isApproveOn = !isApproveOn
     }
 
-    @IBAction public func trashWasPressed(sender: AnyObject) {
+    @IBAction func trashWasPressed(sender: AnyObject) {
         onTrashClick?(sender: sender)
     }
 
-    @IBAction public func spamWasPressed(sender: AnyObject) {
+    @IBAction func spamWasPressed(sender: AnyObject) {
         onSpamClick?(sender: sender)
     }
 
