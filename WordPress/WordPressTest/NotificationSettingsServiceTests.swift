@@ -30,8 +30,8 @@ class NotificationSettingsServiceTests: XCTestCase
                                                            wordPressComRestApi: remoteApi)
 
         stub({ request in
-            return request.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil
-                && request.HTTPMethod == "GET"
+            return request.URL?.absoluteString!.rangeOfString(self.settingsEndpoint) != nil
+                && request.HTTPMethod! == "GET"
             }) { _ in
                 let stubPath = OHPathForFile(self.settingsFilename, self.dynamicType)
                 return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
