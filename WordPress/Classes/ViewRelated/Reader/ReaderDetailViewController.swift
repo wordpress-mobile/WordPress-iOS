@@ -448,7 +448,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     private func requestForURL(url:NSURL) -> NSURLRequest {
         var requestURL = url
 
-        let absoluteString = requestURL.absoluteString
+        let absoluteString = requestURL.absoluteString ?? ""
         if !absoluteString.hasPrefix("https") {
             let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
             requestURL = NSURL(string: sslURL)!
@@ -910,7 +910,7 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
         if url.host != nil {
             if let postURLString = post?.permaLink {
                 let postURL = NSURL(string: postURLString)
-                url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)!
+                url = NSURL(string: linkURL.absoluteString!, relativeToURL: postURL)!
             }
         }
         presentWebViewControllerWithURL(url)

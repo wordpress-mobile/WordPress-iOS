@@ -95,7 +95,7 @@ public class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         // Let's see if a scheme is provided and it's HTTP or HTTPS
-        var scheme = baseURL.scheme.lowercaseString
+        var scheme = baseURL.scheme!.lowercaseString
         if scheme.isEmpty {
             resultURLString = "http://\(resultURLString)"
             scheme = "http"
