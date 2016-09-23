@@ -145,8 +145,8 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         success = nil
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        DDLogSwift.logError(error?.localizedDescription)
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        DDLogSwift.logError(error.localizedDescription)
     }
 
 }

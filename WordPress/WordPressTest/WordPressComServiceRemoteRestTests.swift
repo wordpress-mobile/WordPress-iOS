@@ -30,7 +30,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
             guard let url = request.URL else {
                 return false
             }
-            return url.absoluteString.containsString(self.wordPressUsersNewEndpoint)
+            return url.absoluteString!.containsString(self.wordPressUsersNewEndpoint)
         }
     }
 
@@ -39,7 +39,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
             guard let url = request.URL else {
                 return false
             }
-            return url.absoluteString.containsString(self.wordPressSitesNewEndpoint)
+            return url.absoluteString!.containsString(self.wordPressSitesNewEndpoint)
         }
     }
 
