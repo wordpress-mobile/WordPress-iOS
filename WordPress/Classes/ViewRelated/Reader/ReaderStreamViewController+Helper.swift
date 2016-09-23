@@ -35,22 +35,22 @@ extension ReaderStreamViewController
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil).first as! ReaderFollowedSitesStreamHeader
+            return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
         }
 
         // if tag
         if ReaderHelpers.isTopicTag(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil).first as! ReaderTagStreamHeader
+            return NSBundle.mainBundle().loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
         }
 
         // if list
         if ReaderHelpers.isTopicList(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil).first as! ReaderListStreamHeader
+            return NSBundle.mainBundle().loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
         }
 
         // if site
         if ReaderHelpers.isTopicSite(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil).first as! ReaderSiteStreamHeader
+            return NSBundle.mainBundle().loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
         }
 
         // if anything else return nil

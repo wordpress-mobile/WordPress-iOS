@@ -9,114 +9,12 @@ import Mixpanel
 @objc class SigninHelpers: NSObject
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
-    private static let JoinABTestTimeoutInSeconds: NSTimeInterval = 2
-
-    // MARK: - AB test related methods
-
-
-    /// Loads the mixpanel experiments (if necessary) and shows a variant of the sign in flow.
-    /// A call is made to join mixpanel experiements, passing a callback to show
-    /// the relevant sign in variant. To compensate for latency, a brief timer is
-    /// scheduled to do the same task.  Regardless of whether the timer or the
-    /// callback is performed first the second call will be ignored by design.
-    ///
-    class func loadABTestThenShowSigninController() {
-        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
-            assertionFailure("Missing a rootViewController.")
-            return
-        }
-
-        if useNewSigninFlow() {
-            // We know we're using a varient so proceeed without wait.
-            SigninHelpers.showSigninFromPresenter(rootController, animated: false, thenEditor: false)
-            return
-        }
-
-        // Keep showing the launch screen until we know which signin varient we want.
-        let storyboard = UIStoryboard(name: "Launch Screen", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateInitialViewController()!
-        let navController = NUXNavigationController(rootViewController: controller)
-        navController.toolbarHidden = true
-
-        rootController.presentViewController(navController, animated: false, completion: nil)
-
-        // Load A/B tests.
-        Mixpanel.sharedInstance().joinExperimentsWithCallback {
-            SigninHelpers.showSigninControllerForABTest()
-        }
-
-        NSTimer.scheduledTimerWithTimeInterval(JoinABTestTimeoutInSeconds, target: SigninHelpers.self, selector: #selector(SigninHelpers.showSigninControllerForABTest), userInfo: nil, repeats: false)
-    }
-
-
-    /// Displays a variant of the sign in flow.
-    /// Also checks if the visible view controller is already one of our test
-    /// variants and if so returns early.
-    ///
-    class func showSigninControllerForABTest() {
-        guard let rootController = WordPressAppDelegate.sharedInstance().window.rootViewController else {
-            assertionFailure("Missing a rootViewController.")
-            return
-        }
-
-        // If the presented controller is nil, or not a nux nav controller something isn't right so just bail.
-        guard let navController = rootController.presentedViewController as? NUXNavigationController  else {
-            assertionFailure("It would be very strange for the presented controller to *not* be our desired nav controller.")
-            return
-        }
-
-        // If we're already showing one of the signin screens just bail.
-        if let topViewController = navController.topViewController {
-            if topViewController.isKindOfClass(NUXAbstractViewController.self) {
-                return
-            }
-            if topViewController.isKindOfClass(LoginViewController.self) {
-                return
-            }
-        }
-
-        // Repurpose the already presented nav controller to show our nux varient.
-
-        var controller: UIViewController
-        if useNewSigninFlow() {
-            controller = createControllerForNewSigninFlow(showsEditor: false)
-        } else {
-            controller = createControllerForOldSigninFlow(showsEditor: false)
-        }
-
-        navController.setViewControllers([controller], animated: false)
-    }
-
-
-    // Allows for A/B testing between the old and new signin flows.
-    class func useNewSigninFlow() -> Bool {
-        return MixpanelTweaks.NUXMagicLinksEnabled()
-    }
 
 
     //MARK: - Helpers for presenting the signin flow
 
-
-    // Convenience factory for the old LoginViewController
-    class func createControllerForOldSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        let blogService = BlogService(managedObjectContext: context)
-
-        let hasWPcomAcctButNoSelfHostedBLogs = (accountService.defaultWordPressComAccount() != nil) && blogService.blogCountSelfHosted() == 0
-
-        let controller = LoginViewController()
-        controller.showEditorAfterAddingSites = thenEditor
-        controller.cancellable = hasWPcomAcctButNoSelfHostedBLogs
-        controller.dismissBlock = { [weak controller] (_) in
-            controller?.dismissViewControllerAnimated(true, completion: nil)
-        }
-        return controller
-    }
-
-
-    // Convenience factory for the new signin flow's first vc
-    class func createControllerForNewSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
+    // Convenience factory for the signin flow's first vc
+    class func createControllerForSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
         let controller = SigninEmailViewController.controller()
         controller.dismissBlock = {(cancelled) in
             // Show the editor if requested, and we weren't cancelled.
@@ -131,108 +29,51 @@ import Mixpanel
 
     // Helper used by the app delegate
     class func showSigninFromPresenter(presenter: UIViewController, animated: Bool, thenEditor: Bool) {
-        if useNewSigninFlow() {
-            let controller = createControllerForNewSigninFlow(showsEditor: thenEditor)
-            let navController = NUXNavigationController(rootViewController: controller)
-            presenter.presentViewController(navController, animated: animated, completion: nil)
-
-        } else {
-            let controller = createControllerForOldSigninFlow(showsEditor: thenEditor)
-            let navController = RotationAwareNavigationViewController(rootViewController: controller)
-            navController.navigationBar.translucent = false
-            presenter.presentViewController(navController, animated: animated, completion: nil)
-        }
+        let controller = createControllerForSigninFlow(showsEditor: thenEditor)
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.presentViewController(navController, animated: animated, completion: nil)
     }
 
 
     // Helper used by the MeViewController
     class func showSigninForJustWPComFromPresenter(presenter: UIViewController) {
-        if useNewSigninFlow() {
-            let controller = SigninEmailViewController.controller()
-            controller.restrictSigninToWPCom = true
+        let controller = SigninEmailViewController.controller()
+        controller.restrictSigninToWPCom = true
 
-            let navController = NUXNavigationController(rootViewController: controller)
-            presenter.presentViewController(navController, animated: true, completion: nil)
-        } else {
-
-            let controller = LoginViewController()
-            controller.onlyDotComAllowed = true
-            controller.cancellable = true
-            controller.dismissBlock = { (_)in
-                presenter.dismissViewControllerAnimated(true, completion: nil)
-            }
-
-            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
-            presenter.presentViewController(navigation, animated: true, completion: nil)
-        }
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.presentViewController(navController, animated: true, completion: nil)
     }
 
 
     // Helper used by the BlogListViewController
     class func showSigninForSelfHostedSite(presenter: UIViewController) {
-        if useNewSigninFlow() {
-            let controller = SigninSelfHostedViewController.controller(LoginFields())
-            let navController = NUXNavigationController(rootViewController: controller)
-            presenter.presentViewController(navController, animated: true, completion: nil)
-
-        } else {
-            let controller = LoginViewController()
-            controller.cancellable = true
-            controller.prefersSelfHosted = true
-            controller.dismissBlock = {(_) in
-                presenter.dismissViewControllerAnimated(true, completion: nil)
-            }
-
-            let navController = RotationAwareNavigationViewController(rootViewController: controller)
-            presenter.presentViewController(navController, animated: true, completion: nil)
-        }
+        let controller = SigninSelfHostedViewController.controller(LoginFields())
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.presentViewController(navController, animated: true, completion: nil)
     }
 
 
     // Helper used by WPAuthTokenIssueSolver
     class func signinForWPComFixingAuthToken(onDismissed: ((cancelled: Bool) -> Void)?) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
-        if useNewSigninFlow() {
-            let loginFields = LoginFields()
-            if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
-                loginFields.username = account.username
-            }
-
-            let controller = SigninWPComViewController.controller(loginFields)
-            controller.restrictSigninToWPCom = true
-            controller.dismissBlock = onDismissed
-
-            let navController = NUXNavigationController(rootViewController: controller)
-            return navController
-
-        } else {
-            let blogService = BlogService(managedObjectContext: context)
-            let cancellable = blogService.blogCountSelfHosted() > 0
-
-            let controller = LoginViewController()
-            controller.onlyDotComAllowed = true
-            controller.shouldReauthenticateDefaultAccount = true
-            controller.cancellable = cancellable
-            controller.dismissBlock = {(cancelled) in
-                onDismissed?(cancelled: cancelled)
-            }
-
-            return controller
+        let loginFields = LoginFields()
+        if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
+            loginFields.username = account.username
         }
+
+        let controller = SigninWPComViewController.controller(loginFields)
+        controller.restrictSigninToWPCom = true
+        controller.dismissBlock = onDismissed
+        return NUXNavigationController(rootViewController: controller)
     }
 
 
     // Helper used by WPError
     class func showSigninForWPComFixingAuthToken() {
         let controller = signinForWPComFixingAuthToken(nil)
-        if useNewSigninFlow() {
-            let presenter = UIApplication.sharedApplication().keyWindow?.rootViewController
-            let navController = NUXNavigationController(rootViewController: controller)
-            presenter?.presentViewController(navController, animated: true, completion: nil)
-
-        } else {
-            LoginViewController.presentModalReauthScreen()
-        }
+        let presenter = UIApplication.sharedApplication().keyWindow?.rootViewController
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter?.presentViewController(navController, animated: true, completion: nil)
     }
 
 
@@ -335,15 +176,16 @@ import Mixpanel
             return ""
         }
 
-        var path = siteURL.absoluteString.lowercaseString
+        var path = siteURL.absoluteString!.lowercaseString
+        let isSiteURLSchemeEmpty = siteURL.scheme == nil || siteURL.scheme!.isEmpty
 
         if path.isWordPressComPath() {
-            if siteURL.scheme.characters.count == 0 {
+            if isSiteURLSchemeEmpty {
                 path = "https://\(path)"
             } else if path.rangeOfString("http://") != nil {
                 path = path.stringByReplacingOccurrencesOfString("http://", withString: "https://")
             }
-        } else if siteURL.scheme.characters.count == 0 {
+        } else if isSiteURLSchemeEmpty {
             path = "http://\(path)"
         }
 
@@ -394,7 +236,7 @@ import Mixpanel
             return false
         }
 
-        if url.absoluteString.isEmpty {
+        if url.absoluteString!.isEmpty {
             return false
         }
 

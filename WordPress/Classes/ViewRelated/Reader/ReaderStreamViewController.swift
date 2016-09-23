@@ -419,7 +419,7 @@ import WordPressComAnalytics
     private func setupCellsForLayout() {
         // Construct the layout cells
         let bundle = NSBundle.mainBundle()
-        if let cell = bundle.loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as? ReaderPostCardCell {
+        if let cell = bundle.loadNibNamed(readerCardCellNibName, owner: nil, options: nil)!.first as? ReaderPostCardCell {
             cellForLayout = cell
 
             // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
@@ -429,7 +429,7 @@ import WordPressComAnalytics
             assertionFailure()
         }
 
-        if let cell = bundle.loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as? ReaderCrossPostCell {
+        if let cell = bundle.loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil)!.first as? ReaderCrossPostCell {
             crossPostCellForLayout = cell
 
             view.addSubview(crossPostCellForLayout)
@@ -446,7 +446,7 @@ import WordPressComAnalytics
 
 
     private func setupFooterView() {
-        guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as? PostListFooterView else {
+        guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
             assertionFailure()
             return
         }
