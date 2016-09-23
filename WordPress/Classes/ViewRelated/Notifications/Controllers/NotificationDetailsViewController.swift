@@ -642,7 +642,7 @@ private extension NotificationDetailsViewController
         }
 
         let mediaURL = imageBlock.media.first?.mediaURL
-        cell.downloadImageWithURL(mediaURL)
+        cell.downloadImage(mediaURL)
     }
 
     func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
