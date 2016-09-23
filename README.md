@@ -25,18 +25,29 @@ Trying to build the project by itself (WordPress.xcproj) after launching will re
 
 We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. Xcode will show a warning if you don't have it installed. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
 
-SwiftLint runs automatically when you build the project, but you can run it manually from the command line with `rake lint`
+SwiftLint runs automatically when you build the project, but you can run it manually from the command line with: 
 
-If your code has any style violations, you can try to automatically correct them by running `rake lint:autocorrect`. Otherwise you have to fix them manually.
+`rake lint`
+
+If your code has any style violations, you can try to automatically correct them by running:
+
+`rake lint:autocorrect`
+
+Otherwise you have to fix them manually.
 
 ### Open Xcode
 
-Launch the workspace by running `rake xcode` from the command line. This will ensure any dependencies are ready before launching Xcode. 
+Launch the workspace by running the following from the command line:
+
+`rake xcode`
+
+This will ensure any dependencies are ready before launching Xcode. 
+
 You can also open the project by double clicking on WordPress.xcworkspace file, or launching Xcode and choose File > Open and browse to WordPress.xcworkspace.
 
 ### Setup Credentials
 
-In order to login on WordPress.com using the app you will need to create an account over at [WordPress.com Developer Portal](https://developer.wordpress.com).
+In order to login to WordPress.com using the app you will need to create an account over at the [WordPress.com Developer Portal](https://developer.wordpress.com).
 
 After you created an account you can create an application on the [WordPress.com applications manager](https://developer.wordpress.com/apps/).
 
@@ -64,7 +75,7 @@ how we're organizing branches in our repository in the [Contribution Guide](http
 
 ## Need help to build or hack? ##
 
-Say hello on our [Slack][4] channel: `#mobile`.
+Say hello on our [Slack](wordpress.slack.com) channel: `#mobile`.
 
 ## License
 
