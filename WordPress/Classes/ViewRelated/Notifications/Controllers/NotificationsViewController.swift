@@ -55,6 +55,10 @@ class NotificationsViewController : UITableViewController
     ///
     private var lastReloadDate = NSDate()
 
+    /// Indicates whether the view is required to reload results on viewWillAppear, or not
+    ///
+    private var needsReloadResults = false
+
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
     private var notificationDeletionActions: [NSManagedObjectID: NotificationDeletion.Action] = [:]
@@ -470,6 +474,7 @@ private extension NotificationsViewController
     }
 
     @objc func defaultAccountDidChange(note: NSNotification) {
+        setNeedsReloadResults()
         resetApplicationBadge()
     }
 }
@@ -595,7 +600,7 @@ private extension NotificationsViewController
         // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
         //
         let daysElapsed = NSCalendar.currentCalendar().daysElapsedSinceDate(lastReloadDate)
-        guard daysElapsed != 0 else {
+        guard daysElapsed != 0 || needsReloadResults else {
             return
         }
 
@@ -617,6 +622,7 @@ private extension NotificationsViewController
 
         // Don't overwork!
         lastReloadDate = NSDate()
+        needsReloadResults = false
     }
 
     func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
@@ -633,6 +639,10 @@ private extension NotificationsViewController
         } catch {
             DDLogSwift.logError("Error refreshing Notification Row \(error)")
         }
+    }
+
+    func setNeedsReloadResults() {
+        needsReloadResults = true
     }
 }
 
