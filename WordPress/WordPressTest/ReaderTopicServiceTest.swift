@@ -53,8 +53,7 @@ class ReaderTopicSwiftTest : XCTestCase
     func countTopics() -> Int {
         let context = ContextManager.sharedInstance().mainContext
         let request = NSFetchRequest(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        var error: NSError?
-        return context.countForFetchRequest(request, error: &error)
+        return try! context.countForFetchRequest(request)
     }
 
     func seedPostsForTopic(topic: ReaderAbstractTopic) {
@@ -145,9 +144,8 @@ class ReaderTopicSwiftTest : XCTestCase
         waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Topics exist in the context
-        var error:NSError?
         let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
-        var count = context.countForFetchRequest(request, error: &error)
+        var count = try! context.countForFetchRequest(request)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
         // Merge new set of topics
@@ -159,7 +157,7 @@ class ReaderTopicSwiftTest : XCTestCase
         waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Make sure the missing topics were removed when merged
-        count = context.countForFetchRequest(request, error: &error)
+        count = try! context.countForFetchRequest(request)
         XCTAssertEqual(count, 1, "Number of topics in context did not match expectations")
         do {
             let results = try context.executeFetchRequest(request)
@@ -193,8 +191,7 @@ class ReaderTopicSwiftTest : XCTestCase
         let sortDescriptor = NSSortDescriptor(key: "tagID", ascending: true)
         let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
         request.sortDescriptors = [sortDescriptor]
-        var error:NSError?
-        var count = context.countForFetchRequest(request, error: &error)
+        var count = try! context.countForFetchRequest(request)
         XCTAssertEqual(count, startingTopics.count, "Number of topics in context did not match expectations")
 
         // Merge new set of topics
@@ -205,7 +202,7 @@ class ReaderTopicSwiftTest : XCTestCase
         waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // make sure the missing topics were added
-        count = context.countForFetchRequest(request, error: &error)
+        count = try! context.countForFetchRequest(request)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
         do {
@@ -296,12 +293,11 @@ class ReaderTopicSwiftTest : XCTestCase
 
 
         var request = NSFetchRequest(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        var error:NSError?
-        var count = context.countForFetchRequest(request, error: &error)
+        var count = try! context.countForFetchRequest(request)
         XCTAssertTrue(count == 0, "Topic was not deleted successfully")
 
         request = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
-        count = context.countForFetchRequest(request, error: &error)
+        count = try! context.countForFetchRequest(request)
         XCTAssertTrue(count == 0, "Topic posts were not deleted successfully")
     }
 

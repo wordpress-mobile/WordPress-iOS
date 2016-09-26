@@ -201,14 +201,15 @@ EditImageDetailsViewControllerDelegate
 {
     NSParameterAssert([post isKindOfClass:[self.class supportedPostClass]]);
 
-    BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
+    BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPPostViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
     
     if (changeToEditModeDueToUnsavedChanges) {
-        mode = kWPEditorViewControllerModeEdit;
+        mode = kWPPostViewControllerModeEdit;
     }
-    
-    self = [super initWithMode:mode];
+
+    WPEditorViewControllerMode editorMode = (WPEditorViewControllerMode)mode;
+    self = [super initWithMode:editorMode];
 	
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
@@ -514,10 +515,10 @@ EditImageDetailsViewControllerDelegate
     
     BOOL isInEditMode = [coder decodeBoolForKey:WPPostViewControllerEditModeRestorationKey];
     
-    WPPostViewControllerMode mode = kWPEditorViewControllerModePreview;
+    WPPostViewControllerMode mode = kWPPostViewControllerModePreview;
     
     if (isInEditMode) {
-        mode = kWPEditorViewControllerModeEdit;
+        mode = kWPPostViewControllerModeEdit;
     }
     
     return mode;

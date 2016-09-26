@@ -26,7 +26,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                                  success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
                                                      if (success) {
                                                          RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
-                                                         theme.active = @YES;
+                                                         theme.active = YES;
                                                          success(theme);
                                                      }
                                                  } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
@@ -189,7 +189,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                     success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
                                         if (success) {
                                             RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
-                                            theme.active = @YES;
+                                            theme.active = YES;
                                             success(theme);
                                         }
                                     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {

@@ -107,7 +107,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (void)setupSaveButtonItem
 {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonSystemItemSave target:self action:@selector(saveBarButtonItemPressed:)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Menus save button title") style:UIBarButtonItemStylePlain target:self action:@selector(saveBarButtonItemPressed:)];
     self.navigationItem.rightBarButtonItem = button;
     button.enabled = NO;
     _saveButtonItem = button;
