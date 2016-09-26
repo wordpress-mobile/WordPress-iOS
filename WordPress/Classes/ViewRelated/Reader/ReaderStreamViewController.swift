@@ -374,14 +374,13 @@ import WordPressComAnalytics
         syncHelper.delegate = self
     }
 
-
     private func setupResultsStatusView() {
         resultsStatusView = WPNoResultsView()
     }
 
 
     private func setupFooterView() {
-        guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as? PostListFooterView else {
+        guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
             assertionFailure()
             return
         }

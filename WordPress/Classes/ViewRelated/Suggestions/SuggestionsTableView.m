@@ -123,7 +123,7 @@ CGFloat const STVSeparatorHeight = 1.f;
                                                          attribute:NSLayoutAttributeHeight
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:nil
-                                                         attribute:nil
+                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                         multiplier:1
                                                           constant:0.f];
     self.heightConstraint.priority = 300;

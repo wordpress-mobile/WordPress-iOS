@@ -63,6 +63,11 @@ class NotificationsViewController : UITableViewController
     ///
     private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
+    /// Pending Actions, to be executed on viewDidDisappear.
+    ///
+    private var onDisappeared: (() -> Void)?
+
+
 
     // MARK: - View Lifecycle
 
@@ -128,6 +133,20 @@ class NotificationsViewController : UITableViewController
 
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .None
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // Glitch Workaround. Scenario:
+        //  -   Mark as Read saves the mainMOC
+        //  -   Simperium sends the change
+        //  -   The backend acknowledges the change, and merges back into the mainMOC
+        // This causes a reloadData event, that might cut any ongoing animations in the detail views. For that reason,
+        // we're using this 'deferred onDisappeared' mechanism, just as yet another workaround.
+        //
+        onDisappeared?()
+        onDisappeared = nil
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -489,17 +508,22 @@ extension NotificationsViewController
         let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
-        // Mark as Read, if needed
-        if let isRead = note.read?.boolValue where isRead == false {
-            note.read = NSNumber(bool: true)
-            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
-        }
-
         // Failsafe: Don't push nested!
         if navigationController?.visibleViewController != self {
             navigationController?.popViewControllerAnimated(false)
         }
 
+        // Deferred Mark as Read: Avoiding 'NotificationDetails' animation glitches.
+        onDisappeared = {
+            guard let isRead = note.read?.boolValue where isRead == false else {
+                return
+            }
+
+            note.read = NSNumber(bool: !isRead)
+            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
+        }
+
+        // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             navigationController?.pushViewController(readerViewController, animated: true)

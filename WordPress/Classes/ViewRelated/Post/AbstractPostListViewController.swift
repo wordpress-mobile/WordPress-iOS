@@ -214,7 +214,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let mainBundle = NSBundle.mainBundle()
 
-        guard let footerView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as? PostListFooterView else {
+        guard let footerView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)![0] as? PostListFooterView else {
             preconditionFailure("Could not load the footer view from the nib file.")
         }
 
