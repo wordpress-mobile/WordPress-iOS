@@ -103,12 +103,6 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)hasUnsavedChanges;
 
 /**
- *  @brief      Call this method to know if the post has local changes.
- *  @returns    YES if there are unsaved changes, NO otherwise.
- */
-- (BOOL)hasLocalChanges;
-
-/**
  *  @brief      Call this method to know if the post has remote changes.
  *  @returns    YES if there are unsaved changes, NO otherwise.
  */
