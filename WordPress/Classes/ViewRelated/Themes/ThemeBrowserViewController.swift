@@ -716,8 +716,9 @@ public protocol ThemePresenter: class
         suspendedSearch = searchName
         presentingTheme = theme
         let webViewController = ThemeWebViewController(theme: theme, url: url)
+        let navigationController = UINavigationController(rootViewController: webViewController)
 
-        webViewController.loadViewIfNeeded()
+        webViewController.secureInteraction = true
         webViewController.navigationItem.titleView = nil
         webViewController.title = theme.name
         var buttons: [UIBarButtonItem]?
@@ -729,10 +730,10 @@ public protocol ThemePresenter: class
 
         if searchController != nil && searchController.active {
             searchController.dismissViewControllerAnimated(true, completion: {
-                self.navigationController?.pushViewController(webViewController, animated:true)
+                self.presentViewController(navigationController, animated: true, completion: nil)
             })
         } else {
-            navigationController?.pushViewController(webViewController, animated:true)
+            presentViewController(navigationController, animated: true, completion: nil)
         }
     }
 
