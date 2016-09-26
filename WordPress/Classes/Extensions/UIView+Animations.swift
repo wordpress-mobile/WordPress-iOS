@@ -7,14 +7,14 @@ extension UIView
 {
     /// Applies a "Shrink to 80%" animation
     ///
-    public func depressAnimation() {
+    func depressAnimation() {
         let parameters = ScaleParameters(0.8, 0.0, 0.4)
         scaleAnimation(parameters)
     }
 
     /// Applies a "Expand to 100%" animation
     ///
-    public func normalizeAnimation() {
+    func normalizeAnimation() {
         let parameters = ScaleParameters(1.0, 0.0, 0.4)
         scaleAnimation(parameters)
     }
@@ -26,11 +26,11 @@ extension UIView
     ///     - completion: Callback to be executed on completion.
     ///
     private func scaleAnimation(parameters: ScaleParameters, completion: (Bool -> Void)? = nil) {
-        let damping         = CGFloat(0.3)
-        let velocity        = CGFloat(0.1)
+        let damping = CGFloat(0.3)
+        let velocity = CGFloat(0.1)
 
         let animations = {
-            self.transform  = CGAffineTransformMakeScale(parameters.scale, parameters.scale)
+            self.transform = CGAffineTransformMakeScale(parameters.scale, parameters.scale)
         }
 
         UIView.animateWithDuration(parameters.duration,
@@ -44,8 +44,7 @@ extension UIView
 
     /// Applies a spring animation, from size 0 to final size
     ///
-    public func displayWithSpringAnimation() {
-
+    func springAnimation() {
         let duration        = 0.5
         let delay           = 0.2
         let damping         = CGFloat(0.7)
@@ -72,19 +71,26 @@ extension UIView
 
     /// Applies a fade in animation
     ///
-    public func displayWithFadeInAnimation() {
+    public func fadeInAnimation() {
+        alpha = Animations.alphaMid
 
-        let duration        = 0.3
-        let alphaInitial    = CGFloat(0.5)
-        let alphaFinal      = CGFloat(1.0)
-
-        alpha               = alphaInitial
-
-        UIView.animateWithDuration(duration) { [weak self] in
-            self?.alpha = alphaFinal
+        UIView.animateWithDuration(Animations.duration) { [weak self] in
+            self?.alpha = Animations.alphaFull
         }
     }
 
+
+    }
+
+
+    /// Private Constants
+    ///
+    private struct Animations {
+        static let duration                 = NSTimeInterval(0.3)
+        static let alphaZero                = CGFloat(0)
+        static let alphaMid                 = CGFloat(0.5)
+        static let alphaFull                = CGFloat(1)
+    }
 
     /// MARK: - Private Typealiases
     private typealias ScaleParameters = (scale: CGFloat, delay: NSTimeInterval, duration: NSTimeInterval)
