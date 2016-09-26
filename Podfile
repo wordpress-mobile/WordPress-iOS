@@ -12,7 +12,7 @@ platform :ios, '9.0'
 abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.6.1'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.4'
+  pod 'WordPressComKit',   '0.0.5'
 
   target 'WordPress' do
     # ---------------------
@@ -29,7 +29,6 @@ abstract_target 'WordPress_Base' do
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
-    pod 'ReactiveCocoa', '~> 2.4.7'
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
@@ -43,14 +42,14 @@ abstract_target 'WordPress_Base' do
     # WordPress components
     # --------------------
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.1'
-    pod 'Gridicons', '0.2'
+    pod 'Gridicons', :git => "https://github.com/Automattic/Gridicons-iOS.git", :commit => "8bd04e18eddaaf36810887c94837571e68f7cc24"
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'Simperium', '0.8.17'
     pod 'WPMediaPicker', '~> 0.10.1'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPress-Aztec-iOS', '0.2.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.19'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7d02c77349245c6e4d3bcdf63a878f90eb4a4e39'
     pod 'WordPressCom-Stats-iOS', '0.7.7'
     pod 'wpxmlrpc', '~> 0.8'
     
@@ -90,8 +89,17 @@ post_install do |installer_representation|
 #       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
 #   end
 
+  # Specify Swift 2.3 Setting!
+  #
+  installer_representation.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_VERSION'] = '2.3'
+    end
+  end
+
   # Does a quick hack to turn off Swift embedding of libraries for extensions
   # See: https://github.com/wordpress-mobile/WordPress-iOS/issues/5160
+  #
   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressShareExtension/*.xcconfig"
   system "sed -i '' -E 's/EMBEDDED_CONTENT_CONTAINS_SWIFT[[:space:]]=[[:space:]]YES/EMBEDDED_CONTENT_CONTAINS_SWIFT = NO/g' Pods/Target\\ Support\\ Files/Pods-WordPress_Base-WordPressTodayWidget/*.xcconfig"
 

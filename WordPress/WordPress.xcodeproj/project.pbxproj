@@ -305,14 +305,12 @@
 		855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */; };
 		855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */; };
 		8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */; };
-		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
 		85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */; };
 		85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */; };
 		85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */; };
 		85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */; };
 		85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */; };
-		85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */; };
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
 		85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CE4C1F1A703CF200780DFE /* NSBundle+VersionNumberHelper.m */; };
 		85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275818F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m */; };
@@ -325,14 +323,11 @@
 		85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */; };
 		85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B51AE5A6170074768D /* ReachabilityFacade.m */; };
 		85D239BB1AE5A6620074768D /* LoginFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B81AE5A6620074768D /* LoginFields.m */; };
-		85D239BC1AE5A6620074768D /* LoginViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BA1AE5A6620074768D /* LoginViewModel.m */; };
 		85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BE1AE5A7020074768D /* LoginFacadeTests.m */; };
-		85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BF1AE5A7020074768D /* LoginViewModelTests.m */; };
 		85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D790A81AE5BF1F0033AE83 /* MixpanelProxy.m */; };
 		85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */; };
 		85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */; };
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
-		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */; };
 		85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */; };
@@ -1446,8 +1441,6 @@
 		8574469C1BF154E1007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8574469D1BF154E2007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8574469E1BF154E3007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		859F761B18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerMixpanelInstructionsForStat.h; sourceTree = "<group>"; };
 		859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerMixpanelInstructionsForStat.m; sourceTree = "<group>"; };
 		85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXPrimaryButton.h; sourceTree = "<group>"; };
@@ -1459,8 +1452,6 @@
 		85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertControllerProxy.m; sourceTree = "<group>"; };
 		85B6F74D1742DA1D00CE7F3A /* WPNUXMainButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXMainButton.h; sourceTree = "<group>"; };
 		85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXMainButton.m; sourceTree = "<group>"; };
-		85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXBackButton.h; sourceTree = "<group>"; };
-		85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXBackButton.m; sourceTree = "<group>"; };
 		85C720AF1730CEFA00460645 /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughTextField.m; sourceTree = "<group>"; };
 		85CE4C1E1A703CF200780DFE /* NSBundle+VersionNumberHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+VersionNumberHelper.h"; sourceTree = "<group>"; };
@@ -1485,10 +1476,7 @@
 		85D239B51AE5A6170074768D /* ReachabilityFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityFacade.m; sourceTree = "<group>"; };
 		85D239B71AE5A6620074768D /* LoginFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFields.h; sourceTree = "<group>"; };
 		85D239B81AE5A6620074768D /* LoginFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFields.m; sourceTree = "<group>"; };
-		85D239B91AE5A6620074768D /* LoginViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewModel.h; sourceTree = "<group>"; };
-		85D239BA1AE5A6620074768D /* LoginViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewModel.m; sourceTree = "<group>"; };
 		85D239BE1AE5A7020074768D /* LoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
-		85D239BF1AE5A7020074768D /* LoginViewModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewModelTests.m; sourceTree = "<group>"; };
 		85D790A71AE5BF1F0033AE83 /* MixpanelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixpanelProxy.h; sourceTree = "<group>"; };
 		85D790A81AE5BF1F0033AE83 /* MixpanelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixpanelProxy.m; sourceTree = "<group>"; };
 		85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixpanelProxyTests.m; sourceTree = "<group>"; };
@@ -1496,8 +1484,6 @@
 		85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerWPCom.m; sourceTree = "<group>"; };
 		85E105841731A597001071A3 /* WPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughOverlayView.h; sourceTree = "<group>"; };
 		85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughOverlayView.m; sourceTree = "<group>"; };
-		85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
-		85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
 		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemoteTests.swift; sourceTree = "<group>"; };
@@ -3458,7 +3444,6 @@
 			isa = PBXGroup;
 			children = (
 				85D239BE1AE5A7020074768D /* LoginFacadeTests.m */,
-				85D239BF1AE5A7020074768D /* LoginViewModelTests.m */,
 				E63C89731CB99A8500649C8F /* SigninHelperTests.swift */,
 			);
 			name = NUX;
@@ -4656,14 +4641,6 @@
 				85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */,
 				85E105841731A597001071A3 /* WPWalkthroughOverlayView.h */,
 				85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */,
-				85D239B91AE5A6620074768D /* LoginViewModel.h */,
-				85D239BA1AE5A6620074768D /* LoginViewModel.m */,
-				85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */,
-				85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */,
-				858DE40D1730384F000AC628 /* LoginViewController.h */,
-				858DE40E1730384F000AC628 /* LoginViewController.m */,
-				85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */,
-				85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */,
 			);
 			name = Deprecated;
 			sourceTree = "<group>";
@@ -5014,11 +4991,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = PZYM8XX95Q;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -5033,11 +5011,13 @@
 					};
 					8511CFB51C607A7000B7CEED = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					932225A61C7CE50300443B02 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = PZYM8XX95Q;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -5050,6 +5030,7 @@
 					93E5283919A7741A003A1A9C = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = PZYM8XX95Q;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -5060,10 +5041,12 @@
 						};
 					};
 					E16AB92914D978240047A2E5 = {
+						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					FF27168E1CAAC87A0006E2D4 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					FFC3F6F41B0DBF0900EFC359 = {
@@ -5110,6 +5093,7 @@
 				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -5777,7 +5761,6 @@
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */,
-				85D239BC1AE5A6620074768D /* LoginViewModel.m in Sources */,
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
@@ -6020,7 +6003,6 @@
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
 				5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
-				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
@@ -6040,7 +6022,6 @@
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
-				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
 				B5BE31C41CB825A100BDF770 /* NSURLCache+Helpers.swift in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
@@ -6071,7 +6052,6 @@
 				74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */,
 				B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
-				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				B5DB8AF21C949DA90059196A /* WPReusableTableViewCells.swift in Sources */,
@@ -6345,7 +6325,6 @@
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
-				85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */,
 				85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
@@ -6522,6 +6501,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA6F171514C2E84A3D498495 /* Pods-WordPress_Base-WordPress.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -6573,10 +6553,11 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "1e83ed49-3613-4fe8-831f-3eccc83debb6";
+				PROVISIONING_PROFILE = "c44d822f-ddaf-4064-818a-6127da6b2afc";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wpdebug;
@@ -6587,6 +6568,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46291DD1B7CD0EAB7ACEE172 /* Pods-WordPress_Base-WordPress.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -6637,6 +6619,7 @@
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
@@ -6686,6 +6669,7 @@
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6728,6 +6712,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6770,6 +6755,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6813,6 +6799,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -6822,10 +6809,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
@@ -6838,6 +6841,7 @@
 				);
 				PRODUCT_MODULE_NAME = WordPress;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Release-Alpha";
@@ -6846,6 +6850,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8DEA974E8F52BCD522B0B655 /* Pods-WordPress_Base-WordPress.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -6900,6 +6905,7 @@
 				PROVISIONING_PROFILE = "c75783a0-d3fd-48bc-b944-688643ba6755";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 				WPCOM_SCHEME = wpalpha;
@@ -6910,6 +6916,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 819A057DA017AF1774BD318A /* Pods-WordPressTest.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -6971,6 +6978,7 @@
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Alpha";
@@ -6987,6 +6995,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7C6F750E97E2AB9DC065FD21 /* Pods-WordPress_Base-WordPressTodayWidget.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7032,6 +7041,7 @@
 				PROVISIONING_PROFILE = "84e3fb7f-be0e-4d7a-9194-922db7638783";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -7048,6 +7058,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C4E2E867D18988C580F01F9A /* Pods-WordPress_Base-WordPressShareExtension.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7090,10 +7101,11 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12dc0514-ca55-426f-b1dc-ed7bb4641741";
+				PROVISIONING_PROFILE = "a70f10e0-26c6-4569-bd6d-6cb7c2714083";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7102,6 +7114,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 94A14C703F0AB08989F99C39 /* Pods-WordPress_Base-WordPressShareExtension.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7145,6 +7158,7 @@
 				PROVISIONING_PROFILE = "a6cb3313-782f-4380-9d40-21a80931ee10";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7153,6 +7167,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4D37828387FE3CF8A7B6978 /* Pods-WordPress_Base-WordPressShareExtension.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7197,6 +7212,7 @@
 				PROVISIONING_PROFILE = "d01a281a-e746-4afb-af68-bf0a3b29b853";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -7205,6 +7221,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0D6CE1DC526C176170D4EC5 /* Pods-WordPress_Base-WordPressShareExtension.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7249,6 +7266,7 @@
 				PROVISIONING_PROFILE = "d1ede4bc-9608-491b-b398-4162cff48242";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -7257,10 +7275,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
@@ -7273,6 +7307,7 @@
 				);
 				PRODUCT_MODULE_NAME = WordPress;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Release-Internal";
@@ -7281,6 +7316,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 26165C3E18786662761456D6 /* Pods-WordPress_Base-WordPress.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -7334,6 +7370,7 @@
 				PROVISIONING_PROFILE = "c35711f9-ccda-427d-a71c-f000b13de385";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 				WPCOM_SCHEME = wpinternal;
@@ -7344,6 +7381,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AAD638CADF4A602E160987B8 /* Pods-WordPressTest.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -7406,6 +7444,7 @@
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Internal";
@@ -7414,6 +7453,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7590F70D7755777DD739589 /* Pods-WordPress_Base-WordPressTodayWidget.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7457,10 +7497,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6e71a957-55b8-4f7a-a6f2-b87e63a65b03";
+				PROVISIONING_PROFILE = "37f68368-e0c4-481e-8e4f-f47f3a8bc628";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7469,6 +7510,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FC4CD5AE2177A3F3D13C506F /* Pods-WordPress_Base-WordPressTodayWidget.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7513,6 +7555,7 @@
 				PROVISIONING_PROFILE = "0bdce6c3-fb16-4dbb-bf70-b2e4f7d32069";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7521,6 +7564,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 084141B11534C1501F7B6A72 /* Pods-WordPress_Base-WordPressTodayWidget.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -7566,6 +7610,7 @@
 				PROVISIONING_PROFILE = "f8ef5af5-5260-4112-9201-fa642043459d";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -7598,12 +7643,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7625,10 +7686,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
@@ -7641,6 +7718,7 @@
 				);
 				PRODUCT_MODULE_NAME = WordPress;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -7649,6 +7727,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3BDDF00D75A0F0BE66FF48AA /* Pods-WordPressTest.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -7720,6 +7799,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -7728,6 +7808,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 57950E0C33688D8EA5C9C9A2 /* Pods-WordPressTest.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -7790,6 +7871,7 @@
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -7836,6 +7918,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = Debug;
@@ -7876,6 +7959,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = Release;
@@ -7916,6 +8000,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = "Release-Internal";
@@ -7956,6 +8041,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WordPress;
 			};
 			name = "Release-Alpha";

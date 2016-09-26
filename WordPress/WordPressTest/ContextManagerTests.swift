@@ -94,7 +94,7 @@ class ContextManagerTests: XCTestCase {
 
         // Verify that the three accounts made it through
         let allAccountsRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = secondContext.countForFetchRequest(allAccountsRequest, error: nil)
+        let numberOfAccounts = try! secondContext.countForFetchRequest(allAccountsRequest)
         XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
 
         // Verify if the Default Account is the right one
@@ -138,7 +138,7 @@ class ContextManagerTests: XCTestCase {
 
         // Verify that the two accounts have been migrated
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = secondContext.countForFetchRequest(fetchRequest, error: nil)
+        let numberOfAccounts = try! secondContext.countForFetchRequest(fetchRequest)
         XCTAssertTrue(numberOfAccounts == 2, "Should have two account")
 
         // Verify if the Default Account is the right one
@@ -193,7 +193,7 @@ class ContextManagerTests: XCTestCase {
 
         // Verify that the three accounts made it through
         let allAccountsRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = secondContext.countForFetchRequest(allAccountsRequest, error: nil)
+        let numberOfAccounts = try! secondContext.countForFetchRequest(allAccountsRequest)
         XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
 
         // Verify if the Default Account is the right one

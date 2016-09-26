@@ -20,7 +20,7 @@ class GravatarOverlayView : UIView
     override func drawRect(rect: CGRect) {
         super.drawRect(rect)
 
-        let context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()!
 
         // Prevent Ellipse Clipping
         let delta = borderWidth - 1.0

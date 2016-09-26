@@ -12,6 +12,8 @@
 @property (nonatomic, copy) NSString *lastTextObserved;
 @property (nonatomic, strong) NSTimer *timer;
 
+- (void)timerFired;
+
 @end
 
 @interface MenuItemSourceTextBar () <UITextFieldDelegate>
