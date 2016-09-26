@@ -186,7 +186,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     NSMutableDictionary *cachedRowHeights = [NSMutableDictionary dictionary];
-    for (NSObject *obj in self.resultsController.fetchedObjects) {
+    for (NSObject<NSFetchRequestResult> *obj in self.resultsController.fetchedObjects) {
         NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
         if (!indexPath) {
             continue;
