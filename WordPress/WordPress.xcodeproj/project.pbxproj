@@ -515,6 +515,7 @@
 		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */; };
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
 		B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift */; };
+		B5B84CDB1D9985190058A8FF /* CGAffineTransform+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */; };
 		B5BC25A01CFCB91800F7D8B9 /* PeopleRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */; };
 		B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */ = {isa = PBXBuildFile; fileRef = B5BC25A11CFCBA5400F7D8B9 /* people-validate-invitation-success.json */; };
 		B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */; };
@@ -1743,6 +1744,7 @@
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveNotificationsHandler.swift; sourceTree = "<group>"; };
+		B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Helpers.swift"; sourceTree = "<group>"; };
 		B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleRemoteTests.swift; sourceTree = "<group>"; };
 		B5BC25A11CFCBA5400F7D8B9 /* people-validate-invitation-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "people-validate-invitation-success.json"; sourceTree = "<group>"; };
 		B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "people-send-invitation-failure.json"; sourceTree = "<group>"; };
@@ -3867,6 +3869,7 @@
 			isa = PBXGroup;
 			children = (
 				B587798319B799EB00E57C5A /* Notifications */,
+				B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
 				B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */,
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
@@ -6125,6 +6128,7 @@
 				E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				E6417BA81CA07F050084050A /* SigninLinkMailViewController.swift in Sources */,
+				B5B84CDB1D9985190058A8FF /* CGAffineTransform+Helpers.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				B52D29A51B66BEB70010BD3D /* RemoteNotificationSettings.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
