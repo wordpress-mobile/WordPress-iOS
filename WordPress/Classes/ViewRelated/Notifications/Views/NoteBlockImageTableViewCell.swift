@@ -27,7 +27,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell
 
         blockImageView.downloadImage(url, placeholderImage: nil, success: { image in
             self.blockImageView.image = image
-            self.blockImageView.springAnimation()
+            self.blockImageView.expandSpringAnimation()
         })
     }
 
