@@ -182,7 +182,10 @@ private enum ReaderCardDiscoverAttribution : Int {
     public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesMoved(touches, withEvent: event)
         // Remove highlight if the touch moves outside of the textLabel's frame
-        guard let touch: UITouch = event?.allTouches()?.first where textLabel.highlighted else {
+        guard textLabel.highlighted else {
+            return
+        }
+        guard let touch: UITouch = event?.allTouches()?.first else {
             return
         }
         if !CGRectContainsPoint(textLabel.bounds, touch.locationInView(textLabel)) {
@@ -201,7 +204,7 @@ private enum ReaderCardDiscoverAttribution : Int {
 
 
     public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        super.touchesCancelled(touches, withEvent: event)
+        super.touchesCancelled(touches!, withEvent: event)
         guard textLabel.highlighted else {
             return
         }
