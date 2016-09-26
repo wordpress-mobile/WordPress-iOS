@@ -233,8 +233,8 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         let onClick = isApproveOn ? onUnapproveClick : onApproveClick
         isApproveOn = !isApproveOn
 
-        animateApproveButton(btnApprove) { 
-//        onClick?(sender: sender)
+        animateApproveButton(btnApprove) {
+            onClick?(sender: sender)
         }
     }
 
@@ -254,42 +254,42 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 private extension NoteBlockActionsTableViewCell
 {
     func animateLikeButton(button: UIButton, completion: (() -> Void)) {
-        guard let buttonImageView = button.imageView, let image = button.imageForState(.Selected) else {
+        guard let overlayImageView = overlayForButton(button, state: .Selected) else {
             return
         }
 
-        let imageView = UIImageView(image: image)
-        imageView.frame = contentView.convertRect(buttonImageView.bounds, fromView: buttonImageView)
-        imageView.backgroundColor = contentView.backgroundColor
-        contentView.addSubview(imageView)
-        contentView.bringSubviewToFront(imageView)
+        contentView.addSubview(overlayImageView)
 
-        if button.selected {
-            imageView.fadeInWithRotationAnimation {
-                imageView.removeFromSuperview()
-                completion()
-            }
-
-        } else {
-            imageView.fadeOutWithRotationAnimation {
-                imageView.removeFromSuperview()
-                completion()
-            }
+        let animation = button.selected ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
+        animation { _ in
+            overlayImageView.removeFromSuperview()
+            completion()
         }
     }
 
     func animateApproveButton(button: UIButton, completion: (() -> Void)) {
-        guard let buttonImageView = button.imageView, let image = button.imageForState(.Selected) else {
+        guard let overlayImageView = overlayForButton(button, state: .Selected) else {
             return
         }
 
-        let imageView = UIImageView(image: image)
-        imageView.frame = contentView.convertRect(buttonImageView.bounds, fromView: buttonImageView)
-        imageView.backgroundColor = contentView.backgroundColor
-        contentView.addSubview(imageView)
-        contentView.bringSubviewToFront(imageView)
+        contentView.addSubview(overlayImageView)
 
-        imageView.explodeAnimation()
+        let animation = button.selected ? overlayImageView.implodeAnimation : overlayImageView.explodeAnimation
+        animation { _ in
+            overlayImageView.removeFromSuperview()
+            completion()
+        }
+    }
+
+    func overlayForButton(button: UIButton, state: UIControlState) -> UIImageView? {
+        guard let buttonImageView = button.imageView, let targetImage = button.imageForState(state) else {
+            return nil
+        }
+
+        let overlayImageView = UIImageView(image: targetImage)
+        overlayImageView.frame = contentView.convertRect(buttonImageView.bounds, fromView: buttonImageView)
+
+        return overlayImageView
     }
 }
 
