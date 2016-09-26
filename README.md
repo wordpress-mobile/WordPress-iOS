@@ -75,7 +75,7 @@ how we're organizing branches in our repository in the [Contribution Guide](http
 
 ## Need help to build or hack? ##
 
-Say hello on our [Slack](wordpress.slack.com) channel: `#mobile`.
+Say hello on our [Slack](https://chat.wordpress.org) channel: `#mobile`.
 
 ## License
 
