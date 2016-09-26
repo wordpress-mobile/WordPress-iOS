@@ -75,7 +75,7 @@ NSString *const SessionCount = @"session_count";
         [self setSuperProperty:SeenLegacyEditor toValue:@YES];
     }
     
-    [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
+    [standardDefaults setBool:YES forKey:CheckedIfUserHasSeenLegacyEditor];
     [standardDefaults synchronize];
 }
 

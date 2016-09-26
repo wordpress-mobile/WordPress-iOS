@@ -671,12 +671,15 @@ int ddLogLevel = DDLogLevelInfo;
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
-    
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
     NSString* apiKey = [ApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
         self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
     }
+#pragma clang diagnostic pop
 }
 
 - (void)configureHockeySDK

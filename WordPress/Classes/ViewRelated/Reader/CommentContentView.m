@@ -188,7 +188,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                     attribute:NSLayoutAttributeHeight
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:nil
-                                                                    attribute:nil
+                                                                    attribute:0
                                                                    multiplier:1.0
                                                                      constant:CommentContentViewMetaHeight];
     [self addConstraint:self.commentMetaHeightConstraint];

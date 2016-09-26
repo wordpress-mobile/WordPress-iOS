@@ -107,7 +107,7 @@ static const NSInteger MinPhotonImageQuality = 1;
     });
     NSString *host = [url host];
     if ([host length] > 0) { // relative URLs may not have a host
-        NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+        NSInteger count = [regex numberOfMatchesInString:host options:0 range:NSMakeRange(0, [host length])];
         if (count > 0) {
             return YES;
         }
