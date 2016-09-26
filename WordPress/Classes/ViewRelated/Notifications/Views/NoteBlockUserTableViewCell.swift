@@ -2,31 +2,27 @@ import Foundation
 import WordPressShared
 
 
+// MARK: - NoteBlockUserTableViewCell
+//
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell
 {
-    typealias EventHandler = (() -> Void)
+    // MARK: - Properties
 
-    // MARK: - Public Properties
-    var onFollowClick    : EventHandler?
-    var onUnfollowClick  : EventHandler?
+    /// Name Label
+    ///
+    @IBOutlet private weak var nameLabel: UILabel!
 
-    var isFollowEnabled: Bool {
-        set {
-            btnFollow.hidden = !newValue
-        }
-        get {
-            return !btnFollow.hidden
-        }
-    }
-    var isFollowOn: Bool {
-        set {
-            btnFollow.selected = newValue
-        }
-        get {
-            return btnFollow.selected
-        }
-    }
+    /// Blog Label
+    ///
+    @IBOutlet private weak var blogLabel: UILabel!
 
+
+    /// Gravatar Image
+    ///
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
+
+    /// User's Name
+    ///
     var name: String? {
         set {
             nameLabel.text  = newValue
@@ -35,6 +31,9 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
             return nameLabel.text
         }
     }
+
+    /// User's Blog Title
+    ///
     var blogTitle: String? {
         set {
             blogLabel.text  = newValue
@@ -44,7 +43,9 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
         }
     }
 
+
     // MARK: - Public Methods
+
     func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
@@ -57,12 +58,11 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
         gravatarURL = url
     }
 
-    // MARK: - View Methods
+
+    // MARK: - Overriden Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        WPStyleGuide.configureFollowButton(btnFollow)
-        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType = .None
@@ -82,21 +82,8 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
         }
     }
 
-    // MARK: - IBActions
-    @IBAction func followWasPressed(sender: AnyObject) {
-        if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
-            listener()
-        }
-        isFollowOn = !isFollowOn
-    }
 
     // MARK: - Private
     private let gravatarImageSizePad = CGSize(width: 54.0, height: 54.0)
     private var gravatarURL: NSURL?
-
-    // MARK: - IBOutlets
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var blogLabel: UILabel!
-    @IBOutlet private weak var btnFollow: UIButton!
-    @IBOutlet private weak var gravatarImageView: CircularImageView!
 }
