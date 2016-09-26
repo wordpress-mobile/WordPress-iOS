@@ -133,7 +133,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     [UIView animateWithDuration:animated ? .1f : 0.f
                           delay:0
-                        options:UIViewAnimationCurveEaseInOut
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.postContentView.layer.borderColor = highlighted ? [[UIColor clearColor] CGColor] : [[WPStyleGuide postCardBorderColor] CGColor];
                          self.alpha = highlighted ? .7f : 1.f;

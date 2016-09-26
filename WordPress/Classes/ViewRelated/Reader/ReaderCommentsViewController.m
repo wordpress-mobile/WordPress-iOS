@@ -498,7 +498,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                       attribute:NSLayoutAttributeHeight
                                                                       relatedBy:NSLayoutRelationEqual
                                                                          toItem:nil
-                                                                      attribute:nil
+                                                                      attribute:0
                                                                      multiplier:1
                                                                        constant:0];
 }
@@ -542,7 +542,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                      attribute:NSLayoutAttributeWidth
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:nil
-                                                                     attribute:nil
+                                                                     attribute:0
                                                                     multiplier:1
                                                                       constant:width];
     [contentView addConstraint:self.cellForLayoutWidthConstraint];
