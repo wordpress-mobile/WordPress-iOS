@@ -79,7 +79,33 @@ extension UIView
         }
     }
 
+    /// Displays the current view with a Fade In / Rotation Animation
+    ///
+    func fadeInWithRotationAnimation(completion: () -> Void) {
+        transform = CGAffineTransform.makeRotation(-270, scale: 3)
+        alpha = Animations.alphaZero
 
+        UIView.animateWithDuration(Animations.duration, animations: {
+            self.transform = CGAffineTransform.makeRotation(0, scale: 0.75)
+            self.alpha = Animations.alphaFull
+        }, completion: { _ in
+            UIView.animateWithDuration(Animations.duration, animations: {
+                self.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            }, completion: { _ in
+                completion()
+            })
+        })
+    }
+
+    /// Hides the current view with a Rotation / FadeOut Animation
+    ///
+    func fadeOutWithRotationAnimation(completion: () -> Void) {
+        UIView.animateWithDuration(Animations.duration, animations: {
+            self.transform = CGAffineTransform.makeRotation(120, scale: 3)
+            self.alpha = Animations.alphaZero
+        }, completion: { _ in
+            completion()
+        })
     }
 
 
