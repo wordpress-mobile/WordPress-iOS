@@ -84,7 +84,7 @@ extension UIImageView {
             success: { image in
                 self.image = image
                 if animate {
-                    self.displayWithFadeInAnimation()
+                    self.fadeInAnimation()
                 }
             }, failure: {
                 error in
