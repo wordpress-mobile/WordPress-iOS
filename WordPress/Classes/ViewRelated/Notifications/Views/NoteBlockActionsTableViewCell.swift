@@ -84,21 +84,21 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         btnReply.setTitleColor(textNormalColor, forState: .Normal)
         btnReply.accessibilityLabel = replyTitle
 
-        btnLike.setTitle(likeNormalTitle, forState: .Normal)
-        btnLike.setTitle(likeSelectedTitle, forState: .Highlighted)
-        btnLike.setTitle(likeSelectedTitle, forState: .Selected)
+        btnLike.setTitle(Like.normalTitle, forState: .Normal)
+        btnLike.setTitle(Like.selectedTitle, forState: .Highlighted)
+        btnLike.setTitle(Like.selectedTitle, forState: .Selected)
         btnLike.setTitleColor(textNormalColor, forState: .Normal)
         btnLike.setTitleColor(textSelectedColor, forState: .Highlighted)
         btnLike.setTitleColor(textSelectedColor, forState: .Selected)
-        btnLike.accessibilityLabel = likeNormalTitle
+        btnLike.accessibilityLabel = Like.normalTitle
 
-        btnApprove.setTitle(approveNormalTitle, forState: .Normal)
-        btnApprove.setTitle(approveSelectedTitle, forState: .Highlighted)
-        btnApprove.setTitle(approveSelectedTitle, forState: .Selected)
+        btnApprove.setTitle(Approve.normalTitle, forState: .Normal)
+        btnApprove.setTitle(Approve.selectedTitle, forState: .Highlighted)
+        btnApprove.setTitle(Approve.selectedTitle, forState: .Selected)
         btnApprove.setTitleColor(textNormalColor, forState: .Normal)
         btnApprove.setTitleColor(textSelectedColor, forState: .Highlighted)
         btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
-        btnApprove.accessibilityLabel = approveNormalTitle
+        btnApprove.accessibilityLabel = Approve.normalTitle
 
         btnSpam.setTitle(spamTitle, forState: .Normal)
         btnSpam.setTitleColor(textNormalColor, forState: .Normal)
@@ -149,19 +149,19 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     }
 
     private var approveAccesibilityLabel : String {
-        return isApproveOn ? approveSelectedTitle : approveNormalTitle
+        return isApproveOn ? Approve.selectedTitle : Approve.normalTitle
     }
 
     private var approveAccesibilityHint : String {
-        return isApproveOn ? approveSelectedHint : approveNormalHint
+        return isApproveOn ? Approve.selectedHint : Approve.normalHint
     }
 
     private var likeAccesibilityLabel : String {
-        return isLikeOn ? likeSelectedTitle : likeNormalTitle
+        return isLikeOn ? Like.selectedTitle : Like.normalTitle
     }
 
     private var likeAccessibilityHint : String {
-        return isLikeOn ? likeSelectedHint : likeNormalHint
+        return isLikeOn ? Like.selectedHint : Like.normalHint
     }
 
 
@@ -169,15 +169,19 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     private let buttonSpacing = CGFloat(20)
     private let buttonSpacingCompact = CGFloat(10)
 
-    private let likeNormalTitle = NSLocalizedString("Like", comment: "Like a comment")
-    private let likeSelectedTitle = NSLocalizedString("Liked", comment: "A comment has been liked")
-    private let likeNormalHint = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
-    private let likeSelectedHint = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
+    private struct Like {
+        static let normalTitle      = NSLocalizedString("Like", comment: "Like a comment")
+        static let selectedTitle    = NSLocalizedString("Liked", comment: "A comment has been liked")
+        static let normalHint       = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
+        static let selectedHint     = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
+    }
 
-    private let approveNormalTitle = NSLocalizedString("Approve",  comment: "Approve a comment")
-    private let approveSelectedTitle = NSLocalizedString("Approved", comment: "Unapprove a comment")
-    private let approveNormalHint = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
-    private let approveSelectedHint = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
+    private struct Approve {
+        static let normalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
+        static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
+        static let normalHint       = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
+        static let selectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
+    }
 
     // MARK: - IBOutlets
     @IBOutlet private var actionsView: UIStackView!
