@@ -427,7 +427,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
         // TODO: grab link from pasteboard if available
 
         let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment:"Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment:"Label action for updating a link on the editor")
-        let removeButtonTitle = NSLocalizedString("Remove Link", comment:"Label action for removing a link from the editor");
+        let removeButtonTitle = NSLocalizedString("Remove Link", comment:"Label action for removing a link from the editor")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment:"Cancel button")
 
         let alertController = UIAlertController(title:insertButtonTitle,
@@ -435,8 +435,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
                                                 preferredStyle:UIAlertControllerStyle.Alert)
 
         alertController.addTextFieldWithConfigurationHandler({ [weak self]textField in
-            textField.clearButtonMode = UITextFieldViewMode.Always;
-            textField.placeholder = NSLocalizedString("URL", comment:"URL text field placeholder");
+            textField.clearButtonMode = UITextFieldViewMode.Always
+            textField.placeholder = NSLocalizedString("URL", comment:"URL text field placeholder")
 
             textField.text = url?.absoluteString
 
