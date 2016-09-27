@@ -24,14 +24,9 @@ class NoteTableViewCell: WPTableViewCell
             }
         }
     }
-    var selectable: Bool = false {
-        didSet {
-            refreshSelectionStyle()
-        }
-    }
     var showsUndeleteOverlay: Bool {
         get {
-            return undoOverlayText != nil
+            return undeleteOverlayText != nil
         }
     }
     var showsBottomSeparator: Bool {
@@ -67,6 +62,7 @@ class NoteTableViewCell: WPTableViewCell
                 refreshSubviewVisibility()
                 refreshBackgrounds()
                 refreshUndoOverlay()
+                refreshSelectionStyle()
             }
         }
     }
@@ -206,12 +202,12 @@ class NoteTableViewCell: WPTableViewCell
     }
 
     private func refreshSelectionStyle() {
-        selectionStyle = selectable ? .Gray : .None
+        selectionStyle = showsUndeleteOverlay ? .Gray : .None
     }
 
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews {
-            subview.hidden = showsUndoOverlay
+            subview.hidden = showsUndeleteOverlay
         }
     }
 
@@ -223,7 +219,7 @@ class NoteTableViewCell: WPTableViewCell
 
     private func refreshUndoOverlay() {
         // Remove
-        if showsUndoOverlay == false {
+        guard showsUndeleteOverlay else {
             undoOverlayView?.removeFromSuperview()
             return
         }

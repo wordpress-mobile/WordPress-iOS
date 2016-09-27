@@ -715,9 +715,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
             return
         }
 
-        let undeleteOverlayText     = deletionRequestForNoteWithID(note.objectID)?.kind.legendText
+        let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-        let isSelectable            = undoOverlayText == nil
 
         cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
@@ -726,8 +725,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
         cell.showsBottomSeparator   = !isLastRow
-        cell.selectable             = isSelectable
-        cell.undeleteOverlayText    = undeleteOverlayText
+        cell.undeleteOverlayText    = deletionRequest?.kind.legendText
         cell.onUndelete             = { [weak self] in
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
