@@ -121,6 +121,18 @@ import WordPressComAnalytics
     }
 
 
+    /// Check if the specified topic is Automattic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Automattic
+    ///
+    public class func topicIsAutomattic(topic: ReaderAbstractTopic) -> Bool {
+        return topic.path.hasSuffix("/read/a8c")
+    }
+
+
     // MARK: Analytics Helpers
 
     public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
