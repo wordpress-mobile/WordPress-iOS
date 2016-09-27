@@ -24,13 +24,9 @@ class NoteTableViewCell: WPTableViewCell
             }
         }
     }
-    var markedForDeletion: Bool = false {
-        didSet {
-            if markedForDeletion != oldValue {
-                refreshSubviewVisibility()
-                refreshBackgrounds()
-                refreshUndoOverlay()
-            }
+    var showsUndoOverlay: Bool {
+        get {
+            return undoOverlayText != nil
         }
     }
     var showsBottomSeparator: Bool {
@@ -58,6 +54,15 @@ class NoteTableViewCell: WPTableViewCell
         }
         get {
             return snippetLabel.attributedText
+        }
+    }
+    var undoOverlayText: String? {
+        didSet {
+            if undoOverlayText != undoOverlayText {
+                refreshSubviewVisibility()
+                refreshBackgrounds()
+                refreshUndoOverlay()
+            }
         }
     }
     var noticon: String? {
@@ -197,7 +202,7 @@ class NoteTableViewCell: WPTableViewCell
 
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews {
-            subview.hidden = markedForDeletion
+            subview.hidden = showsUndoOverlay
         }
     }
 
@@ -209,7 +214,7 @@ class NoteTableViewCell: WPTableViewCell
 
     private func refreshUndoOverlay() {
         // Remove
-        if markedForDeletion == false {
+        if showsUndoOverlay == false {
             undoOverlayView?.removeFromSuperview()
             return
         }
@@ -226,6 +231,8 @@ class NoteTableViewCell: WPTableViewCell
             contentView.addSubview(undoOverlayView)
             contentView.pinSubviewToAllEdges(undoOverlayView)
         }
+
+        undoOverlayView.legendText = undoOverlayText
     }
 
 
