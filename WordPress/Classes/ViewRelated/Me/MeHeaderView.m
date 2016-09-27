@@ -223,13 +223,13 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 {
     // Touch Down: Depress the gravatarImageView
     if (sender.state == UIGestureRecognizerStateBegan) {
-        [_gravatarImageView depressAnimation];
+        [_gravatarImageView depressSpringAnimation:nil];
         return;
     }
     
     // Touch Up: Normalize the gravatarImageView
     if (sender.state == UIGestureRecognizerStateEnded) {
-        [_gravatarImageView normalizeAnimation];
+        [_gravatarImageView normalizeSpringAnimation:nil];
         
         // Hit the callback only if we're still within Gravatar Bounds
         CGPoint touchInGravatar = [sender locationInView:_gravatarImageView];
