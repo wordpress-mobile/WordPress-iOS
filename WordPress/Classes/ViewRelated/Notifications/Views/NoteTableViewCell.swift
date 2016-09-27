@@ -24,7 +24,12 @@ class NoteTableViewCell: WPTableViewCell
             }
         }
     }
-    var showsUndoOverlay: Bool {
+    var selectable: Bool = false {
+        didSet {
+            refreshSelectionStyle()
+        }
+    }
+    var showsUndeleteOverlay: Bool {
         get {
             return undoOverlayText != nil
         }
@@ -56,9 +61,9 @@ class NoteTableViewCell: WPTableViewCell
             return snippetLabel.attributedText
         }
     }
-    var undoOverlayText: String? {
+    var undeleteOverlayText: String? {
         didSet {
-            if undoOverlayText != undoOverlayText {
+            if undeleteOverlayText != oldValue {
                 refreshSubviewVisibility()
                 refreshBackgrounds()
                 refreshUndoOverlay()
@@ -200,6 +205,10 @@ class NoteTableViewCell: WPTableViewCell
         }
     }
 
+    private func refreshSelectionStyle() {
+        selectionStyle = selectable ? .Gray : .None
+    }
+
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews {
             subview.hidden = showsUndoOverlay
@@ -232,7 +241,7 @@ class NoteTableViewCell: WPTableViewCell
             contentView.pinSubviewToAllEdges(undoOverlayView)
         }
 
-        undoOverlayView.legendText = undoOverlayText
+        undoOverlayView.legendText = undeleteOverlayText
     }
 
 
