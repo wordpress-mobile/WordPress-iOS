@@ -474,7 +474,7 @@ private extension NotificationsViewController
     }
 
     @objc func defaultAccountDidChange(note: NSNotification) {
-        setNeedsReloadResults()
+        needsReloadResults = true
         resetApplicationBadge()
     }
 }
@@ -639,10 +639,6 @@ private extension NotificationsViewController
         } catch {
             DDLogSwift.logError("Error refreshing Notification Row \(error)")
         }
-    }
-
-    func setNeedsReloadResults() {
-        needsReloadResults = true
     }
 }
 
