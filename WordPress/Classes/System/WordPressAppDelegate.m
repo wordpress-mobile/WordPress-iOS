@@ -410,9 +410,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Configure Extensions
     [self setupWordPressExtensions];
     
-    // Configure Today Widget
-    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
-    
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
 
@@ -978,12 +975,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 
 #pragma mark - Today Extension
-
-- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
-{
-    TodayExtensionService *service = [TodayExtensionService new];
-    [service hideTodayWidgetIfNotConfigured];
-}
 
 - (void)removeTodayWidgetConfiguration
 {
