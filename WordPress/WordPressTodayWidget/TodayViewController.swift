@@ -182,7 +182,7 @@ extension TodayViewController: NCWidgetProviding {
                     self.isConfigured = false
                     self.updateUIBasedOnWidgetConfiguration()
                 }
-                
+
                 completionHandler(NCUpdateResult.Failed)
         })
 
