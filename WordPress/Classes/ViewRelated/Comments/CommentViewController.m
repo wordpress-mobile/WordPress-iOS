@@ -42,7 +42,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 @property (nonatomic, strong) NSLayoutConstraint        *bottomLayoutConstraint;
 @property (nonatomic, strong) KeyboardDismissHelper     *keyboardManager;
 
-@property (nonatomic, strong) NSDictionary              *layoutIdentifiersMap;
 @property (nonatomic, strong) NSDictionary              *reuseIdentifiersMap;
 @property (nonatomic, assign) NSUInteger                numberOfRows;
 @property (nonatomic, assign) NSUInteger                rowNumberForHeader;
@@ -94,7 +93,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         UINib *tableViewCellNib = [UINib nibWithNibName:className bundle:[NSBundle mainBundle]];
         
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass layoutIdentifier]];
     }
 
     [self attachSuggestionsTableViewIfNeeded];
@@ -319,15 +317,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *layoutIdentifier = self.layoutIdentifiersMap[@(indexPath.row)];
-    NSAssert(layoutIdentifier, @"Missing Layout Identifier!");
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:layoutIdentifier];
-    NSAssert(cell, @"Missing layout cell!");
-    
-    [self setupCell:cell];
-    
-    return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    return UITableViewAutomaticDimension;
 }
 
 #pragma mark - Setup Cells
@@ -368,7 +358,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
-    if (cell.isLayoutCell == NO && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
+    if ([self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
 }
@@ -385,13 +375,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
     cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
-    
-    if (cell.isLayoutCell == NO) {
-        if ([self.comment avatarURLForDisplay]) {
-            [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
-        } else {
-            [cell downloadGravatarWithEmail:[self.comment gravatarEmailForDisplay]];
-        }
+
+    if ([self.comment avatarURLForDisplay]) {
+        [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+    } else {
+        [cell downloadGravatarWithEmail:[self.comment gravatarEmailForDisplay]];
     }
 
     // Setup the Callbacks
@@ -516,7 +504,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
     
-    // Show the alertView
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
     
@@ -803,13 +790,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         @(self.rowNumberForComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
         @(self.rowNumberForActions)   : NoteBlockActionsTableViewCell.reuseIdentifier,
     };
-    
-    self.layoutIdentifiersMap = @{
-        @(self.rowNumberForHeader)    : NoteBlockHeaderTableViewCell.layoutIdentifier,
-        @(self.rowNumberForComment)   : NoteBlockCommentTableViewCell.layoutIdentifier,
-        @(self.rowNumberForActions)   : NoteBlockActionsTableViewCell.layoutIdentifier,
-    };
-    
+
     // Reload the table, at last!
     [self.tableView reloadData];
 }
