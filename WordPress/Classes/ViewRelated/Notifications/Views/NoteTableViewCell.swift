@@ -68,7 +68,15 @@ class NoteTableViewCell: WPTableViewCell
             return noticonLabel.text
         }
     }
-    var onUndelete: (Void -> Void)?
+    override var backgroundColor: UIColor? {
+        didSet {
+            // Note: This is done to improve scrolling performance!
+            snippetLabel.backgroundColor = backgroundColor
+            subjectLabel.backgroundColor = backgroundColor
+            separatorsView.backgroundColor = backgroundColor
+        }
+    }
+    var onUndelete: (() -> Void)?
 
 
 
