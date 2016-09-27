@@ -3,8 +3,14 @@ import Foundation
 
 /// Used by both NotificationsViewController and NotificationDetailsViewController.
 ///
-struct NotificationDeletion
+enum NotificationDeletionKind {
+    case Spamming
+    case Deletion
+}
+
+
+struct NotificationDeletionRequest
 {
-    typealias Request = (action: Action) -> Void
-    typealias Action  = (completion: (Bool -> Void)) -> Void
+    let kind    : NotificationDeletionKind
+    let action  : (completion: (Bool -> Void)) -> Void
 }
