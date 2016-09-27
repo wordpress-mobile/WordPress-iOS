@@ -202,7 +202,7 @@ class NoteTableViewCell: WPTableViewCell
     }
 
     private func refreshSelectionStyle() {
-        selectionStyle = showsUndeleteOverlay ? .Gray : .None
+        selectionStyle = showsUndeleteOverlay ? .None : .Gray
     }
 
     private func refreshSubviewVisibility() {
