@@ -85,6 +85,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     case Search
     case Recommendations
     case Likes
+    case Automattic
     case Other
 }
 
@@ -214,6 +215,9 @@ enum ReaderDefaultMenuItemOrder: Int {
                 } else if ReaderHelpers.topicIsLiked(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Likes.rawValue
                     item.icon = Gridicon.iconOfType(.Star)
+                } else if ReaderHelpers.topicIsAutomattic(abstractTopic) {
+                    item.order = ReaderDefaultMenuItemOrder.Automattic.rawValue
+                    item.icon = UIImage(named: "a8c")
                 } else {
                     item.order = ReaderDefaultMenuItemOrder.Other.rawValue
                 }
