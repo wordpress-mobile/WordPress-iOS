@@ -221,22 +221,21 @@ class NoteTableViewCell: WPTableViewCell
         // Remove
         guard showsUndeleteOverlay else {
             undoOverlayView?.removeFromSuperview()
+            undoOverlayView = nil
             return
         }
 
-        // Load
+        // Lazy Load
         if undoOverlayView == nil {
             let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
             NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil)
             undoOverlayView.translatesAutoresizingMaskIntoConstraints = false
-        }
 
-        // Attach
-        if undoOverlayView.superview == nil {
             contentView.addSubview(undoOverlayView)
             contentView.pinSubviewToAllEdges(undoOverlayView)
         }
 
+        undoOverlayView.hidden = false
         undoOverlayView.legendText = undeleteOverlayText
     }
 
