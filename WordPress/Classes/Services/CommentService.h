@@ -28,6 +28,9 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
+// Determine if a recent cache is available
++ (BOOL)shouldRefreshCacheFor:(Blog *)blog;
+
 // Load extra comments
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                         success:(void (^)(BOOL hasMore))success
