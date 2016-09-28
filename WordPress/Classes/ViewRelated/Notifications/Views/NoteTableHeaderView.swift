@@ -70,6 +70,8 @@ class NoteTableHeaderView: UIView
         layoutView.backgroundColor = Style.sectionHeaderBackgroundColor
         layoutView.bottomVisible = true
         layoutView.topVisible = true
+
+        titleLabel.backgroundColor = Style.sectionHeaderBackgroundColor
     }
 
 
