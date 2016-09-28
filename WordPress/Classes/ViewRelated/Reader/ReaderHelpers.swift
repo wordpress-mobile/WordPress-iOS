@@ -117,18 +117,6 @@ import WordPressComAnalytics
     }
 
 
-    /// Check if the specified topic is for a Team
-    ///
-    /// - Parameters:
-    ///     - topic: A ReaderAbstractTopic
-    ///
-    /// - Returns: True if the topic is for a Team
-    ///
-    public class func topicIsTeam(topic: ReaderAbstractTopic) -> Bool {
-        return topic.type == "team"
-    }
-
-
     // MARK: Analytics Helpers
 
     public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
