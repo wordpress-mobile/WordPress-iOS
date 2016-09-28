@@ -117,15 +117,15 @@ import WordPressComAnalytics
     }
 
 
-    /// Check if the specified topic is Automattic
+    /// Check if the specified topic is for a Team
     ///
     /// - Parameters:
     ///     - topic: A ReaderAbstractTopic
     ///
-    /// - Returns: True if the topic is for Automattic
+    /// - Returns: True if the topic is for a Team
     ///
-    public class func topicIsAutomattic(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/a8c")
+    public class func topicIsTeam(topic: ReaderAbstractTopic) -> Bool {
+        return topic.type == "team"
     }
 
 
