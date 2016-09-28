@@ -710,7 +710,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     } else if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
         return [self listTopicForRemoteTopic:remoteTopic];
-
+    } else if ([remoteTopic.type isEqualToString:@"team"]) {
+        return [self teamTopicForRemoteTopic:remoteTopic];
     }
 
     return [self defaultTopicForRemoteTopic:remoteTopic];
@@ -762,6 +763,23 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
     topic.type = [ReaderDefaultTopic TopicType];
     topic.title = [self formatTitle:remoteTopic.title];
+    topic.path = remoteTopic.path;
+    topic.showInMenu = YES;
+    topic.following = YES;
+
+    return topic;
+}
+
+- (ReaderTeamTopic *)teamTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+{
+    ReaderTeamTopic *topic = (ReaderTeamTopic *)[self findWithPath:remoteTopic.path];
+    if (!topic || ![topic isKindOfClass:[ReaderTeamTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTeamTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
+    topic.type = [ReaderTeamTopic TopicType];
+    topic.title = [self formatTitle:remoteTopic.title];
+    topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;

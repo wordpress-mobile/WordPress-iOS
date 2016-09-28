@@ -6,6 +6,7 @@ import Gridicons
 ///
 enum ReaderMenuSectionType: Int {
     case Defaults
+    case Teams
     case Lists
     case Tags
 }
@@ -85,7 +86,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     case Search
     case Recommendations
     case Likes
-    case Automattic
     case Other
 }
 
@@ -95,6 +95,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 @objc class ReaderMenuViewModel: NSObject
 {
     var defaultsFetchedResultsController: NSFetchedResultsController!
+    var teamsFetchedResultsController: NSFetchedResultsController!
     var listsFetchedResultsController: NSFetchedResultsController!
     var tagsFetchedResultsController: NSFetchedResultsController!
 
@@ -131,6 +132,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func setupResultsControllers() {
         setupDefaultResultsController()
+        setupTeamsResultsController()
         setupListResultsController()
         setupTagsResultsController()
     }
@@ -147,6 +149,10 @@ enum ReaderDefaultMenuItemOrder: Int {
 
         // Rebuild!
         setupDefaultsSection()
+
+        if ReaderHelpers.isLoggedIn() && teamsFetchedResultsController.fetchedObjects?.count > 0 {
+            setupTeamsSection()
+        }
 
         if ReaderHelpers.isLoggedIn() && listsFetchedResultsController.fetchedObjects?.count > 0 {
             setupListsSection()
@@ -215,9 +221,6 @@ enum ReaderDefaultMenuItemOrder: Int {
                 } else if ReaderHelpers.topicIsLiked(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.Likes.rawValue
                     item.icon = Gridicon.iconOfType(.Star)
-                } else if ReaderHelpers.topicIsAutomattic(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.Automattic.rawValue
-                    item.icon = UIImage(named: "a8c")
                 } else {
                     item.order = ReaderDefaultMenuItemOrder.Other.rawValue
                 }
@@ -276,6 +279,64 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func menuItemForDefaultAtIndex(index: Int) -> ReaderMenuItem? {
         return defaultSectionItems[index]
+    }
+
+
+    // MARK: - Teams Section
+
+
+    /// Sets up the teams section.
+    ///
+    func setupTeamsSection() {
+        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment:"Section title of the teams reader section."), type: .Teams)
+        sections.append(section)
+    }
+
+
+    /// Sets up the teams fetched results controller.
+    ///
+    func setupTeamsResultsController() {
+        let fetchRequest = NSFetchRequest(entityName: "ReaderTeamTopic")
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
+        fetchRequest.sortDescriptors = [sortDescriptor]
+
+        teamsFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                   managedObjectContext: ContextManager.sharedInstance().mainContext,
+                                                                   sectionNameKeyPath: nil,
+                                                                   cacheName: nil)
+        teamsFetchedResultsController.delegate = self
+
+        do {
+            let _ = try teamsFetchedResultsController.performFetch()
+        } catch {
+            DDLogSwift.logError("There was a problem fetching team topics for the menu.")
+            assertionFailure("There was a problem fetching team topics.")
+        }
+    }
+
+
+    /// Returns the number of items for the teams section.
+    ///
+    /// - Returns: The number of items in the section.
+    ///
+    func itemCountForTeamsSection() -> Int {
+        return teamsFetchedResultsController.fetchedObjects?.count ?? 0
+    }
+
+
+    /// Returns the menu item from the teams section at the specified index.
+    ///
+    /// - Parameters:
+    ///     - index: The index of the item.
+    ///
+    /// - Returns: The requested menu item or nil.
+    ///
+    func menuItemForTeamsAtIndex(index: Int) -> ReaderMenuItem? {
+        guard let topic = teamsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderTeamTopic else {
+            return nil
+        }
+
+        return ReaderMenuItem(title: topic.title, type: .Topic, icon: topic.icon, topic: topic)
     }
 
 
@@ -508,6 +569,9 @@ enum ReaderDefaultMenuItemOrder: Int {
         case .Defaults:
             return itemCountForDefaultSection()
 
+        case .Teams:
+            return itemCountForTeamsSection()
+
         case .Lists:
             return itemCountForListSection()
 
@@ -566,6 +630,9 @@ enum ReaderDefaultMenuItemOrder: Int {
         switch section.type {
         case .Defaults:
             return menuItemForDefaultAtIndex(indexPath.row)
+
+        case .Teams:
+            return menuItemForTeamsAtIndex(indexPath.row)
 
         case .Lists:
             return menuItemForListAtIndex(indexPath.row)
