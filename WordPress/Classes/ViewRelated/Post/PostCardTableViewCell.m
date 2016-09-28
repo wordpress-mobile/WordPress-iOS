@@ -258,8 +258,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.postCardImageView.hidden = isAnimatedGIF;
 
     if (isAnimatedGIF) {
-        FLAnimatedImage *image = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:url]];
-        self.postCardAnimatedImageView.animatedImage = image;
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+        if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
+            request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
+        }
+        [self.postCardAnimatedImageView setAnimatedImage:request
+                                        placeholderImage:nil
+                                                 success:nil
+                                                 failure:nil];
         return;
     }
     
