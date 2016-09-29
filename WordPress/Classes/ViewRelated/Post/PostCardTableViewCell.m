@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *postCardImageView;
-@property (nonatomic, strong) IBOutlet FLAnimatedImageView *postCardAnimatedImageView;
+@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardAnimatedImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
