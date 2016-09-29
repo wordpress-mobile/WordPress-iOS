@@ -508,6 +508,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
     }
