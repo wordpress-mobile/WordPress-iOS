@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 52
+
+- @koke 2016-09-28
+- Added `ReaderTeamTopic` entity.
+
 ## WordPress 51
 - @aerych 2016-08-12
 - Added `algorithm` optional string field to `ReaderAbstractTopic`.
