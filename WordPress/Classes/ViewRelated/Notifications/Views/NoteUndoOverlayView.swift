@@ -11,13 +11,37 @@ import WordPressShared
 ///
 class NoteUndoOverlayView: UIView
 {
-    // MARK: - NSCoder
+    // MARK: - Properties
+
+    /// Legend Text
+    ///
+    var legendText: String? {
+        get {
+            return legendLabel.text
+        }
+        set {
+            legendLabel.text = newValue
+        }
+    }
+
+    /// Action Button Text
+    ///
+    var buttonText: String? {
+        get {
+            return undoButton.titleForState(.Normal)
+        }
+        set {
+            undoButton.setTitle(newValue, forState: .Normal)
+        }
+    }
+
+
+    // MARK: - Overriden Methods
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = Style.noteUndoBackgroundColor
 
         // Legend
-        legendLabel.text = NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is removed")
         legendLabel.textColor = Style.noteUndoTextColor
         legendLabel.font = Style.noteUndoTextFont
 
@@ -26,7 +50,6 @@ class NoteUndoOverlayView: UIView
         undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), forState: .Normal)
         undoButton.setTitleColor(Style.noteUndoTextColor, forState: .Normal)
     }
-
 
 
     // MARK: - Private Alias
