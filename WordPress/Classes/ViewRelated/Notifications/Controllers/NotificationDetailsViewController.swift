@@ -516,16 +516,6 @@ private extension NotificationDetailsViewController
         cell.accessoryType = hasHomeURL ? .DisclosureIndicator : .None
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
-        cell.isFollowOn = userBlock.isActionOn(.Follow)
-
-        cell.onFollowClick = { [weak self] in
-            self?.followSiteWithBlock(userBlock)
-        }
-
-        cell.onUnfollowClick = { [weak self] in
-            self?.unfollowSiteWithBlock(userBlock)
-        }
 
         // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
@@ -926,16 +916,6 @@ private extension NotificationDetailsViewController
 //
 private extension NotificationDetailsViewController
 {
-    func followSiteWithBlock(block: NotificationBlock) {
-        actionsService.followSiteWithBlock(block)
-        WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
-    }
-
-    func unfollowSiteWithBlock(block: NotificationBlock) {
-        actionsService.unfollowSiteWithBlock(block)
-        WPAppAnalytics.track(.NotificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
-    }
-
     func likeCommentWithBlock(block: NotificationBlock) {
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
