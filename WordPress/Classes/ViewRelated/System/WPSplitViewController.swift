@@ -4,6 +4,7 @@ import WordPressShared
 @objc enum WPSplitViewControllerPrimaryColumnWidth: Int {
     case Default
     case Narrow
+    case Full
 }
 
 class WPSplitViewController: UISplitViewController {
@@ -33,16 +34,19 @@ class WPSplitViewController: UISplitViewController {
     private func updateSplitViewForPrimaryColumnWidth() {
         switch wpPrimaryColumnWidth {
         case .Default:
-            preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
             minimumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
             maximumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
+            preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
         case .Narrow:
             let orientation = UIApplication.sharedApplication().statusBarOrientation
             let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.widthForInterfaceOrientation(orientation)
 
-            preferredPrimaryColumnWidthFraction = UIScreen.mainScreen().bounds.width / columnWidth
             minimumPrimaryColumnWidth = columnWidth
             maximumPrimaryColumnWidth = columnWidth
+            preferredPrimaryColumnWidthFraction = UIScreen.mainScreen().bounds.width / columnWidth
+        case .Full:
+            maximumPrimaryColumnWidth = UIScreen.mainScreen().bounds.width
+            preferredPrimaryColumnWidthFraction = 1.0
         }
     }
 
@@ -141,7 +145,13 @@ class WPSplitViewController: UISplitViewController {
     /// If set to `true`, the split view will automatically dim the detail
     /// view controller whenever the primary navigation controller is popped
     /// back to its root view controller.
-    var dimsDetailViewControllerAutomatically = false
+    var dimsDetailViewControllerAutomatically = false {
+        didSet {
+            if !dimsDetailViewControllerAutomatically {
+                dimDetailViewController(false)
+            }
+        }
+    }
 
     private let dimmingViewAlpha: CGFloat = 0.5
     private let dimmingViewAnimationDuration: NSTimeInterval = 0.3
