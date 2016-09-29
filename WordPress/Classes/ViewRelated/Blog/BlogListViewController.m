@@ -34,12 +34,14 @@ static NSInteger HideSearchMinSites = 3;
                                         NSFetchedResultsControllerDelegate,
                                         UISearchResultsUpdating,
                                         UISearchControllerDelegate,
+                                        WPNoResultsViewDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -142,6 +144,7 @@ static NSInteger HideSearchMinSites = 3;
 
     [self configureTableView];
     [self configureSearchController];
+    [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
 }
@@ -157,6 +160,7 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [self updateSearchVisibility];
     [self maybeShowNUX];
+    [self maybeShowNoResultsView];
     [self syncBlogs];
 
     [self updateCurrentBlogSelection];
@@ -222,6 +226,35 @@ static NSInteger HideSearchMinSites = 3;
         [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
+}
+
+- (void)maybeShowNoResultsView
+{
+    NSUInteger count = [self countForAllBlogs];
+    BOOL hasSites = (count != NSNotFound && count > 0);
+
+    // If we've gone from no results to having just one site, the user has
+    // added a new site so we should auto-select it
+    if (!self.noResultsView.hidden && count == 1) {
+        [self bypassBlogListViewController];
+    }
+
+    self.noResultsView.hidden = hasSites;
+
+    // If we have no results, set the split view to full width
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
+        splitViewController.dimsDetailViewControllerAutomatically = hasSites;
+        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
+    }
+}
+
+- (NSUInteger)countForAllBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:BlogEntityName];
+    request.predicate = [self fetchRequestPredicateForAllBlogs];
+    return [context countForFetchRequest:request error:nil];
 }
 
 - (void)syncBlogs
@@ -353,6 +386,23 @@ static NSInteger HideSearchMinSites = 3;
 
 - (CGFloat)searchBarHeight {
     return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+}
+
+- (void)configureNoResultsView
+{
+    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.")
+                                                         message:NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.")
+                                                   accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
+                                                     buttonTitle:NSLocalizedString(@"Create Site", nil)];
+    [self.tableView addSubview:self.noResultsView];
+    [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.tableView pinSubviewAtCenter:self.noResultsView];
+    [self.noResultsView layoutIfNeeded];
+
+    self.noResultsView.hidden = YES;
+
+    self.noResultsView.delegate = self;
 }
 
 #pragma mark - Notifications
@@ -649,6 +699,15 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addSite
 {
+    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
+
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
+}
+
+- (UIAlertController *)makeAddSiteAlertController
+{
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
@@ -672,10 +731,8 @@ static NSInteger HideSearchMinSites = 3;
 
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-    
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    self.addSiteAlertController = addSiteAlertController;
+
+    return addSiteAlertController;
 }
 
 - (WPAccount *)defaultWordPressComAccount
@@ -864,13 +921,41 @@ static NSInteger HideSearchMinSites = 3;
     [self.tableView reloadData];
     [self updateEditButton];
     [self maybeShowNUX];
+    [self maybeShowNoResultsView];
+}
+
+#pragma mark - WPNoResultsViewDelegate
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Find the button in the NoResultsView
+    UIButton *button = nil;
+    for (UIView *subview in noResultsView.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            button = (UIButton *)subview;
+            break;
+        }
+    }
+
+    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+    addSiteAlertController.popoverPresentationController.sourceView = self.tableView;
+    addSiteAlertController.popoverPresentationController.sourceRect = [self.tableView convertRect:button.frame
+                                                                                         fromView:noResultsView];
+    addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
 }
 
 #pragma mark - WPSplitViewControllerDetailProvider
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
+    if ([self numSites] == 0) {
+        return [UIViewController new];
+    } else {
+        return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
+    }
 }
 
 @end

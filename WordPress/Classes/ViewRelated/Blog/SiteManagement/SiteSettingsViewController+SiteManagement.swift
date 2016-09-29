@@ -163,8 +163,18 @@ public extension SiteSettingsViewController
                 let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
                 SVProgressHUD.showSuccessWithStatus(status)
 
-                if let navController = self?.navigationController {
-                    navController.popToRootViewControllerAnimated(true)
+                if let primaryNavigationController = self?.splitViewController?.viewControllers.first as? UINavigationController {
+                    // If this view controller is in the detail pane of its splitview,
+                    // replace it with an empty view controller, as its blog no longer exists
+                    if let secondaryNavigationController = self?.splitViewController?.viewControllers.last as? UINavigationController
+                        where primaryNavigationController != secondaryNavigationController && secondaryNavigationController == self?.navigationController {
+                        let emptyViewController = UIViewController()
+                        WPStyleGuide.configureColorsForView(emptyViewController.view, andTableView: nil)
+
+                        self?.navigationController?.viewControllers = [emptyViewController]
+                    }
+
+                    primaryNavigationController.popToRootViewControllerAnimated(true)
                 }
             },
             failure: { error in
