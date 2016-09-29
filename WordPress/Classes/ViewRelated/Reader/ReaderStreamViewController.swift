@@ -40,7 +40,6 @@ import WordPressComAnalytics
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    private let readerWindowlessCellIdentifier = "ReaderWindowlessCellIdentifier"
     private let estimatedRowHeight = CGFloat(300.0)
     private let loadMoreThreashold = 4
 
@@ -56,7 +55,6 @@ import WordPressComAnalytics
     private var indexPathForGapMarker: NSIndexPath?
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
-
 
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -354,8 +352,6 @@ import WordPressComAnalytics
 
         nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
-
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: readerWindowlessCellIdentifier)
     }
 
 
@@ -1550,15 +1546,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if view.window == nil && WPDeviceIdentification.isiPad() {
-            // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
-            // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
-            // The result is the cells do not show the correct layout on the iPad.
-            // HACK: aerych, 2016-06-27
-            // Use a generic cell in this situation and reload the table view once its back in a window.
-            return tableView.dequeueReusableCellWithIdentifier(readerWindowlessCellIdentifier)!
-        }
-
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 
