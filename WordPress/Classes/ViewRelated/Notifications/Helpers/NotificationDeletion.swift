@@ -3,8 +3,23 @@ import Foundation
 
 /// Used by both NotificationsViewController and NotificationDetailsViewController.
 ///
-struct NotificationDeletion
+enum NotificationDeletionKind {
+    case Spamming
+    case Deletion
+
+    var legendText: String {
+        switch self {
+        case .Deletion:
+            return NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is deleted")
+        case .Spamming:
+            return NSLocalizedString("Comment has been marked as Spam", comment: "Displayed when a Comment is spammed")
+        }
+    }
+}
+
+
+struct NotificationDeletionRequest
 {
-    typealias Request = (action: Action) -> Void
-    typealias Action  = (completion: (Bool -> Void)) -> Void
+    let kind    : NotificationDeletionKind
+    let action  : (completion: (Bool -> Void)) -> Void
 }
