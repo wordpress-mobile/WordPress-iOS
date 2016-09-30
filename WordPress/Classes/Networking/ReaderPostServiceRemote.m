@@ -52,6 +52,7 @@ NSString * const PostRESTKeySiteURL = @"site_URL";
 NSString * const PostRESTKeySlug = @"slug";
 NSString * const PostRESTKeyStatus = @"status";
 NSString * const PostRESTKeyTitle = @"title";
+NSString * const PostRESTKeyTaggedOn = @"tagged_on";
 NSString * const PostRESTKeyTags = @"tags";
 NSString * const POSTRESTKeyTagDisplayName = @"display_name";
 NSString * const PostRESTKeyURL = @"URL";
@@ -561,7 +562,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
         // Find the last of the image press options after the image URL
         // Search from the start of the URL to the end of the string
-        NSRange ampRng = [img rangeOfString:@"&" options:nil range:NSMakeRange(location, [img length] - location)];
+        NSRange ampRng = [img rangeOfString:@"&" options:NSLiteralSearch range:NSMakeRange(location, [img length] - location)];
         // Default length is the remainder of the string following the start of the image URL.
         NSInteger length = [img length] - location;
         if (ampRng.location != NSNotFound) {
@@ -640,6 +641,12 @@ static const NSUInteger ReaderPostTitleLength = 30;
 {
     // Sort date varies depending on the endpoint we're fetching from.
     NSString *sortDate = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
+
+    // Date tagged on is returned by read/tags/%s/posts endpoints.
+    NSString *taggedDate = [dict stringForKey:PostRESTKeyTaggedOn];
+    if (taggedDate != nil) {
+        sortDate = taggedDate;
+    }
 
     // Date liked is returned by the read/liked end point.  Use this for sorting recent likes.
     NSString *likedDate = [dict stringForKey:PostRESTKeyDateLiked];
@@ -980,12 +987,12 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
     // Find instances of VideoPress markup.
 
-    NSArray *matches = [regexVideoPress matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
+    NSArray *matches = [regexVideoPress matchesInString:mstr options:0 range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
 
         // Find the mp4 in the markup.
-        NSRange mp4Match = [regexMp4 rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        NSRange mp4Match = [regexMp4 rangeOfFirstMatchInString:mstr options:0 range:match.range];
         if (mp4Match.location == NSNotFound) {
             DDLogError(@"%@ failed to match mp4 JSON string while formatting video press markup: %@", NSStringFromSelector(_cmd), [mstr substringWithRange:match.range]);
             [mstr replaceCharactersInRange:match.range withString:@""];
@@ -994,7 +1001,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
         NSString *mp4 = [mstr substringWithRange:mp4Match];
 
         // Get the mp4 url.
-        NSRange srcMatch = [regexSrc rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        NSRange srcMatch = [regexSrc rangeOfFirstMatchInString:mp4 options:0 range:NSMakeRange(0, [mp4 length])];
         if (srcMatch.location == NSNotFound) {
             DDLogError(@"%@ failed to match mp4 src when formatting video press markup: %@", NSStringFromSelector(_cmd), mp4);
             [mstr replaceCharactersInRange:match.range withString:@""];
@@ -1005,7 +1012,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
         NSString *height = @"200"; // default
         NSString *placeholder = @"";
-        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
+        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:0 range:NSMakeRange(0, [string length])];
         if (posterMatch.location != NSNotFound) {
             NSString *poster = [string substringWithRange:posterMatch];
             NSString *value = [self parseValueForAttributeNamed:@"height" inElement:poster];
@@ -1047,7 +1054,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
 
-    NSArray *matches = [regexGalleryImages matchesInString:mcontent options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mcontent length])];
+    NSArray *matches = [regexGalleryImages matchesInString:mcontent options:0 range:NSMakeRange(0, [mcontent length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSMutableString *imageElementString = [[mcontent substringWithRange:match.range] mutableCopy];
         NSString *srcImageURLString = [self parseValueForAttributeNamed:@"src" inElement:imageElementString];

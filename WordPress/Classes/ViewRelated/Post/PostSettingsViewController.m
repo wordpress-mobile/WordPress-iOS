@@ -60,8 +60,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
-@property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, assign) BOOL *isUploadingMedia;
+@property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
+@property (nonatomic, assign) BOOL isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 

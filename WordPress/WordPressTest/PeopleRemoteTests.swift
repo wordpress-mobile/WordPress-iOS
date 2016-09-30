@@ -39,7 +39,7 @@ class PeopleServiceTests : XCTestCase
 
     private func stubRemoteResponse(endpoint: String, filename: String) {
         stub({ request in
-            return request.URL?.absoluteString.rangeOfString(endpoint) != nil
+            return request.URL?.absoluteString!.rangeOfString(endpoint) != nil
         }) { _ in
             let stubPath = OHPathForFile(filename, self.dynamicType)
             return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])

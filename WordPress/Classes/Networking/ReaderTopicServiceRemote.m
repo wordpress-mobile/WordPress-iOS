@@ -13,6 +13,7 @@ static NSString * const TopicDictionaryOwnerKey = @"owner";
 static NSString * const TopicDictionarySlugKey = @"slug";
 static NSString * const TopicDictionaryTagKey = @"tag";
 static NSString * const TopicDictionaryTitleKey = @"title";
+static NSString * const TopicDictionaryTypeKey = @"type";
 static NSString * const TopicDictionaryDisplayNameKey = @"display_name";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
@@ -133,8 +134,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
              withSuccess:(void (^)(NSNumber *topicID))success
                  failure:(void (^)(NSError *error))failure
 {
-    NSString *slug = [self slugForTopicName:topicName];
-    [self followTopicWithSlug:slug withSuccess:success failure:failure];
+    [self followTopicWithSlug:topicName withSuccess:success failure:failure];
 }
 
 - (void)followTopicWithSlug:(NSString *)slug
@@ -142,6 +142,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
                  failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/new", slug];
+    path = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
@@ -388,6 +389,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     topic.path = [[topicDict stringForKey:TopicDictionaryURLKey] lowercaseString];
     topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
     topic.title = [topicDict stringForKey:TopicDictionaryDisplayNameKey] ?: [topicDict stringForKey:TopicDictionaryTitleKey];
+    topic.type = [topicDict stringForKey:TopicDictionaryTypeKey];
 
     return topic;
 }

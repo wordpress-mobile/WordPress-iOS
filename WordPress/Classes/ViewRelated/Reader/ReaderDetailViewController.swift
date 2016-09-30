@@ -448,7 +448,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     private func requestForURL(url:NSURL) -> NSURLRequest {
         var requestURL = url
 
-        let absoluteString = requestURL.absoluteString
+        let absoluteString = requestURL.absoluteString ?? ""
         if !absoluteString.hasPrefix("https") {
             let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
             requestURL = NSURL(string: sslURL)!
@@ -714,18 +714,29 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
         } else {
             // Shows the navbar and footer view
+            let pinToBottom = isScrollViewAtBottom()
+
             navigationController?.setNavigationBarHidden(false, animated: true)
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animateWithDuration(0.3,
                 delay: 0.0,
                 options: [.BeginFromCurrentState, .AllowUserInteraction],
-                animations: { () -> Void in
+                animations: {
                     self.view.layoutIfNeeded()
+                    if pinToBottom {
+                        let y = self.scrollView.contentSize.height - self.scrollView.frame.height
+                        self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+                    }
+
                 }, completion: nil)
         }
 
     }
 
+
+    func isScrollViewAtBottom() -> Bool {
+        return scrollView.contentOffset.y + scrollView.frame.height == scrollView.contentSize.height
+    }
 
     // MARK: - Analytics
 
@@ -899,7 +910,7 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
         if url.host != nil {
             if let postURLString = post?.permaLink {
                 let postURL = NSURL(string: postURLString)
-                url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)!
+                url = NSURL(string: linkURL.absoluteString!, relativeToURL: postURL)!
             }
         }
         presentWebViewControllerWithURL(url)
@@ -937,8 +948,16 @@ extension ReaderDetailViewController : UIScrollViewDelegate
         }
     }
 
+
     public func scrollViewDidScrollToTop(scrollView: UIScrollView) {
         setBarsHidden(false)
+    }
+
+
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if isScrollViewAtBottom() {
+            setBarsHidden(false)
+        }
     }
 
 }
