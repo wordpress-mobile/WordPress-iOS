@@ -151,7 +151,7 @@ class NoteTableViewCell: WPTableViewCell
 
         iconImageView.image = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
-        noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
+        noticonContainerView.layer.cornerRadius = Settings.noticonContainerRadius
 
         noticonView.layer.cornerRadius = Settings.noticonRadius
         noticonLabel.font = Style.noticonFont
@@ -266,6 +266,7 @@ class NoteTableViewCell: WPTableViewCell
         static let subjectNumberOfLinesWithSnippet = 2
         static let snippetNumberOfLines = 2
         static let noticonRadius = CGFloat(10)
+        static let noticonContainerRadius = CGFloat(12)
 
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
