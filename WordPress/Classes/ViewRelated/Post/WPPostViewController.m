@@ -893,6 +893,15 @@ EditImageDetailsViewControllerDelegate
     [super startEditing];
 }
 
+- (void)setEditing:(BOOL)editing
+{
+    [super setEditing:editing];
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.splitViewController.preferredDisplayMode = (editing) ? UISplitViewControllerDisplayModePrimaryHidden : UISplitViewControllerDisplayModeAllVisible;
+    }];
+}
+
 #pragma mark - Instance Methods
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
