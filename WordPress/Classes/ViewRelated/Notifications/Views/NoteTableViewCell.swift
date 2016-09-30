@@ -24,13 +24,9 @@ class NoteTableViewCell: WPTableViewCell
             }
         }
     }
-    var markedForDeletion: Bool = false {
-        didSet {
-            if markedForDeletion != oldValue {
-                refreshSubviewVisibility()
-                refreshBackgrounds()
-                refreshUndoOverlay()
-            }
+    var showsUndeleteOverlay: Bool {
+        get {
+            return undeleteOverlayText != nil
         }
     }
     var showsBottomSeparator: Bool {
@@ -58,6 +54,16 @@ class NoteTableViewCell: WPTableViewCell
         }
         get {
             return snippetLabel.attributedText
+        }
+    }
+    var undeleteOverlayText: String? {
+        didSet {
+            if undeleteOverlayText != oldValue {
+                refreshSubviewVisibility()
+                refreshBackgrounds()
+                refreshUndoOverlay()
+                refreshSelectionStyle()
+            }
         }
     }
     var noticon: String? {
@@ -145,7 +151,7 @@ class NoteTableViewCell: WPTableViewCell
 
         iconImageView.image = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
-        noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
+        noticonContainerView.layer.cornerRadius = Settings.noticonContainerRadius
 
         noticonView.layer.cornerRadius = Settings.noticonRadius
         noticonLabel.font = Style.noticonFont
@@ -203,9 +209,13 @@ class NoteTableViewCell: WPTableViewCell
         }
     }
 
+    private func refreshSelectionStyle() {
+        selectionStyle = showsUndeleteOverlay ? .None : .Gray
+    }
+
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews {
-            subview.hidden = markedForDeletion
+            subview.hidden = showsUndeleteOverlay
         }
     }
 
@@ -217,23 +227,24 @@ class NoteTableViewCell: WPTableViewCell
 
     private func refreshUndoOverlay() {
         // Remove
-        if markedForDeletion == false {
+        guard showsUndeleteOverlay else {
             undoOverlayView?.removeFromSuperview()
+            undoOverlayView = nil
             return
         }
 
-        // Load
+        // Lazy Load
         if undoOverlayView == nil {
             let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
             NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil)
             undoOverlayView.translatesAutoresizingMaskIntoConstraints = false
-        }
 
-        // Attach
-        if undoOverlayView.superview == nil {
             contentView.addSubview(undoOverlayView)
             contentView.pinSubviewToAllEdges(undoOverlayView)
         }
+
+        undoOverlayView.hidden = false
+        undoOverlayView.legendText = undeleteOverlayText
     }
 
 
@@ -255,6 +266,7 @@ class NoteTableViewCell: WPTableViewCell
         static let subjectNumberOfLinesWithSnippet = 2
         static let snippetNumberOfLines = 2
         static let noticonRadius = CGFloat(10)
+        static let noticonContainerRadius = CGFloat(12)
 
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
