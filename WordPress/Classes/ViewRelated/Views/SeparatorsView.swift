@@ -86,41 +86,41 @@ public class SeparatorsView : UIView
 
         let scale = UIScreen.mainScreen().scale
         let ctx = UIGraphicsGetCurrentContext()
-        CGContextClearRect(ctx, rect)
-        CGContextSetShouldAntialias(ctx, false)
+        CGContextClearRect(ctx!, rect)
+        CGContextSetShouldAntialias(ctx!, false)
 
         // Background
         if backgroundColor != nil {
             backgroundColor?.setFill()
-            CGContextFillRect(ctx, rect)
+            CGContextFillRect(ctx!, rect)
         }
 
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
-            CGContextSetLineWidth(ctx, leftWidthInPoints * scale)
-            CGContextMoveToPoint(ctx, bounds.minX, bounds.minY)
-            CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
-            CGContextStrokePath(ctx)
+            CGContextSetLineWidth(ctx!, leftWidthInPoints * scale)
+            CGContextMoveToPoint(ctx!, bounds.minX, bounds.minY)
+            CGContextAddLineToPoint(ctx!, bounds.minX, bounds.maxY)
+            CGContextStrokePath(ctx!)
         }
 
         // Top Separator
         if topVisible {
             topColor.setStroke()
             let lineWidth = topHeightInPixels / scale
-            CGContextSetLineWidth(ctx, lineWidth)
-            CGContextMoveToPoint(ctx, topInsets.left, lineWidth)
-            CGContextAddLineToPoint(ctx, bounds.maxX - topInsets.right, lineWidth)
-            CGContextStrokePath(ctx)
+            CGContextSetLineWidth(ctx!, lineWidth)
+            CGContextMoveToPoint(ctx!, topInsets.left, lineWidth)
+            CGContextAddLineToPoint(ctx!, bounds.maxX - topInsets.right, lineWidth)
+            CGContextStrokePath(ctx!)
         }
 
         // Bottom Separator
         if bottomVisible {
             bottomColor.setStroke()
-            CGContextSetLineWidth(ctx, bottomHeightInPixels / scale)
-            CGContextMoveToPoint(ctx, bottomInsets.left, bounds.height)
-            CGContextAddLineToPoint(ctx, bounds.maxX - bottomInsets.right, bounds.height)
-            CGContextStrokePath(ctx)
+            CGContextSetLineWidth(ctx!, bottomHeightInPixels / scale)
+            CGContextMoveToPoint(ctx!, bottomInsets.left, bounds.height)
+            CGContextAddLineToPoint(ctx!, bounds.maxX - bottomInsets.right, bounds.height)
+            CGContextStrokePath(ctx!)
         }
     }
 

@@ -75,7 +75,7 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
             }
             return;
         }
-        id responseObject = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
+        id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         if (responseObject == nil || ![responseObject isKindOfClass:[NSDictionary class]]) {
             // Let's be optimistic and turn off throttling by default if this call doesn't work
             [self resetReviewPromptDisabledStatus];

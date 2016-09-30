@@ -84,7 +84,7 @@ NSString* const WPLookbackPresenterShakeToPullUpFeedbackKey = @"InternalBetaShak
         [window addGestureRecognizer:recognizer];
     });
     
-    [Lookback lookback].userIdentifier = userId;
+    [Lookback lookback].options.userIdentifier = userId;
 #endif
 }
 

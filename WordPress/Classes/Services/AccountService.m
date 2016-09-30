@@ -125,7 +125,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
@@ -310,19 +309,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
     Blog *defaultBlog = [defaultAccount defaultBlog];
-    
-    if (defaultBlog == nil || defaultBlog.isDeleted) {
-        return;
-    }
-
-    // Required Attributes
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
     
-    // Widget Configuration
-    TodayExtensionService *service = [TodayExtensionService new];
-    
-    if ([service widgetIsConfigured] == false) {
+    if (defaultBlog == nil || defaultBlog.isDeleted) {
+        TodayExtensionService *service = [TodayExtensionService new];
+        [service removeTodayWidgetConfiguration];
+    } else {
+        // Required Attributes
+        
         BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
         NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
         NSString *oauth2Token       = defaultAccount.authToken;
@@ -336,7 +331,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         });
     }
     
-    // Share Extension Configuration
     dispatch_async(dispatch_get_main_queue(), ^{
         [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
         [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
