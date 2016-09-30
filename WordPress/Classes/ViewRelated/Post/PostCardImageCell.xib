@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="448"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CUK-Fg-fJ5" id="lmn-sx-Q9M">
-                <frame key="frameInset" width="320" height="447"/>
+                <frame key="frameInset" width="320" height="447.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5E-yQ-veP">
@@ -51,7 +51,7 @@
                                     <constraint firstItem="DWo-S7-Yu2" firstAttribute="leading" secondItem="rIp-IY-Ng4" secondAttribute="leading" id="xwc-7q-5QP"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Kf-3e-Bni" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
+                            <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Kf-3e-Bni" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y9d-Yk-F4X">
