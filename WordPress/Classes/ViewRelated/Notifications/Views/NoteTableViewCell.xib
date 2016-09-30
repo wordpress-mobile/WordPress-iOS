@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,25 +11,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9ZS-co-ZCe" id="9Ex-yA-LkS">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                <frame key="frameInset" width="320" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GgS-tD-1kB" userLabel="IconImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="12" y="12" width="46" height="46"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="46" id="NFx-6b-mLk"/>
                             <constraint firstAttribute="height" constant="46" id="ta1-tG-DqK"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-j3-kM6" userLabel="NoticonContainerView">
-                        <rect key="frame" x="42" y="42" width="24" height="24"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iFs-j8-6X0" userLabel="NoticonView">
-                                <rect key="frame" x="2" y="2" width="20" height="20"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a81-9a-t1j" userLabel="NoticonLabel">
-                                        <rect key="frame" x="2" y="4" width="16" height="16"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" image="YES"/>
                                             <bool key="isElement" value="NO"/>
@@ -38,53 +35,37 @@
                                             <constraint firstAttribute="width" constant="16" id="PZS-KM-g6P"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="a81-9a-t1j" secondAttribute="centerY" id="4Yt-OI-K6w"/>
                                     <constraint firstAttribute="centerX" secondItem="a81-9a-t1j" secondAttribute="centerX" id="7hc-hH-Vbr"/>
                                     <constraint firstAttribute="height" constant="20" id="F1Q-2h-RZO"/>
-                                    <constraint firstItem="a81-9a-t1j" firstAttribute="top" secondItem="iFs-j8-6X0" secondAttribute="top" constant="4" id="FeZ-kR-zN9"/>
+                                    <constraint firstItem="a81-9a-t1j" firstAttribute="top" secondItem="iFs-j8-6X0" secondAttribute="top" constant="2" id="FeZ-kR-zN9"/>
                                     <constraint firstAttribute="width" constant="20" id="xql-ql-Uzf"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="4Yt-OI-K6w"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="iFs-j8-6X0" secondAttribute="centerY" id="43Q-C4-k3t"/>
                             <constraint firstAttribute="width" constant="24" id="5MP-uM-RZI"/>
-                            <constraint firstAttribute="centerY" secondItem="iFs-j8-6X0" secondAttribute="centerY" id="JSr-qz-Zdc"/>
-                            <constraint firstAttribute="centerX" secondItem="iFs-j8-6X0" secondAttribute="centerX" id="NkZ-eB-b6Y"/>
                             <constraint firstAttribute="centerX" secondItem="iFs-j8-6X0" secondAttribute="centerX" id="aC0-GU-q9z"/>
                             <constraint firstAttribute="height" constant="24" id="t5b-6V-yq3"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="JSr-qz-Zdc"/>
-                                <exclude reference="NkZ-eB-b6Y"/>
-                            </mask>
-                        </variation>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
-                        <rect key="frame" x="71" y="9" width="237" height="19"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
-                        <rect key="frame" x="71" y="28" width="237" height="19"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
