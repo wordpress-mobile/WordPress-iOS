@@ -44,6 +44,7 @@ PODS:
     - DTFoundation/Core
   - Expecta (1.0.5)
   - Fabric (1.6.8)
+  - FLAnimatedImage (1.0.12)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
     - FormatterKit/ArrayFormatter (= 1.8.1)
@@ -192,6 +193,7 @@ DEPENDENCIES:
   - Crashlytics
   - DTCoreText (= 1.6.16)
   - Expecta (= 1.0.5)
+  - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
   - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, commit `8bd04e18eddaaf36810887c94837571e68f7cc24`)
   - Helpshift (~> 5.7.1)
@@ -261,6 +263,7 @@ SPEC CHECKSUMS:
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
   Helpshift: 48ee4b24dc5f0ae7d1dfd8dded6eea327069a014
@@ -289,6 +292,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 0401d4a991725d97f5d18a18a518b8e5d127ee07
+PODFILE CHECKSUM: 9b1d9a4ad3ef662f291178019c6bbd783079e25b
 
 COCOAPODS: 1.0.1
