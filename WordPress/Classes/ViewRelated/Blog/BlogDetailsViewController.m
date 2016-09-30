@@ -47,6 +47,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
+@property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic, copy) void (^callback)();
 
 @end
@@ -74,6 +75,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _callback = callback;
         _identifier = identifier;
+        _showsSelectionState = YES;
     }
     return self;
 }
@@ -374,21 +376,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showStats];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                    image:[Gridicon iconOfType:GridiconTypeHouse]
-                                                 callback:^{
-                                                     [weakSelf showViewSite];
-                                                 }]];
+    BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
+                                                                  image:[Gridicon iconOfType:GridiconTypeHouse]
+                                                               callback:^{
+                                                                   [weakSelf showViewSite];
+                                                               }];
+    viewSiteRow.showsSelectionState = NO;
+    [rows addObject:viewSiteRow];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
                                                           image:[Gridicon iconOfType:GridiconTypeMySites]
                                                        callback:^{
                                                            [weakSelf showViewAdmin];
+                                                           [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
                                                        }];
     UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)];
     UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
     accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
     row.accessoryView = accessoryView;
+    row.showsSelectionState = NO;
     [rows addObject:row];
 
     if ([self.blog supports:BlogFeaturePlans]) {
@@ -558,11 +564,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.restorableSelectedIndexPath = indexPath;
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
+
+    if (row.showsSelectionState) {
+        self.restorableSelectedIndexPath = indexPath;
+    } else {
+        // Reselect the previous row
+        [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
+                               animated:YES
+                         scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
