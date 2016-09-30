@@ -62,7 +62,7 @@ class NotificationDetailsViewController: UIViewController
     /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
     /// in the eventuallity of a failure.
     ///
-    var onDeletionRequestCallback: NotificationDeletion.Request?
+    var onDeletionRequestCallback: (NotificationDeletionRequest -> Void)?
 
 
     deinit {
@@ -959,7 +959,7 @@ private extension NotificationDetailsViewController
     func spamCommentWithBlock(block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
-        onDeletionRequestCallback? { onCompletion in
+        let request = NotificationDeletionRequest(kind: .Spamming, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
             service.spamCommentWithBlock(block) { success in
@@ -967,7 +967,9 @@ private extension NotificationDetailsViewController
             }
 
             WPAppAnalytics.track(.NotificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
-        }
+        })
+
+        onDeletionRequestCallback?(request)
 
         // We're thru
         navigationController?.popToRootViewControllerAnimated(true)
@@ -977,7 +979,7 @@ private extension NotificationDetailsViewController
         precondition(onDeletionRequestCallback != nil)
 
         // Hit the DeletionRequest Callback
-        onDeletionRequestCallback? { onCompletion in
+        let request = NotificationDeletionRequest(kind: .Deletion, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
             service.deleteCommentWithBlock(block) { success in
@@ -985,7 +987,9 @@ private extension NotificationDetailsViewController
             }
 
             WPAppAnalytics.track(.NotificationsCommentTrashed, withBlogID: block.metaSiteID)
-        }
+        })
+
+        onDeletionRequestCallback?(request)
 
         // We're thru
         navigationController?.popToRootViewControllerAnimated(true)

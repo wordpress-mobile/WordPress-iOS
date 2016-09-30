@@ -7,6 +7,7 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import "WPStyleGuide+Posts.h"
 #import "Wordpress-Swift.h"
+#import "FLAnimatedImage.h"
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *postCardImageView;
+@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardAnimatedImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
@@ -241,13 +243,32 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
 
     AbstractPost *post = [self.post latest];
-
-    if (![post featuredImageURLForDisplay]) {
-        self.postCardImageView.image = nil;
+    // Clear the image so we know its not stale.
+    self.postCardImageView.image = nil;
+    self.postCardAnimatedImageView.image = nil;
+    self.postCardAnimatedImageView.animatedImage = nil;
+    NSURL *url = [post featuredImageURLForDisplay];
+    if (url == nil) {
+        // no feature image available.
+        return;
     }
 
-    NSURL *url = [post featuredImageURLForDisplay];
-    self.postCardImageView.image = nil; // Clear the image so we know its not stale.
+    BOOL isAnimatedGIF = [[url pathExtension] isEqual:@"gif"];
+    self.postCardAnimatedImageView.hidden = !isAnimatedGIF;
+    self.postCardImageView.hidden = isAnimatedGIF;
+
+    if (isAnimatedGIF) {
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+        if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
+            request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
+        }
+        [self.postCardAnimatedImageView setAnimatedImage:request
+                                        placeholderImage:nil
+                                                 success:nil
+                                                 failure:nil];
+        return;
+    }
+    
     CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
