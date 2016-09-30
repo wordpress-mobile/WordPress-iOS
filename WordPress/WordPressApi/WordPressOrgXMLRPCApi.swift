@@ -3,7 +3,7 @@ import wpxmlrpc
 
 public class WordPressOrgXMLRPCApi: NSObject
 {
-    public typealias SuccessResponseBlock = (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) -> ()
+    public typealias SuccessResponseBlock = (AnyObject, NSHTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
 
     private let endpoint: NSURL
@@ -20,6 +20,22 @@ public class WordPressOrgXMLRPCApi: NSObject
         let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         return session
     }()
+
+    private var uploadSession: NSURLSession {
+        get {
+            if #available(iOS 10.0, *) {
+                return self.session
+            }
+            let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
+            var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate"]
+            if let userAgent = self.userAgent {
+                additionalHeaders["User-Agent"] = userAgent
+            }
+            sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders
+            let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+            return session
+        }
+    }
 
     public init(endpoint: NSURL, userAgent: String? = nil) {
         self.endpoint = endpoint
@@ -84,7 +100,7 @@ public class WordPressOrgXMLRPCApi: NSObject
         let task = session.dataTaskWithRequest(request) { (data, urlResponse, error) in
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
-                success(responseObject: responseObject, httpResponse: urlResponse as? NSHTTPURLResponse)
+                success(responseObject, urlResponse as? NSHTTPURLResponse)
             } catch let error as NSError {
                 failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
                 return
@@ -123,11 +139,15 @@ public class WordPressOrgXMLRPCApi: NSObject
         }
 
         // Create task
+        let session = uploadSession
         let task = session.uploadTaskWithRequest(request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
+            if session != self.session {
+                session.finishTasksAndInvalidate()
+            }
             let _ = try? NSFileManager.defaultManager().removeItemAtURL(fileURL)
             do {
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
-                success(responseObject: responseObject, httpResponse: urlResponse as? NSHTTPURLResponse)
+                success(responseObject, urlResponse as? NSHTTPURLResponse)
             } catch let error as NSError {
                 failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
             }
@@ -167,7 +187,7 @@ public class WordPressOrgXMLRPCApi: NSObject
     private func URLForTemporaryFile() -> NSURL {
         let fileName = "\(NSProcessInfo.processInfo().globallyUniqueString)_file.xmlrpc"
         let fileURL = NSURL.fileURLWithPath(NSTemporaryDirectory()).URLByAppendingPathComponent(fileName)
-        return fileURL
+        return fileURL!
     }
 
     //MARK: - Progress reporting
@@ -249,10 +269,10 @@ extension WordPressOrgXMLRPCApi: NSURLSessionTaskDelegate, NSURLSessionDelegate 
                 completionHandler(.UseCredential, credential)
                 return
             }
-            var result = SecTrustResultType(kSecTrustResultInvalid)
+            var result = SecTrustResultType.Invalid
             if let serverTrust = challenge.protectionSpace.serverTrust {
                 let certificateStatus = SecTrustEvaluate(serverTrust, &result)
-                if certificateStatus == 0 && result == SecTrustResultType(kSecTrustResultRecoverableTrustFailure) {
+                if certificateStatus == 0 && result == SecTrustResultType.RecoverableTrustFailure {
                     dispatch_async(dispatch_get_main_queue(), { () in
                         HTTPAuthenticationAlertController.presentWithChallenge(challenge, handler: completionHandler)
                     })

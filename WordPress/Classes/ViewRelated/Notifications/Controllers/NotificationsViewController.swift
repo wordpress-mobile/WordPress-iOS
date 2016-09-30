@@ -57,11 +57,16 @@ class NotificationsViewController : UITableViewController
 
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
-    private var notificationDeletionActions: [NSManagedObjectID: NotificationDeletion.Action] = [:]
+    private var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
 
     /// Notifications being deleted are proactively filtered from the list.
     ///
     private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
+
+    /// Pending Actions, to be executed on viewDidDisappear.
+    ///
+    private var onDisappeared: (() -> Void)?
+
 
 
     // MARK: - View Lifecycle
@@ -130,6 +135,20 @@ class NotificationsViewController : UITableViewController
         tableViewHandler.updateRowAnimation = .None
     }
 
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // Glitch Workaround. Scenario:
+        //  -   Mark as Read saves the mainMOC
+        //  -   Simperium sends the change
+        //  -   The backend acknowledges the change, and merges back into the mainMOC
+        // This causes a reloadData event, that might cut any ongoing animations in the detail views. For that reason,
+        // we're using this 'deferred onDisappeared' mechanism, just as yet another workaround.
+        //
+        onDisappeared?()
+        onDisappeared = nil
+    }
+
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         // Note: We're assuming `tableViewHandler` might be nil. Weird case in which the view
@@ -187,16 +206,7 @@ class NotificationsViewController : UITableViewController
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        // Load the Subject + Snippet
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
-            return CGFloat.min
-        }
-
-        // Old School Height Calculation
-        let subject = note.subjectBlock?.attributedSubjectText
-        let snippet = note.snippetBlock?.attributedSnippetText
-
-        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -207,7 +217,7 @@ class NotificationsViewController : UITableViewController
         }
 
         // Push the Details: Unless the note has a pending deletion!
-        guard isNoteMarkedForDeletion(note.objectID) == false else {
+        guard deletionRequestForNoteWithID(note.objectID) == nil else {
             return
         }
 
@@ -224,8 +234,8 @@ class NotificationsViewController : UITableViewController
         }
 
         detailsViewController.setupWithNotification(note)
-        detailsViewController.onDeletionRequestCallback = { onUndoTimeout in
-            self.showUndeleteForNoteWithID(note.objectID, onTimeout: onUndoTimeout)
+        detailsViewController.onDeletionRequestCallback = { request in
+            self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
     }
 }
@@ -264,11 +274,13 @@ extension NotificationsViewController
             let title = NSLocalizedString("Trash", comment: "Trashes a comment")
 
             let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] _ in
-                self?.showUndeleteForNoteWithID(note.objectID) { onCompletion in
+                let request = NotificationDeletionRequest(kind: .Deletion, action: { [weak self] onCompletion in
                     self?.actionsService.deleteCommentWithBlock(block) { success in
                         onCompletion(success)
                     }
-                }
+                })
+
+                self?.showUndeleteForNoteWithID(note.objectID, request: request)
 
                 self?.tableView.setEditing(false, animated: true)
             })
@@ -498,17 +510,22 @@ extension NotificationsViewController
         let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
 
-        // Mark as Read, if needed
-        if let isRead = note.read?.boolValue where isRead == false {
-            note.read = NSNumber(bool: true)
-            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
-        }
-
         // Failsafe: Don't push nested!
         if navigationController?.visibleViewController != self {
             navigationController?.popViewControllerAnimated(false)
         }
 
+        // Deferred Mark as Read: Avoiding 'NotificationDetails' animation glitches.
+        onDisappeared = {
+            guard let isRead = note.read?.boolValue where isRead == false else {
+                return
+            }
+
+            note.read = NSNumber(bool: !isRead)
+            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
+        }
+
+        // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             navigationController?.pushViewController(readerViewController, animated: true)
@@ -524,15 +541,15 @@ extension NotificationsViewController
     ///
     /// -   Parameters:
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
-    ///     -   onTimeout: A "destructive" closure, to be executed after a given timeout.
+    ///     -   request: A DeletionRequest Struct
     ///
-    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, onTimeout: NotificationDeletion.Action) {
-        // Mark this note as Pending Deletichroon and Reload
-        notificationDeletionActions[noteObjectID] = onTimeout
+    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
+        // Mark this note as Pending Deletion and Reload
+        notificationDeletionRequests[noteObjectID] = request
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
-        performSelector(#selector(deleteNoteWithID), withObject:noteObjectID, afterDelay:Syncing.undoTimeout)
+        performSelector(#selector(deleteNoteWithID), withObject: noteObjectID, afterDelay: Syncing.undoTimeout)
     }
 }
 
@@ -543,7 +560,7 @@ private extension NotificationsViewController
 {
     @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
-        guard let deletionBlock = notificationDeletionActions[noteObjectID] else {
+        guard let request = deletionRequestForNoteWithID(noteObjectID) else {
             return
         }
 
@@ -551,9 +568,9 @@ private extension NotificationsViewController
         notificationIdsBeingDeleted.insert(noteObjectID)
         reloadResultsController()
 
-        // Hit the Deletion Block
-        deletionBlock { success in
-            self.notificationDeletionActions.removeValueForKey(noteObjectID)
+        // Hit the Deletion Action
+        request.action { success in
+            self.notificationDeletionRequests.removeValueForKey(noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
             // Error: let's unhide the row
@@ -563,15 +580,15 @@ private extension NotificationsViewController
         }
     }
 
-    func cancelDeletionForNoteWithID(noteObjectID: NSManagedObjectID) {
-        notificationDeletionActions.removeValueForKey(noteObjectID)
+    func cancelDeletionRequestForNoteWithID(noteObjectID: NSManagedObjectID) {
+        notificationDeletionRequests.removeValueForKey(noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
-    func isNoteMarkedForDeletion(noteObjectID: NSManagedObjectID) -> Bool {
-        return notificationDeletionActions[noteObjectID] != nil
+    func deletionRequestForNoteWithID(noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
+        return notificationDeletionRequests[noteObjectID]
     }
 }
 
@@ -698,7 +715,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
             return
         }
 
-        let isMarkedForDeletion     = isNoteMarkedForDeletion(note.objectID)
+        let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.forceCustomCellMargins = true
@@ -707,11 +724,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.read                   = note.read?.boolValue ?? false
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
-        cell.markedForDeletion      = isMarkedForDeletion
-        cell.showsBottomSeparator   = !isLastRow && !isMarkedForDeletion
-        cell.selectionStyle         = isMarkedForDeletion ? .None : .Gray
+        cell.showsBottomSeparator   = !isLastRow
+        cell.undeleteOverlayText    = deletionRequest?.kind.legendText
         cell.onUndelete             = { [weak self] in
-            self?.cancelDeletionForNoteWithID(note.objectID)
+            self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
         cell.downloadIconWithURL(note.iconURL)

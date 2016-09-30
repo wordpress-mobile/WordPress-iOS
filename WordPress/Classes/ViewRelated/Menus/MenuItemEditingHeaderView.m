@@ -14,16 +14,9 @@
 
 @implementation MenuItemEditingHeaderView
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification) name:UIDeviceOrientationDidChangeNotification object:nil];
 
     self.backgroundColor = [UIColor clearColor];
 
@@ -131,9 +124,9 @@
                                               ]];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)layoutSubviews
 {
-    [super traitCollectionDidChange:previousTraitCollection];
+    [super layoutSubviews];
     [self setNeedsDisplay];
 }
 
@@ -206,13 +199,6 @@
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
     [self.delegate editingHeaderView:self didUpdateTextForItemName:textField.text];
-}
-
-#pragma mark - notifications
-
-- (void)deviceOrientationDidChangeNotification
-{
-    [self setNeedsDisplay];
 }
 
 @end

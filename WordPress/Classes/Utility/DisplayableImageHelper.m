@@ -72,7 +72,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     });
 
     // Find all the image tags in the content passed.
-    NSArray *matches = [regex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
+    NSArray *matches = [regex matchesInString:content options:0 range:NSMakeRange(0, [content length])];
 
     NSString *firstImageWithNoSize;
     NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
@@ -125,7 +125,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         regex = [NSRegularExpression regularExpressionWithPattern:srcPattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
-    NSRange srcRng = [regex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
+    NSRange srcRng = [regex rangeOfFirstMatchInString:tag options:0 range:NSMakeRange(0, [tag length])];
     NSString *src = [tag substringWithRange:srcRng];
     NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
     NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
@@ -174,7 +174,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
     NSInteger length = [content length] - range.location;
-    range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
+    range = [regex rangeOfFirstMatchInString:content options:0 range:NSMakeRange(range.location, length)];
     if (range.location == NSNotFound) {
         return str;
     }

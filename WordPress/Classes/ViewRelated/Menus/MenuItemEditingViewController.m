@@ -183,10 +183,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 - (BOOL)shouldLayoutForCompactWidth
 {
-    if ([WPDeviceIdentification isiPad]) {
-        return NO;
-    }
-
     BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
 
     if (horizontallyCompact) {
@@ -216,7 +212,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     // compactWidthLayout is any screen size in which the width is less than the height (iPhone portrait)
     BOOL compactWidthLayout = [self shouldLayoutForCompactWidth];
-    BOOL minimizeLayoutForSourceViewTypying = ![WPDeviceIdentification isiPad] && self.sourceViewIsTyping;
+    BOOL minimizeLayoutForSourceViewTypying = compactWidthLayout && self.sourceViewIsTyping;
 
     if (minimizeLayoutForSourceViewTypying) {
         // headerView should be hidden while typing within the sourceView, to save screen space (iPhone)
@@ -225,15 +221,12 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
         [self setHeaderViewHidden:NO];
     }
 
-    if (![WPDeviceIdentification isiPad]) {
-
-        if (!compactWidthLayout) {
-            // on iPhone landscape we want to minimize the height of the footer to gain any vertical screen space we can
-            self.footerViewHeightConstraint.constant = FooterViewCompactHeight;
-        } else  {
-            // restore the height of the footer on portrait since we have more vertical screen space
-            self.footerViewHeightConstraint.constant = FooterViewDefaultHeight;
-        }
+    if (!compactWidthLayout) {
+        // on iPhone landscape we want to minimize the height of the footer to gain any vertical screen space we can
+        self.footerViewHeightConstraint.constant = FooterViewCompactHeight;
+    } else  {
+        // restore the height of the footer on portrait since we have more vertical screen space
+        self.footerViewHeightConstraint.constant = FooterViewDefaultHeight;
     }
 
     if (compactWidthLayout || minimizeLayoutForSourceViewTypying) {
@@ -323,6 +316,12 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
                 [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
                 break;
             }
+        }
+
+        if (contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews) {
+            [self.sourceViewController setHeaderViewHidden:YES];
+        } else {
+            [self.sourceViewController setHeaderViewHidden:NO];
         }
     }
 }

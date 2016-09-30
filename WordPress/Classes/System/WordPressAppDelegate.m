@@ -55,7 +55,6 @@
 
 // View controllers
 #import "RotationAwareNavigationViewController.h"
-#import "LoginViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
@@ -77,7 +76,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
-@property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
 @end
 
@@ -129,10 +127,7 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
 
-    [self showWelcomeScreenABTestIfNeeded];
-
-    // TODO: Restore this method when the NUX A/B test is over. - aerych, 2016-06-28
-    // [self showWelcomeScreenIfNeededAnimated:NO];
+    [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
     [self setupStoreKit];
@@ -317,8 +312,7 @@ int ddLogLevel = DDLogLevelInfo;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
         if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
             return @"Post Editor";
-        } else if ([firstViewController isKindOfClass:[LoginViewController class]] || [firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
-            // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
+        } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
             return @"Login View";
         }
     }
@@ -339,12 +333,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    if (self.launchedShortcutItem) {
-        WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
-        [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
-        self.launchedShortcutItem = nil;
-    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -421,9 +409,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Configure Extensions
     [self setupWordPressExtensions];
-    
-    // Configure Today Widget
-    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
@@ -532,16 +517,6 @@ int ddLogLevel = DDLogLevelInfo;
     return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
 }
 
-// Only call this method when launching the app. At any other time the signin screen
-// should be shown by calling `showWelcomeScreenIfNeededAnimated:`
-- (void)showWelcomeScreenABTestIfNeeded
-{
-    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
-        return;
-    }
-    [SigninHelpers loadABTestThenShowSigninController];
-}
-
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
     if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
@@ -576,9 +551,7 @@ int ddLogLevel = DDLogLevelInfo;
         return YES;
     }
 
-    // TODO: Remember to change this when switching to the new signin feature. (Aerych 2016.4.20)
-    UIViewController *controller = presentedViewController.visibleViewController;
-    return [controller isKindOfClass:[LoginViewController class]] || [controller isKindOfClass:[NUXAbstractViewController class]];
+    return [presentedViewController.visibleViewController isKindOfClass:[NUXAbstractViewController class]];
 }
 
 - (BOOL)noWordPressDotComAccount
@@ -695,12 +668,15 @@ int ddLogLevel = DDLogLevelInfo;
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
-    
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
     NSString* apiKey = [ApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
         self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
     }
+#pragma clang diagnostic pop
 }
 
 - (void)configureHockeySDK
@@ -999,12 +975,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 
 #pragma mark - Today Extension
-
-- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
-{
-    TodayExtensionService *service = [TodayExtensionService new];
-    [service hideTodayWidgetIfNotConfigured];
-}
 
 - (void)removeTodayWidgetConfiguration
 {

@@ -176,6 +176,9 @@ public extension SiteSettingsViewController
 
                     primaryNavigationController.popToRootViewControllerAnimated(true)
                 }
+
+                let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+                accountService.updateUserDetailsForAccount(accountService.defaultWordPressComAccount()!, success: { _ in }, failure: { _ in })
             },
             failure: { error in
                 DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")
