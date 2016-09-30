@@ -312,6 +312,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_blogListSplitViewController) {
         _blogListSplitViewController = [WPSplitViewController new];
         _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
+        _blogListSplitViewController.presentsWithGesture = NO;
         _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
