@@ -394,10 +394,10 @@ static NSInteger HideSearchMinSites = 3;
                                                          message:NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.")
                                                    accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
                                                      buttonTitle:NSLocalizedString(@"Create Site", nil)];
-    [self.tableView addSubview:self.noResultsView];
+    [self.view addSubview:self.noResultsView];
     [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.tableView pinSubviewAtCenter:self.noResultsView];
+    [self.view pinSubviewAtCenter:self.noResultsView];
     [self.noResultsView layoutIfNeeded];
 
     self.noResultsView.hidden = YES;
@@ -938,9 +938,9 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-    addSiteAlertController.popoverPresentationController.sourceView = self.tableView;
-    addSiteAlertController.popoverPresentationController.sourceRect = [self.tableView convertRect:button.frame
-                                                                                         fromView:noResultsView];
+    addSiteAlertController.popoverPresentationController.sourceView = self.view;
+    addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:button.frame
+                                                                                    fromView:noResultsView];
     addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
 
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
