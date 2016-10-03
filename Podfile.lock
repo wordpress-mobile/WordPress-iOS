@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - Crashlytics (3.7.3):
+  - Crashlytics (3.8.2):
     - Fabric (~> 1.6.3)
   - DTCoreText (1.6.16):
     - DTFoundation/Core (~> 1.7.5)
@@ -43,7 +43,7 @@ PODS:
   - DTFoundation/UIKit (1.7.10):
     - DTFoundation/Core
   - Expecta (1.0.5)
-  - Fabric (1.6.8)
+  - Fabric (1.6.9)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
     - FormatterKit/ArrayFormatter (= 1.8.1)
@@ -264,11 +264,11 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: d5398183a8b50432d5cefeb1080f02b8c9b3928a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  Crashlytics: 76f6beaff70acf226139582c09c78461597c2b98
+  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
+  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
   Helpshift: 48ee4b24dc5f0ae7d1dfd8dded6eea327069a014
