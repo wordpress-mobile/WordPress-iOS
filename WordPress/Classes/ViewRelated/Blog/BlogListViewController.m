@@ -247,6 +247,11 @@ static NSInteger HideSearchMinSites = 3;
         splitViewController.dimsDetailViewControllerAutomatically = hasSites;
         splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
     }
+
+    // Nil out our blog details VC reference if the blog no longer exists
+    if (self.blogDetailsViewController && ![self.resultsController.fetchedObjects containsObject:self.blogDetailsViewController.blog]) {
+        self.blogDetailsViewController = nil;
+    }
 }
 
 - (NSUInteger)countForAllBlogs
@@ -951,8 +956,10 @@ static NSInteger HideSearchMinSites = 3;
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    if ([self numSites] == 0) {
-        return [UIViewController new];
+    if ([self numSites] == 0 || !self.blogDetailsViewController) {
+        UIViewController *emptyViewController = [UIViewController new];
+        [WPStyleGuide configureColorsForView:emptyViewController.view andTableView:nil];
+        return emptyViewController;
     } else {
         return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
     }
