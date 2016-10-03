@@ -47,11 +47,6 @@ import WordPressShared
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardContentViewLeadingMarginConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardContentViewTrailingMarginConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardContentViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cardContentViewTrailingConstraint: NSLayoutConstraint!
-
 
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
@@ -126,41 +121,6 @@ import WordPressShared
         // Layout the stackView if needed since layout may be a bit different than
         // what was expected from the nib layout.
         stackView.layoutIfNeeded()
-    }
-
-    public override func didMoveToWindow() {
-        super.didMoveToWindow()
-        // The hack below is only necessary on iOS versions older than iOS 10.
-        guard WPDeviceIdentification.isiOSVersionEarlierThan10() else {
-            return
-        }
-        // I don't like this, but there's an issue in iOS (older than iOS 10) where
-        // constraints that are activated for specific size classes do not get properly
-        // activated/deactivated when moving to a window for the first time, if having
-        // been initalized and configured without a window (switching tabs).
-        // So the hack below forces an activation of the constraints we want, based on the window's size class,
-        // and deactivates the constraints we don't.
-        // ** This should be removed after we require iOS 10 at a minimum. **
-        // Note: blame Brent C. Sep 29/2016
-        if window?.traitCollection.horizontalSizeClass == .Compact {
-            NSLayoutConstraint.deactivateConstraints([
-                cardContentViewLeadingMarginConstraint,
-                cardContentViewTrailingMarginConstraint
-                ])
-            NSLayoutConstraint.activateConstraints([
-                cardContentViewLeadingConstraint,
-                cardContentViewTrailingConstraint
-                ])
-        } else {
-            NSLayoutConstraint.deactivateConstraints([
-                cardContentViewLeadingConstraint,
-                cardContentViewTrailingConstraint
-                ])
-            NSLayoutConstraint.activateConstraints([
-                cardContentViewLeadingMarginConstraint,
-                cardContentViewTrailingMarginConstraint
-                ])
-        }
     }
 
     /**
