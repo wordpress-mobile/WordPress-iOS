@@ -79,11 +79,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshAndSyncIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [self unregisterForSyncNotification];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -450,31 +445,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshPullToRefresh];
 }
 
-#pragma mark - Sync Notification Methods
-
-- (void)registerForSyncNotification
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(syncNotificationReceived:)
-                                                 name:CommentServiceFinishedSyncingNotification
-                                               object:nil];
-}
-
-- (void)unregisterForSyncNotification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:CommentServiceFinishedSyncingNotification object:nil];
-}
-
-- (void)syncNotificationReceived:(NSNotification *)notification
-{
-    NSDictionary *notificationInfo = notification.userInfo;
-    NSManagedObjectID *blogObjectID = notificationInfo[@"objectID"];
-    if ([blogObjectID isEqual:self.blog.objectID])
-    {
-        [self.tableViewHandler refreshTableView];
-    }
-}
-
 
 #pragma mark - View Refresh Helpers
 
@@ -487,8 +457,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 {
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
-    } else {
-        [self registerForSyncNotification];
     }
 }
 

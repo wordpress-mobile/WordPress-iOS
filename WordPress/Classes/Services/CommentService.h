@@ -2,7 +2,6 @@
 #import "LocalCoreDataService.h"
 
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
-extern NSString *const CommentServiceFinishedSyncingNotification;
 
 @class Blog;
 @class Comment;

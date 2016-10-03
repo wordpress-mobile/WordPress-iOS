@@ -29,10 +29,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (Post *)createPostForBlog:(Blog *)blog {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
-    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
+    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:blog.managedObjectContext];
     post.blog = blog;
     post.remoteStatus = AbstractPostRemoteStatusSync;
-    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:blog.managedObjectContext];
     PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
     if (category) {
         [post addCategoriesObject:category];

@@ -17,7 +17,6 @@
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
-NSString * const CommentServiceFinishedSyncingNotification = @"CommentServiceFinishedSyncingNotification";
 
 @implementation CommentService
 
@@ -158,7 +157,6 @@ NSString * const CommentServiceFinishedSyncingNotification = @"CommentServiceFin
                    }];
              }
          }];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CommentServiceFinishedSyncingNotification object:self userInfo:@{@"objectID": blogID}];
      } failure:^(NSError *error) {
          [[self class] stopSyncingCommentsForBlog:blogID];
          if (failure) {
