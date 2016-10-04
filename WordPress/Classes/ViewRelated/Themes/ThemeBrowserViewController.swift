@@ -60,6 +60,26 @@ public protocol ThemePresenter: class
     func presentViewForTheme(theme: Theme?)
 }
 
+/// Invalidates the layout whenever the collection view's bounds change
+@objc public class ThemeBrowserCollectionViewLayout: UICollectionViewFlowLayout {
+    public override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return shouldInvalidateForNewBounds(newBounds)
+    }
+
+    public override func invalidationContextForBoundsChange(newBounds: CGRect) -> UICollectionViewFlowLayoutInvalidationContext {
+        let context = super.invalidationContextForBoundsChange(newBounds) as! UICollectionViewFlowLayoutInvalidationContext
+        context.invalidateFlowLayoutDelegateMetrics = shouldInvalidateForNewBounds(newBounds)
+
+        return context
+    }
+
+    private func shouldInvalidateForNewBounds(newBounds: CGRect) -> Bool {
+        guard let collectionView = collectionView else { return false }
+
+        return (newBounds.width != collectionView.bounds.width || newBounds.height != collectionView.bounds.height)
+    }
+}
+
 @objc public class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
 {
     // MARK: - Properties: must be set by parent
@@ -230,14 +250,6 @@ public protocol ThemePresenter: class
 
     private var searchBarHeight: CGFloat {
         return CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
-    }
-
-    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-
-        coordinator.animateAlongsideTransition({ [weak self] context in
-            self?.collectionView?.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
     }
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
