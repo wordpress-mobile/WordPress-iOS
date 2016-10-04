@@ -17,7 +17,6 @@ import WordPressShared
 
     // Wrapper views
     @IBOutlet private weak var cardContentView: UIView!
-    @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
 
     // Header realated Views
@@ -156,7 +155,8 @@ import WordPressShared
     */
     private func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-        cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
+        cardContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        cardContentView.layer.borderWidth = 1.0
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
@@ -471,7 +471,7 @@ import WordPressShared
             delay: 0,
             options: .CurveEaseInOut,
             animations: {
-                self.cardBorderView.backgroundColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor() : WPStyleGuide.readerCardCellBorderColor()
+                self.cardContentView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
         }, completion: nil)
     }
 

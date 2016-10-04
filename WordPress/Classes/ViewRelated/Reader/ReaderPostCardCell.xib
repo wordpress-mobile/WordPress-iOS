@@ -11,13 +11,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <frame key="frameInset" width="320" height="483.5"/>
+                <frame key="frameInset" width="320" height="483"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXQ-M1-ujW">
-                        <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
+                    <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
@@ -235,17 +232,13 @@
                 </subviews>
                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstItem="aXQ-M1-ujW" firstAttribute="bottom" secondItem="kha-YG-ZlO" secondAttribute="bottom" constant="1" id="0se-j1-fYz"/>
-                    <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="aXQ-M1-ujW" secondAttribute="leading" constant="1" id="59C-QP-FyV"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="leading" secondItem="519-Nh-f7o" secondAttribute="leading" id="62p-4S-YZv"/>
-                    <constraint firstItem="aXQ-M1-ujW" firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" constant="1" id="8eq-aI-MkE"/>
+                    <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="k3b-5o-H9u" secondAttribute="leading" constant="-1" id="AZC-X1-QmT"/>
+                    <constraint firstItem="kha-YG-ZlO" firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" constant="1" id="Bln-fp-IVb"/>
                     <constraint firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" constant="8" id="DcY-YC-ycO"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="k3b-5o-H9u" secondAttribute="top" id="KfR-3O-caf"/>
-                    <constraint firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" id="Li3-OI-84w"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="top" secondItem="519-Nh-f7o" secondAttribute="top" constant="8" id="S77-5V-r2V"/>
-                    <constraint firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" id="UPJ-4V-EXD"/>
                     <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" id="WRt-aP-3vg"/>
-                    <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="aXQ-M1-ujW" secondAttribute="top" constant="1" id="fyC-BX-zso"/>
                     <constraint firstItem="D4Q-6L-ZIL" firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" id="lhg-vY-HXz"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" id="saf-za-gpy"/>
                     <constraint firstItem="D4Q-6L-ZIL" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" id="ut1-lT-M6z"/>
@@ -260,7 +253,6 @@
                 <outlet property="avatarImageView" destination="7Qj-iX-iqv" id="sjW-0m-Xxe"/>
                 <outlet property="blogNameLabel" destination="Wvp-3d-4a9" id="hvz-eo-2mf"/>
                 <outlet property="bylineLabel" destination="EQf-tj-ltv" id="z5e-oO-0eF"/>
-                <outlet property="cardBorderView" destination="aXQ-M1-ujW" id="YFC-Rb-Uq7"/>
                 <outlet property="cardContentView" destination="kha-YG-ZlO" id="V97-NO-edR"/>
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
                 <outlet property="featuredMediaHeightConstraint" destination="JJ8-Je-ZFq" id="3NG-gd-fl9"/>
@@ -275,7 +267,7 @@
                 <outlet property="titleLabel" destination="Zf5-cD-Pd2" id="56V-Zc-1sF"/>
                 <outlet property="wordCountLabel" destination="cpX-bs-YOa" id="7lM-9H-Ql7"/>
             </connections>
-            <point key="canvasLocation" x="394" y="499"/>
+            <point key="canvasLocation" x="478" y="470"/>
         </tableViewCell>
     </objects>
     <resources>
