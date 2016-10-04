@@ -6645,7 +6645,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "a4070359-ff37-4e9b-9a6d-70683d4080c6";
+				PROVISIONING_PROFILE = "81dc0474-a7a6-4b49-b020-ffdc6f74a1ab";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
@@ -7163,7 +7163,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a6cb3313-782f-4380-9d40-21a80931ee10";
+				PROVISIONING_PROFILE = "b1244297-34c5-47c3-ac2a-eb5ecc45045b";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
@@ -7538,7 +7538,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0bdce6c3-fb16-4dbb-bf70-b2e4f7d32069";
+				PROVISIONING_PROFILE = "3fbffb15-3410-4872-8d0c-dbb38dec6bfb";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
