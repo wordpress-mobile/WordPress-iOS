@@ -460,6 +460,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadStats];
         [self preloadPosts];
         [self preloadPages];
+        [self preloadComments];
     }
 }
 
@@ -501,6 +502,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     options.purgesLocalSync = YES;
 
     [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
+}
+
+- (void)preloadComments
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    if ([CommentService shouldRefreshCacheFor:self.blog]) {
+        [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
+    }
 }
 
 - (void)showComments
