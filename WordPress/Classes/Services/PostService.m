@@ -152,6 +152,24 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                     forBlog:blogInContext
                               purgeExisting:options.purgesLocalSync
                           completionHandler:^(NSArray<AbstractPost *> *posts) {
+                              // Update the Last Sync Date, accordingly
+                              Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blog.objectID error:nil];
+
+                              if (blogInContext) {
+                                  BOOL syncedAll = [postType isEqual:PostServiceTypeAny];
+                                  BOOL syncedPosts = [postType isEqual:PostServiceTypePost] || syncedAll;
+                                  BOOL syncedPages = [postType isEqual:PostServiceTypePage] || syncedAll;
+
+                                  if (syncedPages) {
+                                      blogInContext.lastPagesSync = [NSDate date];
+                                  }
+
+                                  if (syncedPosts) {
+                                      blogInContext.lastPostsSync = [NSDate date];
+                                  }
+
+                                  [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                              }
                               if (success) {
                                   success(posts);
                               }
@@ -164,6 +182,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                            }];
                        }
                    }];
+}
+
++ (BOOL)shouldRefreshCacheFor:(Blog *)blog
+{
+    NSDate *lastSynced = blog.lastCommentsSync;
+    BOOL isSyncing = [self isSyncingCommentsForBlog:blog];
+    return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
 - (void)uploadPost:(AbstractPost *)post
