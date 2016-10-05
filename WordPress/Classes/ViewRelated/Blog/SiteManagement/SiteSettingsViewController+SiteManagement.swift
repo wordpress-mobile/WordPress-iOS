@@ -187,7 +187,7 @@ public extension SiteSettingsViewController
         if let primaryNavigationController = self.splitViewController?.viewControllers.first as? UINavigationController {
             if let secondaryNavigationController = self.splitViewController?.viewControllers.last as? UINavigationController {
 
-                // If this view controller is in the detail pane of its splitview 
+                // If this view controller is in the detail pane of its splitview
                 // (i.e. its navigation controller isn't the navigation controller in the primary position in the splitview)
                 // then replace it with an empty view controller, as we just deleted its blog
                 if primaryNavigationController != secondaryNavigationController && secondaryNavigationController == self.navigationController {
