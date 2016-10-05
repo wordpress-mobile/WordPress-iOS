@@ -160,7 +160,8 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [self updateSearchVisibility];
     [self maybeShowNUX];
-    [self maybeShowNoResultsView];
+    [self updateViewsForCurrentSiteCount];
+    [self validateBlogDetailsViewController];
     [self syncBlogs];
 
     [self updateCurrentBlogSelection];
@@ -228,18 +229,31 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
-- (void)maybeShowNoResultsView
+- (void)updateViewsForCurrentSiteCount
 {
     NSUInteger count = [self countForAllBlogs];
-    BOOL hasSites = (count != NSNotFound && count > 0);
+    if (count == NSNotFound) {
+        count = 0;
+    }
 
+    [self showNoResultsViewForSiteCount:count];
+    [self updateSplitViewAppearanceForSiteCount:count];
+}
+
+- (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
+{
     // If we've gone from no results to having just one site, the user has
     // added a new site so we should auto-select it
-    if (!self.noResultsView.hidden && count == 1) {
+    if (!self.noResultsView.hidden && siteCount == 1) {
         [self bypassBlogListViewController];
     }
 
-    self.noResultsView.hidden = hasSites;
+    self.noResultsView.hidden = (siteCount > 0);
+}
+
+- (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
+{
+    BOOL hasSites = (siteCount > 0);
 
     // If we have no results, set the split view to full width
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
@@ -247,7 +261,10 @@ static NSInteger HideSearchMinSites = 3;
         splitViewController.dimsDetailViewControllerAutomatically = hasSites;
         splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
     }
+}
 
+- (void)validateBlogDetailsViewController
+{
     // Nil out our blog details VC reference if the blog no longer exists
     if (self.blogDetailsViewController && ![self.resultsController.fetchedObjects containsObject:self.blogDetailsViewController.blog]) {
         self.blogDetailsViewController = nil;
@@ -926,7 +943,8 @@ static NSInteger HideSearchMinSites = 3;
     [self.tableView reloadData];
     [self updateEditButton];
     [self maybeShowNUX];
-    [self maybeShowNoResultsView];
+    [self updateViewsForCurrentSiteCount];
+    [self validateBlogDetailsViewController];
 }
 
 #pragma mark - WPNoResultsViewDelegate
