@@ -1413,8 +1413,7 @@ EditImageDetailsViewControllerDelegate
     [self.view endEditing:YES];
 
     //Make sure that we are uploading the latest content on the editor.
-    self.post.postTitle = self.titleText;
-    self.post.content = self.bodyText;
+    [self autosaveContent];
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
