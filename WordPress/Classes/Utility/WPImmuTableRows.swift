@@ -123,6 +123,8 @@ struct ButtonRow: ImmuTableRow {
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .ByWordWrapping
 
         WPStyleGuide.configureTableViewActionCell(cell)
         cell.textLabel?.textAlignment = .Center
