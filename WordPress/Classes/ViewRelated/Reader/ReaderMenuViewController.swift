@@ -243,7 +243,7 @@ import WordPressShared
     ///
     func showPostsForTopic(topic: ReaderAbstractTopic) {
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
-        navigationController?.pushViewController(controller, animated: true)
+        showDetailViewController(controller, sender: self)
     }
 
 
@@ -251,7 +251,7 @@ import WordPressShared
     ///
     func showReaderSearch() {
         let controller = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
+        showDetailViewController(controller, sender: self)
     }
 
 
@@ -523,4 +523,15 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate
         tableView.reloadData()
     }
 
+}
+
+extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        guard let menuItem = viewModel.menuItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)),
+            let topic = menuItem.topic else {
+            return UIViewController()
+        }
+
+        return ReaderStreamViewController.controllerWithTopic(topic)
+    }
 }
