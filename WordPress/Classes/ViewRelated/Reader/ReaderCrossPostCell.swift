@@ -3,10 +3,8 @@ import WordPressShared.WPStyleGuide
 
 public class ReaderCrossPostCell: UITableViewCell
 {
-
-    @IBOutlet private weak var innerContentView: UIView!
-
-    // Header realated Views
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var contentStackView: UIStackView!
     @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var blavatarImageView: UIImageView!
@@ -25,7 +23,6 @@ public class ReaderCrossPostCell: UITableViewCell
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
-            innerContentView?.backgroundColor = backgroundColor
             cardContentView?.backgroundColor = backgroundColor
             cardBorderView?.backgroundColor = backgroundColor
             label?.backgroundColor = backgroundColor
@@ -53,6 +50,15 @@ public class ReaderCrossPostCell: UITableViewCell
     public override func awakeFromNib() {
         super.awakeFromNib()
 
+        // HACK
+        // See ReaderPostCardCell awakeFromNib for the same hack and details.
+        if WPDeviceIdentification.isiOSVersionEarlierThan10() && window == nil {
+            if WordPressAppDelegate.sharedInstance().window.traitCollection.horizontalSizeClass == .Compact {
+                stackView.preservesSuperviewLayoutMargins = false
+            } else {
+                stackView.preservesSuperviewLayoutMargins = true
+            }
+        }
         applyStyles()
     }
 
