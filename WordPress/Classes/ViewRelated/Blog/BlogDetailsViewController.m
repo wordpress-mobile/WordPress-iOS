@@ -28,6 +28,7 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
+NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 
 // NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
 // stats/insights. Per @mtias, if the dashboard should change at some point the
@@ -476,32 +477,52 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadPosts
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
-    PostListFilter *filter = [filterSettings currentPostListFilter];
-    
-    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
-    options.statuses = filter.statuses;
-    options.authorID = [filterSettings authorIDFilter];
-    options.purgesLocalSync = YES;
-    
-    [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:nil];
+    NSTimeInterval now = [[NSDate date] timeIntervalSinceReferenceDate];
+    NSTimeInterval lastSync = self.blog.lastPostsSync.timeIntervalSinceReferenceDate;
+    if (now - lastSync > PreloadingCacheTimeout) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
+        PostListFilter *filter = [filterSettings currentPostListFilter];
+        
+        PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+        options.statuses = filter.statuses;
+        options.authorID = [filterSettings authorIDFilter];
+        options.purgesLocalSync = YES;
+
+        self.blog.lastPostsSync = [NSDate date];
+        NSError *error = nil;
+        [self.blog.managedObjectContext save:&error];
+
+        [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
+            self.blog.lastPostsSync = [NSDate dateWithTimeIntervalSince1970:0.0]; // invalidate cache timer
+        }];
+    }
 }
 
 - (void)preloadPages
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
-    PostListFilter *filter = [filterSettings currentPostListFilter];
+    NSTimeInterval now = [[NSDate date] timeIntervalSinceReferenceDate];
+    NSTimeInterval lastSync = self.blog.lastPagesSync.timeIntervalSinceReferenceDate;
+    if (now - lastSync > PreloadingCacheTimeout) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
+        PostListFilter *filter = [filterSettings currentPostListFilter];
 
-    PostServiceSyncOptions *options = [PostServiceSyncOptions new];
-    options.statuses = filter.statuses;
-    options.authorID = [filterSettings authorIDFilter];
-    options.purgesLocalSync = YES;
+        PostServiceSyncOptions *options = [PostServiceSyncOptions new];
+        options.statuses = filter.statuses;
+        options.authorID = [filterSettings authorIDFilter];
+        options.purgesLocalSync = YES;
 
-    [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:nil];
+        self.blog.lastPagesSync = [NSDate date];
+        NSError *error = nil;
+        [self.blog.managedObjectContext save:&error];
+
+        [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
+            self.blog.lastPagesSync = [NSDate dateWithTimeIntervalSince1970:0.0]; // invalidate cache timer
+        }];
+    }
 }
 
 - (void)preloadComments
