@@ -23,6 +23,7 @@
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 
 static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
+static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
 
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -65,6 +66,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
 @property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
@@ -108,7 +110,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
         [self setViewControllers:@[self.blogListSplitViewController,
-                                   self.readerNavigationController,
+                                   self.readerSplitViewController,
                                    self.newPostViewController,
                                    self.meSplitViewController,
                                    self.notificationsNavigationController]];
@@ -325,6 +327,22 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _blogListSplitViewController;
 }
 
+- (UISplitViewController *)readerSplitViewController
+{
+    if (!_readerSplitViewController) {
+        _readerSplitViewController = [WPSplitViewController new];
+        _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
+        _readerSplitViewController.presentsWithGesture = NO;
+        _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+
+        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
+
+        _readerSplitViewController.tabBarItem = self.readerNavigationController.tabBarItem;
+    }
+
+    return _readerSplitViewController;
+}
+
 - (UISplitViewController *)meSplitViewController
 {
     if (!_meSplitViewController) {
@@ -344,10 +362,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
+    _readerSplitViewController = nil;
     _meSplitViewController = nil;
 
     [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerNavigationController,
+                               self.readerSplitViewController,
                                self.newPostViewController,
                                self.meSplitViewController,
                                self.notificationsNavigationController]];
