@@ -31,8 +31,8 @@ import WordPressShared
     // Card views
     @IBOutlet private weak var featuredMediaView: UIView!
     @IBOutlet private weak var featuredImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var summaryLabel: UILabel!
+    @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
+    @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var wordCountLabel: UILabel!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
