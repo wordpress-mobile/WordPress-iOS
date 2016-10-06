@@ -51,7 +51,7 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.19'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7d02c77349245c6e4d3bcdf63a878f90eb4a4e39'
-    pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "f674aa370e891553deb7e97fd4675379159f6001"
+    pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "8a6871af520999c1e731e71ac9697f13cc5e8739"
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,7 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-      pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "f674aa370e891553deb7e97fd4675379159f6001"
+      pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "8a6871af520999c1e731e71ac9697f13cc5e8739"
   end
 
 end
