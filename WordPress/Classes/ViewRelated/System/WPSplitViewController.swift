@@ -162,6 +162,9 @@ class WPSplitViewController: UISplitViewController {
                 view.addSubview(dimmingView)
                 updateDimmingViewFrame()
                 dimmingView.alpha = WPAlphaZero
+
+                // Dismiss the keyboard from the detail view controller if active
+                topDetailViewController?.navigationController?.view.endEditing(true)
                 UIView.animateWithDuration(dimmingViewAnimationDuration, animations: {
                     self.dimmingView.alpha = self.dimmingViewAlpha
                 })
