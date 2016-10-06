@@ -161,6 +161,11 @@ import WordPressShared
         attributionView.delegate = self
     }
 
+    private func setupSummaryLabel() {
+        summaryLabel.numberOfLines = summaryMaxNumberOfLines
+        summaryLabel.lineBreakMode = .ByTruncatingTail
+    }
+
     private func createAvatarTapGestureRecognizer() {
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderPostCardCell.didTapHeaderAvatar(_:)))
         avatarImageView.addGestureRecognizer(tgr)
@@ -317,10 +322,6 @@ import WordPressShared
             summaryLabel.attributedText = nil
             summaryLabel.hidden = true
         }
-
-        summaryLabel.numberOfLines = summaryMaxNumberOfLines
-        summaryLabel.lineBreakMode = .ByTruncatingTail
-
     }
 
     private func configureAttribution() {
