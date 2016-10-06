@@ -16,8 +16,9 @@ import WordPressShared
     // MARK: - Properties
 
     // Wrapper views
-    @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var cardContentView: UIView!
+    @IBOutlet private weak var contentStackView: UIStackView!
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
@@ -102,6 +103,22 @@ import WordPressShared
     public override func awakeFromNib() {
         super.awakeFromNib()
 
+        // Hack:
+        // On iOS9, if a cell is loaded while its window is nil, the cell won't
+        // pick up the correct size classes once its appear and been added to a window.
+        // This doesn't happen on iOS10, for now we enforce the relative setting
+        // based on the size class of the application delegate's window.
+        // In this case, its whether or not to preserve the cell contentView's margins
+        // for readability margins on the stackView.
+        // Brent C. Oct/5/2016
+        if WPDeviceIdentification.isiOSVersionEarlierThan10() && window == nil {
+            if WordPressAppDelegate.sharedInstance().window.traitCollection.horizontalSizeClass == .Compact {
+                stackView.preservesSuperviewLayoutMargins = false
+            } else {
+                stackView.preservesSuperviewLayoutMargins = true
+            }
+        }
+
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
         // Otherwise, IB will make incorrect size adjustments and/or complain along the way.
@@ -117,9 +134,9 @@ import WordPressShared
         createAvatarTapGestureRecognizer()
         setupAttributionView()
 
-        // Layout the stackView if needed since layout may be a bit different than
+        // Layout the contentStackView if needed since layout may be a bit different than
         // what was expected from the nib layout.
-        stackView.layoutIfNeeded()
+        contentStackView.layoutIfNeeded()
     }
 
     /**
@@ -303,6 +320,7 @@ import WordPressShared
 
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .ByTruncatingTail
+
     }
 
     private func configureAttribution() {
