@@ -323,7 +323,7 @@ extension WPStyleGuide
         public static let loadMoreButtonFontSize:CGFloat = 15.0
         public static let crossPostTitleFontSize:CGFloat = 16.0
         public static let crossPostSubtitleFontSize:CGFloat = 13.0
-        public static let crossPostLineSpacing:CGFloat = 4.0
+        public static let crossPostLineSpacing:CGFloat = 2.0
     }
 
     public struct Detail
