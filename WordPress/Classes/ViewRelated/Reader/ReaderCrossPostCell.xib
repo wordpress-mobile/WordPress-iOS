@@ -1,114 +1,97 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UmB-iQ-Dkc" customClass="ReaderCrossPostCell" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" rowHeight="86" id="l6Y-Fy-vps" customClass="ReaderCrossPostCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UmB-iQ-Dkc" id="5qn-1n-3Ik">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="l6Y-Fy-vps" id="2sd-JP-syY">
+                <frame key="frameInset" width="320" height="85"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqw-Gu-5jd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pB-wb-r4Y">
-                                <rect key="frame" x="-1" y="8" width="322" height="48"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMb-Gb-gWp">
-                                <rect key="frame" x="16" y="16" width="288" height="32"/>
-                                <subviews>
-                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="odD-xS-y0M">
-                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
-                                        <gestureRecognizers/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="MAk-f1-wxx"/>
-                                            <constraint firstAttribute="width" constant="32" id="hOH-Lf-9Yp"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="HKf-84-9ay" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="12" width="24" height="24"/>
-                                        <gestureRecognizers/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="IxI-83-hD0"/>
-                                            <constraint firstAttribute="width" constant="24" id="dRA-1Q-9SV"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u3R-Xf-UYr">
-                                        <rect key="frame" x="42" y="0.0" width="246" height="32"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstItem="u3R-Xf-UYr" firstAttribute="top" secondItem="aMb-Gb-gWp" secondAttribute="top" id="4BD-Vw-MqN"/>
-                                    <constraint firstItem="odD-xS-y0M" firstAttribute="leading" secondItem="aMb-Gb-gWp" secondAttribute="leading" id="7n5-b5-lnT"/>
-                                    <constraint firstAttribute="bottom" secondItem="u3R-Xf-UYr" secondAttribute="bottom" id="OLo-4R-x7u"/>
-                                    <constraint firstItem="HKf-84-9ay" firstAttribute="top" secondItem="aMb-Gb-gWp" secondAttribute="top" constant="12" id="Oqy-UF-Fhm"/>
-                                    <constraint firstItem="odD-xS-y0M" firstAttribute="top" secondItem="aMb-Gb-gWp" secondAttribute="top" id="ULu-7B-HSF"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="odD-xS-y0M" secondAttribute="bottom" id="WHe-Fo-7wM"/>
-                                    <constraint firstItem="u3R-Xf-UYr" firstAttribute="leading" secondItem="odD-xS-y0M" secondAttribute="trailing" constant="10" id="ekC-RF-STH"/>
-                                    <constraint firstItem="HKf-84-9ay" firstAttribute="leading" secondItem="aMb-Gb-gWp" secondAttribute="leading" constant="12" id="gOf-25-Acz"/>
-                                    <constraint firstAttribute="trailing" secondItem="u3R-Xf-UYr" secondAttribute="trailing" id="nZN-d2-exD"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="5pB-wb-r4Y" firstAttribute="leading" secondItem="Wqw-Gu-5jd" secondAttribute="leading" constant="-1" id="1mR-8q-8m8"/>
-                            <constraint firstAttribute="trailing" secondItem="aMb-Gb-gWp" secondAttribute="trailing" constant="16" id="5Mg-HZ-5Ap"/>
-                            <constraint firstAttribute="bottom" secondItem="aMb-Gb-gWp" secondAttribute="bottom" constant="16" id="6Tc-9F-I3U"/>
-                            <constraint firstItem="5pB-wb-r4Y" firstAttribute="top" secondItem="Wqw-Gu-5jd" secondAttribute="top" constant="8" id="H4E-fW-Oib"/>
-                            <constraint firstAttribute="bottom" secondItem="5pB-wb-r4Y" secondAttribute="bottom" constant="8" id="SFB-Cd-DLa"/>
-                            <constraint firstAttribute="trailing" secondItem="5pB-wb-r4Y" secondAttribute="trailing" constant="-1" id="aSj-nA-n8O"/>
-                            <constraint firstItem="aMb-Gb-gWp" firstAttribute="top" secondItem="Wqw-Gu-5jd" secondAttribute="top" constant="16" id="epM-bd-P7k"/>
-                            <constraint firstItem="aMb-Gb-gWp" firstAttribute="leading" secondItem="Wqw-Gu-5jd" secondAttribute="leading" constant="16" id="qQY-I7-eZS"/>
-                        </constraints>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTS-fR-PQT">
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5ut-Sw-4KV">
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ppb-96-lFD">
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SkM-ak-dfb">
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ODD-Ys-uII">
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="neF-qT-hsY">
+                                                        <subviews>
+                                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Ap0-kK-cyS">
+                                                                <gestureRecognizers/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="32" id="0pN-Fl-k80"/>
+                                                                    <constraint firstAttribute="height" constant="32" id="Wn7-hF-1D5"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNy-fU-VEf">
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="ODD-Ys-uII" firstAttribute="top" secondItem="SkM-ak-dfb" secondAttribute="top" id="02G-LM-TQ6"/>
+                                            <constraint firstAttribute="trailing" secondItem="ODD-Ys-uII" secondAttribute="trailing" id="5Oe-Jz-Fwq"/>
+                                            <constraint firstItem="ODD-Ys-uII" firstAttribute="leading" secondItem="SkM-ak-dfb" secondAttribute="leading" id="KQK-P5-YTF"/>
+                                            <constraint firstAttribute="bottom" secondItem="ODD-Ys-uII" secondAttribute="bottom" id="L24-Pf-kU4"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
+                            </stackView>
+                        </subviews>
+                        <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="0.0"/>
+                        <variation key="widthClass=regular" preservesSuperviewLayoutMargins="YES"/>
+                    </stackView>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="4R4-gj-7Xa" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="5A7-WD-dbE"/>
+                            <constraint firstAttribute="width" constant="24" id="cOW-bo-j4R"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="leading" secondItem="5qn-1n-3Ik" secondAttribute="leadingMargin" id="G1e-76-U6Q"/>
-                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="top" secondItem="5qn-1n-3Ik" secondAttribute="top" id="KUc-I4-IEJ"/>
-                    <constraint firstAttribute="trailing" secondItem="Wqw-Gu-5jd" secondAttribute="trailing" id="QyC-ij-Muu"/>
-                    <constraint firstAttribute="bottom" secondItem="Wqw-Gu-5jd" secondAttribute="bottom" id="cBX-gu-Mzp"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Wqw-Gu-5jd" secondAttribute="trailing" priority="999" id="fR6-TA-Yjt"/>
-                    <constraint firstItem="Wqw-Gu-5jd" firstAttribute="leading" secondItem="5qn-1n-3Ik" secondAttribute="leading" id="xeF-Hp-0xl"/>
+                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="top" secondItem="Ap0-kK-cyS" secondAttribute="top" constant="12" id="2HX-qc-rXN"/>
+                    <constraint firstItem="Ppb-96-lFD" firstAttribute="top" secondItem="VTS-fR-PQT" secondAttribute="top" id="60h-R6-CkP"/>
+                    <constraint firstItem="VTS-fR-PQT" firstAttribute="bottom" secondItem="Ppb-96-lFD" secondAttribute="bottom" id="Bev-3r-KuY"/>
+                    <constraint firstItem="VTS-fR-PQT" firstAttribute="leading" secondItem="Ppb-96-lFD" secondAttribute="leading" constant="-1" id="DcO-tT-2kn"/>
+                    <constraint firstItem="5ut-Sw-4KV" firstAttribute="leading" secondItem="2sd-JP-syY" secondAttribute="leading" id="Lav-td-AOe"/>
+                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="leading" secondItem="Ap0-kK-cyS" secondAttribute="leading" constant="12" id="RNw-RZ-QSh"/>
+                    <constraint firstItem="Ppb-96-lFD" firstAttribute="trailing" secondItem="VTS-fR-PQT" secondAttribute="trailing" constant="-1" id="SbH-4m-c57"/>
+                    <constraint firstAttribute="bottom" secondItem="5ut-Sw-4KV" secondAttribute="bottom" id="hEW-DD-0CY"/>
+                    <constraint firstAttribute="trailing" secondItem="5ut-Sw-4KV" secondAttribute="trailing" id="tTa-mS-kP3"/>
+                    <constraint firstItem="5ut-Sw-4KV" firstAttribute="top" secondItem="2sd-JP-syY" secondAttribute="top" id="tsi-9H-CPE"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="G1e-76-U6Q"/>
-                        <exclude reference="fR6-TA-Yjt"/>
-                    </mask>
-                </variation>
-                <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
-                    <mask key="constraints">
-                        <include reference="G1e-76-U6Q"/>
-                        <exclude reference="QyC-ij-Muu"/>
-                        <include reference="fR6-TA-Yjt"/>
-                        <exclude reference="xeF-Hp-0xl"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
-            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
-                <outlet property="avatarImageView" destination="HKf-84-9ay" id="tZr-P9-JcR"/>
-                <outlet property="blavatarImageView" destination="odD-xS-y0M" id="pyw-35-X8J"/>
-                <outlet property="cardBorderView" destination="5pB-wb-r4Y" id="QsS-tT-fYu"/>
-                <outlet property="cardContentView" destination="aMb-Gb-gWp" id="LFh-y4-Yvu"/>
-                <outlet property="innerContentView" destination="Wqw-Gu-5jd" id="dWh-g2-pcc"/>
-                <outlet property="label" destination="u3R-Xf-UYr" id="Tup-Hs-InL"/>
+                <outlet property="avatarImageView" destination="4R4-gj-7Xa" id="noM-47-9Ga"/>
+                <outlet property="blavatarImageView" destination="Ap0-kK-cyS" id="IPR-Pi-AiK"/>
+                <outlet property="cardBorderView" destination="VTS-fR-PQT" id="pap-tS-58X"/>
+                <outlet property="cardContentView" destination="SkM-ak-dfb" id="ooF-mh-7sJ"/>
+                <outlet property="contentStackView" destination="Ppb-96-lFD" id="o1F-Vh-OnY"/>
+                <outlet property="label" destination="QNy-fU-VEf" id="sbX-VU-jfS"/>
+                <outlet property="stackView" destination="5ut-Sw-4KV" id="Ebb-nl-QFI"/>
             </connections>
-            <point key="canvasLocation" x="495" y="465"/>
+            <point key="canvasLocation" x="495" y="591"/>
         </tableViewCell>
     </objects>
     <resources>
