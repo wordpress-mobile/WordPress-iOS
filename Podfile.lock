@@ -15,7 +15,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Alamofire (3.5.0)
+  - Alamofire (3.5.1)
   - Automattic-Tracks-iOS (0.1.1):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
@@ -254,7 +254,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
   Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: f4682598772ae66c9ef5554d2d78d0a19fb413a0
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
