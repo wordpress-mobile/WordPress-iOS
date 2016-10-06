@@ -184,10 +184,57 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    }];
 }
 
-+ (BOOL)shouldRefreshCacheFor:(Blog *)blog
++ (NSMutableSet *)syncingCommentsLocks
 {
-    NSDate *lastSynced = blog.lastCommentsSync;
-    BOOL isSyncing = [self isSyncingCommentsForBlog:blog];
+    static NSMutableSet *syncingCommentsLocks;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        syncingCommentsLocks = [NSMutableSet set];
+    });
+    return syncingCommentsLocks;
+}
+
++ (BOOL)isSyncingCommentsForBlog:(Blog *)blog {
+    return [self isSyncingCommentsForBlogID:blog.objectID];
+}
+
++ (BOOL)isSyncingCommentsForBlogID:(NSManagedObjectID *)blogID
+{
+    NSParameterAssert(blogID);
+    return [[self syncingCommentsLocks] containsObject:blogID];
+}
+
++ (BOOL)startSyncingCommentsForBlog:(NSManagedObjectID *)blogID
+{
+    NSParameterAssert(blogID);
+    @synchronized([self syncingCommentsLocks]) {
+        if ([self isSyncingCommentsForBlogID:blogID]){
+            return NO;
+        }
+        [[self syncingCommentsLocks] addObject:blogID];
+        return YES;
+    }
+}
+
++ (void)stopSyncingCommentsForBlog:(NSManagedObjectID *)blogID
+{
+    NSParameterAssert(blogID);
+    @synchronized([self syncingCommentsLocks]) {
+        [[self syncingCommentsLocks] removeObject:blogID];
+    }
+}
+
++ (BOOL)shouldRefreshPostCacheFor:(Blog *)blog
+{
+    NSDate *lastSynced = blog.lastPostsSync;
+    BOOL isSyncing = [self isSyncingPostsForBlog:blog];
+    return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
+}
+
++ (BOOL)shouldRefreshPageCacheFor:(Blog *)blog
+{
+    NSDate *lastSynced = blog.lastPostsSync;
+    BOOL isSyncing = [self isSyncingPagesForBlog:blog];
     return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
