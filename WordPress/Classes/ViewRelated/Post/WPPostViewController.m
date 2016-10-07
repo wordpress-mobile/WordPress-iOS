@@ -1432,6 +1432,7 @@ EditImageDetailsViewControllerDelegate
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
                         [SVProgressHUD showSuccessWithStatus:hudText];
+                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
@@ -1443,6 +1444,7 @@ EditImageDetailsViewControllerDelegate
                             hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                         }
                         [SVProgressHUD showErrorWithStatus:hudText];
+                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
                     }];
 
     [self didSaveNewPost];

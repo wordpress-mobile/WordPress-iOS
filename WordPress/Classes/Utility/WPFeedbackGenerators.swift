@@ -8,8 +8,8 @@ public enum WPNotificationFeedbackType : Int {
 }
 
 /// iOS's taptic feedback classes are only available for iOS 10+.
-/// This is a small wrapper around UINotificationFeedbackGenerator, which simply 
-/// results in a no-op on iOS 9 – avoiding the need for conditional code 
+/// This is a small wrapper around UINotificationFeedbackGenerator, which simply
+/// results in a no-op on iOS 9 – avoiding the need for conditional code
 /// throughout the app.
 /// - seealso: UINotificationFeedbackGenerator
 @objc
