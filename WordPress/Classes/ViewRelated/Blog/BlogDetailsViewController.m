@@ -477,37 +477,29 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadPosts
 {
-    NSTimeInterval now = [[NSDate date] timeIntervalSinceReferenceDate];
-    NSTimeInterval lastSync = self.blog.lastPostsSync.timeIntervalSinceReferenceDate;
-    if (now - lastSync > PreloadingCacheTimeout) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePost];
-        PostListFilter *filter = [filterSettings currentPostListFilter];
-        
-        PostServiceSyncOptions *options = [PostServiceSyncOptions new];
-        options.statuses = filter.statuses;
-        options.authorID = [filterSettings authorIDFilter];
-        options.purgesLocalSync = YES;
-
-        self.blog.lastPostsSync = [NSDate date];
-        NSError *error = nil;
-        [self.blog.managedObjectContext save:&error];
-
-        [postService syncPostsOfType:PostServiceTypePost withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
-            self.blog.lastPostsSync = [NSDate dateWithTimeIntervalSince1970:0.0]; // invalidate cache timer
-        }];
-    }
+    [self preloadPostsOfType:PostServiceTypePost];
 }
 
 - (void)preloadPages
 {
+    [self preloadPostsOfType:PostServiceTypePage];
+}
+
+// preloads posts or pages.
+- (void)preloadPostsOfType:(PostServiceType)postType
+{
+    NSDate *lastSyncDate;
+    if ([postType isEqual:PostServiceTypePage]) {
+        lastSyncDate = self.blog.lastPagesSync;
+    } else {
+        lastSyncDate = self.blog.lastPostsSync;
+    }
     NSTimeInterval now = [[NSDate date] timeIntervalSinceReferenceDate];
-    NSTimeInterval lastSync = self.blog.lastPagesSync.timeIntervalSinceReferenceDate;
+    NSTimeInterval lastSync = lastSyncDate.timeIntervalSinceReferenceDate;
     if (now - lastSync > PreloadingCacheTimeout) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:PostServiceTypePage];
+        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:postType];
         PostListFilter *filter = [filterSettings currentPostListFilter];
 
         PostServiceSyncOptions *options = [PostServiceSyncOptions new];
@@ -515,12 +507,21 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         options.authorID = [filterSettings authorIDFilter];
         options.purgesLocalSync = YES;
 
-        self.blog.lastPagesSync = [NSDate date];
+        if ([postType isEqual:PostServiceTypePage]) {
+            self.blog.lastPagesSync = [NSDate date];
+        } else {
+            self.blog.lastPostsSync = [NSDate date];
+        }
         NSError *error = nil;
         [self.blog.managedObjectContext save:&error];
 
-        [postService syncPostsOfType:PostServiceTypePage withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
-            self.blog.lastPagesSync = [NSDate dateWithTimeIntervalSince1970:0.0]; // invalidate cache timer
+        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
+            NSDate *invalidatedDate = [NSDate dateWithTimeIntervalSince1970:0.0];
+            if ([postType isEqual:PostServiceTypePage]) {
+                self.blog.lastPagesSync = invalidatedDate;
+            } else {
+                self.blog.lastPostsSync = invalidatedDate;
+            }
         }];
     }
 }
