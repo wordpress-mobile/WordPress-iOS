@@ -299,13 +299,17 @@ extension WPStyleGuide
     // MARK: - Gap Marker Styles
 
     public class func applyGapMarkerButtonStyle(button:UIButton) {
-        let normalImage = UIImage(color: WPStyleGuide.greyDarken10(), havingSize: button.bounds.size)
-        let highlightedImage = UIImage(color: WPStyleGuide.lightBlue(), havingSize: button.bounds.size)
-        button.setBackgroundImage(normalImage, forState: .Normal)
-        button.setBackgroundImage(highlightedImage, forState: .Highlighted)
-
+        button.backgroundColor = gapMarkerButtonBackgroundColor()
         button.titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(Cards.loadMoreButtonFontSize)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+    }
+
+    public class func gapMarkerButtonBackgroundColor() -> UIColor {
+        return WPStyleGuide.greyDarken10()
+    }
+
+    public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
+        return WPStyleGuide.lightBlue()
     }
 
 
