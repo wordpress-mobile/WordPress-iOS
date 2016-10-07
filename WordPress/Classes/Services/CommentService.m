@@ -16,6 +16,7 @@
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
+static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
 
 @implementation CommentService
 
@@ -57,6 +58,13 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
     @synchronized([self syncingCommentsLocks]) {
         [[self syncingCommentsLocks] removeObject:blogID];
     }
+}
+
++ (BOOL)shouldRefreshCacheFor:(Blog *)blog
+{
+    NSDate *lastSynced = blog.lastCommentsSync;
+    BOOL isSyncing = [self isSyncingCommentsForBlog:blog];
+    return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog
