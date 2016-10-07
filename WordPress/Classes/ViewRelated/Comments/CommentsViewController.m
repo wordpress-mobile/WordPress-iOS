@@ -17,7 +17,6 @@ static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.
 static CGFloat const CommentsActivityFooterHeight               = 50.0;
 static NSInteger const CommentsRefreshRowPadding                = 4;
 static NSInteger const CommentsFetchBatchSize                   = 10;
-static NSTimeInterval const CommentsRefreshTimeoutInSeconds     = 60 * 5; // 5 minutes
 
 static NSString *CommentsReuseIdentifier                        = @"CommentsReuseIdentifier";
 static NSString *CommentsLayoutIdentifier                       = @"CommentsLayoutIdentifier";
@@ -65,8 +64,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self configureTableViewFooter];
     [self configureTableViewHandler];
     [self configureTableViewLayoutCell];
-
-    [self refreshAndSyncIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,6 +75,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Refresh the UI
     [self refreshNoResultsView];
+
+    [self refreshAndSyncIfNeeded];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -456,8 +455,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshAndSyncIfNeeded
 {
-    NSDate *lastSynced = self.blog.lastCommentsSync;
-    if (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds) {
+    if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
     }
 }
