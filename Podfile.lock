@@ -202,7 +202,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.6.2)
   - WordPressCom-Analytics-iOS (= 0.1.19)
-  - WordPressCom-Stats-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`, commit `8a6871af520999c1e731e71ac9697f13cc5e8739`)
+  - WordPressCom-Stats-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`, commit `81a7f9a93b16adb1e280ad06176bb0e53274aa4d`)
   - WordPressComKit (= 0.0.5)
   - WPMediaPicker (~> 0.10.1)
   - wpxmlrpc (~> 0.8)
@@ -221,7 +221,7 @@ EXTERNAL SOURCES:
     :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressCom-Stats-iOS:
-    :commit: 8a6871af520999c1e731e71ac9697f13cc5e8739
+    :commit: 81a7f9a93b16adb1e280ad06176bb0e53274aa4d
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 CHECKOUT OPTIONS:
@@ -238,7 +238,7 @@ CHECKOUT OPTIONS:
     :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressCom-Stats-iOS:
-    :commit: 8a6871af520999c1e731e71ac9697f13cc5e8739
+    :commit: 81a7f9a93b16adb1e280ad06176bb0e53274aa4d
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 SPEC CHECKSUMS:
@@ -282,6 +282,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 72872a85bdb7c3a5a5b595441d079ddb072c3cc5
+PODFILE CHECKSUM: f5d18f1b3e0f8a9f32518818761fe011c8229cb9
 
 COCOAPODS: 1.0.1
