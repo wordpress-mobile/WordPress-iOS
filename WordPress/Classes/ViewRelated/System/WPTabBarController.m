@@ -382,7 +382,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;    
-    [self presentViewController:navController animated:animated completion:nil];
+    [self presentViewController:navController animated:animated completion:^{
+        WPImpactFeedbackGenerator *generator = [[WPImpactFeedbackGenerator alloc] initWithStyle:WPImpactFeedbackStyleMedium];
+        [generator impactOccurred];
+    }];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
