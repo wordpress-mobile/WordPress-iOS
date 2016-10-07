@@ -553,7 +553,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     WPAvatarSource *source = [WPAvatarSource sharedSource];
 
     NSString *hash;
-    CGSize size = CGSizeMake(CommentAvatarSize, CommentAvatarSize);
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize size = CGSizeMake(CommentAvatarSize * scale, CommentAvatarSize * scale);
+
     NSURL *url = [comment avatarURLForDisplay];
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
@@ -666,8 +668,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
     
     [self.postHeaderView setTitle:self.post.titleForDisplay];
-    
-    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize * scale, PostHeaderViewAvatarSize * scale);
     UIImage *image = [self.post cachedAvatarWithSize:imageSize];
     if (image) {
         [self.postHeaderView setAvatarImage:image];
