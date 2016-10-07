@@ -13,6 +13,7 @@ abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.6.2'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit',   '0.0.5'
+  pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "81a7f9a93b16adb1e280ad06176bb0e53274aa4d"
 
   target 'WordPress' do
     # ---------------------
@@ -51,7 +52,6 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.19'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7d02c77349245c6e4d3bcdf63a878f90eb4a4e39'
-    pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "8a6871af520999c1e731e71ac9697f13cc5e8739"
     pod 'wpxmlrpc', '~> 0.8'
     
     target :WordPressTest do
@@ -69,7 +69,6 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-      pod 'WordPressCom-Stats-iOS', :git => "https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git", :commit => "8a6871af520999c1e731e71ac9697f13cc5e8739"
   end
 
 end

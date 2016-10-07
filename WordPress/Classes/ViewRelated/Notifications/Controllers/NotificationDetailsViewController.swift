@@ -3,7 +3,7 @@ import CoreData
 import Simperium
 import SVProgressHUD
 import WordPressShared
-
+import WordPressComStatsiOS
 
 
 /// Renders a given Notification entity, onscreen. Whenever the Notification is remotely updated,
