@@ -261,9 +261,21 @@ CGFloat const STVSeparatorHeight = 1.f;
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    
-    [self setAvatarForSuggestion:suggestion forCell:cell indexPath:indexPath];
-    
+    cell.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
+
+    [self loadAvatarForSuggestion:suggestion success:^(UIImage *image) {
+        if (indexPath.row >= self.searchResults.count) {
+            return;
+        }
+
+        Suggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
+        if ([reloaded.imageURL isEqual:suggestion.imageURL] == false) {
+            return;
+        }
+
+        cell.avatarImageView.image = image;
+    }];
+
     return cell;
 }
 
@@ -298,23 +310,22 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Avatar helper
 
-- (void)setAvatarForSuggestion:(Suggestion *)post forCell:(SuggestionsTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+- (void)loadAvatarForSuggestion:(Suggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
-    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    UIImage *image = [suggestion cachedAvatarWithSize:imageSize];
     if (image) {
-        [cell.avatarImageView setImage:image];
-    } else {
-        [cell.avatarImageView setImage:[UIImage imageNamed:@"gravatar"]];
-        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            if (!image) {
-                return;
-            }
-            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell.avatarImageView setImage:image];
-            }
-        }];
+        success(image);
+        return;
     }
+
+    [suggestion fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+        if (!image) {
+            return;
+        }
+
+        success(image);
+    }];
 }
 
 @end
