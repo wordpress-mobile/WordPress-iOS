@@ -7,7 +7,7 @@ public enum WPNotificationFeedbackType : Int {
     case Error
 
     @available(iOS 10, *)
-    var UIFeedbackType: UINotificationFeedbackType {
+    var systemFeedbackType: UINotificationFeedbackType {
         switch self {
         case .Success: return .Success
         case .Warning: return .Warning
@@ -29,7 +29,7 @@ class WPNotificationFeedbackGenerator: NSObject {
         }
 
         let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(notificationType.UIFeedbackType)
+        generator.notificationOccurred(notificationType.systemFeedbackType)
     }
 }
 
@@ -40,7 +40,7 @@ public enum WPImpactFeedbackStyle : Int {
     case Heavy
 
     @available(iOS 10, *)
-    var UIFeedbackStyle: UIImpactFeedbackStyle {
+    var systemFeedbackStyle: UIImpactFeedbackStyle {
         switch self {
         case .Light: return .Light
         case .Medium: return .Medium
@@ -69,7 +69,7 @@ class WPImpactFeedbackGenerator: NSObject {
             return
         }
 
-        let generator = UIImpactFeedbackGenerator(style: style.UIFeedbackStyle)
+        let generator = UIImpactFeedbackGenerator(style: style.systemFeedbackStyle)
         generator.impactOccurred()
     }
 }
