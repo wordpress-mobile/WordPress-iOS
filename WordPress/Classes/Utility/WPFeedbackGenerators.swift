@@ -5,6 +5,15 @@ public enum WPNotificationFeedbackType : Int {
     case Success
     case Warning
     case Error
+
+    @available(iOS 10, *)
+    var UIFeedbackType: UINotificationFeedbackType {
+        switch self {
+        case .Success: return .Success
+        case .Warning: return .Warning
+        case .Error: return .Error
+        }
+    }
 }
 
 /// iOS's taptic feedback classes are only available for iOS 10+.
@@ -20,7 +29,7 @@ class WPNotificationFeedbackGenerator: NSObject {
         }
 
         let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(UINotificationFeedbackType(rawValue: notificationType.rawValue)!)
+        generator.notificationOccurred(notificationType.UIFeedbackType)
     }
 }
 
@@ -29,6 +38,15 @@ public enum WPImpactFeedbackStyle : Int {
     case Light
     case Medium
     case Heavy
+
+    @available(iOS 10, *)
+    var UIFeedbackStyle: UIImpactFeedbackStyle {
+        switch self {
+        case .Light: return .Light
+        case .Medium: return .Medium
+        case .Heavy: return .Heavy
+        }
+    }
 }
 
 /// iOS's taptic feedback classes are only available for iOS 10+.
@@ -51,7 +69,7 @@ class WPImpactFeedbackGenerator: NSObject {
             return
         }
 
-        let generator = UIImpactFeedbackGenerator(style: UIImpactFeedbackStyle(rawValue: style.rawValue)!)
+        let generator = UIImpactFeedbackGenerator(style: style.UIFeedbackStyle)
         generator.impactOccurred()
     }
 }
