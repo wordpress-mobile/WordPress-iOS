@@ -405,12 +405,16 @@ import WordPressShared
         }
         tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Middle)
 
-        let time = dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(0.7 * Double(NSEC_PER_SEC))
-        )
-        dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
-            self?.tableView.deselectSelectedRowWithAnimation(true)
+        if splitViewControllerIsHorizontallyCompact {
+            let time = dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(0.7 * Double(NSEC_PER_SEC))
+            )
+            dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(true)
+            }
+        } else {
+            self.tableView(tableView, didSelectRowAtIndexPath: indexPath)
         }
     }
 
