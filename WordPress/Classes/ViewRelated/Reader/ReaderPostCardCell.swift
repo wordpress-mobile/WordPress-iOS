@@ -58,6 +58,9 @@ import WordPressShared
     private let minimumMinutesToRead = 2
     private var currentLoadedCardImageURL: String?
 
+    // Image Loading
+    private var imageHeaderAuthorization: String?
+
     // MARK: - Accessors
 
     public var enableLoggedInFeatures: Bool = true
@@ -100,8 +103,16 @@ import WordPressShared
 
     // MARK: - Lifecycle Methods
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     public override func awakeFromNib() {
         super.awakeFromNib()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+
+        refreshImageHeaderAuthorization()
 
         // Hack:
         // On iOS9, if a cell is loaded while its window is nil, the cell won't
@@ -281,7 +292,19 @@ import WordPressShared
         }
     }
 
+    private func refreshImageHeaderAuthorization() {
+        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let account = acctServ.defaultWordPressComAccount() {
+            let token = account.authToken
+            let headerValue = String(format: "Bearer %@", token)
+            imageHeaderAuthorization = headerValue
+        } else {
+            imageHeaderAuthorization = nil
+        }
+    }
+
     private func requestForURL(url:NSURL) -> NSURLRequest {
+
         var requestURL = url
 
         let absoluteString = requestURL.absoluteString ?? ""
@@ -291,14 +314,10 @@ import WordPressShared
         }
 
         let request = NSMutableURLRequest(URL: requestURL)
-
-        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = acctServ.defaultWordPressComAccount() {
-            let token = account.authToken
-            let headerValue = String(format: "Bearer %@", token)
-            request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        guard let headerAuth = imageHeaderAuthorization else {
+            return request
         }
-
+        request.addValue(headerAuth, forHTTPHeaderField: "Authorization")
         return request
     }
 
@@ -555,6 +574,13 @@ import WordPressShared
 
     @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
         blogNameLabel.highlighted = false
+    }
+
+
+    // MARK: - Notifications
+
+    @objc private func defaultAccountDidChange(notification: NSNotification) {
+        refreshImageHeaderAuthorization()
     }
 
 
