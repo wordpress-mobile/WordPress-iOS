@@ -221,7 +221,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _readerNavigationController;
     }
 
-    self.readerMenuViewController = [ReaderMenuViewController sharedInstance];
+    self.readerMenuViewController = [ReaderMenuViewController controller];
 
     _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
 
