@@ -484,14 +484,19 @@ import WordPressShared
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
+        func updateBorder() {
+            self.cardContentView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
+        }
+        guard animated else {
+            updateBorder()
+            return
+        }
         let duration:NSTimeInterval = animated ? 0.25 : 0
-
         UIView.animateWithDuration(duration,
             delay: 0,
             options: .CurveEaseInOut,
-            animations: {
-                self.cardContentView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
-        }, completion: nil)
+            animations: updateBorder,
+            completion: nil)
     }
 
 
