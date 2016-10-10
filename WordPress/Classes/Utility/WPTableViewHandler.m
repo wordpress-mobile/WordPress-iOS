@@ -68,11 +68,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)refreshTableViewPreservingOffset
 {
-    // Buckle up.
+    // Buckle up, refill that coffee...
 
+    // Persist some info on the currently visible rows.
     [self preserveRowInfoBeforeContentChanges];
 
-    // Make sure its necessary to account for previously existing rows.
+    // Make sure its necessary to account for currently visible rows.
     // We check here vs in `controllerWillChangeContent:` in order to reload
     // the table view if necessary.
     if ([self.fetchedResultsBeforeChange count] == 0) {
@@ -86,6 +87,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {
             [self.delegate tableViewHandlerDidRefreshTableViewPreservingOffset:self];
         }
+        // Don't need to do anything else, get out of here.
         return;
     }
 
@@ -126,7 +128,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         newIndexPath = [self.resultsController indexPathForObject:obj];
         if (newIndexPath) {
             // Since we still have one of the orginally visible objects,
-            // preserver the original cell frame's origin, relative to the original content offset.
+            // preserve the original cell frame's origin, relative to the original content offset.
             CGRect originalCellFrame = [[visibleCellFrames objectAtIndex:i] CGRectValue];
             originalCellOriginOffsetDelta = originalOffset.y - originalCellFrame.origin.y;
             break;
@@ -141,14 +143,20 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     if (newIndexPath) {
-        // With a new indexPath, calculate a new offset as relative to the cell's new origin.
+        // Trigger a scroll to the cell at the newIndexPath, otherwise it won't have a frame.
+        [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+
+        // With the newIndexPath cell in its new position, grab the cell and calculate
+        // an offset relative to the cell's new origin.
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:newIndexPath];
         CGPoint newOffset = self.tableView.contentOffset;
-        newOffset.y = cell.frame.origin.y + originalCellOriginOffsetDelta; // Add the delta, if any.
+        newOffset.y = cell.frame.origin.y + originalCellOriginOffsetDelta; // Add the original delta, if any.
+
         // Set the tableview to the new offset
         [self.tableView setContentOffset:newOffset];
+
     } else {
-        // Fail safe. If the new index path was nil set the offset to 0
+        // Fail safe. If the new index path was nil set the offset to 0, or the top of the tableView.s
         [self.tableView setContentOffset:CGPointZero];
     }
 
@@ -161,6 +169,8 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {
         [self.delegate tableViewHandlerDidRefreshTableViewPreservingOffset:self];
     }
+
+    // Whew, take a breather.
 }
 
 
