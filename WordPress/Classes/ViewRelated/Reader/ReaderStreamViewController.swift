@@ -1594,7 +1594,10 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
         post.rendered = true
-        WPAppAnalytics.track(.TrainTracksRender, withProperties: railcar)
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+            WPAppAnalytics.track(.TrainTracksRender, withProperties: railcar)
+        })
     }
 
 
