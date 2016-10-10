@@ -3,6 +3,8 @@
 #import "ApiCredentials.h"
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
+#import "WPAccount.h"
+#import "Blog.h"
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
@@ -105,6 +107,22 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 + (void)refreshUnreadNotificationCount
 {
     [HelpshiftSupport getNotificationCountFromRemote:YES];
+}
+
++ (NSArray<NSString *> *)planTagsForAccount:(WPAccount *)account
+{
+    NSMutableSet<NSString *> *titles = [NSMutableSet set];
+    for (Blog *blog in account.blogs) {
+        // Helpshift won't take any capitalized tag names, so convert to lowercase first
+        [titles addObject:[blog.planTitle lowercaseString]];
+    }
+
+    // If there's more than one unique title, then there is a paid plan.
+    // Don't return the Free tag
+    if ([titles count] > 1) {
+        [titles removeObject:@"free"];
+    }
+    return [titles allObjects];
 }
 
 #pragma mark - HelpshiftSupport Delegate
