@@ -27,4 +27,16 @@
     XCTAssertTrue([[blavatarURL absoluteString] rangeOfString:@"s=50"].location != NSNotFound);
 }
 
+- (void)testDisplayDate
+{
+    NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
+    ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
+                                                     inManagedObjectContext:context];
+
+    // Arbitrary time interval.  Anything except "now" just so we have a better test.
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-10000];
+    post.dateCreated = date;
+    XCTAssertTrue([post.dateCreated isEqualToDate:post.dateForDisplay]);
+}
+
 @end
