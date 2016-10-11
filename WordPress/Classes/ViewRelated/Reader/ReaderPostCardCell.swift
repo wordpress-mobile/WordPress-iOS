@@ -100,6 +100,21 @@ import WordPressShared
         }
     }
 
+    private lazy var readerCardTitleAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCardTitleAttributes()
+    }()
+
+    private lazy var readerCardSummaryAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCardSummaryAttributes()
+    }()
+
+    private lazy var readerCardWordCountAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCardWordCountAttributes()
+    }()
+
+    private lazy var readerCardReadingTimeAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCardReadingTimeAttributes()
+    }()
 
     // MARK: - Lifecycle Methods
 
@@ -191,7 +206,7 @@ import WordPressShared
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
-
+        WPStyleGuide.applyReaderCardWordCountLabelStyle(wordCountLabel)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
     }
@@ -318,7 +333,7 @@ import WordPressShared
 
     private func configureTitle() {
         if let title = contentProvider?.titleForDisplay() {
-            let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
+            let attributes = readerCardTitleAttributes as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
             titleLabel.hidden = false
         } else {
@@ -329,7 +344,7 @@ import WordPressShared
 
     private func configureSummary() {
         if let summary = contentProvider?.contentPreviewForDisplay() {
-            let attributes = WPStyleGuide.readerCardSummaryAttributes() as! [String: AnyObject]
+            let attributes = readerCardSummaryAttributes as! [String: AnyObject]
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
             summaryLabel.hidden = false
         } else {
@@ -391,7 +406,7 @@ import WordPressShared
                                         comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
 
         let countStr = String(format: "%d %@ ", wordCount, wordsStr)
-        var attributes = WPStyleGuide.readerCardWordCountAttributes() as! [String: AnyObject]
+        var attributes = readerCardWordCountAttributes as! [String: AnyObject]
         let attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
         attrStr.appendAttributedString(attrWordCount)
 
@@ -403,7 +418,7 @@ import WordPressShared
         let format = NSLocalizedString("(~ %d min)",
                                         comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
         let str = String(format: format, readingTime)
-        attributes = WPStyleGuide.readerCardReadingTimeAttributes() as! [String: AnyObject]
+        attributes = readerCardReadingTimeAttributes as! [String: AnyObject]
         let attrReadingTime = NSAttributedString(string: str, attributes: attributes)
         attrStr.appendAttributedString(attrReadingTime)
 
