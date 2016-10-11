@@ -231,7 +231,9 @@ import WordPressComAnalytics
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
         refreshTableHeaderIfNeeded()
+        tableView.layoutIfNeeded()
     }
 
 
