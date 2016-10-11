@@ -448,10 +448,10 @@ import WordPressComAnalytics
 
 
     func displayResultsStatus() {
-        if resultsStatusView.isDescendantOfView(tableView) {
+        if resultsStatusView.isDescendantOfView(view) {
             resultsStatusView.centerInSuperview()
         } else {
-            tableView.addSubviewWithFadeAnimation(resultsStatusView)
+            view.addSubviewWithFadeAnimation(resultsStatusView)
         }
         footerView.hidden = true
     }
