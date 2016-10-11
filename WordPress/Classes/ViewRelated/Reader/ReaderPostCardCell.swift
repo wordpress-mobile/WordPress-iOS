@@ -160,11 +160,6 @@ import WordPressShared
         return super.hitTest(point, withEvent: event)
     }
 
-    public override func prepareForReuse() {
-        super.prepareForReuse()
-        applyHighlightedEffect(false, animated: false)
-    }
-
 
     // MARK: - Configuration
 
