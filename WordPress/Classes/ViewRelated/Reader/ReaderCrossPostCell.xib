@@ -23,35 +23,28 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SkM-ak-dfb">
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ODD-Ys-uII">
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="neF-qT-hsY">
-                                                        <subviews>
-                                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Ap0-kK-cyS">
-                                                                <gestureRecognizers/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="32" id="0pN-Fl-k80"/>
-                                                                    <constraint firstAttribute="height" constant="32" id="Wn7-hF-1D5"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                        </subviews>
-                                                        <edgeInsets key="layoutMargins" top="2" left="0.0" bottom="0.0" right="0.0"/>
-                                                    </stackView>
-                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNy-fU-VEf" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
-                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Ap0-kK-cyS">
+                                                <gestureRecognizers/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="32" id="0pN-Fl-k80"/>
+                                                    <constraint firstAttribute="height" constant="32" id="Wn7-hF-1D5"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNy-fU-VEf" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="ODD-Ys-uII" secondAttribute="trailing" id="3c1-9O-67z"/>
-                                            <constraint firstAttribute="bottom" secondItem="ODD-Ys-uII" secondAttribute="bottom" id="C1I-bW-Wxh"/>
-                                            <constraint firstItem="ODD-Ys-uII" firstAttribute="top" secondItem="SkM-ak-dfb" secondAttribute="top" id="bUZ-tA-k6Z"/>
-                                            <constraint firstItem="ODD-Ys-uII" firstAttribute="leading" secondItem="SkM-ak-dfb" secondAttribute="leading" id="xKq-nK-I8p"/>
+                                            <constraint firstItem="QNy-fU-VEf" firstAttribute="leading" secondItem="Ap0-kK-cyS" secondAttribute="trailing" constant="10" id="0ud-0g-aRC"/>
+                                            <constraint firstItem="Ap0-kK-cyS" firstAttribute="leading" secondItem="SkM-ak-dfb" secondAttribute="leading" id="2un-9K-Sxy"/>
+                                            <constraint firstAttribute="bottom" secondItem="QNy-fU-VEf" secondAttribute="bottom" id="9Pi-wn-7zg"/>
+                                            <constraint firstItem="Ap0-kK-cyS" firstAttribute="top" secondItem="SkM-ak-dfb" secondAttribute="top" id="ONH-4T-xWh"/>
+                                            <constraint firstAttribute="trailing" secondItem="QNy-fU-VEf" secondAttribute="trailing" id="Rfj-hT-bUD"/>
+                                            <constraint firstItem="QNy-fU-VEf" firstAttribute="top" secondItem="SkM-ak-dfb" secondAttribute="top" id="aRt-9t-AAe"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -74,11 +67,11 @@
                     <constraint firstItem="Ppb-96-lFD" firstAttribute="top" secondItem="VTS-fR-PQT" secondAttribute="top" id="60h-R6-CkP"/>
                     <constraint firstItem="VTS-fR-PQT" firstAttribute="bottom" secondItem="Ppb-96-lFD" secondAttribute="bottom" id="Bev-3r-KuY"/>
                     <constraint firstItem="VTS-fR-PQT" firstAttribute="leading" secondItem="Ppb-96-lFD" secondAttribute="leading" constant="-1" id="DcO-tT-2kn"/>
+                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="centerX" secondItem="Ap0-kK-cyS" secondAttribute="centerX" constant="8" id="JOm-fh-Bx9"/>
                     <constraint firstItem="5ut-Sw-4KV" firstAttribute="leading" secondItem="2sd-JP-syY" secondAttribute="leading" id="Lav-td-AOe"/>
-                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="centerX" secondItem="Ap0-kK-cyS" secondAttribute="centerX" constant="8" id="MiT-2U-rR3"/>
                     <constraint firstItem="Ppb-96-lFD" firstAttribute="trailing" secondItem="VTS-fR-PQT" secondAttribute="trailing" constant="-1" id="SbH-4m-c57"/>
+                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="centerY" secondItem="Ap0-kK-cyS" secondAttribute="centerY" constant="8" id="Ypl-8h-hHJ"/>
                     <constraint firstAttribute="bottom" secondItem="5ut-Sw-4KV" secondAttribute="bottom" id="hEW-DD-0CY"/>
-                    <constraint firstItem="4R4-gj-7Xa" firstAttribute="centerY" secondItem="Ap0-kK-cyS" secondAttribute="centerY" constant="8" id="nh2-Xh-zb8"/>
                     <constraint firstAttribute="trailing" secondItem="5ut-Sw-4KV" secondAttribute="trailing" id="tTa-mS-kP3"/>
                     <constraint firstItem="5ut-Sw-4KV" firstAttribute="top" secondItem="2sd-JP-syY" secondAttribute="top" id="tsi-9H-CPE"/>
                 </constraints>
