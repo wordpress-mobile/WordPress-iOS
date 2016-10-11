@@ -232,10 +232,6 @@ import WordPressComAnalytics
         super.viewWillAppear(animated)
 
         refreshTableHeaderIfNeeded()
-
-        // Always reload tableview so any core data changes merged to the child
-        // context are reflected in the list.
-        tableViewHandler.refreshTableViewPreservingOffset()
     }
 
 
