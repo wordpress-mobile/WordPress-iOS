@@ -20,6 +20,10 @@ private enum ReaderCardDiscoverAttribution : Int {
     @IBOutlet private weak var imageView: CircularImageView!
     @IBOutlet private weak var textLabel: UILabel!
 
+    private lazy var originalAttributionParagraphAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.originalAttributionParagraphAttributes()
+    }()
+
     private var attributionAction: ReaderCardDiscoverAttribution = .None {
         didSet {
             // Enable/disable userInteraction on self if we allow an action.
@@ -104,7 +108,7 @@ private enum ReaderCardDiscoverAttribution : Int {
 
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
-        let attributes = WPStyleGuide.originalAttributionParagraphAttributes()
+        let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
         textLabel.textColor = WPStyleGuide.grey()
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .None
@@ -123,7 +127,7 @@ private enum ReaderCardDiscoverAttribution : Int {
 
         let range = (str as NSString).rangeOfString(blogName)
         let font = WPFontManager.systemItalicFontOfSize(WPStyleGuide.originalAttributionFontSize())
-        let attributes = WPStyleGuide.siteAttributionParagraphAttributes()
+        let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
         textLabel.textColor = WPStyleGuide.mediumBlue()

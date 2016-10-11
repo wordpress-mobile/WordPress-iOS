@@ -32,11 +32,6 @@ extension WPStyleGuide
         ]
     }
 
-    public class func siteAttributionParagraphAttributes() -> [String: AnyObject] {
-        let attributes = NSMutableDictionary(dictionary: originalAttributionParagraphAttributes())
-        return NSDictionary(dictionary: attributes) as! [String: AnyObject]
-    }
-
     public class func originalAttributionFontSize() -> CGFloat {
         return Cards.contentFontSize
     }
@@ -138,7 +133,6 @@ extension WPStyleGuide
 
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: greyDarken10()
         ]
     }
 
@@ -146,13 +140,8 @@ extension WPStyleGuide
         let fontSize:CGFloat = Cards.subtextFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
-
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: greyDarken10()
         ]
     }
 
@@ -236,6 +225,10 @@ extension WPStyleGuide
         button.setTitleColor(jazzyOrange(), forState: .Selected)
         button.setTitleColor(greyDarken10(), forState: .Disabled)
         button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+    }
+
+    public class func applyReaderCardWordCountLabelStyle(label:UILabel) {
+        label.textColor = greyDarken10()
     }
 
 
