@@ -3,16 +3,6 @@ import Foundation
 extension ReaderStreamViewController
 {
 
-    struct ActionSheetButtonTitles
-    {
-        static let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
-        static let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
-        static let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing the lets the user share a post to others.")
-        static let visit = NSLocalizedString("Visit Site", comment:"An option to visit the site to which a specific post belongs")
-        static let unfollow = NSLocalizedString("Unfollow Site", comment:"Verb. An option to unfollow a site.")
-        static let follow = NSLocalizedString("Follow Site", comment:"Verb. An option to follow a site.")
-    }
-
     // A simple struct defining a title and message for use with a WPNoResultsView
     public struct NoResultsResponse
     {

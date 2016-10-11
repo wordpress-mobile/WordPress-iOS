@@ -726,11 +726,11 @@ import WordPressComAnalytics
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel, handler: nil)
+        alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
         // Block button
         if shouldShowBlockSiteMenuItem() {
-            alertController.addActionWithTitle(ActionSheetButtonTitles.blockSite,
+            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                 style: .Destructive,
                 handler: { (action:UIAlertAction) in
                     if let post = self.postWithObjectID(post.objectID) {
@@ -741,7 +741,7 @@ import WordPressComAnalytics
 
         // Following
         if ReaderHelpers.topicIsFollowing(topic) {
-            let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
+            let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
                 handler: { (action:UIAlertAction) in
@@ -752,7 +752,7 @@ import WordPressComAnalytics
         }
 
         // Visit site
-        alertController.addActionWithTitle(ActionSheetButtonTitles.visit,
+        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
             style: .Default,
             handler: { (action:UIAlertAction) in
                 if let post = self.postWithObjectID(post.objectID) {
@@ -761,7 +761,7 @@ import WordPressComAnalytics
         })
 
         // Share
-        alertController.addActionWithTitle(ActionSheetButtonTitles.share,
+        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
             handler: { [weak self] (action:UIAlertAction) in
                 self?.sharePost(post.objectID, fromView: anchorView)
@@ -848,7 +848,12 @@ import WordPressComAnalytics
 
 
     private func visitSiteForPost(post:ReaderPost) {
-        let siteURL = NSURL(string: post.blogURL)!
+        guard
+            let permalink = post.permaLink,
+            let siteURL = NSURL(string: permalink) else {
+                return
+        }
+
         let controller = WPWebViewController(URL: siteURL)
         controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
