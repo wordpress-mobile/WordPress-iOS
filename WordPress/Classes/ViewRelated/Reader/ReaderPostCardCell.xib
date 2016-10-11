@@ -20,75 +20,72 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xGb-kM-7oA">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVT-vK-D4O">
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVT-vK-D4O">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZI-k0-M8C">
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZI-k0-M8C">
+                                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv">
+                                                                <gestureRecognizers/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="32" id="QED-5F-6P0"/>
+                                                                    <constraint firstAttribute="height" constant="32" id="zs2-p7-TAz"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ii2-b3-ZTs">
                                                                 <subviews>
-                                                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv">
-                                                                        <gestureRecognizers/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" constant="32" id="QED-5F-6P0"/>
-                                                                            <constraint firstAttribute="height" constant="32" id="zs2-p7-TAz"/>
-                                                                        </constraints>
-                                                                    </imageView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ii2-b3-ZTs">
-                                                                        <subviews>
-                                                                            <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
-                                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                            <label userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="740" text="Author - Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
-                                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                        </subviews>
-                                                                    </stackView>
+                                                                    <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
+                                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="740" text="Author - Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
+                                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                             </stackView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
+                                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" priority="999" constant="32" id="plk-OF-Mi2"/>
+                                                                    <constraint firstAttribute="width" priority="999" constant="24" id="zjD-kx-Uwk"/>
+                                                                </constraints>
+                                                                <state key="normal" image="icon-menu-ellipsis">
+                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
                                                                 <connections>
-                                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
-                                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
-                                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
-                                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
-                                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
-                                                                    <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
-                                                                    <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
+                                                                    <action selector="didTapMenuButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="4HX-3p-mfP"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
-                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstItem="l5X-fR-34a" firstAttribute="height" secondItem="wZI-k0-M8C" secondAttribute="height" id="6je-38-Qhi"/>
-                                                            <constraint firstAttribute="trailing" secondItem="wZI-k0-M8C" secondAttribute="trailing" id="WVo-i4-h6S"/>
-                                                            <constraint firstItem="l5X-fR-34a" firstAttribute="width" secondItem="wZI-k0-M8C" secondAttribute="width" id="aR8-5W-Hh5"/>
-                                                            <constraint firstItem="wZI-k0-M8C" firstAttribute="top" secondItem="PVT-vK-D4O" secondAttribute="top" id="crU-38-PZZ"/>
-                                                            <constraint firstItem="l5X-fR-34a" firstAttribute="centerY" secondItem="wZI-k0-M8C" secondAttribute="centerY" id="i3p-qP-3PX"/>
-                                                            <constraint firstItem="wZI-k0-M8C" firstAttribute="leading" secondItem="PVT-vK-D4O" secondAttribute="leading" id="rwZ-Ge-bjt"/>
-                                                            <constraint firstItem="l5X-fR-34a" firstAttribute="centerX" secondItem="wZI-k0-M8C" secondAttribute="centerX" id="wV4-0w-RzV"/>
-                                                            <constraint firstAttribute="bottom" secondItem="wZI-k0-M8C" secondAttribute="bottom" id="zyg-FS-ai4"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" priority="999" constant="32" id="plk-OF-Mi2"/>
-                                                            <constraint firstAttribute="width" priority="999" constant="24" id="zjD-kx-Uwk"/>
-                                                        </constraints>
-                                                        <state key="normal" image="icon-menu-ellipsis">
-                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
+                                                    </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
                                                         <connections>
-                                                            <action selector="didTapMenuButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="4HX-3p-mfP"/>
+                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
+                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
+                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
+                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
+                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
+                                                            <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
+                                                            <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                            </stackView>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="wZI-k0-M8C" firstAttribute="height" secondItem="PVT-vK-D4O" secondAttribute="height" id="B7d-Sa-msb"/>
+                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="ii2-b3-ZTs" secondAttribute="top" id="DC4-MJ-L9C"/>
+                                                    <constraint firstItem="wZI-k0-M8C" firstAttribute="width" secondItem="PVT-vK-D4O" secondAttribute="width" id="Gh9-bQ-KOm"/>
+                                                    <constraint firstItem="wZI-k0-M8C" firstAttribute="centerY" secondItem="PVT-vK-D4O" secondAttribute="centerY" id="OzX-hl-9UH"/>
+                                                    <constraint firstAttribute="height" secondItem="7Qj-iX-iqv" secondAttribute="height" id="ca5-Mi-pUM"/>
+                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="ii2-b3-ZTs" secondAttribute="bottom" id="mxK-Er-MIP"/>
+                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="7Qj-iX-iqv" secondAttribute="leading" id="nJU-Ft-kzV"/>
+                                                    <constraint firstItem="wZI-k0-M8C" firstAttribute="centerX" secondItem="PVT-vK-D4O" secondAttribute="centerX" id="rA5-P1-NcO"/>
+                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="ii2-b3-ZTs" secondAttribute="trailing" id="rGe-8q-xDF"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7QB-Yd-xun">
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D4Q-6L-ZIL"/>
@@ -135,7 +132,7 @@
                                                         </subviews>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb"/>
+                                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999 (1px padding)"/>
                                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
                                                             <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
                                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
