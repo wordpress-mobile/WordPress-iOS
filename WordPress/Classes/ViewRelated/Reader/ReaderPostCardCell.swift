@@ -264,8 +264,12 @@ import WordPressShared
     private func configureCardImage() {
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
 
-            featuredMediaView.hidden = false
-            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+            if featuredMediaView.hidden {
+                featuredMediaView.hidden = false
+            }
+            if featuredMediaHeightConstraint.constant != featuredMediaHeightConstraintConstant {
+                featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+            }
 
             if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
                 return // Don't reload an image already being displayed.
@@ -298,7 +302,9 @@ import WordPressShared
         } else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
-            featuredMediaView.hidden = true
+            if !featuredMediaView.hidden {
+                featuredMediaView.hidden = true
+            }
         }
     }
 
@@ -335,10 +341,14 @@ import WordPressShared
         if let title = contentProvider?.titleForDisplay() {
             let attributes = readerCardTitleAttributes as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
-            titleLabel.hidden = false
+            if titleLabel.hidden {
+                titleLabel.hidden = false
+            }
         } else {
             titleLabel.attributedText = nil
-            titleLabel.hidden = true
+            if !titleLabel.hidden {
+                titleLabel.hidden = true
+            }
         }
     }
 
@@ -346,20 +356,28 @@ import WordPressShared
         if let summary = contentProvider?.contentPreviewForDisplay() {
             let attributes = readerCardSummaryAttributes as! [String: AnyObject]
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
-            summaryLabel.hidden = false
+            if summaryLabel.hidden {
+                summaryLabel.hidden = false
+            }
         } else {
             summaryLabel.attributedText = nil
-            summaryLabel.hidden = true
+            if !summaryLabel.hidden {
+                summaryLabel.hidden = true
+            }
         }
     }
 
     private func configureAttribution() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
             attributionView.configureView(nil)
-            attributionView.hidden = true
+            if !attributionView.hidden {
+                attributionView.hidden = true
+            }
         } else {
             attributionView.configureView(contentProvider)
-            attributionView.hidden = false
+            if attributionView.hidden {
+                attributionView.hidden = false
+            }
         }
     }
 
@@ -370,7 +388,10 @@ import WordPressShared
                 tag = "#\(rawTag)"
             }
         }
-        tagButton.hidden = tag.characters.count == 0
+        let hidden = tag.characters.count == 0
+        if tagButton.hidden != hidden {
+            tagButton.hidden = hidden
+        }
         tagButton.setTitle(tag, forState: .Normal)
         tagButton.setTitle(tag, forState: .Highlighted)
     }
@@ -380,7 +401,7 @@ import WordPressShared
         wordCountLabel.attributedText = nil
 
         // For now, if showing the attribution view do not show the word count label
-        if !attributionView.hidden {
+        if !attributionView.hidden && !wordCountLabel.hidden {
             wordCountLabel.hidden = true
             return
         }
@@ -392,9 +413,13 @@ import WordPressShared
         }
 
         if wordCountLabel.attributedText == nil {
-            wordCountLabel.hidden = true
+            if !wordCountLabel.hidden {
+                wordCountLabel.hidden = true
+            }
         } else {
-            wordCountLabel.hidden = false
+            if wordCountLabel.hidden {
+                wordCountLabel.hidden = false
+            }
         }
     }
 
@@ -505,9 +530,9 @@ import WordPressShared
     }
 
     private func configureActionViewHeightIfNeeded() {
-        if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
+        if !actionView.hidden && actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
             actionView.hidden = true
-        } else {
+        } else  if actionView.hidden {
             actionView.hidden = false
         }
     }
