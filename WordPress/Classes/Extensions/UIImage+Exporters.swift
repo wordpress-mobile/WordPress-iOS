@@ -81,6 +81,7 @@ extension UIImage: ExportableAsset
                      targetUTI: String,
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
+                     synchronous: Bool,
                      successHandler: SuccessHandler,
                      errorHandler: ErrorHandler)
     {
