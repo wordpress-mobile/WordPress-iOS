@@ -84,11 +84,6 @@ public class ReaderCrossPostCell: UITableViewCell
         return super.hitTest(point, withEvent: event)
     }
 
-    public override func prepareForReuse() {
-        super.prepareForReuse()
-        applyHighlightedEffect(false, animated: false)
-    }
-
 
     // MARK: - Appearance
 
@@ -101,13 +96,19 @@ public class ReaderCrossPostCell: UITableViewCell
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
+        func updateBorder() {
+            self.cardBorderView.alpha = highlighted ? 1.0 : 0.0
+        }
+        guard animated else {
+            updateBorder()
+            return
+        }
         let duration:NSTimeInterval = animated ? 0.25 : 0
         UIView.animateWithDuration(duration,
             delay: 0,
             options: .CurveEaseInOut,
-            animations: {
-                self.cardBorderView.alpha = highlighted ? 1.0 : 0.0
-            }, completion: nil)
+            animations:updateBorder,
+            completion: nil)
     }
 
 
@@ -180,7 +181,6 @@ public class ReaderCrossPostCell: UITableViewCell
         attrText.appendAttributedString(attrSubtitle)
 
         label.attributedText = attrText
-        invalidateIntrinsicContentSize()
     }
 
     private func subDomainNameFromPath(path:String) -> String {
