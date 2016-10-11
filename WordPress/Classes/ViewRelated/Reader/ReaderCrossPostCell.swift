@@ -18,6 +18,18 @@ public class ReaderCrossPostCell: UITableViewCell
 
     // MARK: - Accessors
 
+    private lazy var readerCrossPostTitleAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCrossPostTitleAttributes()
+    }()
+
+    private lazy var readerCrossPostSubtitleAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCrossPostSubtitleAttributes()
+    }()
+
+    private lazy var readerCrossPostBoldSubtitleAttributes: [NSObject: AnyObject] = {
+        return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
+    }()
+
     public var enableLoggedInFeatures: Bool = true
 
     public override var backgroundColor: UIColor? {
@@ -145,7 +157,7 @@ public class ReaderCrossPostCell: UITableViewCell
         if title.containsString(xPostTitlePrefix) {
             title = title?.componentsSeparatedByString(xPostTitlePrefix).last
         }
-        let titleAttributes = WPStyleGuide.readerCrossPostTitleAttributes() as! [String:AnyObject]
+        let titleAttributes = readerCrossPostTitleAttributes as! [String:AnyObject]
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
 
         // Compose the subtitle
@@ -159,8 +171,8 @@ public class ReaderCrossPostCell: UITableViewCell
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
-        let subtitleAttributes = WPStyleGuide.readerCrossPostSubtitleAttributes() as! [String:AnyObject]
-        let boldSubtitleAttributes = WPStyleGuide.readerCrossPostBoldSubtitleAttributes() as! [String:AnyObject]
+        let subtitleAttributes = readerCrossPostSubtitleAttributes as! [String:AnyObject]
+        let boldSubtitleAttributes = readerCrossPostBoldSubtitleAttributes as! [String:AnyObject]
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
         attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
