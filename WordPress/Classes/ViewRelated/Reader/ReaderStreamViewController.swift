@@ -520,11 +520,12 @@ import WordPressComAnalytics
 
 
     func displayResultsStatus() {
-        if resultsStatusView.isDescendantOfView(tableView) {
-            resultsStatusView.centerInSuperview()
-        } else {
+        if !resultsStatusView.isDescendantOfView(tableView) {
             tableView.addSubviewWithFadeAnimation(resultsStatusView)
+            resultsStatusView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(resultsStatusView)
         }
+
         footerView.hidden = true
     }
 
