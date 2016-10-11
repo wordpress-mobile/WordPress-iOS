@@ -23,6 +23,13 @@ class WPSplitViewController: UISplitViewController {
         case Landscape = 320
 
         static func widthForInterfaceOrientation(orientation: UIInterfaceOrientation) -> CGFloat {
+            // If the app is in multitasking (so isn't fullscreen), just use the narrow width
+            if let windowFrame = UIApplication.sharedApplication().keyWindow?.frame {
+                if windowFrame.width < UIScreen.mainScreen().bounds.width {
+                    return self.Portrait.rawValue
+                }
+            }
+
             if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isiPhoneSixPlus() {
                 return self.Portrait.rawValue
             } else {
