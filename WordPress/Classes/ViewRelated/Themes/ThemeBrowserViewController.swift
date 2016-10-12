@@ -60,6 +60,26 @@ public protocol ThemePresenter: class
     func presentViewForTheme(theme: Theme?)
 }
 
+/// Invalidates the layout whenever the collection view's bounds change
+@objc public class ThemeBrowserCollectionViewLayout: UICollectionViewFlowLayout {
+    public override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return shouldInvalidateForNewBounds(newBounds)
+    }
+
+    public override func invalidationContextForBoundsChange(newBounds: CGRect) -> UICollectionViewFlowLayoutInvalidationContext {
+        let context = super.invalidationContextForBoundsChange(newBounds) as! UICollectionViewFlowLayoutInvalidationContext
+        context.invalidateFlowLayoutDelegateMetrics = shouldInvalidateForNewBounds(newBounds)
+
+        return context
+    }
+
+    private func shouldInvalidateForNewBounds(newBounds: CGRect) -> Bool {
+        guard let collectionView = collectionView else { return false }
+
+        return (newBounds.width != collectionView.bounds.width || newBounds.height != collectionView.bounds.height)
+    }
+}
+
 @objc public class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
 {
     // MARK: - Properties: must be set by parent
@@ -230,14 +250,6 @@ public protocol ThemePresenter: class
 
     private var searchBarHeight: CGFloat {
         return CGRectGetHeight(searchController.searchBar.bounds) + topLayoutGuide.length
-    }
-
-    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-
-        coordinator.animateAlongsideTransition({ [weak self] context in
-            self?.collectionView?.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
     }
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -716,8 +728,9 @@ public protocol ThemePresenter: class
         suspendedSearch = searchName
         presentingTheme = theme
         let webViewController = ThemeWebViewController(theme: theme, url: url)
+        let navigationController = UINavigationController(rootViewController: webViewController)
 
-        webViewController.loadViewIfNeeded()
+        webViewController.secureInteraction = true
         webViewController.navigationItem.titleView = nil
         webViewController.title = theme.name
         var buttons: [UIBarButtonItem]?
@@ -727,12 +740,12 @@ public protocol ThemePresenter: class
         }
         webViewController.navigationItem.rightBarButtonItems = buttons
 
-        if searchController.active {
+        if searchController != nil && searchController.active {
             searchController.dismissViewControllerAnimated(true, completion: {
-                self.navigationController?.pushViewController(webViewController, animated:true)
+                self.presentViewController(navigationController, animated: true, completion: nil)
             })
         } else {
-            navigationController?.pushViewController(webViewController, animated:true)
+            presentViewController(navigationController, animated: true, completion: nil)
         }
     }
 

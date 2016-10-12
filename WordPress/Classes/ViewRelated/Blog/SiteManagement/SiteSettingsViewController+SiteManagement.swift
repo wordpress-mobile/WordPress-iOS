@@ -163,9 +163,7 @@ public extension SiteSettingsViewController
                 let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
                 SVProgressHUD.showSuccessWithStatus(status)
 
-                if let navController = self?.navigationController {
-                    navController.popToRootViewControllerAnimated(true)
-                }
+                self?.updateNavigationStackAfterSiteDeletion()
 
                 let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 accountService.updateUserDetailsForAccount(accountService.defaultWordPressComAccount()!, success: { _ in }, failure: { _ in })
@@ -183,6 +181,26 @@ public extension SiteSettingsViewController
 
                 alertController.presentFromRootViewController()
             })
+    }
+
+    private func updateNavigationStackAfterSiteDeletion() {
+        if let primaryNavigationController = self.splitViewController?.viewControllers.first as? UINavigationController {
+            if let secondaryNavigationController = self.splitViewController?.viewControllers.last as? UINavigationController {
+
+                // If this view controller is in the detail pane of its splitview
+                // (i.e. its navigation controller isn't the navigation controller in the primary position in the splitview)
+                // then replace it with an empty view controller, as we just deleted its blog
+                if primaryNavigationController != secondaryNavigationController && secondaryNavigationController == self.navigationController {
+                    let emptyViewController = UIViewController()
+                    WPStyleGuide.configureColorsForView(emptyViewController.view, andTableView: nil)
+
+                    self.navigationController?.viewControllers = [emptyViewController]
+                }
+            }
+
+            // Pop the primary navigation controller back to the sites list
+            primaryNavigationController.popToRootViewControllerAnimated(true)
+        }
     }
 
     /// Creates purchase warning alert for Delete Site

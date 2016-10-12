@@ -33,15 +33,20 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDataSource,
                                         NSFetchedResultsControllerDelegate,
                                         UISearchResultsUpdating,
-                                        UISearchControllerDelegate>
+                                        UISearchControllerDelegate,
+                                        WPNoResultsViewDelegate,
+                                        WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
+
+@property (nonatomic, strong) BlogDetailsViewController *blogDetailsViewController;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -138,8 +143,8 @@ static NSInteger HideSearchMinSites = 3;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self configureTableView];
-    [self configureHeaderView];
     [self configureSearchController];
+    [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
 }
@@ -155,7 +160,11 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [self updateSearchVisibility];
     [self maybeShowNUX];
+    [self updateViewsForCurrentSiteCount];
+    [self validateBlogDetailsViewController];
     [self syncBlogs];
+
+    [self updateCurrentBlogSelection];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -176,7 +185,9 @@ static NSInteger HideSearchMinSites = 3;
             // this forces the tableHeaderView to resize
             self.tableView.tableHeaderView = self.headerView;
         }
-    } completion:nil];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateCurrentBlogSelection];
+    }];
 }
 
 - (NSUInteger)numSites
@@ -218,6 +229,56 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+- (void)updateViewsForCurrentSiteCount
+{
+    NSUInteger count = [self countForAllBlogs];
+    if (count == NSNotFound) {
+        count = 0;
+    }
+
+    [self showNoResultsViewForSiteCount:count];
+    [self updateSplitViewAppearanceForSiteCount:count];
+}
+
+- (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
+{
+    // If we've gone from no results to having just one site, the user has
+    // added a new site so we should auto-select it
+    if (!self.noResultsView.hidden && siteCount == 1) {
+        [self bypassBlogListViewController];
+    }
+
+    self.noResultsView.hidden = (siteCount > 0);
+}
+
+- (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
+{
+    BOOL hasSites = (siteCount > 0);
+
+    // If we have no results, set the split view to full width
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
+        splitViewController.dimsDetailViewControllerAutomatically = hasSites;
+        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
+    }
+}
+
+- (void)validateBlogDetailsViewController
+{
+    // Nil out our blog details VC reference if the blog no longer exists
+    if (self.blogDetailsViewController && ![self.resultsController.fetchedObjects containsObject:self.blogDetailsViewController.blog]) {
+        self.blogDetailsViewController = nil;
+    }
+}
+
+- (NSUInteger)countForAllBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:BlogEntityName];
+    request.predicate = [self fetchRequestPredicateForAllBlogs];
+    return [context countForFetchRequest:request error:nil];
+}
+
 - (void)syncBlogs
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -234,16 +295,20 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Header methods
 
-- (void)configureHeaderView
+- (UIView *)headerView
 {
-    self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.headerLabel.numberOfLines = 0;
-    self.headerLabel.textAlignment = NSTextAlignmentCenter;
-    self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    self.headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
-    self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-    [self.headerView addSubview:self.headerLabel];
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectZero];
+        _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _headerLabel.numberOfLines = 0;
+        _headerLabel.textAlignment = NSTextAlignmentCenter;
+        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
+        _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+        [_headerView addSubview:_headerLabel];
+    }
+
+    return _headerView;
 }
 
 - (void)updateHeaderSize
@@ -276,6 +341,21 @@ static NSInteger HideSearchMinSites = 3;
 - (void)selectFirstSite
 {
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
+- (void)updateCurrentBlogSelection
+{
+    if (self.splitViewControllerIsHorizontallyCompact) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    } else {
+        if (self.selectedBlog) {
+            NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
+            if (blogIndex != NSNotFound) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
+                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            }
+        }
+    }
 }
 
 #pragma mark - Configuration
@@ -328,6 +408,23 @@ static NSInteger HideSearchMinSites = 3;
 
 - (CGFloat)searchBarHeight {
     return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+}
+
+- (void)configureNoResultsView
+{
+    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.")
+                                                         message:NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.")
+                                                   accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
+                                                     buttonTitle:NSLocalizedString(@"Create Site", nil)];
+    [self.view addSubview:self.noResultsView];
+    [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.view pinSubviewAtCenter:self.noResultsView];
+    [self.noResultsView layoutIfNeeded];
+
+    self.noResultsView.hidden = YES;
+
+    self.noResultsView.delegate = self;
 }
 
 #pragma mark - Notifications
@@ -433,7 +530,6 @@ static NSInteger HideSearchMinSites = 3;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor whiteColor];
-    cell.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -510,8 +606,6 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     if (self.tableView.isEditing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
@@ -527,10 +621,30 @@ static NSInteger HideSearchMinSites = 3;
         blog.visible = YES;
         [blogService flagBlogAsLastUsed:blog];
 
-        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blog;
-        [self.navigationController pushViewController:blogDetailsViewController animated:YES];
+        self.selectedBlog = blog;
     }
+}
+
+- (void)setSelectedBlog:(Blog *)selectedBlog
+{
+    [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
+}
+
+- (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
+{
+    if (selectedBlog != _selectedBlog) {
+        _selectedBlog = selectedBlog;
+
+        self.blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        self.blogDetailsViewController.blog = selectedBlog;
+
+        if (![self splitViewControllerIsHorizontallyCompact]) {
+            WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+            [self showDetailViewController:[(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitViewController] sender:self];
+        }
+    }
+
+    [self.navigationController pushViewController:self.blogDetailsViewController animated:animated];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -607,6 +721,15 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addSite
 {
+    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
+
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
+}
+
+- (UIAlertController *)makeAddSiteAlertController
+{
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
@@ -630,10 +753,8 @@ static NSInteger HideSearchMinSites = 3;
 
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-    
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    self.addSiteAlertController = addSiteAlertController;
+
+    return addSiteAlertController;
 }
 
 - (WPAccount *)defaultWordPressComAccount
@@ -822,6 +943,44 @@ static NSInteger HideSearchMinSites = 3;
     [self.tableView reloadData];
     [self updateEditButton];
     [self maybeShowNUX];
+    [self updateViewsForCurrentSiteCount];
+    [self validateBlogDetailsViewController];
+}
+
+#pragma mark - WPNoResultsViewDelegate
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Find the button in the NoResultsView
+    UIButton *button = nil;
+    for (UIView *subview in noResultsView.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            button = (UIButton *)subview;
+            break;
+        }
+    }
+
+    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+    addSiteAlertController.popoverPresentationController.sourceView = self.view;
+    addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:noResultsView.button.frame
+                                                                                    fromView:noResultsView];
+    addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
+}
+
+#pragma mark - WPSplitViewControllerDetailProvider
+
+- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
+{
+    if ([self numSites] == 0 || !self.blogDetailsViewController) {
+        UIViewController *emptyViewController = [UIViewController new];
+        [WPStyleGuide configureColorsForView:emptyViewController.view andTableView:nil];
+        return emptyViewController;
+    } else {
+        return [(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitView];
+    }
 }
 
 @end

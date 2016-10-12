@@ -9,16 +9,22 @@
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
-#import "StatsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
+#import "UIViewController+SizeClass.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
+
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+
+static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
+static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
+
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
@@ -57,6 +63,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
+
+@property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
 
@@ -98,13 +107,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
-        [self setViewControllers:@[self.blogListNavigationController,
+        [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerNavigationController,
                                    self.newPostViewController,
-                                   self.meNavigationController,
+                                   self.meSplitViewController,
                                    self.notificationsNavigationController]];
 
-        [self setSelectedViewController:self.blogListNavigationController];
+        [self setSelectedViewController:self.blogListSplitViewController];
 
         // adds the orange dot on top of the notification tab
         [self addNotificationBadgeIcon];
@@ -117,6 +126,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
                                                      name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(signinDidFinish:)
+                                                     name:SigninHelpers.WPSigninDidFinishNotification
                                                    object:nil];
 
         // Watch for application badge number changes
@@ -193,9 +207,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
     if (blogToOpen) {
-        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blogToOpen;
-        [_blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
+        _blogListViewController.selectedBlog = blogToOpen;
     }
 
     return _blogListNavigationController;
@@ -246,7 +258,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _meNavigationController;
     }
 
-    self.meViewController = [MeViewController new];
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
     UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
     _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -257,6 +268,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 
     return _meNavigationController;
+}
+
+- (MeViewController *)meViewController {
+    if (!_meViewController) {
+        _meViewController = [MeViewController new];
+    }
+
+    return _meViewController;
 }
 
 - (UINavigationController *)notificationsNavigationController
@@ -284,6 +303,54 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     CGFloat offset = [WPDeviceIdentification isiPad] ? WPTabBarIconOffsetiPad : WPTabBarIconOffsetiPhone;
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
+}
+
+#pragma mark - Split View Controllers
+
+- (UISplitViewController *)blogListSplitViewController
+{
+    if (!_blogListSplitViewController) {
+        _blogListSplitViewController = [WPSplitViewController new];
+        _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
+        _blogListSplitViewController.presentsWithGesture = NO;
+        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+
+        [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+
+        _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
+
+        _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
+    }
+
+    return _blogListSplitViewController;
+}
+
+- (UISplitViewController *)meSplitViewController
+{
+    if (!_meSplitViewController) {
+        _meSplitViewController = [WPSplitViewController new];
+        _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+
+        [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+
+        _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
+    }
+    
+    return _meSplitViewController;
+}
+
+- (void)reloadSplitViewControllers
+{
+    _blogListNavigationController = nil;
+    _blogListSplitViewController = nil;
+    _meSplitViewController = nil;
+
+    [self setViewControllers:@[self.blogListSplitViewController,
+                               self.readerNavigationController,
+                               self.newPostViewController,
+                               self.meSplitViewController,
+                               self.notificationsNavigationController]];
 }
 
 #pragma mark - Navigation Helpers
@@ -387,11 +454,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:WPTabMySites];
-
-    // Check which VC is showing.
-    UIViewController *topVC = self.blogListNavigationController.topViewController;
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
     if ([topVC isKindOfClass:[PostListViewController class]]) {
         Blog *blog = ((PostListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
@@ -401,53 +464,52 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-    blogDetailsViewController.blog = post.blog;
+    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
 
-    PostListViewController *postsViewController = [PostListViewController controllerWithBlog:post.blog];
-
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, postsViewController]];
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
+    }
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:WPTabMySites];
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-
-    StatsViewController *statsViewController = [StatsViewController new];
-    statsViewController.blog = blog;
-
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, statsViewController]];
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
+    }
 }
 
 - (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
 {
-    [self showTabForIndex:WPTabMySites];
-    
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
-    
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
-    [viewController presentCustomizeForTheme:[viewController currentTheme]];
+    [self switchMySitesTabToThemesViewForBlog:blog];
+
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    if ([topVC isKindOfClass:[ThemeBrowserViewController class]]) {
+        ThemeBrowserViewController *themeViewController = (ThemeBrowserViewController *)topVC;
+        [themeViewController presentCustomizeForTheme:[themeViewController currentTheme]];
+    }
 }
 
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
 {
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionThemes];
+    }
+}
+
+- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
+{
     [self showTabForIndex:WPTabMySites];
-    
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
-    
-    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
+
+    BlogListViewController *blogListVC = self.blogListViewController;
+    self.blogListNavigationController.viewControllers = @[blogListVC];
+    [blogListVC setSelectedBlog:blog animated:NO];
 }
 
 - (NSString *)currentlySelectedScreen
@@ -498,8 +560,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             // Bump the accessed stat when switching to the My Sites tab, but not if the tab is tapped when already selected.
             [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
 
-            UINavigationController *navController = (UINavigationController *)viewController;
-            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
+            UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+            BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
+
             if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
                 if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
                     [blogListViewController bypassBlogListViewController];
@@ -518,20 +581,33 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            if (navController.topViewController == navController.viewControllers.firstObject) {
-                UIViewController *topViewController = navController.topViewController;
-                if ([topViewController.view isKindOfClass:[UITableView class]]) {
-                    UITableView *tableView = (UITableView *)topViewController.view;
-                    CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
-                    [tableView setContentOffset:topOffset animated:YES];
-                } else if ([[topViewController class] conformsToProtocol:@protocol(WPScrollableViewController)]) {
-                    [((id<WPScrollableViewController>)topViewController) scrollViewToTop];
+            [self scrollNavigationControllerContentToTop:navController];
+        } else if ([viewController isKindOfClass:[UISplitViewController class]]) {
+            UISplitViewController *splitViewController = (UISplitViewController *)viewController;
+            for (UIViewController *viewController in splitViewController.viewControllers) {
+                if ([viewController isKindOfClass:[UINavigationController class]]) {
+                    [self scrollNavigationControllerContentToTop:(UINavigationController *)viewController];
                 }
             }
         }
+
     }
 
     return YES;
+}
+
+- (void)scrollNavigationControllerContentToTop:(UINavigationController *)navigationController
+{
+    if (navigationController.topViewController == navigationController.viewControllers.firstObject) {
+        UIViewController *topViewController = navigationController.topViewController;
+        if ([topViewController.view isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView *)topViewController.view;
+            CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
+            [tableView setContentOffset:topOffset animated:YES];
+        } else if ([[topViewController class] conformsToProtocol:@protocol(WPScrollableViewController)]) {
+            [((id<WPScrollableViewController>)topViewController) scrollViewToTop];
+        }
+    }
 }
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
@@ -568,6 +644,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
+}
+
+- (void)signinDidFinish:(NSNotification *)notification
+{
+    [self reloadSplitViewControllers];
 }
 
 #pragma mark - Handling Badges

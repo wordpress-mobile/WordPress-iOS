@@ -189,7 +189,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSDate *)dateForDisplay
 {
-    return [self sortDate];
+    return [self dateCreated];
 }
 
 - (NSString *)contentPreviewForDisplay
