@@ -8,16 +8,18 @@ struct NavigationItemRow : ImmuTableRow {
     let title: String
     let icon: UIImage?
     let action: ImmuTableAction?
+    let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .DisclosureIndicator, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
+        self.accessoryType = accessoryType
         self.action = action
     }
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
-        cell.accessoryType = .DisclosureIndicator
+        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -31,11 +33,13 @@ struct BadgeNavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let badgeCount: Int
+    let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .DisclosureIndicator, action: ImmuTableAction) {
         self.title = title
         self.icon = icon
         self.badgeCount = badgeCount
+        self.accessoryType = accessoryType
         self.action = action
     }
 
@@ -43,7 +47,7 @@ struct BadgeNavigationItemRow: ImmuTableRow {
         let cell = cell as! WPTableViewCellBadge
 
         cell.textLabel?.text = title
-        cell.accessoryType = .None
+        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
         cell.badgeCount = badgeCount
 
@@ -119,6 +123,8 @@ struct ButtonRow: ImmuTableRow {
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .ByWordWrapping
 
         WPStyleGuide.configureTableViewActionCell(cell)
         cell.textLabel?.textAlignment = .Center
@@ -133,6 +139,8 @@ struct DestructiveButtonRow: ImmuTableRow {
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .ByWordWrapping
 
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
     }
