@@ -16,12 +16,10 @@ import WordPressShared
     // MARK: - Properties
 
     // Wrapper views
-    @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var contentStackView: UIStackView!
 
     // Header realated Views
-    @IBOutlet private weak var headerView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var headerBlogButton: UIButton!
     @IBOutlet private weak var blogNameLabel: UILabel!
@@ -29,7 +27,6 @@ import WordPressShared
     @IBOutlet private weak var menuButton: UIButton!
 
     // Card views
-    @IBOutlet private weak var featuredMediaView: UIView!
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
@@ -129,22 +126,6 @@ import WordPressShared
 
         refreshImageHeaderAuthorization()
 
-        // Hack:
-        // On iOS9, if a cell is loaded while its window is nil, the cell won't
-        // pick up the correct size classes once its appear and been added to a window.
-        // This doesn't happen on iOS10, for now we enforce the relative setting
-        // based on the size class of the application delegate's window.
-        // In this case, its whether or not to preserve the cell contentView's margins
-        // for readability margins on the stackView.
-        // Brent C. Oct/5/2016
-        if WPDeviceIdentification.isiOSVersionEarlierThan10() && window == nil {
-            if WordPressAppDelegate.sharedInstance().window.traitCollection.horizontalSizeClass == .Compact {
-                stackView.preservesSuperviewLayoutMargins = false
-            } else {
-                stackView.preservesSuperviewLayoutMargins = true
-            }
-        }
-
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
         // Otherwise, IB will make incorrect size adjustments and/or complain along the way.
@@ -157,7 +138,6 @@ import WordPressShared
 
         applyStyles()
         applyOpaqueBackgroundColors()
-        createAvatarTapGestureRecognizer()
         setupAttributionView()
 
         // Layout the contentStackView if needed since layout may be a bit different than
@@ -186,12 +166,6 @@ import WordPressShared
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .ByTruncatingTail
     }
-
-    private func createAvatarTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderPostCardCell.didTapHeaderAvatar(_:)))
-        avatarImageView.addGestureRecognizer(tgr)
-    }
-
 
     /**
         Applies the default styles to the cell's subviews
@@ -264,8 +238,8 @@ import WordPressShared
     private func configureCardImage() {
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
 
-            if featuredMediaView.hidden {
-                featuredMediaView.hidden = false
+            if featuredImageView.hidden {
+                featuredImageView.hidden = false
             }
             if featuredMediaHeightConstraint.constant != featuredMediaHeightConstraintConstant {
                 featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
@@ -279,7 +253,7 @@ import WordPressShared
             // momentarily visible.
             featuredImageView.image = nil
             var url = featuredImageURL
-            let desiredWidth = UIApplication.sharedApplication().keyWindow?.frame.size.width ?? self.featuredMediaView.frame.width
+            let desiredWidth = self.featuredImageView.frame.width
             let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
             if !(contentProvider!.isPrivate()) {
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
@@ -302,8 +276,8 @@ import WordPressShared
         } else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
-            if !featuredMediaView.hidden {
-                featuredMediaView.hidden = true
+            if !featuredImageView.hidden {
+                featuredImageView.hidden = true
             }
         }
     }
@@ -564,12 +538,6 @@ import WordPressShared
 
 
     // MARK: - Actions
-
-    func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
-        if gesture.state == .Ended {
-            notifyDelegateHeaderWasTapped()
-        }
-    }
 
     @IBAction func didTapHeaderBlogButton(sender: UIButton) {
         notifyDelegateHeaderWasTapped()
