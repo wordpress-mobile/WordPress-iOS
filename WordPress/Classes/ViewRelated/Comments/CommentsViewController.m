@@ -492,8 +492,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
     
     // Display NoResultsView
-    [self.noResultsView centerInSuperview];
-    
+    self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.tableView pinSubviewAtCenter:self.noResultsView];
+
     if (shouldPerformAnimation) {
         [self.noResultsView fadeInWithAnimation];
     }
