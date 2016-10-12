@@ -15,7 +15,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Alamofire (3.5.0)
+  - Alamofire (3.5.1)
   - Automattic-Tracks-iOS (0.1.1):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
@@ -29,21 +29,21 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - Crashlytics (3.8.1):
+  - Crashlytics (3.8.2):
     - Fabric (~> 1.6.3)
   - DTCoreText (1.6.16):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.10)
-  - DTFoundation/DTAnimatedGIF (1.7.10)
-  - DTFoundation/DTHTMLParser (1.7.10):
+  - DTFoundation/Core (1.7.11)
+  - DTFoundation/DTAnimatedGIF (1.7.11)
+  - DTFoundation/DTHTMLParser (1.7.11):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.10):
+  - DTFoundation/UIKit (1.7.11):
     - DTFoundation/Core
   - Expecta (1.0.5)
-  - Fabric (1.6.8)
+  - Fabric (1.6.9)
   - FLAnimatedImage (1.0.12)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
@@ -155,24 +155,24 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.6.2):
+  - WordPress-iOS-Shared (0.6.3):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.19)
-  - WordPressCom-Stats-iOS (0.7.7):
+  - WordPressCom-Stats-iOS (0.7.8):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-    - WordPressCom-Stats-iOS/Services (= 0.7.7)
-    - WordPressCom-Stats-iOS/UI (= 0.7.7)
-  - WordPressCom-Stats-iOS/Services (0.7.7):
+    - WordPressCom-Stats-iOS/Services (= 0.7.8)
+    - WordPressCom-Stats-iOS/UI (= 0.7.8)
+  - WordPressCom-Stats-iOS/Services (0.7.8):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPress-iOS-Shared (~> 0.5)
     - WordPressCom-Analytics-iOS (~> 0.1.4)
-  - WordPressCom-Stats-iOS/UI (0.7.7):
+  - WordPressCom-Stats-iOS/UI (0.7.8):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -215,10 +215,10 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `7d02c77349245c6e4d3bcdf63a878f90eb4a4e39`)
   - WordPress-iOS-Editor (= 1.8.1)
-  - WordPress-iOS-Shared (= 0.6.2)
+  - WordPress-iOS-Shared (= 0.6.3)
   - WordPressCom-Analytics-iOS (= 0.1.19)
-  - WordPressCom-Stats-iOS (= 0.7.7)
-  - WordPressCom-Stats-iOS/Services (= 0.7.7)
+  - WordPressCom-Stats-iOS (= 0.7.8)
+  - WordPressCom-Stats-iOS/Services (= 0.7.8)
   - WordPressComKit (= 0.0.5)
   - WPMediaPicker (~> 0.10.1)
   - wpxmlrpc (~> 0.8)
@@ -254,15 +254,15 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
   Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: f4682598772ae66c9ef5554d2d78d0a19fb413a0
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  Crashlytics: 4391d8df0b125345e9f209c5db6e7f40a6a8435d
+  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
-  DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
+  DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
+  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
@@ -285,13 +285,13 @@ SPEC CHECKSUMS:
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
   WordPress-Aztec-iOS: 49c682caa55e69bfbe12545dc1f448207060f6f4
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
-  WordPress-iOS-Shared: 96b5695837cfa907d17122b250e83e05b59b6039
+  WordPress-iOS-Shared: 2496fba282efcdcb8182f8f282ca0eb56dc4eb32
   WordPressCom-Analytics-iOS: 1b01177ee3f588e984465b5b37ebcbb342836a8d
-  WordPressCom-Stats-iOS: 5996ea5bc7ce2096400fdc33e3368b5524f7288a
+  WordPressCom-Stats-iOS: fe144146738b8cdafead8245073a1c10a43d0e28
   WordPressComKit: 4dc52eebc508b8e056d8bf8e931a7be95d467e3b
   WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: f5749f8254776a7245dfc75034fa8df38e014bf7
+PODFILE CHECKSUM: f1ba4e9e5421ce5194c98ddca121399020173686
 
 COCOAPODS: 1.0.1

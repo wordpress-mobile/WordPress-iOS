@@ -127,8 +127,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
-    BOOL isFirstViewControllerInNavigationStack = self.navigationController.navigationBar.backItem == nil;
-    if (isFirstViewControllerInNavigationStack) {
+    if (self.presentingViewController) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
     }
 

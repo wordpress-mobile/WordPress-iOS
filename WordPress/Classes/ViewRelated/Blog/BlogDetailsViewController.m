@@ -26,6 +26,8 @@ static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
+NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
+
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
@@ -46,6 +48,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
+@property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic, copy) void (^callback)();
 
 @end
@@ -73,6 +76,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _callback = callback;
         _identifier = identifier;
+        _showsSelectionState = YES;
     }
     return self;
 }
@@ -100,7 +104,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -108,9 +112,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 
+/// Used to restore the tableview selection during state restoration, and
+/// also when switching between a collapsed and expanded split view controller presentation
+@property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
+
 @end
 
 @implementation BlogDetailsViewController
+
+#pragma mark - State Restoration
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
@@ -131,12 +141,47 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return nil;
     }
 
+    // If there's already a blog details view controller for this blog in the primary
+    // navigation stack, we'll return that instead of creating a new one.
+    UISplitViewController *splitViewController = [[WPTabBarController sharedInstance] blogListSplitViewController];
+    UINavigationController *navigationController = splitViewController.viewControllers.firstObject;
+    if (navigationController && [navigationController isKindOfClass:[UINavigationController class]]) {
+        BlogDetailsViewController *topViewController = (BlogDetailsViewController *)navigationController.topViewController;
+        if ([topViewController isKindOfClass:[BlogDetailsViewController class]] && topViewController.blog == restoredBlog) {
+            return topViewController;
+        }
+    }
+
     BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
 
     return viewController;
 }
 
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
+
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    UIViewController *detailViewController = splitViewController.topDetailViewController;
+    if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
+        // If the current detail view controller supports state restoration, store the current selection
+        [coder encodeObject:self.restorableSelectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
+    }
+
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    NSIndexPath *indexPath = [coder decodeObjectForKey:WPBlogDetailsSelectedIndexPathKey];
+    if (indexPath) {
+        self.restorableSelectedIndexPath = indexPath;
+    }
+
+    [super decodeRestorableStateWithCoder:coder];
+}
 
 #pragma mark = Lifecycle Methods
 
@@ -155,12 +200,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return self;
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
-    [super encodeRestorableStateWithCoder:coder];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -170,12 +209,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
 
+    self.clearsSelectionOnViewWillAppear = NO;
+
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [self.blogService syncBlog:_blog completionHandler:^() {
         [weakSelf configureTableViewData];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadTableViewPreservingSelection];
     }];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
@@ -197,16 +238,111 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
+    if (self.splitViewControllerIsHorizontallyCompact) {
+        [self animateDeselectionInteractively];
+        self.restorableSelectedIndexPath = nil;
+    }
+
     [self.headerView setBlog:self.blog];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
-    [self.tableView reloadData];
+
+    [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    // Required to update disclosure indicators depending on split view status
+    [self reloadTableViewPreservingSelection];
+}
+
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
+{
+    NSIndexPath *indexPath = [self indexPathForSubsection:section];
+
+    switch (section) {
+        case BlogDetailsSubsectionStats:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showStats];
+            break;
+        case BlogDetailsSubsectionPosts:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showPostList];
+            break;
+        case BlogDetailsSubsectionThemes:
+        case BlogDetailsSubsectionCustomize:
+            if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showThemes];
+            }
+            break;
+    }
+}
+
+- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
+{
+    switch (section) {
+        case BlogDetailsSubsectionStats:
+            return [NSIndexPath indexPathForRow:0 inSection:0];
+        case BlogDetailsSubsectionPosts:
+            return [NSIndexPath indexPathForRow:0 inSection:1];
+        case BlogDetailsSubsectionThemes:
+        case BlogDetailsSubsectionCustomize:
+            return [NSIndexPath indexPathForRow:0 inSection:2];
+    }
+}
+
+#pragma mark - Properties
+
+- (NSIndexPath *)restorableSelectedIndexPath
+{
+    if (!_restorableSelectedIndexPath) {
+        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }
+
+    return _restorableSelectedIndexPath;
+}
 
 #pragma mark - Data Model setup
+
+- (void)reloadTableViewPreservingSelection
+{
+    // First, we'll grab the appropriate index path so we can reselect it
+    // after reloading the table
+    NSIndexPath *selectedIndexPath = self.restorableSelectedIndexPath;
+
+    // Configure and reload table data when appearing to ensure pending comment count is updated
+    [self.tableView reloadData];
+
+    if (![self splitViewControllerIsHorizontallyCompact]) {
+        // And finally we'll reselect the selected row, if there is one
+
+        [self.tableView selectRowAtIndexPath:selectedIndexPath
+                                    animated:NO
+                              scrollPosition:[self optimumScrollPositionForIndexPath:selectedIndexPath]];
+    }
+}
+
+- (UITableViewScrollPosition)optimumScrollPositionForIndexPath:(NSIndexPath *)indexPath
+{
+    // Try and avoid scrolling if not necessary
+    CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
+    BOOL cellIsNotFullyVisible = !CGRectContainsRect(self.tableView.bounds, cellRect);
+    return (cellIsNotFullyVisible) ? UITableViewScrollPositionMiddle : UITableViewScrollPositionNone;
+}
 
 - (NSString *)adminRowTitle
 {
@@ -241,21 +377,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showStats];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                    image:[Gridicon iconOfType:GridiconTypeHouse]
-                                                 callback:^{
-                                                     [weakSelf showViewSite];
-                                                 }]];
+    BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
+                                                                  image:[Gridicon iconOfType:GridiconTypeHouse]
+                                                               callback:^{
+                                                                   [weakSelf showViewSite];
+                                                               }];
+    viewSiteRow.showsSelectionState = NO;
+    [rows addObject:viewSiteRow];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
                                                           image:[Gridicon iconOfType:GridiconTypeMySites]
                                                        callback:^{
                                                            [weakSelf showViewAdmin];
+                                                           [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
                                                        }];
     UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)];
     UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
     accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
     row.accessoryView = accessoryView;
+    row.showsSelectionState = NO;
     [rows addObject:row];
 
     if ([self.blog supports:BlogFeaturePlans]) {
@@ -413,7 +553,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
@@ -425,11 +565,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
+
+    if (row.showsSelectionState) {
+        self.restorableSelectedIndexPath = indexPath;
+    } else {
+        // Reselect the previous row
+        [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
+                               animated:YES
+                         scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -446,6 +593,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionHeader:view];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    BOOL isNewSelection = (indexPath != tableView.indexPathForSelectedRow);
+    
+    if (isNewSelection) {
+        return indexPath;
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark - Private methods
@@ -541,42 +699,42 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStylePlain];
     controller.blog = self.blog;
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPostList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:self.blog];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPageList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:self.blog];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPeople
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPlans
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSettings
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSharing
@@ -591,7 +749,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showStats
@@ -600,23 +758,31 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;
-    [self.navigationController pushViewController:statsView animated:YES];
+
+    // Calling `showDetailViewController:sender:` should do this automatically for us,
+    // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
+    // presents the stats view controller as modal instead of pushing it. As a
+    // workaround for now, we'll manually decide whether to push or use `showDetail`.
+    // @frosty 2016-09-05
+    if (self.splitViewController.isCollapsed) {
+        [self.navigationController pushViewController:statsView animated:YES];
+    } else {
+        [self showDetailViewController:statsView sender:self];
+    }
 }
 
 - (void)showThemes
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
-    [self.navigationController pushViewController:viewController
-                                         animated:YES];
+    [self showDetailViewController:viewController sender:self];
 }
 
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
     MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
-    [self.navigationController pushViewController:viewController
-                                         animated:YES];
+    [self showDetailViewController:viewController sender:self];
 }
 
 - (void)showViewSite
@@ -664,8 +830,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
         self.navigationItem.title = self.blog.settings.name;
-        [self.tableView reloadData];
+        [self reloadTableViewPreservingSelection];
     }
+}
+
+#pragma mark - WPSplitViewControllerDetailProvider
+
+- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
+{
+    StatsViewController *statsView = [StatsViewController new];
+    statsView.blog = self.blog;
+    statsView.statsService = self.statsService;
+
+    return statsView;
 }
 
 @end
