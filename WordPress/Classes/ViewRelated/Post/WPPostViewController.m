@@ -894,6 +894,15 @@ EditImageDetailsViewControllerDelegate
     [super startEditing];
 }
 
+- (void)setEditing:(BOOL)editing
+{
+    [super setEditing:editing];
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.splitViewController.preferredDisplayMode = (editing) ? UISplitViewControllerDisplayModePrimaryHidden : UISplitViewControllerDisplayModeAllVisible;
+    }];
+}
+
 #pragma mark - Instance Methods
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -1451,7 +1460,10 @@ EditImageDetailsViewControllerDelegate
 - (void)didSaveNewPost
 {
     if ([self.post hasLocalChanges]) {
-        [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
+        // Only attempt to switch to the posts list if the editor was presented modally
+        if ([self presentingViewController]) {
+            [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
+        }
     }
 }
 
