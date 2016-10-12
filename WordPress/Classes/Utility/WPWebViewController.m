@@ -33,6 +33,8 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
+static NSString *const WPWebViewWebKitErrorDomain = @"WebKitErrorDomain";
+static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 #pragma mark - Private Properties
 
@@ -395,6 +397,8 @@ static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
     // Don't show Ajax Cancelled or Frame Load Interrupted errors
     if (error.code == WPWebViewErrorAjaxCancelled || error.code == WPWebViewErrorFrameLoadInterrupted) {
+        return;
+    } else if ([error.domain isEqualToString:WPWebViewWebKitErrorDomain] && error.code == WPWebViewErrorPluginHandledLoad) {
         return;
     }
 
