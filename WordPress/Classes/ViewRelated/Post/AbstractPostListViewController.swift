@@ -310,8 +310,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         // in the table view
         if noResultsView.isDescendantOfView(tableView) == false {
             tableView.addSubviewWithFadeAnimation(noResultsView)
-        } else {
-            noResultsView.centerInSuperview()
+            noResultsView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(noResultsView)
         }
 
         tableView.sendSubviewToBack(noResultsView)

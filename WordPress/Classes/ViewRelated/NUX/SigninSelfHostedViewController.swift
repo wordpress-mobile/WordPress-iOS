@@ -288,6 +288,9 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
         BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
+
+            NSNotificationCenter.defaultCenter().postNotificationName(SigninHelpers.WPSigninDidFinishNotification, object: nil)
+
             self?.dismiss()
         }
     }
