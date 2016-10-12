@@ -17,9 +17,11 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class MeViewController;
 @class NotificationsViewController;
 @class ReaderMenuViewController;
+@class WPSplitViewController;
 
 @interface WPTabBarController : UITabBarController
 
+@property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;

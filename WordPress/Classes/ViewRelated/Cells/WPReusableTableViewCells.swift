@@ -69,7 +69,6 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
                 accessoryType = .None
             } else {
                 accessoryView = nil
-                accessoryType = .DisclosureIndicator
             }
         }
     }
