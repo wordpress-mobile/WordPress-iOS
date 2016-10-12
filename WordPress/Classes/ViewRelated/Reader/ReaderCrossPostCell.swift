@@ -3,10 +3,6 @@ import WordPressShared.WPStyleGuide
 
 public class ReaderCrossPostCell: UITableViewCell
 {
-    @IBOutlet private weak var stackView: UIStackView!
-    @IBOutlet private weak var contentStackView: UIStackView!
-    @IBOutlet private weak var cardContentView: UIView!
-    @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var blavatarImageView: UIImageView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var label: UILabel!
@@ -35,8 +31,6 @@ public class ReaderCrossPostCell: UITableViewCell
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
-            cardContentView?.backgroundColor = backgroundColor
-            cardBorderView?.backgroundColor = backgroundColor
             label?.backgroundColor = backgroundColor
         }
     }
@@ -61,27 +55,7 @@ public class ReaderCrossPostCell: UITableViewCell
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-
-        // HACK
-        // See ReaderPostCardCell awakeFromNib for the same hack and details.
-        if WPDeviceIdentification.isiOSVersionEarlierThan10() && window == nil {
-            if WordPressAppDelegate.sharedInstance().window.traitCollection.horizontalSizeClass == .Compact {
-                stackView.preservesSuperviewLayoutMargins = false
-            } else {
-                stackView.preservesSuperviewLayoutMargins = true
-            }
-        }
         applyStyles()
-    }
-
-    /**
-     Ignore taps in the card margins
-     */
-    public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if (!CGRectContainsPoint(cardContentView.frame, point)) {
-            return nil
-        }
-        return super.hitTest(point, withEvent: event)
     }
 
 
@@ -89,15 +63,11 @@ public class ReaderCrossPostCell: UITableViewCell
 
     private func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-
-        cardBorderView.layer.borderColor = WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor
-        cardBorderView.layer.borderWidth = 1.0
-        cardBorderView.alpha = 0.0
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
         func updateBorder() {
-            self.cardBorderView.alpha = highlighted ? 1.0 : 0.0
+            label.alpha = highlighted ? 0.50 : WPAlphaFull
         }
         guard animated else {
             updateBorder()
