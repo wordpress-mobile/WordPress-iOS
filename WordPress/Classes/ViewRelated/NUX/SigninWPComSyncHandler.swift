@@ -40,7 +40,6 @@ extension SigninWPComSyncHandler
 
         BlogSyncFacade().syncBlogsForAccount(account, success: { [weak self] in
                 accountFacade.updateUserDetailsForAccount(account, success: { [weak self] in
-
                 self?.handleSyncSuccess(requiredMultifactor)
 
                 }, failure: { [weak self] (error: NSError!) in
@@ -61,6 +60,9 @@ extension SigninWPComSyncHandler
     func handleSyncSuccess(requiredMultifactor: Bool) {
         configureStatusLabel("")
         configureViewLoading(false)
+
+        NSNotificationCenter.defaultCenter().postNotificationName(SigninHelpers.WPSigninDidFinishNotification, object: nil)
+
         dismiss()
 
         let properties = [

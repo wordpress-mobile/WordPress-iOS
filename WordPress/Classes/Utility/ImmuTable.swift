@@ -285,9 +285,20 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
 
     // MARK: Table View Delegate
 
+    public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if target.respondsToSelector(#selector(UITableViewDelegate.tableView(_:willSelectRowAtIndexPath:))) {
+            return target.tableView(tableView, willSelectRowAtIndexPath: indexPath)
+        } else {
+            return indexPath
+        }
+    }
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        row.action?(row)
+        if target.respondsToSelector(#selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) {
+            target.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+        } else {
+            let row = viewModel.rowAtIndexPath(indexPath)
+            row.action?(row)
+        }
     }
 
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
