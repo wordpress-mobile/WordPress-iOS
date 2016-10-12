@@ -7,242 +7,209 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
                 <frame key="frameInset" width="320" height="483"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tiw-BW-NNu">
+                    <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
                         <subviews>
-                            <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
+                            <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xwk-ft-EDo">
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVT-vK-D4O">
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv">
+                                                <gestureRecognizers/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="32" id="o8R-06-S1a"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-I0-BNp">
                                                 <subviews>
-                                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv">
-                                                        <gestureRecognizers/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="32" id="QED-5F-6P0"/>
-                                                            <constraint firstAttribute="height" constant="32" id="zs2-p7-TAz"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="17" id="bcj-oP-AHQ"/>
-                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="740" text="Author - Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalCompressionResistancePriority="740" text="Author - Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" priority="999" constant="32" id="plk-OF-Mi2"/>
-                                                            <constraint firstAttribute="width" priority="999" constant="24" id="zjD-kx-Uwk"/>
-                                                        </constraints>
-                                                        <state key="normal" image="icon-menu-ellipsis">
-                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="didTapMenuButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="4HX-3p-mfP"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
-                                                        <connections>
-                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
-                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
-                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
-                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
-                                                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
-                                                            <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
-                                                            <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
-                                                        </connections>
-                                                    </button>
                                                 </subviews>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </stackView>
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
                                                 <constraints>
-                                                    <constraint firstItem="7Qj-iX-iqv" firstAttribute="centerY" secondItem="PVT-vK-D4O" secondAttribute="centerY" id="376-5D-os2"/>
-                                                    <constraint firstItem="7Qj-iX-iqv" firstAttribute="leading" secondItem="PVT-vK-D4O" secondAttribute="leading" id="59L-YV-UgI"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Z6l-P3-Z3i" secondAttribute="trailing" id="B5Y-fq-5yw"/>
-                                                    <constraint firstItem="Z6l-P3-Z3i" firstAttribute="leading" secondItem="EQf-tj-ltv" secondAttribute="trailing" constant="10" id="Bu4-SK-CAh"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Z6l-P3-Z3i" secondAttribute="bottom" id="Cmw-f0-xw3"/>
-                                                    <constraint firstItem="Z6l-P3-Z3i" firstAttribute="top" secondItem="PVT-vK-D4O" secondAttribute="top" id="D4V-Vy-et7"/>
-                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="7Qj-iX-iqv" secondAttribute="bottom" id="IFl-00-f36"/>
-                                                    <constraint firstItem="EQf-tj-ltv" firstAttribute="leading" secondItem="7Qj-iX-iqv" secondAttribute="trailing" constant="10" id="OIc-oJ-P0h"/>
-                                                    <constraint firstItem="Wvp-3d-4a9" firstAttribute="leading" secondItem="7Qj-iX-iqv" secondAttribute="trailing" constant="10" id="OOr-sy-hzt"/>
-                                                    <constraint firstItem="Wvp-3d-4a9" firstAttribute="top" secondItem="PVT-vK-D4O" secondAttribute="top" id="SkA-Vb-Glb"/>
-                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="7Qj-iX-iqv" secondAttribute="top" id="bBU-sZ-Mci"/>
-                                                    <constraint firstAttribute="height" secondItem="7Qj-iX-iqv" secondAttribute="height" id="d9G-UI-9Y3"/>
-                                                    <constraint firstAttribute="bottom" secondItem="EQf-tj-ltv" secondAttribute="bottom" id="hg5-H5-YWM"/>
-                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="7Qj-iX-iqv" secondAttribute="leading" id="if6-Oo-M3S"/>
-                                                    <constraint firstItem="Z6l-P3-Z3i" firstAttribute="leading" secondItem="Wvp-3d-4a9" secondAttribute="trailing" constant="10" id="lCv-wH-Jwg"/>
-                                                    <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="Wvp-3d-4a9" secondAttribute="trailing" id="vHU-S2-JK9"/>
-                                                    <constraint firstItem="EQf-tj-ltv" firstAttribute="top" secondItem="Wvp-3d-4a9" secondAttribute="bottom" id="wVH-mS-kRH"/>
+                                                    <constraint firstAttribute="width" priority="999" constant="24" id="zjD-kx-Uwk"/>
                                                 </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7QB-Yd-xun">
+                                                <state key="normal" image="icon-menu-ellipsis">
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapMenuButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="4HX-3p-mfP"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D4Q-6L-ZIL">
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="999" constant="196" id="6Qh-iW-StJ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D4Q-6L-ZIL"/>
-                                                </subviews>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" priority="999" constant="196" id="JJ8-Je-ZFq"/>
-                                                    <constraint firstItem="D4Q-6L-ZIL" firstAttribute="top" secondItem="7QB-Yd-xun" secondAttribute="top" id="cAE-2o-jgs"/>
-                                                    <constraint firstAttribute="bottom" secondItem="D4Q-6L-ZIL" secondAttribute="bottom" id="yR1-pi-HDX"/>
-                                                </constraints>
-                                            </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
-                                                        <subviews>
-                                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-cD-Pd2" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
-                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1n-gR-1xw" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
-                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                                        <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" priority="999" constant="20" id="gyO-ef-jnx"/>
-                                                                    <constraint firstAttribute="width" constant="20" id="rXo-se-pG1"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="740" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="maZ-qu-bdT">
-                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999 (1px padding)"/>
-                                                            <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
-                                                            <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
-                                                            <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
-                                                            <constraint firstItem="maZ-qu-bdT" firstAttribute="leading" secondItem="tUL-YG-fIa" secondAttribute="trailing" constant="8" id="nVB-6A-H4M"/>
-                                                            <constraint firstItem="maZ-qu-bdT" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="sq0-mM-VGr"/>
-                                                        </constraints>
-                                                        <connections>
-                                                            <outlet property="imageView" destination="tUL-YG-fIa" id="ajx-dy-VhM"/>
-                                                            <outlet property="textLabel" destination="maZ-qu-bdT" id="Lxf-io-KNw"/>
-                                                        </connections>
-                                                    </view>
-                                                    <label userInteractionEnabled="NO" contentMode="left" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpX-bs-YOa">
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-cD-Pd2" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" priority="999" constant="18" id="iri-9j-xqp"/>
-                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1n-gR-1xw" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZc-p0-o3j">
-                                                        <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                                                <subviews>
-                                                                    <button clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJw-y3-ygi">
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <state key="normal" title="#tag">
-                                                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sw2-hO-Lax"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <view contentMode="scaleToFill" horizontalHuggingPriority="200" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="dQj-Z8-uHQ" userLabel="View (Spacer)">
-                                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </view>
-                                                                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="mXM-gf-gZv"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                                        <state key="normal" title="0" image="icon-reader-comment">
-                                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Yje-zP-A7R"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="Bvu-ns-pQ9"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                                        <state key="normal" title="Like" image="icon-reader-like">
-                                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sUt-yQ-WrS"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                </subviews>
-                                                            </stackView>
-                                                        </subviews>
-                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstItem="Wzi-SV-nkT" firstAttribute="leading" secondItem="DZc-p0-o3j" secondAttribute="leading" id="KiS-LH-eLh"/>
-                                                            <constraint firstAttribute="bottom" secondItem="Wzi-SV-nkT" secondAttribute="bottom" id="TDe-nj-GWR"/>
-                                                            <constraint firstItem="Wzi-SV-nkT" firstAttribute="top" secondItem="DZc-p0-o3j" secondAttribute="top" id="gOa-eE-gTM"/>
-                                                            <constraint firstAttribute="height" priority="999" constant="24" id="qdj-fA-vdR"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Wzi-SV-nkT" secondAttribute="trailing" id="xIw-NV-dpT"/>
-                                                        </constraints>
-                                                    </view>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" priority="999" constant="20" id="gyO-ef-jnx"/>
+                                                            <constraint firstAttribute="width" constant="20" id="rXo-se-pG1"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="740" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="maZ-qu-bdT">
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999 (1px padding)"/>
+                                                    <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
+                                                    <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
+                                                    <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
+                                                    <constraint firstItem="maZ-qu-bdT" firstAttribute="leading" secondItem="tUL-YG-fIa" secondAttribute="trailing" constant="8" id="nVB-6A-H4M"/>
+                                                    <constraint firstItem="maZ-qu-bdT" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="sq0-mM-VGr"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="imageView" destination="tUL-YG-fIa" id="ajx-dy-VhM"/>
+                                                    <outlet property="textLabel" destination="maZ-qu-bdT" id="Lxf-io-KNw"/>
+                                                </connections>
+                                            </view>
+                                            <label userInteractionEnabled="NO" contentMode="left" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpX-bs-YOa">
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="999" constant="18" id="iri-9j-xqp"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZc-p0-o3j">
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
+                                                        <subviews>
+                                                            <button clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJw-y3-ygi">
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <state key="normal" title="#tag">
+                                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sw2-hO-Lax"/>
+                                                                </connections>
+                                                            </button>
+                                                            <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="dQj-Z8-uHQ" userLabel="View (Spacer)">
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </view>
+                                                            <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="mXM-gf-gZv"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                                                <state key="normal" title="0" image="icon-reader-comment">
+                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Yje-zP-A7R"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="Bvu-ns-pQ9"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                                                <state key="normal" title="Like" image="icon-reader-like">
+                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sUt-yQ-WrS"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="Wzi-SV-nkT" firstAttribute="leading" secondItem="DZc-p0-o3j" secondAttribute="leading" id="KiS-LH-eLh"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Wzi-SV-nkT" secondAttribute="bottom" id="TDe-nj-GWR"/>
+                                                    <constraint firstItem="Wzi-SV-nkT" firstAttribute="top" secondItem="DZc-p0-o3j" secondAttribute="top" id="gOa-eE-gTM"/>
+                                                    <constraint firstAttribute="height" priority="999" constant="24" id="qdj-fA-vdR"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Wzi-SV-nkT" secondAttribute="trailing" id="xIw-NV-dpT"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="D4Q-6L-ZIL" firstAttribute="leading" secondItem="k3b-5o-H9u" secondAttribute="leading" id="UaN-TI-mZD"/>
-                                            <constraint firstAttribute="trailing" secondItem="D4Q-6L-ZIL" secondAttribute="trailing" id="b4p-ar-Lk6"/>
-                                        </constraints>
-                                        <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                     </stackView>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" id="gfh-Bl-37e"/>
-                                    <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" constant="1" id="oeM-Ji-kM6"/>
-                                    <constraint firstItem="k3b-5o-H9u" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="1" id="one-z5-OMG"/>
-                                    <constraint firstItem="k3b-5o-H9u" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" id="sGq-zd-shR"/>
-                                </constraints>
-                            </view>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                            </stackView>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
+                                <connections>
+                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
+                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
+                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
+                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
+                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
+                                    <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
+                                    <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="0.0"/>
-                        <variation key="heightClass=regular-widthClass=regular" preservesSuperviewLayoutMargins="YES"/>
-                    </stackView>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="xwk-ft-EDo" secondAttribute="bottom" id="K6Q-ew-jQq"/>
+                            <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="xwk-ft-EDo" secondAttribute="leading" id="N8y-iI-tyR"/>
+                            <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="Pv6-I0-BNp" secondAttribute="trailing" id="Tve-yE-iIk"/>
+                            <constraint firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" id="gfh-Bl-37e"/>
+                            <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" constant="1" id="oeM-Ji-kM6"/>
+                            <constraint firstItem="k3b-5o-H9u" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="1" id="one-z5-OMG"/>
+                            <constraint firstItem="k3b-5o-H9u" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" id="sGq-zd-shR"/>
+                            <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="xwk-ft-EDo" secondAttribute="top" id="u1x-Vh-tx6"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="tiw-BW-NNu" secondAttribute="trailing" constant="-1" id="7f8-AO-J73"/>
-                    <constraint firstItem="tiw-BW-NNu" firstAttribute="leading" secondItem="519-Nh-f7o" secondAttribute="leading" constant="-1" id="E2a-hn-xck"/>
-                    <constraint firstAttribute="bottom" secondItem="tiw-BW-NNu" secondAttribute="bottom" id="EEu-sh-k5U"/>
-                    <constraint firstItem="tiw-BW-NNu" firstAttribute="top" secondItem="519-Nh-f7o" secondAttribute="top" id="ILE-hk-URD"/>
+                    <constraint firstAttribute="bottom" secondItem="kha-YG-ZlO" secondAttribute="bottom" constant="8" id="Nqn-xj-CYJ"/>
+                    <constraint firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" constant="-1" id="lpn-aZ-UEt"/>
+                    <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="519-Nh-f7o" secondAttribute="leading" constant="-1" id="qtI-Im-R6d"/>
+                    <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="519-Nh-f7o" secondAttribute="top" constant="8" id="sCF-MD-uGF"/>
                 </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
@@ -257,13 +224,10 @@
                 <outlet property="cardContentView" destination="kha-YG-ZlO" id="V97-NO-edR"/>
                 <outlet property="contentStackView" destination="k3b-5o-H9u" id="B82-c0-vlU"/>
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
-                <outlet property="featuredMediaHeightConstraint" destination="JJ8-Je-ZFq" id="3NG-gd-fl9"/>
-                <outlet property="featuredMediaView" destination="7QB-Yd-xun" id="VCH-fq-ebv"/>
+                <outlet property="featuredMediaHeightConstraint" destination="6Qh-iW-StJ" id="uf6-jH-tzf"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
-                <outlet property="headerView" destination="PVT-vK-D4O" id="cg1-2u-S8G"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
-                <outlet property="stackView" destination="tiw-BW-NNu" id="y1r-Zy-cuw"/>
                 <outlet property="summaryLabel" destination="u1n-gR-1xw" id="jsD-Vc-hr5"/>
                 <outlet property="tagButton" destination="YJw-y3-ygi" id="q3o-S6-E2E"/>
                 <outlet property="titleLabel" destination="Zf5-cD-Pd2" id="56V-Zc-1sF"/>
