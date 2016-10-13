@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import Aztec
 import Gridicons
+import WordPressShared
 
 class AztecPostViewController: UIViewController {
     func cancelEditingAction(sender: AnyObject) {
