@@ -16,7 +16,6 @@ import WordPressShared
     // MARK: - Properties
 
     // Wrapper views
-    @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var contentStackView: UIStackView!
 
     // Header realated Views
@@ -36,6 +35,7 @@ import WordPressShared
     @IBOutlet private weak var actionStackView: UIStackView!
 
     // Helper Views
+    @IBOutlet private weak var borderedView: UIView!
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
@@ -145,16 +145,6 @@ import WordPressShared
         contentStackView.layoutIfNeeded()
     }
 
-    /**
-        Ignore taps in the card margins
-    */
-    public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if (!CGRectContainsPoint(cardContentView.frame, point)) {
-            return nil
-        }
-        return super.hitTest(point, withEvent: event)
-    }
-
 
     // MARK: - Configuration
 
@@ -172,8 +162,8 @@ import WordPressShared
     */
     private func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-        cardContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
-        cardContentView.layer.borderWidth = 1.0
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderWidth = 1.0
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
@@ -513,7 +503,7 @@ import WordPressShared
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
         func updateBorder() {
-            self.cardContentView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
+            self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
         }
         guard animated else {
             updateBorder()
