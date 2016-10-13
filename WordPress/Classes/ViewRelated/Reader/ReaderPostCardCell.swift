@@ -33,7 +33,7 @@ import WordPressShared
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var wordCountLabel: UILabel!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
-    @IBOutlet private weak var actionView: UIView!
+    @IBOutlet private weak var actionStackView: UIStackView!
 
     // Helper Views
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
@@ -211,7 +211,7 @@ import WordPressShared
         configureTag()
         configureWordCount()
         configureActionButtons()
-        configureActionViewHeightIfNeeded()
+        configureActionStackViewIfNeeded()
     }
 
     private func configureHeader() {
@@ -503,11 +503,11 @@ import WordPressShared
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
     }
 
-    private func configureActionViewHeightIfNeeded() {
-        if !actionView.hidden && actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
-            actionView.hidden = true
-        } else  if actionView.hidden {
-            actionView.hidden = false
+    private func configureActionStackViewIfNeeded() {
+        if !actionStackView.hidden && actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
+            actionStackView.hidden = true
+        } else  if actionStackView.hidden {
+            actionStackView.hidden = false
         }
     }
 
