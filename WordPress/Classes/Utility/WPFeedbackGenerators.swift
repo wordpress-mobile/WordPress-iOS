@@ -16,6 +16,16 @@ public enum WPNotificationFeedbackType : Int {
     }
 }
 
+// This allows us to more easily inject a generator into our custom wrapper
+// for testing, whilst also supporting iOS 9.
+protocol WPNotificationFeedbackGeneratorConformance {
+    @available(iOS 10, *)
+    func notificationOccurred(notificationType: UINotificationFeedbackType)
+}
+
+@available(iOS 10, *)
+extension UINotificationFeedbackGenerator: WPNotificationFeedbackGeneratorConformance {}
+
 /// iOS's taptic feedback classes are only available for iOS 10+.
 /// This is a small wrapper around UINotificationFeedbackGenerator, which simply
 /// results in a no-op on iOS 9 – avoiding the need for conditional code
@@ -23,13 +33,16 @@ public enum WPNotificationFeedbackType : Int {
 /// - seealso: UINotificationFeedbackGenerator
 @objc
 class WPNotificationFeedbackGenerator: NSObject {
+    static var generator: WPNotificationFeedbackGeneratorConformance?
+
     class func notificationOccurred(notificationType: WPNotificationFeedbackType) {
-        guard #available(iOS 10, *) else {
-            return
+        guard #available(iOS 10, *) else { return }
+
+        if generator == nil {
+            generator = UINotificationFeedbackGenerator()
         }
 
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(notificationType.systemFeedbackType)
+        generator?.notificationOccurred(notificationType.systemFeedbackType)
     }
 }
 
@@ -49,6 +62,16 @@ public enum WPImpactFeedbackStyle : Int {
     }
 }
 
+// This allows us to more easily inject a generator into our custom wrapper
+// for testing, whilst also supporting iOS 9.
+protocol WPImpactFeedbackGeneratorConformance {
+    func impactOccurred()
+}
+
+@available(iOS 10, *)
+extension UIImpactFeedbackGenerator: WPImpactFeedbackGeneratorConformance {}
+
+
 /// iOS's taptic feedback classes are only available for iOS 10+.
 /// This is a small wrapper around UIImpactFeedbackGenerator, which simply
 /// results in a no-op on iOS 9 – avoiding the need for conditional code
@@ -56,20 +79,17 @@ public enum WPImpactFeedbackStyle : Int {
 /// - seealso: UIImpactFeedbackGenerator
 @objc
 class WPImpactFeedbackGenerator: NSObject {
-    let style: WPImpactFeedbackStyle
+    internal var generator: WPImpactFeedbackGeneratorConformance?
 
     init(style: WPImpactFeedbackStyle) {
-        self.style = style
+        if #available(iOS 10, *) {
+            generator = UIImpactFeedbackGenerator(style: style.systemFeedbackStyle)
+        }
+
         super.init()
     }
 
-    /// call when your UI element impacts something else
     func impactOccurred() {
-        guard #available(iOS 10, *) else {
-            return
-        }
-
-        let generator = UIImpactFeedbackGenerator(style: style.systemFeedbackStyle)
-        generator.impactOccurred()
+        generator?.impactOccurred()
     }
 }
