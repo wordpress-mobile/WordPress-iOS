@@ -3,15 +3,13 @@ import WordPressShared
 
 @objc public class ReaderSiteStreamHeader: UIView, ReaderStreamHeader
 {
-    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var borderedView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
     @IBOutlet private weak var followButton: PostMetaButton!
-    @IBOutlet private weak var descriptionView: UIView!
     @IBOutlet private weak var followCountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
 
     public var delegate: ReaderStreamHeaderDelegate?
     private var defaultBlavatar = "blavatar-default"
@@ -26,6 +24,8 @@ import WordPressShared
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderWidth = 1.0
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -54,10 +54,9 @@ import WordPressShared
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
 
         if descriptionLabel.attributedText?.length > 0 {
-            // Bottom and top margins should match.
-            descriptionBottomConstraint.constant = descriptionLabel.frame.minY
+            descriptionLabel.hidden = false
         } else {
-            descriptionBottomConstraint.constant = 0
+            descriptionLabel.hidden = true
         }
     }
 
