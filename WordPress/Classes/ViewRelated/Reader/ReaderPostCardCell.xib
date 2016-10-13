@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <frame key="frameInset" width="320" height="483"/>
+                <frame key="frameInset" width="320" height="483.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
@@ -116,61 +116,52 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZc-p0-o3j">
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                                        <subviews>
-                                                            <button clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJw-y3-ygi">
-                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <state key="normal" title="#tag">
-                                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                                <connections>
-                                                                    <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sw2-hO-Lax"/>
-                                                                </connections>
-                                                            </button>
-                                                            <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="dQj-Z8-uHQ" userLabel="View (Spacer)">
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </view>
-                                                            <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="mXM-gf-gZv"/>
-                                                                </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                                <state key="normal" title="0" image="icon-reader-comment">
-                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                                <connections>
-                                                                    <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Yje-zP-A7R"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="Bvu-ns-pQ9"/>
-                                                                </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                                <state key="normal" title="Like" image="icon-reader-like">
-                                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                                <connections>
-                                                                    <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sUt-yQ-WrS"/>
-                                                                </connections>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
+                                                    <button clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJw-y3-ygi">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <state key="normal" title="#tag">
+                                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sw2-hO-Lax"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="dQj-Z8-uHQ" userLabel="View (Spacer)">
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="mXM-gf-gZv"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                                        <state key="normal" title="0" image="icon-reader-comment">
+                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Yje-zP-A7R"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="30" id="Bvu-ns-pQ9"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                                        <state key="normal" title="Like" image="icon-reader-like">
+                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="sUt-yQ-WrS"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstItem="Wzi-SV-nkT" firstAttribute="leading" secondItem="DZc-p0-o3j" secondAttribute="leading" id="KiS-LH-eLh"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Wzi-SV-nkT" secondAttribute="bottom" id="TDe-nj-GWR"/>
-                                                    <constraint firstItem="Wzi-SV-nkT" firstAttribute="top" secondItem="DZc-p0-o3j" secondAttribute="top" id="gOa-eE-gTM"/>
-                                                    <constraint firstAttribute="height" priority="999" constant="24" id="qdj-fA-vdR"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Wzi-SV-nkT" secondAttribute="trailing" id="xIw-NV-dpT"/>
+                                                    <constraint firstAttribute="height" priority="999" constant="24" id="RDJ-jr-Y8h"/>
                                                 </constraints>
-                                            </view>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
@@ -216,7 +207,7 @@
             <connections>
                 <outlet property="actionButtonLeft" destination="3W2-KV-isX" id="3xr-Lf-bbg"/>
                 <outlet property="actionButtonRight" destination="z4x-8W-5Dc" id="h6g-zT-jai"/>
-                <outlet property="actionView" destination="DZc-p0-o3j" id="NJ7-Jv-I68"/>
+                <outlet property="actionStackView" destination="Wzi-SV-nkT" id="4lH-Qh-6iA"/>
                 <outlet property="attributionView" destination="nU7-76-6MV" id="Pjl-4F-R7r"/>
                 <outlet property="avatarImageView" destination="7Qj-iX-iqv" id="sjW-0m-Xxe"/>
                 <outlet property="blogNameLabel" destination="Wvp-3d-4a9" id="hvz-eo-2mf"/>
