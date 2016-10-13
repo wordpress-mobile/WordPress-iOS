@@ -4,66 +4,66 @@ import XCTest
 // MARK: - Enum mapping tests
 
 @available(iOS 10, *)
-class WPFeedbackGeneratorTests: XCTestCase {
+class WPFeedbackGeneratorMappingTests: XCTestCase {
     func testNotificationFeedbackGeneratorMapping() {
         let successType = WPNotificationFeedbackType.Success
-        XCTAssertEqual(successType.rawValue, successType.systemFeedbackType.rawValue)
+        XCTAssertEqual(successType.systemFeedbackType.rawValue, UINotificationFeedbackType.Success.rawValue)
 
         let warningType = WPNotificationFeedbackType.Warning
-        XCTAssertEqual(warningType.rawValue, warningType.systemFeedbackType.rawValue)
+        XCTAssertEqual(warningType.rawValue, UINotificationFeedbackType.Warning.rawValue)
 
         let errorType = WPNotificationFeedbackType.Error
-        XCTAssertEqual(errorType.rawValue, errorType.systemFeedbackType.rawValue)
+        XCTAssertEqual(errorType.rawValue, UINotificationFeedbackType.Error.rawValue)
     }
 
     func testImpactFeedbackGeneratorMapping() {
         let lightStyle = WPImpactFeedbackStyle.Light
-        XCTAssertEqual(lightStyle.rawValue, lightStyle.systemFeedbackStyle.rawValue)
+        XCTAssertEqual(lightStyle.systemFeedbackStyle.rawValue, UIImpactFeedbackStyle.Light.rawValue)
 
         let mediumStyle = WPImpactFeedbackStyle.Medium
-        XCTAssertEqual(mediumStyle.rawValue, mediumStyle.systemFeedbackStyle.rawValue)
+        XCTAssertEqual(mediumStyle.systemFeedbackStyle.rawValue, UIImpactFeedbackStyle.Medium.rawValue)
 
         let heavyStyle = WPImpactFeedbackStyle.Heavy
-        XCTAssertEqual(heavyStyle.rawValue, heavyStyle.systemFeedbackStyle.rawValue)
+        XCTAssertEqual(heavyStyle.systemFeedbackStyle.rawValue, UIImpactFeedbackStyle.Heavy.rawValue)
     }
 }
 
 // MARK: - Notification generator tests
 
 @available(iOS 10, *)
-extension WPFeedbackGeneratorTests {
-    func testUINotificationFeedbackGeneratorIsCalledForSuccess() {
-        let mockGenerator = MockNotificationGenerator()
-        WPNotificationFeedbackGenerator.generator = mockGenerator
+class WPNotificationFeedbackGeneratorTests: XCTestCase {
+    private var mockGenerator: MockNotificationGenerator? = nil
 
-        XCTAssertNil(mockGenerator.notificationType)
+    override func setUp() {
+        super.setUp()
+
+        mockGenerator = MockNotificationGenerator()
+        WPNotificationFeedbackGenerator.generator = mockGenerator
+    }
+
+    func testUINotificationFeedbackGeneratorIsCalledForSuccess() {
+        XCTAssertNil(mockGenerator?.notificationType)
         WPNotificationFeedbackGenerator.notificationOccurred(.Success)
-        XCTAssertEqual(mockGenerator.notificationType, UINotificationFeedbackType.Success)
+        XCTAssertEqual(mockGenerator?.notificationType, UINotificationFeedbackType.Success)
     }
 
     func testUINotificationFeedbackGeneratorIsCalledForWarning() {
-        let mockGenerator = MockNotificationGenerator()
-        WPNotificationFeedbackGenerator.generator = mockGenerator
-
-        XCTAssertNil(mockGenerator.notificationType)
+        XCTAssertNil(mockGenerator?.notificationType)
         WPNotificationFeedbackGenerator.notificationOccurred(.Warning)
-        XCTAssertEqual(mockGenerator.notificationType, UINotificationFeedbackType.Warning)
+        XCTAssertEqual(mockGenerator?.notificationType, UINotificationFeedbackType.Warning)
     }
 
     func testUINotificationFeedbackGeneratorIsCalledForError() {
-        let mockGenerator = MockNotificationGenerator()
-        WPNotificationFeedbackGenerator.generator = mockGenerator
-
-        XCTAssertNil(mockGenerator.notificationType)
+        XCTAssertNil(mockGenerator?.notificationType)
         WPNotificationFeedbackGenerator.notificationOccurred(.Error)
-        XCTAssertEqual(mockGenerator.notificationType, UINotificationFeedbackType.Error)
+        XCTAssertEqual(mockGenerator?.notificationType, UINotificationFeedbackType.Error)
     }
 }
 
 // MARK: - Impact generator tests
 
 @available(iOS 10, *)
-extension WPFeedbackGeneratorTests {
+class WPImpactFeedbackGeneratorTests: XCTestCase {
     func testUIImpactFeedbackGeneratorIsCalledForLightImpact() {
         let (lightGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(.Light)
 
@@ -110,7 +110,6 @@ private class MockImpactGenerator: WPImpactFeedbackGeneratorConformance {
         impactOccurredCalled = true
     }
 }
-
 
 private func impactGeneratorAndMockWithStyle(style: WPImpactFeedbackStyle) -> (WPImpactFeedbackGenerator, MockImpactGenerator) {
     let mockGenerator = MockImpactGenerator()
