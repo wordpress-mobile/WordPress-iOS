@@ -1720,7 +1720,7 @@ EditImageDetailsViewControllerDelegate
     [self.editorView.contentField focus];
     
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-    for (id<WPMediaAsset> asset in assets) {
+    for (id<WPMediaAsset> asset in [assets reverseObjectEnumerator]) {
         if ([asset isKindOfClass:[PHAsset class]]){
             [self addDeviceMediaAsset:(PHAsset *)asset];
         } else if ([asset isKindOfClass:[Media class]]) {

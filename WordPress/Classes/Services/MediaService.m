@@ -112,6 +112,7 @@
                                       targetUTI:assetUTI
                               maximumResolution:maximumResolution
                                stripGeoLocation:stripGeoLocation
+                                    synchronous:true
                                  successHandler:^(CGSize resultingSize) {
                                      [self createMediaForPost:postObjectID
                                                      mediaURL:mediaURL
