@@ -1,20 +1,21 @@
 import Foundation
 import SVProgressHUD
 
+
+struct ReaderPostMenuButtonTitles
+{
+    static let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
+    static let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
+    static let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing lets the user share a post to others.")
+    static let visit = NSLocalizedString("Visit", comment:"An option to visit the site to which a specific post belongs")
+    static let unfollow = NSLocalizedString("Unfollow Site", comment:"Verb. An option to unfollow a site.")
+    static let follow = NSLocalizedString("Follow Site", comment:"Verb. An option to follow a site.")
+}
+
+
 public class ReaderPostMenu
 {
     public static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
-
-    struct ReaderPostMenuButtonTitles
-    {
-        static let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
-        static let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
-        static let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing the lets the user share a post to others.")
-        static let visit = NSLocalizedString("Visit Site", comment:"An option to visit the site to which a specific post belongs")
-        static let unfollow = NSLocalizedString("Unfollow Site", comment:"Verb. An option to unfollow a site.")
-        static let follow = NSLocalizedString("Follow Site", comment:"Verb. An option to follow a site.")
-    }
-
 
     public class func showMenuForPost(post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
         // Create the action sheet
@@ -118,7 +119,12 @@ public class ReaderPostMenu
 
 
     private class func visitSiteForPost(post:ReaderPost, presentingViewController viewController:UIViewController) {
-        let siteURL = NSURL(string: post.blogURL)!
+        guard
+            let permalink = post.permaLink,
+            let siteURL = NSURL(string: permalink) else {
+                return
+        }
+
         let controller = WPWebViewController(URL: siteURL)
         controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
