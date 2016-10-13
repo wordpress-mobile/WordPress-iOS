@@ -3,11 +3,9 @@ import WordPressShared.WPStyleGuide
 
 @objc public class ReaderListStreamHeader: UIView, ReaderStreamHeader
 {
-    @IBOutlet private weak var innerContentView: UIView!
+    @IBOutlet private weak var borderedView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
-    @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
-    @IBOutlet private weak var contentBottomConstraint: NSLayoutConstraint!
 
     // Required by ReaderStreamHeader protocol.
     public var delegate: ReaderStreamHeaderDelegate?
@@ -23,6 +21,8 @@ import WordPressShared.WPStyleGuide
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderWidth = 1.0
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
     }
