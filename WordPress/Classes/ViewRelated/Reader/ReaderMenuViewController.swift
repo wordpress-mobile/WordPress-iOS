@@ -341,6 +341,8 @@ import WordPressShared
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         service.followTagNamed(tagName, withSuccess: { [weak self] in
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+
             // A successful follow makes the new tag the currentTopic.
             if let tag = service.currentTopic as? ReaderTagTopic {
                 self?.scrollToTag(tag)
@@ -348,6 +350,8 @@ import WordPressShared
 
             }, failure: { (error) in
                 DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
+
+                WPNotificationFeedbackGenerator.notificationOccurred(.Error)
 
                 let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
                 let message = error.localizedDescription
