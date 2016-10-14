@@ -1676,11 +1676,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        cell.accessoryType = .None
-        cell.selectionStyle = .None
-
         let postCell = cell as! ReaderPostCardCell
-
         let post = posts[indexPath.row]
 
         postCell.enableLoggedInFeatures = isLoggedIn
