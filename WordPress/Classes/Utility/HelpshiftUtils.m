@@ -111,18 +111,16 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 + (NSArray<NSString *> *)planTagsForAccount:(WPAccount *)account
 {
-    NSMutableSet<NSString *> *titles = [NSMutableSet set];
+    NSMutableSet<NSString *> *tags = [NSMutableSet set];
     for (Blog *blog in account.blogs) {
-        // Helpshift won't take any capitalized tag names, so convert to lowercase first
-        [titles addObject:[blog.planTitle lowercaseString]];
+        if (blog.planID == nil) {
+            continue;
+        }
+        NSString *tag = [NSString stringWithFormat:@"plan:%@", blog.planID];
+        [tags addObject:tag];
     }
 
-    // If there's more than one unique title, then there is a paid plan.
-    // Don't return the Free tag
-    if ([titles count] > 1) {
-        [titles removeObject:@"free"];
-    }
-    return [titles allObjects];
+    return [tags allObjects];
 }
 
 #pragma mark - HelpshiftSupport Delegate
