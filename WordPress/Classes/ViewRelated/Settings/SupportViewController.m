@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     if (helpshiftType == kHelpshiftWindowTypeFAQs) {
         [HelpshiftSupport showFAQs:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     } else if (helpshiftType == kHelpshiftWindowTypeConversation) {
-        [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
+        [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData, @"showSearchOnNewConversation": @"YES"}];
     }
 }
 
