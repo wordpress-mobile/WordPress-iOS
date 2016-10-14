@@ -28,13 +28,6 @@ public class ReaderCrossPostCell: UITableViewCell
 
     public var enableLoggedInFeatures: Bool = true
 
-    public override var backgroundColor: UIColor? {
-        didSet{
-            contentView.backgroundColor = backgroundColor
-            label?.backgroundColor = backgroundColor
-        }
-    }
-
     public override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setHighlighted(selected, animated: animated)
@@ -62,7 +55,8 @@ public class ReaderCrossPostCell: UITableViewCell
     // MARK: - Appearance
 
     private func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        label?.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
