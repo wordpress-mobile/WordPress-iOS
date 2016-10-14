@@ -789,9 +789,14 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         if !isLoaded {
             return
         }
-
         let controller = ReaderCommentsViewController(post: post)
-        navigationController?.pushViewController(controller, animated: true)
+        if WPDeviceIdentification.isiPad() {
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .FormSheet
+            presentViewController(navController, animated: true, completion: nil)
+        } else {
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
 
