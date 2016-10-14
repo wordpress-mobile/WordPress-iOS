@@ -802,7 +802,15 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
             return
         }
 
-        let service = ReaderPostService(managedObjectContext: post!.managedObjectContext)
+        guard let post = post else {
+            return
+        }
+
+        if !post.isLiked {
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+        }
+
+        let service = ReaderPostService(managedObjectContext: post.managedObjectContext)
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
