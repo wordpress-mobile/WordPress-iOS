@@ -1604,19 +1604,16 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
                 syncHelper.syncMoreContent()
             }
         }
-
+        guard cell.isKindOfClass(ReaderPostCardCell) || cell.isKindOfClass(ReaderCrossPostCell) else {
+            return
+        }
         // Bump the render tracker if necessary.
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
-        let railcar = post.railcarDictionary()
-        if post.isKindOfClass(ReaderGapMarker) || railcar == nil || post.rendered {
-            return
-        }
-        post.rendered = true
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+        if !post.rendered, let railcar = post.railcarDictionary() {
+            post.rendered = true
             WPAppAnalytics.track(.TrainTracksRender, withProperties: railcar)
-        })
+        }
     }
 
 
