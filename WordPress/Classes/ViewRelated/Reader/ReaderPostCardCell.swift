@@ -62,11 +62,6 @@ import WordPressShared
 
     public var enableLoggedInFeatures: Bool = true
 
-    public override var backgroundColor: UIColor? {
-        didSet{
-            contentView.backgroundColor = backgroundColor
-        }
-    }
 
     public override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -88,11 +83,13 @@ import WordPressShared
             return headerBlogButton.enabled
         }
         set {
-            headerBlogButton.enabled = newValue
-            if newValue {
-                blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
-            } else {
-                blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+            if headerBlogButton.enabled != newValue {
+                headerBlogButton.enabled = newValue
+                if newValue {
+                    blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+                } else {
+                    blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+                }
             }
         }
     }
@@ -161,7 +158,7 @@ import WordPressShared
         Applies the default styles to the cell's subviews
     */
     private func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
         borderedView.layer.borderWidth = 1.0
 
