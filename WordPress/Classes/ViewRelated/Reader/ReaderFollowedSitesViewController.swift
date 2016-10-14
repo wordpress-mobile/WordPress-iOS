@@ -206,11 +206,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         service.followSiteByURL(url, success: { [weak self] in
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
             SVProgressHUD.showSuccessWithStatus(success)
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
+
+            WPNotificationFeedbackGenerator.notificationOccurred(.Error)
+
             let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
             let description = error.localizedDescription
             self?.promptWithTitle(title, message: description)

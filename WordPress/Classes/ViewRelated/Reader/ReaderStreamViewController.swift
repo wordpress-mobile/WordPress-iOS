@@ -837,6 +837,7 @@ import WordPressComAnalytics
             // Solves a long-standing question from folks who ask 'why do I
             // have more likes than page views?'.
             ReaderHelpers.bumpPageViewForPost(post)
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
@@ -1329,8 +1330,13 @@ import WordPressComAnalytics
 
 
     func toggleFollowingForTag(topic:ReaderTagTopic) {
+        if !topic.following {
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+        }
+
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
         service.toggleFollowingForTag(topic, success: nil, failure: { (error:NSError?) in
+            WPNotificationFeedbackGenerator.notificationOccurred(.Error)
             self.updateStreamHeaderIfNeeded()
         })
         self.updateStreamHeaderIfNeeded()
@@ -1338,8 +1344,13 @@ import WordPressComAnalytics
 
 
     func toggleFollowingForSite(topic:ReaderSiteTopic) {
+        if !topic.following {
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+        }
+
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
         service.toggleFollowingForSite(topic, success:nil, failure: { (error:NSError?) in
+            WPNotificationFeedbackGenerator.notificationOccurred(.Error)
             self.updateStreamHeaderIfNeeded()
         })
         self.updateStreamHeaderIfNeeded()
@@ -1580,7 +1591,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
-
 
     public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Cache the cell's layout height as the currently known height, for estimation.
