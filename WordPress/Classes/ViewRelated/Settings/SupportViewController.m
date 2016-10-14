@@ -172,6 +172,10 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
         [self showLoadingSpinner];
 
         [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
+        NSArray *tags = [HelpshiftUtils planTagsForAccount:defaultAccount];
+        if (tags) {
+            [metaData setObject:tags forKey:HelpshiftSupportTagsKey];
+        }
 
         [defaultAccount.wordPressComRestApi GET:@"v1.1/me"
                          parameters:nil
