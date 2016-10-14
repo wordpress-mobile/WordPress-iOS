@@ -927,6 +927,8 @@ private extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func followSiteWithBlock(block: NotificationBlock) {
+        WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.NotificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
@@ -937,6 +939,8 @@ private extension NotificationDetailsViewController
     }
 
     func likeCommentWithBlock(block: NotificationBlock) {
+        WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.NotificationsCommentLiked, withBlogID: block.metaSiteID)
     }
@@ -996,8 +1000,11 @@ private extension NotificationDetailsViewController
     }
 
     func replyCommentWithBlock(block: NotificationBlock, content: String) {
+        WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+
         actionsService.replyCommentWithBlock(block, content: content, completion: { success in
             guard success else {
+                WPNotificationFeedbackGenerator.notificationOccurred(.Error)
                 self.displayReplyErrorWithBlock(block, content: content)
                 return
             }
@@ -1008,8 +1015,11 @@ private extension NotificationDetailsViewController
     }
 
     func updateCommentWithBlock(block: NotificationBlock, content: String) {
+        WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
+            WPNotificationFeedbackGenerator.notificationOccurred(.Error)
                 return
             }
             self.displayCommentUpdateErrorWithBlock(block, content: content)
