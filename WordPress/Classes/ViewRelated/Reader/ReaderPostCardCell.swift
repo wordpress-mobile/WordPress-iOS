@@ -460,10 +460,9 @@ import WordPressShared
     }
 
     private func configureActionStackViewIfNeeded() {
-        if !actionStackView.hidden && actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
-            actionStackView.hidden = true
-        } else  if actionStackView.hidden {
-            actionStackView.hidden = false
+        let actionsHidden = actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden
+        if actionStackView.hidden != actionsHidden {
+            actionStackView.hidden = actionsHidden
         }
     }
 
