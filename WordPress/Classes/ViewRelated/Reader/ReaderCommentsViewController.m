@@ -243,20 +243,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureNavbar
 {
-    self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
-
-    if (self.presentingViewController) {
-        NSString *title = NSLocalizedString(@"Close", @"Reader: Button text for closing the modal comments view.");
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title
-                                                                                 style:UIBarButtonItemStyleDone
-                                                                                target:self
-                                                                                action:@selector(closeBarButtonItemPressed:)];
-        return;
-    }
-
     // Don't show 'Reader' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.leftBarButtonItem = backButton;
+    self.navigationItem.backBarButtonItem = backButton;
+
+    self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
 }
 
 - (void)configurePostHeader
@@ -754,11 +745,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - Actions
-
-- (void)closeBarButtonItemPressed:(UIBarButtonItem *)button
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)tapRecognized:(id)sender
 {

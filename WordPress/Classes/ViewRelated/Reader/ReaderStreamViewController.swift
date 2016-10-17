@@ -1428,13 +1428,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
         var post = provider as! ReaderPost
         post = postInMainContext(post)!
         let controller = ReaderCommentsViewController(post: post)
-        if WPDeviceIdentification.isiPad() {
-            let navController = UINavigationController(rootViewController: controller)
-            navController.modalPresentationStyle = .FormSheet
-            presentViewController(navController, animated: true, completion: nil)
-        } else {
-            navigationController?.pushViewController(controller, animated: true)
-        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
