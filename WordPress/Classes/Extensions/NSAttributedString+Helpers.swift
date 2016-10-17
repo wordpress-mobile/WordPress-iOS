@@ -66,7 +66,7 @@ extension NSAttributedString
         // Trim Trailing
         range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
 
-        while range.length != 0 && NSMaxRange(range) == length {
+        while range.length != 0 && NSMaxRange(range) == trimmed.length {
             trimmed.replaceCharactersInRange(range, withString: String())
             range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
         }
