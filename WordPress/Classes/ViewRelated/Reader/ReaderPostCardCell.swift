@@ -30,7 +30,6 @@ import WordPressShared
     @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var tagButton: UIButton!
-    @IBOutlet private weak var wordCountLabel: UILabel!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
     @IBOutlet private weak var actionStackView: UIStackView!
 
@@ -167,7 +166,6 @@ import WordPressShared
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
-        WPStyleGuide.applyReaderCardWordCountLabelStyle(wordCountLabel)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
     }
@@ -182,7 +180,6 @@ import WordPressShared
         titleLabel.backgroundColor = UIColor.whiteColor()
         summaryLabel.backgroundColor = UIColor.whiteColor()
         tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
-        wordCountLabel.backgroundColor = UIColor.whiteColor()
         actionButtonLeft.titleLabel?.backgroundColor = UIColor.whiteColor()
         actionButtonRight.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
@@ -196,7 +193,6 @@ import WordPressShared
         configureSummary()
         configureAttribution()
         configureTag()
-        configureWordCount()
         configureActionButtons()
         configureActionStackViewIfNeeded()
     }
@@ -355,33 +351,6 @@ import WordPressShared
         }
         tagButton.setTitle(tag, forState: .Normal)
         tagButton.setTitle(tag, forState: .Highlighted)
-    }
-
-    private func configureWordCount() {
-        // Always reset the attributed string.
-        wordCountLabel.attributedText = nil
-
-        // For now, if showing the attribution view do not show the word count label
-        if !attributionView.hidden && !wordCountLabel.hidden {
-            wordCountLabel.hidden = true
-            return
-        }
-
-        if contentProvider!.wordCount() != nil {
-            let wordCount = contentProvider!.wordCount().integerValue
-            let readingTime = contentProvider!.readingTime().integerValue
-            wordCountLabel.attributedText = attributedTextForWordCount(wordCount, readingTime:readingTime)
-        }
-
-        if wordCountLabel.attributedText == nil {
-            if !wordCountLabel.hidden {
-                wordCountLabel.hidden = true
-            }
-        } else {
-            if wordCountLabel.hidden {
-                wordCountLabel.hidden = false
-            }
-        }
     }
 
     private func attributedTextForWordCount(wordCount:Int, readingTime:Int) -> NSAttributedString? {
