@@ -286,14 +286,14 @@ class NoteTableViewCell: WPTableViewCell
     private var separatorsView = SeparatorsView()
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var iconImageView: CircularImageView!
-    @IBOutlet private weak var noticonLabel: UILabel!
-    @IBOutlet private weak var noticonContainerView: UIView!
-    @IBOutlet private weak var noticonView: UIView!
-    @IBOutlet private weak var subjectLabel: UILabel!
-    @IBOutlet private weak var snippetLabel: UILabel!
-    @IBOutlet private weak var timestampLabel: UILabel!
+    @IBOutlet var iconImageView: CircularImageView!
+    @IBOutlet var noticonLabel: UILabel!
+    @IBOutlet var noticonContainerView: UIView!
+    @IBOutlet var noticonView: UIView!
+    @IBOutlet var subjectLabel: UILabel!
+    @IBOutlet var snippetLabel: UILabel!
+    @IBOutlet var timestampLabel: UILabel!
 
     // MARK: - Undo Overlay Optional
-    @IBOutlet private var undoOverlayView: NoteUndoOverlayView!
+    @IBOutlet var undoOverlayView: NoteUndoOverlayView!
 }
