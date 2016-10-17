@@ -99,7 +99,7 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999"/>
+                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999 (1pt padding)"/>
                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
                                             <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
