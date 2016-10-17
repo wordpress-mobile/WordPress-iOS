@@ -120,6 +120,7 @@ extension WPStyleGuide
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.contentLineSpacing
+        paragraphStyle.lineBreakMode = .ByTruncatingTail
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
