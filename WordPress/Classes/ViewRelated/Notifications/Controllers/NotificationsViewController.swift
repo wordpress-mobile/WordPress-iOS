@@ -210,7 +210,16 @@ class NotificationsViewController : UITableViewController
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        // Load the Subject + Snippet
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+            return CGFloat.min
+        }
+
+        // Old School Height Calculation
+        let subject = note.subjectBlock?.attributedSubjectText
+        let snippet = note.snippetBlock?.attributedSnippetText
+
+        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
