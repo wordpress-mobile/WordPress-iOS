@@ -13,11 +13,13 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     var attributedSubjectText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
-            return self.textWithStyles(Styles.subjectRegularStyle,
+        let attributedText = memoize {
+            let subject = self.textWithStyles(Styles.subjectRegularStyle,
                 quoteStyles:    Styles.subjectItalicsStyle,
                 rangeStylesMap: Constants.subjectRangeStylesMap,
                 linksColor:     nil)
+
+            return subject.trimNewlines()
         }
 
         return attributedText(MemoizeKeys.subject)
@@ -26,11 +28,13 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
     var attributedSnippetText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
-            return self.textWithStyles(Styles.snippetRegularStyle,
+        let attributedText = memoize {
+            let snippet = self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: nil,
                 linksColor:     nil)
+
+            return snippet.trimNewlines()
         }
 
         return attributedText(MemoizeKeys.snippet)
