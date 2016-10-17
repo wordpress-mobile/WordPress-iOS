@@ -1395,6 +1395,8 @@ EditImageDetailsViewControllerDelegate
         [self showFailedMediaRemovalAlert];
         return;
     }
+    //Make sure that we are saving the latest content on the editor.
+    [self autosaveContent];
     [self stopEditing];
     [self savePost];
     [self dismissEditView:YES];
@@ -1411,7 +1413,7 @@ EditImageDetailsViewControllerDelegate
     [self logSavePostStats];
 
     [self.view endEditing:YES];
-    
+
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
