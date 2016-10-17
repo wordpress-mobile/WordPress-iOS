@@ -39,7 +39,7 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
     var attributedHeaderTitleText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: Constants.headerTitleRangeStylesMap,
@@ -52,7 +52,7 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
     var attributedFooterText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: Constants.footerStylesMap,
@@ -71,7 +71,7 @@ extension NotificationBlock
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
 
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.contentBlockRegularStyle,
                 quoteStyles:    Styles.contentBlockBoldStyle,
                 rangeStylesMap: Constants.richRangeStylesMap,
@@ -85,7 +85,7 @@ extension NotificationBlock
     /// formatting that differs from regular notifications, such as centered texts.
     ///
     var attributedBadgeText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.badgeRegularStyle,
                 quoteStyles:    Styles.badgeBoldStyle,
                 rangeStylesMap: Constants.badgeRangeStylesMap,
