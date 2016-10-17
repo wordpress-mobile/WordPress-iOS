@@ -67,6 +67,8 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     private var didBumpPageViews = false
     private var footerViewHeightConstraintConstant = CGFloat(0.0)
 
+    private var interactivePopGestureDelegate: UIGestureRecognizerDelegate?
+
     private let sharingController = PostSharingController()
 
     public var post: ReaderPost? {
@@ -185,6 +187,8 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        nullifyInteractivePopGestureDelegate()
+
         // The UIApplicationDidBecomeActiveNotification notification is broadcast
         // when the app is resumed as a part of split screen multitasking on the iPad.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderDetailViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -203,12 +207,13 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
+        restoreInteractivePopGestureDelegate()
+
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
 
         richTextView.refreshLayout()
-
     }
 
 
@@ -252,6 +257,38 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         // Refresh media layout as our sizing may have changed if the user expanded
         // or shrank the split screen handle.
         richTextView.refreshLayout()
+    }
+
+
+    /// MARK: - Swipe to Pop gesture recognizer wrangling.
+
+    /// HACK: When the detail controller hides the navigation bar, the swipe to pop gesture
+    /// no longer works, even though the gesture is still enabled.  Since we want to
+    /// preserve the user's ability to go back by swiping from the edge, we borrow one of
+    /// the tricks from this SO article: https://stackoverflow.com/questions/24710258/no-swipe-back-when-hiding-navigation-bar-in-uinavigationcontroller
+    ///
+    /// We store the pop gesture recognizer's delegate and then nullify it. Should be called
+    /// when the view appears. The companion restoreInteractivePopGestureDelegate method should
+    /// be called when the view disappears.
+    ///
+    private func nullifyInteractivePopGestureDelegate() {
+        guard interactivePopGestureDelegate == nil else {
+            return
+        }
+
+        interactivePopGestureDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+
+    /// See the documentation for nullifyInteractivePopGestureDelegate() for usage.
+    ///
+    private func restoreInteractivePopGestureDelegate() {
+        guard interactivePopGestureDelegate != nil else {
+            return
+        }
+
+        navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureDelegate
+        interactivePopGestureDelegate = nil
     }
 
 
