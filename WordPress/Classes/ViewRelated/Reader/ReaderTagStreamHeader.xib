@@ -20,7 +20,7 @@
                             <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Lw5-mV-4oQ"/>
-                                <constraint firstAttribute="width" constant="32" id="g5H-RL-frL"/>
+                                <constraint firstAttribute="width" priority="999" constant="32" id="g5H-RL-frL"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="240" text="Tagname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f85-bJ-w04">

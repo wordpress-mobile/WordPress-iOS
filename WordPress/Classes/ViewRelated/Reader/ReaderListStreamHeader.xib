@@ -20,7 +20,7 @@
                             <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="KxR-cT-K27"/>
-                                <constraint firstAttribute="width" constant="32" id="bVN-si-EGf"/>
+                                <constraint firstAttribute="width" priority="999" constant="32" id="bVN-si-EGf"/>
                             </constraints>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TVc-y9-fjf">
