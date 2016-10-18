@@ -573,7 +573,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     NSString *extra = @"";
     if (self.account) {
-        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.dotComID];
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@ plan: %@ (%@)", self.account ? self.account.username : @"NO", self.dotComID, self.planTitle, self.planID];
     } else if (self.jetpackAccount) {
         extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
     } else {
