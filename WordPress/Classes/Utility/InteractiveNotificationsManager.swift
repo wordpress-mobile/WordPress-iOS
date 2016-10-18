@@ -4,14 +4,14 @@ import Foundation
 /// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
 /// UIUserNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsHandler : NSObject
+final public class InteractiveNotificationsManager : NSObject
 {
     // MARK: - Public Properties
 
 
-    /// Returns the shared PushNotificationsManager instance.
+    /// Returns the shared InteractiveNotificationsManager instance.
     ///
-    static let sharedInstance = InteractiveNotificationsHandler()
+    static let sharedInstance = InteractiveNotificationsManager()
 
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
