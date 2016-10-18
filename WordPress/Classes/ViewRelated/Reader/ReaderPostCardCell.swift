@@ -48,6 +48,7 @@ import WordPressShared
     public weak var contentProvider: ReaderPostContentProvider?
 
     private var featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
+    private var featuredImageDesiredWidth = CGFloat()
 
     private let summaryMaxNumberOfLines = 3
     private let avgWordsPerMinuteRead = 250
@@ -141,6 +142,11 @@ import WordPressShared
         contentStackView.layoutIfNeeded()
     }
 
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configureFeaturedImageIfNeeded()
+    }
+
 
     // MARK: - Configuration
 
@@ -188,7 +194,7 @@ import WordPressShared
         self.contentProvider = contentProvider
 
         configureHeader()
-        configureCardImage()
+        configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
         configureAttribution()
@@ -218,51 +224,53 @@ import WordPressShared
         bylineLabel.text = byline
     }
 
-    private func configureCardImage() {
-        if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
+    private func configureFeaturedImageIfNeeded() {
 
-            if featuredImageView.hidden {
-                featuredImageView.hidden = false
-            }
-            if featuredMediaHeightConstraint.constant != featuredMediaHeightConstraintConstant {
-                featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-            }
-
-            if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
-                return // Don't reload an image already being displayed.
-            }
-
-            // Always clear the previous image so there is no stale or unexpected image
-            // momentarily visible.
-            featuredImageView.image = nil
-            var url = featuredImageURL
-            let desiredWidth = self.featuredImageView.frame.width
-            let size = CGSize(width:desiredWidth, height:featuredMediaHeightConstraintConstant)
-            if !(contentProvider!.isPrivate()) {
-                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
-
-            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                // private wpcom image needs special handling.
-                let scale = UIScreen.mainScreen().scale
-                let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
-                url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-                let request = requestForURL(url)
-                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
-
-            } else {
-                // private but not a wpcom hosted image
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
-            }
-            currentLoadedCardImageURL = featuredImageURL.absoluteString
-
-        } else {
+        guard let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
             if !featuredImageView.hidden {
                 featuredImageView.hidden = true
             }
+            return
         }
+        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
+
+            configureFeaturedImage(featuredImageURL)
+        }
+    }
+
+    private func configureFeaturedImage(featuredImageURL: NSURL) {
+        if featuredImageView.hidden {
+            featuredImageView.hidden = false
+        }
+        if featuredMediaHeightConstraint.constant != featuredMediaHeightConstraintConstant {
+            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+        }
+
+        // Always clear the previous image so there is no stale or unexpected image
+        // momentarily visible.
+        featuredImageView.image = nil
+        var url = featuredImageURL
+        featuredImageDesiredWidth = featuredImageView.frame.width
+        let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
+        if !(contentProvider!.isPrivate()) {
+            url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+
+        } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
+            // private wpcom image needs special handling.
+            let scale = UIScreen.mainScreen().scale
+            let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
+            url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
+            let request = requestForURL(url)
+            featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+
+        } else {
+            // private but not a wpcom hosted image
+            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+        }
+        currentLoadedCardImageURL = featuredImageURL.absoluteString
     }
 
     private func refreshImageHeaderAuthorization() {
