@@ -1284,6 +1284,17 @@ import WordPressComAnalytics
     }
 
 
+    public func configurePostCardCell(cell: UITableViewCell, post: ReaderPost) {
+
+        let postCell = cell as! ReaderPostCardCell
+
+        postCell.enableLoggedInFeatures = isLoggedIn
+        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
+        postCell.configureCell(post)
+        postCell.delegate = self
+    }
+
+
     public func configureCrossPostCell(cell: ReaderCrossPostCell, atIndexPath indexPath:NSIndexPath) {
         if tableViewHandler.resultsController.fetchedObjects == nil {
             return
@@ -1581,7 +1592,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         }
 
         let cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell
-        configureCell(cell, atIndexPath: indexPath)
+        configurePostCardCell(cell, post: post)
         return cell
     }
 
@@ -1662,20 +1673,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let topic = readerTopic else {
-            return
-        }
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
-            return
-        }
-
-        let postCell = cell as! ReaderPostCardCell
-        let post = posts[indexPath.row]
-
-        postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
-        postCell.configureCell(post)
-        postCell.delegate = self
+        // Do nothing
     }
 
 }
