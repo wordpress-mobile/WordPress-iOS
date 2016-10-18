@@ -56,6 +56,7 @@ import Foundation
     public var attributedText: NSAttributedString! {
         set {
             textView.attributedText = newValue
+            invalidateIntrinsicContentSize()
             renderAttachments()
         }
         get {
