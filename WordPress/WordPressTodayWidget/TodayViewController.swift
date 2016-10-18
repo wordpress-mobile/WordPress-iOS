@@ -18,7 +18,6 @@ class TodayViewController: UIViewController {
     var timeZone: NSTimeZone?
     var oauthToken: String?
 
-    var siteNameLabelHeightConstraint: NSLayoutConstraint!
     var configureMeLabelHeightConstraint: NSLayoutConstraint!
 
     var siteName: String = ""
@@ -46,9 +45,6 @@ class TodayViewController: UIViewController {
         visitorsCountLabel.text = "-"
         viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
         viewsCountLabel.text = "-"
-
-        siteNameLabelHeightConstraint = NSLayoutConstraint(item: siteNameLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
-        siteNameLabel.addConstraint(siteNameLabelHeightConstraint)
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
