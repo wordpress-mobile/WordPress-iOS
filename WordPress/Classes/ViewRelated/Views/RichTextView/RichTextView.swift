@@ -115,6 +115,13 @@ import Foundation
         }
     }
 
+    public var preferredMaxLayoutWidth: CGFloat? {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+
     // MARK: - TextKit Getters
     public var layoutManager: NSLayoutManager {
         get {
@@ -185,6 +192,27 @@ import Foundation
             self.textView.addSubview(unwrappedView)
             self.attachmentViews.append(unwrappedView)
         }
+    }
+
+    // MARK: - Overriden Methods
+    public override func intrinsicContentSize() -> CGSize {
+        let maxWidth = preferredMaxLayoutWidth ?? frame.width
+        let maxSize = CGSize(width: maxWidth, height: CGFloat.max)
+        let size = sizeThatFits(maxSize)
+
+        return size
+    }
+
+    public override func sizeThatFits(maxSize: CGSize) -> CGSize {
+        guard let textView = textView else {
+            return maxSize
+        }
+
+        var requiredSize = textView.sizeThatFits(maxSize)
+        requiredSize.width = ceil(requiredSize.width)
+        requiredSize.height = ceil(requiredSize.height)
+
+        return requiredSize
     }
 
 
