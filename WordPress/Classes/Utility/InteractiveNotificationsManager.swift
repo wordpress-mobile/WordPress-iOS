@@ -215,7 +215,16 @@ final public class InteractiveNotificationsManager : NSObject
         case CommentReplyWithLike   = "replyto-like-comment"
 
         var actions : [NoteActionDefinition] {
-            return self.dynamicType.actionsMap[self] ?? [NoteActionDefinition]()
+            switch self {
+            case CommentApprove:
+                return [.CommentApprove]
+            case CommentLike:
+                return [.CommentLike]
+            case CommentReply:
+                return [.CommentReply]
+            case CommentReplyWithLike:
+                return [.CommentLike, .CommentReply]
+            }
         }
 
         var identifier : String {
@@ -223,13 +232,6 @@ final public class InteractiveNotificationsManager : NSObject
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
-
-        private static let actionsMap = [
-            CommentApprove          : [NoteActionDefinition.CommentApprove],
-            CommentLike             : [NoteActionDefinition.CommentLike],
-            CommentReply            : [NoteActionDefinition.CommentReply],
-            CommentReplyWithLike    : [NoteActionDefinition.CommentLike, NoteActionDefinition.CommentReply]
-        ]
     }
 
 
@@ -242,7 +244,14 @@ final public class InteractiveNotificationsManager : NSObject
         case CommentReply   = "COMMENT_REPLY"
 
         var description : String {
-            return self.dynamicType.descriptionMap[self] ?? String()
+            switch self {
+            case CommentApprove:
+                return NSLocalizedString("Approve", comment: "Approve comment (verb)")
+            case CommentLike:
+                return NSLocalizedString("Like", comment: "Like (verb)")
+            case CommentReply:
+                return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+            }
         }
 
         var destructive : Bool {
@@ -262,11 +271,5 @@ final public class InteractiveNotificationsManager : NSObject
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
-
-        private static let descriptionMap = [
-            CommentApprove  : NSLocalizedString("Approve", comment: "Approve comment (verb)"),
-            CommentLike     : NSLocalizedString("Like", comment: "Like (verb)"),
-            CommentReply    : NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
-        ]
     }
 }
