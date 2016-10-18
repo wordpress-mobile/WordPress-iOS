@@ -97,8 +97,6 @@ public class CommentsTableViewCell : WPTableViewCell
     private func refreshBackground() {
         let color = Style.backgroundColor(isApproved: approved)
         backgroundColor = color
-        detailsLabel.backgroundColor = color
-        timestampLabel.backgroundColor = color
     }
 
     private func refreshImages() {
