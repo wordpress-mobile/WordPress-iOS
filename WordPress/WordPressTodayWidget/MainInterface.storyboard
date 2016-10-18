@@ -18,86 +18,101 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="215"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="35" id="4Bj-fd-zjx"/>
-                                        </constraints>
-                                        <state key="normal" title="Open WordPress">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
+                                        <frame key="frameInset" width="288" height="126"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pOr-4w-uA8">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
+                                                <frame key="frameInset" width="288" height="91"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
+                                                <frame key="frameInset" minY="91" width="288" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="750" constant="35" id="4Bj-fd-zjx"/>
+                                                </constraints>
+                                                <state key="normal" title="Open WordPress">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
+                                        <frame key="frameInset" minY="126" width="288" height="74"/>
+                                        <subviews>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                                                <frame key="frameInset" width="288" height="20"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8">
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="zY4-tK-hym">
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pOr-4w-uA8">
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="zY4-tK-hym">
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="3E7-hb-kCQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" id="4re-Bb-2eE"/>
+                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="6ed-kI-WYZ"/>
+                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="HFP-yB-zuC"/>
+                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="TbZ-Oq-ahc" secondAttribute="top" id="UzP-ia-oTh"/>
+                                            <constraint firstAttribute="trailing" secondItem="vd1-ys-xI8" secondAttribute="trailing" id="f0S-4g-7Wm"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="3E7-hb-kCQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" id="4re-Bb-2eE"/>
-                                    <constraint firstItem="vd1-ys-xI8" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="6ed-kI-WYZ"/>
-                                    <constraint firstItem="vd1-ys-xI8" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="HFP-yB-zuC"/>
-                                    <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="TbZ-Oq-ahc" secondAttribute="top" id="UzP-ia-oTh"/>
-                                    <constraint firstAttribute="trailing" secondItem="vd1-ys-xI8" secondAttribute="trailing" id="f0S-4g-7Wm"/>
+                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="top" id="0Ze-Rg-4jY"/>
+                                    <constraint firstAttribute="trailing" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="1YW-lt-C2t"/>
+                                    <constraint firstAttribute="bottom" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="L9x-tD-ssX"/>
+                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="top" secondItem="SgL-dy-2cu" secondAttribute="bottom" id="Ylf-IU-P1a"/>
+                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="j9j-hx-ycm"/>
+                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="top" secondItem="SgL-dy-2cu" secondAttribute="bottom" id="k1M-Y6-8Mz"/>
+                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="pUZ-qW-3lK"/>
+                                    <constraint firstAttribute="trailing" secondItem="SgL-dy-2cu" secondAttribute="trailing" id="qjg-dJ-QwA"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="5SE-aA-kQw"/>
-                            <constraint firstItem="SgL-dy-2cu" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" id="65c-bG-icM"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="6SG-5x-VBP"/>
-                            <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="8Xo-ga-QEv"/>
-                            <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="JDg-l8-Un9"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="Yns-YH-G0f"/>
-                            <constraint firstItem="TbZ-Oq-ahc" firstAttribute="top" secondItem="SgL-dy-2cu" secondAttribute="bottom" id="bqk-7P-1AI"/>
-                            <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="pLn-lu-92s"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="GOY-fN-4pW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="57z-E7-fbN" secondAttribute="trailing" id="H8m-vH-Jtg"/>
+                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="WT2-LW-4kK"/>
+                            <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="chN-zF-Uvf"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
