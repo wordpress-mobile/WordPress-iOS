@@ -196,21 +196,12 @@ import Foundation
 
     // MARK: - Overriden Methods
     public override func intrinsicContentSize() -> CGSize {
-        let maxWidth = preferredMaxLayoutWidth ?? frame.width
-        let maxSize = CGSize(width: maxWidth, height: CGFloat.max)
-        let size = sizeThatFits(maxSize)
-
-        return size
-    }
-
-    public override func sizeThatFits(maxSize: CGSize) -> CGSize {
-        guard let textView = textView else {
-            return maxSize
+        guard let maxWidth = preferredMaxLayoutWidth else {
+            return super.intrinsicContentSize()
         }
 
-        var requiredSize = textView.sizeThatFits(maxSize)
-        requiredSize.width = ceil(requiredSize.width)
-        requiredSize.height = ceil(requiredSize.height)
+        let maxSize = CGSize(width: maxWidth, height: CGFloat.max)
+        let requiredSize = textView.sizeThatFits(maxSize)
 
         return requiredSize
     }
