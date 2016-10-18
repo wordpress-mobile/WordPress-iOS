@@ -130,7 +130,8 @@ final public class InteractiveNotificationsManager : NSObject
     /// Checks whether there is a default WordPress.com account available, or not
     ///
     private func defaultAccountAvailable() -> Bool {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
         return service.defaultWordPressComAccount() != nil
     }
 
