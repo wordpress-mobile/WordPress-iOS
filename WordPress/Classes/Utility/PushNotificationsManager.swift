@@ -131,14 +131,12 @@ final public class PushNotificationsManager : NSObject
         // Register against WordPress.com
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        noteService.registerDeviceForPushNotifications(newToken,
-            success: { (deviceId: String) -> () in
-                DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
-                self.deviceId = deviceId
-            },
-            failure: { (error: NSError) -> Void in
-                DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
-            })
+        noteService.registerDeviceForPushNotifications(newToken, success: { deviceId in
+            DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
+            self.deviceId = deviceId
+        }, failure: { error in
+            DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
+        })
     }
 
 
@@ -163,17 +161,14 @@ final public class PushNotificationsManager : NSObject
 
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        noteService.unregisterDeviceForPushNotifications(knownDeviceId,
-            success: {
-                DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
+        noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
+            DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
 
-                self.deviceToken = nil
-                self.deviceId = nil
-
-            },
-            failure: { (error: NSError) -> Void in
-                DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
-            })
+            self.deviceToken = nil
+            self.deviceId = nil
+        }, failure: { error in
+            DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
+        })
     }
 
 
@@ -328,14 +323,14 @@ final public class PushNotificationsManager : NSObject
         }
 
         let simperium = WordPressAppDelegate.sharedInstance().simperium
-        simperium.backgroundFetchWithCompletion({ (result: UIBackgroundFetchResult) in
+        simperium.backgroundFetchWithCompletion { result in
             if result == .NewData {
                 DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
             } else {
                 DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
             }
             completionHandler?(result)
-        })
+        }
 
         return true
     }
