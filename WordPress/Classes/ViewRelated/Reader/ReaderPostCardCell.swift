@@ -303,7 +303,7 @@ import WordPressShared
     }
 
     private func configureTitle() {
-        if let title = contentProvider?.titleForDisplay() {
+        if let title = contentProvider?.titleForDisplay() where !title.isEmpty() {
             let attributes = readerCardTitleAttributes as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
             if titleLabel.hidden {
@@ -318,7 +318,7 @@ import WordPressShared
     }
 
     private func configureSummary() {
-        if let summary = contentProvider?.contentPreviewForDisplay() {
+        if let summary = contentProvider?.contentPreviewForDisplay() where !summary.isEmpty() {
             let attributes = readerCardSummaryAttributes as! [String: AnyObject]
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
             if summaryLabel.hidden {
