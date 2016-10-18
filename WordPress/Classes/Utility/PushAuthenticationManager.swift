@@ -13,10 +13,12 @@ import WordPressComAnalytics
     // MARK: - Public Methods
     //
     public var alertControllerProxy = UIAlertControllerProxy()
-    public let pushAuthenticationService:PushAuthenticationService
+    public let pushAuthenticationService: PushAuthenticationService
 
     override convenience init() {
-        self.init(pushAuthenticationService: PushAuthenticationService(managedObjectContext: ContextManager.sharedInstance().mainContext))
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PushAuthenticationService(managedObjectContext: context)
+        self.init(pushAuthenticationService: service)
     }
 
     public init(pushAuthenticationService: PushAuthenticationService) {
