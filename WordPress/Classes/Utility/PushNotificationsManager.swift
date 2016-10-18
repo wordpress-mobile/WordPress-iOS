@@ -4,13 +4,6 @@ import WordPressComAnalytics
 
 
 
-/// These notifications are sent when the user Registers / Unregisters for Push Notifications.
-///
-public let NotificationsManagerDidRegisterDeviceToken   = "NotificationsManagerDidRegisterDeviceToken"
-public let NotificationsManagerDidUnregisterDeviceToken = "NotificationsManagerDidUnregisterDeviceToken"
-
-
-
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
@@ -145,10 +138,6 @@ final public class PushNotificationsManager : NSObject
             failure: { (error: NSError) -> Void in
                 DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
             })
-
-        // Notify Listeners
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(NotificationsManagerDidRegisterDeviceToken, object: newToken)
     }
 
 
@@ -179,9 +168,6 @@ final public class PushNotificationsManager : NSObject
 
                 self.deviceToken = nil
                 self.deviceId = nil
-
-                let notificationCenter = NSNotificationCenter.defaultCenter()
-                notificationCenter.postNotificationName(NotificationsManagerDidUnregisterDeviceToken, object: nil)
 
             },
             failure: { (error: NSError) -> Void in
