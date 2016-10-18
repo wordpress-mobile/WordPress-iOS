@@ -149,7 +149,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     
     // Notifications
     [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
+    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
