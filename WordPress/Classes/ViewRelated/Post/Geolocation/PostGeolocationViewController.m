@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         _tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
         _tableView.hidden = YES;
         _tableView.delegate = self;
-        _tableView.rowHeight = 60.0;
+        _tableView.rowHeight = 90;
         UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         _tableView.backgroundView = visualEffect;
         _tableView.backgroundColor = [UIColor clearColor];
@@ -294,7 +294,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             CLPlacemark *placemark = self.placemarks[indexPath.row];
             cell.textLabel.text = placemark.name;
             cell.detailTextLabel.text = placemark.formattedAddress;
-            cell.detailTextLabel.numberOfLines = 0;
+            cell.detailTextLabel.numberOfLines = 3;
             cell.detailTextLabel.font = [WPStyleGuide regularTextFont];
             cell.detailTextLabel.textColor = [WPStyleGuide darkGrey];
             cell.backgroundColor = [UIColor clearColor];
@@ -326,7 +326,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             } else {
                 [self.geoView setCoordinate:coordinate];
             }
-            self.geoView.address = [NSString stringWithFormat:@"%@, %@]",placemark.name, placemark.formattedAddress];
+            self.geoView.address = [NSString stringWithFormat:@"%@, %@]", placemark.name, placemark.formattedAddress];
             self.post.geolocation = self.geoView.coordinate;
         }
             break;
