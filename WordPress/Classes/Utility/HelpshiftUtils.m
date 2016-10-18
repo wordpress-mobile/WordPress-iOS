@@ -3,6 +3,8 @@
 #import "ApiCredentials.h"
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
+#import "WPAccount.h"
+#import "Blog.h"
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
@@ -105,6 +107,20 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 + (void)refreshUnreadNotificationCount
 {
     [HelpshiftSupport getNotificationCountFromRemote:YES];
+}
+
++ (NSArray<NSString *> *)planTagsForAccount:(WPAccount *)account
+{
+    NSMutableSet<NSString *> *tags = [NSMutableSet set];
+    for (Blog *blog in account.blogs) {
+        if (blog.planID == nil) {
+            continue;
+        }
+        NSString *tag = [NSString stringWithFormat:@"plan:%@", blog.planID];
+        [tags addObject:tag];
+    }
+
+    return [tags allObjects];
 }
 
 #pragma mark - HelpshiftSupport Delegate
