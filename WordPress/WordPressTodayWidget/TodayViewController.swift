@@ -4,18 +4,14 @@ import WordPressComStatsiOS
 import WordPressShared
 
 class TodayViewController: UIViewController {
+    @IBOutlet weak var unconfiguredView: UIStackView!
     @IBOutlet var siteNameLabel: UILabel!
+    @IBOutlet weak var configuredView: UIStackView!
     @IBOutlet var countContainerView: UIView!
-    @IBOutlet var countContainerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var visitorsCountLabel: UILabel!
     @IBOutlet var visitorsLabel: UILabel!
     @IBOutlet var viewsCountLabel: UILabel!
     @IBOutlet var viewsLabel: UILabel!
-    @IBOutlet var configureMeLabel: UILabel!
-    @IBOutlet var configureMeLabelRightConstraint: NSLayoutConstraint!
-    @IBOutlet var configureMeButtonContainerView: UIView!
-    @IBOutlet var configureMeButtonContainerViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var configureMeButtonContainerViewRightConstraint: NSLayoutConstraint!
     @IBOutlet var configureMeButton: UIButton!
 
     var siteID: NSNumber?
@@ -29,8 +25,6 @@ class TodayViewController: UIViewController {
     var visitorCount: String = ""
     var viewCount: String = ""
     var standardLeftMargin: CGFloat = 0.0
-    var standardButtonContainerViewHeight: CGFloat = 0.0
-    var standardCountContainerViewHeight: CGFloat = 0.0
 
     var isConfigured = false
 
@@ -41,7 +35,7 @@ class TodayViewController: UIViewController {
 
         let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue()).resizableImageWithCapInsets(UIEdgeInsetsZero)
 
-        configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
+//        configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
         configureMeButton.setTitle(NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app"), forState: .Normal)
         configureMeButton.setBackgroundImage(backgroundImage, forState: .Normal)
         configureMeButton.clipsToBounds = true
@@ -55,11 +49,6 @@ class TodayViewController: UIViewController {
 
         siteNameLabelHeightConstraint = NSLayoutConstraint(item: siteNameLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
         siteNameLabel.addConstraint(siteNameLabelHeightConstraint)
-        configureMeLabelHeightConstraint = NSLayoutConstraint(item: configureMeLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
-        configureMeLabel.addConstraint(configureMeLabelHeightConstraint)
-
-        standardButtonContainerViewHeight = configureMeButtonContainerViewHeightConstraint.constant
-        standardCountContainerViewHeight = countContainerViewHeightConstraint.constant
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
@@ -105,14 +94,8 @@ class TodayViewController: UIViewController {
     }
 
     func updateUIBasedOnWidgetConfiguration() {
-        siteNameLabel.hidden = !isConfigured
-        siteNameLabelHeightConstraint.active = !isConfigured
-        countContainerView.hidden = !isConfigured
-        countContainerViewHeightConstraint.constant = isConfigured ? standardCountContainerViewHeight : 8
-        configureMeButtonContainerView.hidden = isConfigured
-        configureMeButtonContainerViewHeightConstraint.constant = isConfigured ? 0 : standardButtonContainerViewHeight
-        configureMeLabel.hidden = isConfigured
-        configureMeLabelHeightConstraint.active = isConfigured
+        unconfiguredView.hidden = isConfigured
+        configuredView.hidden = !isConfigured
 
         view.setNeedsUpdateConstraints()
     }
@@ -140,8 +123,6 @@ class TodayViewController: UIViewController {
 extension TodayViewController: NCWidgetProviding {
     func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
         standardLeftMargin = defaultMarginInsets.left
-        configureMeLabelRightConstraint.constant = standardLeftMargin
-        configureMeButtonContainerViewRightConstraint.constant = standardLeftMargin
 
         return defaultMarginInsets
     }
