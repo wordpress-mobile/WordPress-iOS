@@ -19,7 +19,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Stores the Apple's Push Notifications Token
     ///
-    var deviceToken : String? {
+    var deviceToken: String? {
         get {
             return NSUserDefaults.standardUserDefaults().stringForKey(deviceTokenKey) ?? String()
         }
@@ -32,7 +32,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Stores the WordPress.com Device identifier
     ///
-    var deviceId : String? {
+    var deviceId: String? {
         get {
             return standardUserDefaults.stringForKey(deviceIdKey) ?? String()
         }
@@ -45,14 +45,14 @@ final public class PushNotificationsManager : NSObject
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    var sharedApplication : UIApplication {
+    var sharedApplication: UIApplication {
         return UIApplication.sharedApplication()
     }
 
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    var applicationState : UIApplicationState {
+    var applicationState: UIApplicationState {
         return sharedApplication.applicationState
     }
 
@@ -64,16 +64,17 @@ final public class PushNotificationsManager : NSObject
 
     /// Returns the Standard User Defaults.
     ///
-    private var standardUserDefaults : NSUserDefaults {
+    private var standardUserDefaults: NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
 
 
     /// Indicates whether there is a default WordPress.com accounta available, or not
     ///
-    private var wordPressDotComAvailable : Bool {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return accountService.defaultWordPressComAccount() != nil
+    private var wordPressDotComAvailable: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        return service.defaultWordPressComAccount() != nil
     }
 
 
