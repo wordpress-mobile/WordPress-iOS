@@ -15,6 +15,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
+@property (nonatomic, strong) MKLocalSearch *search;
 
 @end
 
@@ -119,9 +120,12 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = query;
     request.region = region;
-    MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
+    if (self.search.isSearching) {
+        [self.search cancel];
+    }
+    self.search = [[MKLocalSearch alloc] initWithRequest:request];
 
-    [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
+    [self.search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
     {
         if (error) {
             completionBlock(nil, error);
