@@ -178,7 +178,7 @@
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="X6N-vG-hr3">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lUA-Mu-a4u">
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAQ-jD-BAz" customClass="CircularImageView" customModule="WordPress">
                                                                 <constraints>
@@ -186,29 +186,24 @@
                                                                     <constraint firstAttribute="height" priority="999" constant="20" id="IzH-3N-1dv"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="c2K-XN-Xo5">
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-ci-UB0">
-                                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-ci-UB0">
+                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="YBQ-xA-5CN" userLabel="View (spacer)">
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </view>
                                                         </subviews>
-                                                        <constraints>
-                                                            <constraint firstItem="c2K-XN-Xo5" firstAttribute="height" secondItem="X6N-vG-hr3" secondAttribute="height" id="fM5-xr-5Ck"/>
-                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="X6N-vG-hr3" secondAttribute="bottom" id="3cP-D4-KBG"/>
-                                                    <constraint firstItem="X6N-vG-hr3" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="F9u-Jl-W57"/>
-                                                    <constraint firstItem="X6N-vG-hr3" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="OdI-GT-bqh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="X6N-vG-hr3" secondAttribute="trailing" id="PTA-Qe-T0Z"/>
-                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="tOq-4U-2r6"/>
+                                                    <constraint firstAttribute="trailing" secondItem="lUA-Mu-a4u" secondAttribute="trailing" id="29T-ZN-CUn"/>
+                                                    <constraint firstItem="lUA-Mu-a4u" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="Jbh-tW-3mu"/>
+                                                    <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" id="Wvl-3O-WyW"/>
+                                                    <constraint firstItem="lUA-Mu-a4u" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="f82-aL-C6b"/>
                                                 </constraints>
                                                 <connections>
                                                     <outlet property="imageView" destination="TAQ-jD-BAz" id="VaQ-fj-5Zv"/>
