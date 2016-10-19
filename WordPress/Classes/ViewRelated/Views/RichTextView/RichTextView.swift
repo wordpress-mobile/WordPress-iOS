@@ -56,6 +56,7 @@ import Foundation
     public var attributedText: NSAttributedString! {
         set {
             textView.attributedText = newValue
+            invalidateIntrinsicContentSize()
             renderAttachments()
         }
         get {
@@ -113,6 +114,13 @@ import Foundation
             return textView.scrollsToTop
         }
     }
+
+    public var preferredMaxLayoutWidth: CGFloat? {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
 
     // MARK: - TextKit Getters
     public var layoutManager: NSLayoutManager {
@@ -184,6 +192,18 @@ import Foundation
             self.textView.addSubview(unwrappedView)
             self.attachmentViews.append(unwrappedView)
         }
+    }
+
+    // MARK: - Overriden Methods
+    public override func intrinsicContentSize() -> CGSize {
+        guard let maxWidth = preferredMaxLayoutWidth else {
+            return super.intrinsicContentSize()
+        }
+
+        let maxSize = CGSize(width: maxWidth, height: CGFloat.max)
+        let requiredSize = textView.sizeThatFits(maxSize)
+
+        return requiredSize
     }
 
 
