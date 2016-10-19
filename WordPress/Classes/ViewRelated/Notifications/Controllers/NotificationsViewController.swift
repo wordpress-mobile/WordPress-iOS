@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import Simperium
 import WordPressComAnalytics
 import WordPress_AppbotX
 import WordPressShared
