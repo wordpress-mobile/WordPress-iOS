@@ -225,8 +225,10 @@ import WordPressShared
     }
 
     private func configureFeaturedImageIfNeeded() {
-
-        guard let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() else {
+        guard let content = contentProvider else {
+            return
+        }
+        guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
             if !featuredImageView.hidden {
