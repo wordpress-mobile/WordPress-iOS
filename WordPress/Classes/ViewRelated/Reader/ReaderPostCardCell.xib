@@ -193,19 +193,19 @@
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
-                <outlet property="actionButtonLeft" destination="3W2-KV-isX" id="3xr-Lf-bbg"/>
-                <outlet property="actionButtonRight" destination="z4x-8W-5Dc" id="h6g-zT-jai"/>
                 <outlet property="actionStackView" destination="Wzi-SV-nkT" id="4lH-Qh-6iA"/>
                 <outlet property="attributionView" destination="nU7-76-6MV" id="Pjl-4F-R7r"/>
                 <outlet property="avatarImageView" destination="7Qj-iX-iqv" id="sjW-0m-Xxe"/>
                 <outlet property="blogNameLabel" destination="Wvp-3d-4a9" id="hvz-eo-2mf"/>
                 <outlet property="borderedView" destination="kha-YG-ZlO" id="06S-Kz-yUF"/>
                 <outlet property="bylineLabel" destination="EQf-tj-ltv" id="z5e-oO-0eF"/>
+                <outlet property="commentActionButton" destination="3W2-KV-isX" id="hpZ-8G-U5a"/>
                 <outlet property="contentStackView" destination="k3b-5o-H9u" id="B82-c0-vlU"/>
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
                 <outlet property="featuredMediaHeightConstraint" destination="6Qh-iW-StJ" id="uf6-jH-tzf"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
+                <outlet property="likeActionButton" destination="z4x-8W-5Dc" id="anJ-1J-8im"/>
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
                 <outlet property="summaryLabel" destination="u1n-gR-1xw" id="jsD-Vc-hr5"/>
                 <outlet property="tagButton" destination="YJw-y3-ygi" id="q3o-S6-E2E"/>

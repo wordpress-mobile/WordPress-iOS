@@ -38,8 +38,8 @@ import WordPressShared
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet private weak var actionButtonRight: UIButton!
-    @IBOutlet private weak var actionButtonLeft: UIButton!
+    @IBOutlet private weak var likeActionButton: UIButton!
+    @IBOutlet private weak var commentActionButton: UIButton!
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -137,6 +137,8 @@ import WordPressShared
         applyOpaqueBackgroundColors()
         setupSummaryLabel()
         setupAttributionView()
+        setupCommentActionButton()
+        setupLikeActionButton()
 
         // Layout the contentStackView if needed since layout may be a bit different than
         // what was expected from the nib layout.
@@ -160,6 +162,22 @@ import WordPressShared
         summaryLabel.lineBreakMode = .ByTruncatingTail
     }
 
+    private func setupCommentActionButton() {
+        let image = UIImage(named: "icon-reader-comment")
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        commentActionButton.setImage(image, forState: .Normal)
+        commentActionButton.setImage(highlightImage, forState: .Highlighted)
+    }
+
+    private func setupLikeActionButton() {
+        let image = UIImage(named: "icon-reader-like")
+        let highlightImage = UIImage(named: "icon-reader-like-highlight")
+        let selectedImage = UIImage(named: "icon-reader-liked")
+        likeActionButton.setImage(image, forState: .Normal)
+        likeActionButton.setImage(highlightImage, forState: .Highlighted)
+        likeActionButton.setImage(selectedImage, forState: .Selected)
+    }
+
     /**
         Applies the default styles to the cell's subviews
     */
@@ -173,8 +191,8 @@ import WordPressShared
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
+        WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
     }
 
 
@@ -187,8 +205,8 @@ import WordPressShared
         titleLabel.backgroundColor = UIColor.whiteColor()
         summaryLabel.backgroundColor = UIColor.whiteColor()
         tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
-        actionButtonLeft.titleLabel?.backgroundColor = UIColor.whiteColor()
-        actionButtonRight.titleLabel?.backgroundColor = UIColor.whiteColor()
+        commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
+        likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
@@ -392,86 +410,60 @@ import WordPressShared
     }
 
     private func configureActionButtons() {
-        var buttons = [
-            actionButtonLeft,
-            actionButtonRight
-        ]
-
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
-            resetActionButtons(buttons)
+            resetActionButton(commentActionButton)
+            resetActionButton(likeActionButton)
             return
         }
 
+        configureCommentActionButton()
+        configureLikeActionButton()
+    }
+
+    private func resetActionButton(button:UIButton) {
+        button.setTitle(nil, forState: .Normal)
+        button.selected = false
+        button.hidden = true
+    }
+
+    private func configureLikeActionButton() {
         // Show likes if logged in, or if likes exist, but not if external
-        if (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() {
-            let button = buttons.removeLast() as UIButton
-            configureLikeActionButton(button)
+        guard (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() else {
+            resetActionButton(likeActionButton)
+            return
         }
+
+        likeActionButton.tag = CardAction.Like.rawValue
+        likeActionButton.enabled = enableLoggedInFeatures
+
+        let title = contentProvider!.likeCountForDisplay()
+        likeActionButton.setTitle(title, forState: .Normal)
+        likeActionButton.selected = contentProvider!.isLiked()
+        likeActionButton.hidden = false
+    }
+
+    private func configureCommentActionButton() {
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
         if contentProvider!.isWPCom() {
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
-                let button = buttons.removeLast() as UIButton
-                configureCommentActionButton(button)
+
+                commentActionButton.tag = CardAction.Comment.rawValue
+
+                let title = contentProvider?.commentCount().stringValue
+                commentActionButton.setTitle(title, forState: .Normal)
+                commentActionButton.hidden = false
+
+                return
             }
         }
-
-        resetActionButtons(buttons)
-    }
-
-    private func resetActionButtons(buttons:[UIButton!]) {
-        for button in buttons {
-            resetActionButton(button)
-        }
-    }
-
-    private func resetActionButton(button:UIButton) {
-        button.setTitle(nil, forState: .Normal)
-        button.setTitle(nil, forState: .Highlighted)
-        button.setTitle(nil, forState: .Disabled)
-        button.setImage(nil, forState: .Normal)
-        button.setImage(nil, forState: .Highlighted)
-        button.setImage(nil, forState: .Disabled)
-        button.selected = false
-        button.hidden = true
-        button.enabled = true
-    }
-
-    private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
-        button.setTitle(title, forState: .Disabled)
-        button.setImage(image, forState: .Normal)
-        button.setImage(highlightedImage, forState: .Highlighted)
-        button.setImage(image, forState: .Disabled)
-        button.selected = selected
-        button.hidden = false
-    }
-
-    private func configureLikeActionButton(button: UIButton) {
-        button.tag = CardAction.Like.rawValue
-        button.enabled = enableLoggedInFeatures
-
-        let title = contentProvider!.likeCountForDisplay()
-        let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
-        let image = UIImage(named: imageName)
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
-        let selected = contentProvider!.isLiked()
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:selected)
-    }
-
-    private func configureCommentActionButton(button: UIButton) {
-        button.tag = CardAction.Comment.rawValue
-        let title = contentProvider?.commentCount().stringValue
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+        resetActionButton(commentActionButton)
     }
 
     private func configureActionStackViewIfNeeded() {
-        let actionsHidden = actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden
+        let actionsHidden = commentActionButton.hidden && likeActionButton.hidden && tagButton.hidden
         if actionStackView.hidden != actionsHidden {
             actionStackView.hidden = actionsHidden
         }
