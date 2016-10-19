@@ -930,13 +930,4 @@ int ddLogLevel = DDLogLevelInfo;
     [ShareExtensionService removeShareExtensionConfiguration];
 }
 
-
-#pragma mark - Simperium helpers
-
-- (BOOL)testSuiteIsRunning
-{
-    Class testSuite = NSClassFromString(@"XCTestCase");
-    return testSuite != nil;
-}
-
 @end
