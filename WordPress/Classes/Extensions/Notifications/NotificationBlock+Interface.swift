@@ -13,11 +13,13 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     var attributedSubjectText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
-            return self.textWithStyles(Styles.subjectRegularStyle,
+        let attributedText = memoize {
+            let subject = self.textWithStyles(Styles.subjectRegularStyle,
                 quoteStyles:    Styles.subjectItalicsStyle,
                 rangeStylesMap: Constants.subjectRangeStylesMap,
                 linksColor:     nil)
+
+            return subject.trimNewlines()
         }
 
         return attributedText(MemoizeKeys.subject)
@@ -26,11 +28,13 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
     ///
     var attributedSnippetText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
-            return self.textWithStyles(Styles.snippetRegularStyle,
+        let attributedText = memoize {
+            let snippet = self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: nil,
                 linksColor:     nil)
+
+            return snippet.trimNewlines()
         }
 
         return attributedText(MemoizeKeys.snippet)
@@ -39,7 +43,7 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
     ///
     var attributedHeaderTitleText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: Constants.headerTitleRangeStylesMap,
@@ -52,7 +56,7 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
     ///
     var attributedFooterText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles:    nil,
                 rangeStylesMap: Constants.footerStylesMap,
@@ -71,7 +75,7 @@ extension NotificationBlock
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
 
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.contentBlockRegularStyle,
                 quoteStyles:    Styles.contentBlockBoldStyle,
                 rangeStylesMap: Constants.richRangeStylesMap,
@@ -85,7 +89,7 @@ extension NotificationBlock
     /// formatting that differs from regular notifications, such as centered texts.
     ///
     var attributedBadgeText: NSAttributedString {
-        let attributedText = memoize { () -> NSAttributedString in
+        let attributedText = memoize {
             return self.textWithStyles(Styles.badgeRegularStyle,
                 quoteStyles:    Styles.badgeBoldStyle,
                 rangeStylesMap: Constants.badgeRangeStylesMap,
