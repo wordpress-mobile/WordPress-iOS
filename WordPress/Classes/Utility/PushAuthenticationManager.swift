@@ -13,10 +13,12 @@ import WordPressComAnalytics
     // MARK: - Public Methods
     //
     public var alertControllerProxy = UIAlertControllerProxy()
-    public let pushAuthenticationService:PushAuthenticationService
+    public let pushAuthenticationService: PushAuthenticationService
 
     override convenience init() {
-        self.init(pushAuthenticationService: PushAuthenticationService(managedObjectContext: ContextManager.sharedInstance().mainContext))
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PushAuthenticationService(managedObjectContext: context)
+        self.init(pushAuthenticationService: service)
     }
 
     public init(pushAuthenticationService: PushAuthenticationService) {
@@ -58,16 +60,15 @@ import WordPressComAnalytics
         }
 
         // Verify: Ask for approval
-        let token   = userInfo?["push_auth_token"]           as? String
-        let message = userInfo?.valueForKeyPath("aps.alert") as? String
-
-        if token == nil || message == nil {
+        guard let token = userInfo?["push_auth_token"] as? String,
+            let message = userInfo?.valueForKeyPath("aps.alert") as? String else
+        {
             return
         }
 
-        showLoginVerificationAlert(message!) { (approved) -> () in
+        showLoginVerificationAlert(message) { approved in
             if approved {
-                self.authorizeLogin(token!, retryCount: self.initialRetryCount)
+                self.authorizeLogin(token, retryCount: self.initialRetryCount)
                 WPAnalytics.track(.PushAuthenticationApproved)
             } else {
                 WPAnalytics.track(.PushAuthenticationIgnored)
@@ -92,7 +93,7 @@ import WordPressComAnalytics
             return
         }
 
-        self.pushAuthenticationService.authorizeLogin(token) { (success) -> () in
+        self.pushAuthenticationService.authorizeLogin(token) { success in
             if !success {
                 self.authorizeLogin(token, retryCount: (retryCount + 1))
             }
@@ -142,14 +143,13 @@ import WordPressComAnalytics
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
         alertControllerProxy.showWithTitle(title,
-            message:            message,
-            cancelButtonTitle: cancelButtonTitle,
-            otherButtonTitles: [acceptButtonTitle as AnyObject])
-            {
-                (theAlertController: UIAlertController!, buttonIndex: Int) -> Void in
-                let approved = theAlertController.actions[buttonIndex].style != .Cancel
-                completion(approved: approved)
-            }
+                                           message: message,
+                                           cancelButtonTitle: cancelButtonTitle,
+                                           otherButtonTitles: [acceptButtonTitle])
+        { (theAlertController, buttonIndex) in
+            let approved = theAlertController.actions[buttonIndex].style != .Cancel
+            completion(approved: approved)
+        }
     }
 
 
