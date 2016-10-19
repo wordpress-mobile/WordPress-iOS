@@ -5,6 +5,7 @@
 @interface PostGeolocationView : UIView
 
 @property (nonatomic, strong) Coordinate *coordinate;
+@property (nonatomic, readonly) MKCoordinateRegion region;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic) CGFloat labelMargin;
 @property (nonatomic) BOOL scrollEnabled;

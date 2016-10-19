@@ -1,4 +1,5 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import MapKit;
 
 /**
  Completion block for LocationService methods.
@@ -85,7 +86,7 @@ extern NSString *const LocationServiceErrorDomain;
  *  @param query           the query string to use for search
  *  @param completionBlock a block to be invoked when results are found or an error occurs.
  */
-- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock;
+- (void)searchPlacemarksWithQuery:(NSString *)query region:(MKCoordinateRegion)region  completion:(LocationServicePlacemarksCompletionBlock)completionBlock;
 
 /**
  *  Shows an alert for an error resulting from a location request
