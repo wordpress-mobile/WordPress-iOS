@@ -1,6 +1,7 @@
 #import "LocationService.h"
 
 #import <CoreLocation/CoreLocation.h>
+@import MapKit;
 #import "WordPress-Swift.h"
 
 static LocationService *instance;
@@ -14,6 +15,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
+@property (nonatomic, strong) MKLocalSearch *search;
 
 @end
 
@@ -110,16 +112,29 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     return NO;
 }
 
-- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock
+- (void)searchPlacemarksWithQuery:(NSString *)query region:(MKCoordinateRegion)region completion:(LocationServicePlacemarksCompletionBlock)completionBlock
 {
     NSParameterAssert(query);
     NSParameterAssert(completionBlock);
-    [self.geocoder geocodeAddressString:query completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
-        if (placemarks == nil) {
+
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    request.naturalLanguageQuery = query;
+    request.region = region;
+    if (self.search.isSearching) {
+        [self.search cancel];
+    }
+    self.search = [[MKLocalSearch alloc] initWithRequest:request];
+
+    [self.search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
+    {
+        if (error) {
             completionBlock(nil, error);
             return;
         }
-        
+        NSMutableArray *placemarks = [NSMutableArray array];
+        for (MKMapItem *item in response.mapItems) {
+            [placemarks addObject:item.placemark];
+        }
         completionBlock(placemarks, nil);
     }];
 }
