@@ -538,7 +538,6 @@
 		B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */; };
 		B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
-		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5CD5CFE1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CD5CFD1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift */; };
 		B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */; };
 		B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */; };
@@ -1770,8 +1769,6 @@
 		B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
-		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
 		B5CD5CFD1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURLSessionConfiguration+Extensions.swift"; path = "WordPressShareExtension/NSURLSessionConfiguration+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
 		B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
@@ -3822,8 +3819,6 @@
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
 				B500A4821D5B8D5E00FC8A96 /* NotificationMedia.swift */,
 				B500A4831D5B8D5E00FC8A96 /* NotificationRange.swift */,
-				B5CC05F71962186D00975CAC /* Meta.h */,
-				B5CC05F81962186D00975CAC /* Meta.m */,
 				B5899AE31B422D990075A3D6 /* NotificationSettings.swift */,
 			);
 			path = Notifications;
@@ -5976,7 +5971,6 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
-				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				17D33AE01D9E9C6900FBB621 /* WPFeedbackGenerators.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
