@@ -1,8 +1,8 @@
 import Foundation
 
 
-extension NSAttributedString {
-
+extension NSAttributedString
+{
     /// Checks if a given Push Notification is a Push Authentication.
     /// This method will embed a collection of assets, in the specified NSRange's.
     /// Since NSRange is an ObjC struct, you'll need to wrap it up into a NSValue instance!
@@ -11,7 +11,7 @@ extension NSAttributedString {
     ///
     /// - Returns: An attributed string with all of the embeds specified, inlined.
     ///
-    public func stringByEmbeddingImageAttachments(embeds: [NSValue: UIImage]?) -> NSAttributedString {
+    func stringByEmbeddingImageAttachments(embeds: [NSValue: UIImage]?) -> NSAttributedString {
         // Allow nil embeds: behave as a simple NO-OP
         if embeds == nil {
             return self
@@ -45,15 +45,28 @@ extension NSAttributedString {
         return theString
     }
 
-    /// This helper method returns a new NSAttributedString instance, with all of the the trailing newLines
+    /// This helper method returns a new NSAttributedString instance, with all of the the leading / trailing newLines
     /// characters removed.
     ///
-    public func trimTrailingNewlines() -> NSMutableAttributedString {
-        let trimmed         = mutableCopy() as! NSMutableAttributedString
-        let characterSet    = NSCharacterSet.newlineCharacterSet()
-        var range           = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
+    func trimNewlines() -> NSAttributedString {
+        guard let trimmed = mutableCopy() as? NSMutableAttributedString else {
+            return self
+        }
 
-        while range.length != 0 && NSMaxRange(range) == length {
+        let characterSet = NSCharacterSet.newlineCharacterSet()
+
+        // Trim: Leading
+        var range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet)
+
+        while range.length != 0 && range.location == 0 {
+            trimmed.replaceCharactersInRange(range, withString: String())
+            range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet)
+        }
+
+        // Trim Trailing
+        range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
+
+        while range.length != 0 && NSMaxRange(range) == trimmed.length {
             trimmed.replaceCharactersInRange(range, withString: String())
             range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
         }

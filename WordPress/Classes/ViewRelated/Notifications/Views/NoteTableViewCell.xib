@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -56,14 +56,14 @@
                             <constraint firstAttribute="height" constant="24" id="t5b-6V-yq3"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -74,11 +74,11 @@
                 <constraints>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
                     <constraint firstAttribute="trailing" secondItem="SfC-6n-kyD" secondAttribute="trailing" constant="12" id="6YI-0h-7xG"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" priority="750" constant="12" id="AFb-po-J3Z"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" constant="12" id="AFb-po-J3Z"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="top" constant="3" id="LJX-o9-vZJ"/>
                     <constraint firstAttribute="trailing" secondItem="wcv-fL-daS" secondAttribute="trailing" constant="12" id="MFS-Lb-Dh4"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="42" id="NI5-rg-Yif"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" priority="750" constant="12" id="O3R-0F-z4J"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="O3R-0F-z4J"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="UVx-Pm-foz"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
