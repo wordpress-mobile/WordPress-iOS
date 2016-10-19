@@ -46,7 +46,6 @@
 #import "NavbarTitleDropdownButton.h"
 #import "SuggestionService.h"
 #import "StatsViewController.h"
-#import "Meta.h"
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
