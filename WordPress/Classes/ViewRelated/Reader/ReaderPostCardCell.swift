@@ -135,6 +135,7 @@ import WordPressShared
 
         applyStyles()
         applyOpaqueBackgroundColors()
+        setupSummaryLabel()
         setupAttributionView()
 
         // Layout the contentStackView if needed since layout may be a bit different than
