@@ -97,7 +97,6 @@ class NotificationsViewController : UITableViewController
         setupRefreshControl()
         setupNoResultsView()
         setupFiltersSegmentedControl()
-        setupNotificationsBucketDelegate()
 
         startListeningToAccountNotifications()
 
@@ -431,11 +430,6 @@ private extension NotificationsViewController
         }
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
-    }
-
-    func setupNotificationsBucketDelegate() {
-        notesBucket.delegate = self
-        notesBucket.notifyWhileIndexing = true
     }
 }
 
