@@ -518,7 +518,7 @@ extension NotificationsViewController
     /// - Parameter note: The Notification that should be rendered.
     ///
     func showDetailsForNotification(note: Notification) {
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Track
         let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
@@ -981,13 +981,8 @@ private extension NotificationsViewController
             return
         }
 
-        let bucketName = Meta.classNameWithoutNamespaces()
-        guard let metadata = simperium.bucketForName(bucketName).objectForKey(bucketName.lowercaseString) as? Meta else {
-            return
-        }
-
-        metadata.last_seen = NSNumber(double: note.timestampAsDate.timeIntervalSince1970)
-        simperium.save()
+// TODO: Update Last Seen Timestamp
+//        note.timestampAsDate.timeIntervalSince1970)
     }
 
     func startWaitingForNotification(notificationID: String) {
