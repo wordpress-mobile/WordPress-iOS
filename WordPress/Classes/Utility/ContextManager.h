@@ -6,11 +6,10 @@
 ///----------------------------------------------
 ///@name Persistent Contexts
 ///
-/// The mainContext has concurrency type
-/// NSMainQueueConcurrencyType and should be used
+/// The mainContext has concurrency type NSMainQueueConcurrencyType and should be used
 /// for UI elements and fetched results controllers.
-/// During Simperium startup, a backgroundWriterContext
-/// will be created.
+/// Internally, we'll use a privateQueued context to perform disk write Operations.
+///
 ///----------------------------------------------
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 
