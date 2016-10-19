@@ -147,8 +147,6 @@ class NoteTableViewCell: WPTableViewCell
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        contentView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-
         iconImageView.image = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
         noticonContainerView.layer.cornerRadius = Settings.noticonContainerRadius
@@ -255,6 +253,40 @@ class NoteTableViewCell: WPTableViewCell
     }
 
 
+    // MARK: - Public Static Helpers
+    class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
+
+        // Limit the width (iPad Devices)
+        let cellWidth = min(width, Style.maximumCellWidth)
+        var cellHeight = Settings.textInsets.top + Settings.textInsets.bottom
+
+        // Calculate the maximum label size
+        let maxLabelWidth = cellWidth - Settings.textInsets.left - Settings.textInsets.right
+        let maxLabelSize = CGSize(width: maxLabelWidth, height: CGFloat.max)
+
+        // Helpers
+        let showsSnippet = snippet != nil
+
+        // If we must render a snippet, the maximum subject height will change. Account for that please
+        if let unwrappedSubject = subject {
+            let subjectRect = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                                                    options: .UsesLineFragmentOrigin,
+                                                                    context: nil)
+
+            cellHeight += min(subjectRect.height, Settings.subjectMaximumHeight(showsSnippet))
+        }
+
+        if let unwrappedSubject = snippet {
+            let snippetRect = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                                                    options: .UsesLineFragmentOrigin,
+                                                                    context: nil)
+
+            cellHeight += min(snippetRect.height, Settings.snippetMaximumHeight())
+        }
+
+        return max(cellHeight, Settings.minimumCellHeight)
+    }
+
 
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
@@ -267,6 +299,8 @@ class NoteTableViewCell: WPTableViewCell
         static let snippetNumberOfLines = 2
         static let noticonRadius = CGFloat(10)
         static let noticonContainerRadius = CGFloat(12)
+        static let minimumCellHeight = CGFloat(70)
+        static let textInsets = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
 
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
@@ -286,14 +320,14 @@ class NoteTableViewCell: WPTableViewCell
     private var separatorsView = SeparatorsView()
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var iconImageView: CircularImageView!
-    @IBOutlet private weak var noticonLabel: UILabel!
-    @IBOutlet private weak var noticonContainerView: UIView!
-    @IBOutlet private weak var noticonView: UIView!
-    @IBOutlet private weak var subjectLabel: UILabel!
-    @IBOutlet private weak var snippetLabel: UILabel!
-    @IBOutlet private weak var timestampLabel: UILabel!
+    @IBOutlet var iconImageView: CircularImageView!
+    @IBOutlet var noticonLabel: UILabel!
+    @IBOutlet var noticonContainerView: UIView!
+    @IBOutlet var noticonView: UIView!
+    @IBOutlet var subjectLabel: UILabel!
+    @IBOutlet var snippetLabel: UILabel!
+    @IBOutlet var timestampLabel: UILabel!
 
     // MARK: - Undo Overlay Optional
-    @IBOutlet private var undoOverlayView: NoteUndoOverlayView!
+    @IBOutlet var undoOverlayView: NoteUndoOverlayView!
 }
