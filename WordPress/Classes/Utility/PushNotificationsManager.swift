@@ -4,13 +4,6 @@ import WordPressComAnalytics
 
 
 
-/// These notifications are sent when the user Registers / Unregisters for Push Notifications.
-///
-public let NotificationsManagerDidRegisterDeviceToken   = "NotificationsManagerDidRegisterDeviceToken"
-public let NotificationsManagerDidUnregisterDeviceToken = "NotificationsManagerDidUnregisterDeviceToken"
-
-
-
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
@@ -26,7 +19,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Stores the Apple's Push Notifications Token
     ///
-    var deviceToken : String? {
+    var deviceToken: String? {
         get {
             return NSUserDefaults.standardUserDefaults().stringForKey(deviceTokenKey) ?? String()
         }
@@ -39,7 +32,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Stores the WordPress.com Device identifier
     ///
-    var deviceId : String? {
+    var deviceId: String? {
         get {
             return standardUserDefaults.stringForKey(deviceIdKey) ?? String()
         }
@@ -52,14 +45,14 @@ final public class PushNotificationsManager : NSObject
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    var sharedApplication : UIApplication {
+    var sharedApplication: UIApplication {
         return UIApplication.sharedApplication()
     }
 
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    var applicationState : UIApplicationState {
+    var applicationState: UIApplicationState {
         return sharedApplication.applicationState
     }
 
@@ -71,16 +64,17 @@ final public class PushNotificationsManager : NSObject
 
     /// Returns the Standard User Defaults.
     ///
-    private var standardUserDefaults : NSUserDefaults {
+    private var standardUserDefaults: NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
 
 
     /// Indicates whether there is a default WordPress.com accounta available, or not
     ///
-    private var wordPressDotComAvailable : Bool {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return accountService.defaultWordPressComAccount() != nil
+    private var wordPressDotComAvailable: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        return service.defaultWordPressComAccount() != nil
     }
 
 
@@ -137,18 +131,12 @@ final public class PushNotificationsManager : NSObject
         // Register against WordPress.com
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        noteService.registerDeviceForPushNotifications(newToken,
-            success: { (deviceId: String) -> () in
-                DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
-                self.deviceId = deviceId
-            },
-            failure: { (error: NSError) -> Void in
-                DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
-            })
-
-        // Notify Listeners
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(NotificationsManagerDidRegisterDeviceToken, object: newToken)
+        noteService.registerDeviceForPushNotifications(newToken, success: { deviceId in
+            DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
+            self.deviceId = deviceId
+        }, failure: { error in
+            DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
+        })
     }
 
 
@@ -173,20 +161,14 @@ final public class PushNotificationsManager : NSObject
 
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        noteService.unregisterDeviceForPushNotifications(knownDeviceId,
-            success: {
-                DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
+        noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
+            DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
 
-                self.deviceToken = nil
-                self.deviceId = nil
-
-                let notificationCenter = NSNotificationCenter.defaultCenter()
-                notificationCenter.postNotificationName(NotificationsManagerDidUnregisterDeviceToken, object: nil)
-
-            },
-            failure: { (error: NSError) -> Void in
-                DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
-            })
+            self.deviceToken = nil
+            self.deviceId = nil
+        }, failure: { error in
+            DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
+        })
     }
 
 
@@ -341,14 +323,14 @@ final public class PushNotificationsManager : NSObject
         }
 
         let simperium = WordPressAppDelegate.sharedInstance().simperium
-        simperium.backgroundFetchWithCompletion({ (result: UIBackgroundFetchResult) in
+        simperium.backgroundFetchWithCompletion { result in
             if result == .NewData {
                 DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
             } else {
                 DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
             }
             completionHandler?(result)
-        })
+        }
 
         return true
     }

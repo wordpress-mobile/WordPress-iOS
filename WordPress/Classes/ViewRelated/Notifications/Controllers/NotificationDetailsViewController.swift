@@ -560,7 +560,7 @@ private extension NotificationDetailsViewController
         cell.name                   = userBlock.text
         cell.timestamp              = note.timestampAsDate.shortString()
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
-        cell.attributedCommentText  = text.trimTrailingNewlines()
+        cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
         cell.isRepliedComment       = note.isRepliedComment
 
