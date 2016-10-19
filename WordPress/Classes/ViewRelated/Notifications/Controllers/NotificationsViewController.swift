@@ -351,16 +351,7 @@ private extension NotificationsViewController
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
-
-        // This is only required for debugging:
-        // If we're sync'ing against a custom bucket, we should let the user know about it!
-        let bucketName = Notification.classNameWithoutNamespaces()
-
-        if let overridenName = simperium.bucketOverrides[bucketName] as? String where overridenName != WPNotificationsBucketName {
-            navigationItem.title = "Notifications from [\(overridenName)]"
-        } else {
-            navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
-        }
+        navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
     func setupConstraints() {
