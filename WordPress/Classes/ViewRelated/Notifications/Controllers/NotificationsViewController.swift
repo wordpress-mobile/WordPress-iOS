@@ -1056,16 +1056,8 @@ private extension NotificationsViewController
 {
     typealias NoteKind = Notification.Kind
 
-    var simperium: Simperium {
-        return WordPressAppDelegate.sharedInstance().simperium
-    }
-
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
-    }
-
-    var notesBucket: SPBucket {
-        return simperium.bucketForName(entityName())
     }
 
     var actionsService: NotificationActionsService {
