@@ -504,11 +504,11 @@ extension NotificationsViewController
 
         // Deferred Mark as Read: Avoiding 'NotificationDetails' animation glitches.
         onDisappeared = {
-            guard let isRead = note.read?.boolValue where isRead == false else {
+            guard note.read == false else {
                 return
             }
 
-            note.read = NSNumber(bool: !isRead)
+            note.read = true
             ContextManager.sharedInstance().saveContext(note.managedObjectContext)
         }
 
@@ -705,7 +705,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
         cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
-        cell.read                   = note.read?.boolValue ?? false
+        cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
         cell.showsBottomSeparator   = !isLastRow
