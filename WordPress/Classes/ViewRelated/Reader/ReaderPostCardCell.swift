@@ -47,7 +47,7 @@ import WordPressShared
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private var featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
+    private let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
     private var featuredImageDesiredWidth = CGFloat()
 
     private let summaryMaxNumberOfLines = 3
@@ -60,7 +60,7 @@ import WordPressShared
 
     // MARK: - Accessors
 
-    public var enableLoggedInFeatures: Bool = true
+    public var enableLoggedInFeatures = true
 
 
     public override func setSelected(selected: Bool, animated: Bool) {
@@ -94,23 +94,19 @@ import WordPressShared
         }
     }
 
-    private lazy var readerCardTitleAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCardTitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
 
-    private lazy var readerCardSummaryAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCardSummaryAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    private lazy var readerCardReadingTimeAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCardReadingTimeAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
 
     // MARK: - Lifecycle Methods
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
 
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -220,16 +216,14 @@ import WordPressShared
 
     private func configureHeader() {
         // Always reset
-        let placeholder = UIImage(named: "post-blavatar-placeholder")
-        avatarImageView.image = placeholder
+        avatarImageView.image = UIImage(named: "post-blavatar-placeholder")
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
         if let url = contentProvider?.siteIconForDisplayOfSize(Int(size)) {
             avatarImageView.setImageWithURL(url)
         }
 
-        let blogName = contentProvider?.blogNameForDisplay()
-        blogNameLabel.text = blogName
+        blogNameLabel.text = contentProvider?.blogNameForDisplay()
 
         var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
         if let author = contentProvider?.authorForDisplay() {
@@ -321,8 +315,7 @@ import WordPressShared
 
     private func configureTitle() {
         if let title = contentProvider?.titleForDisplay() where !title.isEmpty() {
-            let attributes = readerCardTitleAttributes as! [String: AnyObject]
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCardTitleAttributes)
             if titleLabel.hidden {
                 titleLabel.hidden = false
             }
@@ -336,8 +329,7 @@ import WordPressShared
 
     private func configureSummary() {
         if let summary = contentProvider?.contentPreviewForDisplay() where !summary.isEmpty() {
-            let attributes = readerCardSummaryAttributes as! [String: AnyObject]
-            summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
+            summaryLabel.attributedText = NSAttributedString(string: summary, attributes: readerCardSummaryAttributes)
             if summaryLabel.hidden {
                 summaryLabel.hidden = false
             }
@@ -446,8 +438,7 @@ import WordPressShared
             updateBorder()
             return
         }
-        let duration:NSTimeInterval = animated ? 0.25 : 0
-        UIView.animateWithDuration(duration,
+        UIView.animateWithDuration(0.25,
             delay: 0,
             options: .CurveEaseInOut,
             animations: updateBorder,

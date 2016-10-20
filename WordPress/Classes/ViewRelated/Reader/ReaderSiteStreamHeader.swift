@@ -86,8 +86,7 @@ import WordPressShared
     }
 
     func attributedSiteDescriptionForTopic(topic:ReaderSiteTopic) -> NSAttributedString {
-        let attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes() as! [String: AnyObject]
-        return NSAttributedString(string: topic.siteDescription, attributes: attributes)
+        return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 
     public func enableLoggedInFeatures(enable: Bool) {

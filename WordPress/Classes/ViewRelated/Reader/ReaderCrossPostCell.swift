@@ -14,15 +14,15 @@ public class ReaderCrossPostCell: UITableViewCell
 
     // MARK: - Accessors
 
-    private lazy var readerCrossPostTitleAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCrossPostTitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostTitleAttributes()
     }()
 
-    private lazy var readerCrossPostSubtitleAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCrossPostSubtitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostSubtitleAttributes()
     }()
 
-    private lazy var readerCrossPostBoldSubtitleAttributes: [NSObject: AnyObject] = {
+    private lazy var readerCrossPostBoldSubtitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
@@ -67,8 +67,7 @@ public class ReaderCrossPostCell: UITableViewCell
             updateBorder()
             return
         }
-        let duration:NSTimeInterval = animated ? 0.25 : 0
-        UIView.animateWithDuration(duration,
+        UIView.animateWithDuration(0.25,
             delay: 0,
             options: .CurveEaseInOut,
             animations:updateBorder,
@@ -122,8 +121,7 @@ public class ReaderCrossPostCell: UITableViewCell
         if title.containsString(xPostTitlePrefix) {
             title = title?.componentsSeparatedByString(xPostTitlePrefix).last
         }
-        let titleAttributes = readerCrossPostTitleAttributes as! [String:AnyObject]
-        let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
+        let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: readerCrossPostTitleAttributes)
 
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
@@ -136,10 +134,8 @@ public class ReaderCrossPostCell: UITableViewCell
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
-        let subtitleAttributes = readerCrossPostSubtitleAttributes as! [String:AnyObject]
-        let boldSubtitleAttributes = readerCrossPostBoldSubtitleAttributes as! [String:AnyObject]
-        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
-        attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
+        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
+        attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
         // Add the subtitle to the attributed text
         attrText.appendAttributedString(attrSubtitle)

@@ -469,8 +469,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
     private func configureTitle() {
         if let title = post?.titleForDisplay() {
-            let attributes = WPStyleGuide.readerDetailTitleAttributes() as! [String: AnyObject]
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.readerDetailTitleAttributes())
             titleLabel.hidden = false
 
         } else {
