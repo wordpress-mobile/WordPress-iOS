@@ -249,7 +249,9 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     if (self.revision) {
         [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:self.revision];
+            [self willChangeValueForKey:@"revision"];
             [self setPrimitiveValue:nil forKey:@"revision"];
+            [self didChangeValueForKey:@"revision"];
         }];
     }
 }
@@ -292,12 +294,20 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 - (AbstractPost *)revision
 {
-    return [self primitiveValueForKey:@"revision"];
+    [self willAccessValueForKey:@"revision"];
+    AbstractPost *revision = [self primitiveValueForKey:@"revision"];
+    [self didAccessValueForKey:@"revision"];
+
+    return revision;
 }
 
 - (AbstractPost *)original
 {
-    return [self primitiveValueForKey:@"original"];
+    [self willAccessValueForKey:@"original"];
+    AbstractPost *original = [self primitiveValueForKey:@"original"];
+    [self didAccessValueForKey:@"original"];
+
+    return original;
 }
 
 
