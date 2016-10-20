@@ -251,7 +251,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         var predicates = [NSPredicate]()
 
         if let blog = blog {
-            let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+            let basePredicate = NSPredicate(format: "blog = %@ && original = nil", blog)
             predicates.append(basePredicate)
         }
 
