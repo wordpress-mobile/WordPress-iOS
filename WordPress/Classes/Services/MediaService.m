@@ -269,6 +269,36 @@
                 failure:failureBlock];
 }
 
+- (void)updateMultipleMedia:(NSArray<Media *> *)mediaObjects
+             overallSuccess:(void (^)())overallSuccess
+                    failure:(void (^)(NSError *error))failure
+{
+    if (mediaObjects.count == 0) {
+        if (overallSuccess) {
+            overallSuccess();
+        }
+        return;
+    }
+
+    NSNumber *totalOperations = @(mediaObjects.count);
+    __block NSUInteger completedOperations = 0;
+
+    void (^individualOperationSuccess)() = ^() {
+        @synchronized (totalOperations) {
+            completedOperations += 1;
+            if (completedOperations >= totalOperations.unsignedIntegerValue && overallSuccess) {
+                overallSuccess();
+            }
+        }
+    };
+
+    for (Media *media in mediaObjects) {
+        // This effectively ignores any errors presented
+        [self updateMedia:media success:individualOperationSuccess failure:individualOperationSuccess];
+    }
+
+}
+
 - (NSError *)translateMediaUploadError:(NSError *)error {
     NSError *newError = error;
     if (error.domain == WPXMLRPCFaultErrorDomain) {

@@ -68,6 +68,18 @@
             failure:(void (^)(NSError *error))failure;
 
 /**
+ Updates multiple media objects similar to -updateMedia:success:failure: but batches them
+ together. The success handler is only called when all updates succeed. Failure is called
+ if the entire process fails in some catostrophic way.
+ 
+ @param mediaObjects An array of media objects to update
+ @param success
+ */
+- (void)updateMultipleMedia:(NSArray<Media *> *)mediaObjects
+             overallSuccess:(void (^)())overallSuccess
+                    failure:(void (^)(NSError *error))failure;
+
+/**
  Find the media object in the local database.
  
  @param mediaID
