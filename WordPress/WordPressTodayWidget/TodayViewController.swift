@@ -18,16 +18,10 @@ class TodayViewController: UIViewController {
     var siteID: NSNumber?
     var timeZone: NSTimeZone?
     var oauthToken: String?
-
-    var configureMeLabelHeightConstraint: NSLayoutConstraint!
-
     var siteName: String = ""
     var visitorCount: String = ""
     var viewCount: String = ""
-    var standardLeftMargin: CGFloat = 0.0
-
     var isConfigured = false
-
     var tracks = Tracks(appGroupName: WPAppGroupName)
 
     override func viewDidLoad() {
@@ -117,13 +111,6 @@ class TodayViewController: UIViewController {
 }
 
 extension TodayViewController: NCWidgetProviding {
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
-        standardLeftMargin = defaultMarginInsets.left
-
-        return defaultMarginInsets
-    }
-
-
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
         dispatch_async(dispatch_get_main_queue()) {
@@ -162,6 +149,5 @@ extension TodayViewController: NCWidgetProviding {
 
                 completionHandler(NCUpdateResult.Failed)
         })
-
     }
 }
