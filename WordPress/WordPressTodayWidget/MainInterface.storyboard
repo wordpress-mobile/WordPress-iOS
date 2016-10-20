@@ -121,6 +121,7 @@
                     <size key="freeformSize" width="320" height="215"/>
                     <connections>
                         <outlet property="configureMeButton" destination="sB2-YC-Udf" id="mJp-wY-qyy"/>
+                        <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="qc5-25-zMa"/>
                         <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
                         <outlet property="countContainerView" destination="TbZ-Oq-ahc" id="Q9S-Zl-eIG"/>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
