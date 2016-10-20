@@ -34,10 +34,13 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///     - lastSeen: Timestamp of the last seen notification.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateLastSeen(lastSeen: String, completion: (Bool -> Void)?) {
+    func updateLastSeen(timestamp: String, completion: (Bool -> Void)?) {
         let path = "notifications/seen"
         let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
-        let parameters = ["time": lastSeen]
+
+        let parameters = [
+            "time": timestamp
+        ]
 
         wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
             completion?(true)
