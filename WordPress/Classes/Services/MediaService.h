@@ -14,7 +14,7 @@
  @param asset
  @param postObjectID
  @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
- @completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
+ @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
@@ -32,8 +32,8 @@
  
  @param mediaID
  @param blog
- @success a block that will be invoked when the media is retrieved
- @failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ @param success a block that will be invoked when the media is retrieved
+ @param failure a block that will be invoked if an error happens returnin the associated error object with the details.
  */
 - (void)getMediaWithID:(NSNumber *)mediaID
                 inBlog:(Blog *)blog
@@ -45,8 +45,8 @@
  
  @param media object to upload to the server.
  @param progress a NSProgress that tracks the upload progress to the server.
- @sucess a block that will be invoked when the media upload finished with success
- @failure a block that will be invoked when there is upload error.
+ @param success a block that will be invoked when the media upload finished with success
+ @param failure a block that will be invoked when there is upload error.
  */
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **) progress
@@ -60,10 +60,9 @@
  caption, alternative text, etc...
 
  @param media object to upload to the server.
- @sucess a block that will be invoked when the media upload finished with success
+ @success a block that will be invoked when the media upload finished with success
  @failure a block that will be invoked when there is upload error.
  */
-
 - (void)updateMedia:(Media *)media
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure;
@@ -105,7 +104,7 @@
  + Get a thumbnail image for a Media by downloading its image or using the local cache
  +
  + @param media
- + @success a block that will be invoked when the media is retrieved
+ + @param success a block that will be invoked when the media is retrieved
  + @failure a block that will be invoked if an error happens returnin the associated error object with the details.
  + */
 - (void)thumbnailForMedia:(Media *)media
