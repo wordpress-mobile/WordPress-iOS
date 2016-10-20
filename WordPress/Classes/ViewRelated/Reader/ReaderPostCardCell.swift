@@ -240,9 +240,7 @@ import WordPressShared
         guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
-            if !featuredImageView.hidden {
-                featuredImageView.hidden = true
-            }
+            featuredImageView.hidden = true
             return
         }
         if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
@@ -252,12 +250,8 @@ import WordPressShared
     }
 
     private func configureFeaturedImage(featuredImageURL: NSURL) {
-        if featuredImageView.hidden {
-            featuredImageView.hidden = false
-        }
-        if featuredMediaHeightConstraint.constant != featuredMediaHeightConstraintConstant {
-            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-        }
+        featuredImageView.hidden = false
+        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
 
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
@@ -316,42 +310,30 @@ import WordPressShared
     private func configureTitle() {
         if let title = contentProvider?.titleForDisplay() where !title.isEmpty() {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCardTitleAttributes)
-            if titleLabel.hidden {
-                titleLabel.hidden = false
-            }
+            titleLabel.hidden = false
         } else {
             titleLabel.attributedText = nil
-            if !titleLabel.hidden {
-                titleLabel.hidden = true
-            }
+            titleLabel.hidden = true
         }
     }
 
     private func configureSummary() {
         if let summary = contentProvider?.contentPreviewForDisplay() where !summary.isEmpty() {
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: readerCardSummaryAttributes)
-            if summaryLabel.hidden {
-                summaryLabel.hidden = false
-            }
+            summaryLabel.hidden = false
         } else {
             summaryLabel.attributedText = nil
-            if !summaryLabel.hidden {
-                summaryLabel.hidden = true
-            }
+            summaryLabel.hidden = true
         }
     }
 
     private func configureAttribution() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
             attributionView.configureView(nil)
-            if !attributionView.hidden {
-                attributionView.hidden = true
-            }
+            attributionView.hidden = true
         } else {
             attributionView.configureView(contentProvider)
-            if attributionView.hidden {
-                attributionView.hidden = false
-            }
+            attributionView.hidden = false
         }
     }
 
@@ -363,9 +345,7 @@ import WordPressShared
             }
         }
         let hidden = tag.characters.count == 0
-        if tagButton.hidden != hidden {
-            tagButton.hidden = hidden
-        }
+        tagButton.hidden = hidden
         tagButton.setTitle(tag, forState: .Normal)
         tagButton.setTitle(tag, forState: .Highlighted)
     }
@@ -425,9 +405,7 @@ import WordPressShared
 
     private func configureActionStackViewIfNeeded() {
         let actionsHidden = commentActionButton.hidden && likeActionButton.hidden && tagButton.hidden
-        if actionStackView.hidden != actionsHidden {
-            actionStackView.hidden = actionsHidden
-        }
+        actionStackView.hidden = actionsHidden
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
