@@ -102,10 +102,6 @@ import WordPressShared
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    private lazy var readerCardWordCountAttributes: [NSObject: AnyObject] = {
-        return WPStyleGuide.readerCardWordCountAttributes()
-    }()
-
     private lazy var readerCardReadingTimeAttributes: [NSObject: AnyObject] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
@@ -380,33 +376,6 @@ import WordPressShared
         }
         tagButton.setTitle(tag, forState: .Normal)
         tagButton.setTitle(tag, forState: .Highlighted)
-    }
-
-    private func attributedTextForWordCount(wordCount:Int, readingTime:Int) -> NSAttributedString? {
-        let attrStr = NSMutableAttributedString()
-
-        // Compose the word count.
-        let wordsStr = NSLocalizedString("words",
-                                        comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
-
-        let countStr = String(format: "%d %@ ", wordCount, wordsStr)
-        var attributes = readerCardWordCountAttributes as! [String: AnyObject]
-        let attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
-        attrStr.appendAttributedString(attrWordCount)
-
-        // Append the reading time if needed.
-        if readingTime == 0 {
-            return attrStr
-        }
-
-        let format = NSLocalizedString("(~ %d min)",
-                                        comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
-        let str = String(format: format, readingTime)
-        attributes = readerCardReadingTimeAttributes as! [String: AnyObject]
-        let attrReadingTime = NSAttributedString(string: str, attributes: attributes)
-        attrStr.appendAttributedString(attrReadingTime)
-
-        return attrStr
     }
 
     private func configureActionButtons() {
