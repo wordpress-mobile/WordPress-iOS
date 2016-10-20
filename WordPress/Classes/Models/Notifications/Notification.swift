@@ -10,7 +10,7 @@ class Notification: NSManagedObject
 {
     /// Notification Primary Key!
     ///
-    @NSManaged var notificationId: String?
+    @NSManaged var notificationId: String
 
     /// Associated Resource's Icon, as a plain string
     ///
@@ -22,7 +22,7 @@ class Notification: NSManagedObject
 
     /// Indicates whether the note was already read, or not
     ///
-    @NSManaged var read: NSNumber?
+    @NSManaged var read: Bool
 
     /// Timestamp as a String
     ///
