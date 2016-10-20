@@ -336,8 +336,6 @@ import WordPressComAnalytics
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        tableView.estimatedRowHeight = estimatedRowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.accessibilityIdentifier = "Reader"
         tableView.separatorStyle = .None
         refreshControl = tableViewController.refreshControl!
