@@ -183,7 +183,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                
                 if ([postInContext isRevision]) {
                     postInContext = postInContext.original;
                     [postInContext applyRevision];
@@ -192,18 +191,18 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
+
+                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
+                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
+
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                for (Media *media in postInContext.media) {
-                    if ([media.postID longLongValue] <= 0) {
-                        media.postID = post.postID;
-                        [mediaService updateMedia:media success:nil failure:nil];
+                [mediaService updateMultipleMedia:mediaToUpdate overallSuccess:^{
+                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+                    if (success) {
+                        success(postInContext);
                     }
-                }
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                
-                if (success) {
-                    success(postInContext);
-                }
+                } failure:failure];
             } else {
                 // This can happen if the post was deleted right after triggering the upload.
                 if (success) {
