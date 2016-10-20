@@ -42,13 +42,6 @@ class NotificationsViewController : UITableViewController
     ///
     private var noResultsView: WPNoResultsView!
 
-    /// ID of the Notification that must be pushed, granted that it gets synced before the timeout kicks.
-    ///
-    private var pushNotificationID: String?
-
-    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
-    ///
-    private var pushNotificationDate: NSDate?
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -967,36 +960,6 @@ private extension NotificationsViewController
 
 // TODO: Update Last Seen Timestamp
 //        note.timestampAsDate.timeIntervalSince1970)
-    }
-
-    func startWaitingForNotification(notificationID: String) {
-        guard simperium.requiresConnection == false else {
-            return
-        }
-
-        DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
-
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
-        performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
-
-        pushNotificationID = notificationID
-        pushNotificationDate = NSDate()
-    }
-
-    func stopWaitingForNotification() {
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
-        pushNotificationID = nil
-        pushNotificationDate = nil
-    }
-
-    @objc func notificationWaitDidTimeout() {
-        DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
-
-        pushNotificationID = nil
-        pushNotificationDate = nil
-
-        let properties = [Stats.networkStatusKey: simperium.networkStatus]
-        WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
 
