@@ -434,7 +434,6 @@ private extension NotificationsViewController
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.addObserver(self, selector: #selector(applicationWillResignActive), name:UIApplicationWillResignActiveNotification, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -453,14 +452,10 @@ private extension NotificationsViewController
         guard isViewLoaded() == true && view.window != nil else {
             return
         }
-
+// TODO: Review + Fix if needed
         resetApplicationBadge()
         updateLastSeenTime()
         reloadResultsControllerIfNeeded()
-    }
-
-    @objc func applicationWillResignActive(note: NSNotification) {
-        stopWaitingForNotification()
     }
 
     @objc func defaultAccountDidChange(note: NSNotification) {
