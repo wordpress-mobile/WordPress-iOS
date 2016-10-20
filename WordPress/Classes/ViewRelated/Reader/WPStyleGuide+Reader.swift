@@ -59,7 +59,7 @@ extension WPStyleGuide
 
     // MARK: - Card Attributed Text Attributes
 
-    public class func readerCrossPostTitleAttributes() -> [NSObject: AnyObject] {
+    public class func readerCrossPostTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostTitleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
@@ -73,7 +73,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerCrossPostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
+    public class func readerCrossPostBoldSubtitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.systemBoldFontOfSize(fontSize)
 
@@ -87,7 +87,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerCrossPostSubtitleAttributes() -> [NSObject: AnyObject] {
+    public class func readerCrossPostSubtitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
@@ -101,7 +101,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerCardTitleAttributes() -> [NSObject: AnyObject] {
+    public class func readerCardTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.titleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
@@ -114,7 +114,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerCardSummaryAttributes() -> [NSObject: AnyObject] {
+    public class func readerCardSummaryAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
@@ -128,7 +128,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerCardReadingTimeAttributes() -> [NSObject: AnyObject] {
+    public class func readerCardReadingTimeAttributes() -> [String: AnyObject] {
         let fontSize:CGFloat = Cards.subtextFontSize
         let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
@@ -139,7 +139,7 @@ extension WPStyleGuide
 
     // MARK: - Detail styles
 
-    public class func readerDetailTitleAttributes() -> [NSObject: AnyObject] {
+    public class func readerDetailTitleAttributes() -> [String: AnyObject] {
         let fontSize = Detail.titleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
@@ -157,7 +157,7 @@ extension WPStyleGuide
 
     // MARK: - Stream Header Attributed Text Attributes
 
-    public class func readerStreamHeaderDescriptionAttributes() -> [NSObject: AnyObject] {
+    public class func readerStreamHeaderDescriptionAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 

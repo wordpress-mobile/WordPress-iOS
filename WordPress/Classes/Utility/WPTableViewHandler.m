@@ -127,7 +127,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         }
         newIndexPath = [self.resultsController indexPathForObject:obj];
         if (newIndexPath) {
-            // Since we still have one of the orginally visible objects,
+            // Since we still have one of the originally visible objects,
             // preserve the original cell frame's origin, relative to the original content offset.
             CGRect originalCellFrame = [[visibleCellFrames objectAtIndex:i] CGRectValue];
             originalCellOriginOffsetDelta = originalOffset.y - originalCellFrame.origin.y;
@@ -156,7 +156,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         [self.tableView setContentOffset:newOffset];
 
     } else {
-        // Fail safe. If the new index path was nil set the offset to 0, or the top of the tableView.s
+        // Fail safe. If the new index path was nil set the offset to 0, or the top of the tableView.
         [self.tableView setContentOffset:CGPointZero];
     }
 
