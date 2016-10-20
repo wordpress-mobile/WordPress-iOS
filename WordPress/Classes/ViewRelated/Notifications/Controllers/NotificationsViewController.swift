@@ -620,13 +620,9 @@ private extension NotificationsViewController
         needsReloadResults = false
     }
 
-    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
-        guard let noteObjectID = noteObjectID else {
-            return
-        }
-
+    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID) {
         do {
-            let note = try simperium.managedObjectContext().existingObjectWithID(noteObjectID)
+            let note = try mainContext.existingObjectWithID(noteObjectID)
 
             if let indexPath = tableViewHandler.resultsController.indexPathForObject(note) {
                 tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
