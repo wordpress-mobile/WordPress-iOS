@@ -1404,7 +1404,8 @@ EditImageDetailsViewControllerDelegate
         [self showFailedMediaRemovalAlert];
         return;
     }
-    //Make sure that we are saving the latest content on the editor.
+
+    // Make sure that we are saving the latest content on the editor.
     [self autosaveContent];
     [self stopEditing];
     [self savePost];
