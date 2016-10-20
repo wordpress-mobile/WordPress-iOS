@@ -107,7 +107,7 @@
                         <constraints>
                             <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="GOY-fN-4pW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="57z-E7-fbN" secondAttribute="trailing" id="H8m-vH-Jtg"/>
-                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="WT2-LW-4kK"/>
+                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="WT2-LW-4kK"/>
                             <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="chN-zF-Uvf"/>
                         </constraints>
                         <connections>
