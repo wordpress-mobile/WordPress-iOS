@@ -4,10 +4,10 @@ import WordPressComStatsiOS
 import WordPressShared
 
 class TodayViewController: UIViewController {
-    @IBOutlet weak var unconfiguredView: UIStackView!
+    @IBOutlet var unconfiguredView: UIStackView!
     @IBOutlet var configureMeLabel: UILabel!
     @IBOutlet var siteNameLabel: UILabel!
-    @IBOutlet weak var configuredView: UIStackView!
+    @IBOutlet var configuredView: UIStackView!
     @IBOutlet var countContainerView: UIView!
     @IBOutlet var visitorsCountLabel: UILabel!
     @IBOutlet var visitorsLabel: UILabel!
@@ -49,7 +49,6 @@ class TodayViewController: UIViewController {
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
-
     }
 
     override func viewWillAppear(animated: Bool) {
