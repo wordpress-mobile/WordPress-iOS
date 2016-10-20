@@ -272,6 +272,7 @@ import WordPressComAnalytics
         if didSetupView {
             refreshTableViewHeaderLayout()
         }
+        centerResultsStatusViewIfNeeded()
     }
 
 
@@ -450,12 +451,18 @@ import WordPressComAnalytics
 
 
     func displayResultsStatus() {
-        if resultsStatusView.isDescendantOfView(view) {
-            resultsStatusView.centerInSuperview()
-        } else {
-            view.addSubviewWithFadeAnimation(resultsStatusView)
+        if !resultsStatusView.isDescendantOfView(tableView) {
+            tableView.addSubviewWithFadeAnimation(resultsStatusView)
         }
+        resultsStatusView.centerInSuperview()
         footerView.hidden = true
+    }
+
+
+    func centerResultsStatusViewIfNeeded() {
+        if resultsStatusView.isDescendantOfView(tableView) {
+            resultsStatusView.centerInSuperview()
+        }
     }
 
 
