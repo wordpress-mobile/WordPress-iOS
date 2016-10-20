@@ -5,6 +5,7 @@ import WordPressShared
 
 class TodayViewController: UIViewController {
     @IBOutlet weak var unconfiguredView: UIStackView!
+    @IBOutlet var configureMeLabel: UILabel!
     @IBOutlet var siteNameLabel: UILabel!
     @IBOutlet weak var configuredView: UIStackView!
     @IBOutlet var countContainerView: UIView!
