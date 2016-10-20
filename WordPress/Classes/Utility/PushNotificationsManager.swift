@@ -69,15 +69,6 @@ final public class PushNotificationsManager : NSObject
     }
 
 
-    /// Indicates whether there is a default WordPress.com accounta available, or not
-    ///
-    private var wordPressDotComAvailable: Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        return service.defaultWordPressComAccount() != nil
-    }
-
-
 
 
     // MARK: - Public Methods: Registration
@@ -113,7 +104,7 @@ final public class PushNotificationsManager : NSObject
         Mixpanel.sharedInstance().people.addPushDeviceToken(tokenData)
 
         // Don't bother registering for WordPress anything if the user isn't logged in
-        if !wordPressDotComAvailable {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
