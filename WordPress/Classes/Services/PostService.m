@@ -39,6 +39,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
+
+    [[ContextManager sharedInstance] obtainPermanentIDForObject:post];
+    
     return post;
 }
 
