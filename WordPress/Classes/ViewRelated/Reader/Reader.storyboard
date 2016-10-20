@@ -437,7 +437,7 @@
             <objects>
                 <tableViewController id="ojY-lw-Nq8" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8GD-qV-397">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="936"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="495"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
@@ -489,8 +489,6 @@
                             <constraint firstItem="afc-5c-5tF" firstAttribute="width" secondItem="UQY-Uf-csX" secondAttribute="width" constant="-32" id="7H0-0r-9sW"/>
                             <constraint firstItem="PuG-YC-OIC" firstAttribute="top" secondItem="UQY-Uf-csX" secondAttribute="bottom" id="9Py-mf-1gR"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="OVh-zU-bdz"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UQY-Uf-csX" secondAttribute="trailing" priority="999" constant="-8" id="Rp5-hV-8Pb"/>
-                            <constraint firstItem="UQY-Uf-csX" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leadingMargin" constant="-8" id="VDG-yu-G7a"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="top" secondItem="KDf-ab-yd0" secondAttribute="bottom" id="Vjr-r9-9fI"/>
                             <constraint firstItem="afc-5c-5tF" firstAttribute="centerY" secondItem="PuG-YC-OIC" secondAttribute="centerY" constant="-64" id="WFt-Iz-74I"/>
                             <constraint firstAttribute="trailing" secondItem="PuG-YC-OIC" secondAttribute="trailing" id="Xy7-kf-4Zi"/>
@@ -498,20 +496,7 @@
                             <constraint firstItem="afc-5c-5tF" firstAttribute="centerX" secondItem="PuG-YC-OIC" secondAttribute="centerX" id="e4c-Hf-6s0"/>
                             <constraint firstItem="PuG-YC-OIC" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="u5y-Zc-kp9"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Rp5-hV-8Pb"/>
-                                <exclude reference="VDG-yu-G7a"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES">
-                            <mask key="constraints">
-                                <exclude reference="OVh-zU-bdz"/>
-                                <include reference="Rp5-hV-8Pb"/>
-                                <include reference="VDG-yu-G7a"/>
-                                <exclude reference="ack-5h-tUx"/>
-                            </mask>
-                        </variation>
+                        <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
@@ -587,7 +572,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZnW-aR-PRt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1318" y="-250"/>
+            <point key="canvasLocation" x="1512" y="-245"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="I2o-bP-1jd">
