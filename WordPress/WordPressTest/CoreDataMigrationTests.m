@@ -857,6 +857,7 @@
 
     NSManagedObject *note = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
     [note setValue:legacySimperiumKey forKey:@"simperiumKey"];
+    [note setValue:@(true) forKey:@"read"];
     [context save:&error];
     XCTAssertNil(error, @"Error while saving context");
 
@@ -891,6 +892,7 @@
 
     NSManagedObject *migratedNote = [results firstObject];
     XCTAssertEqualObjects([migratedNote valueForKey:@"notificationId"], legacySimperiumKey, @"Oops?");
+    XCTAssertEqualObjects([migratedNote valueForKey:@"read"], @(true), @"Oops?");
 }
 
 
