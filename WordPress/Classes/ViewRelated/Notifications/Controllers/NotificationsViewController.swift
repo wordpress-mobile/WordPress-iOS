@@ -482,12 +482,13 @@ extension NotificationsViewController
     /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteID: String) {
-        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
-            startWaitingForNotification(noteID)
-            return
-        }
-
-        showDetailsForNotification(note)
+// TODO: Fixme
+//        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
+//            startWaitingForNotification(noteID)
+//            return
+//        }
+//
+//        showDetailsForNotification(note)
     }
 
     /// Pushes the details for a given Notification Instance.
@@ -773,7 +774,9 @@ private extension NotificationsViewController
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        return notesBucket.numObjects() > 0
+// TODO: Fixme
+return false
+//        return notesBucket.numObjects() > 0
     }
 }
 
@@ -906,38 +909,40 @@ private extension NotificationsViewController
 
 
 
+// TODO: Reuse / Cleanup as needed
+//
 // MARK: - SPBucketDelegate Methods
 //
-extension NotificationsViewController: SPBucketDelegate
-{
-    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
-        // We're only concerned with New Notification Events
-        guard changeType == .Insert else {
-            return
-        }
-
-        // Mark as read immediately, if needed
-        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
-            resetApplicationBadge()
-            updateLastSeenTime()
-        }
-
-        // Were we waiting for this notification?
-        guard let waitingNoteID = pushNotificationID where waitingNoteID == key else {
-            return
-        }
-
-        // Don't fire the Timeout Event
-        stopWaitingForNotification()
-
-        // Show the details only if NotificationPushMaxWait hasn't elapsed
-        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
-            return
-        }
-
-        showDetailsForNotificationWithID(key)
-    }
-}
+//extension NotificationsViewController: SPBucketDelegate
+//{
+//    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
+//        // We're only concerned with New Notification Events
+//        guard changeType == .Insert else {
+//            return
+//        }
+//
+//        // Mark as read immediately, if needed
+//        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
+//            resetApplicationBadge()
+//            updateLastSeenTime()
+//        }
+//
+//        // Were we waiting for this notification?
+//        guard let waitingNoteID = pushNotificationID where waitingNoteID == key else {
+//            return
+//        }
+//
+//        // Don't fire the Timeout Event
+//        stopWaitingForNotification()
+//
+//        // Show the details only if NotificationPushMaxWait hasn't elapsed
+//        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
+//            return
+//        }
+//
+//        showDetailsForNotificationWithID(key)
+//    }
+//}
 
 
 
@@ -955,7 +960,6 @@ private extension NotificationsViewController
         }
 
 // TODO: Update Last Seen Timestamp
-//        note.timestampAsDate.timeIntervalSince1970)
     }
 }
 
