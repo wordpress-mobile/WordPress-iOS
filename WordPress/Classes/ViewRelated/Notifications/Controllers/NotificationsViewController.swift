@@ -518,7 +518,7 @@ extension NotificationsViewController
     /// - Parameter note: The Notification that should be rendered.
     ///
     func showDetailsForNotification(note: Notification) {
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.simperiumKey)]")
+        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Track
         let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
@@ -531,11 +531,11 @@ extension NotificationsViewController
 
         // Deferred Mark as Read: Avoiding 'NotificationDetails' animation glitches.
         onDisappeared = {
-            guard let isRead = note.read?.boolValue where isRead == false else {
+            guard note.read == false else {
                 return
             }
 
-            note.read = NSNumber(bool: !isRead)
+            note.read = true
             ContextManager.sharedInstance().saveContext(note.managedObjectContext)
         }
 
@@ -736,7 +736,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
         cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
-        cell.read                   = note.read?.boolValue ?? false
+        cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
         cell.showsBottomSeparator   = !isLastRow
@@ -981,13 +981,8 @@ private extension NotificationsViewController
             return
         }
 
-        let bucketName = Meta.classNameWithoutNamespaces()
-        guard let metadata = simperium.bucketForName(bucketName).objectForKey(bucketName.lowercaseString) as? Meta else {
-            return
-        }
-
-        metadata.last_seen = NSNumber(double: note.timestampAsDate.timeIntervalSince1970)
-        simperium.save()
+// TODO: Update Last Seen Timestamp
+//        note.timestampAsDate.timeIntervalSince1970)
     }
 
     func startWaitingForNotification(notificationID: String) {

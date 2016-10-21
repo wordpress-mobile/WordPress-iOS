@@ -495,7 +495,7 @@ private extension NotificationDetailsViewController
 
     func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification [\(note.simperiumKey)")
+            assertionFailure("Missing Text Block for Notification [\(note.notificationId)")
             return
         }
 
@@ -506,7 +506,7 @@ private extension NotificationDetailsViewController
 
     func setupUserCell(cell: NoteBlockUserTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let userBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
 
@@ -541,12 +541,12 @@ private extension NotificationDetailsViewController
         //  -   A left separator is displayed.
         //
         guard let commentBlock = blockGroup.blockOfKind(.Comment) else {
-            assertionFailure("Missing Comment Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
             return
         }
 
         guard let userBlock = blockGroup.blockOfKind(.User) else {
-            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
 
@@ -592,7 +592,7 @@ private extension NotificationDetailsViewController
 
     func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let commentBlock = blockGroup.blockOfKind(.Comment) else {
-            assertionFailure("Missing Comment Block for Notification \(note.simperiumKey)")
+            assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
             return
         }
 
@@ -637,7 +637,7 @@ private extension NotificationDetailsViewController
 
     func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let imageBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Image Block for Notification [\(note.simperiumKey)")
+            assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
             return
         }
 
@@ -647,7 +647,7 @@ private extension NotificationDetailsViewController
 
     func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification \(note.simperiumKey)")
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
         }
 
