@@ -132,9 +132,7 @@ public class WP3DTouchShortcutCreator: NSObject
     }
 
     private func hasWordPressComAccount() -> Bool {
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        return accountService.defaultWordPressComAccount() != nil
+        return AccountHelper.isDotcomAvailable()
     }
 
     private func doesCurrentBlogSupportStats() -> Bool {
