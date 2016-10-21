@@ -214,10 +214,6 @@ import WordPressComAnalytics
     // MARK: Logged in helper
 
     public class func isLoggedIn() -> Bool {
-        // Is Logged In
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let account = service.defaultWordPressComAccount()
-        return account != nil
+        return AccountHelper.isDotcomAvailable()
     }
-
 }
