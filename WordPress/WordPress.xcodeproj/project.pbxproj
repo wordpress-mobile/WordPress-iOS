@@ -538,7 +538,6 @@
 		B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */; };
 		B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
-		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5CD5CFE1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CD5CFD1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift */; };
 		B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */; };
 		B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */; };
@@ -1770,8 +1769,6 @@
 		B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
-		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
 		B5CD5CFD1D0B587200C6BD26 /* NSURLSessionConfiguration+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURLSessionConfiguration+Extensions.swift"; path = "WordPressShareExtension/NSURLSessionConfiguration+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
 		B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
@@ -1792,6 +1789,7 @@
 		B5EFB1C41B31BAA2007608A3 /* NotificationSettingsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationSettingsServiceRemote.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B5EFB1C81B333C5A007608A3 /* NotificationSettingsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsServiceTests.swift; sourceTree = "<group>"; };
 		B5EFB1D01B33630C007608A3 /* notifications-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-settings.json"; sourceTree = "<group>"; };
+		B5F94DBF1DB8035200DD505D /* WordPress 53.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 53.xcdatamodel"; sourceTree = "<group>"; };
 		B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationSettingsViewController.xib; sourceTree = "<group>"; };
 		B5FA22821C99F6180016CA7C /* Tracks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tracks.swift; path = WordPressShareExtension/Tracks.swift; sourceTree = SOURCE_ROOT; };
 		B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extensions.swift"; path = "WordPressShareExtension/UIImage+Extensions.swift"; sourceTree = SOURCE_ROOT; };
@@ -3821,8 +3819,6 @@
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
 				B500A4821D5B8D5E00FC8A96 /* NotificationMedia.swift */,
 				B500A4831D5B8D5E00FC8A96 /* NotificationRange.swift */,
-				B5CC05F71962186D00975CAC /* Meta.h */,
-				B5CC05F81962186D00975CAC /* Meta.m */,
 				B5899AE31B422D990075A3D6 /* NotificationSettings.swift */,
 			);
 			path = Notifications;
@@ -5943,7 +5939,6 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
-				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				17D33AE01D9E9C6900FBB621 /* WPFeedbackGenerators.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
@@ -8162,6 +8157,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B5F94DBF1DB8035200DD505D /* WordPress 53.xcdatamodel */,
 				E1DB326D1D9AE60900C8FEBC /* WordPress 52.xcdatamodel */,
 				E677A0001D3ECBD500536CF2 /* WordPress 51.xcdatamodel */,
 				E625706B1CF3B1CE004FA8B6 /* WordPress 50.xcdatamodel */,
@@ -8215,7 +8211,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E1DB326D1D9AE60900C8FEBC /* WordPress 52.xcdatamodel */;
+			currentVersion = B5F94DBF1DB8035200DD505D /* WordPress 53.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

@@ -751,6 +751,10 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)logoutSimperiumAndResetNotifications
 {
+    if (self.testSuiteIsRunning) {
+        return;
+    }
+
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 

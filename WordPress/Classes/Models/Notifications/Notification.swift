@@ -1,14 +1,17 @@
 import Foundation
 import CoreData
-import Simperium
 
 
 
 // MARK: - Notification Entity
 //
 @objc(Notification)
-class Notification: SPManagedObject
+class Notification: NSManagedObject
 {
+    /// Notification Primary Key!
+    ///
+    @NSManaged var notificationId: String
+
     /// Associated Resource's Icon, as a plain string
     ///
     @NSManaged var icon: String?
@@ -19,7 +22,7 @@ class Notification: SPManagedObject
 
     /// Indicates whether the note was already read, or not
     ///
-    @NSManaged var read: NSNumber?
+    @NSManaged var read: Bool
 
     /// Timestamp as a String
     ///
@@ -216,13 +219,13 @@ extension Notification
     /// Parse the Timestamp as a Cocoa Date Instance.
     ///
     var timestampAsDate: NSDate {
-        assert(timestamp != nil, "Notification Timestamp should not be nil [\(simperiumKey)]")
+        assert(timestamp != nil, "Notification Timestamp should not be nil [\(notificationId)]")
 
         if let timestampAsDate = cachedTimestampAsDate {
             return timestampAsDate
         }
         guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
-            DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(simperiumKey)]")
+            DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(notificationId)]")
             return NSDate()
         }
 
