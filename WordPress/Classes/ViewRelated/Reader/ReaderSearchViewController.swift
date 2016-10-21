@@ -138,12 +138,6 @@ import Gridicons
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
 
         WPStyleGuide.configureSearchBar(searchBar)
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), forSearchBarIcon: .Clear, state: .Normal)
-
-        let size = searchBarSearchIconSize * UIScreen.mainScreen().scale
-        let image = Gridicon.iconOfType(GridiconType.Search, withSize: CGSize(width: size, height: size))
-
-        searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
     }
 
 
