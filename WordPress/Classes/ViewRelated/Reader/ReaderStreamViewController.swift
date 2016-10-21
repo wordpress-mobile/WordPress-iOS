@@ -225,11 +225,6 @@ import WordPressComAnalytics
         } else if siteID != nil || tagSlug != nil {
             displayLoadingStream()
         }
-        // Trigger a layout pass.
-        // This seems to ensure the first cells are loaded for the first time with the right
-        // margins and heights. Not 100% sure what's going on here.
-        // Brent C. Oct/19/2016
-        tableView.layoutIfNeeded()
     }
 
 

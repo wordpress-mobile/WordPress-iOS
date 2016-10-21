@@ -127,14 +127,11 @@ import WordPressShared
 
         applyStyles()
         applyOpaqueBackgroundColors()
+        setupFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
         setupCommentActionButton()
         setupLikeActionButton()
-
-        // Layout the contentStackView if needed since layout may be a bit different than
-        // what was expected from the nib layout.
-        contentStackView.layoutIfNeeded()
     }
 
     public override func layoutSubviews() {
@@ -147,6 +144,10 @@ import WordPressShared
 
     private func setupAttributionView() {
         attributionView.delegate = self
+    }
+
+    private func setupFeaturedImageView() {
+        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
     }
 
     private func setupSummaryLabel() {
@@ -212,6 +213,8 @@ import WordPressShared
         configureTag()
         configureActionButtons()
         configureActionStackViewIfNeeded()
+
+        contentStackView.layoutIfNeeded()
     }
 
     private func configureHeader() {
@@ -251,7 +254,6 @@ import WordPressShared
 
     private func configureFeaturedImage(featuredImageURL: NSURL) {
         featuredImageView.hidden = false
-        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
 
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
