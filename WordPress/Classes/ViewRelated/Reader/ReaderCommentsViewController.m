@@ -23,6 +23,7 @@
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 
 
@@ -580,8 +581,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)checkIfLoggedIn
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
 #pragma mark - Accessor methods
