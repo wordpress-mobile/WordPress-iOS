@@ -55,6 +55,7 @@ import WordPressComAnalytics
     private var indexPathForGapMarker: NSIndexPath?
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
+    private var imageRequestAuthToken: String?
 
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -186,11 +187,6 @@ import WordPressComAnalytics
     // MARK: - LifeCycle Methods
 
 
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-
     public override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
         restorationClass = self.dynamicType
 
@@ -209,6 +205,9 @@ import WordPressComAnalytics
         // Disable the view until we have a topic.  This prevents a premature
         // pull to refresh animation.
         view.userInteractionEnabled = readerTopic != nil
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        refreshImageRequestAuthToken()
 
         setupTableView()
         setupFooterView()
@@ -566,6 +565,13 @@ import WordPressComAnalytics
         }
 
         title = topic.title
+    }
+
+
+    /// Fetch and cache the current defaultAccount authtoken, if available.
+    private func refreshImageRequestAuthToken() {
+        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
     }
 
 
@@ -1255,6 +1261,13 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - Notifications
+
+    @objc private func defaultAccountDidChange(notification: NSNotification) {
+        refreshImageRequestAuthToken()
+    }
+
+
     // MARK: - Helpers for TableViewHandler
 
 
@@ -1293,10 +1306,10 @@ import WordPressComAnalytics
 
         let postCell = cell as! ReaderPostCardCell
 
+        postCell.delegate = self
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post)
-        postCell.delegate = self
     }
 
 
@@ -1429,6 +1442,7 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
 
 extension ReaderStreamViewController : ReaderPostCellDelegate {
 
+
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
 
@@ -1474,6 +1488,11 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     public func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         showAttributionForPost(post)
+    }
+
+
+    public func readerCellImageRequestAuthToken(cell: ReaderPostCardCell) -> String? {
+        return imageRequestAuthToken
     }
 }
 
