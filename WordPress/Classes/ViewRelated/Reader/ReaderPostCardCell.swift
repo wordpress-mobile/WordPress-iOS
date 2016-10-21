@@ -9,6 +9,7 @@ import WordPressShared
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCellImageRequestAuthToken(cell: ReaderPostCardCell) -> String?
 }
 
 @objc public class ReaderPostCardCell: UITableViewCell
@@ -54,9 +55,6 @@ import WordPressShared
     private let avgWordsPerMinuteRead = 250
     private let minimumMinutesToRead = 2
     private var currentLoadedCardImageURL: String?
-
-    // Image Loading
-    private var imageHeaderAuthorization: String?
 
     // MARK: - Accessors
 
@@ -110,10 +108,6 @@ import WordPressShared
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
-
-        refreshImageHeaderAuthorization()
 
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
@@ -280,17 +274,6 @@ import WordPressShared
         currentLoadedCardImageURL = featuredImageURL.absoluteString
     }
 
-    private func refreshImageHeaderAuthorization() {
-        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = acctServ.defaultWordPressComAccount() {
-            let token = account.authToken
-            let headerValue = String(format: "Bearer %@", token)
-            imageHeaderAuthorization = headerValue
-        } else {
-            imageHeaderAuthorization = nil
-        }
-    }
-
     private func requestForURL(url:NSURL) -> NSURLRequest {
 
         var requestURL = url
@@ -302,10 +285,11 @@ import WordPressShared
         }
 
         let request = NSMutableURLRequest(URL: requestURL)
-        guard let headerAuth = imageHeaderAuthorization else {
+        guard let token = delegate?.readerCellImageRequestAuthToken(self) else {
             return request
         }
-        request.addValue(headerAuth, forHTTPHeaderField: "Authorization")
+        let headerValue = String(format: "Bearer %@", token)
+        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
         return request
     }
 
@@ -475,13 +459,6 @@ import WordPressShared
 
     @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
         blogNameLabel.highlighted = false
-    }
-
-
-    // MARK: - Notifications
-
-    @objc private func defaultAccountDidChange(notification: NSNotification) {
-        refreshImageHeaderAuthorization()
     }
 
 
