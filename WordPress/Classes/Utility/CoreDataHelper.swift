@@ -12,7 +12,7 @@ protocol ManagedObject
 
 // MARK: - Core Data Helpers
 //
-struct CoreDataHelpers<T where T: NSManagedObject, T: ManagedObject>
+struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
 {
     /// CoreData ManagedObjectContext
     ///
@@ -130,7 +130,7 @@ struct CoreDataHelpers<T where T: NSManagedObject, T: ManagedObject>
 
 // MARK: - Private Helpers
 //
-private extension CoreDataHelpers
+private extension CoreDataHelper
 {
     /// Loads the collection of entities that match with a given Fetch Request
     ///
