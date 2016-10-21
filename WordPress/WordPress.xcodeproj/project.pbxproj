@@ -537,6 +537,7 @@
 		B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */; };
 		B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */; };
 		B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */; };
+		B5C9401A1DB900DC0079D4FF /* AccountHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C940191DB900DC0079D4FF /* AccountHelper.swift */; };
 		B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
@@ -1541,8 +1542,8 @@
 		937D9A1019F838C2007B9D5F /* AccountToAccount22to23.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountToAccount22to23.swift; sourceTree = "<group>"; };
 		937F3E301AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerAutomatticTracks.h; sourceTree = "<group>"; };
 		937F3E311AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerAutomatticTracks.m; sourceTree = "<group>"; };
-		93A379D919FE6D3000415023 /* DDLogSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLogSwift.h; sourceTree = "<group>"; };
-		93A379DA19FE6D3000415023 /* DDLogSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLogSwift.m; sourceTree = "<group>"; };
+		93A379D919FE6D3000415023 /* DDLogSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDLogSwift.h; path = ../DDLogSwift.h; sourceTree = "<group>"; };
+		93A379DA19FE6D3000415023 /* DDLogSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDLogSwift.m; path = ../DDLogSwift.m; sourceTree = "<group>"; };
 		93A379EB19FFBF7900415023 /* KeychainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainTest.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerAutomatticTracksTests.m; sourceTree = "<group>"; };
@@ -1770,6 +1771,7 @@
 		B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockImageTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockUserTableViewCell.xib; sourceTree = "<group>"; };
 		B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
+		B5C940191DB900DC0079D4FF /* AccountHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountHelper.swift; sourceTree = "<group>"; };
 		B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
@@ -2819,13 +2821,6 @@
 			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
-		5993E7261AC5D62100D31D2B /* Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Files;
-			sourceTree = "<group>";
-		};
 		59B48B601B99E0B0008EBB84 /* TestUtilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -2838,6 +2833,8 @@
 		59DD94311AC479DC0032DD6B /* Logging */ = {
 			isa = PBXGroup;
 			children = (
+				93A379D919FE6D3000415023 /* DDLogSwift.h */,
+				93A379DA19FE6D3000415023 /* DDLogSwift.m */,
 				59DD94321AC479ED0032DD6B /* WPLogger.h */,
 				59DD94331AC479ED0032DD6B /* WPLogger.m */,
 			);
@@ -3322,13 +3319,17 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				B5C9401B1DB901120079D4FF /* Account */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
-				5993E7261AC5D62100D31D2B /* Files */,
+				B5C9401C1DB901BF0079D4FF /* Crashlytics */,
+				B5C9401E1DB902070079D4FF /* Helpshift */,
+				B5C9401F1DB902220079D4FF /* HockeyApp */,
 				B5DB8AF51C949DC70059196A /* ImmuTable */,
 				59DD94311AC479DC0032DD6B /* Logging */,
 				E159D1011309AAF200F498E2 /* Migrations */,
 				B53520991AF7BB9600B33BA8 /* Notifications */,
 				852416CC1A12EAF70030700C /* Ratings */,
+				B5C9401D1DB901F30079D4FF /* Reachability */,
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				B526DC241B1E473B002A8C5F /* WebViewController */,
 				E1BEEC621C4E35A8000B4FA0 /* Animator.swift */,
@@ -3337,23 +3338,13 @@
 				C545E0A11811B9880020844C /* ContextManager.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
-				93A379D919FE6D3000415023 /* DDLogSwift.h */,
-				93A379DA19FE6D3000415023 /* DDLogSwift.m */,
 				E1C3C8521CE467A900D5DB36 /* EmailTypoChecker.swift */,
 				E1266D2C1BBE8B9A00FCB6B6 /* Gravatar.swift */,
-				313692771A5D6F7900EBE645 /* HelpshiftUtils.h */,
-				313692781A5D6F7900EBE645 /* HelpshiftUtils.m */,
-				E1718E9E1CAD0800006F9E2D /* HockeyManager.h */,
-				E1718E9F1CAD0800006F9E2D /* HockeyManager.m */,
 				E11000981CDB5F1E00E33887 /* KeychainTools.swift */,
 				B576B4871C6A22FB0027C754 /* Languages.swift */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 				E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */,
-				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
-				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
-				85D239B41AE5A6170074768D /* ReachabilityFacade.h */,
-				85D239B51AE5A6170074768D /* ReachabilityFacade.m */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */,
@@ -3366,10 +3357,6 @@
 				5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */,
 				E183BD7217621D85000B0822 /* WPCookie.h */,
 				E183BD7317621D86000B0822 /* WPCookie.m */,
-				5926E1E11AC4468300964783 /* WPCrashlytics.h */,
-				5926E1E21AC4468300964783 /* WPCrashlytics.m */,
-				E1C265C71BECFCDD00DC4C6B /* WPCrashlyticsLogger.h */,
-				E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */,
 				E114D798153D85A800984182 /* WPError.h */,
 				E114D799153D85A800984182 /* WPError.m */,
 				59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */,
@@ -4047,6 +4034,54 @@
 				B50248BE1C96FFCC00AFBDED /* WordPressSharePrefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B5C9401B1DB901120079D4FF /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				B5C940191DB900DC0079D4FF /* AccountHelper.swift */,
+			);
+			name = Account;
+			sourceTree = "<group>";
+		};
+		B5C9401C1DB901BF0079D4FF /* Crashlytics */ = {
+			isa = PBXGroup;
+			children = (
+				5926E1E11AC4468300964783 /* WPCrashlytics.h */,
+				5926E1E21AC4468300964783 /* WPCrashlytics.m */,
+				E1C265C71BECFCDD00DC4C6B /* WPCrashlyticsLogger.h */,
+				E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */,
+			);
+			name = Crashlytics;
+			sourceTree = "<group>";
+		};
+		B5C9401D1DB901F30079D4FF /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
+				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
+				85D239B41AE5A6170074768D /* ReachabilityFacade.h */,
+				85D239B51AE5A6170074768D /* ReachabilityFacade.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		B5C9401E1DB902070079D4FF /* Helpshift */ = {
+			isa = PBXGroup;
+			children = (
+				313692771A5D6F7900EBE645 /* HelpshiftUtils.h */,
+				313692781A5D6F7900EBE645 /* HelpshiftUtils.m */,
+			);
+			name = Helpshift;
+			sourceTree = "<group>";
+		};
+		B5C9401F1DB902220079D4FF /* HockeyApp */ = {
+			isa = PBXGroup;
+			children = (
+				E1718E9E1CAD0800006F9E2D /* HockeyManager.h */,
+				E1718E9F1CAD0800006F9E2D /* HockeyManager.m */,
+			);
+			name = HockeyApp;
 			sourceTree = "<group>";
 		};
 		B5DB8AF51C949DC70059196A /* ImmuTable */ = {
@@ -5916,6 +5951,7 @@
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
 				5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
+				B5C9401A1DB900DC0079D4FF /* AccountHelper.swift in Sources */,
 				E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */,
 				08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
