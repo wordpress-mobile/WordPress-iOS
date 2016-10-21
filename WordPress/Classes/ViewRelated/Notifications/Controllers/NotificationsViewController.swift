@@ -864,10 +864,7 @@ private extension NotificationsViewController
     }
 
     var shouldDisplayJetpackMessage: Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount() == nil
+        return AccountHelper.isDotcomAvailable() == false
     }
 
     var shouldDisplayNoResultsView: Bool {

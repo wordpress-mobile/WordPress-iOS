@@ -20,11 +20,9 @@ class CoreDataHelperTests: XCTestCase
         ContextManager.overrideSharedInstance(nil)
     }
 
-
-    
     func testSomething() {
 
-        
+
         NSLog("HERE")
     }
 }
