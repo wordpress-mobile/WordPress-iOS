@@ -53,7 +53,8 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         do {
             result = try context.countForFetchRequest(request)
         } catch {
-            DDLogSwift.logError("Error counting objects [\(T.entityName)]")
+            DDLogSwift.logError("Error counting objects [\(T.entityName)]: \(error)")
+            assert(false)
         }
 
         return result
@@ -66,7 +67,8 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
             context.deleteObject(object)
             try context.save()
         } catch {
-            DDLogSwift.logError("Error deleting entity [\(T.entityName)]")
+            DDLogSwift.logError("Error deleting entity [\(T.entityName)]: \(error)")
+            assert(false)
         }
     }
 
@@ -85,7 +87,8 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
 
             try context.save()
         } catch {
-            DDLogSwift.logError("Error deleting all entities of kind [\(T.entityName)]")
+            DDLogSwift.logError("Error deleting all entities of kind [\(T.entityName)]: \(error)")
+            assert(false)
         }
     }
 
