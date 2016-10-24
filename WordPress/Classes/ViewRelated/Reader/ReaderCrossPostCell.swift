@@ -83,8 +83,6 @@ public class ReaderCrossPostCell: UITableViewCell
         configureLabel()
         configureBlavatarImage()
         configureAvatarImageView()
-
-        contentView.layoutIfNeeded()
     }
 
     private func configureBlavatarImage() {
