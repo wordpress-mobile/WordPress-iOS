@@ -590,9 +590,7 @@ import WordPressComAnalytics
         }
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let account = service.defaultWordPressComAccount()
-        isLoggedIn = account != nil
+        isLoggedIn = AccountHelper.isDotcomAvailable()
 
         // Reset our display context to ensure its current.
         managedObjectContext().reset()
