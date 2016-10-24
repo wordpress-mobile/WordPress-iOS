@@ -269,6 +269,50 @@
                 failure:failureBlock];
 }
 
+- (void)updateMultipleMedia:(NSArray<Media *> *)mediaObjects
+             overallSuccess:(void (^)())overallSuccess
+                    failure:(void (^)(NSError *error))failure
+{
+    if (mediaObjects.count == 0) {
+        if (overallSuccess) {
+            overallSuccess();
+        }
+        return;
+    }
+
+    NSNumber *totalOperations = @(mediaObjects.count);
+    __block NSUInteger completedOperations = 0;
+    __block NSUInteger failedOperations = 0;
+
+    void (^individualOperationCompletion)(BOOL success) = ^(BOOL success) {
+        @synchronized (totalOperations) {
+            completedOperations += 1;
+            failedOperations += success ? 0 : 1;
+
+            if (completedOperations >= totalOperations.unsignedIntegerValue) {
+                if (overallSuccess && failedOperations != totalOperations.unsignedIntegerValue) {
+                    overallSuccess();
+                } else if (failure && failedOperations == totalOperations.unsignedIntegerValue) {
+                    NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
+                                                         code:WordPressComRestApiErrorUnknown
+                                                     userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach remote media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
+                    failure(error);
+                }
+            }
+        }
+    };
+
+    for (Media *media in mediaObjects) {
+        // This effectively ignores any errors presented
+        [self updateMedia:media success:^{
+            individualOperationCompletion(true);
+        } failure:^(NSError *error) {
+            individualOperationCompletion(false);
+        }];
+    }
+
+}
+
 - (NSError *)translateMediaUploadError:(NSError *)error {
     NSError *newError = error;
     if (error.domain == WPXMLRPCFaultErrorDomain) {
