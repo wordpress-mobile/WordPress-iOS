@@ -141,7 +141,7 @@ private extension CoreDataHelper
         do {
             objects = try context.executeFetchRequest(request) as? [T]
         } catch {
-            DDLogSwift.logError("")
+            DDLogSwift.logError("Error loading Objects [\(T.entityName)")
         }
 
         return objects ?? []
