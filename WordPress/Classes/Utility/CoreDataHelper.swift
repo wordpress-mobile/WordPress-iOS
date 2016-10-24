@@ -102,7 +102,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         return objects.first
     }
 
-    /// Inserts a new Entity
+    /// Inserts a new Entity. For performance reasons, this helper *DOES NOT* persists the context.
     ///
     func insertNewObject() -> T {
         let name = T.entityName
