@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <frame key="frameInset" width="320" height="483"/>
+                <frame key="frameInset" width="320" height="483.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
@@ -99,10 +99,11 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" priority="999" constant="1" id="3US-dt-xFb" userLabel="bottom = Text Label.bottom + 1 @999 (1pt padding)"/>
+                                            <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" id="3US-dt-xFb"/>
                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
                                             <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
+                                            <constraint firstItem="maZ-qu-bdT" firstAttribute="height" relation="greaterThanOrEqual" secondItem="tUL-YG-fIa" secondAttribute="height" id="f5c-rQ-0t9"/>
                                             <constraint firstItem="maZ-qu-bdT" firstAttribute="leading" secondItem="tUL-YG-fIa" secondAttribute="trailing" constant="8" id="nVB-6A-H4M"/>
                                             <constraint firstItem="maZ-qu-bdT" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="sq0-mM-VGr"/>
                                         </constraints>

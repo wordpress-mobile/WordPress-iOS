@@ -207,8 +207,6 @@ import WordPressShared
         configureTag()
         configureActionButtons()
         configureActionStackViewIfNeeded()
-
-        contentStackView.layoutIfNeeded()
     }
 
     private func configureHeader() {
