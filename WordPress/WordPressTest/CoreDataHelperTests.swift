@@ -34,6 +34,18 @@ class CoreDataHelperTests: XCTestCase
 }
 
 
+// MARK: - Testing Helpers
+//
+extension CoreDataHelperTests
+{
+    func insertDummyEntities(count: Int) {
+        for i in 0 ..< count {
+            let entity = helper.insertNewObject()
+            entity.value = i
+        }
+    }
+}
+
 
 // MARK: - Dummy Sample Entity
 //
