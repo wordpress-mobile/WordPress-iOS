@@ -112,12 +112,31 @@ class CoreDataHelperTests: XCTestCase
         XCTAssert(helper.allObjects().count == 0)
     }
 
+    /// Verifies that firstObject effectively retrieves a single instance, when applicable
+    ///
     func testFirstObjectMatchingPredicateReturnsTheExpectedObject() {
-        
+        let count = 50
+        let targetKey = "5"
+        insertDummyEntities(count)
+
+        let predicate = NSPredicate(format: "key == %@", targetKey)
+        let retrieved = helper.firstObject(matchingPredicate: predicate)
+
+        XCTAssertNotNil(retrieved)
+        XCTAssertEqual(retrieved!.key, targetKey)
     }
 
+    /// Verifies that firstObject effectively retrieves nil, when applicable
+    ///
     func testFirstObjectMatchingPredicateReturnsNilIfNothingWasFound() {
+        let count = 5
+        let targetKey = "50"
+        insertDummyEntities(count)
 
+        let predicate = NSPredicate(format: "key == %@", targetKey)
+        let retrieved = helper.firstObject(matchingPredicate: predicate)
+
+        XCTAssertNil(retrieved)
     }
 
     /// Verifies that insertNewObject returns a new entity of the specialized kind
@@ -130,12 +149,33 @@ class CoreDataHelperTests: XCTestCase
         XCTAssert(anyObject is DummyEntity)
     }
 
+    /// Verifies that loadObject returns nil whenever the entity was deleted
+    ///
     func testLoadObjectReturnsNilIfTheObjectWasDeleted() {
+        let entity = helper.insertNewObject()
+        let objectID = entity.objectID
 
+        let retrieved = helper.loadObject(withObjectID: objectID)
+        XCTAssertNotNil(retrieved)
+
+        helper.deleteObject(entity)
+
+        XCTAssertNil(helper.loadObject(withObjectID: objectID))
     }
 
+    /// Verifies that loadObject retrieves the expected entity
+    ///
     func testLoadObjectReturnsTheExpectedObject() {
+        let entity = helper.insertNewObject()
+        entity.key = "YEAH!"
+        entity.value = 42
 
+        let objectID = entity.objectID
+        let retrieved = helper.loadObject(withObjectID: objectID)
+
+        XCTAssertNotNil(retrieved)
+        XCTAssertEqual(retrieved!.key, "YEAH!")
+        XCTAssertEqual(retrieved!.value, 42)
     }
 }
 
@@ -147,8 +187,11 @@ extension CoreDataHelperTests
     func insertDummyEntities(count: Int) {
         for i in 0 ..< count {
             let entity = helper.insertNewObject()
+            entity.key = "\(i)"
             entity.value = i
         }
+
+        _ = try? stack.context.save()
     }
 }
 
@@ -174,7 +217,6 @@ class DummyStack
         keyAttribute.name = "key"
         keyAttribute.attributeType = .StringAttributeType
 
-
         let valueAttribute  = NSAttributeDescription()
         valueAttribute.name = "value"
         valueAttribute.attributeType = .Integer64AttributeType
@@ -192,13 +234,11 @@ class DummyStack
         return model
     }()
 
-
     lazy var context: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         context.persistentStoreCoordinator = self.coordinator
         return context
     }()
-
 
     lazy var coordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
@@ -210,7 +250,7 @@ class DummyStack
     lazy var storeURL: NSURL = {
         let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         let foundationPath = documents as NSString
-        let dummyStore = foundationPath.stringByAppendingPathComponent("LordYosemite.sqlite")
-        return NSURL.fileURLWithPath(dummyStore)
+        let store = foundationPath.stringByAppendingPathComponent("LordYosemite.sqlite")
+        return NSURL.fileURLWithPath(store)
     }()
 }
