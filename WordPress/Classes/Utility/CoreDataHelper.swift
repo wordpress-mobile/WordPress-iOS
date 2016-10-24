@@ -30,9 +30,10 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet. Optional.
     ///
-    func allObjects(matchingPredicate predicate: NSPredicate? = nil)  -> [T] {
+    func allObjects(matchingPredicate predicate: NSPredicate? = nil, sortedBy descriptors: [NSSortDescriptor]? = nil)  -> [T] {
         let request = newFetchRequest()
         request.predicate = predicate
+        request.sortDescriptors = descriptors
 
         return loadObjects(withFetchRequest: request)
     }
