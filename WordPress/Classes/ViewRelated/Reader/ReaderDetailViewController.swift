@@ -744,13 +744,14 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     // MARK: - Analytics
 
     private func bumpStats() {
+        if didBumpStats {
+            return
+        }
+
         guard let readerPost = post where isViewLoaded() && view.window != nil else {
             return
         }
 
-        if didBumpStats {
-            return
-        }
         didBumpStats = true
 
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
@@ -771,12 +772,14 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
 
     private func bumpPageViewsForPost() {
-        guard let readerPost = post where isViewLoaded() && view.window != nil else {
-            return
-        }
         if didBumpPageViews {
             return
         }
+
+        guard let readerPost = post where isViewLoaded() && view.window != nil else {
+            return
+        }
+
         didBumpPageViews = true
         ReaderHelpers.bumpPageViewForPost(readerPost)
     }
