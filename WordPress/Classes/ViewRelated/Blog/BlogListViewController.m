@@ -147,6 +147,7 @@ static NSInteger HideSearchMinSites = 3;
     [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
+    [self registerForBlogCreationNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -437,6 +438,14 @@ static NSInteger HideSearchMinSites = 3;
                                                object:nil];
 }
 
+- (void)registerForBlogCreationNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(newWordPressComBlogCreated:)
+                                                 name:NewWPComBlogCreatedNotification
+                                               object:nil];
+}
+
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -506,6 +515,26 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO];
     [self updateSearchVisibility];
+}
+
+- (void)newWordPressComBlogCreated:(NSNotification *)notification
+{
+    Blog *blog = notification.userInfo[NewWPComBlogCreatedNotificationBlogUserInfoKey];
+
+    if (blog) {
+        NSUInteger index = [self.resultsController.fetchedObjects indexOfObject:blog];
+
+        if (index != NSNotFound) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            [self.tableView flashRowAtIndexPath:indexPath
+                                 scrollPosition:UITableViewScrollPositionMiddle
+                                     completion:^{
+                                         if (![self splitViewControllerIsHorizontallyCompact]) {
+                                             [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+                                         }
+                                     }];
+        }
+    }
 }
 
 #pragma mark - Table view data source
