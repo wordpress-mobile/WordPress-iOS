@@ -18,6 +18,9 @@
 
 #import "WordPress-Swift.h"
 
+NSString * const NewWPComBlogCreatedNotification = @"NewWPComBlogCreatedNotification";
+NSString * const NewWPComBlogCreatedNotificationBlogUserInfoKey = @"NewWPComBlogCreatedNotificationBlogUserInfoKey";
+
 @interface CreateNewBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
     WPNUXSecondaryButton *_cancelButton;
     UILabel *_titleLabel;
@@ -504,18 +507,32 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             blog.dotComID = [blogOptions numberForKey:@"blogid"];
             blog.url = blogOptions[@"url"];
             blog.settings.name = [[blogOptions stringForKey:@"blogname"] stringByDecodingXMLCharacters];
-            defaultAccount.defaultBlog = blog;
-            
+
             [[ContextManager sharedInstance] saveContext:context];
 
+            __weak __typeof(self) weakSelf = self;
+
+            void (^completion)() = ^{
+                [WPAnalytics refreshMetadata];
+                [weakSelf setAuthenticating:NO];
+                [weakSelf dismissViewControllerAnimated:YES completion:^{
+                    NSDictionary *userInfo = @{ NewWPComBlogCreatedNotificationBlogUserInfoKey: blog };
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NewWPComBlogCreatedNotification
+                                                                        object:nil
+                                                                      userInfo:userInfo];
+                }];
+            };
+
             [blogService syncBlog:blog completionHandler:^{
-                [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
+                [accountService updateUserDetailsForAccount:defaultAccount
+                                                    success:completion
+                                                    failure:^(NSError * _Nonnull error) {
+                                                        completion();
+                                                    }];
             }];
-            
-            [WPAnalytics refreshMetadata];
-            [self setAuthenticating:NO];
-            [self dismissViewControllerAnimated:YES completion:nil];
         };
+
         WordPressComServiceFailureBlock createBlogFailure = ^(NSError *error) {
             DDLogError(@"Failed creating blog: %@", error);
             [self setAuthenticating:NO];
