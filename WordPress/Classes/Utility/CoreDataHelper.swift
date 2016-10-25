@@ -125,7 +125,6 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
             result = try context.existingObjectWithID(objectID) as? T
         } catch {
             DDLogSwift.logError("Error loading Object [\(T.entityName)]")
-            assert(false)
         }
 
         return result
