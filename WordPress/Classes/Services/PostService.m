@@ -34,9 +34,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.remoteStatus = AbstractPostRemoteStatusSync;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
 
-    if (blog.settings.defaultCategoryID) {
+    if (blog.settings.defaultCategoryID && blog.settings.defaultCategoryID.integerValue != PostCategoryUncategorized) {
         PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
-        if (category && category.categoryID.integerValue != PostCategoryUncategorized) {
+        if (category) {
             [post addCategoriesObject:category];
         }
     }
