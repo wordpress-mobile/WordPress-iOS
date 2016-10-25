@@ -176,7 +176,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
         setupNavBar()
 
-        if post != nil {
+        if let _ = post {
             configureView()
         }
     }
@@ -321,6 +321,9 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         configureTag()
         configureActionButtons()
         configureFooterIfNeeded()
+
+        bumpStats()
+        bumpPageViewsForPost()
 
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: #selector(ReaderDetailViewController.handleBlockSiteNotification(_:)),
@@ -741,22 +744,26 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     // MARK: - Analytics
 
     private func bumpStats() {
+        guard let readerPost = post where isViewLoaded() && view.window != nil else {
+            return
+        }
+
         if didBumpStats {
             return
         }
         didBumpStats = true
 
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
-        let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
+        let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
 
-        var properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: nil, forKey: nil)
+        var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
         WPAppAnalytics.track(.ReaderArticleOpened, withProperties: properties)
 
         // We can remove the nil check and use `if let` when `ReaderPost` adopts nullibility.
-        let railcar = post?.railcarDictionary()
+        let railcar = readerPost.railcarDictionary()
         if railcar != nil {
             WPAppAnalytics.trackTrainTracksInteraction(.ReaderArticleOpened, withProperties: railcar)
         }
@@ -764,11 +771,14 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
 
     private func bumpPageViewsForPost() {
+        guard let readerPost = post where isViewLoaded() && view.window != nil else {
+            return
+        }
         if didBumpPageViews {
             return
         }
         didBumpPageViews = true
-        ReaderHelpers.bumpPageViewForPost(post!)
+        ReaderHelpers.bumpPageViewForPost(readerPost)
     }
 
 
