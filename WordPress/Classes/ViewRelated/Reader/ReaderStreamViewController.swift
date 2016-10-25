@@ -1050,12 +1050,14 @@ import WordPressComAnalytics
     /// Bump tracked analytics stats if necessary.
     ///
     func bumpStats() {
-        guard let topic = readerTopic, properties = topicPropertyForStats() where isViewLoaded() && view.window != nil else {
-            return
-        }
         if didBumpStats {
             return
         }
+
+        guard let topic = readerTopic, properties = topicPropertyForStats() where isViewLoaded() && view.window != nil else {
+            return
+        }
+
         didBumpStats = true
         ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
     }
