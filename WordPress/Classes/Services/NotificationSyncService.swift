@@ -1,15 +1,15 @@
 import Foundation
 
 
-// MARK: NotificationSyncService
+// MARK: - NotificationSyncService
 //
 class NotificationSyncService
 {
-    ///
+    /// Sync Service Remote
     ///
     private var remote: NotificationSyncServiceRemote!
 
-    ///
+    /// Designed Initializer
     ///
     init?() {
         guard let dotcomAPI = dotcomAPI else {
@@ -21,7 +21,9 @@ class NotificationSyncService
 
 
 
-    /// GET /rest/v1.1/notifications/?http_envelope=1&fields=id%2Ctype%2Cunread%2Cbody%2Csubject%2Ctimestamp%2Cmeta%2Cnote_hash&number=10 HTTP/1.1
+    /// GET /rest/v1.1/notifications/?
+    /// fields=id,type,unread,body,subject,timestamp,meta
+    /// note_hash&number=40
     ///
     func sync() {
 
@@ -41,10 +43,10 @@ class NotificationSyncService
                 return
             }
 
-            self.updateStatus(original, forNoteWithObjectID: notification.objectID)
+            self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
         }
 
-        updateStatus(false, forNoteWithObjectID: notification.objectID)
+        updateReadStatus(true, forNoteWithObjectID: notification.objectID)
     }
 
     /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
@@ -52,6 +54,8 @@ class NotificationSyncService
     /// - Parameter timestamp: Timestamp of the last seen notification.
     ///
     func updateLastSeen(timestamp: String) {
+        assert(NSThread.isMainThread())
+
         remote.updateLastSeen(timestamp) { success in
             if success {
                 return
@@ -73,7 +77,7 @@ private extension NotificationSyncService
     ///     - status: New *read* value
     ///     - noteObjectID: CoreData ObjectID
     ///
-    func updateStatus(status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
+    func updateReadStatus(status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
         do {
             let note = try mainContext.existingObjectWithID(noteObjectID) as? Notification
             note?.read = status
