@@ -606,6 +606,8 @@ import WordPressComAnalytics
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
 
+        bumpStats()
+
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
 
         // Make sure we're showing the no results view if appropriate
@@ -1048,13 +1050,14 @@ import WordPressComAnalytics
     /// Bump tracked analytics stats if necessary.
     ///
     func bumpStats() {
+        guard let topic = readerTopic, properties = topicPropertyForStats() where isViewLoaded() && view.window != nil else {
+            return
+        }
         if didBumpStats {
             return
         }
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            didBumpStats = true
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
-        }
+        didBumpStats = true
+        ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
     }
 
 
