@@ -188,6 +188,9 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         // The UIApplicationDidBecomeActiveNotification notification is broadcast
         // when the app is resumed as a part of split screen multitasking on the iPad.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderDetailViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+        bumpStats()
+        bumpPageViewsForPost()
     }
 
 
@@ -318,9 +321,6 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         configureTag()
         configureActionButtons()
         configureFooterIfNeeded()
-
-        bumpStats()
-        bumpPageViewsForPost()
 
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: #selector(ReaderDetailViewController.handleBlockSiteNotification(_:)),

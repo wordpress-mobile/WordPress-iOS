@@ -59,6 +59,7 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
+    private var didBumpStats = false
 
 
     /// Used for fetching content.
@@ -251,6 +252,8 @@ import WordPressComAnalytics
 
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+
+        bumpStats()
     }
 
 
@@ -579,15 +582,11 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
-
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
-            if ReaderHelpers.isTopicSearchTopic(topic) {
-                tableViewController.refreshControl = nil
-            }
+            tableViewController.refreshControl = nil
         }
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
@@ -1040,6 +1039,22 @@ import WordPressComAnalytics
     func handleSearchButtonTapped(sender: UIBarButtonItem) {
         let controller = ReaderSearchViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+
+    // MARK: - Analytics
+
+
+    /// Bump tracked analytics stats if necessary.
+    ///
+    func bumpStats() {
+        if didBumpStats {
+            return
+        }
+        if let topic = readerTopic, properties = topicPropertyForStats() {
+            didBumpStats = true
+            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+        }
     }
 
 
