@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import Simperium
 import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS

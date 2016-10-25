@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import Simperium
 import WordPressComAnalytics
 import WordPress_AppbotX
 import WordPressShared
@@ -43,13 +42,6 @@ class NotificationsViewController : UITableViewController
     ///
     private var noResultsView: WPNoResultsView!
 
-    /// ID of the Notification that must be pushed, granted that it gets synced before the timeout kicks.
-    ///
-    private var pushNotificationID: String?
-
-    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
-    ///
-    private var pushNotificationDate: NSDate?
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -97,7 +89,6 @@ class NotificationsViewController : UITableViewController
         setupRefreshControl()
         setupNoResultsView()
         setupFiltersSegmentedControl()
-        setupNotificationsBucketDelegate()
 
         startListeningToAccountNotifications()
 
@@ -351,16 +342,7 @@ private extension NotificationsViewController
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
-
-        // This is only required for debugging:
-        // If we're sync'ing against a custom bucket, we should let the user know about it!
-        let bucketName = Notification.classNameWithoutNamespaces()
-
-        if let overridenName = simperium.bucketOverrides[bucketName] as? String where overridenName != WPNotificationsBucketName {
-            navigationItem.title = "Notifications from [\(overridenName)]"
-        } else {
-            navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
-        }
+        navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
     func setupConstraints() {
@@ -441,11 +423,6 @@ private extension NotificationsViewController
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
     }
-
-    func setupNotificationsBucketDelegate() {
-        notesBucket.delegate = self
-        notesBucket.notifyWhileIndexing = true
-    }
 }
 
 
@@ -457,7 +434,6 @@ private extension NotificationsViewController
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.addObserver(self, selector: #selector(applicationWillResignActive), name:UIApplicationWillResignActiveNotification, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -476,14 +452,10 @@ private extension NotificationsViewController
         guard isViewLoaded() == true && view.window != nil else {
             return
         }
-
+// TODO: Review + Fix if needed
         resetApplicationBadge()
         updateLastSeenTime()
         reloadResultsControllerIfNeeded()
-    }
-
-    @objc func applicationWillResignActive(note: NSNotification) {
-        stopWaitingForNotification()
     }
 
     @objc func defaultAccountDidChange(note: NSNotification) {
@@ -505,12 +477,13 @@ extension NotificationsViewController
     /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteID: String) {
-        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
-            startWaitingForNotification(noteID)
-            return
-        }
-
-        showDetailsForNotification(note)
+// TODO: Fixme
+//        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
+//            startWaitingForNotification(noteID)
+//            return
+//        }
+//
+//        showDetailsForNotification(note)
     }
 
     /// Pushes the details for a given Notification Instance.
@@ -643,13 +616,9 @@ private extension NotificationsViewController
         needsReloadResults = false
     }
 
-    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
-        guard let noteObjectID = noteObjectID else {
-            return
-        }
-
+    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID) {
         do {
-            let note = try simperium.managedObjectContext().existingObjectWithID(noteObjectID)
+            let note = try mainContext.existingObjectWithID(noteObjectID)
 
             if let indexPath = tableViewHandler.resultsController.indexPathForObject(note) {
                 tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -800,7 +769,9 @@ private extension NotificationsViewController
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        return notesBucket.numObjects() > 0
+// TODO: Fixme
+return false
+//        return notesBucket.numObjects() > 0
     }
 }
 
@@ -930,38 +901,40 @@ private extension NotificationsViewController
 
 
 
+// TODO: Reuse / Cleanup as needed
+//
 // MARK: - SPBucketDelegate Methods
 //
-extension NotificationsViewController: SPBucketDelegate
-{
-    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
-        // We're only concerned with New Notification Events
-        guard changeType == .Insert else {
-            return
-        }
-
-        // Mark as read immediately, if needed
-        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
-            resetApplicationBadge()
-            updateLastSeenTime()
-        }
-
-        // Were we waiting for this notification?
-        guard let waitingNoteID = pushNotificationID where waitingNoteID == key else {
-            return
-        }
-
-        // Don't fire the Timeout Event
-        stopWaitingForNotification()
-
-        // Show the details only if NotificationPushMaxWait hasn't elapsed
-        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
-            return
-        }
-
-        showDetailsForNotificationWithID(key)
-    }
-}
+//extension NotificationsViewController: SPBucketDelegate
+//{
+//    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
+//        // We're only concerned with New Notification Events
+//        guard changeType == .Insert else {
+//            return
+//        }
+//
+//        // Mark as read immediately, if needed
+//        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
+//            resetApplicationBadge()
+//            updateLastSeenTime()
+//        }
+//
+//        // Were we waiting for this notification?
+//        guard let waitingNoteID = pushNotificationID where waitingNoteID == key else {
+//            return
+//        }
+//
+//        // Don't fire the Timeout Event
+//        stopWaitingForNotification()
+//
+//        // Show the details only if NotificationPushMaxWait hasn't elapsed
+//        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
+//            return
+//        }
+//
+//        showDetailsForNotificationWithID(key)
+//    }
+//}
 
 
 
@@ -979,37 +952,6 @@ private extension NotificationsViewController
         }
 
 // TODO: Update Last Seen Timestamp
-//        note.timestampAsDate.timeIntervalSince1970)
-    }
-
-    func startWaitingForNotification(notificationID: String) {
-        guard simperium.requiresConnection == false else {
-            return
-        }
-
-        DDLogSwift.logInfo("Waiting \(Syncing.pushMaxWait) secs for Notification with ID [\(notificationID)]")
-
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
-        performSelector(#selector(notificationWaitDidTimeout), withObject:nil, afterDelay: Syncing.syncTimeout)
-
-        pushNotificationID = notificationID
-        pushNotificationDate = NSDate()
-    }
-
-    func stopWaitingForNotification() {
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(notificationWaitDidTimeout), object: nil)
-        pushNotificationID = nil
-        pushNotificationDate = nil
-    }
-
-    @objc func notificationWaitDidTimeout() {
-        DDLogSwift.logInfo("Sync Timeout: Cancelling wait for notification with ID [\(pushNotificationID)]")
-
-        pushNotificationID = nil
-        pushNotificationDate = nil
-
-        let properties = [Stats.networkStatusKey: simperium.networkStatus]
-        WPAnalytics.track(.NotificationsMissingSyncWarning, withProperties: properties)
     }
 }
 
@@ -1069,16 +1011,8 @@ private extension NotificationsViewController
 {
     typealias NoteKind = Notification.Kind
 
-    var simperium: Simperium {
-        return WordPressAppDelegate.sharedInstance().simperium
-    }
-
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
-    }
-
-    var notesBucket: SPBucket {
-        return simperium.bucketForName(entityName())
     }
 
     var actionsService: NotificationActionsService {
