@@ -128,8 +128,8 @@ import WordPressShared
         setupLikeActionButton()
     }
 
-    public override func layoutSubviews() {
-        super.layoutSubviews()
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
     }
 
@@ -238,8 +238,9 @@ import WordPressShared
             featuredImageView.hidden = true
             return
         }
-        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
 
+        featuredImageView.layoutIfNeeded()
+        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
             configureFeaturedImage(featuredImageURL)
         }
     }
