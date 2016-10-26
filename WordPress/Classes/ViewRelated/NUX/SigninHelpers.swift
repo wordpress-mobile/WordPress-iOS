@@ -253,6 +253,7 @@ import Mixpanel
         alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
             callback()
         })
+        alertController.presentFromRootViewController()
     }
 
 
