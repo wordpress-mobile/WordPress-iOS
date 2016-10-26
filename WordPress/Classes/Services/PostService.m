@@ -531,7 +531,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:post.content];
         for (Media *media in post.blog.media) {
             NSNumber *mediaID = media.mediaID;
-            if (mediaID && [mediaIDs containsObject:mediaID]){
+            if (mediaID && [mediaIDs containsObject:mediaID]) {
                 post.pathForDisplayImage = media.remoteURL;
             }
         }
