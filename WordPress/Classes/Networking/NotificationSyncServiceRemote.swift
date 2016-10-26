@@ -7,13 +7,15 @@ import Foundation
 class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 {
     // MARK: - Constants
-    private let defaultPageSize = 40
+    private let defaultPageSize = 100
 
 
     /// Retrieves the Notification for the specified pageSize (OR collection of NoteID's, when present)
     ///
     func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
-        loadNotes(withNoteIds: noteIds, pageSize: pageSize) { notes in
+        let fields = "id,note_hash,type,unread,body,subject,timestamp,meta"
+
+        loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { notes in
             completion(notes)
         }
     }
@@ -81,7 +83,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 
 // MARK: -  Private Methods
 //
-extension NotificationSyncServiceRemote
+private extension NotificationSyncServiceRemote
 {
     /// Retrieves the Notification for the specified pageSize (OR collection of NoteID's, when present).
     /// Note that only the specified fields will be retrieved.
@@ -100,8 +102,8 @@ extension NotificationSyncServiceRemote
             "number": pageSize ?? defaultPageSize
         ]
 
-        if let noteIds = noteIds {
-            parameters["ids"] = noteIds
+        if let notificationIds = noteIds {
+            parameters["ids"] = (notificationIds as NSArray).componentsJoinedByString(",")
         }
 
         if let fields = fields {
