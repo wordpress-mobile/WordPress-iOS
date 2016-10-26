@@ -414,7 +414,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    if ([UIDevice isPad]) {
+    if ([WPDeviceIdentification isiPad]) {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[postHeader(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
@@ -457,7 +457,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
-    if ([UIDevice isPad]) {
+    if ([WPDeviceIdentification isiPad]) {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[replyTextView(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
@@ -1002,7 +1002,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = [UIDevice isPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = [WPDeviceIdentification isiPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 

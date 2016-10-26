@@ -3,7 +3,7 @@ import WordPressShared.WPStyleGuide
 
 public class ReaderBlockedSiteCell: UITableViewCell
 {
-
+    @IBOutlet private weak var borderedContentView: UIView!
     @IBOutlet private weak var label: UILabel!
 
     public override func awakeFromNib() {
@@ -12,6 +12,9 @@ public class ReaderBlockedSiteCell: UITableViewCell
     }
 
     private func applyStyles() {
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        borderedContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedContentView.layer.borderWidth = 1.0
         label.font = WPStyleGuide.subtitleFont()
         label.textColor = WPStyleGuide.whisperGrey()
     }
