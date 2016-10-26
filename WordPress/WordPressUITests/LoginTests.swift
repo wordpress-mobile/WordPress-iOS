@@ -34,7 +34,7 @@ class LoginTests: XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText("failpassword")
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         self.waitForElementToAppear(app.staticTexts["Sorry, we can't log you in."])
 
@@ -50,7 +50,7 @@ class LoginTests: XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText(WordPressTestCredentials.oneStepPassword)
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         self.waitForElementToAppear(app.tabBars["Main Navigation"])
     }
@@ -65,7 +65,7 @@ class LoginTests: XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText(WordPressTestCredentials.twoStepPassword)
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         self.waitForElementToAppear(app.tabBars["Main Navigation"])
     }

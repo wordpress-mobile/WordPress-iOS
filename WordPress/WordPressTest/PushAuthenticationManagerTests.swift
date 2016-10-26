@@ -106,7 +106,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login verification")
-        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn!, NSLocalizedString("Verify Sign In", comment: ""), "")
+        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn!, NSLocalizedString("Verify Log In", comment: ""), "")
     }
 
     func testHandlePushAuthenticationNotificationShouldAttemptToAuthorizeTheLoginIfTheUserIndicatesTheyWantTo() {
