@@ -112,7 +112,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 + (NSSet *)searchPostContentForAttachmentIdsInGalleries:(NSString *)content
 {
     NSMutableSet *resultSet = [NSMutableSet set];
-    // If there is no image tag in the content, just bail.
+    // If there is no gallery shortcode in the content, just bail.
     if (!content || [content rangeOfString:@"[gallery "].location == NSNotFound) {
         return resultSet;
     }
@@ -122,7 +122,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     static dispatch_once_t onceTokenRegexGallery;
     dispatch_once(&onceTokenRegexGallery, ^{
         NSError *error;
-        NSString *galleryPattern = @"(\\[gallery [^]]*\\])";
+        NSString *galleryPattern = @"\\[gallery[^]]+ids=\"([0-9,]*)\"[^]]*\\]";
         regexGallery = [NSRegularExpression regularExpressionWithPattern:galleryPattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
