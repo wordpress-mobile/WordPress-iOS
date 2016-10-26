@@ -9,6 +9,11 @@ class NotificationSyncService
     ///
     private var remote: NotificationSyncServiceRemote!
 
+    /// Maximum number of Notes to Sync
+    ///
+    private let maximumNotes = 100
+
+
     /// Designed Initializer
     ///
     init?() {
@@ -20,14 +25,35 @@ class NotificationSyncService
     }
 
 
-
-    /// GET /rest/v1.1/notifications/?
-    /// fields=id,type,unread,body,subject,timestamp,meta
-    /// note_hash&number=40
+    ///
     ///
     func sync() {
+        let start = NSDate()
+        remote.loadLastestHashes(withPageSize: maximumNotes) { (notifications) in
+            guard let notifications = notifications else {
+                return
+            }
 
+            // Load Local Notes + Calculate Deltas
+NSLog("## Load Hashes \(notifications.count) Delta \(start.timeIntervalSinceNow)")
+            let noteIds = notifications.map { $0.notificationId }
+            self.sync(noteIds)
+        }
     }
+
+
+    ///
+    ///
+    private func sync(noteIds: [String]) {
+        let start = NSDate()
+        remote.loadNotes(noteIds: noteIds) { (notifications) in
+            guard let notifications = notifications else {
+                return
+            }
+NSLog("## Load Notes \(notifications.count) Delta \(start.timeIntervalSinceNow)")
+        }
+    }
+
 
     /// Marks a Notification as Read. On error, proceeds to revert the change.
     ///
@@ -48,6 +74,7 @@ class NotificationSyncService
 
         updateReadStatus(true, forNoteWithObjectID: notification.objectID)
     }
+
 
     /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
     ///
