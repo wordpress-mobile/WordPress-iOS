@@ -82,4 +82,12 @@ static NSString * const PathForAttachmentD = @"http://www.example.com/exampleD.p
     XCTAssertTrue([idsSet containsObject:@(900)], "It should find 900");
 }
 
+- (void)testSearchPostContentForImageToDisplay
+{
+    NSString *imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img width=\"100\" src=\"http://photo.com/200.jpg\" /> Img300<img width=\"300\" src=\"http://photo.com/300.jpg\" /> Img100<img width=\"100\" src=\"http://photo.com/100.jpg\" />"];
+
+    XCTAssertTrue([imageSrc isEqualToString:@"http://photo.com/300.jpg"], @"It should find the 300.jpg");
+}
+
+
 @end

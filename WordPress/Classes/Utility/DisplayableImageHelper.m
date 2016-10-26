@@ -224,7 +224,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         return 0;
     }
 
-    NSString *widthStr = [tag substringWithRange:NSMakeRange(startingIdx, [tag length] - rng.location)];
+    NSString *widthStr = [tag substringWithRange:NSMakeRange(startingIdx, rng.location - startingIdx)];
     return [widthStr integerValue];
 }
 
