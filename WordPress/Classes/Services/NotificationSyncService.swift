@@ -38,7 +38,7 @@ class NotificationSyncService
 
         let original = notification.read
 
-        remote.updateStatus(notification.notificationId, read: true) { success in
+        remote.updateReadStatus(notification.notificationId, read: true) { success in
             if success {
                 return
             }
