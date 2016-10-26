@@ -1,59 +1,43 @@
 import Foundation
 
 
+
 // MARK: - NotificationSyncServiceRemote
 //
 class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 {
-    ///
-    ///
-    func load(noteId: String) {
-        let path = "notifications/" + noteId
-        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+    // MARK: - Constants
+    private let defaultPageSize = 40
 
-        let parameters = [
-            "fields": "id,type,unread,body,subject,timestamp,meta,note_hash"
-        ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-            //            completion?(true)
-        }, failure:{ (error, _) in
-            DDLogSwift.logError("Error while Marking Notification as Read: \(error)")
-            //            completion?(false)
-        })
+    /// Retrieves the Notification for the specified pageSize (OR collection of NoteID's, when present)
+    ///
+    func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
+        loadNotes(withNoteIds: noteIds, pageSize: pageSize) { notes in
+            completion(notes)
+        }
     }
 
 
+    /// Retrieves the Notification Hashes for the specified pageSize (OR collection of NoteID's, when present)
     ///
-    ///
-    func sync() {
-        let path = "notifications"
-        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+    func loadLastestHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
+        let fields = "id,note_hash"
 
-        let pageSize = 40
-
-        let parameters = [
-            "fields": "id,type,unread,body,subject,timestamp,meta,note_hash",
-            "number": pageSize
-        ]
-
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-//            completion?(true)
-        }, failure:{ (error, _) in
-            DDLogSwift.logError("Error while Marking Notification as Read: \(error)")
-//            completion?(false)
-        })
+        loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { notes in
+            completion(notes)
+        }
     }
 
 
-    /// Updates a Notification's Status as specified.
+    /// Updates a Notification's Read Status as specified.
     ///
     /// - Parameters:
     ///     - notificationID: The NotificationID to Mark as Read.
     ///     - read: The new Read Status to set.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateStatus(notificationID: String, read: Bool, completion: (Bool -> Void)?) {
+    func updateReadStatus(notificationID: String, read: Bool, completion: (Bool -> Void)) {
         let path = "notifications/read"
         let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
 
@@ -62,10 +46,10 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
         ]
 
         wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-            completion?(true)
+            completion(true)
         }, failure:{ (error, _) in
-            DDLogSwift.logError("Error while Marking Notification as Read: \(error)")
-            completion?(false)
+            DDLogSwift.logError("Error while Marking Notification as Read: \(error.description)")
+            completion(false)
         })
     }
 
@@ -76,7 +60,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///     - lastSeen: Timestamp of the last seen notification.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateLastSeen(timestamp: String, completion: (Bool -> Void)?) {
+    func updateLastSeen(timestamp: String, completion: (Bool -> Void)) {
         let path = "notifications/seen"
         let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
 
@@ -85,10 +69,57 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
         ]
 
         wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-            completion?(true)
+            completion(true)
         }, failure:{ (error, _) in
-            DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error)")
-            completion?(false)
+            DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error.description)")
+            completion(false)
+        })
+    }
+}
+
+
+
+// MARK: -  Private Methods
+//
+extension NotificationSyncServiceRemote
+{
+    /// Retrieves the Notification for the specified pageSize (OR collection of NoteID's, when present).
+    /// Note that only the specified fields will be retrieved.
+    ///
+    /// - Parameters:
+    ///     - noteIds: Identifier for the notifications that should be loaded.
+    ///     - fields: List of comma separated fields, to be loaded.
+    ///     - pageSize: Number of notifications to load.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func loadNotes(withNoteIds noteIds: [String]? = nil, fields: String? = nil, pageSize: Int?, completion: ([RemoteNotification]? -> Void)) {
+        let path = "notifications/"
+        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+
+        var parameters: [String: AnyObject] = [
+            "number": pageSize ?? defaultPageSize
+        ]
+
+        if let noteIds = noteIds {
+            parameters["ids"] = noteIds
+        }
+
+        if let fields = fields {
+            parameters["fields"] = fields
+        }
+
+        wordPressComRestApi.GET(requestUrl, parameters: parameters, success: { (response, _)  in
+            let document = response as? [String: AnyObject]
+            let notes = document?["notes"] as? [[String: AnyObject]]
+            let parsed = notes?.flatMap { rawNote in
+                return RemoteNotification(document: rawNote)
+            }
+
+            completion(parsed)
+
+        }, failure:{ (error, _) in
+            DDLogSwift.logError("Error while Marking Notification as Read: \(error.description)")
+            completion(nil)
         })
     }
 }
