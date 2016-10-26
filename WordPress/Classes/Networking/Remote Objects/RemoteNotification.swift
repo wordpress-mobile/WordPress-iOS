@@ -1,6 +1,7 @@
 import Foundation
 
 
+
 // MARK: - RemoteNotification
 //
 struct RemoteNotification
