@@ -113,7 +113,7 @@ import WordPressShared
         submitButton.setTitle(submitButtonTitle, forState: .Normal)
         submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
 
-        let safariButtonTitle = NSLocalizedString("Sign in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
+        let safariButtonTitle = NSLocalizedString("Log in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
         safariPasswordButton.setTitle(safariButtonTitle, forState: .Normal)
         safariPasswordButton.setTitle(safariButtonTitle, forState: .Highlighted)
 
