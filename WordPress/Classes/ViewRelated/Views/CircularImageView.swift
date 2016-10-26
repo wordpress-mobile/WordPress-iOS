@@ -10,24 +10,6 @@ class CircularImageView : UIImageView
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-
-        layer.masksToBounds = true
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        layer.masksToBounds = true
-    }
-
-    override init(image: UIImage!) {
-        super.init(image: image)
-
-        layer.masksToBounds = true
-    }
-
     convenience init() {
         self.init(frame: CGRectZero)
     }
@@ -44,6 +26,13 @@ class CircularImageView : UIImageView
     }
 
     private func refreshRadius() {
-        layer.cornerRadius = shouldRoundCorners ? (frame.width * 0.5) : 0
+
+        let radius = shouldRoundCorners ? (frame.width * 0.5) : 0
+        if layer.cornerRadius != radius {
+            layer.cornerRadius = radius
+        }
+        if layer.masksToBounds != shouldRoundCorners {
+            layer.masksToBounds = shouldRoundCorners
+        }
     }
 }
