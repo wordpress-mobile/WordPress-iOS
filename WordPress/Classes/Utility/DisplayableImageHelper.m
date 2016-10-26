@@ -130,7 +130,10 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     NSArray *matches = [regexGallery matchesInString:content options:0 range:NSMakeRange(0, [content length])];
 
     for (NSTextCheckingResult *match in matches) {
-        NSString *tag = [content substringWithRange:match.range];
+        if (match.numberOfRanges < 2) {
+            continue;
+        }
+        NSString *tag = [content substringWithRange:[match rangeAtIndex:1]];
         NSSet *tagIds = [self idsFromGallery:tag];
         [resultSet unionSet:tagIds];
     }
@@ -243,19 +246,8 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     return [widthStr integerValue];
 }
 
-+ (NSSet *)idsFromGallery:(NSString *)tag
++ (NSSet *)idsFromGallery:(NSString *)idsStr
 {
-    NSRange rng = [tag rangeOfString:@"ids=\""];
-    if (rng.location == NSNotFound) {
-        return [NSSet set];
-    }
-    NSInteger startingIdx = rng.location + rng.length;
-    rng = [tag rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(startingIdx, [tag length] - startingIdx)];
-    if (rng.location == NSNotFound) {
-        return [NSSet set];
-    }
-
-    NSString *idsStr = [tag substringWithRange:NSMakeRange(startingIdx,  rng.location-startingIdx)];
     NSArray * imageIds = [idsStr componentsSeparatedByString:@","];
     NSMutableSet *result = [NSMutableSet set];
     for (NSString *imageIdStr in imageIds) {
