@@ -207,7 +207,7 @@ import Mixpanel
     ///
     class func isUsernameReserved(username: String) -> Bool {
         let name = username.lowercaseString.trim()
-        return ["admin", "administrator", "root", "user"].contains(name)
+        return ["admin", "administrator", "invite", "main", "root", "web", "www"].contains(name)
     }
 
 
