@@ -185,9 +185,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                    failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
-                                                  completionHandler:success]
-                           failure:failure];
+    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
+        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
+                                                          completionHandler:success]
+                               failure:failure];
+    }
 }
 
 - (void)syncSettingsForBlog:(Blog *)blog
@@ -332,15 +334,29 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
 
-    dispatch_group_enter(syncGroup);
-    [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                      completionHandler:^{
-                                                          dispatch_group_leave(syncGroup);
-                                                      }]
-                           failure:^(NSError *error) {
-                               DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-                               dispatch_group_leave(syncGroup);
-                           }];
+    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
+        dispatch_group_enter(syncGroup);
+        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
+                                                          completionHandler:^{
+                                                              dispatch_group_leave(syncGroup);
+                                                          }]
+                               failure:^(NSError *error) {
+                                   DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+                                   dispatch_group_leave(syncGroup);
+                               }];
+    }
+
+    if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
+        dispatch_group_enter(syncGroup);
+        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blogObjectID
+                                                                  completionHandler:^{
+                                                                      dispatch_group_leave(syncGroup);
+                                                                  }]
+                                   failure:^(NSError *error) {
+                                       DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
+                                       dispatch_group_leave(syncGroup);
+                                   }];
+    }
 
     dispatch_group_enter(syncGroup);
     [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blogObjectID
@@ -365,7 +381,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     dispatch_group_enter(syncGroup);
     [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
-        [self updateMutliAuthor:isMultiAuthor forBlog:blogObjectID];
+        [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
 
     } failure:^(NSError *error) {
@@ -566,37 +582,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
-        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
-        
-        if (!blog && remoteBlog.jetpack) {
-            blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
-        }
-        
-        if (!blog) {
-            DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
-            blog = [self createBlogWithAccount:account];
-            blog.xmlrpc = remoteBlog.xmlrpc;
-        }
-        
-        if (!blog.settings) {
-            blog.settings = [self createSettingsWithBlog:blog];
-        }
-        
-        blog.url = remoteBlog.url;
-        blog.dotComID = remoteBlog.blogID;
-        blog.isHostedAtWPcom = !remoteBlog.jetpack;
-        blog.icon = remoteBlog.icon;
-        blog.capabilities = remoteBlog.capabilities;
-        blog.isAdmin = remoteBlog.isAdmin;
-        blog.visible = remoteBlog.visible;
-        blog.options = remoteBlog.options;
-        blog.planID = remoteBlog.planID;
-        blog.planTitle = remoteBlog.planTitle;
-        
-        // Update 'Top Level' Settings
-        BlogSettings *settings = blog.settings;
-        settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
-        settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
+        [self updateBlogWithRemoteBlog:remoteBlog account:account];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -604,6 +590,46 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);
     }
+}
+
+- (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account
+{
+    Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+
+    if (!blog && remoteBlog.jetpack) {
+        blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
+    }
+
+    if (!blog) {
+        DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
+        blog = [self createBlogWithAccount:account];
+        blog.xmlrpc = remoteBlog.xmlrpc;
+    }
+
+    [self updateBlog:blog withRemoteBlog:remoteBlog];
+}
+
+- (void)updateBlog:(Blog *)blog withRemoteBlog:(RemoteBlog *)remoteBlog
+{
+    if (!blog.settings) {
+        blog.settings = [self createSettingsWithBlog:blog];
+    }
+
+    blog.url = remoteBlog.url;
+    blog.dotComID = remoteBlog.blogID;
+    blog.isHostedAtWPcom = !remoteBlog.jetpack;
+    blog.icon = remoteBlog.icon;
+    blog.capabilities = remoteBlog.capabilities;
+    blog.isAdmin = remoteBlog.isAdmin;
+    blog.visible = remoteBlog.visible;
+    blog.options = remoteBlog.options;
+    blog.planID = remoteBlog.planID;
+    blog.planTitle = remoteBlog.planTitle;
+
+    // Update 'Top Level' Settings
+    BlogSettings *settings = blog.settings;
+    settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
+    settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
 }
 
 /**
@@ -740,7 +766,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Completion handlers
 
-- (void)updateMutliAuthor:(BOOL)isMultiAuthor forBlog:(NSManagedObjectID *)blogObjectID
+- (void)updateMultiAuthor:(BOOL)isMultiAuthor forBlog:(NSManagedObjectID *)blogObjectID
 {
     [self.managedObjectContext performBlock:^{
         NSError *error;
@@ -754,6 +780,27 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.isMultiAuthor = isMultiAuthor;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
+}
+
+- (SiteDetailsHandler)siteDetailsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                                       completionHandler:(void (^)(void))completion
+{
+    return ^void(RemoteBlog *remoteBlog) {
+        [self.managedObjectContext performBlock:^{
+            NSError *error = nil;
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:&error];
+            if (blog) {
+                [self updateBlog:blog withRemoteBlog:remoteBlog];
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+
+            if (completion) {
+                completion();
+            }
+        }];
+    };
 }
 
 - (OptionsHandler)optionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
