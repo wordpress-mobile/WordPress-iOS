@@ -62,7 +62,6 @@ struct RemoteNotification
     /// Designed Initializer
     ///
     init?(document: [String: AnyObject]) {
-
         guard let noteId = document.valueAsString(forKey: "id"),
             let noteHash = document.valueAsString(forKey: "note_hash") else
         {

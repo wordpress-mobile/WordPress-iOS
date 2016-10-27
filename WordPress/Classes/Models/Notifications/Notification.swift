@@ -12,6 +12,14 @@ class Notification: NSManagedObject
     ///
     @NSManaged var notificationId: String
 
+    /// Notification Hash!
+    ///
+    @NSManaged var notificationHash: String?
+
+    /// Indicates whether the note was already read, or not
+    ///
+    @NSManaged var read: Bool
+
     /// Associated Resource's Icon, as a plain string
     ///
     @NSManaged var icon: String?
@@ -19,10 +27,6 @@ class Notification: NSManagedObject
     /// Noticon resource, associated with this notification
     ///
     @NSManaged var noticon: String?
-
-    /// Indicates whether the note was already read, or not
-    ///
-    @NSManaged var read: Bool
 
     /// Timestamp as a String
     ///
