@@ -12,14 +12,21 @@
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[PostService createDraftPageInMainContextForBlog:blog]];
+    AbstractPost *page = [postService createDraftPageForBlog:blog];
+
+    return [self initWithPost:page];
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog
 {
-    return [PostService createDraftPageInMainContextForBlog:blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+
+    AbstractPost *page = [postService createDraftPageForBlog:blog];
+    return page;
 }
 
 - (void)didSaveNewPost {
