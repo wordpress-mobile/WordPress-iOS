@@ -36,7 +36,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///
     /// - Notes: The RemoteNotification Entity will only have it's ID + Hash populated
     ///
-    func loadLastestHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
+    func loadHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
         let fields = "id,note_hash"
 
         loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { notes in
