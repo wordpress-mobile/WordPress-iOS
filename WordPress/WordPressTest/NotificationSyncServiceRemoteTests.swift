@@ -71,7 +71,7 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         let response = "notifications-load-hash.json"
         stubRequest(forEndpoint: endpoint, withFileAtPath: response)
 
-        let expectation = expectationWithDescription("Load All")
+        let expectation = expectationWithDescription("Load Hashes")
         serviceRemote.loadHashes { notes in
 
             guard let notes = notes else {
@@ -100,21 +100,41 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         }
 
         self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
-
     }
 
+
+    /// Verifies that Mark as Read successfully parses the backend's response
+    ///
     func testUpdateReadStatus() {
         let endpoint = "notifications/read"
         let response = "notifications-mark-as-read.json"
         stubRequest(forEndpoint: endpoint, withFileAtPath: response)
 
+        let expectation = expectationWithDescription("Mark as Read")
+        serviceRemote.updateReadStatus("1234", read: true) { success in
+
+            XCTAssertTrue(success)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
     }
 
+
+    /// Verifies that Update Last Seen successfully parses the backend's response
+    ///
     func testUpdateLastSeen() {
         let endpoint = "notifications/seen"
         let response = "notifications-last-seen.json"
         stubRequest(forEndpoint: endpoint, withFileAtPath: response)
 
+        let expectation = expectationWithDescription("Update Last Seen")
+        serviceRemote.updateLastSeen("1234") { success in
+            XCTAssertTrue(success)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
     }
 }
 
