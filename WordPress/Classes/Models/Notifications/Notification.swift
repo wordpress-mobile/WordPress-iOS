@@ -300,6 +300,29 @@ extension Notification
 }
 
 
+// MARK: - Update Helpers
+//
+extension Notification
+{
+    /// Updates the local fields with the new values stored in a given Remote Notification
+    ///
+    func update(with remote: RemoteNotification) {
+        notificationHash = remote.notificationHash
+        read = remote.read
+        icon = remote.icon
+        noticon = remote.noticon
+        timestamp = remote.timestamp
+        type = remote.type
+        url = remote.url
+        title = remote.title
+        subject = remote.subject
+        header = remote.header
+        body = remote.body
+        meta = remote.meta
+    }
+}
+
+
 // MARK: - Notification Types
 //
 extension Notification
