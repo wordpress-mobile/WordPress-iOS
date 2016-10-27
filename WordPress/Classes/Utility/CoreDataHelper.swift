@@ -47,6 +47,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         request.predicate = predicate
         request.includesSubentities = false
         request.predicate = predicate
+        request.resultType = .CountResultType
 
         var result = 0
 
@@ -63,13 +64,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
     /// Deletes the specified Object Instance
     ///
     func deleteObject(object: T) {
-        do {
-            context.deleteObject(object)
-            try context.save()
-        } catch {
-            DDLogSwift.logError("Error deleting entity [\(T.entityName)]: \(error)")
-            assert(false)
-        }
+        context.deleteObject(object)
     }
 
     /// Deletes all of the NSMO instances associated to the current kind
@@ -79,16 +74,9 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         request.includesPropertyValues = false
         request.includesSubentities = false
 
-        do {
-            let objects = loadObjects(withFetchRequest: request)
-            for object in objects  {
-                context.deleteObject(object)
-            }
-
-            try context.save()
-        } catch {
-            DDLogSwift.logError("Error deleting all entities of kind [\(T.entityName)]: \(error)")
-            assert(false)
+        let objects = loadObjects(withFetchRequest: request)
+        for object in objects  {
+            context.deleteObject(object)
         }
     }
 
