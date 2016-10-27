@@ -10,7 +10,13 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     private let defaultPageSize = 100
 
 
-    /// Retrieves the Notification for the specified pageSize (OR collection of NoteID's, when present)
+    /// Retrieves latest Notifications (OR collection of Notifications, whenever noteIds is present)
+    ///
+    /// - Parameters:
+    ///     - pageSize: Number of hashes to retrieve.
+    ///     - noteIds: Identifiers of notifications to retrieve.
+    ///     - completion: callback to be executed on completion.
+    ///
     ///
     func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
         let fields = "id,note_hash,type,unread,body,subject,timestamp,meta"
@@ -22,6 +28,13 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 
 
     /// Retrieves the Notification Hashes for the specified pageSize (OR collection of NoteID's, when present)
+    ///
+    /// - Parameters:
+    ///     - pageSize: Number of hashes to retrieve.
+    ///     - noteIds: Identifiers of notifications to retrieve.
+    ///     - completion: callback to be executed on completion.
+    ///
+    /// - Notes: The RemoteNotification Entity will only have it's ID + Hash populated
     ///
     func loadLastestHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ([RemoteNotification]? -> Void)) {
         let fields = "id,note_hash"
