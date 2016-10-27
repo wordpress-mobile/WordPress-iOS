@@ -3,11 +3,11 @@
 #import "WordPress-Swift.h"
 
 
-@interface InteractiveNotificationsHandlerTests : XCTestCase
+@interface InteractiveNotificationsManagerTests : XCTestCase
 
 @end
 
-@implementation InteractiveNotificationsHandlerTests
+@implementation InteractiveNotificationsManagerTests
 
 - (void)testRegisterForUserNotificationsCallsSharedApplicationRegisterForUserNotifications
 {
@@ -20,7 +20,7 @@
     
     [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
     
-    id mockManager = [OCMockObject partialMockForObject:[InteractiveNotificationsHandler sharedInstance]];
+    id mockManager = [OCMockObject partialMockForObject:[InteractiveNotificationsManager sharedInstance]];
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
     
     [mockManager registerForUserNotifications];

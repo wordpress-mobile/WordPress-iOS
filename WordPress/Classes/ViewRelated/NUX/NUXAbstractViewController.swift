@@ -141,9 +141,8 @@ class NUXAbstractViewController : UIViewController
         // if there is an existing blog, or an existing account return true.
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        let accountService = AccountService(managedObjectContext: context)
 
-        return accountService.defaultWordPressComAccount() != nil || blogService.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
     }
 
 

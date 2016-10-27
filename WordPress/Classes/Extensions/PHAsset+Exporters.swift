@@ -26,6 +26,7 @@ typealias ErrorHandler = (error: NSError) -> ()
                      targetUTI: String,
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
+                     synchronous: Bool,
                      successHandler: SuccessHandler,
                      errorHandler: ErrorHandler)
 
@@ -73,6 +74,7 @@ extension PHAsset: ExportableAsset {
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
+        synchronous: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
 
@@ -82,6 +84,7 @@ extension PHAsset: ExportableAsset {
                 targetUTI: targetUTI,
                 maximumResolution: maximumResolution,
                 stripGeoLocation: stripGeoLocation,
+                synchronous: synchronous,
                 successHandler: successHandler,
                 errorHandler: errorHandler)
         case .Video:
@@ -102,13 +105,14 @@ extension PHAsset: ExportableAsset {
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
+        synchronous: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
 
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
         let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
 
-        exportImageWithSize(requestedSize) { (image, info) in
+        exportImageWithSize(requestedSize, synchronous: synchronous) { (image, info) in
             guard let image = image else {
                 if let error = info?[PHImageErrorKey] as? NSError {
                     errorHandler(error: error)
@@ -140,15 +144,15 @@ extension PHAsset: ExportableAsset {
 
     func exportMaximumSizeImage(completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
         let targetSize = CGSize(width: pixelWidth, height: pixelHeight)
-        exportImageWithSize(targetSize, completion: completion)
+        exportImageWithSize(targetSize, synchronous: false, completion: completion)
     }
 
-    func exportImageWithSize(targetSize: CGSize, completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
+    func exportImageWithSize(targetSize: CGSize, synchronous: Bool, completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
         let options = PHImageRequestOptions()
         options.version = .Current
         options.deliveryMode = .HighQualityFormat
         options.resizeMode = .Exact
-        options.synchronous = false
+        options.synchronous = synchronous
         options.networkAccessAllowed = true
 
         let manager = PHImageManager.defaultManager()

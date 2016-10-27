@@ -75,6 +75,10 @@ const CGFloat GeoViewMinHeight = 130.0f;
     [self updateAddressLabel];
 }
 
+- (MKCoordinateRegion)region {
+    return self.mapView.region;
+}
+
 - (void)setCoordinate:(Coordinate *)coordinate
 {
     MKCoordinateRegion defaultRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200.0, 100.0);

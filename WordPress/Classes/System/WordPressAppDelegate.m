@@ -443,7 +443,7 @@ int ddLogLevel = DDLogLevelInfo;
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [[InteractiveNotificationsHandler sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
+    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
     
     completionHandler();
 }
@@ -556,11 +556,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)noWordPressDotComAccount
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    return !defaultAccount;
+    return [AccountHelper isDotcomAvailable] == false;
 }
 
 - (BOOL)noSelfHostedBlogs
