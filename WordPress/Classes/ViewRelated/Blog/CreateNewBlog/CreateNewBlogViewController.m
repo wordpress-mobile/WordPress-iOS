@@ -510,6 +510,9 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
 
             [[ContextManager sharedInstance] saveContext:context];
 
+            // syncBlog will need a permanent ID so it can fetch and update the blog in its request completion blocks 
+            [[ContextManager sharedInstance] obtainPermanentIDForObject:blog];
+
             __weak __typeof(self) weakSelf = self;
 
             void (^completion)() = ^{
