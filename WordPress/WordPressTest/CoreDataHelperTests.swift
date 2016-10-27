@@ -159,6 +159,7 @@ class CoreDataHelperTests: XCTestCase
         XCTAssertNotNil(retrieved)
 
         helper.deleteObject(entity)
+        _ = try? stack.context.save()
 
         XCTAssertNil(helper.loadObject(withObjectID: objectID))
     }
@@ -242,15 +243,8 @@ class DummyStack
 
     lazy var coordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
-        _ = try? coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: self.storeURL, options: nil)
+        _ = try? coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
 
         return coordinator
-    }()
-
-    lazy var storeURL: NSURL = {
-        let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
-        let foundationPath = documents as NSString
-        let store = foundationPath.stringByAppendingPathComponent("LordYosemite.sqlite")
-        return NSURL.fileURLWithPath(store)
     }()
 }
