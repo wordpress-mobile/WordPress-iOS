@@ -60,8 +60,12 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             "counts": [notificationID, read]
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-            completion(true)
+        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+            let document = response as? [String: AnyObject]
+            let success = (document?["success"] as? Bool) ?? false
+
+            completion(success)
+
         }, failure:{ (error, _) in
             DDLogSwift.logError("Error while Marking Notification as Read: \(error.description)")
             completion(false)
@@ -83,8 +87,12 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             "time": timestamp
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (_, _)  in
-            completion(true)
+        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+            let document = response as? [String: AnyObject]
+            let success = (document?["success"] as? Bool) ?? false
+
+            completion(success)
+
         }, failure:{ (error, _) in
             DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error.description)")
             completion(false)
