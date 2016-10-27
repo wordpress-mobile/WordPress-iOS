@@ -515,8 +515,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// All the content in the view model is updated as a result.
     ///
     func handleWordPressComAccountChanged(notification: NSNotification) {
-        // TODO: We need to ensure we have no stale topics in core data prior to reloading content.
-
         // Update predicates to correctly fetch following or not following.
         updateAndPerformListsFetchRequest()
         updateAndPerformTagsFetchRequest()
@@ -667,11 +665,16 @@ extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
 {
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        var section: Int = 0
+        var section: Int?
         if controller == defaultsFetchedResultsController {
             // Rebuild the defaults section since its source content changed.
             buildDefaultSectionItems()
             if let index = indexOfSectionWithType(.Defaults) {
+                section = index
+            }
+
+        } else if controller == teamsFetchedResultsController {
+            if let index = indexOfSectionWithType(.Teams) {
                 section = index
             }
 
@@ -686,7 +689,17 @@ extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
             }
         }
 
-        delegate?.menuSectionDidChangeContent(section)
+        if let section = section {
+            delegate?.menuSectionDidChangeContent(section)
+
+        } else {
+            // One of the results controllers updated its content but that controller is not currently
+            // included in the list of sections.
+            // We need to update our sections then notify the delegate that content was reloaded.
+            setupSections()
+            delegate?.menuDidReloadContent()
+        }
+
     }
 
 }

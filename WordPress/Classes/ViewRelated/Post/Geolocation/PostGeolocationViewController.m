@@ -113,9 +113,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     if (_tableView == nil) {
         _tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
         _tableView.hidden = YES;
-        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CLPlacemarkTableViewCellIdentifier];
         _tableView.delegate = self;
-        _tableView.rowHeight = 60.0;
+        _tableView.rowHeight = 90;
         UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         _tableView.backgroundView = visualEffect;
         _tableView.backgroundColor = [UIColor clearColor];
@@ -241,7 +240,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         return;
     }
     __weak __typeof__(self) weakSelf = self;
-    [self.locationService searchPlacemarksWithQuery:query completion:^(NSArray *placemarks, NSError *error) {
+    [self.locationService searchPlacemarksWithQuery:query region:self.geoView.region completion:^(NSArray *placemarks, NSError *error) {
         if (error) {
             return;
         }
@@ -288,12 +287,16 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         case SearchResultsSectionCurrentLocation:
             return self.currentLocationCell;
         case SearchResultsSectionSearchResults: {
-            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
+            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CLPlacemarkTableViewCellIdentifier];
+            }
             CLPlacemark *placemark = self.placemarks[indexPath.row];
-            cell.textLabel.text = placemark.formattedAddress;
-            cell.textLabel.numberOfLines = 0;
-            cell.textLabel.font = [WPStyleGuide regularTextFont];
-            cell.textLabel.textColor = [WPStyleGuide darkGrey];
+            cell.textLabel.text = placemark.name;
+            cell.detailTextLabel.text = placemark.formattedAddress;
+            cell.detailTextLabel.numberOfLines = 3;
+            cell.detailTextLabel.font = [WPStyleGuide regularTextFont];
+            cell.detailTextLabel.textColor = [WPStyleGuide darkGrey];
             cell.backgroundColor = [UIColor clearColor];
             cell.selected = NO;
             return cell;
@@ -323,7 +326,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             } else {
                 [self.geoView setCoordinate:coordinate];
             }
-            self.geoView.address = placemark.name;
+            self.geoView.address = [NSString stringWithFormat:@"%@, %@]", placemark.name, placemark.formattedAddress];
             self.post.geolocation = self.geoView.coordinate;
         }
             break;

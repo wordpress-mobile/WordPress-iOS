@@ -469,8 +469,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
     private func configureTitle() {
         if let title = post?.titleForDisplay() {
-            let attributes = WPStyleGuide.readerDetailTitleAttributes() as! [String: AnyObject]
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.readerDetailTitleAttributes())
             titleLabel.hidden = false
 
         } else {
@@ -516,9 +515,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
             attributionView.hidden = true
         } else {
             attributionView.configureViewWithVerboseSiteAttribution(post!)
-
-            let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapDiscoverAttribution))
-            attributionView.addGestureRecognizer(tgr)
+            attributionView.delegate = self
         }
     }
 
@@ -802,7 +799,15 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
             return
         }
 
-        let service = ReaderPostService(managedObjectContext: post!.managedObjectContext)
+        guard let post = post else {
+            return
+        }
+
+        if !post.isLiked {
+            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+        }
+
+        let service = ReaderPostService(managedObjectContext: post.managedObjectContext)
         service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
@@ -879,6 +884,15 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     }
 }
 
+// MARK: - ReaderCardDiscoverAttributionView Delegate Methods
+
+extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
+{
+    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
+        didTapDiscoverAttribution()
+    }
+}
+
 
 // MARK: - WPRichTextView Delegate Methods
 
@@ -918,6 +932,8 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
 
 }
 
+
+// MARK: - UIScrollView Delegate Methods
 
 extension ReaderDetailViewController : UIScrollViewDelegate
 {

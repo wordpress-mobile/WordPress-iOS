@@ -4,14 +4,14 @@ import Foundation
 /// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
 /// UIUserNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsHandler : NSObject
+final public class InteractiveNotificationsManager : NSObject
 {
     // MARK: - Public Properties
 
 
-    /// Returns the shared PushNotificationsManager instance.
+    /// Returns the shared InteractiveNotificationsManager instance.
     ///
-    static let sharedInstance = InteractiveNotificationsHandler()
+    static let sharedInstance = InteractiveNotificationsManager()
 
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
@@ -44,7 +44,7 @@ final public class InteractiveNotificationsHandler : NSObject
     ///     - remoteNotification: the notification object
     ///
     public func handleActionWithIdentifier(identifier: String, remoteNotification: NSDictionary) {
-        guard defaultAccountAvailable() else {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
@@ -90,11 +90,10 @@ final public class InteractiveNotificationsHandler : NSObject
         let service = CommentService(managedObjectContext: context)
 
         service.likeCommentWithID(commentID, siteID: siteID, success: {
-                DDLogSwift.logInfo("Liked comment from push notification")
-            },
-            failure: { (error: NSError!) -> Void in
-                DDLogSwift.logInfo("Couldn't like comment from push notification")
-            })
+            DDLogSwift.logInfo("Liked comment from push notification")
+        }, failure: { error in
+            DDLogSwift.logInfo("Couldn't like comment from push notification")
+        })
     }
 
 
@@ -109,11 +108,10 @@ final public class InteractiveNotificationsHandler : NSObject
         let service = CommentService(managedObjectContext: context)
 
         service.approveCommentWithID(commentID, siteID: siteID, success: {
-                DDLogSwift.logInfo("Successfully moderated comment from push notification")
-            },
-            failure: { (error: NSError!) -> Void in
-                DDLogSwift.logInfo("Couldn't moderate comment from push notification")
-            })
+            DDLogSwift.logInfo("Successfully moderated comment from push notification")
+        }, failure: { error in
+            DDLogSwift.logInfo("Couldn't moderate comment from push notification")
+        })
     }
 
 
@@ -123,15 +121,6 @@ final public class InteractiveNotificationsHandler : NSObject
     ///
     private func showDetailsWithNoteID(noteId: NSNumber) {
         WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
-    }
-
-
-
-    /// Checks whether there is a default WordPress.com account available, or not
-    ///
-    private func defaultAccountAvailable() -> Bool {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return service.defaultWordPressComAccount() != nil
     }
 
 
@@ -214,7 +203,16 @@ final public class InteractiveNotificationsHandler : NSObject
         case CommentReplyWithLike   = "replyto-like-comment"
 
         var actions : [NoteActionDefinition] {
-            return self.dynamicType.actionsMap[self] ?? [NoteActionDefinition]()
+            switch self {
+            case CommentApprove:
+                return [.CommentApprove]
+            case CommentLike:
+                return [.CommentLike]
+            case CommentReply:
+                return [.CommentReply]
+            case CommentReplyWithLike:
+                return [.CommentLike, .CommentReply]
+            }
         }
 
         var identifier : String {
@@ -222,13 +220,6 @@ final public class InteractiveNotificationsHandler : NSObject
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
-
-        private static let actionsMap = [
-            CommentApprove          : [NoteActionDefinition.CommentApprove],
-            CommentLike             : [NoteActionDefinition.CommentLike],
-            CommentReply            : [NoteActionDefinition.CommentReply],
-            CommentReplyWithLike    : [NoteActionDefinition.CommentLike, NoteActionDefinition.CommentReply]
-        ]
     }
 
 
@@ -241,7 +232,14 @@ final public class InteractiveNotificationsHandler : NSObject
         case CommentReply   = "COMMENT_REPLY"
 
         var description : String {
-            return self.dynamicType.descriptionMap[self] ?? String()
+            switch self {
+            case CommentApprove:
+                return NSLocalizedString("Approve", comment: "Approve comment (verb)")
+            case CommentLike:
+                return NSLocalizedString("Like", comment: "Like (verb)")
+            case CommentReply:
+                return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+            }
         }
 
         var destructive : Bool {
@@ -261,11 +259,5 @@ final public class InteractiveNotificationsHandler : NSObject
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
-
-        private static let descriptionMap = [
-            CommentApprove  : NSLocalizedString("Approve", comment: "Approve comment (verb)"),
-            CommentLike     : NSLocalizedString("Like", comment: "Like (verb)"),
-            CommentReply    : NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
-        ]
     }
 }

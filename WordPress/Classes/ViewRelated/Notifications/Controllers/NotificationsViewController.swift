@@ -55,6 +55,10 @@ class NotificationsViewController : UITableViewController
     ///
     private var lastReloadDate = NSDate()
 
+    /// Indicates whether the view is required to reload results on viewWillAppear, or not
+    ///
+    private var needsReloadResults = false
+
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
     private var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
@@ -206,7 +210,16 @@ class NotificationsViewController : UITableViewController
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        // Load the Subject + Snippet
+        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+            return CGFloat.min
+        }
+
+        // Old School Height Calculation
+        let subject = note.subjectBlock?.attributedSubjectText
+        let snippet = note.snippetBlock?.attributedSnippetText
+
+        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -474,6 +487,7 @@ private extension NotificationsViewController
     }
 
     @objc func defaultAccountDidChange(note: NSNotification) {
+        needsReloadResults = true
         resetApplicationBadge()
     }
 }
@@ -604,7 +618,7 @@ private extension NotificationsViewController
         // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
         //
         let daysElapsed = NSCalendar.currentCalendar().daysElapsedSinceDate(lastReloadDate)
-        guard daysElapsed != 0 else {
+        guard daysElapsed != 0 || needsReloadResults else {
             return
         }
 
@@ -626,6 +640,7 @@ private extension NotificationsViewController
 
         // Don't overwork!
         lastReloadDate = NSDate()
+        needsReloadResults = false
     }
 
     func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID?) {
@@ -849,10 +864,7 @@ private extension NotificationsViewController
     }
 
     var shouldDisplayJetpackMessage: Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount() == nil
+        return AccountHelper.isDotcomAvailable() == false
     }
 
     var shouldDisplayNoResultsView: Bool {
