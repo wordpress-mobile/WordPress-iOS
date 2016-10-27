@@ -1404,9 +1404,10 @@ EditImageDetailsViewControllerDelegate
         [self showFailedMediaRemovalAlert];
         return;
     }
-    [self stopEditing];
+
+    // Make sure that we are saving the latest content on the editor.
+    [self autosaveContent];
     [self savePost];
-    [self dismissEditView:YES];
 }
 
 /**
@@ -1419,16 +1420,30 @@ EditImageDetailsViewControllerDelegate
     DDLogMethod();
     [self logSavePostStats];
 
-    [self.view endEditing:YES];
-    
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
-    
+    void (^stopEditingAndDismiss)() = ^() {
+        [self stopEditing];
+        [self.view endEditing:YES];
+        [self didSaveNewPost];
+        [self dismissEditView:YES];
+    };
+
+    NSString *hudText;
+    if (postIsScheduled) {
+        hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
+    } else if ([postStatus isEqualToString:@"publish"]){
+        hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+    } else {
+        hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+    }
+    [SVProgressHUD showWithStatus:hudText];
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
-                    success:^(AbstractPost *post){
+                    success:^(AbstractPost *post) {
                         self.post = post;                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
@@ -1440,7 +1455,11 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
+                        [SVProgressHUD dismiss];
                         [SVProgressHUD showSuccessWithStatus:hudText];
+                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+
+                        stopEditingAndDismiss();
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
@@ -1451,10 +1470,12 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                         }
+                        [SVProgressHUD dismiss];
                         [SVProgressHUD showErrorWithStatus:hudText];
-                    }];
+                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
 
-    [self didSaveNewPost];
+                        stopEditingAndDismiss();
+                    }];
 }
 
 - (void)didSaveNewPost
@@ -1732,7 +1753,7 @@ EditImageDetailsViewControllerDelegate
     [self.editorView.contentField focus];
     
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-    for (id<WPMediaAsset> asset in assets) {
+    for (id<WPMediaAsset> asset in [assets reverseObjectEnumerator]) {
         if ([asset isKindOfClass:[PHAsset class]]){
             [self addDeviceMediaAsset:(PHAsset *)asset];
         } else if ([asset isKindOfClass:[Media class]]) {
