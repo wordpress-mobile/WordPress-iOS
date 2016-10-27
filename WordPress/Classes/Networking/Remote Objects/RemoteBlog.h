@@ -73,4 +73,9 @@
  */
 @property (nonatomic, strong) NSDictionary *capabilities;
 
+/**
+ * @details Parses details from a JSON dictionary.
+ */
+- (instancetype)initWithJSONDictionary:(NSDictionary *)json;
+
 @end
