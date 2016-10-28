@@ -52,7 +52,7 @@ class NotificationSyncService
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync() {
+    func sync(completion: (Void -> Void)?) {
         assert(NSThread.isMainThread())
 
         remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
@@ -71,7 +71,9 @@ class NotificationSyncService
                     }
 
                     self.updateLocalNotes(with: remoteNotes) {
-                        self.deleteLocalMissingNotes(from: remoteHashes)
+                        self.deleteLocalMissingNotes(from: remoteHashes) {
+                            completion?()
+                        }
                     }
                 }
             }
@@ -81,19 +83,21 @@ class NotificationSyncService
 
     /// Marks a Notification as Read. On error, proceeds to revert the change.
     ///
-    /// - Paramter notification: The notification that was just read.
+    /// - Parameters:
+    ///     - notification: The notification that was just read.
+    ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(notification: Notification) {
+    func markAsRead(notification: Notification, completion: (Bool -> Void)?) {
         assert(NSThread.isMainThread())
 
         let original = notification.read
 
         remote.updateReadStatus(notification.notificationId, read: true) { success in
-            if success {
-                return
+            if !success {
+                self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
             }
 
-            self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
+            completion?(success)
         }
 
         updateReadStatus(true, forNoteWithObjectID: notification.objectID)
@@ -102,17 +106,19 @@ class NotificationSyncService
 
     /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
     ///
-    /// - Parameter timestamp: Timestamp of the last seen notification.
+    /// - Parameters:
+    ///     - timestamp: Timestamp of the last seen notification.
+    ///     - completion: Callback to be executed on completion.
     ///
-    func updateLastSeen(timestamp: String) {
+    func updateLastSeen(timestamp: String, completion: (Bool -> Void)?) {
         assert(NSThread.isMainThread())
 
         remote.updateLastSeen(timestamp) { success in
-            if success {
-                return
+            if !success {
+                DDLogSwift.logError("Error while trying to update Notifications Last Seen Timestamp: \(timestamp)")
             }
 
-            DDLogSwift.logError("Error while trying to update Notifications Last Seen Timestamp: \(timestamp)")
+            completion?(success)
         }
     }
 }
@@ -191,7 +197,7 @@ private extension NotificationSyncService
     ///
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification]) {
+    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: (Void -> Void)) {
         let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
@@ -203,7 +209,11 @@ private extension NotificationSyncService
                 helper.deleteObject(orphan)
             }
 
-            self.contextManager.saveDerivedContext(derivedContext)
+            self.contextManager.saveDerivedContext(derivedContext) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion()
+                }
+            }
         }
     }
 
