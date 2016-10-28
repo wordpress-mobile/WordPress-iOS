@@ -747,9 +747,8 @@ private extension NotificationsViewController
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-// TODO: Fixme
-return false
-//        return notesBucket.numObjects() > 0
+        let helper = CoreDataHelper<Notification>(context: mainContext)
+        return helper.countObjects() > 0
     }
 }
 
