@@ -930,7 +930,9 @@ private extension NotificationsViewController
             return
         }
 
-// TODO: Update Last Seen
+// TODO: Avoid this when it's not needed
+        let service = NotificationSyncService()
+        service?.updateLastSeen(timestamp)
     }
 }
 
