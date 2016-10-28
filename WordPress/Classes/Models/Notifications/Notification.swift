@@ -300,6 +300,16 @@ extension Notification
 }
 
 
+// MARK: - Core Data Helper
+//
+extension Notification: ManagedObject
+{
+    static var entityName: String {
+        return classNameWithoutNamespaces()
+    }
+}
+
+
 // MARK: - Update Helpers
 //
 extension Notification
@@ -307,6 +317,7 @@ extension Notification
     /// Updates the local fields with the new values stored in a given Remote Notification
     ///
     func update(with remote: RemoteNotification) {
+        notificationId = remote.notificationId
         notificationHash = remote.notificationHash
         read = remote.read
         icon = remote.icon
