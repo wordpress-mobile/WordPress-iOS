@@ -9,8 +9,6 @@ import WordPressShared
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
 ///
-/// This class relies on both, Simperium and WPTableViewHandler to automatically receive
-/// new Notifications that might be generated, and render them onscreen.
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
@@ -458,7 +456,7 @@ extension NotificationsViewController
     /// which this call is executed, we'll hold for the time interval specified by the `Syncing.pushMaxWait`
     /// constant.
     ///
-    /// - Parameter notificationID: The simperiumKey of the Notification that should be rendered onscreen.
+    /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteID: String) {
 // TODO: Fixme
@@ -615,6 +613,7 @@ extension NotificationsViewController
 {
     func refresh() {
         // Yes. This is dummy. Simperium handles sync for us!
+// TODO: Implement proper refresh
         refreshControl?.endRefreshing()
     }
 }
