@@ -109,7 +109,7 @@ import WordPressShared
         usernameField.placeholder = NSLocalizedString("Email or username", comment: "Username placeholder")
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Sign In", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Log In", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
         submitButton.setTitle(submitButtonTitle, forState: .Normal)
         submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
 
