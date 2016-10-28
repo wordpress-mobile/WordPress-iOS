@@ -5,6 +5,10 @@ import Foundation
 //
 class NotificationSyncService
 {
+    /// Returns the Main Managed Context
+    ///
+    private var contextManager: ContextManager!
+
     /// Sync Service Remote
     ///
     private var remote: NotificationSyncServiceRemote!
@@ -21,8 +25,25 @@ class NotificationSyncService
             return nil
         }
 
+        contextManager = ContextManager.sharedInstance()
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
+
+    /// Initializer: Useful for Unit Testing
+    ///
+    /// - Parameters:
+    ///     - manager: ContextManager Instance
+    ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
+    ///
+    init?(manager: ContextManager, dotcomAPI: WordPressComRestApi) {
+        guard dotcomAPI.hasCredentials() else {
+            return nil
+        }
+
+        contextManager = manager
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+    }
+
 
 
     /// Syncs the latest *maximumNotes*:
@@ -39,12 +60,12 @@ class NotificationSyncService
                 return
             }
 
-            self.determineUpdatedNotes(with: remoteHashes) { noteIds in
-                guard noteIds.isEmpty == false else {
+            self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
+                guard outdatedNoteIds.isEmpty == false else {
                     return
                 }
 
-                self.remote.loadNotes(noteIds: noteIds) { remoteNotes in
+                self.remote.loadNotes(noteIds: outdatedNoteIds) { remoteNotes in
                     guard let remoteNotes = remoteNotes else {
                         return
                     }
@@ -109,7 +130,7 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: ([String] -> Void)) {
-        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -145,7 +166,7 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)) {
-        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -156,7 +177,7 @@ private extension NotificationSyncService
                 localNote.update(with: remoteNote)
             }
 
-            ContextManager.sharedInstance().saveDerivedContext(derivedContext) {
+            self.contextManager.saveDerivedContext(derivedContext) {
                 dispatch_async(dispatch_get_main_queue()) {
                     completion()
                 }
@@ -171,7 +192,7 @@ private extension NotificationSyncService
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification]) {
-        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -182,7 +203,7 @@ private extension NotificationSyncService
                 helper.deleteObject(orphan)
             }
 
-            ContextManager.sharedInstance().saveDerivedContext(derivedContext)
+            self.contextManager.saveDerivedContext(derivedContext)
         }
     }
 
@@ -194,13 +215,10 @@ private extension NotificationSyncService
     ///     - noteObjectID: CoreData ObjectID
     ///
     func updateReadStatus(status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
-        do {
-            let note = try mainContext.existingObjectWithID(noteObjectID) as? Notification
-            note?.read = status
-            try mainContext.save()
-        } catch {
-            DDLogSwift.logError("Error while Updating Notification Status: \(error)")
-        }
+        let helper = CoreDataHelper<Notification>(context: mainContext)
+        let note = helper.loadObject(withObjectID: noteObjectID)
+        note?.read = status
+        contextManager.saveContext(mainContext)
     }
 }
 
@@ -209,10 +227,10 @@ private extension NotificationSyncService
 //
 private extension NotificationSyncService
 {
-    /// Returns the Main Managed Context
+    /// Returns the main CoredAta Context
     ///
     var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return contextManager.mainContext
     }
 
 
