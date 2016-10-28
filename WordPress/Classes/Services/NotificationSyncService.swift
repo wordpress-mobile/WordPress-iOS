@@ -21,12 +21,12 @@ class NotificationSyncService
     /// Designed Initializer
     ///
     init?() {
-        guard let dotcomAPI = dotcomAPI else {
-            return nil
-        }
-
         contextManager = ContextManager.sharedInstance()
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+
+        guard dotcomAPI != nil else {
+            return nil
+        }
     }
 
     /// Initializer: Useful for Unit Testing
@@ -52,7 +52,7 @@ class NotificationSyncService
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync(completion: (Void -> Void)?) {
+    func sync(completion: (Void -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
@@ -87,7 +87,7 @@ class NotificationSyncService
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(notification: Notification, completion: (Bool -> Void)?) {
+    func markAsRead(notification: Notification, completion: (Bool -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         let original = notification.read
@@ -110,7 +110,7 @@ class NotificationSyncService
     ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Callback to be executed on completion.
     ///
-    func updateLastSeen(timestamp: String, completion: (Bool -> Void)?) {
+    func updateLastSeen(timestamp: String, completion: (Bool -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         remote.updateLastSeen(timestamp) { success in
