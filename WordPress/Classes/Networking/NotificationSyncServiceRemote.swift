@@ -56,8 +56,11 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
         let path = "notifications/read"
         let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
 
+        // Note: Isn't the API wonderful?
+        let value = read ? 9999 : -9999
+
         let parameters = [
-            "counts": [notificationID, read]
+            "counts": ["\(notificationID)": value]
         ]
 
         wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
