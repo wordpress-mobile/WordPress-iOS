@@ -32,6 +32,8 @@ class NotificationSyncService
     /// - Local collection will be updated. Old notes will be purged!
     ///
     func sync() {
+        assert(NSThread.isMainThread())
+
         remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
             guard let remoteHashes = remoteHashes else {
                 return
@@ -99,7 +101,12 @@ class NotificationSyncService
 //
 private extension NotificationSyncService
 {
+    /// Given a collection of RemoteNotification Hashes, this method will determine the NotificationID's
+    /// that are either missing in our database, or have been remotely updated.
     ///
+    /// - Parameters:
+    ///     - remoteHashes: Collection of Notification Hashes
+    ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: ([String] -> Void)) {
         let derivedContext = ContextManager.sharedInstance().newDerivedContext()
@@ -130,7 +137,12 @@ private extension NotificationSyncService
     }
 
 
+    /// Given a collection of remoteNotes, this method will insert missing local ones, and update the ones
+    /// that can be found.
     ///
+    /// - Parameters:
+    ///     - remoteNotes: Collection of Remote Notes
+    ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)) {
         let derivedContext = ContextManager.sharedInstance().newDerivedContext()
@@ -145,13 +157,18 @@ private extension NotificationSyncService
             }
 
             ContextManager.sharedInstance().saveDerivedContext(derivedContext) {
-                completion()
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion()
+                }
             }
         }
     }
 
 
+    /// Deletes the collection of local notifications that cannot be found in a given collection of
+    /// remote hashes.
     ///
+    /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification]) {
         let derivedContext = ContextManager.sharedInstance().newDerivedContext()
