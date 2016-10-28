@@ -35,7 +35,7 @@
 {
     [tester clearTextFromAndThenEnterText:@"unknow@unknow.com" intoViewWithAccessibilityIdentifier:@"Username / Email"];
     [tester clearTextFromAndThenEnterText:@"failpassword" intoViewWithAccessibilityIdentifier:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"Sign In"];
+    [tester tapViewWithAccessibilityLabel:@"Log In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
@@ -48,7 +48,7 @@
 {
     [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
     [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"Sign In"];
+    [tester tapViewWithAccessibilityLabel:@"Log In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
@@ -61,7 +61,7 @@
 {
     [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
     [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"Sign In"];
+    [tester tapViewWithAccessibilityLabel:@"Log In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
