@@ -20,9 +20,6 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
-+ (Post *)createDraftPostInMainContextForBlog:(Blog *)blog;
-+ (Page *)createDraftPageInMainContextForBlog:(Blog *)blog;
-
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
 /**
