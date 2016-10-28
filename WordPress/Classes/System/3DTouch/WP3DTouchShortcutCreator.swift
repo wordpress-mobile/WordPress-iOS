@@ -58,7 +58,7 @@ public class WP3DTouchShortcutCreator: NSObject
 
     private func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
-                                                   localizedTitle: NSLocalizedString("Sign In", comment: "Sign In 3D Touch Shortcut"),
+                                                   localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
                                                              icon: UIApplicationShortcutIcon(templateImageName: logInShortcutIconImageName),
                                                          userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.rawValue])
