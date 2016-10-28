@@ -228,6 +228,7 @@ extension Notification
         if let timestampAsDate = cachedTimestampAsDate {
             return timestampAsDate
         }
+
         guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
             DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(notificationId)]")
             return NSDate()

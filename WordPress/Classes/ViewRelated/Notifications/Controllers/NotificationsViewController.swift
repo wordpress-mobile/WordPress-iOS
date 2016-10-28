@@ -116,6 +116,8 @@ class NotificationsViewController : UITableViewController
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
+
+// TODO: Wire Sync
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -485,8 +487,7 @@ extension NotificationsViewController
         }
 
         // Mark as Read
-        let service = NotificationSyncService()
-        service?.markAsRead(note)
+// TODO: Mark as Read
 
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
@@ -929,8 +930,7 @@ private extension NotificationsViewController
             return
         }
 
-        let service = NotificationSyncService()
-        service?.updateLastSeen(timestamp)
+        // TODO: Update Last Seen
     }
 }
 
