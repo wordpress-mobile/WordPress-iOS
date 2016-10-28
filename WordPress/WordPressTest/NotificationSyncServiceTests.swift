@@ -111,9 +111,6 @@ class NotificationSyncServiceTests: XCTestCase
         let stubPath = OHPathForFile("notifications-last-seen.json", self.dynamicType)!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        // CoreData Expectations
-        manager.testExpectation = expectationWithDescription("Context save expectation")
-
         // Service Expectations
         let expectation = expectationWithDescription("Update Last Seen")
 
