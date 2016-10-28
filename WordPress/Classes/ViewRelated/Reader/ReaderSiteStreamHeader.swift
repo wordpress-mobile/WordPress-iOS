@@ -3,18 +3,13 @@ import WordPressShared
 
 @objc public class ReaderSiteStreamHeader: UIView, ReaderStreamHeader
 {
-    @IBOutlet private weak var innerContentView:UIView!
+    @IBOutlet private weak var borderedView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
     @IBOutlet private weak var followButton: PostMetaButton!
-    @IBOutlet private weak var descriptionView: UIView!
     @IBOutlet private weak var followCountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var followCountBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
-    @IBOutlet private weak var contentIPadWidthConstraint: NSLayoutConstraint?
 
     public var delegate: ReaderStreamHeaderDelegate?
     private var defaultBlavatar = "blavatar-default"
@@ -29,34 +24,16 @@ import WordPressShared
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderWidth = 1.0
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
         WPStyleGuide.applyReaderSiteStreamCountStyle(followCountLabel)
     }
 
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        // Vertical and horizontal margins
-        let hMargin = descriptionLabel.frame.minX
-        let vMargin = descriptionLabel.frame.minY
 
-        let width = UIDevice.isPad() ? contentIPadWidthConstraint!.constant : size.width
-        let innerWidth = width - (hMargin * 2)
-        let adjustedSize = CGSize(width:innerWidth, height:CGFloat.max)
-
-        var height = UIDevice.isPad() ? contentIPadTopConstraint!.constant : 0
-        height += descriptionView.frame.minY
-        height += vMargin
-        height += descriptionLabel.sizeThatFits(adjustedSize).height
-        height += descriptionBottomConstraint.constant
-        height += followCountLabel.sizeThatFits(adjustedSize).height
-        height += followCountBottomConstraint.constant
-
-        return CGSize(width: size.width, height: height)
-    }
-
-
-   // MARK: - Configuration
+    // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
         assert(topic.isKindOfClass(ReaderSiteTopic), "Topic must be a site topic")
@@ -74,16 +51,13 @@ import WordPressShared
         }
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
+        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
 
         if descriptionLabel.attributedText?.length > 0 {
-            // Bottom and top margins should match.
-            descriptionBottomConstraint.constant = descriptionLabel.frame.minY
+            descriptionLabel.hidden = false
         } else {
-            descriptionBottomConstraint.constant = 0
+            descriptionLabel.hidden = true
         }
-
-
-        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
     }
 
     func configureHeaderImage(siteBlavatar: String?) {
@@ -112,8 +86,7 @@ import WordPressShared
     }
 
     func attributedSiteDescriptionForTopic(topic:ReaderSiteTopic) -> NSAttributedString {
-        let attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes() as! [String: AnyObject]
-        return NSAttributedString(string: topic.siteDescription, attributes: attributes)
+        return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 
     public func enableLoggedInFeatures(enable: Bool) {

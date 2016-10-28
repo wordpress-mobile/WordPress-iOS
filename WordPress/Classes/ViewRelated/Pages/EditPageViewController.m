@@ -51,7 +51,11 @@
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPageInMainContextForBlog:blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    AbstractPost *page = [postService createDraftPageForBlog:blog];
+
+    return page;
 }
 
 @end
