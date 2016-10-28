@@ -87,7 +87,7 @@ namespace :dependencies do
         Dir.mktmpdir do |tmpdir|
           # Try first using a binary release
           pkgfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.pkg"
-          sh "curl --location -o #{pkgfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/SwiftLint.pkg"
+          sh "curl --fail --location -o #{pkgfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/SwiftLint.pkg || true"
           if File.exists?(pkgfile)
             pkgdir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
             sh "pkgutil --expand #{pkgfile} #{pkgdir}"
