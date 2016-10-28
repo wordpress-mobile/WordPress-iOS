@@ -24,7 +24,7 @@ class NotificationSyncServiceRemoteTests: XCTestCase
 
     override func tearDown() {
         super.tearDown()
-        removeAllStubs()
+        OHHTTPStubs.removeAllStubs()
     }
 
 
@@ -32,8 +32,8 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testLoadNotesEffectivelyRetrievesAllOfTheNotificationFields() {
         let endpoint = "notifications/"
-        let response = "notifications-load-all.json"
-        stubRequest(forEndpoint: endpoint, withFileAtPath: response)
+        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Load All")
         serviceRemote.loadNotes { notes in
@@ -68,8 +68,8 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testLoadHashesRetrievesOnlyTheNotificationHashes() {
         let endpoint = "notifications/"
-        let response = "notifications-load-hash.json"
-        stubRequest(forEndpoint: endpoint, withFileAtPath: response)
+        let stubPath = OHPathForFile("notifications-load-hash.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Load Hashes")
         serviceRemote.loadHashes { notes in
@@ -107,8 +107,8 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testUpdateReadStatus() {
         let endpoint = "notifications/read"
-        let response = "notifications-mark-as-read.json"
-        stubRequest(forEndpoint: endpoint, withFileAtPath: response)
+        let stubPath = OHPathForFile("notifications-mark-as-read.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Mark as Read")
         serviceRemote.updateReadStatus("1234", read: true) { success in
@@ -125,8 +125,8 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testUpdateLastSeen() {
         let endpoint = "notifications/seen"
-        let response = "notifications-last-seen.json"
-        stubRequest(forEndpoint: endpoint, withFileAtPath: response)
+        let stubPath = OHPathForFile("notifications-last-seen.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Update Last Seen")
         serviceRemote.updateLastSeen("1234") { success in
@@ -135,24 +135,5 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         }
 
         self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
-    }
-}
-
-
-// MARK: - Private helpers
-//
-private extension NotificationSyncServiceRemoteTests
-{
-    func stubRequest(forEndpoint endpoint: String, withFileAtPath path: String) {
-        stub({ request in
-            return request.URL?.absoluteString?.rangeOfString(endpoint) != nil
-        }) { _ in
-            let stubPath = OHPathForFile(path, self.dynamicType)!
-            return fixture(stubPath, headers: ["Content-Type": "application/json"])
-        }
-    }
-
-    func removeAllStubs() {
-        OHHTTPStubs.removeAllStubs()
     }
 }
