@@ -612,9 +612,14 @@ private extension NotificationsViewController
 extension NotificationsViewController
 {
     func refresh() {
-        // Yes. This is dummy. Simperium handles sync for us!
-// TODO: Implement proper refresh
-        refreshControl?.endRefreshing()
+        guard let service = NotificationSyncService() else {
+            refreshControl?.endRefreshing()
+            return
+        }
+
+        service.sync { _ in
+            self.refreshControl?.endRefreshing()
+        }
     }
 }
 
