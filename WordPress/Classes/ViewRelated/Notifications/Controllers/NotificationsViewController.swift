@@ -930,7 +930,7 @@ private extension NotificationsViewController
             return
         }
 
-        // TODO: Update Last Seen
+// TODO: Update Last Seen
     }
 }
 
