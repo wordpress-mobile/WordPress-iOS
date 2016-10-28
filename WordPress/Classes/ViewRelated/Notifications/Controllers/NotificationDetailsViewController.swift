@@ -5,8 +5,7 @@ import WordPressShared
 import WordPressComStatsiOS
 
 
-/// Renders a given Notification entity, onscreen. Whenever the Notification is remotely updated,
-/// this class will automatically take care of refreshing the UI for you, thanks to Simperium's Awesomeness
+/// Renders a given Notification entity, onscreen
 ///
 class NotificationDetailsViewController: UIViewController
 {
