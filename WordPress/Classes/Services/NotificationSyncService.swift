@@ -32,20 +32,24 @@ class NotificationSyncService
     /// - Local collection will be updated. Old notes will be purged!
     ///
     func sync() {
-        remote.loadHashes(withPageSize: maximumNotes) { hashes in
-            guard let hashes = hashes else {
+        remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
+            guard let remoteHashes = remoteHashes else {
                 return
             }
 
-            self.determineUpdatedNotes(withRemoteHashes: hashes) { noteIds in
+            self.determineUpdatedNotes(with: remoteHashes) { noteIds in
+                guard noteIds.isEmpty == false else {
+                    return
+                }
 
                 self.remote.loadNotes(noteIds: noteIds) { remoteNotes in
                     guard let remoteNotes = remoteNotes else {
                         return
                     }
 
-                    self.updateLocalNotes(withRemoteNotes: remoteNotes)
-                    self.deleteLocalMissingNotes(fromRemoteHashes: hashes)
+                    self.updateLocalNotes(with: remoteNotes) {
+                        self.deleteLocalMissingNotes(from: remoteHashes)
+                    }
                 }
             }
         }
@@ -97,25 +101,72 @@ private extension NotificationSyncService
 {
     ///
     ///
-    func determineUpdatedNotes(withRemoteHashes hashes: [RemoteNotification], completion: ([String] -> Void)) {
-        let noteIds = hashes.map { $0.notificationId }
-        completion(noteIds)
+    func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: ([String] -> Void)) {
+        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+
+        derivedContext.performBlock {
+            let remoteIds = remoteHashes.map { $0.notificationId }
+            let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
+            var localHashes = [String: String]()
+
+            for note in helper.allObjects(matchingPredicate: predicate) {
+                localHashes[note.notificationId] = note.notificationHash ?? ""
+            }
+
+            let filtered = remoteHashes.filter { remote in
+                let localHash = localHashes[remote.notificationId]
+                return localHash == nil || localHash != remote.notificationHash
+            }
+
+            derivedContext.reset()
+
+            let outdatedIds = filtered.map { $0.notificationId }
+
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(outdatedIds)
+            }
+        }
     }
 
 
     ///
     ///
-    func updateLocalNotes(withRemoteNotes notes: [RemoteNotification]) {
-        // Update Newest
-        // Insert Missing
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)) {
+        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+
+        derivedContext.performBlock {
+            for remoteNote in remoteNotes {
+                let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
+                let localNote = helper.firstObject(matchingPredicate: predicate) ?? helper.insertNewObject()
+
+                localNote.update(with: remoteNote)
+            }
+
+            ContextManager.sharedInstance().saveDerivedContext(derivedContext) {
+                completion()
+            }
+        }
     }
 
 
     ///
     ///
-    func deleteLocalMissingNotes(fromRemoteHashes hashes: [RemoteNotification]) {
-        // Delete Removed
-        let remoteIds = hashes.map { $0.notificationId }
+    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification]) {
+        let derivedContext = ContextManager.sharedInstance().newDerivedContext()
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+
+        derivedContext.performBlock {
+            let remoteIds = remoteHashes.map { $0.notificationId }
+            let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
+
+            for orphan in helper.allObjects(matchingPredicate: predicate) {
+                helper.deleteObject(orphan)
+            }
+
+            ContextManager.sharedInstance().saveDerivedContext(derivedContext)
+        }
     }
 
 
