@@ -189,6 +189,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
                                failure:failure];
+    } else if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
+        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blog.objectID
+                                                                  completionHandler:success]
+                                   failure:failure];
     }
 }
 
