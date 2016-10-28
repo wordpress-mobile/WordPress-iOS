@@ -23,20 +23,20 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @implementation PostService
 
-+ (instancetype)serviceWithMainContext {
-    return [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-}
-
 - (Post *)createPostForBlog:(Blog *)blog {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
     post.blog = blog;
     post.remoteStatus = AbstractPostRemoteStatusSync;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
-    if (category) {
-        [post addCategoriesObject:category];
+
+    if (blog.settings.defaultCategoryID && blog.settings.defaultCategoryID.integerValue != PostCategoryUncategorized) {
+        PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
+        if (category) {
+            [post addCategoriesObject:category];
+        }
     }
+
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
 
@@ -51,11 +51,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return post;
 }
 
-+ (Post *)createDraftPostInMainContextForBlog:(Blog *)blog {
-    PostService *service = [PostService serviceWithMainContext];
-    return [service createDraftPostForBlog:blog];
-}
-
 - (Page *)createPageForBlog:(Blog *)blog {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
@@ -68,11 +63,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     Page *page = [self createPageForBlog:blog];
     [self initializeDraft:page];
     return page;
-}
-
-+ (Page *)createDraftPageInMainContextForBlog:(Blog *)blog {
-    PostService *service = [PostService serviceWithMainContext];
-    return [service createDraftPageForBlog:blog];
 }
 
 - (void)getPostWithID:(NSNumber *)postID

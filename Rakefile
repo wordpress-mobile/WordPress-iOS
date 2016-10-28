@@ -1,4 +1,4 @@
-SWIFTLINT_VERSION="0.10.0"
+SWIFTLINT_VERSION="0.12.0"
 XCODE_WORKSPACE="WordPress.xcworkspace"
 XCODE_SCHEME="WordPress"
 XCODE_CONFIGURATION="Debug"
@@ -85,13 +85,33 @@ namespace :dependencies do
       fold("install.swiftlint") do
         puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
         Dir.mktmpdir do |tmpdir|
-          sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
-          Dir.chdir(tmpdir) do
-            sh "git checkout --quiet #{SWIFTLINT_VERSION}"
-            sh "git submodule --quiet update --init --recursive"
-            FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
-            FileUtils.mkdir_p(swiftlint_path)
-            sh "make prefix_install PREFIX='#{swiftlint_path}'"
+          # Try first using a binary release
+          pkgfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.pkg"
+          sh "curl --fail --location -o #{pkgfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/SwiftLint.pkg || true"
+          if File.exists?(pkgfile)
+            pkgdir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
+            sh "pkgutil --expand #{pkgfile} #{pkgdir}"
+            Dir.chdir(pkgdir) do
+              binfile = "#{pkgdir}/usr/local/bin/swiftlint"
+              sh "cat Payload | gzip -d | cpio -id"
+              sh "install_name_tool -rpath /Library/Frameworks '@executable_path/../Frameworks' #{binfile}"
+              sh "install_name_tool -rpath /Library/Frameworks/SwiftLintFramework.framework/Versions/Current/Frameworks '@executable_path/../Frameworks/SwiftLintFramework.framework/Versions/Current/Frameworks' #{binfile}"
+              puts "Copying SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
+              FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
+              FileUtils.mkdir_p(swiftlint_path)
+              FileUtils.cp_r("#{pkgdir}/Library/Frameworks", swiftlint_path)
+              FileUtils.mkdir_p("#{swiftlint_path}/bin")
+              FileUtils.cp("#{pkgdir}/usr/local/bin/swiftlint", "#{swiftlint_path}/bin/swiftlint")
+            end
+          else
+            sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
+            Dir.chdir(tmpdir) do
+              sh "git checkout --quiet #{SWIFTLINT_VERSION}"
+              sh "git submodule --quiet update --init --recursive"
+              FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
+              FileUtils.mkdir_p(swiftlint_path)
+              sh "make prefix_install PREFIX='#{swiftlint_path}'"
+            end
           end
         end
       end
