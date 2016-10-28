@@ -487,7 +487,8 @@ extension NotificationsViewController
         }
 
         // Mark as Read
-// TODO: Mark as Read
+        let service = NotificationSyncService()
+        service?.markAsRead(note)
 
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
