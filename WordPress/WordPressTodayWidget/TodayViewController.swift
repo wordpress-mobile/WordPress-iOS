@@ -63,6 +63,15 @@ class TodayViewController: UIViewController {
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
     }
+    
+    func changeTextColorIfIOS10() {
+        if #available(iOS 10, *) {
+            configureMeLabel.textColor = UIColor.blackColor()
+            siteNameLabel.textColor = UIColor.blackColor()
+            visitorsCountLabel.textColor = UIColor.blackColor()
+            viewsCountLabel.textColor = UIColor.blackColor()
+        }
+    }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -84,6 +93,7 @@ class TodayViewController: UIViewController {
     }
 
     func updateUIBasedOnWidgetConfiguration() {
+        changeTextColorIfIOS10()
         unconfiguredView.hidden = isConfigured
         configuredView.hidden = !isConfigured
 
