@@ -40,6 +40,8 @@ class TodayViewController: UIViewController {
         visitorsCountLabel.text = "-"
         viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
         viewsCountLabel.text = "-"
+        
+        changeTextColorIfIOS10()
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
@@ -93,7 +95,6 @@ class TodayViewController: UIViewController {
     }
 
     func updateUIBasedOnWidgetConfiguration() {
-        changeTextColorIfIOS10()
         unconfiguredView.hidden = isConfigured
         configuredView.hidden = !isConfigured
 
