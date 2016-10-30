@@ -3,16 +3,9 @@ import WordPressShared.WPStyleGuide
 
 public class ReaderCrossPostCell: UITableViewCell
 {
-
-    @IBOutlet private weak var innerContentView: UIView!
-
-    // Header realated Views
-    @IBOutlet private weak var cardContentView: UIView!
-    @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var blavatarImageView: UIImageView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var label: UILabel!
-    @IBOutlet private weak var maxIPadWidthConstraint: NSLayoutConstraint!
 
     public weak var contentProvider: ReaderPostContentProvider?
 
@@ -21,16 +14,19 @@ public class ReaderCrossPostCell: UITableViewCell
 
     // MARK: - Accessors
 
-    public var enableLoggedInFeatures: Bool = true
+    private lazy var readerCrossPostTitleAttributes: [String: AnyObject] = {
+        return WPStyleGuide.readerCrossPostTitleAttributes()
+    }()
 
-    public override var backgroundColor: UIColor? {
-        didSet{
-            contentView.backgroundColor = backgroundColor
-            innerContentView?.backgroundColor = backgroundColor
-            cardContentView?.backgroundColor = backgroundColor
-            cardBorderView?.backgroundColor = backgroundColor
-        }
-    }
+    private lazy var readerCrossPostSubtitleAttributes: [String: AnyObject] = {
+        return WPStyleGuide.readerCrossPostSubtitleAttributes()
+    }()
+
+    private lazy var readerCrossPostBoldSubtitleAttributes: [String: AnyObject] = {
+        return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
+    }()
+
+    public var enableLoggedInFeatures: Bool = true
 
     public override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -52,83 +48,39 @@ public class ReaderCrossPostCell: UITableViewCell
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-
         applyStyles()
-    }
-
-    /**
-     Ignore taps in the card margins
-     */
-    public override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if (!CGRectContainsPoint(cardContentView.frame, point)) {
-            return nil
-        }
-        return super.hitTest(point, withEvent: event)
-    }
-
-    public override func prepareForReuse() {
-        super.prepareForReuse()
-        applyHighlightedEffect(false, animated: false)
-    }
-
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        let innerWidth = innerWidthForSize(size)
-        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
-
-        var height = cardContentView.frame.minY * 2.0 // Upper and bottom margins
-        height += max(blavatarImageView.frame.size.height, label.sizeThatFits(innerSize).height)
-
-        return CGSize(width: size.width, height: height)
-    }
-
-    private func innerWidthForSize(size: CGSize) -> CGFloat {
-        var width:CGFloat = UIDevice.isPad() ? min(size.width, maxIPadWidthConstraint.constant) : size.width
-        // Subtract the left and right margins.
-        width -= cardContentView.frame.minX * 2.0
-
-        // Subtract the x offset of the label.
-        width -= label.frame.minX
-
-        return width
     }
 
 
     // MARK: - Appearance
 
     private func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
-
-        cardBorderView.layer.borderColor = WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor
-        cardBorderView.layer.borderWidth = 1.0
-        cardBorderView.alpha = 0.0
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        label?.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
-        let duration:NSTimeInterval = animated ? 0.25 : 0
-        UIView.animateWithDuration(duration,
+        func updateBorder() {
+            label.alpha = highlighted ? 0.50 : WPAlphaFull
+        }
+        guard animated else {
+            updateBorder()
+            return
+        }
+        UIView.animateWithDuration(0.25,
             delay: 0,
             options: .CurveEaseInOut,
-            animations: {
-                self.cardBorderView.alpha = highlighted ? 1.0 : 0.0
-            }, completion: nil)
+            animations:updateBorder,
+            completion: nil)
     }
 
 
     // MARK: - Configuration
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
-        configureCell(contentProvider, layoutOnly: false)
-    }
-
-    public func configureCell(contentProvider:ReaderPostContentProvider, layoutOnly:Bool) {
         self.contentProvider = contentProvider
 
         configureLabel()
-
-        if layoutOnly {
-            return
-        }
-
         configureBlavatarImage()
         configureAvatarImageView()
     }
@@ -169,8 +121,7 @@ public class ReaderCrossPostCell: UITableViewCell
         if title.containsString(xPostTitlePrefix) {
             title = title?.componentsSeparatedByString(xPostTitlePrefix).last
         }
-        let titleAttributes = WPStyleGuide.readerCrossPostTitleAttributes() as! [String:AnyObject]
-        let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
+        let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: readerCrossPostTitleAttributes)
 
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
@@ -183,10 +134,8 @@ public class ReaderCrossPostCell: UITableViewCell
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
-        let subtitleAttributes = WPStyleGuide.readerCrossPostSubtitleAttributes() as! [String:AnyObject]
-        let boldSubtitleAttributes = WPStyleGuide.readerCrossPostBoldSubtitleAttributes() as! [String:AnyObject]
-        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
-        attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
+        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
+        attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
         // Add the subtitle to the attributed text
         attrText.appendAttributedString(attrSubtitle)

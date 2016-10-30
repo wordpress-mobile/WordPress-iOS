@@ -165,7 +165,7 @@ private extension ShareViewController
         }
 
         let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
-        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
         let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
