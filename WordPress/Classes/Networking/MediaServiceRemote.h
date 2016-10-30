@@ -18,8 +18,8 @@
  *  Update media details on the server
  *
  *  @param media   the media object to update
- *  @param success uccess a block to be executed when the request finishes with success.
- *  @param failure failure a block to be execute when the request fails.
+ *  @param success a block to be executed when the request finishes with success.
+ *  @param failure a block to be executed when the request fails.
  */
 - (void)updateMedia:(RemoteMedia *)media
             success:(void (^)(RemoteMedia *remoteMedia))success

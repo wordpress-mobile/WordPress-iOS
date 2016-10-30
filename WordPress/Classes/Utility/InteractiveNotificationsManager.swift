@@ -44,7 +44,7 @@ final public class InteractiveNotificationsManager : NSObject
     ///     - remoteNotification: the notification object
     ///
     public func handleActionWithIdentifier(identifier: String, remoteNotification: NSDictionary) {
-        guard defaultAccountAvailable() else {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
@@ -121,16 +121,6 @@ final public class InteractiveNotificationsManager : NSObject
     ///
     private func showDetailsWithNoteID(noteId: NSNumber) {
         WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
-    }
-
-
-
-    /// Checks whether there is a default WordPress.com account available, or not
-    ///
-    private func defaultAccountAvailable() -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        return service.defaultWordPressComAccount() != nil
     }
 
 

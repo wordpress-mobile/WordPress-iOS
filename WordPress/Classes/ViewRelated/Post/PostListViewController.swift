@@ -251,6 +251,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         var predicates = [NSPredicate]()
 
         if let blog = blog {
+            // Show all original posts without a revision & revision posts.
             let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
             predicates.append(basePredicate)
         }
@@ -369,7 +370,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     private func createPostInNativeEditor() {
-        let post = PostService.createDraftPostInMainContextForBlog(blog)
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let post = postService.createDraftPostForBlog(blog)
         let postViewController = AztecPostViewController(post: post)
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
