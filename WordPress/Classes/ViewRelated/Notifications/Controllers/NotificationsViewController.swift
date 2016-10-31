@@ -471,6 +471,21 @@ extension NotificationsViewController
                 return
             }
 
+// TODO: Reimplement Timeout Logic!
+//
+//        // Mark as read immediately, if needed
+//        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
+//            resetApplicationBadge()
+//            updateLastSeenTime()
+//        }
+//
+//        // Show the details only if NotificationPushMaxWait hasn't elapsed
+//        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
+//            return
+//        }
+//
+//        showDetailsForNotificationWithID(key)
+
             self.showDetailsForNotification(note)
         }
     }
@@ -885,43 +900,6 @@ private extension NotificationsViewController
         }
     }
 }
-
-
-// TODO: Reuse / Cleanup as needed
-//
-// MARK: - SPBucketDelegate Methods
-//
-//extension NotificationsViewController: SPBucketDelegate
-//{
-//    func bucket(bucket: SPBucket!, didChangeObjectForKey key: String!, forChangeType changeType: SPBucketChangeType, memberNames: [AnyObject]!) {
-//        // We're only concerned with New Notification Events
-//        guard changeType == .Insert else {
-//            return
-//        }
-//
-//        // Mark as read immediately, if needed
-//        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
-//            resetApplicationBadge()
-//            updateLastSeenTime()
-//        }
-//
-//        // Were we waiting for this notification?
-//        guard let waitingNoteID = pushNotificationID where waitingNoteID == key else {
-//            return
-//        }
-//
-//        // Don't fire the Timeout Event
-//        stopWaitingForNotification()
-//
-//        // Show the details only if NotificationPushMaxWait hasn't elapsed
-//        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
-//            return
-//        }
-//
-//        showDetailsForNotificationWithID(key)
-//    }
-//}
-
 
 
 // MARK: - Sync'ing Helpers
