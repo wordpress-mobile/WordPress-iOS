@@ -52,30 +52,30 @@ class NotificationSyncService
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync(completion: (Bool -> Void)? = nil) {
+    func sync(completion: (ErrorType? -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
-        remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
+        remote.loadHashes(withPageSize: maximumNotes) { error, remoteHashes in
             guard let remoteHashes = remoteHashes else {
-                completion?(false)
+                completion?(error)
                 return
             }
 
             self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                 guard outdatedNoteIds.isEmpty == false else {
-                    completion?(true)
+                    completion?(nil)
                     return
                 }
 
-                self.remote.loadNotes(noteIds: outdatedNoteIds) { remoteNotes in
+                self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
                     guard let remoteNotes = remoteNotes else {
-                    completion?(false)
+                        completion?(error)
                         return
                     }
 
                     self.updateLocalNotes(with: remoteNotes) {
                         self.deleteLocalMissingNotes(from: remoteHashes) {
-                            completion?(true)
+                            completion?(nil)
                         }
                     }
                 }
@@ -90,17 +90,18 @@ class NotificationSyncService
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(notification: Notification, completion: (Bool -> Void)? = nil) {
+    func markAsRead(notification: Notification, completion: (ErrorType?-> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         let original = notification.read
 
-        remote.updateReadStatus(notification.notificationId, read: true) { success in
-            if !success {
+        remote.updateReadStatus(notification.notificationId, read: true) { error in
+            if let error = error {
+                DDLogSwift.logError("Error marking note as read: \(error)")
                 self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
             }
 
-            completion?(success)
+            completion?(error)
         }
 
         updateReadStatus(true, forNoteWithObjectID: notification.objectID)
@@ -113,15 +114,15 @@ class NotificationSyncService
     ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Callback to be executed on completion.
     ///
-    func updateLastSeen(timestamp: String, completion: (Bool -> Void)? = nil) {
+    func updateLastSeen(timestamp: String, completion: (ErrorType? -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
-        remote.updateLastSeen(timestamp) { success in
-            if !success {
-                DDLogSwift.logError("Error while trying to update Notifications Last Seen Timestamp: \(timestamp)")
+        remote.updateLastSeen(timestamp) { error in
+            if let error = error {
+                DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error)")
             }
 
-            completion?(success)
+            completion?(error)
         }
     }
 }

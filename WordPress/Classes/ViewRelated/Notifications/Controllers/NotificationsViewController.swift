@@ -937,10 +937,11 @@ private extension NotificationsViewController
         }
 
         let service = NotificationSyncService()
-        service?.updateLastSeen(timestamp) { success in
-            guard success else {
+        service?.updateLastSeen(timestamp) { error in
+            guard error == nil else {
                 return
             }
+
             self.lastSeenTime = timestamp
         }
     }
