@@ -412,7 +412,7 @@ public class DiscussionSettingsViewController : UITableViewController
                             }),
 
             Row(style:      .Switch,
-                title:      NSLocalizedString("Require users to sign in", comment: "Settings: Comments Approval settings"),
+                title:      NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireRegistration,
                 handler:    {   [weak self] in
                                 self?.pressedRequireRegistration($0)
