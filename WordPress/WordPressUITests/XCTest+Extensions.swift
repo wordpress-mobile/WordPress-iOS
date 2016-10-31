@@ -39,7 +39,7 @@ extension XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText(WordPressTestCredentials.oneStepPassword)
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         self.waitForElementToAppear(app.tabBars["Main Navigation"])
     }
@@ -54,7 +54,7 @@ extension XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText(WordPressTestCredentials.twoStepPassword)
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         self.waitForElementToAppear(app.tabBars["Main Navigation"])
     }

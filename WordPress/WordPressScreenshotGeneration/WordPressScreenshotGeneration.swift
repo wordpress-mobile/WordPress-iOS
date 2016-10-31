@@ -56,7 +56,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         passwordSecureTextField.tap()
         passwordSecureTextField.typeText("ENTER-PASSWORD-HERE")
 
-        app.buttons["Sign In"].tap()
+        app.buttons["Log In"].tap()
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["Reader"].tap()
