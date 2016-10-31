@@ -52,30 +52,30 @@ class NotificationSyncService
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync(completion: (ErrorType? -> Void)? = nil) {
+    func sync(completion: ((ErrorType?, Bool) -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         remote.loadHashes(withPageSize: maximumNotes) { error, remoteHashes in
             guard let remoteHashes = remoteHashes else {
-                completion?(error)
+                completion?(error, false)
                 return
             }
 
             self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                 guard outdatedNoteIds.isEmpty == false else {
-                    completion?(nil)
+                    completion?(nil, false)
                     return
                 }
 
                 self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
                     guard let remoteNotes = remoteNotes else {
-                        completion?(error)
+                        completion?(error, false)
                         return
                     }
 
                     self.updateLocalNotes(with: remoteNotes) {
                         self.deleteLocalMissingNotes(from: remoteHashes) {
-                            completion?(nil)
+                            completion?(nil, true)
                         }
                     }
                 }
