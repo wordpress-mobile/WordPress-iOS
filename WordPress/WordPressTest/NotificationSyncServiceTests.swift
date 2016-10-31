@@ -115,8 +115,8 @@ class NotificationSyncServiceTests: XCTestCase
         let expectation = expectationWithDescription("Update Last Seen")
 
         // Update Last Seen!
-        service.updateLastSeen("1234") { success in
-            XCTAssertTrue(success)
+        service.updateLastSeen("1234") { error in
+            XCTAssertNil(error)
             expectation.fulfill()
         }
 
