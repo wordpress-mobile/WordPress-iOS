@@ -119,7 +119,7 @@
 {
     NSString *alertTitle = NSLocalizedString(@"Oops!",
                                              @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-    NSString *alertMessage = NSLocalizedString(@"There was a problem connecting to WordPress.com. Please sign in again.",
+    NSString *alertMessage = NSLocalizedString(@"There was a problem connecting to WordPress.com. Please log in again.",
                                                @"Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     NSString *okButtonTitle = NSLocalizedString(@"OK",
                                                 @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
