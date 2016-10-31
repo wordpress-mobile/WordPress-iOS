@@ -36,13 +36,14 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Load All")
-        serviceRemote.loadNotes { notes in
+        serviceRemote.loadNotes { error, notes in
 
             guard let notes = notes, let note = notes.first else {
                 XCTFail()
                 return
             }
 
+            XCTAssertNil(error)
             XCTAssertEqual(note.notificationId, "2674124016")
             XCTAssertEqual(note.notificationHash, "4007447833")
             XCTAssertEqual(note.read, true)
@@ -72,13 +73,14 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Load Hashes")
-        serviceRemote.loadHashes { notes in
+        serviceRemote.loadHashes { error, notes in
 
             guard let notes = notes else {
                 XCTFail()
                 return
             }
 
+            XCTAssertNil(error)
             XCTAssertEqual(notes.count, 10)
 
             for note in notes {
@@ -111,9 +113,9 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Mark as Read")
-        serviceRemote.updateReadStatus("1234", read: true) { success in
+        serviceRemote.updateReadStatus("1234", read: true) { error in
 
-            XCTAssertTrue(success)
+            XCTAssertNil(error)
             expectation.fulfill()
         }
 
@@ -129,8 +131,8 @@ class NotificationSyncServiceRemoteTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         let expectation = expectationWithDescription("Update Last Seen")
-        serviceRemote.updateLastSeen("1234") { success in
-            XCTAssertTrue(success)
+        serviceRemote.updateLastSeen("1234") { error in
+            XCTAssertNil(error)
             expectation.fulfill()
         }
 
