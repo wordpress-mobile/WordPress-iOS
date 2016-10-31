@@ -313,16 +313,15 @@ final public class PushNotificationsManager : NSObject
             return false
         }
 
-// TODO: Fixme
-//        let simperium = WordPressAppDelegate.sharedInstance().simperium
-//        simperium.backgroundFetchWithCompletion { result in
-//            if result == .NewData {
-//                DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
-//            } else {
-//                DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
-//            }
-//            completionHandler?(result)
-//        }
+        guard let service = NotificationSyncService() else {
+            completionHandler?(.Failed)
+            return true
+        }
+
+        service.sync { success in
+            let result: UIBackgroundFetchResult = success ? .NewData : .NoData
+            completionHandler?(result)
+        }
 
         return true
     }
