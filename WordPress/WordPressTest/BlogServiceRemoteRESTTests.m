@@ -37,27 +37,26 @@ static NSTimeInterval const TestExpectationTimeout = 5;
                                  failure:^(NSError *error) {}];
 }
 
+#pragma mark - Synchronizing site details for a blog
 
-#pragma mark - Synchronizing options for a blog
-
-- (void)testThatSyncOptionForBlogWorks
+- (void)testThatSyncSiteDetailsForBlogWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
-    
+
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     BlogServiceRemoteREST *service = nil;
-    
+
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@", blog.dotComID];
-    
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
-    
+
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
-    
-    [service syncOptionsWithSuccess:^(NSDictionary *options) {}
+
+    [service syncSiteDetailsWithSuccess:^(RemoteBlog *remoteBlog) {}
                             failure:^(NSError *error) {}];
 }
 
