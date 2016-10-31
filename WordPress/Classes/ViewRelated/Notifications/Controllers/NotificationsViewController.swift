@@ -845,7 +845,6 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 }
 
 
-
 // MARK: - RatingsView Helpers
 //
 private extension NotificationsViewController
@@ -880,7 +879,6 @@ private extension NotificationsViewController
         }
     }
 }
-
 
 
 // TODO: Reuse / Cleanup as needed
