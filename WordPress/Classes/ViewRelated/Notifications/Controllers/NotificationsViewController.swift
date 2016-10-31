@@ -459,14 +459,20 @@ extension NotificationsViewController
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
-    func showDetailsForNotificationWithID(noteID: String) {
-// TODO: Fixme
-//        guard let note = notesBucket.objectForKey(noteID) as? Notification else {
-//            startWaitingForNotification(noteID)
-//            return
-//        }
-//
-//        showDetailsForNotification(note)
+    func showDetailsForNotificationWithID(noteId: String) {
+        guard let service = NotificationSyncService() else {
+            DDLogSwift.logError("Error: Cannot instantiate NotificationsSyncService: Missing dotcom account!")
+            return
+        }
+
+        service.retrieveNote(with: noteId) { error, note in
+            guard let note = note else {
+                DDLogSwift.logError("Error: Couldn't retrieve Notification [\(noteId)]")
+                return
+            }
+
+            self.showDetailsForNotification(note)
+        }
     }
 
     /// Pushes the details for a given Notification Instance.
