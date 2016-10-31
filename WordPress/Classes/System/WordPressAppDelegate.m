@@ -206,10 +206,8 @@ int ddLogLevel = DDLogLevelInfo;
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
-
-        if ([URLString rangeOfString:@"newpost"].length) {
-            returnValue = [self handleNewPostRequestWithURL:url];
-        } else if ([URLString rangeOfString:@"magic-login"].length) {
+            
+        if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
             returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
@@ -446,68 +444,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
     
     completionHandler();
-}
-
-#pragma mark - OpenURL helpers
-
-/**
- *  @brief      Handle the a new post request by URL.
- *  
- *  @param      url     The URL with the request info.  Cannot be nil.
- *
- *  @return     YES if the request was handled, NO otherwise.
- */
-- (BOOL)handleNewPostRequestWithURL:(NSURL*)url
-{
-    NSParameterAssert([url isKindOfClass:[NSURL class]]);
-    
-    BOOL handled = NO;
-    
-    // Create a new post from data shared by a third party application.
-    NSDictionary *params = [[url query] dictionaryFromQueryString];
-    DDLogInfo(@"App launched for new post with params: %@", params);
-    
-    params = [self sanitizeNewPostParameters:params];
-    
-    if ([params count]) {
-        [[WPTabBarController sharedInstance] showPostTabWithOptions:params];
-        handled = YES;
-    }
-	
-    return handled;
-}
-
-/**
- *	@brief		Sanitizes a 'new post' parameters dictionary.
- *	@details	Prevent HTML injections like the one in:
- *				https://github.com/wordpress-mobile/WordPress-iOS-Editor/issues/211
- *
- *	@param		parameters		The new post parameters to sanitize.  Cannot be nil.
- *
- *  @returns    The sanitized dictionary.
- */
-- (NSDictionary*)sanitizeNewPostParameters:(NSDictionary*)parameters
-{
-    NSParameterAssert([parameters isKindOfClass:[NSDictionary class]]);
-	
-    NSUInteger parametersCount = [parameters count];
-    
-    NSMutableDictionary* sanitizedDictionary = [[NSMutableDictionary alloc] initWithCapacity:parametersCount];
-    
-    for (NSString* key in [parameters allKeys])
-    {
-        NSString* value = [parameters objectForKey:key];
-        
-        if ([key isEqualToString:WPNewPostURLParamContentKey]) {
-            value = [value stringByStrippingHTML];
-        } else if ([key isEqualToString:WPNewPostURLParamTagsKey]) {
-            value = [value stringByStrippingHTML];
-        }
-        
-        [sanitizedDictionary setObject:value forKey:key];
-    }
-    
-    return [NSDictionary dictionaryWithDictionary:sanitizedDictionary];
 }
 
 #pragma mark - Custom methods
