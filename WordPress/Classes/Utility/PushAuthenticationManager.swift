@@ -138,7 +138,7 @@ import WordPressComAnalytics
     ///     - completion: A closure that receives a parameter, indicating whether the login attempt was confirmed or not.
     ///
     private func showLoginVerificationAlert(message: String, completion: ((approved: Bool) -> ())) {
-        let title               = NSLocalizedString("Verify Sign In", comment: "Push Authentication Alert Title")
+        let title               = NSLocalizedString("Verify Log In", comment: "Push Authentication Alert Title")
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
