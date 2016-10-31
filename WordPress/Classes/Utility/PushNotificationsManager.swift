@@ -318,8 +318,8 @@ final public class PushNotificationsManager : NSObject
             return true
         }
 
-        service.sync { success in
-            let result: UIBackgroundFetchResult = success ? .NewData : .NoData
+        service.sync { error, newData in
+            let result = newData ? UIBackgroundFetchResult.NewData : .NoData
             completionHandler?(result)
         }
 
