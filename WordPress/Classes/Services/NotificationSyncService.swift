@@ -84,6 +84,32 @@ class NotificationSyncService
     }
 
 
+    /// Retrieves a Notification matching the specified ID.
+    ///
+    /// - Parameters:
+    ///     - noteId: Notification ID of the note to be downloaded.
+    ///     - completion: Closure to be executed on completion.
+    ///
+    func retrieveNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
+        assert(NSThread.isMainThread())
+
+        remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
+            guard let remoteNotes = remoteNotes else {
+                completion(error, nil)
+                return
+            }
+
+            self.updateLocalNotes(with: remoteNotes) {
+                let helper = CoreDataHelper<Notification>(context: self.mainContext)
+                let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
+                let note = helper.firstObject(matchingPredicate: predicate)
+
+                completion(nil, note)
+            }
+        }
+    }
+
+
     /// Marks a Notification as Read. On error, proceeds to revert the change.
     ///
     /// - Parameters:
@@ -175,7 +201,7 @@ private extension NotificationSyncService
     ///     - remoteNotes: Collection of Remote Notes
     ///     - completion: Callback to be executed on completion
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)) {
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)? = nil) {
         let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
@@ -189,7 +215,7 @@ private extension NotificationSyncService
 
             self.contextManager.saveDerivedContext(derivedContext) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    completion()
+                    completion?()
                 }
             }
         }
