@@ -114,8 +114,7 @@ class NotificationsViewController : UITableViewController
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
-
-// TODO: Wire Sync
+        syncNewNotifications()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -442,6 +441,7 @@ private extension NotificationsViewController
 
     @objc func defaultAccountDidChange(note: NSNotification) {
         needsReloadResults = true
+        resetNotifications()
         resetApplicationBadge()
     }
 }
@@ -923,6 +923,21 @@ private extension NotificationsViewController
 //
 private extension NotificationsViewController
 {
+    func syncNewNotifications() {
+        let service = NotificationSyncService()
+        service?.sync()
+    }
+
+    func resetNotifications() {
+        do {
+            let helper = CoreDataHelper<Notification>(context: mainContext)
+            helper.deleteAllObjects()
+            try mainContext.save()
+        } catch {
+            DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
+        }
+    }
+
     func resetApplicationBadge() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
