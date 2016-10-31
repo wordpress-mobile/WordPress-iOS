@@ -442,6 +442,7 @@ private extension NotificationsViewController
     @objc func defaultAccountDidChange(note: NSNotification) {
         needsReloadResults = true
         resetNotifications()
+        resetLastSeenTime()
         resetApplicationBadge()
     }
 }
@@ -928,6 +929,24 @@ private extension NotificationsViewController
         service?.sync()
     }
 
+    func updateLastSeenTime() {
+        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
+            return
+        }
+
+        guard let timestamp = note.timestamp where timestamp != lastSeenTime else {
+            return
+        }
+
+        let service = NotificationSyncService()
+        service?.updateLastSeen(timestamp) { success in
+            guard success else {
+                return
+            }
+            self.lastSeenTime = timestamp
+        }
+    }
+
     func resetNotifications() {
         do {
             let helper = CoreDataHelper<Notification>(context: mainContext)
@@ -938,20 +957,12 @@ private extension NotificationsViewController
         }
     }
 
-    func resetApplicationBadge() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    func resetLastSeenTime() {
+        lastSeenTime = nil
     }
 
-    func updateLastSeenTime() {
-        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
-            let timestamp = note.timestamp else
-        {
-            return
-        }
-
-// TODO: Avoid this when it's not needed
-        let service = NotificationSyncService()
-        service?.updateLastSeen(timestamp)
+    func resetApplicationBadge() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
 }
 
@@ -1019,6 +1030,20 @@ private extension NotificationsViewController
         return NotificationActionsService(managedObjectContext: mainContext)
     }
 
+    var userDefaults: NSUserDefaults{
+        return NSUserDefaults.standardUserDefaults()
+    }
+
+    var lastSeenTime: String? {
+        get {
+            return userDefaults.stringForKey(Settings.lastSeenTime)
+        }
+        set {
+            userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
+            userDefaults.synchronize()
+        }
+    }
+
     enum Filter: Int {
         case None = 0
         case Unread = 1
@@ -1052,6 +1077,7 @@ private extension NotificationsViewController
 
     enum Settings {
         static let estimatedRowHeight = CGFloat(70)
+        static let lastSeenTime = "notifications_last_seen_time"
     }
 
     enum Stats {
