@@ -165,7 +165,7 @@ class SigninErrorViewController : UIViewController
         }
 
         if message.trim().characters.count == 0 {
-            message = NSLocalizedString("Sign in failed. Please try again.", comment: "A generic error message for a failed sign in.")
+            message = NSLocalizedString("Log in failed. Please try again.", comment: "A generic error message for a failed log in.")
         }
 
         if error.code == 405 {
