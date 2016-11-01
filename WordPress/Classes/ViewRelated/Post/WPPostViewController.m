@@ -947,7 +947,11 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPostInMainContextForBlog:blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    AbstractPost *post = [postService createDraftPostForBlog:blog];
+
+    return post;
 }
 
 /*

@@ -407,19 +407,12 @@ import WordPressShared
         guard let indexPath = viewModel.indexPathOfTag(tag) else {
             return
         }
-        tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Middle)
 
-        if splitViewControllerIsHorizontallyCompact {
-            let time = dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(0.7 * Double(NSEC_PER_SEC))
-            )
-            dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
-                self?.tableView.deselectSelectedRowWithAnimation(true)
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .Middle, completion: {
+            if !self.splitViewControllerIsHorizontallyCompact {
+                self.tableView(self.tableView, didSelectRowAtIndexPath: indexPath)
             }
-        } else {
-            self.tableView(tableView, didSelectRowAtIndexPath: indexPath)
-        }
+        })
     }
 
 

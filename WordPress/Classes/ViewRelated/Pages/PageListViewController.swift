@@ -323,7 +323,9 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         if editorSettings.visualEditorEnabled {
             let postViewController: UIViewController
             if editorSettings.nativeEditorEnabled {
-                let page = PostService.createDraftPageInMainContextForBlog(blog)
+                let context = ContextManager.sharedInstance().mainContext
+                let postService = PostService(managedObjectContext: context)
+                let page = postService.createDraftPageForBlog(blog)
                 postViewController = AztecPostViewController(post:page)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {

@@ -207,7 +207,7 @@ import Mixpanel
     ///
     class func isUsernameReserved(username: String) -> Bool {
         let name = username.lowercaseString.trim()
-        return ["admin", "administrator", "root"].contains(name)
+        return ["admin", "administrator", "invite", "main", "root", "web", "www"].contains(name) || name.containsString("wordpress")
     }
 
 
@@ -253,6 +253,7 @@ import Mixpanel
         alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
             callback()
         })
+        alertController.presentFromRootViewController()
     }
 
 
