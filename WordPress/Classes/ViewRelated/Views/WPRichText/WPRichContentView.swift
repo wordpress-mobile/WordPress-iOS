@@ -118,10 +118,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Returns: A WPRichTextEmbed instance configured for the attachment.
     ///
     func embedForAttachment(attachment: WPTextAttachment) -> WPRichTextEmbed {
-        let width = attachment.width ?? Int(frame.width)
-        let height = attachment.height ?? 50
+        let width: CGFloat = attachment.width ?? textContainer.size.width
+        let height: CGFloat = attachment.height ?? 150.0
+        let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
 
-        let embed = WPRichTextEmbed(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        attachment.maxSize = CGSize(width: width, height: height)
 
         if attachment.tagName == "iframe" {
             embed.loadContentURL(NSURL(string: attachment.src)!)
@@ -148,15 +149,12 @@ extension WPRichContentView: WPTableImageSourceDelegate
 
         richMedia.image.imageView.image = image
         richMedia.attachment.maxSize = image.size
-        richMedia.attachment.width = Int(image.size.width)
-        richMedia.attachment.height = Int(image.size.height)
 
         let frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
         richMedia.image.frame = frame
 
         attachmentManager.layoutAttachmentViews()
         invalidateIntrinsicContentSize()
-
     }
 
 

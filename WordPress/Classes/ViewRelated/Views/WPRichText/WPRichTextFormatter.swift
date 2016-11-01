@@ -357,14 +357,17 @@ class AttachmentTagProcessor: HtmlTagProcessor
         textAttachment.attributes = attrs
         textAttachment.html = html
 
-        if let widthStr = attrs["width"],
-            let width = Int(widthStr) {
-            textAttachment.width = width
+        if let widthStr = attrs["width"] {
+            if widthStr.containsString("%") {
+                textAttachment.width = CGFloat.max
+            } else if let width = Float(widthStr) {
+                textAttachment.width = CGFloat(width)
+            }
         }
 
         if let heightStr = attrs["height"],
-            let height = Int(heightStr) {
-            textAttachment.height = height
+            let height = Float(heightStr) {
+            textAttachment.height = CGFloat(height)
         }
 
         if let align = attrs["align"] {
