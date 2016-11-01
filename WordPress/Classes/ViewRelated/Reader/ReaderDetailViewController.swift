@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-public class ReaderDetailViewController : UIViewController, UIViewControllerRestoration
+public class ReaderDetailViewController: UIViewController, UIViewControllerRestoration
 {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -54,6 +54,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var richTextView: WPRichTextView!
+    @IBOutlet private weak var textView: WPRichContentView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
 
     // Spacers
@@ -498,15 +499,18 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     }
 
     private func configureRichText() {
-        richTextView.delegate = self
-        let fontSize = WPStyleGuide.Detail.contentFontSize
-        let lineHeight = WPStyleGuide.Detail.contentLineHeight
-        var textOptions = richTextView.textOptions
-        textOptions[DTDefaultFontSize] = WPStyleGuide.Cards.contentFontSize
-        textOptions[DTDefaultLineHeightMultiplier] = lineHeight / fontSize
-        richTextView.textOptions = textOptions
-        richTextView.content = post!.contentForDisplay()
-        richTextView.privateContent = post!.isPrivate()
+        textView.content = post!.contentForDisplay()
+        textView.delegate = self
+
+//        richTextView.delegate = self
+//        let fontSize = WPStyleGuide.Detail.contentFontSize
+//        let lineHeight = WPStyleGuide.Detail.contentLineHeight
+//        var textOptions = richTextView.textOptions
+//        textOptions[DTDefaultFontSize] = WPStyleGuide.Cards.contentFontSize
+//        textOptions[DTDefaultLineHeightMultiplier] = lineHeight / fontSize
+//        richTextView.textOptions = textOptions
+//        richTextView.content = post!.contentForDisplay()
+//        richTextView.privateContent = post!.isPrivate()
     }
 
 
@@ -891,6 +895,28 @@ extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
     public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
         didTapDiscoverAttribution()
     }
+}
+
+
+// MARK: - UITextView Delegate Methods
+
+extension ReaderDetailViewController: UITextViewDelegate
+{
+
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        // Cusome handing of the URL
+        var url = URL
+        if url.host != nil {
+            if let postURLString = post?.permaLink {
+                let postURL = NSURL(string: postURLString)
+                url = NSURL(string: URL.absoluteString!, relativeToURL: postURL)!
+            }
+        }
+        presentWebViewControllerWithURL(url)
+
+        return false
+    }
+
 }
 
 
