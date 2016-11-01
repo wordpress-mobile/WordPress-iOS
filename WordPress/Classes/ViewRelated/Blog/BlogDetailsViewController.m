@@ -19,6 +19,7 @@
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
 
+@import WordPressComStatsiOS;
 @import Gridicons;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
