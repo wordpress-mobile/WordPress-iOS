@@ -1,5 +1,4 @@
 import Foundation
-import DTCoreText
 
 class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 {
@@ -80,7 +79,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
         if (fixedHeight > 0) {
-            return CGSizeMake(CGFloat(CGFLOAT_WIDTH_UNKNOWN), fixedHeight)
+            return CGSizeMake(CGFloat.max, fixedHeight)
         }
 
         if !CGSizeEqualToSize(attachmentSize, CGSizeZero) {
