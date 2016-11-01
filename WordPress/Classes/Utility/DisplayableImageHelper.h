@@ -25,4 +25,13 @@
  */
 + (NSString *)searchPostContentForImageToDisplay:(NSString *)content;
 
+/**
+ Find attachments ids in post content
+
+ @param content The content string to search
+
+ @return A set with all the attachment id that where found in galleries
+ */
++ (NSSet *)searchPostContentForAttachmentIdsInGalleries:(NSString *)content;
+
 @end

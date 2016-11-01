@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - Crashlytics (3.8.2):
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - DTCoreText (1.6.16):
     - DTFoundation/Core (~> 1.7.5)
@@ -43,7 +43,7 @@ PODS:
   - DTFoundation/UIKit (1.7.11):
     - DTFoundation/Core
   - Expecta (1.0.5)
-  - Fabric (1.6.9)
+  - Fabric (1.6.10)
   - FLAnimatedImage (1.0.12)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
@@ -166,7 +166,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.4)
   - WordPressComKit (0.0.5):
     - Alamofire (~> 3.0)
-  - WPMediaPicker (0.10.1)
+  - WPMediaPicker (0.10.2)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -204,7 +204,7 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (= 0.1.19)
   - WordPressCom-Stats-iOS (= 0.8.0)
   - WordPressComKit (= 0.0.5)
-  - WPMediaPicker (~> 0.10.1)
+  - WPMediaPicker (~> 0.10.2)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -242,11 +242,11 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: b130494633946a970ffe70c02461cf61c2bf488a
   BuddyBuildSDK: f4682598772ae66c9ef5554d2d78d0a19fb413a0
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
+  Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
@@ -273,9 +273,9 @@ SPEC CHECKSUMS:
   WordPressCom-Analytics-iOS: 1b01177ee3f588e984465b5b37ebcbb342836a8d
   WordPressCom-Stats-iOS: 7c961a7780a695f54db5431537c16615682cdf32
   WordPressComKit: 4dc52eebc508b8e056d8bf8e931a7be95d467e3b
-  WPMediaPicker: 645ecc2435293cc898c76180f3994358a68cae20
+  WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 2491222bc611fe5cbb8547531135796ceab24f1e
+PODFILE CHECKSUM: 677f892ccdea351964e26828a46125e68895bd4b
 
 COCOAPODS: 1.1.1
