@@ -841,6 +841,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     if ([self containsVideoPress:content]) {
         content = [self formatVideoPress:content];
     }
+    content = [self removeForbiddenTags:content];
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
     content = [content stringByReplacingHTMLEmoticonsWithEmoji];
@@ -891,6 +892,28 @@ static const NSUInteger ReaderPostTitleLength = 30;
 - (NSString *)makePlainText:(NSString *)string
 {
     return [NSString makePlainText:string];
+}
+
+
+- (NSString *)removeForbiddenTags:(NSString *)string
+{
+    if (!string) {
+        return @"";
+    }
+
+    static NSRegularExpression *regexStyle;
+    static NSRegularExpression *regexScript;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexStyle = [NSRegularExpression regularExpressionWithPattern:@"<style[^>]*>[\\s\\S]+?</style>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexScript = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*>[\\s\\S]+?</script>" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    string = [regexStyle stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+    string = [regexScript stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+
+    return string;
 }
 
 /**
