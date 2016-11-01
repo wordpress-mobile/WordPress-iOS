@@ -125,7 +125,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         attachment.maxSize = CGSize(width: width, height: height)
 
         if attachment.tagName == "iframe" {
-            embed.loadContentURL(NSURL(string: attachment.src)!)
+            embed.loadContentURL(NSURL(string: attachment.src.stringByDecodingXMLCharacters())!)
         } else {
             embed.loadHTMLString(attachment.html!)
         }
