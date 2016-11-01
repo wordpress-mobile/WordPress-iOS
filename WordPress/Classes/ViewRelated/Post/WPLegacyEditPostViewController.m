@@ -131,9 +131,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[PostService createDraftPostInMainContextForBlog:blog]];
+    AbstractPost *post = [postService createDraftPostForBlog:blog];
+
+    return [self initWithPost:post];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -442,7 +445,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - Instance Methods
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    return [PostService createDraftPostInMainContextForBlog:blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    AbstractPost *post = [postService createDraftPostForBlog:blog];
+
+    return post;
 }
 
 /*
