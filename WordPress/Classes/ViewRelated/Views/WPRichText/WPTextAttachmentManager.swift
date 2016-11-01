@@ -252,23 +252,32 @@ import UIKit
         }
 
         let view = attachmentView.view
-        if view.frame.height == 0 {
+        let maxSize = attachment.maxSize
+
+        // If max size height or width is zero, make sure the view's size is zero.
+        if maxSize.height == 0 || maxSize.width == 0 {
+            view.frame.size.width = 0.0
+            view.frame.size.height = 0.0
             return
         }
 
-        let ratio = view.frame.size.width / view.frame.size.height
+        var width = maxSize.width
+        var height = maxSize.height
 
-        // If the attachmentView's maxSize width is greater than the new width set the attachmentView's width to the new width and adjust the height accordingly.
-        if attachment.maxSize.width == 0.0 || attachment.maxSize.width > size.width {
-            view.frame.size.width = floor(size.width)
-            view.frame.size.height = floor(size.width / ratio)
+        // When the width is max, use the maximum available width and whatever
+        // height was specified.
+        if maxSize.width == CGFloat.max {
+            width = size.width
 
-        } else {
-            // If the attachmentView's maxSize width is less than the new width set the attachment view's width to its max width (do not scale up).
-            view.frame.size.width = attachment.maxSize.width
-            view.frame.size.height = attachment.maxSize.height
+        } else if width > size.width {
+            // When width is greater than the available width scale down.
+            let ratio = width / height
+            width = floor(size.width)
+            height = floor(width / ratio)
         }
 
+        view.frame.size.width = width
+        view.frame.size.height = height
     }
 
 
@@ -294,6 +303,7 @@ import UIKit
                     return
                 }
                 attachments.append(attachment)
+                attachment.delegate = self
 
                 if let view = delegate?.attachmentManager(self, viewForAttachment: attachment) {
                     attachmentViews[attachment.identifier] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
@@ -324,6 +334,14 @@ import UIKit
 
         attachmentViews.removeAll()
         attachments.removeAll()
+    }
+}
+
+
+extension WPTextAttachmentManager: WPTextAttachmentDelegate
+{
+    func attachmentMaxSizeDidChange(attachment: WPTextAttachment) {
+        resizeViewForAttachment(attachment, toFitSize: textView.textContainer.size)
     }
 }
 
