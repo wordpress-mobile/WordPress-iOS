@@ -7,6 +7,11 @@ import UIKit
 }
 
 
+protocol WPTextAttachmentDelegate: class {
+    func attachmentMaxSizeDidChange(attribute: WPTextAttachment)
+}
+
+
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
 public class WPTextAttachment: NSTextAttachment
@@ -14,13 +19,18 @@ public class WPTextAttachment: NSTextAttachment
     private(set) public var identifier: String
     private(set) public var tagName: String
     private(set) public var src: String
-    public var maxSize = CGSizeZero
+    weak var delegate: WPTextAttachmentDelegate?
+    public var maxSize = CGSizeZero {
+        didSet {
+            delegate?.attachmentMaxSizeDidChange(self)
+        }
+    }
     public var align = WPTextAttachmentAlignment.None
 
     internal(set) public var attributes: [String : String]?
     internal(set) public var html: String?
-    internal(set) public var width = 0
-    internal(set) public var height = 0
+    internal(set) public var width = CGFloat(0)
+    internal(set) public var height = CGFloat(0)
 
     // Keys used for NSCoding
     private let identifierKey = "identifier"
@@ -61,8 +71,8 @@ public class WPTextAttachment: NSTextAttachment
 
         self.attributes = aDecoder.decodeObjectForKey(attributesKey) as? [String : String]
         self.html = aDecoder.decodeObjectForKey(htmlKey) as? String
-        self.width = aDecoder.decodeIntegerForKey(widthKey)
-        self.height = aDecoder.decodeIntegerForKey(heightKey)
+        self.width = CGFloat(aDecoder.decodeDoubleForKey(widthKey))
+        self.height = CGFloat(aDecoder.decodeDoubleForKey(heightKey))
 
         super.init(coder: aDecoder)
     }
@@ -81,8 +91,8 @@ public class WPTextAttachment: NSTextAttachment
 
         aCoder.encodeObject(attributes, forKey: attributesKey)
         aCoder.encodeObject(html, forKey: htmlKey)
-        aCoder.encodeInteger(width, forKey: widthKey)
-        aCoder.encodeInteger(height, forKey: heightKey)
+        aCoder.encodeDouble(Double(width), forKey: widthKey)
+        aCoder.encodeDouble(Double(height), forKey: heightKey)
     }
 
 
