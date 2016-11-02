@@ -12,6 +12,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-swift.h"
 #import "WPXMLRPCDecoder.h"
+#import "PhotonImageURLHelper.h"
 
 @implementation MediaService
 
@@ -459,10 +460,13 @@
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
         } else if (media.mediaType == MediaTypeImage) {
             NSString *remote = media.remoteURL;
-            if ([media.blog isHostedAtWPcom]) {
-                remote = [NSString stringWithFormat:@"%@?w=%ld",remote, (long)size.width];
-            }
             remoteURL = [NSURL URLWithString:remote];
+            if (!media.blog.isPrivate) {
+                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
+            } else {
+                remoteURL = [WPImageURLHelper imageURLWithSize:size forImageURL:remoteURL];
+            }
+
         }
         if (!remoteURL) {
             if (failure) {
