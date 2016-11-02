@@ -59,10 +59,6 @@ class NotificationsViewController : UITableViewController
     ///
     private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
-    /// Pending Actions, to be executed on viewDidDisappear.
-    ///
-    private var onDisappeared: (() -> Void)?
-
 
 
     // MARK: - View Lifecycle
@@ -120,6 +116,8 @@ class NotificationsViewController : UITableViewController
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
+
+// TODO: Wire Sync
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -128,20 +126,6 @@ class NotificationsViewController : UITableViewController
 
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .None
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        // Glitch Workaround. Scenario:
-        //  -   Mark as Read saves the mainMOC
-        //  -   Simperium sends the change
-        //  -   The backend acknowledges the change, and merges back into the mainMOC
-        // This causes a reloadData event, that might cut any ongoing animations in the detail views. For that reason,
-        // we're using this 'deferred onDisappeared' mechanism, just as yet another workaround.
-        //
-        onDisappeared?()
-        onDisappeared = nil
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -452,7 +436,7 @@ private extension NotificationsViewController
         guard isViewLoaded() == true && view.window != nil else {
             return
         }
-// TODO: Review + Fix if needed
+
         resetApplicationBadge()
         updateLastSeenTime()
         reloadResultsControllerIfNeeded()
@@ -502,15 +486,8 @@ extension NotificationsViewController
             navigationController?.popViewControllerAnimated(false)
         }
 
-        // Deferred Mark as Read: Avoiding 'NotificationDetails' animation glitches.
-        onDisappeared = {
-            guard note.read == false else {
-                return
-            }
-
-            note.read = true
-            ContextManager.sharedInstance().saveContext(note.managedObjectContext)
-        }
+        // Mark as Read
+// TODO: Mark as Read
 
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
@@ -947,11 +924,13 @@ private extension NotificationsViewController
     }
 
     func updateLastSeenTime() {
-        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
+        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let timestamp = note.timestamp else
+        {
             return
         }
 
-// TODO: Update Last Seen Timestamp
+// TODO: Update Last Seen
     }
 }
 
