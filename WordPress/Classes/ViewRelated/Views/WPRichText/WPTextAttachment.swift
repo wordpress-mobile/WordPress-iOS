@@ -6,12 +6,6 @@ import UIKit
     case None, Left, Right, Center
 }
 
-
-protocol WPTextAttachmentDelegate: class {
-    func attachmentMaxSizeDidChange(attribute: WPTextAttachment)
-}
-
-
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
 public class WPTextAttachment: NSTextAttachment
@@ -19,12 +13,7 @@ public class WPTextAttachment: NSTextAttachment
     private(set) public var identifier: String
     private(set) public var tagName: String
     private(set) public var src: String
-    weak var delegate: WPTextAttachmentDelegate?
-    public var maxSize = CGSizeZero {
-        didSet {
-            delegate?.attachmentMaxSizeDidChange(self)
-        }
-    }
+    public var maxSize = CGSizeZero
     public var align = WPTextAttachmentAlignment.None
 
     internal(set) public var attributes: [String : String]?
@@ -104,9 +93,24 @@ public class WPTextAttachment: NSTextAttachment
             return super.attachmentBoundsForTextContainer(textContainer, proposedLineFragment: lineFrag, glyphPosition: position, characterIndex: charIndex)
         }
 
-        let width = (lineFrag.width - position.x) - (textContainer!.lineFragmentPadding * 2.0)
-        let rect = CGRectMake(0.0, 0.0, floor(width), 1.0)
-        return rect
+        // If max size height or width is zero, make sure the view's size is zero.
+        if maxSize.height == 0 || maxSize.width == 0 {
+            return CGRectZero
+        }
+
+        let proposedWidth = lineFrag.size.width
+        var width = maxSize.width
+        var height = maxSize.height
+
+        // When the width is max, use the maximum available width and whatever
+        // height was specified.
+        if width > proposedWidth {
+            // When width is greater than the available width scale down.
+            let ratio = width / height
+            width = floor(proposedWidth)
+            height = floor(width / ratio)
+        }
+        return CGRect(x: 0.0, y: 0.0, width: width, height: height)
     }
 
 }

@@ -101,8 +101,6 @@ import UIKit
 
         textView.addSubview(view)
 
-        resizeViewForAttachment(attachment, toFitSize: textView.textContainer.size)
-
         layoutAttachmentViews()
     }
 
@@ -117,22 +115,6 @@ import UIKit
             print("Unable to layout attachment views. No NSTextStorage.")
             return
         }
-
-        // Remove any existing attachment exclusion paths and ensure layout.
-        // This ensures previous (soon to be invalid) exclusion paths do not
-        // conflict with the new layout.
-        var exclusionPaths = textView.textContainer.exclusionPaths
-        for (_, attachmentView) in attachmentViews {
-            guard let exclusionPath = attachmentView.exclusionPath else {
-                continue
-            }
-            if let index = exclusionPaths.indexOf(exclusionPath) {
-                exclusionPaths.removeAtIndex(index)
-            }
-        }
-
-        textView.textContainer.exclusionPaths = exclusionPaths
-        layoutManager.ensureLayoutForTextContainer(textView.textContainer)
 
         // Now do the update.
         textStorage.enumerateAttribute(attributeAttachmentName,
@@ -160,26 +142,9 @@ import UIKit
             return
         }
 
-        var exclusionPaths = textView.textContainer.exclusionPaths
+        attachmentView.view.frame = textView.frameForTextInRange(range)
 
-        let attachmentFrame = frameForAttachmentView(attachmentView, forAttachment: attachment, atRange: range)
-
-        var exclusionFrame = attachmentFrame
-        if attachment.align == .None {
-            exclusionFrame = CGRectMake(0.0, attachmentFrame.minY, textView.frame.width, attachmentFrame.height)
-        }
-        exclusionFrame.origin.y -= textView.textContainerInset.top
-
-        let newExclusionPath = UIBezierPath(rect: exclusionFrame)
-        exclusionPaths.append(newExclusionPath)
-
-        attachmentView.exclusionPath = newExclusionPath
-        attachmentView.view.frame = attachmentFrame
-
-        textView.textContainer.exclusionPaths = exclusionPaths
-
-        // Always ensure layout after updating an individual exclusion path so
-        // subsequent attachments are in their proper location.
+        // Always ensure layout after updating
         layoutManager.ensureLayoutForTextContainer(textView.textContainer)
     }
 
@@ -303,11 +268,9 @@ import UIKit
                     return
                 }
                 attachments.append(attachment)
-                attachment.delegate = self
 
                 if let view = delegate?.attachmentManager(self, viewForAttachment: attachment) {
                     attachmentViews[attachment.identifier] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
-                    resizeViewForAttachment(attachment, toFitSize: textView.textContainer.size)
                     textView.addSubview(view)
                 }
         })
@@ -338,14 +301,6 @@ import UIKit
 }
 
 
-extension WPTextAttachmentManager: WPTextAttachmentDelegate
-{
-    func attachmentMaxSizeDidChange(attachment: WPTextAttachment) {
-        resizeViewForAttachment(attachment, toFitSize: textView.textContainer.size)
-    }
-}
-
-
 /// A UITextView does not register as delegate to its NSLayoutManager so the
 /// WPTextAttachmentManager does in order to be notified of any changes to the size
 /// of the UITextView's textContainer.
@@ -357,22 +312,6 @@ extension WPTextAttachmentManager: NSLayoutManagerDelegate
     /// then lays out the attachment views.
     ///
     public func layoutManager(layoutManager: NSLayoutManager, textContainer: NSTextContainer, didChangeGeometryFromSize oldSize: CGSize) {
-        guard let textStorage = layoutManager.textStorage else {
-            return
-        }
-
-        let newSize = textView.textContainer.size
-        layoutManager.textStorage?.enumerateAttribute(attributeAttachmentName,
-            inRange: NSMakeRange(0, textStorage.length),
-            options: [],
-            usingBlock: { (object:AnyObject?, range:NSRange, stop:UnsafeMutablePointer<ObjCBool>) in
-                guard let attachment = object as? WPTextAttachment else {
-                    return
-                }
-
-                resizeViewForAttachment(attachment, toFitSize: newSize)
-        })
-
         layoutAttachmentViews()
     }
 }
