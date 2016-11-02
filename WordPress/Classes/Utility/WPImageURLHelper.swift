@@ -25,8 +25,8 @@ public class WPImageURLHelper: NSObject
                 }
             }
         }
-        let height = size.height
-        let width = size.width
+        let height = Int(size.height)
+        let width = Int(size.width)
         if height != 0 {
             let heightItem = NSURLQueryItem(name:"h", value:"\(height)")
             newQueryItems.append(heightItem)

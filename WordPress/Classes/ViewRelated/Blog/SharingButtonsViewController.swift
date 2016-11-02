@@ -74,6 +74,12 @@ import WordPressShared
         tableView.reloadData()
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        self.saveButtonChanges(true)
+    }
+
 
     // MARK: - Sections Setup and Config
 

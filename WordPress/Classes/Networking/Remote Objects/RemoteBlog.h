@@ -73,4 +73,9 @@
  */
 @property (nonatomic, strong) NSDictionary *capabilities;
 
+/**
+ * @details Parses details from a JSON dictionary, as returned by the WordPress.com REST API.
+ */
+- (instancetype)initWithJSONDictionary:(NSDictionary *)json;
+
 @end
