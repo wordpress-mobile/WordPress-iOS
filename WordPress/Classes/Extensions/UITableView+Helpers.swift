@@ -40,6 +40,41 @@ extension UITableView
         }
     }
 
+    /// Flashes the specified row (selecting and then deselecting), and optionally scrolls to the specified position.
+    /// This method uses a default 'flash length' (time between selection and deselection) of 0.7 seconds.
+    /// Use `flashRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition = default, flashLength: NSTimeInterval, completion: (() -> Void)?)`
+    /// to specify a custom length.
+    ///
+    // - Parameters:
+    ///     - indexPath:        The indexPath of the row to flash.
+    ///     - scrollPosition:   The position in the table view to scroll the specified row. Use `.None` for no scrolling. Defaults to `.Middle`.
+    ///     - completion:       A block to call after the row has been deselected.
+    ///
+    public func flashRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition = .Middle, completion: (() -> Void)?) {
+        flashRowAtIndexPath(indexPath, scrollPosition: scrollPosition, flashLength: self.dynamicType.defaultFlashLength, completion: completion)
+    }
+
+    /// Flashes the specified row (selecting and then deselecting), and optionally scrolls to the specified position.
+    ///
+    // - Parameters:
+    ///     - indexPath:        The indexPath of the row to flash.
+    ///     - scrollPosition:   The position in the table view to scroll the specified row. Use `.None` for no scrolling.
+    ///     - flashLength:      The length of time (in seconds) to wait between selecting and deselecting the row.
+    ///     - completion:       A block to call after the row has been deselected.
+    ///
+    func flashRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition = .Middle, flashLength: NSTimeInterval, completion: (() -> Void)?) {
+        selectRowAtIndexPath(indexPath, animated: true, scrollPosition: scrollPosition)
+
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(flashLength * Double(NSEC_PER_SEC)))
+
+        dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
+            self?.deselectSelectedRowWithAnimation(true)
+            completion?()
+        }
+    }
+
+    private static let defaultFlashLength: NSTimeInterval = 0.7
+
     /// Disables Editing after a specified delay.
     ///
     /// -   Parameter delay: milliseconds to elapse before edition will be disabled.
