@@ -150,9 +150,6 @@ extension WPRichContentView: WPTableImageSourceDelegate
         richMedia.image.imageView.image = image
         richMedia.attachment.maxSize = image.size
 
-        let frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
-        richMedia.image.frame = frame
-
         attachmentManager.layoutAttachmentViews()
         invalidateIntrinsicContentSize()
     }
