@@ -191,7 +191,7 @@
                                                     <constraint firstAttribute="height" constant="8" id="hgy-5R-zg1"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ix7-KK-iap" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" delaysContentTouches="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ix7-KK-iap" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="10" y="182" width="363" height="208"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
