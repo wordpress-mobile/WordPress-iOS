@@ -1,10 +1,12 @@
 #import <Foundation/Foundation.h>
 
+@class RemoteBlog;
 @class RemoteBlogSettings;
 @class RemotePostType;
 
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
+typedef void (^SiteDetailsHandler)(RemoteBlog *remoteBlog);
 typedef void (^PostTypesHandler)(NSArray <RemotePostType *> *postTypes);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
@@ -20,15 +22,6 @@ typedef void (^SuccessHandler)();
  */
 - (void)checkMultiAuthorWithSuccess:(MultiAuthorCheckHandler)success
                             failure:(void (^)(NSError *error))failure;
-
-/**
- *  @brief      Synchronizes a blog's options.
- *
- *  @param      success     The block that will be executed on success.  Can be nil.
- *  @param      failure     The block that will be executed on failure.  Can be nil.
- */
-- (void)syncOptionsWithSuccess:(OptionsHandler)success
-                       failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's post types.
@@ -67,5 +60,25 @@ typedef void (^SuccessHandler)();
 - (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure;
+
+@optional
+
+/**
+ *  @brief      Synchronizes a blog's options.
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)syncOptionsWithSuccess:(OptionsHandler)success
+                       failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Synchronizes a blog's top-level details.
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)syncSiteDetailsWithSuccess:(SiteDetailsHandler)success
+                           failure:(void (^)(NSError *error))failure;
 
 @end

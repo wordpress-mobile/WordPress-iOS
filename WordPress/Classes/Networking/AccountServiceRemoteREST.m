@@ -195,27 +195,8 @@ static NSString * const UserDictionaryDateKey = @"date";
 {
     NSArray *blogs = jsonBlogs;
     return [blogs wp_map:^id(NSDictionary *jsonBlog) {
-        return [self remoteBlogFromJSONDictionary:jsonBlog];
+        return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
     }];
-}
-
-- (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog
-{
-    RemoteBlog *blog = [RemoteBlog new];
-    blog.blogID =  [jsonBlog numberForKey:@"ID"];
-    blog.name = [jsonBlog stringForKey:@"name"];
-    blog.tagline = [jsonBlog stringForKey:@"description"];
-    blog.url = [jsonBlog stringForKey:@"URL"];
-    blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
-    blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
-    blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
-    blog.capabilities = [jsonBlog dictionaryForKey:@"capabilities"];
-    blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
-    blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
-    blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
-    blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
-    blog.planTitle = [jsonBlog stringForKeyPath:@"plan.product_name_short"];
-    return blog;
 }
 
 @end

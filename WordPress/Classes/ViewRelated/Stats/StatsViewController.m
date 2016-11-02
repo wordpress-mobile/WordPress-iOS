@@ -14,6 +14,8 @@
 #import "WPAppAnalytics.h"
 #import "WPWebViewController.h"
 
+@import WordPressComStatsiOS;
+
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @interface StatsViewController () <WPStatsViewControllerDelegate>

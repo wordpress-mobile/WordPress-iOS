@@ -458,6 +458,7 @@
 		B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */; };
 		B5552D831CD1062400B26DF6 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
 		B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B555E1141C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel */; };
+		B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B558541019631A1000FAF6C3 /* Notifications.storyboard */; };
@@ -1704,6 +1705,7 @@
 		B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		B555E1131C04A1DD00CEC81B /* WordPress 42.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 42.xcdatamodel"; sourceTree = "<group>"; };
 		B555E1141C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-41-42.xcmappingmodel"; sourceTree = "<group>"; };
+		B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryHelpersTests.swift; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B55853F519630D5400FAF6C3 /* NSAttributedString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Util.h"; sourceTree = "<group>"; };
@@ -4759,6 +4761,7 @@
 		E1C9AA541C1041E600732665 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */,
 				E1C9AA551C10427100732665 /* MathTest.swift */,
 				E63C89791CB9A0BB00649C8F /* StringHelperTests.swift */,
 				E63C897B1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift */,
@@ -6435,6 +6438,7 @@
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				591CFB061B28A960009E61B3 /* AccountServiceRemoteRESTTests.m in Sources */,
+				B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
