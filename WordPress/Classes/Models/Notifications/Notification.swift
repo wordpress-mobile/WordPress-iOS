@@ -12,6 +12,14 @@ class Notification: NSManagedObject
     ///
     @NSManaged var notificationId: String
 
+    /// Notification Hash!
+    ///
+    @NSManaged var notificationHash: String?
+
+    /// Indicates whether the note was already read, or not
+    ///
+    @NSManaged var read: Bool
+
     /// Associated Resource's Icon, as a plain string
     ///
     @NSManaged var icon: String?
@@ -19,10 +27,6 @@ class Notification: NSManagedObject
     /// Noticon resource, associated with this notification
     ///
     @NSManaged var noticon: String?
-
-    /// Indicates whether the note was already read, or not
-    ///
-    @NSManaged var read: Bool
 
     /// Timestamp as a String
     ///
@@ -224,6 +228,7 @@ extension Notification
         if let timestampAsDate = cachedTimestampAsDate {
             return timestampAsDate
         }
+
         guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
             DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(notificationId)]")
             return NSDate()
@@ -292,6 +297,40 @@ extension Notification
         }
 
         return subjectBlocks.last
+    }
+}
+
+
+// MARK: - Core Data Helper
+//
+extension Notification: ManagedObject
+{
+    static var entityName: String {
+        return classNameWithoutNamespaces()
+    }
+}
+
+
+// MARK: - Update Helpers
+//
+extension Notification
+{
+    /// Updates the local fields with the new values stored in a given Remote Notification
+    ///
+    func update(with remote: RemoteNotification) {
+        notificationId = remote.notificationId
+        notificationHash = remote.notificationHash
+        read = remote.read
+        icon = remote.icon
+        noticon = remote.noticon
+        timestamp = remote.timestamp
+        type = remote.type
+        url = remote.url
+        title = remote.title
+        subject = remote.subject
+        header = remote.header
+        body = remote.body
+        meta = remote.meta
     }
 }
 
