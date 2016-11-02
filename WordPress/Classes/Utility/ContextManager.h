@@ -96,7 +96,7 @@
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
- Get a peranent NSManagedObjectID for the specified NSManagedObject
+ Get a permanent NSManagedObjectID for the specified NSManagedObject
  
  @param managedObject A managedObject with a temporary NSManagedObjectID
  @return YES if the permanentID was successfully obtained, or NO if it failed.
