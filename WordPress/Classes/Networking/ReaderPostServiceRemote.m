@@ -906,8 +906,8 @@ static const NSUInteger ReaderPostTitleLength = 30;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        regexStyle = [NSRegularExpression regularExpressionWithPattern:@"<style[^>]*>[\\s\\S]+?</style>" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexScript = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*>[\\s\\S]+?</script>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexStyle = [NSRegularExpression regularExpressionWithPattern:@"<style[^>]*?>[\\s\\S]*?</style>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexScript = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*?>[\\s\\S]*?</script>" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     string = [regexStyle stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
