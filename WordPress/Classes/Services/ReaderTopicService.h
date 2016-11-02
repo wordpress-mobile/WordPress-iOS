@@ -9,6 +9,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
+@class ReaderSavedPostsTopic;
 
 @interface ReaderTopicService : LocalCoreDataService
 
@@ -80,6 +81,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase;
 
+/**
+ Returns the ReaderSavedPostsTopic. If the topic does not exist, it will create one and return it.
+
+ @return The ReaderSavedPostsTopic instance.
+ */
+- (ReaderSavedPostsTopic *)savedPostsTopic;
 
 /**
  Unfollows the specified topic. If the specified topic was the current topic the 

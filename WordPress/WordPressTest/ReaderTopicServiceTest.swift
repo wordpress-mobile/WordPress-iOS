@@ -338,4 +338,29 @@ class ReaderTopicSwiftTest : XCTestCase
 
         XCTAssert(topic.type == "search")
     }
+
+    /**
+     Ensure that the a new saved posts topic is created and returned if none exists
+     */
+    func testSavedPostsTopicCreated() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        let topic = service.savedPostsTopic()
+
+        XCTAssert(topic.type == "savedPosts")
+    }
+
+    /**
+    Ensure that the existing saved posts topic is returned if it exists
+    */
+    func testExistingSavedPostsTopic() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        let topic = service.savedPostsTopic()
+        let secondTopic = service.savedPostsTopic()
+
+        XCTAssert(topic.objectID == secondTopic.objectID)
+    }
 }

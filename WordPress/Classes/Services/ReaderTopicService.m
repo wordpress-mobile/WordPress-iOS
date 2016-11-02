@@ -248,6 +248,23 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
+- (ReaderSavedPostsTopic *)savedPostsTopic
+{
+    ReaderSavedPostsTopic *topic = [self findSavedPostsTopic];
+    if (!topic) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSavedPostsTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
+    topic.type = [ReaderSavedPostsTopic TopicType];
+    topic.path = @""; // TODO: See if we can make this optional
+    topic.title = @"Saved Posts"; // TODO: Extract this
+    topic.showInMenu = YES;
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+
+    return topic;
+}
+
 - (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic
 {
     // Optimistically mark the topic subscribed.
@@ -957,6 +974,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     return (ReaderSiteTopic *)[results firstObject];
+}
+
+- (ReaderSavedPostsTopic *)findSavedPostsTopic
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSavedPostsTopic classNameWithoutNamespaces]];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSavedPostsTopic *)[results firstObject];
 }
 
 @end
