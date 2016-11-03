@@ -195,7 +195,7 @@ final public class PushNotificationsManager : NSObject
         let handlers = [ handleHelpshiftNotification,
                          handleAuthenticationNotification,
                          handleInactiveNotification,
-                         handlePushNotification ]
+                         handleBackgroundNotification ]
 
         for handler in handlers {
             if handler(userInfo, completionHandler: completionHandler) {
@@ -308,7 +308,8 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handlePushNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        // TODO: JLP Nov.3.2016. Nuke applicationState == .Active once PingHub is in place!
         guard applicationState == .Background || applicationState == .Active else {
             return false
         }
