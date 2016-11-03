@@ -4,7 +4,7 @@ import CoreData
 @objc public class ReaderAbstractTopic : NSManagedObject
 {
     // Relations
-    @NSManaged public var posts: [ReaderPost]
+    @NSManaged public var posts: Set<ReaderPost>
 
     // Properties
     @NSManaged public var preserveForRestoration: Bool
