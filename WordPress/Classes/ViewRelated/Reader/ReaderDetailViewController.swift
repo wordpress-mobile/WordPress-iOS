@@ -898,9 +898,9 @@ extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
 }
 
 
-// MARK: - UITextView Delegate Methods
+// MARK: - UITextView/WPRichContentView Delegate Methods
 
-extension ReaderDetailViewController: UITextViewDelegate
+extension ReaderDetailViewController: WPRichContentViewDelegate
 {
 
     public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
@@ -917,6 +917,26 @@ extension ReaderDetailViewController: UITextViewDelegate
         return false
     }
 
+
+    func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
+        var controller: WPImageViewController
+
+        if WPImageViewController.isUrlSupported(image.linkURL) {
+            controller = WPImageViewController(image: image.imageView.image, andURL: image.linkURL)
+
+        } else if let linkURL = image.linkURL {
+            presentWebViewControllerWithURL(linkURL)
+            return
+
+        } else {
+            controller = WPImageViewController(image: image.imageView.image)
+        }
+
+        controller.modalTransitionStyle = .CrossDissolve
+        controller.modalPresentationStyle = .FullScreen
+
+        presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
 
