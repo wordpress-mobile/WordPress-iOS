@@ -40,6 +40,10 @@ class NotificationsViewController : UITableViewController
     ///
     private var noResultsView: WPNoResultsView!
 
+    /// ID of the Notification that must be pushed (due to APN Tap Event)
+    ///
+    private var pushNotificationID: String?
+
     /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
     ///
     private var pushNotificationDate: NSDate?
@@ -465,6 +469,7 @@ extension NotificationsViewController
     ///
     func showDetailsForNotificationWithID(noteId: String) {
         // Start Timeout!
+        pushNotificationID = noteId
         pushNotificationDate = NSDate()
 
         // Retrieve
@@ -472,16 +477,15 @@ extension NotificationsViewController
             DDLogSwift.logError("Error: Cannot instantiate NotificationsSyncService: Missing dotcom account!")
             return
         }
-// TODO: Is this really needed?
+
 // TODO: If already locally available, just refresh
 
         service.retrieveNote(with: noteId) { error, note in
-// TODO: Cleanup pushNotificationDate
             guard let elapsed = self.pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
                 return
             }
 
-            guard let note = note else {
+            guard let note = note where note.notificationId == self.pushNotificationID else {
                 DDLogSwift.logError("Error: Couldn't retrieve Notification [\(noteId)]")
                 return
             }
