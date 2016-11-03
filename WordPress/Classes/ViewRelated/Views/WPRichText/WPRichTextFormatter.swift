@@ -138,7 +138,7 @@ class WPRichTextFormatter
             let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: match.range.location, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
 
             let mParaStyle = NSMutableParagraphStyle()
-            mParaStyle.setParagraphStyle( pStyle )
+            mParaStyle.setParagraphStyle(pStyle)
             mParaStyle.headIndent = blockquoteIndentation
             mParaStyle.firstLineHeadIndent = blockquoteIndentation
 
@@ -303,7 +303,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor
 {
 
     init() {
-        super.init(tagName: "blockquote", includesEndTag: false)
+        super.init(tagName: "blockquote", includesEndTag: true)
     }
 
 
@@ -312,10 +312,39 @@ class BlockquoteTagProcessor: HtmlTagProcessor
     override func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
         var (matched, parsedString) = extractTag(scanner)
 
-        if matched {
-            // Add the marker.
-            parsedString += WPRichTextFormatter.blockquoteIdentifier
+        // No matches? Just bail.
+        if !matched {
+            return (parsedString, nil)
         }
+
+        // If the blockquote contains no paragraphs just insert the marker after
+        // the tag.
+        if !parsedString.containsString("<p>") {
+            var str = parsedString as NSString
+            let location = "<\(tagName)>".characters.count
+            str = str.stringByReplacingCharactersInRange(NSRange(location: location, length: 0), withString: WPRichTextFormatter.blockquoteIdentifier)
+            parsedString = str as String
+            return (parsedString, nil)
+        }
+
+        // For each paragraph contained by the blockquote, insert a marker
+        // after the opening paragraph tag.
+        let marker = "<p>" + WPRichTextFormatter.blockquoteIdentifier
+        var str = ""
+        var tempStr: NSString? = ""
+        let paragraphScanner = NSScanner(string: parsedString)
+        while !paragraphScanner.atEnd {
+            paragraphScanner.scanUpToString("<p>", intoString: &tempStr)
+
+            str += tempStr as! String
+            if paragraphScanner.atEnd {
+                break
+            }
+
+            paragraphScanner.scanLocation += 3
+            str += marker
+        }
+        parsedString = str
 
         return (parsedString, nil)
     }

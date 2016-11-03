@@ -47,7 +47,7 @@ class WPRichContentView: UITextView
         }
         set {
             let str = newValue ?? ""
-            let style = "<style>body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } a { color: #0087be; text-decoration: none; } a:active { color: #005082 } blockquote { text-style: italic; } </style>"
+            let style = "<style>body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } a { color: #0087be; text-decoration: none; } a:active { color: #005082 } blockquote { font-style: italic; } </style>"
             let content = style + str
             let attrTxt = try! NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil)
             attributedText = attrTxt
