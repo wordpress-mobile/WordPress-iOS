@@ -103,6 +103,15 @@ extension ReaderStreamViewController
             )
         }
 
+        // if saved topic
+        if ReaderHelpers.isTopicSavedPostsTopic(topic) {
+            let message = NSLocalizedString("Posts that you save will appear here", comment:"Message shown when the reader finds no saved posts.")
+            return NoResultsResponse(
+                title: NSLocalizedString("No saved posts", comment:"A message title"),
+                message: NSString(format: message, topic.title) as String
+            )
+        }
+
         // Default message
         return NoResultsResponse(
             title: NSLocalizedString("No recent posts", comment:"A message title"),

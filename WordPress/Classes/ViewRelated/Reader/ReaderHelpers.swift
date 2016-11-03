@@ -68,6 +68,17 @@ import WordPressComAnalytics
         return topic.isKindOfClass(ReaderSearchTopic)
     }
 
+    /// Check if the specified topic is a saved posts topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a saved posts topic
+    ///
+    public class func isTopicSavedPostsTopic(topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKindOfClass(ReaderSavedPostsTopic)
+    }
+
 
     /// Check if the specified topic is for Freshly Pressed
     ///
