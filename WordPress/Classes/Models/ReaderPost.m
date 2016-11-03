@@ -31,6 +31,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isBlogPrivate;
 @dynamic isFollowing;
 @dynamic isLiked;
+@dynamic isSaved;
 @dynamic isReblogged;
 @dynamic isWPCom;
 @dynamic likeCount;

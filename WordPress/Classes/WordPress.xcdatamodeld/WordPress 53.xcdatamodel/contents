@@ -531,6 +531,7 @@
         <attribute name="isLiked" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isSaved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -652,7 +653,8 @@
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="645"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
+        <element name="ReaderSavedPostsTopic" positionX="36" positionY="162" width="128" height="45"/>
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
@@ -661,6 +663,5 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
-        <element name="ReaderSavedPostsTopic" positionX="36" positionY="162" width="128" height="45"/>
     </elements>
 </model>
