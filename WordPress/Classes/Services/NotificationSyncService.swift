@@ -83,13 +83,13 @@ class NotificationSyncService
     }
 
 
-    /// Retrieves a Notification matching the specified ID.
+    /// Sync's Notification matching the specified ID, and updates the local entity.
     ///
     /// - Parameters:
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
     ///
-    func retrieveNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
+    func syncNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
         assert(NSThread.isMainThread())
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
