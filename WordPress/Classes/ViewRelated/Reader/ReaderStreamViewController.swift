@@ -856,6 +856,14 @@ import WordPressComAnalytics
         })
     }
 
+    private func toggleSavedForPost(post: ReaderPost) {
+        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        service.toggleSavedForPost(post, success: nil, failure: { (error:NSError?) in
+            if let anError = error {
+                DDLogSwift.logError("Error (un)saving post: \(anError.localizedDescription)")
+            }
+        })
+    }
 
     /// The fetch request can need a different predicate depending on how the content
     /// being displayed has changed (blocking sites for instance).  Call this method to
@@ -1483,6 +1491,11 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     public func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         toggleLikeForPost(post)
+    }
+
+    public func readerCell(cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+        let post = provider as! ReaderPost
+        toggleSavedForPost(post)
     }
 
 
