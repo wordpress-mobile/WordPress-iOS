@@ -254,7 +254,6 @@ import WordPressShared
         navigationController?.pushViewController(controller, animated: true)
     }
 
-
     /// Presents a new view controller for subscribing to a new tag.
     ///
     func showAddTag() {
