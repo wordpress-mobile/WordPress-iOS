@@ -195,7 +195,7 @@ final public class PushNotificationsManager : NSObject
         let handlers = [ handleHelpshiftNotification,
                          handleAuthenticationNotification,
                          handleInactiveNotification,
-                         handleBackgroundNotification ]
+                         handlePushNotification ]
 
         for handler in handlers {
             if handler(userInfo, completionHandler: completionHandler) {
@@ -297,7 +297,7 @@ final public class PushNotificationsManager : NSObject
     }
 
 
-    /// Handles a Notification while in Background Mode
+    /// Handles a Notification while in Active OR Background Modes
     ///
     /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
     ///         we'll temporarily keep it as public. Sorry.
@@ -308,8 +308,8 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
-        guard applicationState == .Background else {
+    func handlePushNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        guard applicationState == .Background || applicationState == .Active else {
             return false
         }
 
@@ -318,7 +318,11 @@ final public class PushNotificationsManager : NSObject
             return true
         }
 
+        DDLogSwift.logInfo("Running Notifications Background Fetch...")
+
         service.sync { error, newData in
+            DDLogSwift.logInfo("Finished Notifications Background Fetch!")
+
             let result = newData ? UIBackgroundFetchResult.NewData : .NoData
             completionHandler?(result)
         }
