@@ -91,6 +91,7 @@ class NotificationSyncService
     ///     - completion: Closure to be executed on completion.
     ///
     func retrieveNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
+// TODO: Unit Test
         assert(NSThread.isMainThread())
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in

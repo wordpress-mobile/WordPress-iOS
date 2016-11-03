@@ -40,6 +40,9 @@ class NotificationsViewController : UITableViewController
     ///
     private var noResultsView: WPNoResultsView!
 
+    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
+    ///
+    private var pushNotificationDate: NSDate?
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -460,31 +463,27 @@ extension NotificationsViewController
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteId: String) {
+        // Start Timeout!
+        pushNotificationDate = NSDate()
+
+        // Retrieve
         guard let service = NotificationSyncService() else {
             DDLogSwift.logError("Error: Cannot instantiate NotificationsSyncService: Missing dotcom account!")
             return
         }
+// TODO: Is this really needed?
+// TODO: If already locally available, just refresh
 
         service.retrieveNote(with: noteId) { error, note in
+// TODO: Cleanup pushNotificationDate
+            guard let elapsed = self.pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
+                return
+            }
+
             guard let note = note else {
                 DDLogSwift.logError("Error: Couldn't retrieve Notification [\(noteId)]")
                 return
             }
-
-// TODO: Reimplement Timeout Logic!
-//
-//        // Mark as read immediately, if needed
-//        if isViewOnScreen() == true && UIApplication.sharedApplication().applicationState == .Active {
-//            resetApplicationBadge()
-//            updateLastSeenTime()
-//        }
-//
-//        // Show the details only if NotificationPushMaxWait hasn't elapsed
-//        guard let elapsed = pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
-//            return
-//        }
-//
-//        showDetailsForNotificationWithID(key)
 
             self.showDetailsForNotification(note)
         }
