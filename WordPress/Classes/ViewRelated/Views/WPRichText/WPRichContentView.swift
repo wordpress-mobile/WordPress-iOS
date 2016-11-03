@@ -1,6 +1,13 @@
 import Foundation
 import UIKit
 
+
+protocol WPRichContentViewDelegate: UITextViewDelegate
+{
+    func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
+}
+
+
 /// A subclass of UITextView for displaying HTML formatted strings.  Embedded content
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
@@ -76,37 +83,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
 {
     func attachmentManager(attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "img" {
-
             return imageForAttachment(attachment)
 
         } else {
-
             return embedForAttachment(attachment)
-
         }
-    }
-
-
-    /// Returns the view to use for an image attachment.
-    ///
-    /// - Parameters:
-    ///     - attachment: A WPTextAttachment for an image.
-    ///
-    /// - Returns: A WPRichTextImage instance configured for the attachment.
-    ///
-    func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
-        let img = WPRichTextImage(frame: CGRect.zero)
-        let media = RichMedia(image: img, attachment: attachment)
-        let url = NSURL(string: attachment.src)
-        img.contentURL = url
-
-        let index = mediaArray.count
-        let indexPath = NSIndexPath(forRow: index, inSection: 1)
-        imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: false)
-
-        mediaArray.append(media)
-
-        return img
     }
 
 
@@ -138,6 +119,113 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         return embed
     }
 
+
+    /// Returns the view to use for an image attachment.
+    ///
+    /// - Parameters:
+    ///     - attachment: A WPTextAttachment for an image.
+    ///
+    /// - Returns: A WPRichTextImage instance configured for the attachment.
+    ///
+    func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
+        let img = WPRichTextImage(frame: CGRect.zero)
+        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
+
+        let url = NSURL(string: attachment.src)
+        img.contentURL = url
+        img.linkURL = linkURLForImageAttachment(attachment)
+
+        let index = mediaArray.count
+        let indexPath = NSIndexPath(forRow: index, inSection: 1)
+        imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: false)
+
+        let media = RichMedia(image: img, attachment: attachment)
+        mediaArray.append(media)
+
+        return img
+    }
+
+
+    /// Retrieves the URL for a link wrapping a text attachment, if one exists.
+    ///
+    /// - Parameters:
+    ///     - attachment: A WPTextAttachment instance.
+    ///
+    /// - Returns: An NSURL optional.
+    ///
+    func linkURLForImageAttachment(attachment: WPTextAttachment) -> NSURL? {
+        var link: NSURL?
+        let attrText = attributedText
+        attrText.enumerateAttachments { (textAttachment, range) in
+            if textAttachment == attachment {
+                var effectiveRange = NSRange()
+                if let value = attrText.attribute(NSLinkAttributeName, atIndex: range.location, longestEffectiveRange: &effectiveRange, inRange: NSRange(location: 0, length: attrText.length)) as? NSURL {
+                    link = value
+                }
+            }
+        }
+        return link
+    }
+
+
+    /// Get the NSRange for the specified attachment in the attributedText.
+    ///
+    /// - Parameters:
+    ///     - attachment: A WPTextAttachment instance.
+    ///
+    /// - Returns: An NSRange optional.
+    ///
+    func rangeOfAttachment(attachment: WPTextAttachment) -> NSRange? {
+        var attachmentRange: NSRange?
+        let attrText = attributedText
+        attrText.enumerateAttachments { (textAttachment, range) in
+            if attachment == textAttachment {
+                attachmentRange = range
+            }
+        }
+        return attachmentRange
+    }
+
+
+    /// Get the NSRange for the attachment associated with the specified WPRichTextImage instance.
+    ///
+    /// - Parameters:
+    ///     - richTextImage: A WPRichTextImage instance.
+    ///
+    /// - Returns: An NSRange optional.
+    ///
+    func attachmentRangeForRichTextImage(richTextImage: WPRichTextImage) -> NSRange? {
+        for item in mediaArray {
+            if item.image == richTextImage {
+                return rangeOfAttachment(item.attachment)
+            }
+        }
+        return nil
+    }
+
+
+    /// Notifies the delegate of an user interaction with a WPRichTextImage instance.
+    ///
+    /// - Parameters:
+    ///     - sender: The WPRichTextImage that was tapped.
+    ///
+    func handleImageTapped(sender: WPRichTextImage) {
+        guard let delegate = delegate else {
+            return
+        }
+
+        if let url = sender.linkURL,
+            let range = attachmentRangeForRichTextImage(sender) {
+
+            delegate.textView?(self, shouldInteractWithURL: url, inRange: range)
+            return
+        }
+
+        guard let richDelegate = delegate as? WPRichContentViewDelegate else {
+            return
+        }
+        richDelegate.richContentView(self, didReceiveImageAction: sender)
+    }
 }
 
 
