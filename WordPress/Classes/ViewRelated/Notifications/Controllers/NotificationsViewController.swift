@@ -462,6 +462,7 @@ extension NotificationsViewController
     func showDetailsForNotificationWithID(noteId: String) {
         if let note = loadNotificationWithID(noteId) {
             showDetailsForNotification(note)
+            return
         }
 
         syncNotificationWithID(noteId, timeout: Syncing.pushMaxWait) { note in
