@@ -478,8 +478,6 @@ extension NotificationsViewController
             return
         }
 
-// TODO: If already locally available, just refresh
-
         service.retrieveNote(with: noteId) { error, note in
             guard let elapsed = self.pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
                 return
@@ -490,6 +488,7 @@ extension NotificationsViewController
                 return
             }
 
+            DDLogSwift.logInfo("Notification Loaded in \(self.pushNotificationDate?.timeIntervalSinceNow) seconds")
             self.showDetailsForNotification(note)
         }
     }
@@ -1076,7 +1075,7 @@ private extension NotificationsViewController
     }
 
     enum Syncing {
-        static let pushMaxWait = NSTimeInterval(1)
+        static let pushMaxWait = NSTimeInterval(1.5)
         static let syncTimeout = NSTimeInterval(10)
         static let undoTimeout = NSTimeInterval(4)
     }
