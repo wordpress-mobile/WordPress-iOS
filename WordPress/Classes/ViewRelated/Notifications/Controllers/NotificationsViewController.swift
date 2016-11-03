@@ -40,14 +40,6 @@ class NotificationsViewController : UITableViewController
     ///
     private var noResultsView: WPNoResultsView!
 
-    /// ID of the Notification that must be pushed (due to APN Tap Event)
-    ///
-    private var pushNotificationID: String?
-
-    /// Date in which the OS Push Notification was pressed. Used for Timeout purposes.
-    ///
-    private var pushNotificationDate: NSDate?
-
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
     private var lastReloadDate = NSDate()
@@ -461,34 +453,18 @@ private extension NotificationsViewController
 //
 extension NotificationsViewController
 {
-    /// Pushes the Details for a given notificationID. If the Notification is unavailable at the point in
-    /// which this call is executed, we'll hold for the time interval specified by the `Syncing.pushMaxWait`
-    /// constant.
+    /// Pushes the Details for a given notificationID, immediately, if the notification is already available.
+    /// Otherwise, will attempt to Sync the Notification. If this cannot be achieved before the timeout defined
+    /// by `Syncing.pushMaxWait` kicks in, we'll just do nothing (in order not to disrupt the UX!).
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
     func showDetailsForNotificationWithID(noteId: String) {
-        // Start Timeout!
-        pushNotificationID = noteId
-        pushNotificationDate = NSDate()
-
-        // Retrieve
-        guard let service = NotificationSyncService() else {
-            DDLogSwift.logError("Error: Cannot instantiate NotificationsSyncService: Missing dotcom account!")
-            return
+        if let note = loadNotificationWithID(noteId) {
+            showDetailsForNotification(note)
         }
 
-        service.retrieveNote(with: noteId) { error, note in
-            guard let elapsed = self.pushNotificationDate?.timeIntervalSinceNow where abs(elapsed) <= Syncing.pushMaxWait else {
-                return
-            }
-
-            guard let note = note where note.notificationId == self.pushNotificationID else {
-                DDLogSwift.logError("Error: Couldn't retrieve Notification [\(noteId)]")
-                return
-            }
-
-            DDLogSwift.logInfo("Notification Loaded in \(self.pushNotificationDate?.timeIntervalSinceNow) seconds")
+        syncNotificationWithID(noteId, timeout: Syncing.pushMaxWait) { note in
             self.showDetailsForNotification(note)
         }
     }
@@ -914,6 +890,28 @@ private extension NotificationsViewController
         service?.sync()
     }
 
+    func syncNotificationWithID(noteId: String, timeout: NSTimeInterval, success: (note: Notification) -> Void) {
+        let service = NotificationSyncService()
+        let startDate = NSDate()
+
+        DDLogSwift.logInfo("Sync'ing Notification [\(noteId)]")
+
+        service?.syncNote(with: noteId) { error, note in
+            guard abs(startDate.timeIntervalSinceNow) <= timeout else {
+                DDLogSwift.logError("Error: Timeout while trying to load Notification [\(noteId)]")
+                return
+            }
+
+            guard let note = note else {
+                DDLogSwift.logError("Error: Couldn't load Notification [\(noteId)]")
+                return
+            }
+
+            DDLogSwift.logInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
+            success(note: note)
+        }
+    }
+
     func updateLastSeenTime() {
         guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
             return
@@ -931,6 +929,13 @@ private extension NotificationsViewController
 
             self.lastSeenTime = timestamp
         }
+    }
+
+    func loadNotificationWithID(noteId: String) -> Notification? {
+        let helper = CoreDataHelper<Notification>(context: mainContext)
+        let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
+
+        return helper.firstObject(matchingPredicate: predicate)
     }
 
     func resetNotifications() {

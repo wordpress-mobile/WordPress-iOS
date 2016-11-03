@@ -71,9 +71,9 @@ class NotificationSyncServiceTests: XCTestCase
     }
 
 
-    /// Verifies that RetrieveNotification withID effectively loads a single Notification from the remote endpoint.
+    /// Verifies that RefreshNotification withID effectively loads a single Notification from the remote endpoint.
     ///
-    func testRetrieveNoteEffectivelyReturnsASingleNotification() {
+    func testSyncNoteEffectivelyReturnsASingleNotification() {
         // Stub Endpoint
         let endpoint = "notifications/"
         let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
@@ -90,7 +90,7 @@ class NotificationSyncServiceTests: XCTestCase
         let expectation = expectationWithDescription("Sync")
 
         // Sync!
-        service.retrieveNote(with: "123") { error, note in
+        service.syncNote(with: "2674124016") { error, note in
             XCTAssertNil(error)
             XCTAssertNotNil(note)
             expectation.fulfill()
