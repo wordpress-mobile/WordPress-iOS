@@ -346,9 +346,18 @@ class ReaderTopicSwiftTest : XCTestCase
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
 
+        let post = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
+        post.postID = NSNumber(int:1)
+        post.postTitle = "post1"
+        post.content = "post1"
+        post.isSaved = true
+
+        try! context.save()
+
         let topic = service.savedPostsTopic()
 
         XCTAssert(topic.type == "savedPosts")
+        XCTAssert(topic.posts.contains(post))
     }
 
     /**

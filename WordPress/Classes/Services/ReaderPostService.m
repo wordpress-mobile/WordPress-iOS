@@ -182,6 +182,47 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 #pragma mark - Update Methods
 
+- (void)toggleSavedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    // Get a the post in our own context
+    NSError *error;
+    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (failure) {
+                failure(error);
+            }
+        });
+        return;
+    }
+
+    BOOL isSaved = !readerPost.isSaved;
+    readerPost.isSaved = isSaved;
+
+    if (!isSaved && !readerPost.topic) {
+        [self.managedObjectContext deleteObject:readerPost];
+    }
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+- (NSArray<ReaderPost *> *)fetchSavedPosts
+{
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isSaved = true"];
+    [fetchRequest setPredicate:pred];
+
+    NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        NSLog(error);
+    }
+
+    return arr;
+}
+
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     [self.managedObjectContext performBlock:^{
@@ -377,7 +418,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND isSaved = false"];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];

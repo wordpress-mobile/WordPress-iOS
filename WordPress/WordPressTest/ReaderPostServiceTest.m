@@ -45,8 +45,24 @@
 
     [service deletePostsWithNoTopic];
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
+}
 
+- (void)testDontDeleteSavedPosts {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
+    post.isSaved = YES;
+    [[ContextManager sharedInstance] saveContext:context];
+
+    [service deletePostsWithNoTopic];
+    XCTAssertTrue(!post.isDeleted, @"The post should not have been deleted.");
+
+    // FIXME: Temporary workaround for core data issue
+    // The test data used here is somehow invalid but I can't figure out why...
+    // The error suggests an missing required attribute
+    [context deleteObject:post];
 }
 
 @end
