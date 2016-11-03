@@ -60,20 +60,21 @@ class NotificationSyncService
                 return
             }
 
-            self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
-                guard outdatedNoteIds.isEmpty == false else {
-                    completion?(nil, false)
-                    return
-                }
-
-                self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
-                    guard let remoteNotes = remoteNotes else {
-                        completion?(error, false)
+            self.deleteLocalMissingNotes(from: remoteHashes) {
+                
+                self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
+                    guard outdatedNoteIds.isEmpty == false else {
+                        completion?(nil, false)
                         return
                     }
 
-                    self.updateLocalNotes(with: remoteNotes) {
-                        self.deleteLocalMissingNotes(from: remoteHashes) {
+                    self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
+                        guard let remoteNotes = remoteNotes else {
+                            completion?(error, false)
+                            return
+                        }
+
+                        self.updateLocalNotes(with: remoteNotes) {
                             completion?(nil, true)
                         }
                     }
