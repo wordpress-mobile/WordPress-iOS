@@ -7,7 +7,7 @@ class NotificationSyncService
 {
     /// Returns the Main Managed Context
     ///
-    private var contextManager: ContextManager!
+    private var contextManager = ContextManager.sharedInstance()
 
     /// Sync Service Remote
     ///
@@ -21,12 +21,11 @@ class NotificationSyncService
     /// Designed Initializer
     ///
     init?() {
-        contextManager = ContextManager.sharedInstance()
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
-
-        guard dotcomAPI != nil else {
+        guard let dotcomAPI = dotcomAPI else {
             return nil
         }
+
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
 
     /// Initializer: Useful for Unit Testing

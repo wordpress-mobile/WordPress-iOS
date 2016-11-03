@@ -71,6 +71,8 @@ class NotificationsViewController : UITableViewController
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         restorationClass = self.dynamicType
+
+        startListeningToAccountNotifications()
     }
 
     override func viewDidLoad() {
@@ -86,8 +88,6 @@ class NotificationsViewController : UITableViewController
         setupRefreshControl()
         setupNoResultsView()
         setupFiltersSegmentedControl()
-
-        startListeningToAccountNotifications()
 
         tableView.reloadData()
     }
@@ -447,6 +447,7 @@ private extension NotificationsViewController
         resetNotifications()
         resetLastSeenTime()
         resetApplicationBadge()
+        syncNewNotifications()
     }
 }
 
