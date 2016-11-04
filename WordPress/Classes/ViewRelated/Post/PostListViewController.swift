@@ -387,8 +387,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             if changesSaved {
                 if let postStatus = viewController.post.status {
-                    self?.filterSettings.setFilterWithPostStatus(postStatus)
-                    WPAnalytics.track(.PostListStatusFilterChanged, withProperties: self?.propertiesForAnalytics())
+                    self?.updateFilterWithPostStatus(postStatus)
                 }
             }
 
@@ -444,7 +443,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
                 if changesSaved {
                     if let postStatus = viewController.post.status {
-                        self?.filterSettings.setFilterWithPostStatus(postStatus)
+                        self?.updateFilterWithPostStatus(postStatus)
                     }
                 }
 

@@ -933,11 +933,19 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return blog.account?.userID
     }
 
+    // MARK - Filtering
+
     func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
         updateFilterTitle()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
+    }
+
+    func updateFilterWithPostStatus(status: String) {
+        filterSettings.setFilterWithPostStatus(status)
+        refreshAndReload()
+        WPAnalytics.track(.PostListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
     func updateFilterTitle() {
