@@ -76,12 +76,31 @@ class Notification: NSManagedObject
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
+    /// Array that contains the Cached Property Names
+    ///
+    private static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
 
+
+    /// When needed, nukes cached attributes
+    ///
+    override func willChangeValueForKey(key: String) {
+        super.willChangeValueForKey(key)
+
+        guard managedObjectContext?.concurrencyType == .MainQueueConcurrencyType else {
+            return
+        }
+
+        guard self.dynamicType.cachedAttributes.contains(key) else {
+            return
+        }
+
+        resetCachedAttributes()
+    }
 
     /// Nukes any cached values.
     ///
-    override func didTurnIntoFault() {
+    private func resetCachedAttributes() {
         cachedTimestampAsDate = nil
         cachedSubjectBlockGroup = nil
         cachedHeaderBlockGroup = nil
