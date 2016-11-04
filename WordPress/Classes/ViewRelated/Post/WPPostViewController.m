@@ -767,7 +767,7 @@ EditImageDetailsViewControllerDelegate
 /**
  Shows the post-post screen.
  
- You don't like more windows? Here's another window.
+ You don't like windows? Here's another window.
  */
 - (void)showPostPost
 {
@@ -1453,15 +1453,13 @@ EditImageDetailsViewControllerDelegate
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
     void (^stopEditingAndDismiss)(BOOL) = ^(BOOL success) {
-
+        [self stopEditing];
+        [self.view endEditing:YES];
+        [self didSaveNewPost];
+        [self dismissEditView:YES];
 
         if (success) {
             [self showPostPost];
-        } else {
-            [self stopEditing];
-            [self.view endEditing:YES];
-            [self didSaveNewPost];
-            [self dismissEditView:YES];
         }
     };
 
