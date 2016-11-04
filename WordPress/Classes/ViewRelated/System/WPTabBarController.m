@@ -332,7 +332,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_readerSplitViewController) {
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
-        _readerSplitViewController.presentsWithGesture = NO;
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
@@ -362,6 +361,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
+    _readerNavigationController = nil;
     _readerSplitViewController = nil;
     _meSplitViewController = nil;
 
