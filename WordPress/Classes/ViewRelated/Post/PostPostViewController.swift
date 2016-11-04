@@ -47,7 +47,20 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func doneTapped() {
-        print("well that's over then")
+        guard let appDelegate = UIApplication.sharedApplication().delegate as? WordPressAppDelegate else {
+            return
+        }
+
+        UIView.animateWithDuration(0.5, animations: { 
+                self.view.alpha = 0.0
+            }) { (success) in
+                if self.view.window == appDelegate.testExtraWindow {
+                    appDelegate.testExtraWindow.hidden = true
+                    appDelegate.testExtraWindow = nil
+                }
+        }
+
+
     }
 
 }
