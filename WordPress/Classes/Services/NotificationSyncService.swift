@@ -1,6 +1,11 @@
 import Foundation
 
 
+// MARK: - Notifications
+//
+let NotificationSyncServiceDidUpdateNotifications = "NotificationSyncServiceDidUpdateNotifications"
+
+
 // MARK: - NotificationSyncService
 //
 class NotificationSyncService
@@ -61,7 +66,7 @@ class NotificationSyncService
             }
 
             self.deleteLocalMissingNotes(from: remoteHashes) {
-                
+
                 self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                     guard outdatedNoteIds.isEmpty == false else {
                         completion?(nil, false)
@@ -75,6 +80,7 @@ class NotificationSyncService
                         }
 
                         self.updateLocalNotes(with: remoteNotes) {
+                            self.notifyNotificationsWereUpdated()
                             completion?(nil, true)
                         }
                     }
@@ -259,6 +265,15 @@ private extension NotificationSyncService
         let note = helper.loadObject(withObjectID: noteObjectID)
         note?.read = status
         contextManager.saveContext(mainContext)
+    }
+
+
+    /// Posts a `NotificationSyncServiceDidUpdateNotifications` Notification, so that (potential listeners)
+    /// may react upon new content.
+    ///
+    func notifyNotificationsWereUpdated() {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.postNotificationName(NotificationSyncServiceDidUpdateNotifications, object: nil)
     }
 }
 
