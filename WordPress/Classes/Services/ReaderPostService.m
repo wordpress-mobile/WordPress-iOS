@@ -199,7 +199,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     BOOL isSaved = !readerPost.isSaved;
     readerPost.isSaved = isSaved;
 
-    if (!isSaved && !readerPost.topic) {
+    // Only allow deletion of the post if it has no current topic, or it's topic is the saved posts topic.
+    BOOL canDelete = (readerPost.topic == nil || [ReaderHelpers isTopicSavedPostsTopic:readerPost.topic]);
+    if (!isSaved && canDelete) {
         [self.managedObjectContext deleteObject:readerPost];
     }
 
