@@ -26,7 +26,7 @@ class WPRichContentView: UITextView
     /// Used to load images for attachments.
     ///
     lazy var imageSource: WPTableImageSource = {
-        let source = WPTableImageSource()
+        let source = WPTableImageSource(maxSize: self.maxDisplaySize)
         source.delegate = self
         source.forceLargerSizeWhenFetching = false
         source.photonQuality = 65
