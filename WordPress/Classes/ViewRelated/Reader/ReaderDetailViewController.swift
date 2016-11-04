@@ -1,5 +1,4 @@
 import Foundation
-import DTCoreText
 import WordPressShared
 import WordPressComAnalytics
 
@@ -53,7 +52,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     @IBOutlet private weak var bylineView: UIView!
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var richTextView: WPRichTextView!
     @IBOutlet private weak var textView: WPRichContentView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
 
@@ -207,9 +205,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
-
-        richTextView.refreshLayout()
-
     }
 
 
@@ -224,13 +219,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         // in the completion handler below.
         if size.height > size.width {
             self.setBarsHidden(false)
-        }
-
-        // The image frames in the WPRichTextView are a little bit dumb about their
-        // resizing after an orientation change. Use the completion block to
-        // refresh media layout.
-        coordinator.animateAlongsideTransition(nil) { (_) in
-            self.richTextView.refreshLayout()
         }
     }
 
@@ -249,10 +237,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     func handleApplicationDidBecomeActive(notification: NSNotification) {
         view.layoutIfNeeded()
-
-        // Refresh media layout as our sizing may have changed if the user expanded
-        // or shrank the split screen handle.
-        richTextView.refreshLayout()
     }
 
 
@@ -501,16 +485,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     private func configureRichText() {
         textView.content = post!.contentForDisplay()
         textView.delegate = self
-
-//        richTextView.delegate = self
-//        let fontSize = WPStyleGuide.Detail.contentFontSize
-//        let lineHeight = WPStyleGuide.Detail.contentLineHeight
-//        var textOptions = richTextView.textOptions
-//        textOptions[DTDefaultFontSize] = WPStyleGuide.Cards.contentFontSize
-//        textOptions[DTDefaultLineHeightMultiplier] = lineHeight / fontSize
-//        richTextView.textOptions = textOptions
-//        richTextView.content = post!.contentForDisplay()
-//        richTextView.privateContent = post!.isPrivate()
     }
 
 
@@ -937,45 +911,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 
         presentViewController(controller, animated: true, completion: nil)
     }
-}
-
-
-// MARK: - WPRichTextView Delegate Methods
-
-extension ReaderDetailViewController : WPRichTextViewDelegate
-{
-    public func richTextView(richTextView: WPRichTextView, didReceiveImageLinkAction imageControl: WPRichTextImage) {
-        var controller: WPImageViewController
-
-        if WPImageViewController.isUrlSupported(imageControl.linkURL) {
-            controller = WPImageViewController(image: imageControl.imageView.image, andURL: imageControl.linkURL)
-
-        } else if let linkURL = imageControl.linkURL {
-            presentWebViewControllerWithURL(linkURL)
-            return
-
-        } else {
-            controller = WPImageViewController(image: imageControl.imageView.image)
-        }
-
-        controller.modalTransitionStyle = .CrossDissolve
-        controller.modalPresentationStyle = .FullScreen
-
-        presentViewController(controller, animated: true, completion: nil)
-    }
-
-
-    public func richTextView(richTextView: WPRichTextView, didReceiveLinkAction linkURL: NSURL) {
-        var url = linkURL
-        if url.host != nil {
-            if let postURLString = post?.permaLink {
-                let postURL = NSURL(string: postURLString)
-                url = NSURL(string: linkURL.absoluteString!, relativeToURL: postURL)!
-            }
-        }
-        presentWebViewControllerWithURL(url)
-    }
-
 }
 
 
