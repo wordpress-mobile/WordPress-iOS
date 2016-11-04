@@ -1,0 +1,53 @@
+//
+//  PostPostViewController.swift
+//  WordPress
+//
+//  Created by Nate Heagy on 2016-11-02.
+//  Copyright © 2016 WordPress. All rights reserved.
+//
+
+import UIKit
+
+class PostPostViewController: UIViewController {
+
+    @IBOutlet var titleLabel:UILabel!
+    @IBOutlet var siteIconView:UIImageView!
+    @IBOutlet var siteNameLabel:UILabel!
+    @IBOutlet var siteUrlLabel:UILabel!
+    @IBOutlet var shareButton:UIButton!
+    var post:AbstractPost?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        setupPost()
+    }
+
+    func setupPost() {
+        guard let post = post, let blogSettings = post.blog.settings else {
+            return
+        }
+
+        titleLabel.text = post.titleForDisplay()
+        siteNameLabel.text = blogSettings.name
+        siteUrlLabel.text = post.blog.url
+        let isPrivate = !post.blog.visible
+        if isPrivate {
+            shareButton.hidden = true
+        }
+    }
+
+    @IBAction func doneTapped() {
+        print("well that's over then")
+    }
+
+}
