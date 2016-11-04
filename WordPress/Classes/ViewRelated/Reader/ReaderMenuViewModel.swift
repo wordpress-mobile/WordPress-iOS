@@ -239,6 +239,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Create a menu item for saved posts
         var savedPostsItem = savedPostsMenuItem()
         savedPostsItem.order = ReaderDefaultMenuItemOrder.SavedPosts.rawValue
+        savedPostsItem.icon = Gridicon.iconOfType(.Time)
         defaultSectionItems.append(savedPostsItem)
 
         // Sort the items into the desired order.
@@ -271,10 +272,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func savedPostsMenuItem() -> ReaderMenuItem {
         let title = NSLocalizedString("Saved Posts", comment: "Title of the reader's Saved Posts menu item.")
-        let topicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let topic = topicService.savedPostsTopic()
-
-        return ReaderMenuItem(title: title, type: .SavedPosts, icon: Gridicon.iconOfType(.Time), topic: topic)
+        return ReaderMenuItem(title: title, type: .SavedPosts)
     }
 
     /// Returns the number of items for the default section.
