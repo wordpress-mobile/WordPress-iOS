@@ -309,6 +309,10 @@ final public class PushNotificationsManager : NSObject
     /// - Returns: True when handled. False otherwise
     ///
     func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        guard userInfo.numberForKey(notificationIdentifierKey)?.stringValue != nil else {
+            return false
+        }
+
         // TODO: JLP Nov.3.2016. Nuke applicationState == .Active once PingHub is in place!
         guard applicationState == .Background || applicationState == .Active else {
             return false
