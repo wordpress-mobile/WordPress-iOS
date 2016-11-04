@@ -395,10 +395,6 @@ class AttachmentTagProcessor: HtmlTagProcessor
             textAttachment.height = CGFloat(height)
         }
 
-        if let align = attrs["align"] {
-            textAttachment.align = alignmentFromString(align)
-        }
-
         return textAttachment
     }
 
@@ -449,29 +445,6 @@ class AttachmentTagProcessor: HtmlTagProcessor
         }
 
         return attrs
-    }
-
-
-    /// Convenience method for getting a WPTextAttachmentAlignment from a string.
-    ///
-    /// - Parameters:
-    ///     - alignment: Aligment string. Values may be `left`, `right`, or `center`.
-    ///
-    /// - Returns: The matching WPTextAttachmentAlignment
-    ///
-    func alignmentFromString(alignment: String) -> WPTextAttachmentAlignment {
-        let align = alignment.lowercaseString
-        if align == "left" {
-            return .Left
-
-        } else if align == "right" {
-            return .Right
-
-        } else if align == "center" {
-            return .Center
-
-        }
-        return .None
     }
 
 }

@@ -2,10 +2,6 @@ import Foundation
 import UIKit
 
 
-@objc public enum WPTextAttachmentAlignment: Int {
-    case None, Left, Right, Center
-}
-
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
 public class WPTextAttachment: NSTextAttachment
@@ -14,7 +10,6 @@ public class WPTextAttachment: NSTextAttachment
     private(set) public var tagName: String
     private(set) public var src: String
     public var maxSize = CGSizeZero
-    public var align = WPTextAttachmentAlignment.None
 
     internal(set) public var attributes: [String : String]?
     internal(set) public var html: String?
@@ -26,7 +21,6 @@ public class WPTextAttachment: NSTextAttachment
     private let tagNameKey = "tagName"
     private let srcKey = "src"
     private let maxSizeKey = "maxSize"
-    private let alignKey = "align"
     private let attributesKey = "attributes"
     private let htmlKey = "html"
     private let widthKey = "width"
@@ -56,7 +50,6 @@ public class WPTextAttachment: NSTextAttachment
         self.tagName = aDecoder.decodeObjectForKey(tagNameKey) as! String
         self.src = aDecoder.decodeObjectForKey(srcKey) as! String
         self.maxSize = aDecoder.decodeCGSizeForKey(maxSizeKey)
-        self.align = WPTextAttachmentAlignment(rawValue: aDecoder.decodeIntegerForKey(alignKey))!
 
         self.attributes = aDecoder.decodeObjectForKey(attributesKey) as? [String : String]
         self.html = aDecoder.decodeObjectForKey(htmlKey) as? String
@@ -76,7 +69,6 @@ public class WPTextAttachment: NSTextAttachment
         aCoder.encodeObject(tagName, forKey: tagNameKey)
         aCoder.encodeObject(src, forKey: srcKey)
         aCoder.encodeCGSize(maxSize, forKey: maxSizeKey)
-        aCoder.encodeInteger(align.rawValue, forKey: alignKey)
 
         aCoder.encodeObject(attributes, forKey: attributesKey)
         aCoder.encodeObject(html, forKey: htmlKey)
@@ -89,7 +81,7 @@ public class WPTextAttachment: NSTextAttachment
     /// Used for clearing text trailing an attachment when align equals .None
     ///
     public override func attachmentBoundsForTextContainer(textContainer: NSTextContainer?, proposedLineFragment lineFrag: CGRect, glyphPosition position: CGPoint, characterIndex charIndex: Int) -> CGRect {
-        if align != .None || textContainer == nil {
+        if textContainer == nil {
             return super.attachmentBoundsForTextContainer(textContainer, proposedLineFragment: lineFrag, glyphPosition: position, characterIndex: charIndex)
         }
 
