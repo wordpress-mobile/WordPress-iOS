@@ -43,16 +43,9 @@ class WPRichTextFormatter
     /// - Returns: An NSAttributedString optional.
     ///
     func attributedStringFromHTMLString(string:String, defaultDocumentAttributes:[String : AnyObject]?) throws -> NSAttributedString? {
-        // Appending to resolve an apparent framework issue with attachments at the end of a textContainer's content size.
-        // There is an issue where TextKit does not respect exclusion paths near the
-        // bottom of an NSTextContainer's content size.  This seems to only happen when
-        // there are no paragraphs following the text intersecting the exclusion path.
-        // Appending a final paragraph to the source HTML seems to prevent the glitch.
-        let finalParagraph = "<p></p>"
-
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
-        let parsedString = parsed.parsedString + finalParagraph
+        let parsedString = parsed.parsedString
         let attachments = parsed.attachments
 
         // Now create an attributed string from the processed html

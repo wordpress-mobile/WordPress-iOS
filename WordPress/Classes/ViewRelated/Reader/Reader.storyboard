@@ -187,7 +187,7 @@
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" delaysContentTouches="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ix7-KK-iap" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="182" width="363" height="208"/>
+                                                <rect key="frame" x="10" y="182" width="363" height="186.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -195,18 +195,11 @@
                                                     <outlet property="delegate" destination="p0j-e1-c0h" id="gCA-aD-r7r"/>
                                                 </connections>
                                             </textView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hp4-cQ-VZR">
-                                                <rect key="frame" x="0.0" y="390" width="383" height="8"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="8" id="g6W-iM-O1N"/>
-                                                </constraints>
-                                            </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                                <rect key="frame" x="16" y="398" width="351" height="20.5"/>
+                                                <rect key="frame" x="16" y="368.5" width="351" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lUA-Mu-a4u">
-                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="50"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAQ-jD-BAz" customClass="CircularImageView" customModule="WordPress">
                                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -251,7 +244,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="cAC-kN-MLi" secondAttribute="trailing" constant="16" id="0dB-dc-DT7"/>
-                                            <constraint firstAttribute="trailing" secondItem="hp4-cQ-VZR" secondAttribute="trailing" id="1pc-0A-sNh"/>
                                             <constraint firstAttribute="trailing" secondItem="MYy-Lu-AaC" secondAttribute="trailing" id="4jl-lW-qsV"/>
                                             <constraint firstItem="ut9-jn-WNM" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" constant="16" id="9Js-yq-sV8"/>
                                             <constraint firstItem="aER-Yk-oAm" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="C2I-uZ-MLt"/>
@@ -259,7 +251,6 @@
                                             <constraint firstItem="ut9-jn-WNM" firstAttribute="top" secondItem="cAC-kN-MLi" secondAttribute="bottom" constant="8" symbolic="YES" placeholder="YES" id="GhE-cM-HVk"/>
                                             <constraint firstItem="H39-2a-c92" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="HLP-yt-vf7"/>
                                             <constraint firstItem="cAC-kN-MLi" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" constant="16" id="IV6-UD-hcO"/>
-                                            <constraint firstItem="hp4-cQ-VZR" firstAttribute="top" secondItem="LMp-cd-vT3" secondAttribute="top" constant="390" placeholder="YES" id="J2l-K5-E68"/>
                                             <constraint firstItem="MYy-Lu-AaC" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="Ldt-Gy-WYM"/>
                                             <constraint firstItem="JFE-Nr-imf" firstAttribute="height" secondItem="LMp-cd-vT3" secondAttribute="height" constant="20" id="MNg-SP-1Ci"/>
                                             <constraint firstItem="3tc-Lf-3D1" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="QCh-Jl-fQS"/>
@@ -268,7 +259,6 @@
                                             <constraint firstAttribute="trailing" secondItem="ut9-jn-WNM" secondAttribute="trailing" constant="16" id="a6o-tx-Fi4"/>
                                             <constraint firstItem="Ix7-KK-iap" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" constant="10" id="bRe-Kr-iSC"/>
                                             <constraint firstAttribute="trailing" secondItem="aER-Yk-oAm" secondAttribute="trailing" id="czW-jL-Saf"/>
-                                            <constraint firstItem="hp4-cQ-VZR" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="eNY-V5-4in"/>
                                             <constraint firstItem="UJH-3y-QkU" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" constant="16" id="imL-P2-AAc"/>
                                             <constraint firstItem="A1K-ZI-1wr" firstAttribute="leading" secondItem="LMp-cd-vT3" secondAttribute="leading" id="lSK-51-3v0"/>
                                             <constraint firstAttribute="height" constant="492" placeholder="YES" id="n2I-ce-v5d"/>
@@ -398,7 +388,6 @@
                         <outlet property="headerView" destination="A1K-ZI-1wr" id="yu0-A1-s21"/>
                         <outlet property="likeButton" destination="2yJ-O3-UEu" id="bB9-Wv-BHT"/>
                         <outlet property="menuButton" destination="Sz9-nP-NnE" id="xCl-dG-HXD"/>
-                        <outlet property="richtTextBottomPaddingView" destination="hp4-cQ-VZR" id="zcz-RM-KYh"/>
                         <outlet property="scrollView" destination="IqL-oc-D5S" id="Nnf-Jl-8Ae"/>
                         <outlet property="tagButton" destination="mBC-NT-IsJ" id="fV5-hf-glc"/>
                         <outlet property="textView" destination="Ix7-KK-iap" id="QgD-HL-wLx"/>

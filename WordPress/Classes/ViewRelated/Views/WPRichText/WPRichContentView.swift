@@ -74,6 +74,9 @@ class WPRichContentView: UITextView
     func setupView() {
         // Because the attachment manager is a lazy property.
         _ = attachmentManager
+
+        // Remove some of the unnecessary space at the bottom of the scrollable area.
+        textContainerInset = UIEdgeInsetsMake(0.0, 0.0, -16.0, 0.0)
     }
 
 }

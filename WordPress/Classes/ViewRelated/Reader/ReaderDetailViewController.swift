@@ -59,7 +59,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     @IBOutlet private weak var featuredImageBottomPaddingView: UIView!
     @IBOutlet private weak var titleBottomPaddingView: UIView!
     @IBOutlet private weak var bylineBottomPaddingView: UIView!
-    @IBOutlet private weak var richtTextBottomPaddingView: UIView!
 
     public var shouldHideComments = false
     private var didBumpStats = false
