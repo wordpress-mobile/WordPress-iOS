@@ -1,13 +1,18 @@
 import Foundation
 
 
+// MARK: - Notifications
+//
+let NotificationSyncServiceDidUpdateNotifications = "NotificationSyncServiceDidUpdateNotifications"
+
+
 // MARK: - NotificationSyncService
 //
 class NotificationSyncService
 {
     /// Returns the Main Managed Context
     ///
-    private var contextManager: ContextManager!
+    private var contextManager = ContextManager.sharedInstance()
 
     /// Sync Service Remote
     ///
@@ -21,12 +26,11 @@ class NotificationSyncService
     /// Designed Initializer
     ///
     init?() {
-        contextManager = ContextManager.sharedInstance()
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
-
-        guard dotcomAPI != nil else {
+        guard let dotcomAPI = dotcomAPI else {
             return nil
         }
+
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
 
     /// Initializer: Useful for Unit Testing
@@ -52,30 +56,61 @@ class NotificationSyncService
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync(completion: (Void -> Void)? = nil) {
+    func sync(completion: ((ErrorType?, Bool) -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
-        remote.loadHashes(withPageSize: maximumNotes) { remoteHashes in
+        remote.loadHashes(withPageSize: maximumNotes) { error, remoteHashes in
             guard let remoteHashes = remoteHashes else {
+                completion?(error, false)
                 return
             }
 
-            self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
-                guard outdatedNoteIds.isEmpty == false else {
-                    return
-                }
+            self.deleteLocalMissingNotes(from: remoteHashes) {
 
-                self.remote.loadNotes(noteIds: outdatedNoteIds) { remoteNotes in
-                    guard let remoteNotes = remoteNotes else {
+                self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
+                    guard outdatedNoteIds.isEmpty == false else {
+                        completion?(nil, false)
                         return
                     }
 
-                    self.updateLocalNotes(with: remoteNotes) {
-                        self.deleteLocalMissingNotes(from: remoteHashes) {
-                            completion?()
+                    self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
+                        guard let remoteNotes = remoteNotes else {
+                            completion?(error, false)
+                            return
+                        }
+
+                        self.updateLocalNotes(with: remoteNotes) {
+                            self.notifyNotificationsWereUpdated()
+                            completion?(nil, true)
                         }
                     }
                 }
+            }
+        }
+    }
+
+
+    /// Sync's Notification matching the specified ID, and updates the local entity.
+    ///
+    /// - Parameters:
+    ///     - noteId: Notification ID of the note to be downloaded.
+    ///     - completion: Closure to be executed on completion.
+    ///
+    func syncNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
+        assert(NSThread.isMainThread())
+
+        remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
+            guard let remoteNotes = remoteNotes else {
+                completion(error, nil)
+                return
+            }
+
+            self.updateLocalNotes(with: remoteNotes) {
+                let helper = CoreDataHelper<Notification>(context: self.mainContext)
+                let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
+                let note = helper.firstObject(matchingPredicate: predicate)
+
+                completion(nil, note)
             }
         }
     }
@@ -87,17 +122,18 @@ class NotificationSyncService
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(notification: Notification, completion: (Bool -> Void)? = nil) {
+    func markAsRead(notification: Notification, completion: (ErrorType?-> Void)? = nil) {
         assert(NSThread.isMainThread())
 
         let original = notification.read
 
-        remote.updateReadStatus(notification.notificationId, read: true) { success in
-            if !success {
+        remote.updateReadStatus(notification.notificationId, read: true) { error in
+            if let error = error {
+                DDLogSwift.logError("Error marking note as read: \(error)")
                 self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
             }
 
-            completion?(success)
+            completion?(error)
         }
 
         updateReadStatus(true, forNoteWithObjectID: notification.objectID)
@@ -110,15 +146,15 @@ class NotificationSyncService
     ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Callback to be executed on completion.
     ///
-    func updateLastSeen(timestamp: String, completion: (Bool -> Void)? = nil) {
+    func updateLastSeen(timestamp: String, completion: (ErrorType? -> Void)? = nil) {
         assert(NSThread.isMainThread())
 
-        remote.updateLastSeen(timestamp) { success in
-            if !success {
-                DDLogSwift.logError("Error while trying to update Notifications Last Seen Timestamp: \(timestamp)")
+        remote.updateLastSeen(timestamp) { error in
+            if let error = error {
+                DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error)")
             }
 
-            completion?(success)
+            completion?(error)
         }
     }
 }
@@ -171,7 +207,7 @@ private extension NotificationSyncService
     ///     - remoteNotes: Collection of Remote Notes
     ///     - completion: Callback to be executed on completion
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)) {
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)? = nil) {
         let derivedContext = contextManager.newDerivedContext()
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
@@ -185,7 +221,7 @@ private extension NotificationSyncService
 
             self.contextManager.saveDerivedContext(derivedContext) {
                 dispatch_async(dispatch_get_main_queue()) {
-                    completion()
+                    completion?()
                 }
             }
         }
@@ -229,6 +265,15 @@ private extension NotificationSyncService
         let note = helper.loadObject(withObjectID: noteObjectID)
         note?.read = status
         contextManager.saveContext(mainContext)
+    }
+
+
+    /// Posts a `NotificationSyncServiceDidUpdateNotifications` Notification, so that (potential listeners)
+    /// may react upon new content.
+    ///
+    func notifyNotificationsWereUpdated() {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.postNotificationName(NotificationSyncServiceDidUpdateNotifications, object: nil)
     }
 }
 
