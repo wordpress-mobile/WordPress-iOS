@@ -414,6 +414,7 @@ private extension NotificationsViewController
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
+        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NotificationSyncServiceDidUpdateNotifications, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -424,7 +425,7 @@ private extension NotificationsViewController
     func stopListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
+        nc.removeObserver(self, name:NotificationSyncServiceDidUpdateNotifications, object: nil)
     }
 
     @objc func applicationDidBecomeActive(note: NSNotification) {
@@ -444,6 +445,12 @@ private extension NotificationsViewController
         resetLastSeenTime()
         resetApplicationBadge()
         syncNewNotifications()
+    }
+
+    @objc func notificationsWereUpdated(note: NSNotification) {
+        // If we're onscreen, don't leave the badge updated behind
+        resetApplicationBadge()
+        updateLastSeenTime()
     }
 }
 
