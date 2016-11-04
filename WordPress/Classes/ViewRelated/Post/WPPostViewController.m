@@ -38,6 +38,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
+#import "WordPressAppDelegate.h"
 
 @import Gridicons;
 
@@ -348,6 +349,8 @@ EditImageDetailsViewControllerDelegate
         self.shouldShowUnsavedChangesAlert = NO;
         [self showUnsavedChangesAlert];
     }
+
+    //[self showPostPost];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -758,6 +761,28 @@ EditImageDetailsViewControllerDelegate
     }];
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
+/**
+ Shows the post-post screen.
+ 
+ You don't like more windows? Here's another window.
+ */
+- (void)showPostPost
+{
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
+    UIWindow *postPostWindow = [[UIWindow alloc] initWithFrame:mainWindow.frame];
+    PostPostViewController *postPostVC = (PostPostViewController *) [[UIStoryboard storyboardWithName:@"Posts" bundle:nil] instantiateViewControllerWithIdentifier:@"PostPostViewController"];
+    postPostVC.post = self.post;
+
+    postPostWindow.frame = mainWindow.frame;
+    postPostWindow.rootViewController = postPostVC;
+    [postPostWindow addSubview:postPostVC.view];
+    postPostWindow.windowLevel = UIWindowLevelAlert;
+    postPostWindow.hidden = NO;
+    appDelegate.testExtraWindow = postPostWindow;
 }
 
 #pragma mark - Toolbar options
@@ -1427,11 +1452,17 @@ EditImageDetailsViewControllerDelegate
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
-    void (^stopEditingAndDismiss)() = ^() {
-        [self stopEditing];
-        [self.view endEditing:YES];
-        [self didSaveNewPost];
-        [self dismissEditView:YES];
+    void (^stopEditingAndDismiss)(BOOL) = ^(BOOL success) {
+
+
+        if (success) {
+            [self showPostPost];
+        } else {
+            [self stopEditing];
+            [self.view endEditing:YES];
+            [self didSaveNewPost];
+            [self dismissEditView:YES];
+        }
     };
 
     NSString *hudText;
@@ -1463,7 +1494,7 @@ EditImageDetailsViewControllerDelegate
                         [SVProgressHUD showSuccessWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
-                        stopEditingAndDismiss();
+                        stopEditingAndDismiss(YES);
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
@@ -1478,7 +1509,7 @@ EditImageDetailsViewControllerDelegate
                         [SVProgressHUD showErrorWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
 
-                        stopEditingAndDismiss();
+                        stopEditingAndDismiss(NO);
                     }];
 }
 
