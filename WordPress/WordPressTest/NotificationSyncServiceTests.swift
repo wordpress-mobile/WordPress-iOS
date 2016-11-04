@@ -71,6 +71,35 @@ class NotificationSyncServiceTests: XCTestCase
     }
 
 
+    /// Verifies that RefreshNotification withID effectively loads a single Notification from the remote endpoint.
+    ///
+    func testSyncNoteEffectivelyReturnsASingleNotification() {
+        // Stub Endpoint
+        let endpoint = "notifications/"
+        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+
+        // Make sure the collection is empty, to begin with
+        let helper = CoreDataHelper<Notification>(context: self.manager.mainContext)
+        XCTAssert(helper.countObjects() == 0)
+
+        // CoreData Expectations
+        manager.testExpectation = expectationWithDescription("Context save expectation")
+
+        // Service Expectations
+        let expectation = expectationWithDescription("Sync")
+
+        // Sync!
+        service.syncNote(with: "2674124016") { error, note in
+            XCTAssertNil(error)
+            XCTAssertNotNil(note)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+
+
     /// Verifies that Mark as Read effectively toggles a Notification's read flag
     ///
     func testMarkAsReadEffectivelyTogglesNotificationReadStatus() {
@@ -115,8 +144,8 @@ class NotificationSyncServiceTests: XCTestCase
         let expectation = expectationWithDescription("Update Last Seen")
 
         // Update Last Seen!
-        service.updateLastSeen("1234") { success in
-            XCTAssertTrue(success)
+        service.updateLastSeen("1234") { error in
+            XCTAssertNil(error)
             expectation.fulfill()
         }
 

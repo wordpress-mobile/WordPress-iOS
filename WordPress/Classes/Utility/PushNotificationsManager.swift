@@ -297,7 +297,7 @@ final public class PushNotificationsManager : NSObject
     }
 
 
-    /// Handles a Notification while in Background Mode
+    /// Handles a Notification while in Active OR Background Modes
     ///
     /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
     ///         we'll temporarily keep it as public. Sorry.
@@ -309,20 +309,28 @@ final public class PushNotificationsManager : NSObject
     /// - Returns: True when handled. False otherwise
     ///
     func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
-        guard applicationState == .Background else {
+        guard userInfo.numberForKey(notificationIdentifierKey)?.stringValue != nil else {
             return false
         }
 
-// TODO: Fixme
-//        let simperium = WordPressAppDelegate.sharedInstance().simperium
-//        simperium.backgroundFetchWithCompletion { result in
-//            if result == .NewData {
-//                DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
-//            } else {
-//                DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
-//            }
-//            completionHandler?(result)
-//        }
+        // TODO: JLP Nov.3.2016. Nuke applicationState == .Active once PingHub is in place!
+        guard applicationState == .Background || applicationState == .Active else {
+            return false
+        }
+
+        guard let service = NotificationSyncService() else {
+            completionHandler?(.Failed)
+            return true
+        }
+
+        DDLogSwift.logInfo("Running Notifications Background Fetch...")
+
+        service.sync { error, newData in
+            DDLogSwift.logInfo("Finished Notifications Background Fetch!")
+
+            let result = newData ? UIBackgroundFetchResult.NewData : .NoData
+            completionHandler?(result)
+        }
 
         return true
     }
