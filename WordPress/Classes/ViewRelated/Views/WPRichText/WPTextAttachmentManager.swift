@@ -81,30 +81,6 @@ import UIKit
     }
 
 
-    /// Returns the custom view for the specified WPTextAttachment or nil if not found.
-    ///
-    /// - Parameters:
-    ///     - view: The view that should be displayed for the attachment
-    ///     - attachment: The WPTextAttachment
-    ///
-    public func assignView(view: UIView, forAttachment attachment: WPTextAttachment) {
-        var attachmentView: WPTextAttachmentView
-
-        if let aView = attachmentViews[attachment.identifier] {
-            attachmentView = aView
-            attachmentView.view.removeFromSuperview()
-            attachmentView.view = view
-        } else {
-            attachmentView = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
-            attachmentViews[attachment.identifier] = attachmentView
-        }
-
-        textView.addSubview(view)
-
-        layoutAttachmentViews()
-    }
-
-
     /// Updates the layout of any custom attachment views.  Call this method after
     /// making changes to the alignment or size of an attachment's custom view,
     /// or after updating an attachment's `image` property.
@@ -149,103 +125,6 @@ import UIKit
     }
 
 
-    /// Computes the frame for an attachment's custom view based on alignment
-    /// and the size of the attachment.  Attachments with a maxSize of CGSizeZero
-    /// will scale to match the current width of the textContainer. Attachments
-    /// with a maxSize greater than CGSizeZero will never scale up, but may be
-    /// scaled down to match the width of the textContainer.
-    ///
-    /// - Parameters:
-    ///     - attachmentView: The WPTextAttachmentView in question.
-    ///     - attachment: The WPTextAttachment
-    ///     - range: The range of the WPTextAttachment in the textView's NSTextStorage
-    ///
-    /// - Returns: The frame for the specified custom attachment view.
-    ///
-    private func frameForAttachmentView(attachmentView: WPTextAttachmentView, forAttachment attachment: WPTextAttachment, atRange range: NSRange) -> CGRect {
-        let glyphRange = layoutManager.glyphRangeForCharacterRange(range, actualCharacterRange: nil)
-
-        // The location of the attachment glyph
-        let glyphBoundingRect = layoutManager.boundingRectForGlyphRange(glyphRange, inTextContainer: textView.textContainer)
-        let lineFragmentRect = layoutManager.lineFragmentRectForGlyphAtIndex(glyphRange.location, effectiveRange: nil)
-
-        // Place on the same line if the attachment glyph is at the beginning of the line fragment, otherwise the next line.
-        var y = lineFragmentRect.minY
-        if attachment.align == .None {
-            y = glyphBoundingRect.minX == lineFragmentRect.minX ? lineFragmentRect.minY : lineFragmentRect.maxY
-        }
-
-        var frame = attachmentView.view.frame
-
-        // TODO: The padding should probably be (lineheight - capheight) / 2.
-        let topLinePadding: CGFloat = 4.0
-
-        frame.origin.y = y + textView.textContainerInset.top + topLinePadding
-
-        switch attachment.align {
-        case .None :
-            frame.origin.x = textView.textContainer.size.width / 2.0 - (attachmentView.view.frame.width / 2.0)
-            break
-
-        case .Left :
-            frame.origin.x = 0.0
-            break
-
-        case .Right :
-            frame.origin.x = textView.textContainer.size.width - attachmentView.view.frame.width
-            break
-
-        case .Center :
-            frame.origin.x = textView.textContainer.size.width / 2.0 - (attachmentView.view.frame.width / 2.0)
-            break
-        }
-
-        return frame
-    }
-
-
-    /// Resize (if necessary) the custom view for the specified attachment so that
-    /// it fits within the width of its textContainer.
-    ///
-    /// - Parameters:
-    ///     - attachment: The WPTextAttachment
-    ///     - size: Should be the size of the textContainer
-    ///
-    private func resizeViewForAttachment(attachment: WPTextAttachment, toFitSize size: CGSize) {
-        guard let attachmentView = attachmentViews[attachment.identifier] else {
-            return
-        }
-
-        let view = attachmentView.view
-        let maxSize = attachment.maxSize
-
-        // If max size height or width is zero, make sure the view's size is zero.
-        if maxSize.height == 0 || maxSize.width == 0 {
-            view.frame.size.width = 0.0
-            view.frame.size.height = 0.0
-            return
-        }
-
-        var width = maxSize.width
-        var height = maxSize.height
-
-        // When the width is max, use the maximum available width and whatever
-        // height was specified.
-        if maxSize.width == CGFloat.max {
-            width = size.width
-
-        } else if width > size.width {
-            // When width is greater than the available width scale down.
-            let ratio = width / height
-            width = floor(size.width)
-            height = floor(width / ratio)
-        }
-
-        view.frame.size.width = width
-        view.frame.size.height = height
-    }
-
-
     /// Called initially during the initial set up of the manager, and whenever
     /// the UITextView's attributedText property changes.
     /// After resetting the attachment manager, this method loops over any
@@ -284,17 +163,9 @@ import UIKit
     /// textStorage.
     ///
     private func resetAttachmentManager() {
-        // Clean up any stale exclusion paths
-        let textContainer = textView.textContainer
         for (_, attachmentView) in attachmentViews {
-            guard let exclusionPath = attachmentView.exclusionPath else {
-                continue
-            }
-            if let index = textContainer.exclusionPaths.indexOf(exclusionPath) {
-                textContainer.exclusionPaths.removeAtIndex(index)
-            }
+            attachmentView.view.removeFromSuperview()
         }
-
         attachmentViews.removeAll()
         attachments.removeAll()
     }
