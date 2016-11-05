@@ -218,6 +218,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
         filterSettings.setCurrentPostAuthorFilter(authorFilter)
         refreshAndReload()
+        syncItemsWithUserInteraction(false)
     }
 
     // MARK: - Data Model Interaction
