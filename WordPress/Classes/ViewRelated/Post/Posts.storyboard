@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -273,6 +273,9 @@
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="shareTapped" destination="DAz-dr-8NB" eventType="touchUpInside" id="Dih-Xt-6jh"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgM-JA-Oto" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="66" width="311" height="44"/>
@@ -282,6 +285,9 @@
                                                         <state key="normal" title="Edit Post">
                                                             <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="editTapped" destination="DAz-dr-8NB" eventType="touchUpInside" id="h04-Qk-hW8"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecV-rp-zZ9" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="132" width="311" height="44"/>
@@ -291,6 +297,9 @@
                                                         <state key="normal" title="View Post">
                                                             <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="viewTapped" destination="DAz-dr-8NB" eventType="touchUpInside" id="6LA-fO-f8U"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
