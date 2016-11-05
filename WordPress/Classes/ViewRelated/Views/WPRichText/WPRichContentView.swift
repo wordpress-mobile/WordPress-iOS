@@ -41,6 +41,10 @@ class WPRichContentView: UITextView
         return CGSize(width: side, height: side)
     }()
 
+    /// Whether the view shows private content. Used when fetching images.
+    ///
+    var isPrivate = false
+
     var content: String {
         get {
             return text ?? ""
@@ -140,7 +144,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
 
         let index = mediaArray.count
         let indexPath = NSIndexPath(forRow: index, inSection: 1)
-        imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: false)
+        imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
 
         let media = RichMedia(image: img, attachment: attachment)
         mediaArray.append(media)
