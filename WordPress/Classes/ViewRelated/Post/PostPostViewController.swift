@@ -15,7 +15,7 @@ class PostPostViewController: UIViewController {
     @IBOutlet var siteNameLabel:UILabel!
     @IBOutlet var siteUrlLabel:UILabel!
     @IBOutlet var shareButton:UIButton!
-    var post:AbstractPost?
+    var post:Post?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,28 @@ class PostPostViewController: UIViewController {
         if isPrivate {
             shareButton.hidden = true
         }
+    }
+
+    @IBAction func shareTapped() {
+//        if ([self.apost isKindOfClass:[Post class]]) {
+//            Post *post = (Post *)self.apost;
+//
+//            PostSharingController *sharingController = [[PostSharingController alloc] init];
+//
+//            [sharingController sharePost:post fromBarButtonItem:[self shareBarButtonItem] inViewController:self];
+//        }
+        guard let post = post else {
+            return
+        }
+
+        let sharingController = PostSharingController()
+        sharingController.sharePost(post, fromView: self.shareButton, inViewController: self)
+    }
+
+    @IBAction func editTapped() {
+    }
+
+    @IBAction func viewTapped() {
     }
 
     @IBAction func doneTapped() {
