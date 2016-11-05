@@ -191,6 +191,7 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="p0j-e1-c0h" id="gCA-aD-r7r"/>
                                                 </connections>
