@@ -481,9 +481,13 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     }
 
+
     private func configureRichText() {
-        textView.content = post!.contentForDisplay()
-        textView.delegate = self
+        guard let post = post else {
+            return
+        }
+        textView.isPrivate = post.isPrivate()
+        textView.content = post.contentForDisplay()
     }
 
 
