@@ -341,6 +341,7 @@
                     <navigationItem key="navigationItem" id="6US-2R-WaU"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="actionsStackView" destination="TDP-in-QyS" id="tYW-Mo-fij"/>
                         <outlet property="navBar" destination="DDC-L5-est" id="cu5-lg-IEu"/>
                         <outlet property="shareButton" destination="0tf-vO-x8h" id="4v3-Gl-WIv"/>
                         <outlet property="siteIconView" destination="MFc-TE-gkF" id="m8l-P3-wGK"/>
