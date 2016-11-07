@@ -88,7 +88,8 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Freshly Pressed
     ///
     public class func topicIsFreshlyPressed(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/freshly-pressed")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/freshly-pressed")
     }
 
 
@@ -100,7 +101,8 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Discover
     ///
     public class func topicIsDiscover(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.containsString("/read/sites/53424024/posts")
+        guard let path = topic.path else { return false }
+        return path.containsString("/read/sites/53424024/posts")
     }
 
 
@@ -112,7 +114,8 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Following
     ///
     public class func topicIsFollowing(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/following")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/read/following")
     }
 
 
@@ -124,7 +127,8 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Posts I Like
     ///
     public class func topicIsLiked(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/liked")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/read/liked")
     }
 
 

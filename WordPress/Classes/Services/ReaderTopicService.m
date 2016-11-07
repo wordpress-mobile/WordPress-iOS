@@ -256,7 +256,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                                               inManagedObjectContext:self.managedObjectContext];
     }
     topic.type = [ReaderSavedPostsTopic TopicType];
-    topic.path = @""; // TODO: See if we can make this optional
+    topic.path = nil;
     topic.title = @"Saved Posts"; // TODO: Extract this
     topic.showInMenu = YES;
 

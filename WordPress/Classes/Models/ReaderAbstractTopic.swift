@@ -11,7 +11,7 @@ import CoreData
     @NSManaged public var algorithm: String?
     @NSManaged public var following: Bool
     @NSManaged public var lastSynced: NSDate?
-    @NSManaged public var path: String
+    @NSManaged public var path: String?
     @NSManaged public var showInMenu: Bool
     @NSManaged public var title: String
     @NSManaged public var type: String

@@ -512,7 +512,7 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) || topic.path == nil {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
@@ -1047,7 +1047,7 @@ import WordPressComAnalytics
 
     func canSync() -> Bool {
         let appDelegate = WordPressAppDelegate.sharedInstance()
-        return (readerTopic != nil) && appDelegate.connectionAvailable
+        return (readerTopic != nil) && appDelegate.connectionAvailable && (readerTopic?.path != nil)
     }
 
 
