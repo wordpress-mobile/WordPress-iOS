@@ -894,7 +894,12 @@ static const NSUInteger ReaderPostTitleLength = 30;
     return [NSString makePlainText:string];
 }
 
-
+/**
+ Removes style and script tags from the specified string.
+ 
+ @param string The string to sanitize.
+ @return A the sanitized string.
+ */
 - (NSString *)removeForbiddenTags:(NSString *)string
 {
     if (!string) {
