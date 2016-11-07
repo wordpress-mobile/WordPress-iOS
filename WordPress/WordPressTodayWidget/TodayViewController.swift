@@ -40,7 +40,7 @@ class TodayViewController: UIViewController {
         visitorsCountLabel.text = "-"
         viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
         viewsCountLabel.text = "-"
-        
+
         changeTextColorIfIOS10()
 
         retrieveSiteConfiguration()
@@ -65,7 +65,7 @@ class TodayViewController: UIViewController {
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
     }
-    
+
     func changeTextColorIfIOS10() {
         if #available(iOS 10, *) {
             configureMeLabel.textColor = UIColor.blackColor()
