@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import <WordPressComStatsiOS/WPStatsViewController.h>
 
 @class Blog;
+@class WPStatsService;
 
 @interface StatsViewController : UIViewController
 
