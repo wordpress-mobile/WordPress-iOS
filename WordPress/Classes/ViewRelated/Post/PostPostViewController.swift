@@ -106,9 +106,9 @@ class PostPostViewController: UIViewController {
         UIView.animateWithDuration(0.66, animations: {
                 self.view.alpha = 0.0
             }) { (success) in
-                if self.view.window == appDelegate.testExtraWindow {
-                    appDelegate.testExtraWindow.hidden = true
-                    appDelegate.testExtraWindow = nil
+                if self.view.window == appDelegate.secondaryWindow {
+                    appDelegate.secondaryWindow.hidden = true
+                    appDelegate.secondaryWindow = nil
                 }
         }
 

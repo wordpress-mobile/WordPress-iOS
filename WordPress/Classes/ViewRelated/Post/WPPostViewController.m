@@ -782,7 +782,7 @@ EditImageDetailsViewControllerDelegate
     [postPostWindow addSubview:postPostVC.view];
     postPostWindow.windowLevel = UIWindowLevelAlert;
     postPostWindow.hidden = NO;
-    appDelegate.testExtraWindow = postPostWindow;
+    appDelegate.secondaryWindow = postPostWindow;
 }
 
 #pragma mark - Toolbar options
