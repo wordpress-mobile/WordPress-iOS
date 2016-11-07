@@ -56,7 +56,7 @@ struct RemoteNotification
 
     /// Raw Associated Metadata
     ///
-    let meta: NSDictionary?
+    let meta: [String: AnyObject]?
 
 
     /// Designed Initializer
@@ -80,6 +80,6 @@ struct RemoteNotification
         subject = document["subject"] as? [AnyObject]
         header = document["header"] as? [AnyObject]
         body = document["body"] as? [AnyObject]
-        meta = document["meta"] as? NSDictionary
+        meta = document["meta"] as? [String: AnyObject]
     }
 }
