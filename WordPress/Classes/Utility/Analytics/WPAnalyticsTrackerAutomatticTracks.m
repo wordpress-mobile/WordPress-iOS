@@ -771,12 +771,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             eventName = @"support_received_response_from_support";
             break;
-        case WPAnalyticsStatSupportSentMessage:
-            eventName = @"support_sent_message";
-            break;
-        case WPAnalyticsStatSupportSentReplyToSupportMessage:
-            eventName = @"support_sent_reply_to_support_message";
-            break;
         case WPAnalyticsStatSupportUserAcceptedTheSolution:
             eventName = @"support_user_accepted_the_solution";
             break;
