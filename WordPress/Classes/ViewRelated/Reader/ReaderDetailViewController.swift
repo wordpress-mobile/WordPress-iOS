@@ -386,7 +386,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     private func configureShareButton() {
         // Share button.
-        let image = UIImage(named: "icon-posts-share")!
+        let image = UIImage(named: "icon-posts-share")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, forState: .Normal)
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), forControlEvents: .TouchUpInside)
@@ -1064,3 +1064,6 @@ extension ReaderDetailViewController : UIScrollViewDelegate
     }
 
 }
+
+// Expand this view controller to full screen if possible
+extension ReaderDetailViewController: PrefersFullscreenDisplay {}
