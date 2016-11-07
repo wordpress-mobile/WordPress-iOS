@@ -426,7 +426,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
 
         // Handle popping from fullscreen view controllers
-        
+
         let hasFullscreenViewControllersInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count > 0
         let isCurrentlyFullscreen = preferredDisplayMode != .AllVisible
 

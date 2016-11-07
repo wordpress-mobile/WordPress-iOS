@@ -215,6 +215,7 @@ import WordPressComAnalytics
         setupTableViewHandler()
         setupSyncHelper()
         setupResultsStatusView()
+        setupNavigationItem()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -226,7 +227,6 @@ import WordPressComAnalytics
             displayLoadingStream()
         }
     }
-
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -372,6 +372,10 @@ import WordPressComAnalytics
         resultsStatusView = WPNoResultsView()
     }
 
+    private func setupNavigationItem() {
+        // Hide the back button title
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+    }
 
     private func setupFooterView() {
         guard let footer = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
@@ -1716,7 +1720,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         }
 
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 
 
