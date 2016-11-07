@@ -270,6 +270,25 @@ class WPSplitViewController: UISplitViewController {
     }
 
     private var detailNavigationStackHasBeenModified = false
+
+    private static let fullscreenTransitionAnimationDuration: NSTimeInterval = 0.4
+
+    /// Shows or hides the primary view controller pane.
+    ///
+    /// - Parameter hidden: If `true`, hide the primary view controller.
+    func setPrimaryViewControllerHidden(hidden: Bool, animated: Bool = true) {
+        let updateDisplayMode = {
+            self.preferredDisplayMode = (hidden) ? .PrimaryHidden : .AllVisible
+        }
+
+        if animated {
+            UIView.animateWithDuration(WPSplitViewController.fullscreenTransitionAnimationDuration) {
+                updateDisplayMode()
+            }
+        } else {
+            updateDisplayMode()
+        }
+    }
 }
 
 // MARK: - UISplitViewControllerDelegate
@@ -405,6 +424,29 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         if navigationController.viewControllers.count > 1 {
             detailNavigationStackHasBeenModified = true
         }
+
+        // Handle popping from fullscreen view controllers
+        
+        let hasFullscreenViewControllersInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count > 0
+        let isCurrentlyFullscreen = preferredDisplayMode != .AllVisible
+
+        // If we're currently in fullscreen mode, and there are no view controllers
+        // left in the navigation stack that prefer to be fullscreen, then
+        // animate back to a standard split view.
+        if animated && isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
+            setPrimaryViewControllerHidden(false, animated: true)
+
+            if !isViewHorizontallyCompact() {
+                navigationController.navigationBar.fadeOutNavigationItems(true)
+            }
+        }
+    }
+
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        if !isViewHorizontallyCompact() {
+            // Restore navigation items after a push or pop if they were previously hidden
+            navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
+        }
     }
 
     private func dimDetailViewControllerIfNecessary() {
@@ -423,6 +465,19 @@ extension UIViewController {
         return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
     }
 }
+
+/// Used to indicate whether a view controller would prefer its splitview
+/// to hide the primary view controller pane.
+///
+/// This isn't actually used on presentation of a view controller, but is used
+/// to keep track of whether any view controllers in the navigation stack
+/// would like to be fullscreen.
+///
+/// Once we've pushed a fullscreen view controller, the split view will remain
+/// in fullscreen until the `navigationController(_:willShowViewController:animated:)`
+/// delegate method detects that there are no fullscreen view controllers left
+/// in the stack.
+protocol PrefersFullscreenDisplay: class {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 
