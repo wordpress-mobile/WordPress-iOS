@@ -13,6 +13,12 @@ protocol WPRichContentViewDelegate: UITextViewDelegate
 ///
 class WPRichContentView: UITextView
 {
+    struct Constants {
+        static let photonQuality = 65
+        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, -16.0, 0.0)
+        static let defaultAttachmentHeight = CGFloat(150.0)
+    }
+
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -29,7 +35,7 @@ class WPRichContentView: UITextView
         let source = WPTableImageSource(maxSize: self.maxDisplaySize)
         source.delegate = self
         source.forceLargerSizeWhenFetching = false
-        source.photonQuality = 65
+        source.photonQuality = Constants.photonQuality
         return source
     }()
 
@@ -51,7 +57,12 @@ class WPRichContentView: UITextView
         }
         set {
             let str = newValue ?? ""
-            let style = "<style>body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } a { color: #0087be; text-decoration: none; } a:active { color: #005082 } blockquote { font-style: italic; color:#4f748e; } </style>"
+            let style = "<style>" +
+                "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
+                "a { color: #0087be; text-decoration: none; } " +
+                "a:active { color: #005082 } " +
+                "blockquote { font-style: italic; color:#4f748e; } " +
+                "</style>"
             let content = style + str
             let attrTxt = try! NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil)
             attributedText = attrTxt
@@ -80,7 +91,7 @@ class WPRichContentView: UITextView
         _ = attachmentManager
 
         // Remove some of the unnecessary space at the bottom of the scrollable area.
-        textContainerInset = UIEdgeInsetsMake(0.0, 0.0, -16.0, 0.0)
+        textContainerInset = Constants.textContainerInset
     }
 
 }
@@ -107,7 +118,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     func embedForAttachment(attachment: WPTextAttachment) -> WPRichTextEmbed {
         let width: CGFloat = attachment.width ?? textContainer.size.width
-        let height: CGFloat = attachment.height ?? 150.0
+        let height: CGFloat = attachment.height ?? Constants.defaultAttachmentHeight
         let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
 
         attachment.maxSize = CGSize(width: width, height: height)
