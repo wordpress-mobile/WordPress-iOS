@@ -58,7 +58,7 @@ class Notification: NSManagedObject
 
     /// Raw Associated Metadata
     ///
-    @NSManaged var meta: NSDictionary?
+    @NSManaged var meta: [String: AnyObject]?
 
     /// Timestamp As Date Transient Storage.
     ///
