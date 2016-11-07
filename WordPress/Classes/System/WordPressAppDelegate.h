@@ -21,7 +21,7 @@
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
 @property (nonatomic, strong,  readonly) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readonly) BOOL                            testSuiteIsRunning;
-@property (strong) UIWindow *testExtraWindow;
+@property (strong) UIWindow *secondaryWindow;
 
 + (WordPressAppDelegate *)sharedInstance;
 
