@@ -765,7 +765,7 @@ private extension NotificationDetailsViewController
         }
 
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        navigationController?.pushViewController(readerViewController, animated: true)
+        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
     func displayCommentsWithPostId(postID: NSNumber?, siteID: NSNumber?) throws {
