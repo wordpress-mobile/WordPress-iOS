@@ -809,6 +809,7 @@
 		E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */; };
 		E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */; };
 		E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */; };
+		E6A216931DCE857100E7DF73 /* WPRichTextFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A216921DCE857100E7DF73 /* WPRichTextFormatterTests.swift */; };
 		E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */; };
 		E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */; };
 		E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384F1BB0A70F00371587 /* ReaderGapMarkerCell.swift */; };
@@ -2148,6 +2149,7 @@
 		E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationWebViewController.m; sourceTree = "<group>"; };
 		E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderMenuViewModel.swift; sourceTree = "<group>"; };
 		E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPostTest.swift; sourceTree = "<group>"; };
+		E6A216921DCE857100E7DF73 /* WPRichTextFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPRichTextFormatterTests.swift; sourceTree = "<group>"; };
 		E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderGapMarker.h; sourceTree = "<group>"; };
 		E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderGapMarker.m; sourceTree = "<group>"; };
 		E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderGapMarkerCell.xib; sourceTree = "<group>"; };
@@ -4409,6 +4411,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				E6A216911DCE851000E7DF73 /* WPRichText */,
 				FF9839A71CD3960600E85258 /* WordPressAPI */,
 				BEA0E4821BD8353B000AEE81 /* System */,
 				E1C9AA541C1041E600732665 /* Extensions */,
@@ -4825,6 +4828,14 @@
 				E66969E31B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift */,
 			);
 			name = "37-38";
+			sourceTree = "<group>";
+		};
+		E6A216911DCE851000E7DF73 /* WPRichText */ = {
+			isa = PBXGroup;
+			children = (
+				E6A216921DCE857100E7DF73 /* WPRichTextFormatterTests.swift */,
+			);
+			name = WPRichText;
 			sourceTree = "<group>";
 		};
 		E6B9B8AB1B94EA710001B92F /* Reader */ = {
@@ -6419,6 +6430,7 @@
 				E124CE721C86D27100F7BA99 /* StoreTests.swift in Sources */,
 				B5744A1E1C3D8FA700A3B8DC /* InteractiveNotificationsManagerTests.m in Sources */,
 				B5EFB1C91B333C5A007608A3 /* NotificationSettingsServiceTests.swift in Sources */,
+				E6A216931DCE857100E7DF73 /* WPRichTextFormatterTests.swift in Sources */,
 				FF34EEA91CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift in Sources */,
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */,
