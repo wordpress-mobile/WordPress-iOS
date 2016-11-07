@@ -111,9 +111,11 @@ public class StartOverViewController: UITableViewController
     }
 
     private func helpshiftMetadata(blog: Blog) -> [NSObject: AnyObject] {
-        let options: [String: String] = [
+        let tags = blog.account.map({ HelpshiftUtils.planTagsForAccount($0) }) ?? []
+        let options: [String: AnyObject] = [
             "Source": "Start Over",
             "Blog": blog.logDescription(),
+            HelpshiftSupportTagsKey: tags
             ]
 
         return [HelpshiftSupportCustomMetadataKey: options]
