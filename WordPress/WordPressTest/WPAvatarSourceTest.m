@@ -28,8 +28,9 @@
 
 - (void)tearDown
 {
-    _source = nil;
     [_source performSelector:@selector(purgeCaches)];
+    _source = nil;
+
     [OHHTTPStubs removeAllStubs];
 
     [super tearDown];

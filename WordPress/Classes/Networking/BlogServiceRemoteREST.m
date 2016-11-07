@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteREST.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "WordPress-Swift.h"
+#import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
 #import "RemotePostType.h"
 
@@ -84,8 +85,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncOptionsWithSuccess:(OptionsHandler)success
-                       failure:(void (^)(NSError *))failure
+- (void)syncSiteDetailsWithSuccess:(SiteDetailsHandler)success
+                           failure:(void (^)(NSError *))failure
 {
     NSString *path = [self pathForOptions];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -95,9 +96,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
        parameters:nil
           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
               NSDictionary *responseDict = (NSDictionary *)responseObject;
-              NSDictionary *options = [RemoteBlogOptionsHelper mapOptionsFromResponse:responseDict];
+              RemoteBlog *remoteBlog = [[RemoteBlog alloc] initWithJSONDictionary:responseDict];
               if (success) {
-                  success(options);
+                  success(remoteBlog);
               }
           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
               if (failure) {
