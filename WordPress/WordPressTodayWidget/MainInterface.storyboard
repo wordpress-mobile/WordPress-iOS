@@ -24,20 +24,17 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
                                 <rect key="frame" x="16" y="0.0" width="288" height="207"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="129"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="128.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="94"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="64.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                                <rect key="frame" x="0.0" y="94" width="288" height="35"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="35" id="IYJ-Oo-eFU"/>
-                                                </constraints>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
+                                                <rect key="frame" x="0.0" y="64.5" width="288" height="64"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <state key="normal" title="Open WordPress">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -48,17 +45,20 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
-                                        <rect key="frame" x="0.0" y="129" width="288" height="78"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
+                                        <rect key="frame" x="0.0" y="128.5" width="288" height="78.5"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="E8n-jC-Xnl"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8">
-                                                <rect key="frame" x="0.0" y="20.5" width="288" height="57.5"/>
+                                                <rect key="frame" x="0.0" y="21" width="288" height="57.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pOr-4w-uA8">
                                                         <rect key="frame" x="0.0" y="0.0" width="144" height="57.5"/>
@@ -111,9 +111,7 @@
                                     <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="top" id="0Ze-Rg-4jY"/>
                                     <constraint firstAttribute="trailing" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="1YW-lt-C2t"/>
                                     <constraint firstAttribute="bottom" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="L9x-tD-ssX"/>
-                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="top" secondItem="SgL-dy-2cu" secondAttribute="bottom" id="Ylf-IU-P1a"/>
                                     <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="j9j-hx-ycm"/>
-                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="top" secondItem="SgL-dy-2cu" secondAttribute="bottom" id="k1M-Y6-8Mz"/>
                                     <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="pUZ-qW-3lK"/>
                                     <constraint firstAttribute="trailing" secondItem="SgL-dy-2cu" secondAttribute="trailing" id="qjg-dJ-QwA"/>
                                 </constraints>
