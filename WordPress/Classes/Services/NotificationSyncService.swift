@@ -52,6 +52,8 @@ class NotificationSyncService
 
     /// Syncs the latest *maximumNotes*:
     ///
+    /// - Note: This method should only be used on the main thread.
+    ///
     /// - Latest 100 hashes are retrieved (++efficiency++)
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
@@ -92,6 +94,8 @@ class NotificationSyncService
 
     /// Sync's Notification matching the specified ID, and updates the local entity.
     ///
+    /// - Note: This method should only be used on the main thread.
+    ///
     /// - Parameters:
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
@@ -118,6 +122,8 @@ class NotificationSyncService
 
     /// Marks a Notification as Read. On error, proceeds to revert the change.
     ///
+    /// - Note: This method should only be used on the main thread.
+    ///
     /// - Parameters:
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
@@ -141,6 +147,8 @@ class NotificationSyncService
 
 
     /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
+    ///
+    /// - Note: This method should only be used on the main thread.
     ///
     /// - Parameters:
     ///     - timestamp: Timestamp of the last seen notification.
