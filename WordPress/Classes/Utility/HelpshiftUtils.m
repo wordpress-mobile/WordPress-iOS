@@ -153,7 +153,7 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     } else if ([newMessage isEqualToString:HelpshiftSupportUserReviewedTheApp]) {
         [WPAnalytics track:WPAnalyticsStatSupportUserReviewedTheApp];
     } else {
-        [WPAnalytics track:WPAnalyticsStatSupportSentReplyToSupportMessage];
+        [WPAnalytics track:WPAnalyticsStatSupportUserRepliedToHelpshift];
     }
 }
 
