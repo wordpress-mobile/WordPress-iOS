@@ -87,6 +87,10 @@ class Notification: NSManagedObject
     override func willChangeValueForKey(key: String) {
         super.willChangeValueForKey(key)
 
+        // Note:
+        // Cached Attributes are only consumed on the main thread, when initializing UI elements.
+        // As an optimization, we'll only reset those attributes when we're running on the main thread.
+        //
         guard managedObjectContext?.concurrencyType == .MainQueueConcurrencyType else {
             return
         }
