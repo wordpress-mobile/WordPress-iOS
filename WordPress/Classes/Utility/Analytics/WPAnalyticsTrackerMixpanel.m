@@ -838,6 +838,22 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Replied to Helpshift"];
             [instructions addSuperPropertyToFlag:@"support_replied_to_helpshift"];
             break;
+        case WPAnalyticsStatSupportUserAcceptedTheSolution:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Accepted the Solution"];
+            [instructions addSuperPropertyToFlag:@"support_user_accepted_the_solution"];
+            break;
+        case WPAnalyticsStatSupportUserRejectedTheSolution:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Rejected the Solution"];
+            [instructions addSuperPropertyToFlag:@"support_user_rejected_the_solution"];
+            break;
+        case WPAnalyticsStatSupportUserSentScreenshot:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Sent a Screenshot"];
+            [instructions addSuperPropertyToFlag:@"support_user_sent_screenshot"];
+            break;
+        case WPAnalyticsStatSupportUserReviewedTheApp:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Reviewed the App"];
+            [instructions addSuperPropertyToFlag:@"support_user_reviewed_the_app"];
+            break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
             break;
