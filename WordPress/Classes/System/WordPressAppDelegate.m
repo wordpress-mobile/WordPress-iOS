@@ -386,8 +386,12 @@ int ddLogLevel = DDLogLevelInfo;
     [KeychainTools processKeychainDebugArguments];
 #endif
 
+    // Don't set up helpshift if we are debugging.
+    // Allows testing of the app without helpshift credentials.
+#if !DEBUG
     [HelpshiftUtils setup];
-    
+#endif
+
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
