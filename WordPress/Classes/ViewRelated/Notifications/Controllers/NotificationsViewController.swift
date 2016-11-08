@@ -449,6 +449,10 @@ private extension NotificationsViewController
 
     @objc func notificationsWereUpdated(note: NSNotification) {
         // If we're onscreen, don't leave the badge updated behind
+        guard UIApplication.sharedApplication().applicationState == .Active else {
+            return
+        }
+
         resetApplicationBadge()
         updateLastSeenTime()
     }
