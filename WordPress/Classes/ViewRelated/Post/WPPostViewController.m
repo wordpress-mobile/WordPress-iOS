@@ -774,7 +774,7 @@ EditImageDetailsViewControllerDelegate
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
     UIWindow *postPostWindow = [[UIWindow alloc] initWithFrame:mainWindow.frame];
-    PostPostViewController *postPostVC = (PostPostViewController *) [[UIStoryboard storyboardWithName:@"Posts" bundle:nil] instantiateViewControllerWithIdentifier:@"PostPostViewController"];
+    PostPostViewController *postPostVC = (PostPostViewController *) [[UIStoryboard storyboardWithName:@"PostPost" bundle:nil] instantiateViewControllerWithIdentifier:@"PostPostViewController"];
     postPostVC.post = self.post;
 
     postPostWindow.frame = mainWindow.frame;
