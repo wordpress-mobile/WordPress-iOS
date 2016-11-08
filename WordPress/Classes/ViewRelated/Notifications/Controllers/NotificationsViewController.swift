@@ -498,8 +498,10 @@ extension NotificationsViewController
         }
 
         // Mark as Read
-        let service = NotificationSyncService()
-        service?.markAsRead(note)
+        if note.read == false {
+            let service = NotificationSyncService()
+            service?.markAsRead(note)
+        }
 
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
