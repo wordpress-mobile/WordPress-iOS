@@ -1,14 +1,25 @@
 import Foundation
 import CoreData
-import Simperium
 
 
 
 // MARK: - Notification Entity
 //
 @objc(Notification)
-class Notification: SPManagedObject
+class Notification: NSManagedObject
 {
+    /// Notification Primary Key!
+    ///
+    @NSManaged var notificationId: String
+
+    /// Notification Hash!
+    ///
+    @NSManaged var notificationHash: String?
+
+    /// Indicates whether the note was already read, or not
+    ///
+    @NSManaged var read: Bool
+
     /// Associated Resource's Icon, as a plain string
     ///
     @NSManaged var icon: String?
@@ -16,10 +27,6 @@ class Notification: SPManagedObject
     /// Noticon resource, associated with this notification
     ///
     @NSManaged var noticon: String?
-
-    /// Indicates whether the note was already read, or not
-    ///
-    @NSManaged var read: NSNumber?
 
     /// Timestamp as a String
     ///
@@ -51,7 +58,7 @@ class Notification: SPManagedObject
 
     /// Raw Associated Metadata
     ///
-    @NSManaged var meta: NSDictionary?
+    @NSManaged var meta: [String: AnyObject]?
 
     /// Timestamp As Date Transient Storage.
     ///
@@ -69,12 +76,35 @@ class Notification: SPManagedObject
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
+    /// Array that contains the Cached Property Names
+    ///
+    private static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
 
+
+    /// When needed, nukes cached attributes
+    ///
+    override func willChangeValueForKey(key: String) {
+        super.willChangeValueForKey(key)
+
+        // Note:
+        // Cached Attributes are only consumed on the main thread, when initializing UI elements.
+        // As an optimization, we'll only reset those attributes when we're running on the main thread.
+        //
+        guard managedObjectContext?.concurrencyType == .MainQueueConcurrencyType else {
+            return
+        }
+
+        guard self.dynamicType.cachedAttributes.contains(key) else {
+            return
+        }
+
+        resetCachedAttributes()
+    }
 
     /// Nukes any cached values.
     ///
-    override func didTurnIntoFault() {
+    private func resetCachedAttributes() {
         cachedTimestampAsDate = nil
         cachedSubjectBlockGroup = nil
         cachedHeaderBlockGroup = nil
@@ -216,13 +246,14 @@ extension Notification
     /// Parse the Timestamp as a Cocoa Date Instance.
     ///
     var timestampAsDate: NSDate {
-        assert(timestamp != nil, "Notification Timestamp should not be nil [\(simperiumKey)]")
+        assert(timestamp != nil, "Notification Timestamp should not be nil [\(notificationId)]")
 
         if let timestampAsDate = cachedTimestampAsDate {
             return timestampAsDate
         }
+
         guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
-            DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(simperiumKey)]")
+            DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(notificationId)]")
             return NSDate()
         }
 
@@ -289,6 +320,40 @@ extension Notification
         }
 
         return subjectBlocks.last
+    }
+}
+
+
+// MARK: - Core Data Helper
+//
+extension Notification: ManagedObject
+{
+    static var entityName: String {
+        return classNameWithoutNamespaces()
+    }
+}
+
+
+// MARK: - Update Helpers
+//
+extension Notification
+{
+    /// Updates the local fields with the new values stored in a given Remote Notification
+    ///
+    func update(with remote: RemoteNotification) {
+        notificationId = remote.notificationId
+        notificationHash = remote.notificationHash
+        read = remote.read
+        icon = remote.icon
+        noticon = remote.noticon
+        timestamp = remote.timestamp
+        type = remote.type
+        url = remote.url
+        title = remote.title
+        subject = remote.subject
+        header = remote.header
+        body = remote.body
+        meta = remote.meta
     }
 }
 
