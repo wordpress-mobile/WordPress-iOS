@@ -24,6 +24,11 @@ NSString *const WPTwitterWordPressMobileURL                         = @"https://
 NSString *const WPBlavatarBaseURL                                   = @"http://gravatar.com/blavatar";
 NSString *const WPGravatarBaseURL                                   = @"http://gravatar.com/avatar";
 
+/// Image file names
+///
+NSString *const WPIconShowPassword                                  = @"icon-secure-text-visible";
+NSString *const WPIconHidePassword                                  = @"icon-secure-text";
+
 /// Notifications Constants
 ///
 NSString *const WPNotificationsBucketName                           = @"note20";
