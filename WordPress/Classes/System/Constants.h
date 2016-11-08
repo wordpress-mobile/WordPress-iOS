@@ -24,6 +24,11 @@ extern NSString *const WPTwitterWordPressMobileURL;
 extern NSString *const WPBlavatarBaseURL;
 extern NSString *const WPGravatarBaseURL;
 
+/// Image file names
+///
+extern NSString *const WPIconShowPassword;
+extern NSString *const WPIconHidePassword;
+
 /// Notifications Constants
 ///
 extern NSString *const WPNotificationsBucketName;

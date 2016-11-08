@@ -1,4 +1,5 @@
 #import "WPWalkthroughTextField.h"
+#import "Constants.h"
 #import "WPNUXUtility.h"
 
 @interface WPWalkthroughTextField ()
@@ -56,8 +57,8 @@
     self.showTopLineSeparator = NO;
     self.showSecureTextEntryToggle = NO;
 
-    self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible"];
-    self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text"];
+    self.secureTextEntryImageVisible = [UIImage imageNamed:WPIconShowPassword];
+    self.secureTextEntryImageHidden = [UIImage imageNamed:WPIconHidePassword];
 
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
     self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);

@@ -54,6 +54,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
+@property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
@@ -184,7 +185,30 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self reloadData];
+    //[self reloadData];
+}
+
+#pragma mark - Password Field
+
+- (void)togglePasswordVisibility
+{
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    [self refreshPasswordVisibilityButton];
+}
+
+- (void)refreshPasswordVisibilityButton
+{
+    BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
+    
+    if (passwordIsVisible) {
+        UIImage* hidePasswordButton = [UIImage imageNamed:WPIconHidePassword];
+
+        [self.passwordVisibilityButton setImage:hidePasswordButton forState:UIControlStateNormal];
+    } else {
+        UIImage* showPasswordButton = [UIImage imageNamed:WPIconShowPassword];
+        
+        [self.passwordVisibilityButton setImage:showPasswordButton forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - Additional setup
@@ -592,12 +616,22 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
         textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textCell.textField.secureTextEntry = YES;
-
+        
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
         
         self.passwordTextField = textCell.textField;
         self.passwordTextField.accessibilityIdentifier = @"Password Value";
+        
+        // Password visibility button
+        
+        self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.passwordVisibilityButton.frame = CGRectMake(0, 0, 20, 20);
+        [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self refreshPasswordVisibilityButton];
+        
+        textCell.accessoryView = self.passwordVisibilityButton;
     }
 
     return cell;
