@@ -1,7 +1,6 @@
 #import "SettingsTextViewController.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WordPress-Swift.h"
 
 
