@@ -259,7 +259,7 @@
                                                     <constraint firstItem="QfA-49-DqU" firstAttribute="leading" secondItem="JlZ-Ko-7ni" secondAttribute="leading" id="RCK-eH-qgR"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="TDP-in-QyS">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="TDP-in-QyS">
                                                 <rect key="frame" x="0.0" y="459" width="311" height="176"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0tf-vO-x8h" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
@@ -302,6 +302,11 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="ecV-rp-zZ9" firstAttribute="width" secondItem="TDP-in-QyS" secondAttribute="width" id="00h-PX-Mzg"/>
+                                                    <constraint firstItem="0tf-vO-x8h" firstAttribute="width" secondItem="TDP-in-QyS" secondAttribute="width" id="Kde-oc-Sh3"/>
+                                                    <constraint firstItem="TgM-JA-Oto" firstAttribute="width" secondItem="TDP-in-QyS" secondAttribute="width" id="d49-hI-vSH"/>
+                                                </constraints>
                                             </stackView>
                                         </subviews>
                                     </stackView>
@@ -342,12 +347,17 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="actionsStackView" destination="TDP-in-QyS" id="tYW-Mo-fij"/>
+                        <outlet property="editButton" destination="TgM-JA-Oto" id="4on-kT-zFJ"/>
+                        <outlet property="editButtonWidth" destination="d49-hI-vSH" id="HQi-gR-hQT"/>
                         <outlet property="navBar" destination="DDC-L5-est" id="cu5-lg-IEu"/>
                         <outlet property="shareButton" destination="0tf-vO-x8h" id="4v3-Gl-WIv"/>
+                        <outlet property="shareButtonWidth" destination="Kde-oc-Sh3" id="m9d-Hp-DAU"/>
                         <outlet property="siteIconView" destination="MFc-TE-gkF" id="m8l-P3-wGK"/>
                         <outlet property="siteNameLabel" destination="iHQ-32-xX4" id="paF-0d-myX"/>
                         <outlet property="siteUrlLabel" destination="VEc-8l-LwY" id="bHw-HL-jX2"/>
                         <outlet property="titleLabel" destination="Cen-sW-omS" id="4fX-wL-arO"/>
+                        <outlet property="viewButton" destination="ecV-rp-zZ9" id="kkR-VG-jhb"/>
+                        <outlet property="viewButtonWidth" destination="00h-PX-Mzg" id="kfG-tf-g5l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P5n-CP-UsA" userLabel="First Responder" sceneMemberID="firstResponder"/>

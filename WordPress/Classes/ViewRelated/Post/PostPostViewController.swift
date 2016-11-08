@@ -16,8 +16,13 @@ class PostPostViewController: UIViewController {
     @IBOutlet var siteNameLabel:UILabel!
     @IBOutlet var siteUrlLabel:UILabel!
     @IBOutlet var shareButton:UIButton!
+    @IBOutlet var editButton:UIButton!
+    @IBOutlet var viewButton:UIButton!
     @IBOutlet var navBar:UINavigationBar!
     @IBOutlet var actionsStackView:UIStackView!
+    @IBOutlet var shareButtonWidth:NSLayoutConstraint!
+    @IBOutlet var editButtonWidth:NSLayoutConstraint!
+    @IBOutlet var viewButtonWidth:NSLayoutConstraint!
     var post:Post?
 
     override func viewDidLoad() {
@@ -43,21 +48,77 @@ class PostPostViewController: UIViewController {
         navBar.setBackgroundImage(clearImage, forBarMetrics: .Default)
 
         self.view.alpha = 0
-        self.actionsStackView.alpha = 0
+        self.shareButton.alpha = 0
+        self.editButton.alpha = 0
+        self.viewButton.alpha = 0
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.actionsStackView.layer.transform = CATransform3DMakeTranslation(0, 100, 0)
-        self.actionsStackView.alpha = 1
+        //actionsStackView.layer.transform = CATransform3DMakeTranslation(0, 10, 0)
+        shareButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+        editButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+        viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+        view.layoutIfNeeded()
+//
+//        UIView.animateWithDuration(0.66, delay:0, options:UIViewAnimationOptions.CurveEaseIn, animations: {
+//            self.view.alpha = 1
+//
+//            }, completion: { (success) in
+//                self.shareButtonWidth.constant = 0
+//                UIView.animateWithDuration(0.6, delay: 0.5, options: UIViewAnimationOptions.CurveLinear, animations: {
+//                        //self.actionsStackView.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
+//                        self.view.layoutIfNeeded()
+//                        self.editButtonWidth.constant = 0
+//                        UIView.animateWithDuration(0.6, delay: 0.5, options: UIViewAnimationOptions.CurveLinear, animations: {
+//                            self.view.layoutIfNeeded()
+//                        }, completion: nil)
+//
+//                    }, completion: nil)
+//
+//        })
 
-        UIView.animateWithDuration(0.66, delay:0, options:UIViewAnimationOptions.CurveEaseIn, animations: {
+//        UIView.animateKeyframesWithDuration(0.44, delay: 0, options: UIViewKeyframeAnimationOptions(rawValue: UIViewAnimationOptions.CurveEaseOut.rawValue), animations: {
+//            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0.5, animations: {
+//                self.view.alpha = 1
+//            })
+//            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0.8, animations: {
+//                self.shareButton.alpha = 1
+//                self.shareButtonWidth.constant = 0
+//                self.view.layoutIfNeeded()
+//            })
+//            UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0.9, animations: {
+//                self.editButton.alpha = 1
+//                self.editButtonWidth.constant = 0
+//                self.view.layoutIfNeeded()
+//            })
+//            UIView.addKeyframeWithRelativeStartTime(0.2, relativeDuration: 1.0, animations: {
+//                self.viewButton.alpha = 1
+//                self.viewButtonWidth.constant = 0
+//                self.view.layoutIfNeeded()
+//            })
+//        }) { (success) in
+//
+//        }
+        UIView.animateWithDuration(0.33, delay: 0.1, options: .CurveEaseOut, animations: {
             self.view.alpha = 1
-            self.actionsStackView.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
-            }, completion: { (success) in
-
-        })
+            }, completion: nil)
+        UIView.animateWithDuration(0.33, delay: 0.3, options: .CurveEaseOut, animations: {
+            self.shareButton.alpha = 1
+            self.shareButtonWidth.constant = 0
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        UIView.animateWithDuration(0.33, delay: 0.4, options: .CurveEaseOut, animations: {
+            self.editButton.alpha = 1
+            self.editButtonWidth.constant = 0
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        UIView.animateWithDuration(0.33, delay: 0.5, options: .CurveEaseOut, animations: {
+            self.viewButton.alpha = 1
+            self.viewButtonWidth.constant = 0
+            self.view.layoutIfNeeded()
+            }, completion: nil)
     }
 
     override func prefersStatusBarHidden() -> Bool {
