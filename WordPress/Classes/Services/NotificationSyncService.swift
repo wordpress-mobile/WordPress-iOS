@@ -12,25 +12,35 @@ class NotificationSyncService
 {
     /// Returns the Main Managed Context
     ///
-    private var contextManager = ContextManager.sharedInstance()
+    private let contextManager: ContextManager
 
     /// Sync Service Remote
     ///
-    private var remote: NotificationSyncServiceRemote!
+    private let remote: NotificationSyncServiceRemote
 
     /// Maximum number of Notes to Sync
     ///
     private let maximumNotes = 100
 
+    /// Returns the main CoredAta Context
+    ///
+    private var mainContext: NSManagedObjectContext {
+        return contextManager.mainContext
+    }
+
+
 
     /// Designed Initializer
     ///
-    init?() {
-        guard let dotcomAPI = dotcomAPI else {
+    convenience init?() {
+        let manager = ContextManager.sharedInstance()
+        let service = AccountService(managedObjectContext: manager.mainContext)
+
+        guard let dotcomAPI = service.defaultWordPressComAccount()?.wordPressComRestApi else {
             return nil
         }
 
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+        self.init(manager: manager, dotcomAPI: dotcomAPI)
     }
 
     /// Initializer: Useful for Unit Testing
@@ -282,31 +292,5 @@ private extension NotificationSyncService
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.postNotificationName(NotificationSyncServiceDidUpdateNotifications, object: nil)
-    }
-}
-
-
-// MARK: - Private Properties
-//
-private extension NotificationSyncService
-{
-    /// Returns the main CoredAta Context
-    ///
-    var mainContext: NSManagedObjectContext {
-        return contextManager.mainContext
-    }
-
-
-    /// Returns the WordPress.com REST API, if any
-    ///
-    var dotcomAPI: WordPressComRestApi? {
-        let service = AccountService(managedObjectContext: mainContext)
-        let account = service.defaultWordPressComAccount()
-
-        guard let dotcomAPI = account?.wordPressComRestApi where dotcomAPI.hasCredentials() else {
-            return nil
-        }
-
-        return dotcomAPI
     }
 }
