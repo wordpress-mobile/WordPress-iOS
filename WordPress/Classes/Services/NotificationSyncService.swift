@@ -274,6 +274,9 @@ private extension NotificationSyncService
 
     /// Updates the Read status, of a given Notification, as specified.
     ///
+    /// Note: This method uses *saveContextAndWait* in order to prevent animation glitches when pushing
+    /// Notification Details.
+    ///
     /// - Parameters:
     ///     - status: New *read* value
     ///     - noteObjectID: CoreData ObjectID
@@ -282,7 +285,7 @@ private extension NotificationSyncService
         let helper = CoreDataHelper<Notification>(context: mainContext)
         let note = helper.loadObject(withObjectID: noteObjectID)
         note?.read = status
-        contextManager.saveContext(mainContext)
+        contextManager.saveContextAndWait(mainContext)
     }
 
 
