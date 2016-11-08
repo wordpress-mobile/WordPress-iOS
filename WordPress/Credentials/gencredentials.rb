@@ -117,17 +117,6 @@ print <<-EOF
 EOF
 end
 
-def print_simperium(simperium_api_key, simperium_app_id)
-print <<-EOF
-+ (NSString *)simperiumAppId {
-	return @"#{simperium_app_id}";
-}
-+ (NSString *)simperiumAPIKey {
-	return @"#{simperium_api_key}";
-}
-EOF
-end
-
 def print_debugging_key(debugging_key)
 print <<-EOF
 + (NSString *)debuggingKey {
@@ -152,7 +141,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -167,7 +156,6 @@ EOF
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
-  print_simperium(simperium_api_key, simperium_app_id)
   print_debugging_key(debugging_key)
   print_lookback_token(lookback_token)
   print_appbotx_api_key(appbotx_api_key)
@@ -194,8 +182,6 @@ mixpanel_prod = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
-simperium_api_key = nil
-simperium_app_id = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -221,10 +207,6 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
-    elsif k == "SIMPERIUM_API_KEY"
-      simperium_api_key = v.chomp
-    elsif k == "SIMPERIUM_APP_ID"
-      simperium_app_id = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -270,10 +252,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Plus API key not found"
   end
 
-  if simperium_api_key.nil? || simperium_app_id.nil?
-    $stderr.puts "warning: Simperium keys not found"
-  end
-
   if helpshift_api_key.nil? || helpshift_domain_name.nil? || helpshift_app_id.nil?
     $stderr.puts "warning: Helpshift keys not found"
   end
@@ -293,4 +271,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
