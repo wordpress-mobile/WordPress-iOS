@@ -44,11 +44,14 @@ import WordPressShared
 
         titleLabel.text = siteTopic.title
         detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
-        if siteTopic.following {
-            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
-        } else {
-            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
-        }
+
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        followButton.selected = topic.following
+//        if siteTopic.following {
+//            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
+//        } else {
+//            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
+//        }
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)

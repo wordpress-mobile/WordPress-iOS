@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -234,34 +235,24 @@ extension WPStyleGuide
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderStreamHeaderFollowingStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Following", comment: "Gerund. A button label indicating the user is currently subscribed to a topic or site in ther eader. Tapping unsubscribes the user.")
+    public class func applyReaderFollowButtonStyle(button: UIButton) {
+        let side = button.titleLabel?.font.pointSize ?? Cards.buttonFontSize
+        let size = CGSize(width: side, height: side)
+        let followStr = NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+        let followingStr = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
 
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
+        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
+        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        button.setTitleColor(validGreen(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        button.setImage(tintedFollowIcon, forState: .Normal)
+        button.setImage(tintedFollowingIcon, forState: .Selected)
+        button.setImage(highlightIcon, forState: .Highlighted)
 
-        button.setImage(UIImage(named: "icon-reader-following"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
-    }
-
-    public class func applyReaderStreamHeaderNotFollowingStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Follow", comment: "Verb. A button label. Tapping subscribes the user to a topic or site in the reader")
-
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
-
-        button.setTitleColor(greyLighten10(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
-
-        button.setImage(UIImage(named: "icon-reader-follow"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
+        button.setTitle(followStr, forState: .Normal)
+        button.setTitle(followingStr, forState: .Selected)
     }
 
     public class func applyReaderSiteStreamDescriptionStyle(label:UILabel) {

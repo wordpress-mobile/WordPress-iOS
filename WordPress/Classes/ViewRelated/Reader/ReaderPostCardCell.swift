@@ -131,7 +131,7 @@ import Gridicons
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupTag()
-        setupFollowButton()
+//        setupFollowButton()
         setupVisitButton()
         setupShareButton()
         setupSummaryLabel()
@@ -188,25 +188,25 @@ import Gridicons
         likeActionButton.setImage(selectedImage, forState: .Selected)
     }
 
-    private func setupFollowButton() {
-        let side = followButton.titleLabel!.font.pointSize
-        let size = CGSize(width: side, height: side)
-        let followStr = NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-        let followingStr = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-
-        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
-        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
-        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
-        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
-
-        followButton.setImage(tintedFollowIcon, forState: .Normal)
-        followButton.setImage(tintedFollowingIcon, forState: .Selected)
-        followButton.setImage(highlightIcon, forState: .Highlighted)
-
-        followButton.setTitle(followStr, forState: .Normal)
-        followButton.setTitle(followingStr, forState: .Selected)
-    }
+//    private func setupFollowButton() {
+//        let side = followButton.titleLabel!.font.pointSize
+//        let size = CGSize(width: side, height: side)
+//        let followStr = NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+//        let followingStr = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+//
+//        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
+//        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+//        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+//        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+//        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
+//
+//        followButton.setImage(tintedFollowIcon, forState: .Normal)
+//        followButton.setImage(tintedFollowingIcon, forState: .Selected)
+//        followButton.setImage(highlightIcon, forState: .Highlighted)
+//
+//        followButton.setTitle(followStr, forState: .Normal)
+//        followButton.setTitle(followingStr, forState: .Selected)
+//    }
 
     private func setupVisitButton() {
         let size = CGSize(width: 20, height: 20)
@@ -240,6 +240,7 @@ import Gridicons
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
         borderedView.layer.borderWidth = 1.0
 
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
