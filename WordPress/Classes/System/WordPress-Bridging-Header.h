@@ -154,7 +154,6 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #import <FLAnimatedImage/FLAnimatedImage.h>
