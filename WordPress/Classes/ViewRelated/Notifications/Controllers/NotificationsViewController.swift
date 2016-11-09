@@ -132,7 +132,6 @@ class NotificationsViewController : UITableViewController
     }
 
 
-
     // MARK: - UITableView Methods
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -217,7 +216,7 @@ class NotificationsViewController : UITableViewController
             return
         }
 
-        detailsViewController.setupWithNotification(note)
+        detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
