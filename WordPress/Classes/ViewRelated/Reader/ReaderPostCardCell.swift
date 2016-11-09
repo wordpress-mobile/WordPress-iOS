@@ -41,6 +41,8 @@ import Gridicons
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
+    @IBOutlet private weak var shareButton: UIButton!
+    @IBOutlet private weak var visitButton: UIButton!
     @IBOutlet private weak var likeActionButton: UIButton!
     @IBOutlet private weak var commentActionButton: UIButton!
     @IBOutlet private weak var menuButton: UIButton!
@@ -126,6 +128,8 @@ import Gridicons
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupFollowButton()
+        setupVisitButton()
+        setupShareButton()
         setupSummaryLabel()
         setupAttributionView()
         setupCommentActionButton()
@@ -177,16 +181,40 @@ import Gridicons
 
         let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
-        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.wordPressBlue())
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
         let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
 
         followButton.setImage(tintedFollowIcon, forState: .Normal)
         followButton.setImage(tintedFollowingIcon, forState: .Selected)
-        followButton.setTitleColor(WPStyleGuide.wordPressBlue(), forState: .Normal)
-        followButton.setTitleColor(WPStyleGuide.validGreen(), forState: .Selected)
+        followButton.setImage(highlightIcon, forState: .Highlighted)
 
         followButton.setTitle(followStr, forState: .Normal)
         followButton.setTitle(followingStr, forState: .Selected)
+    }
+
+    private func setupVisitButton() {
+        let size = CGSize(width: 20, height: 20)
+        let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
+        let icon = Gridicon.iconOfType(.External, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        visitButton.setTitle(title, forState: .Normal)
+        visitButton.setImage(tintedIcon, forState: .Normal)
+        visitButton.setImage(highlightIcon, forState: .Highlighted)
+    }
+
+    private func setupShareButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.Share, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        // No title.
+        shareButton.setTitle("", forState: .Normal)
+        shareButton.setImage(tintedIcon, forState: .Normal)
+        shareButton.setImage(highlightIcon, forState: .Highlighted)
     }
 
     /**
@@ -204,6 +232,8 @@ import Gridicons
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(shareButton)
     }
 
 
@@ -464,6 +494,14 @@ import Gridicons
             return
         }
         delegate?.readerCell(self, tagActionForProvider: contentProvider!)
+    }
+
+    @IBAction func didTapVisitButton(sender: UIButton) {
+
+    }
+
+    @IBAction func didTapShareButton(sender: UIButton) {
+
     }
 
     @IBAction func didTapActionButton(sender: UIButton) {
