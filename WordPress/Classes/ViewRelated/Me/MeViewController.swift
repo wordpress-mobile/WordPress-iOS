@@ -6,6 +6,7 @@ import Gridicons
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
+    var accountHelper: AccountSelectionHelper?
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return self.init()
@@ -37,6 +38,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let accountHelper = switchAccountHelper()
+        self.navigationItem.titleView = accountHelper.titleView
 
         // Preventing MultiTouch Scenarios
         view.exclusiveTouch = true
@@ -73,6 +77,22 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // Required to update the tableview cell disclosure indicators
         reloadViewModel()
+    }
+
+    func switchAccountHelper() -> AccountSelectionHelper {
+        let accounts: [Account] = self.retrieveAccounts()
+
+        var navBarHeight = self.navigationController?.navigationBar.frame.size.height
+        if (navBarHeight == nil) {
+            navBarHeight = 44
+        }
+        let accountHelper = AccountSelectionHelper(parentView: self.view,
+                                                   accounts: accounts,
+                                                   delegate: self,
+                                                   height: navBarHeight!)
+
+        accountHelper.delegate = self
+        return accountHelper
     }
 
     @objc private func accountDidChange() {
@@ -122,7 +142,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return headerView
     }
 
-    private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+    func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .DisclosureIndicator : .None
 
         let myProfile = NavigationItemRow(
@@ -164,6 +184,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("Disconnect from WordPress.com", comment: "Label for disconnecting from WordPress.com account"),
             action: confirmLogout())
 
+        let addAccount = ButtonRow(
+            title:  NSLocalizedString("Add WP Account", comment: "Add account for WordPress.com"),
+            action: addWPAccount())
+
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 
         if loggedIn {
@@ -181,6 +205,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
+                            addAccount,
                             logOut
                         ])
                 ])
@@ -286,6 +311,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    private func addWPAccount() -> ImmuTableAction {
+        return { [unowned self] row in
+            let signInWPComViewController = SigninWPComViewController.controller(LoginFields(), immediateSignin: false)
+            signInWPComViewController.restrictSigninToWPCom = true
+            let navController = NUXNavigationController(rootViewController: signInWPComViewController)
+            self.presentViewController(navController, animated: true, completion: nil)
+        }
+    }
+
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
@@ -308,6 +342,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 style: .Destructive,
                 handler: { [unowned self] _ in
                 self.logOut()
+                self.setDefaultAccountWithNextAccountIfAvailable()
             })
 
             alert.addAction(cancel)
@@ -363,10 +398,32 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
-    private func logOut() {
+    // MARK: - Public for testing purposes
+
+    func retrieveAccounts() -> [Account] {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let accountsCoreData: [AnyObject] = service.retrieveAllAccounts()
+        var accounts: [Account] = []
+        for account in accountsCoreData {
+            let parsedAccount = account as! WPAccount
+            let accountStruct = Account.init(userId: parsedAccount.userID, username: parsedAccount.username, email: parsedAccount.email)
+            accounts.append(accountStruct)
+        }
+        return accounts
+    }
+
+    func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
+    }
+
+    func setDefaultAccountWithNextAccountIfAvailable() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let accounts = service.retrieveAllAccounts()
+        service.setDefaultWordPressComAccount(accounts.first as! WPAccount)
     }
 
     // MARK: - Private Properties
@@ -394,5 +451,14 @@ extension MeViewController: WPSplitViewControllerDetailProvider {
         }
 
         return myProfileViewController
+    }
+}
+
+extension MeViewController: AccountSelectionHelperDelegate {
+    func selectedAccount(account: Account) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let selectedAccount = service.findAccountWithUserID(account.userId) else { return }
+        service.setDefaultWordPressComAccount(selectedAccount)
     }
 }

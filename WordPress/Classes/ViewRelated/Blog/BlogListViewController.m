@@ -925,8 +925,8 @@ static NSInteger HideSearchMinSites = 3;
          // Don't filter – show all sites
         return [self fetchRequestPredicateForAllBlogs];
     }
-    
-    return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    return [NSPredicate predicateWithFormat:@"(( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)) AND account", searchText, searchText, defaultAccount];
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
@@ -935,21 +935,30 @@ static NSInteger HideSearchMinSites = 3;
      -[Blog supports:BlogFeatureVisibility] should match this, but the logic needs
      to be duplicated because core data can't take block predicates.
      */
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
     return [NSPredicate predicateWithFormat:@"account != NULL AND account = %@", defaultAccount];
 }
 
 - (NSPredicate *)fetchRequestPredicateForVisibleBlogs
 {
-    return [NSPredicate predicateWithFormat:@"visible = YES"];
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    if (defaultAccount) {
+        return [NSPredicate predicateWithFormat:@"visible = YES AND account = %@", defaultAccount];
+    }
+    else {
+        return [NSPredicate predicateWithFormat:@"visible = YES"];
+    }
 }
 
 - (NSPredicate *)fetchRequestPredicateForAllBlogs
 {
-    return [NSPredicate predicateWithValue:YES];
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    if (defaultAccount) {
+        return [NSPredicate predicateWithFormat:@"account = %@", defaultAccount];
+    }
+    else {
+        return [NSPredicate predicateWithValue:YES];
+    }
 }
 
 - (void)updateFetchRequest

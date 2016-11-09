@@ -26,6 +26,20 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet var headerStackView: UIStackView!
 
+
+    /*- (WPAccount *)defaultWordPressComAccount
+    {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    return [accountService defaultWordPressComAccount];
+    }
+    */
+    private func defaultWordPressComAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService.init(managedObjectContext: context)
+        return accountService.defaultWordPressComAccount()
+    }
+
     // MARK: - GUI
 
     private let animatedBox = WPAnimatedBox()
