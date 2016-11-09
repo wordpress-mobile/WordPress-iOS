@@ -7,6 +7,8 @@ import Gridicons
     func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
@@ -514,11 +516,17 @@ import Gridicons
     }
 
     @IBAction func didTapVisitButton(sender: UIButton) {
-
+        guard let provider = contentProvider else {
+            return
+        }
+        delegate?.readerCell(self, visitActionForProvider: provider)
     }
 
     @IBAction func didTapShareButton(sender: UIButton) {
-
+        guard let provider = contentProvider else {
+            return
+        }
+        delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
     }
 
     @IBAction func didTapActionButton(sender: UIButton) {
