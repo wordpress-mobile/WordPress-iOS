@@ -26,13 +26,14 @@ import Gridicons
     @IBOutlet private weak var headerBlogButton: UIButton!
     @IBOutlet private weak var blogNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
+    @IBOutlet private weak var tagLabelButton: UIButton!
+    @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var followButton: UIButton!
 
     // Card views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
     @IBOutlet private weak var actionStackView: UIStackView!
 
@@ -127,6 +128,7 @@ import Gridicons
         applyStyles()
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
+        setupTag()
         setupFollowButton()
         setupVisitButton()
         setupShareButton()
@@ -143,6 +145,17 @@ import Gridicons
 
 
     // MARK: - Configuration
+
+    private func setupTag() {
+        let size = CGSize(width: 12, height: 12)
+
+        let icon = Gridicon.iconOfType(.Tag, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        tagButton.setImage(tintedIcon, forState: .Normal)
+        tagButton.setImage(highlightIcon, forState: .Highlighted)
+    }
 
     private func setupAttributionView() {
         attributionView.delegate = self
@@ -229,7 +242,7 @@ import Gridicons
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
+        WPStyleGuide.applyReaderCardTagButtonStyle(tagLabelButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
@@ -245,7 +258,7 @@ import Gridicons
         bylineLabel.backgroundColor = UIColor.whiteColor()
         titleLabel.backgroundColor = UIColor.whiteColor()
         summaryLabel.backgroundColor = UIColor.whiteColor()
-        tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
+        tagLabelButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
@@ -264,21 +277,28 @@ import Gridicons
     }
 
     private func configureHeader() {
+        guard let provider = contentProvider else {
+            return
+        }
+
         // Always reset
         avatarImageView.image = UIImage(named: "post-blavatar-placeholder")
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = contentProvider?.siteIconForDisplayOfSize(Int(size)) {
+        if let url = provider.siteIconForDisplayOfSize(Int(size)) {
             avatarImageView.setImageWithURL(url)
         }
 
-        blogNameLabel.text = contentProvider?.blogNameForDisplay()
-
-        var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
-        if let author = contentProvider?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline)
+        var arr = [String]()
+        if let authorName = provider.authorForDisplay() {
+            arr.append(authorName)
         }
+        if let blogName = provider.blogNameForDisplay() {
+            arr.append(blogName)
+        }
+        blogNameLabel.text = arr.joinWithSeparator(", ")
 
+        let byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
         bylineLabel.text = byline
     }
 
@@ -381,16 +401,13 @@ import Gridicons
     }
 
     private func configureTag() {
-        var tag = ""
-        if let rawTag = contentProvider?.primaryTag() {
-            if (rawTag.characters.count > 0) {
-                tag = "#\(rawTag)"
-            }
-        }
+        let tag = contentProvider?.primaryTag() ?? ""
         let hidden = tag.characters.count == 0
-        tagButton.hidden = hidden
-        tagButton.setTitle(tag, forState: .Normal)
-        tagButton.setTitle(tag, forState: .Highlighted)
+        tagLabelButton.hidden = hidden
+        tagLabelButton.setTitle(tag, forState: .Normal)
+        tagLabelButton.setTitle(tag, forState: .Highlighted)
+
+        tagButton.enabled = !hidden
     }
 
     private func configureActionButtons() {
@@ -527,6 +544,14 @@ import Gridicons
 
     @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
         blogNameLabel.highlighted = false
+    }
+
+    @IBAction func tagButtonTouchesDidHighlight(sender: UIButton) {
+        tagLabelButton.highlighted = true
+    }
+
+    @IBAction func tagButtonTouchesDidEnd(sender: UIButton) {
+        tagLabelButton.highlighted = false
     }
 
 
