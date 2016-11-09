@@ -2,6 +2,8 @@
 #import "Constants.h"
 #import "WPNUXUtility.h"
 
+@import Gridicons;
+
 @interface WPWalkthroughTextField ()
 @property (nonatomic, strong) UIButton *secureTextEntryToggle;
 @property (nonatomic, strong) UIImage *secureTextEntryImageVisible;
@@ -57,8 +59,8 @@
     self.showTopLineSeparator = NO;
     self.showSecureTextEntryToggle = NO;
 
-    self.secureTextEntryImageVisible = [UIImage imageNamed:WPIconShowPassword];
-    self.secureTextEntryImageHidden = [UIImage imageNamed:WPIconHidePassword];
+    self.secureTextEntryImageVisible = [Gridicon iconOfType:GridiconTypeVisible];
+    self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
 
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
     self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
