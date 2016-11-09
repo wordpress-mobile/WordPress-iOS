@@ -27,6 +27,8 @@
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
+
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
@@ -203,17 +205,17 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     NSAssert(_passwordTextField, @"The password text field should be set here.");
     NSAssert(_passwordVisibilityButton, @"The password visibility button should be set here.");
     
+    UIImage *icon;
     BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
     
     if (passwordIsVisible) {
-        UIImage* hidePasswordButton = [UIImage imageNamed:WPIconHidePassword];
-
-        [self.passwordVisibilityButton setImage:hidePasswordButton forState:UIControlStateNormal];
+        icon = [Gridicon iconOfType:GridiconTypeVisible];
     } else {
-        UIImage* showPasswordButton = [UIImage imageNamed:WPIconShowPassword];
-        
-        [self.passwordVisibilityButton setImage:showPasswordButton forState:UIControlStateNormal];
+        icon = [Gridicon iconOfType:GridiconTypeNotVisible];
     }
+    
+    [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];
+    [self.passwordVisibilityButton sizeToFit];
 }
 
 #pragma mark - Additional setup
@@ -643,7 +645,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
 {
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.passwordVisibilityButton.frame = CGRectMake(0, 0, 24, 20);
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
     
     [self refreshPasswordVisibilityButton];
