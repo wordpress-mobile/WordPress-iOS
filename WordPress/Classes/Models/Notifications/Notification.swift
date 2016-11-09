@@ -76,6 +76,10 @@ class Notification: NSManagedObject
     ///
     private var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
+    /// Header + Body Blocks Transient Storage.
+    ///
+    private var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
+
     /// Array that contains the Cached Property Names
     ///
     private static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
@@ -109,6 +113,7 @@ class Notification: NSManagedObject
         cachedSubjectBlockGroup = nil
         cachedHeaderBlockGroup = nil
         cachedBodyBlockGroups = nil
+        cachedHeaderAndBodyBlockGroups = nil
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
@@ -304,6 +309,24 @@ extension Notification
 
         cachedBodyBlockGroups = NotificationBlockGroup.groupsFromBody(body, parent: self)
         return cachedBodyBlockGroups ?? []
+    }
+
+    /// Returns the Header + Body Block Groups, if any. This is done for convenience.
+    ///
+    var headerAndBodyBlockGroups: [NotificationBlockGroup] {
+        if let headerAndBodyBlockGroups = cachedHeaderAndBodyBlockGroups {
+            return headerAndBodyBlockGroups
+        }
+
+        var mergedGroups = [NotificationBlockGroup]()
+        if let header = headerBlockGroup {
+            mergedGroups.append(header)
+        }
+
+        mergedGroups.appendContentsOf(bodyBlockGroups)
+        cachedHeaderAndBodyBlockGroups = mergedGroups
+
+        return mergedGroups
     }
 
     /// Returns the Subject Block, if any.
