@@ -29,7 +29,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isBlogPrivate;
 @property (nonatomic) BOOL isFollowing;
 @property (nonatomic) BOOL isLiked;
-@property (nonatomic) BOOL isSaved;
+@property (nonatomic, readonly) BOOL isSaved;
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
