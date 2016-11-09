@@ -204,7 +204,7 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardTagButtonStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
+        let fontSize = Cards.subtextFontSize
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
