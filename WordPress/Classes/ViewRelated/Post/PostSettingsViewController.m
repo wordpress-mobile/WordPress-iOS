@@ -15,7 +15,6 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
