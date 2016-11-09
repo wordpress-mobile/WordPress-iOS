@@ -63,6 +63,7 @@
     self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
 
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
     self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
     [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
 

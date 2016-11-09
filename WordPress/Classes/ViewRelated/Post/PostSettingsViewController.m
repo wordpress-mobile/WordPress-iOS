@@ -28,6 +28,7 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
+@import WordPressShared;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
@@ -645,6 +646,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
 {
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.passwordVisibilityButton.tintColor = [WPStyleGuide greyLighten10];
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
     
     [self refreshPasswordVisibilityButton];
