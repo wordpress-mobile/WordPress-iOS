@@ -47,11 +47,6 @@ import WordPressShared
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         followButton.selected = topic.following
-//        if siteTopic.following {
-//            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
-//        } else {
-//            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
-//        }
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
