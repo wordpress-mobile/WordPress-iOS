@@ -196,12 +196,20 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return;
     }
 
-    BOOL isSaved = !readerPost.isSaved;
-    readerPost.isSaved = isSaved;
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
+    ReaderSavedPostsTopic *topic = [topicService savedPostsTopic];
+    if (readerPost.isSaved) {
+        [readerPost removeTopicsObject:topic];
+    } else {
+        [readerPost addTopicsObject:topic];
+    }
 
     // Only allow deletion of the post if it has no current topic, or it's topic is the saved posts topic.
-    BOOL canDelete = (readerPost.topic == nil || [ReaderHelpers isTopicSavedPostsTopic:readerPost.topic]);
-    if (!isSaved && canDelete) {
+    BOOL isSavedPost = [ReaderHelpers containsSavedPostsTopic:readerPost.topics];
+    BOOL isOnlySavedPost = (readerPost.topics.count == 1 && isSavedPost);
+    BOOL shouldDelete = (readerPost.topics.count == 0 || isOnlySavedPost);
+    if (shouldDelete) {
         [self.managedObjectContext deleteObject:readerPost];
     }
 
@@ -213,7 +221,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isSaved = true"];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderSavedPostsTopic *topic = [topicService savedPostsTopic];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -352,11 +363,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
     // If this post belongs to a site topic, let the topic service do the work.
-    if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
-        ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
-        [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
-        return;
+    for (ReaderAbstractTopic *topic in readerPost.topics) {
+        if ([ReaderHelpers isTopicSite:topic]) {
+            ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)topic;
+            [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
+            return;
+        }
     }
 
     // Keep previous values in case of failure
@@ -370,7 +384,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     // If the post in question belongs to the default followed sites topic, skip refreshing.
     // We don't want to jar the user.
-    BOOL shouldRefreshFollowedPosts = post.topic != [topicService topicForFollowedSites];
+    BOOL shouldRefreshFollowedPosts;
+    for (ReaderAbstractTopic *topic in readerPost.topics) {
+        shouldRefreshFollowedPosts = (topic != [topicService topicForFollowedSites]);
+    }
 
     // Define success block
     void (^successBlock)() = ^void() {
@@ -420,7 +437,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND isSaved = false"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topics.@count = 0 AND isSaved = false"];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -566,7 +583,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     fetchRequest.includesSubentities = NO; // Exclude gap markers when counting.
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
@@ -577,7 +594,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
     [fetchRequest setPredicate:predicate];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
@@ -726,7 +743,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (ReaderGapMarker *)gapMarkerForTopic:(ReaderAbstractTopic *)topic
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
 
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -758,14 +775,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
     marker.score = post.score;
 
-    marker.topic = topic;
+    [marker addTopicsObject:topic];
 }
 
 
 - (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
 
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -784,7 +801,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsRankedLessThan:(NSNumber *)rank
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY topics = %@ AND sortRank < %@", topic, rank];
 
     NSError *error;
     NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
@@ -808,7 +825,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (NSSet *)globalIDsOfExistingPostsForTopic:(ReaderAbstractTopic *)topic
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
     fetchRequest.includesSubentities = NO;
 
     NSError *error;
@@ -844,7 +861,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topics = %@ AND sortRank < %@", topic, rank];
 
     [fetchRequest setPredicate:pred];
 
@@ -885,7 +902,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSNumber *highestRank = startingRank;
 
     NSNumber *lowestRank = ((ReaderPost *)[posts lastObject]).sortRank;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortRank > %@ AND sortRank < %@", topic, lowestRank, highestRank];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topics = %@ AND sortRank > %@ AND sortRank < %@", topic, lowestRank, highestRank];
 
     [fetchRequest setPredicate:pred];
 
@@ -919,7 +936,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY topics = %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
@@ -1019,7 +1036,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND topic = %@", globalID, topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@", globalID, topic];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
     BOOL existing = false;
@@ -1119,7 +1136,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     // assign the topic last.
-    post.topic = topic;
+    [post addTopicsObject:topic];
 
     return post;
 }

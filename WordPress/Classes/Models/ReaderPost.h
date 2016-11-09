@@ -44,7 +44,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
-@property (nonatomic, strong) ReaderAbstractTopic *topic;
+@property (nonatomic, strong) NSSet<ReaderAbstractTopic *> *topics;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
@@ -80,6 +80,10 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (void)removeCommentsObject:(Comment *)value;
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
+- (void)addTopicsObject:(ReaderAbstractTopic *)value;
+- (void)removeTopicsObject:(ReaderAbstractTopic *)value;
+- (void)addTopics:(NSSet *)values;
+- (void)removeTopics:(NSSet *)values;
 
 @end
 

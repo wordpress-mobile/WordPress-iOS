@@ -1303,7 +1303,7 @@ import WordPressComAnalytics
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
-        let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
+        let predicateForNilTopic = NSPredicate(format: "topics.@count = 0 AND SELF in %@", [])
 
         guard let topic = readerTopic else {
             return predicateForNilTopic
@@ -1315,10 +1315,10 @@ import WordPressComAnalytics
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
-            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
+            return NSPredicate(format: "ANY topics = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
 
-        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topicInContext)
+        return NSPredicate(format: "ANY topics = %@ AND isSiteBlocked = NO", topicInContext)
     }
 
 
@@ -1698,7 +1698,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.ReaderSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.

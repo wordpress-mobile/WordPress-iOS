@@ -485,12 +485,12 @@
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="following" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="preserveForRestoration" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="showInMenu" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topics" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -551,7 +551,7 @@
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="crossPostMeta" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderCrossPostMeta" inverseName="post" inverseEntity="ReaderCrossPostMeta" syncable="YES"/>
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
-        <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
+        <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderSavedPostsTopic" representedClassName="WordPress.ReaderSavedPostsTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderSearchSuggestion" representedClassName="WordPress.ReaderSearchSuggestion" syncable="YES">

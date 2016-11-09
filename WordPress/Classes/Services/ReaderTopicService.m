@@ -260,13 +260,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.title = @"Saved Posts"; // TODO: Extract this
     topic.showInMenu = YES;
 
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSArray *posts = [postService fetchSavedPosts];
-
-    for (ReaderPost *post in posts) {
-        post.topic = topic;
-    }
-
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return topic;

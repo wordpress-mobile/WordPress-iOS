@@ -365,8 +365,8 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         blogNameButton.setTitle(blogName, forState: .Disabled)
 
         // Enable button only if not previewing a site.
-        if let topic = post!.topic {
-            blogNameButton.enabled = !ReaderHelpers.isTopicSite(topic)
+        if let topics = post?.topics {
+            blogNameButton.enabled = !ReaderHelpers.containsSiteTopic(topics)
         }
 
         // If the button is enabled also listen for taps on the avatar.
@@ -752,8 +752,11 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         didBumpStats = true
 
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
-        let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
+        var detailType = DetailAnalyticsConstants.TypeNormal
+        if ReaderHelpers.containsTagTopic(readerPost.topics) {
+            detailType = DetailAnalyticsConstants.TypePreviewSite
+        }
 
         var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
