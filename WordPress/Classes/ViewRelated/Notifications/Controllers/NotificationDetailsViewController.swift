@@ -186,7 +186,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return blockGroups.count
+        return note.headerAndBodyBlockGroups.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -667,7 +667,7 @@ private extension NotificationDetailsViewController
 
     func setupSeparators(cell: NoteBlockTableViewCell, indexPath: NSIndexPath) {
         cell.isBadge = note.isBadge
-        cell.isLastRow = (indexPath.row >= blockGroups.count - 1)
+        cell.isLastRow = (indexPath.row >= note.headerAndBodyBlockGroups.count - 1)
     }
 }
 
@@ -846,7 +846,7 @@ private extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func blockGroupForIndexPath(indexPath: NSIndexPath) -> NotificationBlockGroup {
-        return blockGroups[indexPath.row]
+        return note.headerAndBodyBlockGroups[indexPath.row]
     }
 
     func blogWithBlogID(blogID: NSNumber?) -> Blog? {
