@@ -1,10 +1,12 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
     func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
@@ -24,7 +26,7 @@ import WordPressShared
     @IBOutlet private weak var headerBlogButton: UIButton!
     @IBOutlet private weak var blogNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet private weak var followButton: UIButton!
 
     // Card views
     @IBOutlet private weak var featuredImageView: UIImageView!
@@ -41,6 +43,7 @@ import WordPressShared
     // Action buttons
     @IBOutlet private weak var likeActionButton: UIButton!
     @IBOutlet private weak var commentActionButton: UIButton!
+    @IBOutlet private weak var menuButton: UIButton!
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -122,6 +125,7 @@ import WordPressShared
         applyStyles()
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
+        setupFollowButton()
         setupSummaryLabel()
         setupAttributionView()
         setupCommentActionButton()
@@ -165,6 +169,26 @@ import WordPressShared
         likeActionButton.setImage(selectedImage, forState: .Selected)
     }
 
+    private func setupFollowButton() {
+        let side = followButton.titleLabel!.font.pointSize
+        let size = CGSize(width: side, height: side)
+        let followStr = NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+        let followingStr = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+
+        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
+        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.wordPressBlue())
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+
+        followButton.setImage(tintedFollowIcon, forState: .Normal)
+        followButton.setImage(tintedFollowingIcon, forState: .Selected)
+        followButton.setTitleColor(WPStyleGuide.wordPressBlue(), forState: .Normal)
+        followButton.setTitleColor(WPStyleGuide.validGreen(), forState: .Selected)
+
+        followButton.setTitle(followStr, forState: .Normal)
+        followButton.setTitle(followingStr, forState: .Selected)
+    }
+
     /**
         Applies the default styles to the cell's subviews
     */
@@ -200,13 +224,13 @@ import WordPressShared
         self.contentProvider = contentProvider
 
         configureHeader()
+        configureFollowButton()
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
         configureAttribution()
         configureTag()
         configureActionButtons()
-        configureActionStackViewIfNeeded()
     }
 
     private func configureHeader() {
@@ -226,6 +250,10 @@ import WordPressShared
         }
 
         bylineLabel.text = byline
+    }
+
+    private func configureFollowButton() {
+        followButton.selected = contentProvider?.isFollowing() ?? false
     }
 
     private func configureFeaturedImageIfNeeded() {
@@ -388,10 +416,6 @@ import WordPressShared
         resetActionButton(commentActionButton)
     }
 
-    private func configureActionStackViewIfNeeded() {
-        let actionsHidden = commentActionButton.hidden && likeActionButton.hidden && tagButton.hidden
-        actionStackView.hidden = actionsHidden
-    }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
         func updateBorder() {
@@ -419,6 +443,13 @@ import WordPressShared
 
 
     // MARK: - Actions
+
+    @IBAction func didTapFollowButton(sender: UIButton) {
+        guard let provider = contentProvider else {
+            return
+        }
+        delegate?.readerCell(self, followActionForProvider: provider)
+    }
 
     @IBAction func didTapHeaderBlogButton(sender: UIButton) {
         notifyDelegateHeaderWasTapped()

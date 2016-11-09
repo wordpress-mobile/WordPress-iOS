@@ -1486,6 +1486,11 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
+    public func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+
+    }
+
+
     public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
 
