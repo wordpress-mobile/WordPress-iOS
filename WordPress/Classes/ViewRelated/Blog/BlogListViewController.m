@@ -7,7 +7,6 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
