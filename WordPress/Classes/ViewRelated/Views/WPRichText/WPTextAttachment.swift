@@ -94,16 +94,19 @@ public class WPTextAttachment: NSTextAttachment
         var width = maxSize.width
         var height = maxSize.height
 
+        // There are a few scenarios handled here.
+        // 1. When the width is greater than the line fragment width, scale down to fit
+        // the available width.
+        // 2. When the height is greater than the proposed line height, 
+        // reserve the full width of the line for the attachment so it can be centered.
+        // 3. Other wise when the height is equal to or less than the proposed height
+        // just use the max width & height and let the attachment be rendered inline.
         if width > proposedWidth {
-            // When width is greater than the available width scale down.
             let ratio = width / height
             width = floor(proposedWidth)
             height = floor(width / ratio)
 
         } else if height > lineFrag.size.height {
-            // When the attachment is taller than the line height,
-            // reserve the full width for the attachment.  The layout
-            // manager will center the attachment
             width = proposedWidth
         }
 
