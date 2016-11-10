@@ -14,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="389" height="57"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vbp-eh-kPo" id="g83-Wv-yJ5">
-                <rect key="frame" x="0.0" y="0.0" width="389" height="56"/>
+                <rect key="frame" x="0.0" y="0.0" width="389" height="56.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
@@ -112,8 +112,8 @@
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
-                                <state key="selected" image="notifications-liked"/>
-                                <state key="highlighted" image="notifications-liked"/>
+                                <state key="selected" image="icon-pencil"/>
+                                <state key="highlighted" image="icon-pencil"/>
                                 <connections>
                                     <action selector="editWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="7Vz-WB-sXZ"/>
                                 </connections>
