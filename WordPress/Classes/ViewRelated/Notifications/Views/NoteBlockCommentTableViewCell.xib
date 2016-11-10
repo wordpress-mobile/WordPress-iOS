@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="ipad12_9" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,11 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zZv-EA-ZPR" id="GbU-dc-vAM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99.666666666666671"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="12" y="12" width="37" height="37"/>
+                        <rect key="frame" x="12" y="12" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="37" id="AOG-ko-gpf"/>
                             <constraint firstAttribute="width" constant="32" id="KEp-Kp-Vb8"/>
@@ -28,26 +28,20 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="AOG-ko-gpf"/>
-                                <exclude reference="KEp-Kp-Vb8"/>
-                                <exclude reference="ejc-rj-Nvm"/>
                                 <exclude reference="yiY-al-iMr"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="constraints">
-                                <include reference="KEp-Kp-Vb8"/>
-                                <include reference="ejc-rj-Nvm"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
                                 <include reference="AOG-ko-gpf"/>
+                                <exclude reference="KEp-Kp-Vb8"/>
+                                <exclude reference="ejc-rj-Nvm"/>
                                 <include reference="yiY-al-iMr"/>
                             </mask>
                         </variation>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Y-Yo-5I1">
-                        <rect key="frame" x="59" y="8" width="249" height="18"/>
+                        <rect key="frame" x="54" y="8" width="254" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="TnG-1t-sH0"/>
                         </constraints>
@@ -56,7 +50,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-U0-dRc">
-                        <rect key="frame" x="59" y="26" width="249" height="18"/>
+                        <rect key="frame" x="54" y="26" width="254" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="suV-Ve-xon"/>
                         </constraints>
