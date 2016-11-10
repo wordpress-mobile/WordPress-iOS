@@ -127,8 +127,11 @@ class WPRichTextFormatter
         for match: NSTextCheckingResult in matches.reverse() {
 
             // Indent the blockquote
+            // Note that the marker is not guarenteed to have the exact same paragraph style as the quoted text it marks.
+            // To compensate, we make our index match the first character of the quote text rather than the marker itself.
+            let index = match.range.location + match.range.length + 1
             var effectiveRange = NSRange()
-            let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: match.range.location, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
+            let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
 
             let mParaStyle = NSMutableParagraphStyle()
             mParaStyle.setParagraphStyle(pStyle)
