@@ -456,8 +456,8 @@ import Gridicons
             commentActionButton.setTitle(commentTitle, forState: .Normal)
             shareButton.setTitle("", forState: .Normal)
             followButton.setTitle("", forState: .Normal)
-            followButton.setTitle("", forState: .Highlighted)
             followButton.setTitle("", forState: .Selected)
+            followButton.setTitle("", forState: .Highlighted)
 
         } else {
             // show title text
@@ -474,6 +474,7 @@ import Gridicons
 
             followButton.setTitle(followTitle, forState: .Normal)
             followButton.setTitle(followingTitle, forState: .Selected)
+            followButton.setTitle(followingTitle, forState: .Highlighted)
         }
     }
 
