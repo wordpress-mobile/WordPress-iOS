@@ -235,11 +235,26 @@ extension WPStyleGuide
         label.textColor = greyDarken10()
     }
 
+    public class func applyReaderSiteStreamDescriptionStyle(label:UILabel) {
+        let fontSize = Cards.contentFontSize
+        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        label.textColor = darkGrey()
+    }
+
+    public class func applyReaderSiteStreamCountStyle(label:UILabel) {
+        let fontSize:CGFloat = 12.0
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.textColor = grey()
+    }
+
+
+    // MARK: - Button Styles and Text
+
     public class func applyReaderFollowButtonStyle(button: UIButton) {
         let side = button.titleLabel?.font.pointSize ?? Cards.buttonFontSize
         let size = CGSize(width: side, height: side)
-        let followStr = NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-        let followingStr = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        let followStr = followStringForDisplay(false)
+        let followingStr = followStringForDisplay(true)
 
         let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
@@ -255,16 +270,38 @@ extension WPStyleGuide
         button.setTitle(followingStr, forState: .Selected)
     }
 
-    public class func applyReaderSiteStreamDescriptionStyle(label:UILabel) {
-        let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
-        label.textColor = darkGrey()
+    public class func likeCountForDisplay(count: Int) -> String {
+        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
+        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+
+        if count == 0 {
+            return likeStr
+        } else if count == 1 {
+            return "\(count) \(likeStr)"
+        } else {
+            return "\(count) \(likesStr)"
+        }
     }
 
-    public class func applyReaderSiteStreamCountStyle(label:UILabel) {
-        let fontSize:CGFloat = 12.0
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
-        label.textColor = grey()
+    public class func commentCountForDisplay(count: Int) -> String {
+        let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
+        let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
+
+        if count == 0 {
+            return commentStr
+        } else if count == 1 {
+            return "\(count) \(commentStr)"
+        } else {
+            return "\(count) \(commentsStr)"
+        }
+    }
+
+    public class func followStringForDisplay(isFollowing: Bool) -> String {
+        if isFollowing {
+            return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        } else {
+            return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+        }
     }
 
 
