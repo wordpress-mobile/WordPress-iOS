@@ -93,6 +93,10 @@ class WPRichTextFormatter
     /// - Returns: The modified mutable attributed string.
     ///
     func fixLastParagraphSpacing(attrString: NSMutableAttributedString) -> NSMutableAttributedString {
+        guard attrString.length > 0 else {
+            return attrString
+        }
+
         var effectiveRange = NSRange()
         guard let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: attrString.length - 1, effectiveRange: &effectiveRange) as? NSParagraphStyle else {
             return attrString
