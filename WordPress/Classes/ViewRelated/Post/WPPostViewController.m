@@ -763,28 +763,6 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-
-/**
- Shows the post-post screen.
- 
- You don't like windows? Here's another window.
- */
-- (void)showPostPost
-{
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
-    UIWindow *postPostWindow = [[UIWindow alloc] initWithFrame:mainWindow.frame];
-    PostPostViewController *postPostVC = (PostPostViewController *) [[UIStoryboard storyboardWithName:@"PostPost" bundle:nil] instantiateViewControllerWithIdentifier:@"PostPostViewController"];
-    postPostVC.post = self.post;
-
-    postPostWindow.frame = mainWindow.frame;
-    postPostWindow.rootViewController = postPostVC;
-    [postPostWindow addSubview:postPostVC.view];
-    postPostWindow.windowLevel = UIWindowLevelAlert;
-    postPostWindow.hidden = NO;
-    appDelegate.secondaryWindow = postPostWindow;
-}
-
 #pragma mark - Toolbar options
 
 - (void)showMoreSheet
@@ -1457,10 +1435,6 @@ EditImageDetailsViewControllerDelegate
         [self.view endEditing:YES];
         [self didSaveNewPost];
         [self dismissEditView:YES];
-
-        if (success) {
-            [self showPostPost];
-        }
     };
 
     NSString *hudText;

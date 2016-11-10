@@ -11,9 +11,8 @@ import WordPressShared
 
 class PostPostViewController: UIViewController {
 
-    private(set) var post:Post?
-    private(set) var blog:Blog
-
+    private(set) var post: Post?
+    var revealPost = false
     @IBOutlet var titleLabel:UILabel!
     @IBOutlet var siteIconView:UIImageView!
     @IBOutlet var siteNameLabel:UILabel!
@@ -26,69 +25,18 @@ class PostPostViewController: UIViewController {
     @IBOutlet var shareButtonWidth:NSLayoutConstraint!
     @IBOutlet var editButtonWidth:NSLayoutConstraint!
     @IBOutlet var viewButtonWidth:NSLayoutConstraint!
+    var onClose: (() -> ())?
 
-    var onClose: ((changesSaved: Bool) -> ())?
-
-    private var editorModalPresentationStyle: UIModalPresentationStyle?
-    private var editorModalTransitionSylte: UIModalTransitionStyle?
-    override var modalPresentationStyle: UIModalPresentationStyle
-        {
-        didSet(newValue) {
-            super.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-            editorModalPresentationStyle = newValue
-        }
-    }
-    override var modalTransitionStyle: UIModalTransitionStyle
-        {
-        didSet(newValue) {
-            super.modalTransitionStyle = .CrossDissolve
-            editorModalTransitionSylte = newValue
-        }
-    }
-
-
-    /// Initialize as an editor with the provided post
-    ///
-    /// - Parameter post: post to edit
-    init(post: Post) {
-        self.post = post
-        self.blog = post.blog
-        super.init(nibName: nil, bundle: nil)
-    }
-
-
-    /// Initialize as an editor to create a new post for the provided blog
-    ///
-    /// - Parameter blog: blog to create a new post for
-    init(blog: Blog) {
-        self.blog = blog
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    /// Initialize as an editor to create a new post for the last used or default blog
     init() {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        blog = blogService.lastUsedOrFirstBlog()!
         super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder: NSCoder) {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        blog = blogService.lastUsedOrFirstBlog()!
-        super.init(coder: coder)
-    }
 
-    private func defaultBlog() -> Blog {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        return blogService.lastUsedOrFirstBlog()!
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        setupPost()
 
         navBar.barTintColor = WPStyleGuide.wordPressBlue()
         self.view.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -101,11 +49,15 @@ class PostPostViewController: UIViewController {
         self.shareButton.alpha = 0
         self.editButton.alpha = 0
         self.viewButton.alpha = 0
+
+        if (revealPost) {
+            showPostPost()
+            revealPost = false
+        }
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        showEditor()
     }
 
     func showPostPost() {
@@ -139,10 +91,11 @@ class PostPostViewController: UIViewController {
         return false
     }
 
-    func setupPost() {
-        guard let post = post, let blogSettings = post.blog.settings else {
+    func setup(post post: Post) {
+        guard let blogSettings = post.blog.settings else {
             return
         }
+        self.post = post
 
         titleLabel.text = post.titleForDisplay()
         siteNameLabel.text = blogSettings.name
@@ -156,6 +109,7 @@ class PostPostViewController: UIViewController {
         if isPrivate {
             shareButton.hidden = true
         }
+        revealPost = true
     }
 
     @IBAction func shareTapped() {
@@ -174,105 +128,11 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func doneTapped() {
-        guard let appDelegate = UIApplication.sharedApplication().delegate as? WordPressAppDelegate else {
-            return
-        }
 
         UIView.animateWithDuration(0.66, animations: {
                 self.view.alpha = 0.0
             }) { (success) in
-                if self.view.window == appDelegate.secondaryWindow {
-                    appDelegate.secondaryWindow.hidden = true
-                    appDelegate.secondaryWindow = nil
-                }
+                self.onClose?()
         }
-    }
-
-    // MARK:
-
-    func showEditor() {
-        let editorSettings = EditorSettings()
-        let editor: UIViewController
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                editor = editPostInNativeEditor()
-            } else {
-                editor = editPostInNewEditor()
-            }
-        } else {
-            editor = editPostInOldEditor()
-        }
-
-        presentViewController(editor, animated: true) {
-            let generator = WPImpactFeedbackGenerator(style: .Medium)
-            generator.impactOccurred()
-        }
-    }
-
-    private func editPostInNativeEditor() -> UIViewController {
-        let postToEdit: Post
-        if let post = self.post {
-            postToEdit = post
-        } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-            postToEdit = postService.createDraftPostForBlog(blog)
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-        }
-
-        let postViewController = AztecPostViewController(post: postToEdit)
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
-        return navController
-    }
-
-    private func editPostInNewEditor() -> UIViewController {
-
-        let postViewController: WPPostViewController
-        if let post = post {
-            postViewController = WPPostViewController(post: post, mode: kWPPostViewControllerModeEdit)
-        } else {
-            postViewController = WPPostViewController(draftForBlog: blog)
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-        }
-
-        postViewController.onClose = { [weak self] (viewController, changesSaved) in
-            self?.closeEditor(changesSaved)
-        }
-
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.restorationIdentifier = WPEditorNavigationRestorationID
-        navController.restorationClass = WPPostViewController.self
-        navController.toolbarHidden = false // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = .FullScreen
-
-        return navController
-    }
-
-    private func editPostInOldEditor() -> UIViewController {
-        let editPostViewController: WPLegacyEditPostViewController
-        if let post = post {
-            editPostViewController = WPLegacyEditPostViewController(post: post)
-        } else {
-            editPostViewController = WPLegacyEditPostViewController(draftForLastUsedBlog: ())
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-        }
-
-        editPostViewController.onClose = { [weak self] in
-            self?.closeEditor()
-        }
-
-        let navController = UINavigationController(rootViewController: editPostViewController)
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-        navController.restorationClass = WPLegacyEditPostViewController.self
-        navController.modalPresentationStyle = .FullScreen
-
-        return navController
-    }
-
-    private func closeEditor(changesSaved: Bool = true) {
-        self.onClose?(changesSaved: changesSaved)
-
-        setupPost()
     }
 }
