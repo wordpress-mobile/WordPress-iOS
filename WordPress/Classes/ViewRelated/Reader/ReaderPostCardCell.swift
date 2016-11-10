@@ -131,7 +131,6 @@ import Gridicons
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupTag()
-//        setupFollowButton()
         setupVisitButton()
         setupShareButton()
         setupSummaryLabel()
@@ -143,6 +142,7 @@ import Gridicons
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
+        configureButtonTitles()
     }
 
 
@@ -206,11 +206,10 @@ import Gridicons
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        // No title.
-        shareButton.setTitle("", forState: .Normal)
         shareButton.setImage(tintedIcon, forState: .Normal)
         shareButton.setImage(highlightIcon, forState: .Highlighted)
     }
+
 
     /**
         Applies the default styles to the cell's subviews
@@ -257,6 +256,7 @@ import Gridicons
         configureAttribution()
         configureTag()
         configureActionButtons()
+        configureButtonTitles()
     }
 
     private func configureHeader() {
@@ -419,9 +419,6 @@ import Gridicons
 
         likeActionButton.tag = CardAction.Like.rawValue
         likeActionButton.enabled = enableLoggedInFeatures
-
-        let title = contentProvider!.likeCountForDisplay()
-        likeActionButton.setTitle(title, forState: .Normal)
         likeActionButton.selected = contentProvider!.isLiked()
         likeActionButton.hidden = false
     }
@@ -435,9 +432,6 @@ import Gridicons
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
 
                 commentActionButton.tag = CardAction.Comment.rawValue
-
-                let title = contentProvider?.commentCount().stringValue
-                commentActionButton.setTitle(title, forState: .Normal)
                 commentActionButton.hidden = false
 
                 return
@@ -446,6 +440,42 @@ import Gridicons
         resetActionButton(commentActionButton)
     }
 
+    private func configureButtonTitles() {
+        guard let provider = contentProvider else {
+            return
+        }
+
+        let likeCount = provider.likeCount().integerValue
+        let commentCount = provider.commentCount().integerValue
+
+        if superview?.frame.width < 480 {
+            // remove title text
+            let likeTitle = likeCount > 0 ?  provider.likeCount().stringValue : ""
+            let commentTitle = commentCount > 0 ? provider.commentCount().stringValue : ""
+            likeActionButton.setTitle(likeTitle, forState: .Normal)
+            commentActionButton.setTitle(commentTitle, forState: .Normal)
+            shareButton.setTitle("", forState: .Normal)
+            followButton.setTitle("", forState: .Normal)
+            followButton.setTitle("", forState: .Highlighted)
+            followButton.setTitle("", forState: .Selected)
+
+        } else {
+            // show title text
+
+            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
+            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
+            let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+            let followTitle = WPStyleGuide.followStringForDisplay(false)
+            let followingTitle = WPStyleGuide.followStringForDisplay(true)
+
+            likeActionButton.setTitle(likeTitle, forState: .Normal)
+            commentActionButton.setTitle(commentTitle, forState: .Normal)
+            shareButton.setTitle(shareTitle, forState: .Normal)
+
+            followButton.setTitle(followTitle, forState: .Normal)
+            followButton.setTitle(followingTitle, forState: .Selected)
+        }
+    }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
         func updateBorder() {
