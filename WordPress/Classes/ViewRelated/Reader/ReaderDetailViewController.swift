@@ -661,6 +661,13 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     // MARK: - Instance Methods
 
     func presentWebViewControllerWithURL(url:NSURL) {
+        var url = url
+        if url.host == nil {
+            if let postURLString = post?.permaLink {
+                let postURL = NSURL(string: postURLString)
+                url = NSURL(string: url.absoluteString!, relativeToURL: postURL)!
+            }
+        }
         let controller = WPWebViewController.authenticatedWebViewController(url)
         controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
@@ -894,16 +901,21 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 {
 
     public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        // Custome handing of the URL
-        var url = URL
-        if url.host == nil {
-            if let postURLString = post?.permaLink {
-                let postURL = NSURL(string: postURLString)
-                url = NSURL(string: URL.absoluteString!, relativeToURL: postURL)!
-            }
-        }
-        presentWebViewControllerWithURL(url)
+        presentWebViewControllerWithURL(URL)
+        return false
+    }
 
+
+    @available(iOS 10, *)
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        if interaction == .PresentActions {
+            // show
+            let frame = textView.frameForTextInRange(characterRange)
+            let shareController = PostSharingController()
+            shareController.shareURL(URL, fromRect: frame, inView: textView, inViewController: self)
+        } else {
+            presentWebViewControllerWithURL(URL)
+        }
         return false
     }
 
