@@ -1136,7 +1136,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     // assign the topic last.
-    [post addTopicsObject:topic];
+    if (topic) {
+        [post addTopicsObject:topic];
+    }
 
     return post;
 }
