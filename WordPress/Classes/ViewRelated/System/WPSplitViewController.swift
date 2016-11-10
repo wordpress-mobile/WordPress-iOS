@@ -61,6 +61,12 @@ class WPSplitViewController: UISplitViewController {
         extendedLayoutIncludesOpaqueBars = true
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateDimmingViewFrame()
+    }
+
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
 

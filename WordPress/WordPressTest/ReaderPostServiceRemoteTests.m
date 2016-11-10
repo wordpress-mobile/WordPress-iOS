@@ -454,7 +454,7 @@
 
     XCTAssertTrue([content rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length > 0);
     XCTAssertTrue([resultContent rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length == 0);
-    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=%.1f&w=%.1f\"", scaledSize.height, scaledSize.width];
+    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=%ld&w=%ld\"", (long)(scaledSize.height), (long)(scaledSize.width)];
     XCTAssertTrue([resultContent rangeOfString:expectedURL].length > 0);
 }
 

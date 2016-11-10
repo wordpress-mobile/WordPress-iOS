@@ -7,7 +7,6 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Reachability/Reachability.h>
-#import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPress_AppbotX/ABX.h>
@@ -71,7 +70,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
@@ -102,10 +100,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Set the main window up
     [self.window makeKeyAndVisible];
-    
-    // Simperium: Wire CoreData Stack
-    [self configureSimperiumWithLaunchOptions:launchOptions];
-    
+
     // Local Notifications
     [self listenLocalNotifications];
 
@@ -375,9 +370,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Analytics
     [self configureAnalytics];
 
-    // Start Simperium
-    [self loginSimperium];
-    
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
@@ -643,61 +635,6 @@ int ddLogLevel = DDLogLevelInfo;
 }
 
 
-#pragma mark - Simperium
-
-- (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
-{
-	ContextManager* manager         = [ContextManager sharedInstance];
-    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
-    
-    self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
-											  context:manager.mainContext
-										  coordinator:manager.persistentStoreCoordinator
-                                                label:[NSString string]
-                                      bucketOverrides:bucketOverrides];
-
-    // Note: Nuke Simperium's metadata in case of a faulty Core Data migration
-    if (manager.didMigrationFail) {
-        [self.simperium resetMetadata];
-    }
-    
-    self.simperium.verboseLoggingEnabled = NO;
-}
-
-- (void)loginSimperium
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account              = [accountService defaultWordPressComAccount];
-    NSString *apiKey                = [ApiCredentials simperiumAPIKey];
-
-    if (!account.authToken.length || !apiKey.length) {
-        return;
-    }
-
-    NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-    NSString *simperiumAppID = [ApiCredentials simperiumAppId];
-    [self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
-}
-
-- (void)logoutSimperiumAndResetNotifications
-{
-    [self.simperium signOutAndRemoveLocalData:YES completion:nil];
-}
-
-- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
-{
-    NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
-    NSString *name = nil;
-    
-    if ([launchURL.host isEqualToString:@"notifications"]) {
-        name = [[launchURL.query dictionaryFromQueryString] stringForKey:@"bucket_name"];
-    }
-    
-    return name ?: WPNotificationsBucketName;
-}
-
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
@@ -861,19 +798,12 @@ int ddLogLevel = DDLogLevelInfo;
 {
     // If the notification object is not nil, then it's a login
     if (notification.object) {
-        [self loginSimperium];
         [self setupShareExtensionToken];
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
-        
-        if (self.simperium.user.authenticated) {
-            [self logoutSimperiumAndResetNotifications];
-        } else {
-            [self resetSimperiumOnAuthTokenIssue];
-        }
-        
+
         [self removeTodayWidgetConfiguration];
         [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
@@ -930,28 +860,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)removeShareExtensionConfiguration
 {
     [ShareExtensionService removeShareExtensionConfiguration];
-}
-
-
-#pragma mark - Simperium helpers
-
-/**
- *  @brief      This code exists for the sole purpose of fixing the missing-auth-token issue in
- *              WPiOS 5.3.
- *  @details    Read this: https://github.com/wordpress-mobile/WordPress-iOS/issues/3964
- *  @todo       Remove this once enough version numbers have passed :)
- */
-- (void)resetSimperiumOnAuthTokenIssue
-{
-    SPBucket *notesBucket = [self.simperium bucketForName:NSStringFromClass([Notification class])];
-    [notesBucket deleteAllObjects];
-    [self.simperium saveWithoutSyncing];
-}
-
-- (BOOL)testSuiteIsRunning
-{
-    Class testSuite = NSClassFromString(@"XCTestCase");
-    return testSuite != nil;
 }
 
 @end

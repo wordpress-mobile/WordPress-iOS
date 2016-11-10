@@ -15,7 +15,6 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
@@ -26,6 +25,9 @@
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
+
+@import Gridicons;
+@import WordPressShared;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
@@ -54,6 +56,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
+@property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
@@ -184,7 +187,35 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self reloadData];
+    //[self reloadData];
+}
+
+#pragma mark - Password Field
+
+- (void)togglePasswordVisibility
+{
+    NSAssert(_passwordTextField, @"The password text field should be set here.");
+    
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    [self refreshPasswordVisibilityButton];
+}
+
+- (void)refreshPasswordVisibilityButton
+{
+    NSAssert(_passwordTextField, @"The password text field should be set here.");
+    NSAssert(_passwordVisibilityButton, @"The password visibility button should be set here.");
+    
+    UIImage *icon;
+    BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
+    
+    if (passwordIsVisible) {
+        icon = [Gridicon iconOfType:GridiconTypeVisible];
+    } else {
+        icon = [Gridicon iconOfType:GridiconTypeNotVisible];
+    }
+    
+    [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];
+    [self.passwordVisibilityButton sizeToFit];
 }
 
 #pragma mark - Additional setup
@@ -584,23 +615,42 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         cell.accessibilityIdentifier = @"Visibility";
 
     } else {
-        // Password
-        WPTextFieldTableViewCell *textCell = [self getTextFieldCell];
-        textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the tags field. Should be the same as WP core.");
-        textCell.textField.text = self.apost.password;
-        textCell.textField.attributedPlaceholder = nil;
-        textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
-        textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textCell.textField.secureTextEntry = YES;
-
-        cell = textCell;
-        cell.tag = PostSettingsRowPassword;
-        
-        self.passwordTextField = textCell.textField;
-        self.passwordTextField.accessibilityIdentifier = @"Password Value";
+        cell = [self configurePasswordCell];
     }
 
     return cell;
+}
+
+- (UITableViewCell *)configurePasswordCell
+{
+    // Password
+    WPTextFieldTableViewCell *textCell = [self getTextFieldCell];
+    textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the tags field. Should be the same as WP core.");
+    textCell.textField.text = self.apost.password;
+    textCell.textField.attributedPlaceholder = nil;
+    textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
+    textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textCell.textField.secureTextEntry = YES;
+    
+    textCell.tag = PostSettingsRowPassword;
+    
+    self.passwordTextField = textCell.textField;
+    self.passwordTextField.accessibilityIdentifier = @"Password Value";
+    
+    [self configureVisibilityButtonForPasswordCell:textCell];
+    
+    return textCell;
+}
+
+- (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
+{
+    self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.passwordVisibilityButton.tintColor = [WPStyleGuide greyLighten10];
+    [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self refreshPasswordVisibilityButton];
+    
+    textCell.accessoryView = self.passwordVisibilityButton;
 }
 
 - (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath
