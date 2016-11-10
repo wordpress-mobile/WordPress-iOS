@@ -3617,6 +3617,7 @@
 			isa = PBXGroup;
 			children = (
 				5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */,
+				430693731DD25F31009398A2 /* PostPost.storyboard */,
 				5DF3DD691A9377220051A229 /* Controllers */,
 				5DF3DD6B1A93773B0051A229 /* Style */,
 				5D09CBA61ACDE532007A23BD /* Utils */,
@@ -3649,7 +3650,6 @@
 				5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */,
 				FF06FFB71D65CB480095CDF7 /* AztecPostViewController.swift */,
 				43D54D121DCAA070007F575F /* PostPostViewController.swift */,
-				430693731DD25F31009398A2 /* PostPost.storyboard */,
 			);
 			path = Post;
 			sourceTree = "<group>";

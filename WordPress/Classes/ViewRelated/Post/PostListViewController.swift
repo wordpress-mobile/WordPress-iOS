@@ -358,6 +358,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Post Actions
 
+    // TODO: replace this with new post-post capable VC
     override func createPost() {
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
