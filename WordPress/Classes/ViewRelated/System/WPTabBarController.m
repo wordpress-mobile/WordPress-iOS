@@ -392,6 +392,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
+    EditPostViewController* editor = [EditPostViewController new];
+    editor.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:editor animated:NO completion:nil];
+    return;
+
     UINavigationController *navController;
     EditorSettings *editorSettings = [EditorSettings new];
     if ([editorSettings visualEditorEnabled]) {
