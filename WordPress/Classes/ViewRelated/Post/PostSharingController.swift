@@ -113,4 +113,24 @@ import SVProgressHUD
             fromView: anchorView,
             inViewController: viewController)
     }
+
+    func shareURL(url: NSURL, fromRect rect: CGRect, inView view: UIView, inViewController viewController: UIViewController) {
+        let controller = shareController("", summary: "", tags: "", link: url.absoluteString)
+
+        if !UIDevice.isPad() {
+            viewController.presentViewController(controller, animated: true, completion: nil)
+            return
+        }
+
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+
+        viewController.presentViewController(controller, animated: true, completion: nil)
+        if let presentationController = controller.popoverPresentationController {
+            presentationController.permittedArrowDirections = .Any
+            presentationController.sourceView = view
+            presentationController.sourceRect = rect
+        }
+
+    }
 }
