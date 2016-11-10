@@ -64,8 +64,14 @@ class WPRichContentView: UITextView
                 "blockquote { font-style: italic; color:#4f748e; } " +
                 "</style>"
             let content = style + str
-            let attrTxt = try! NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil)
-            attributedText = attrTxt
+            do {
+                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
+                    attributedText = attrTxt
+                }
+            } catch let error {
+                DDLogSwift.logError("Error converting post content to attributed string: \(error)")
+                text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
+            }
         }
     }
 
