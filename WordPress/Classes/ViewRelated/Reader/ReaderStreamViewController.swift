@@ -1713,14 +1713,13 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
 
-            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!, topic: readerTopic)
 
         } else if post.isCrossPost() {
-            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID, topic: readerTopic)
 
         } else {
-            controller = ReaderDetailViewController.controllerWithPost(post)
-
+            controller = ReaderDetailViewController.controllerWithPost(post, topic: readerTopic)
         }
 
         navigationController?.pushViewController(controller, animated: true)

@@ -7,8 +7,8 @@ import WordPressComAnalytics
 public class ReaderDetailViewController : UIViewController, UIViewControllerRestoration
 {
 
-    static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
-
+    static let restorablePostObjectURLKey: String = "RestorablePostObjectURLKey"
+    static let restorableTopicObjectURLKey: String = "RestorableTopicObjectURLKey"
     // Structs for Constants
 
     private struct DetailConstants
@@ -69,6 +69,8 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
     private let sharingController = PostSharingController()
 
+    public  var topic: ReaderAbstractTopic?
+
     public var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
@@ -97,49 +99,71 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     ///
     /// - Return: A ReaderListViewController instance.
     ///
-    public class func controllerWithPost(post:ReaderPost) -> ReaderDetailViewController {
+    public class func controllerWithPost(post: ReaderPost, topic: ReaderAbstractTopic?) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderDetailViewController") as! ReaderDetailViewController
         controller.post = post
+        controller.topic = topic
 
         return controller
     }
 
+    public class func controllerWithPost(post: ReaderPost) -> ReaderDetailViewController {
+        return ReaderDetailViewController.controllerWithPost(post, topic: nil)
+    }
 
-    public class func controllerWithPostID(postID:NSNumber, siteID:NSNumber) -> ReaderDetailViewController {
+
+    public class func controllerWithPostID(postID:NSNumber, siteID:NSNumber, topic: ReaderAbstractTopic?) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderDetailViewController") as! ReaderDetailViewController
         controller.setupWithPostID(postID, siteID:siteID)
+        controller.topic = topic
 
         return controller
     }
 
+    public class func controllerWithPostID(postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
+        return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID, topic: nil)
+    }
 
     // MARK: - State Restoration
 
 
     public static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObjectForKey(restorablePostObjectURLhKey) as? String else {
+        guard let postPath = coder.decodeObjectForKey(restorablePostObjectURLKey) as? String else {
             return nil
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        guard let url = NSURL(string:path),
-            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) else {
+        guard let postUrl = NSURL(string: postPath),
+            let postObjectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(postUrl) else {
             return nil
         }
 
-        guard let post = (try? context.existingObjectWithID(objectID)) as? ReaderPost else {
+        guard let post = (try? context.existingObjectWithID(postObjectID)) as? ReaderPost else {
             return nil
         }
 
-        return controllerWithPost(post)
+        // Restore topic
+        let topicPath = coder.decodeObjectForKey(restorableTopicObjectURLKey) as? String
+        let topicURL = topicPath.flatMap(NSURL.init)
+        let topicObjectID = topicURL.flatMap {
+            context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation($0)
+        }
+        let topic = (try? topicObjectID.flatMap(context.existingObjectWithID)) as? ReaderAbstractTopic
+        topic?.preserveForRestoration = false
+
+        return controllerWithPost(post, topic: topic)
     }
 
 
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         if let post = post {
-            coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLhKey)
+            coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLKey)
+            if let topic = topic {
+                topic.preserveForRestoration = true
+                coder.encodeObject(topic.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorableTopicObjectURLKey)
+            }
         }
 
         super.encodeRestorableStateWithCoder(coder)
@@ -365,8 +389,10 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         blogNameButton.setTitle(blogName, forState: .Disabled)
 
         // Enable button only if not previewing a site.
-        if let topics = post?.topics {
-            blogNameButton.enabled = !ReaderHelpers.containsSiteTopic(topics)
+        if let topic = topic where ReaderHelpers.isTopicSite(topic) {
+            blogNameButton.enabled = false
+        } else {
+            blogNameButton.enabled = true
         }
 
         // If the button is enabled also listen for taps on the avatar.
@@ -754,7 +780,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
 
         var detailType = DetailAnalyticsConstants.TypeNormal
-        if ReaderHelpers.containsTagTopic(readerPost.topics) {
+        if let topic = topic where ReaderHelpers.isTopicSite(topic) {
             detailType = DetailAnalyticsConstants.TypePreviewSite
         }
 
