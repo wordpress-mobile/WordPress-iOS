@@ -51,11 +51,7 @@ class NotificationDetailsViewController: UIViewController
     ///
     var note: Notification! {
         didSet {
-            guard isViewLoaded() else {
-                return
-            }
-
-            refreshInterface()
+            refreshInterfaceIfNeeded()
         }
     }
 
@@ -115,6 +111,15 @@ class NotificationDetailsViewController: UIViewController
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        refreshInterface()
+    }
+
+
+    private func refreshInterfaceIfNeeded() {
+        guard isViewLoaded() else {
+            return
+        }
+
         refreshInterface()
     }
 
