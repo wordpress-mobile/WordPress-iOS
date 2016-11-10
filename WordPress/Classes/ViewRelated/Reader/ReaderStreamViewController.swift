@@ -56,6 +56,7 @@ import WordPressComAnalytics
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var imageRequestAuthToken: String?
+    private var didBumpStats = false
 
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -240,6 +241,8 @@ import WordPressComAnalytics
 
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+
+        bumpStats()
     }
 
 
@@ -509,15 +512,11 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
-
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
-            if ReaderHelpers.isTopicSearchTopic(topic) {
-                tableViewController.refreshControl = nil
-            }
+            tableViewController.refreshControl = nil
         }
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
@@ -534,6 +533,8 @@ import WordPressComAnalytics
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
+
+        bumpStats()
 
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
 
@@ -996,6 +997,25 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - Analytics
+
+
+    /// Bump tracked analytics stats if necessary.
+    ///
+    func bumpStats() {
+        if didBumpStats {
+            return
+        }
+
+        guard let topic = readerTopic, properties = topicPropertyForStats() where isViewLoaded() && view.window != nil else {
+            return
+        }
+
+        didBumpStats = true
+        ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+    }
+
+
     // MARK: - Sync Methods
 
 
@@ -1037,7 +1057,7 @@ import WordPressComAnalytics
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
     func syncIfAppropriate() {
-        if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
+        guard UIApplication.sharedApplication().isRunningTestSuite() == false else {
             return
         }
 
