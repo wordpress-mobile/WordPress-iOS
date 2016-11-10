@@ -894,9 +894,9 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 {
 
     public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        // Cusome handing of the URL
+        // Custome handing of the URL
         var url = URL
-        if url.host != nil {
+        if url.host == nil {
             if let postURLString = post?.permaLink {
                 let postURL = NSURL(string: postURLString)
                 url = NSURL(string: URL.absoluteString!, relativeToURL: postURL)!
