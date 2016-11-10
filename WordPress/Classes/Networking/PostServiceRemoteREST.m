@@ -343,9 +343,6 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     if (post.postThumbnailPath) {
         post.pathForDisplayImage = post.postThumbnailPath;
     } else {
-        // check attachments for a suitable image
-        post.pathForDisplayImage = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:[jsonPost dictionaryForKey:@"attachments"]];
-
         // parse contents for a suitable image
         if (!post.pathForDisplayImage) {
             post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
