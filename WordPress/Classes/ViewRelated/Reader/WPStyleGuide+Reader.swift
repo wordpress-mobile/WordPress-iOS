@@ -268,6 +268,7 @@ extension WPStyleGuide
 
         button.setTitle(followStr, forState: .Normal)
         button.setTitle(followingStr, forState: .Selected)
+        button.setTitle(followingStr, forState: .Highlighted)
     }
 
     public class func likeCountForDisplay(count: Int) -> String {
