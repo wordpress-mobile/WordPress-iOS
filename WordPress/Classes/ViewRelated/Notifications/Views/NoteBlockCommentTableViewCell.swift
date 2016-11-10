@@ -83,17 +83,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
         // Setup Recognizers
         detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
         detailsLabel.userInteractionEnabled = true
-
-        // Force iPad Size Class
-        // Why? why, why?. Because, although it's set as a Size Class, Autolayout won't actually apply the
-        // right Gravatar Size until this view moves to a superview.
-        // And guess what? Autosizing cells are, of course, broken in iOS 8, non existant in iOS 7, and we need
-        // to perform our own calculation.
-        //
-        if UIDevice.isPad() {
-            gravatarImageView.updateConstraint(.Width, constant: gravatarPadSize.width)
-            gravatarImageView.updateConstraint(.Height, constant: gravatarPadSize.height)
-        }
     }
 
 
@@ -167,7 +156,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
     private let separatorApprovedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     private let separatorUnapprovedInsets = UIEdgeInsetsZero
     private let separatorRepliedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
-    private let gravatarPadSize = CGSize(width: 37.0, height: 37.0)
 
     // MARK: - IBOutlets
     @IBOutlet private weak var actionsView: UIView!
