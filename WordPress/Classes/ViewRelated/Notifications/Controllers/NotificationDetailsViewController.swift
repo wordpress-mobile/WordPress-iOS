@@ -1160,10 +1160,50 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 //
 extension NotificationDetailsViewController: NSFetchedResultsControllerDelegate
 {
+
+
+
+// MARK: - Navigation Helpers
+//
+extension NotificationDetailsViewController
+{
     @IBAction func leftArrowWasPressed() {
+        guard let previous = notification(withIndexDelta: -1) else {
+            return
+        }
+
+        note = previous
     }
 
     @IBAction func rightArrowWasPressed() {
+        guard let next = notification(withIndexDelta: +1) else {
+            return
+        }
+
+        note = next
+    }
+
+    private var shouldEnableNextButton: Bool {
+        return notification(withIndexDelta: +1) != nil
+    }
+
+    private var shouldEnablePreviousButton: Bool {
+        return notification(withIndexDelta: -1) != nil
+    }
+
+    private func notification(withIndexDelta delta: Int) -> Notification? {
+        guard let results = resultsController.fetchedObjects as? [Notification],
+            let currentIndex = results.indexOf(note) else
+        {
+            return nil
+        }
+
+        let targetIndex = currentIndex - delta
+        guard targetIndex >= 0 && targetIndex < results.count else {
+            return nil
+        }
+
+        return results[targetIndex]
     }
 }
 
