@@ -10,7 +10,7 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.6.3'
+  pod 'WordPress-iOS-Shared', '0.7.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit',   '0.0.5'
   pod 'WordPressCom-Stats-iOS', '0.8.0'
