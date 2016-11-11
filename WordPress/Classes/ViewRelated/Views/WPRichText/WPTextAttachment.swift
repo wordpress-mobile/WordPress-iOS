@@ -101,7 +101,7 @@ public class WPTextAttachment: NSTextAttachment
         // reserve the full width of the line for the attachment so it can be centered.
         // 3. Other wise when the height is equal to or less than the proposed height
         // just use the max width & height and let the attachment be rendered inline.
-        if width > proposedWidth {
+        if width > proposedWidth && width != CGFloat.max {
             let ratio = width / height
             width = floor(proposedWidth)
             height = floor(width / ratio)
