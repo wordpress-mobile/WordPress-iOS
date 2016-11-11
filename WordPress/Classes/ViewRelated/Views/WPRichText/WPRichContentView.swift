@@ -16,7 +16,7 @@ class WPRichContentView: UITextView
     struct Constants {
         static let photonQuality = 65
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, -16.0, 0.0)
-        static let defaultAttachmentHeight = CGFloat(150.0)
+        static let defaultAttachmentHeight = CGFloat(50.0)
     }
 
     /// Used to keep references to image attachments.
@@ -124,8 +124,8 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Returns: A WPRichTextEmbed instance configured for the attachment.
     ///
     func embedForAttachment(attachment: WPTextAttachment) -> WPRichTextEmbed {
-        let width: CGFloat = attachment.width ?? textContainer.size.width
-        let height: CGFloat = attachment.height ?? Constants.defaultAttachmentHeight
+        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
         let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
 
         attachment.maxSize = CGSize(width: width, height: height)
@@ -136,7 +136,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
             embed.loadHTMLString(attachment.html!)
         }
 
-        embed.success = { [weak self] _ in
+        embed.success = { [weak self] embedView in
+            if embedView.documentSize.height > attachment.maxSize.height {
+                attachment.maxSize.height = embedView.documentSize.height
+            }
+
             self?.attachmentManager.layoutAttachmentViews()
             self?.invalidateIntrinsicContentSize()
         }
