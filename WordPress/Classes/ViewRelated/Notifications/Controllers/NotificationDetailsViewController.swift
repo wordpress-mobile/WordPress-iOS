@@ -52,11 +52,11 @@ class NotificationDetailsViewController: UIViewController
     ///
     var note: Notification! {
         didSet {
-            guard oldValue != note else {
+            guard oldValue != note && isViewLoaded() else {
                 return
             }
 
-            refreshInterfaceIfNeeded()
+            refreshInterface()
         }
     }
 
@@ -66,6 +66,7 @@ class NotificationDetailsViewController: UIViewController
     /// in the eventuallity of a failure.
     ///
     var onDeletionRequestCallback: (NotificationDeletionRequest -> Void)?
+
 
 
     deinit {
@@ -116,15 +117,6 @@ class NotificationDetailsViewController: UIViewController
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterface()
-    }
-
-
-    private func refreshInterfaceIfNeeded() {
-        guard isViewLoaded() else {
-            return
-        }
-
         refreshInterface()
     }
 
