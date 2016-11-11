@@ -56,6 +56,9 @@ class NotificationDetailsViewController: UIViewController
     ///
     private var nextNavigationButton: UIBarButtonItem!
 
+    /// Results Controller, required to navigate to Next / Previous Notifications
+    ///
+    private var resultsController: NSFetchedResultsController!
     /// Notification to-be-displayed
     ///
     var note: Notification! {
@@ -104,6 +107,7 @@ class NotificationDetailsViewController: UIViewController
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
+        setupResultsController()
         setupNotificationListeners()
 
         AppRatingUtility.incrementSignificantEventForSection("notifications")
@@ -322,6 +326,19 @@ extension NotificationDetailsViewController
                                                 scrollView: tableView,
                                                 dismissableControl: replyTextView,
                                                 bottomLayoutConstraint: bottomLayoutConstraint)
+    }
+
+    func setupResultsController() {
+
+        let frc = NSFetchedResultsController(fetchRequest: request,
+                                             managedObjectContext: mainContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
+
+        frc.delegate = self
+        _ = try? frc.performFetch()
+
+        resultsController = frc
     }
 
     func setupNotificationListeners() {
@@ -1156,10 +1173,14 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 
 
 
-// MARK: - Navigation Helpers
+// MARK: - FRC Delegate
 //
 extension NotificationDetailsViewController: NSFetchedResultsControllerDelegate
 {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        refreshNavigationBar()
+    }
+}
 
 
 
