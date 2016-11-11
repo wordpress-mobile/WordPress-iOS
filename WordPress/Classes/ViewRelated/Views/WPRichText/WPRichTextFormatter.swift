@@ -17,6 +17,8 @@ class WPRichTextFormatter
     lazy var tags:[HtmlTagProcessor] = {
         return [
             BlockquoteTagProcessor(),
+            ListTagProcessor(tagName: "ol", includesEndTag: true),
+            ListTagProcessor(tagName: "ul", includesEndTag: true),
             AttachmentTagProcessor(tagName: "img", includesEndTag: false),
             AttachmentTagProcessor(tagName: "iframe", includesEndTag: true),
             AttachmentTagProcessor(tagName: "video", includesEndTag: true),
@@ -345,6 +347,27 @@ class BlockquoteTagProcessor: HtmlTagProcessor
             str += marker
         }
         parsedString = str
+
+        return (parsedString, nil)
+    }
+}
+
+
+/// Handles processing list tags. Basically we just want to
+/// correct the line spacing following a list. Appending
+/// a <br> does the trick.
+///
+class ListTagProcessor: HtmlTagProcessor
+{
+    override func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
+        var (matched, parsedString) = extractTag(scanner)
+
+        // No matches? Just bail.
+        if !matched {
+            return (parsedString, nil)
+        }
+
+        parsedString = parsedString + "<br>"
 
         return (parsedString, nil)
     }
