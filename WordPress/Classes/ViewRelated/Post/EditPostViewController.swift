@@ -197,10 +197,16 @@ class EditPostViewController: UIViewController {
         self.onClose?(changesSaved: changesSaved)
 
         var dismissPostPostImmediately = true
-        if let post = self.post {
+        if shouldShowPostPost(), let post = post {
             postPost.setup(post: post)
             postPost.onClose = {
                 self.closePostPost()
+            }
+            postPost.reshowEditor = {
+                self.showEditor()
+            }
+            postPost.preview = {
+                self.previewPost()
             }
             dismissPostPostImmediately = false
         }
@@ -209,6 +215,23 @@ class EditPostViewController: UIViewController {
                 self.closePostPost()
             }
         }
+    }
+
+    func shouldShowPostPost() -> Bool  {
+        if post != .None {
+            return true
+        }
+        return false
+    }
+
+    func previewPost() {
+        guard let post = post else {
+            return
+        }
+        let controller = PostPreviewViewController(post: post)
+        controller.hidesBottomBarWhenPushed = true
+        let navWrapper = UINavigationController(rootViewController: controller)
+        postPost.presentViewController(navWrapper, animated: true) {}
     }
 
     func closePostPost() {

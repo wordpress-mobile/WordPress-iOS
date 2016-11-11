@@ -26,6 +26,8 @@ class PostPostViewController: UIViewController {
     @IBOutlet var editButtonWidth:NSLayoutConstraint!
     @IBOutlet var viewButtonWidth:NSLayoutConstraint!
     var onClose: (() -> ())?
+    var reshowEditor: (() -> ())?
+    var preview: (() -> ())?
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -120,9 +122,11 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func editTapped() {
+        self.reshowEditor?()
     }
 
     @IBAction func viewTapped() {
+        self.preview?()
     }
 
     @IBAction func doneTapped() {
