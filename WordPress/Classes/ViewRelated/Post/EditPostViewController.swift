@@ -97,6 +97,10 @@ class EditPostViewController: UIViewController {
         }
     }
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
     // MARK: show the editor
 
     private func showEditor() {
