@@ -52,6 +52,10 @@ class NotificationDetailsViewController: UIViewController
     ///
     var note: Notification! {
         didSet {
+            guard oldValue != note else {
+                return
+            }
+
             refreshInterfaceIfNeeded()
         }
     }
