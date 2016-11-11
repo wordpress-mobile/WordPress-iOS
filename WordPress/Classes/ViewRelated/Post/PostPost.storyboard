@@ -203,7 +203,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mYP-bF-EKS"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="actionsStackView" destination="LUm-wG-tAL" id="Om1-7d-dF7"/>
                         <outlet property="editButton" destination="wfC-rz-tLa" id="xSU-f1-aKT"/>
