@@ -35,6 +35,10 @@ class PostPostViewController: UIViewController {
         super.init(coder: coder)
     }
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -67,28 +71,22 @@ class PostPostViewController: UIViewController {
         viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
         view.layoutIfNeeded()
 
-        UIView.animateWithDuration(0.33, delay: 0.1, options: .CurveEaseOut, animations: {
-            self.view.alpha = 1
-            }, completion: nil)
-        UIView.animateWithDuration(0.33, delay: 0.3, options: .CurveEaseOut, animations: {
+        self.view.alpha = 1
+        UIView.animateWithDuration(0.33, delay: 0.25, options: .CurveEaseOut, animations: {
             self.shareButton.alpha = 1
             self.shareButtonWidth.constant = 0
             self.view.layoutIfNeeded()
             }, completion: nil)
-        UIView.animateWithDuration(0.33, delay: 0.4, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.33, delay: 0.35, options: .CurveEaseOut, animations: {
             self.editButton.alpha = 1
             self.editButtonWidth.constant = 0
             self.view.layoutIfNeeded()
             }, completion: nil)
-        UIView.animateWithDuration(0.33, delay: 0.5, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.33, delay: 0.45, options: .CurveEaseOut, animations: {
             self.viewButton.alpha = 1
             self.viewButtonWidth.constant = 0
             self.view.layoutIfNeeded()
             }, completion: nil)
-    }
-
-    override func prefersStatusBarHidden() -> Bool {
-        return false
     }
 
     func setup(post post: Post) {
