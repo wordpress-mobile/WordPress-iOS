@@ -7,24 +7,11 @@ import UIKit
 @objc public class WPTextAttachmentManager : NSObject
 {
     private let attributeAttachmentName = "NSAttachment" // HACK: DTCoreText hijacks NSAttachmentAttributeName.
-    private var kvoContext = 0
-    private let attributedTextKey = "attributedText"
-
     public var attachments = [WPTextAttachment]()
     var attachmentViews = [String: WPTextAttachmentView]()
-    public var delegate: WPTextAttachmentManagerDelegate?
-    private(set) public var textView: UITextView
-
-    var layoutManager: NSLayoutManager {
-        return textView.layoutManager
-    }
-
-
-    /// Cleans up KVO
-    ///
-    deinit {
-        textView.removeObserver(self, forKeyPath: attributedTextKey)
-    }
+    public weak var delegate: WPTextAttachmentManagerDelegate?
+    private(set) public weak var textView: UITextView?
+    let layoutManager: NSLayoutManager
 
 
     /// Designaged initializer.
@@ -36,33 +23,10 @@ import UIKit
     public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
         self.textView = textView
         self.delegate = delegate
+        self.layoutManager = textView.layoutManager
 
         super.init()
 
-        setupManager()
-    }
-
-
-    /// Watches for changes in the textView's attributedText.
-    ///
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if context != &kvoContext ||
-            keyPath == nil ||
-            attributedTextKey != keyPath! ||
-            textView != object as? UITextView
-        {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-            return
-        }
-
-        enumerateAttachments()
-    }
-
-
-    /// Initial setup.  Should only be called once during init.
-    ///
-    private func setupManager() {
-        textView.addObserver(self, forKeyPath: attributedTextKey, options: .New, context: &kvoContext)
         layoutManager.delegate = self
 
         enumerateAttachments()
@@ -114,7 +78,9 @@ import UIKit
     ///     - range: The range of the WPTextAttachment in the textView's NSTextStorage
     ///
     private func layoutAttachmentViewForAttachment(attachment: WPTextAttachment, atRange range: NSRange) {
-        guard let attachmentView = attachmentViews[attachment.identifier] else {
+        guard
+            let textView = textView,
+            let attachmentView = attachmentViews[attachment.identifier] else {
             return
         }
 
@@ -125,13 +91,13 @@ import UIKit
     }
 
 
-    /// Called initially during the initial set up of the manager, and whenever
-    /// the UITextView's attributedText property changes.
+    /// Called initially during the initial set up of the manager.
+    //  Should be called whenever the UITextView's attributedText property changes.
     /// After resetting the attachment manager, this method loops over any
     /// WPTextAttachments found in textStorage and asks the delegate for a
     /// custom view for the attachment.
     ///
-    private func enumerateAttachments() {
+    func enumerateAttachments() {
         resetAttachmentManager()
 
         // Safety new
@@ -150,7 +116,7 @@ import UIKit
 
                 if let view = delegate?.attachmentManager(self, viewForAttachment: attachment) {
                     attachmentViews[attachment.identifier] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
-                    textView.addSubview(view)
+                    textView?.addSubview(view)
                 }
         })
 
