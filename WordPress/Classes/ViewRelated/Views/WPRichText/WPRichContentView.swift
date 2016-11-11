@@ -47,6 +47,7 @@ class WPRichContentView: UITextView
         return CGSize(width: side, height: side)
     }()
 
+
     /// Whether the view shows private content. Used when fetching images.
     ///
     var isPrivate = false
@@ -73,6 +74,12 @@ class WPRichContentView: UITextView
                 DDLogSwift.logError("Error converting post content to attributed string: \(error)")
                 text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
             }
+        }
+    }
+
+    override var attributedText: NSAttributedString! {
+        didSet {
+            attachmentManager.enumerateAttachments()
         }
     }
 
