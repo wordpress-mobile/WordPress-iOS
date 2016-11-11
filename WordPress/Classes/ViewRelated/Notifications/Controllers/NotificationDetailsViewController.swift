@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS
@@ -224,10 +225,23 @@ extension NotificationDetailsViewController
 {
     func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(),
-                                                           style: .Plain,
-                                                           target: nil,
-                                                           action: nil)
+        let backButton = UIBarButtonItem(title: String(),
+                                         style: .Plain,
+                                         target: nil,
+                                         action: nil)
+
+        let leftButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronLeft),
+                                       style: .Plain,
+                                       target: self,
+                                       action: #selector(leftArrowWasPressed))
+
+        let rightButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronRight),
+                                         style: .Plain,
+                                         target: self,
+                                         action: #selector(rightArrowWasPressed))
+
+        navigationItem.backBarButtonItem = backButton
+        navigationItem.rightBarButtonItems = [rightButton, leftButton]
     }
 
     func setupMainView() {
@@ -1124,6 +1138,19 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
     func suggestionsTableView(suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView.replaceTextAtCaret(text, withText: suggestion)
         suggestionsTableView.showSuggestionsForWord(String())
+    }
+}
+
+
+
+// MARK: - Navigation Helpers
+//
+extension NotificationDetailsViewController: NSFetchedResultsControllerDelegate
+{
+    @IBAction func leftArrowWasPressed() {
+    }
+
+    @IBAction func rightArrowWasPressed() {
     }
 }
 
