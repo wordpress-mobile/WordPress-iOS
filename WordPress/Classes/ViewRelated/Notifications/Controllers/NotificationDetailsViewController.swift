@@ -48,6 +48,14 @@ class NotificationDetailsViewController: UIViewController
     ///
     private var keyboardManager: KeyboardDismissHelper!
 
+    /// Previous NavBar Navigation Button
+    ///
+    private var previousNavigationButton: UIBarButtonItem!
+
+    /// Next NavBar Navigation Button
+    ///
+    private var nextNavigationButton: UIBarButtonItem!
+
     /// Notification to-be-displayed
     ///
     var note: Notification! {
@@ -121,12 +129,18 @@ class NotificationDetailsViewController: UIViewController
     }
 
     private func refreshInterface() {
-        title = note.title
+        refreshNavigationBar()
         tableView.reloadData()
 
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
+    }
+
+    private func refreshNavigationBar() {
+        title = note.title
+        previousNavigationButton.enabled = shouldEnablePreviousButton
+        nextNavigationButton.enabled = shouldEnableNextButton
     }
 }
 
@@ -238,6 +252,9 @@ extension NotificationDetailsViewController
 
         navigationItem.backBarButtonItem = backButton
         navigationItem.rightBarButtonItems = [rightButton, leftButton]
+
+        previousNavigationButton = leftButton
+        nextNavigationButton = rightButton
     }
 
     func setupMainView() {
