@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
-#import "PhotonImageURLHelper.h"
 
+#import "WordPress-Swift.h"
 
 @interface PhotonImageURLHelperTest : XCTestCase
 
@@ -26,13 +26,13 @@
     NSString *domainPathQueryStringForImage = @"blog.example.com/wp-content/images/image-name.jpg?w=1000";
 
     NSURL *httpsURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", domainPathQueryStringForImage]];
-    photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:httpsURL];
+    photonURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:httpsURL];
     XCTAssertNotNil(photonURL, @"A valid URL should be returned, got nil instead.");
     XCTAssertTrue([[photonURL host] isEqualToString:@"i0.wp.com"], @"A Photon URL should be returned, a url with a different host was returned instead.");
     XCTAssertTrue(([[photonURL query] rangeOfString:@"&ssl=1"].location != NSNotFound), @"The Photon URL should be formatted for ssl.");
 
     NSURL *httpURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", domainPathQueryStringForImage]];
-    photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:httpURL];
+    photonURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:httpURL];
     XCTAssertNotNil(photonURL, @"A valid URL should be returned, got nil instead.");
     XCTAssertTrue([[photonURL host] isEqualToString:@"i0.wp.com"], @"A Photon URL should be returned, a url with a different host was returned instead.");
     XCTAssertFalse(([[photonURL query] rangeOfString:@"&ssl=1"].location != NSNotFound), @"The Photon URL should not be formatted for ssl.");
@@ -43,7 +43,7 @@
     // arbitrary size
     CGSize size = CGSizeMake(300, 150);
     NSString *domainPathQueryStringForImage = @"https://blog.example.com/mshots/wp-content/images/image-name.jpg?w=1000";
-    NSURL *photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:[NSURL URLWithString:domainPathQueryStringForImage]];
+    NSURL *photonURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:[NSURL URLWithString:domainPathQueryStringForImage]];
 
     // FIXME: there are several bugs in the mshots codepath that will be fixed in a later commit:
     // - should have a scheme
@@ -66,7 +66,7 @@
                                    ];
     for (NSString *path in paths) {
         NSURL *url = [NSURL URLWithString:path];
-        NSURL *photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:url];
+        NSURL *photonURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:url];
 
         XCTAssertTrue([[photonURL absoluteString] isEqualToString:path], @"expected %@ but got %@", path, [photonURL absoluteString]);
     }

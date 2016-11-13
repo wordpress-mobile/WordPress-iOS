@@ -445,7 +445,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
         if !(post!.isPrivate()) {
             let size = CGSize(width:featuredImageView.frame.width, height:0)
-            url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+            url = WPImageURLHelper.photonURL(withSize: size, forImageURL: url)
             request = NSURLRequest(URL: url)
 
         } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {

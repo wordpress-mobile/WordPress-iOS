@@ -1,13 +1,13 @@
 #import "ReaderPostServiceRemote.h"
 
+#import <WordPressShared/NSString+XMLExtensions.h>
+
 #import "DateUtils.h"
 #import "DisplayableImageHelper.h"
+#import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
-#import "ReaderTopicServiceRemote.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
-#import "PhotonImageURLHelper.h"
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -1095,7 +1095,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
         if (isPrivateSite) {
             modifiedURL = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:originalURL];
         } else {
-            modifiedURL = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:originalURL];
+            modifiedURL = [WPImageURLHelper photonDefaultURLWithSize:imageSize forImageURL:originalURL];
         }
 
         // First replace the src attribute of the <img /> element

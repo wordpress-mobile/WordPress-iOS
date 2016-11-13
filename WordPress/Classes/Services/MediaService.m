@@ -1,18 +1,19 @@
 #import "MediaService.h"
-#import "AccountService.h"
-#import "Media.h"
-#import "WPAccount.h"
-#import "ContextManager.h"
-#import "MediaServiceRemoteXMLRPC.h"
-#import "MediaServiceRemoteREST.h"
-#import "Blog.h"
-#import "RemoteMedia.h"
-#import "WPImageSource.h"
-#import "UIImage+Resize.h"
+
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "WordPress-swift.h"
+
+#import "AccountService.h"
+#import "Blog.h"
+#import "ContextManager.h"
+#import "Media.h"
+#import "MediaServiceRemoteREST.h"
+#import "MediaServiceRemoteXMLRPC.h"
+#import "RemoteMedia.h"
+#import "UIImage+Resize.h"
+#import "WordPress-Swift.h"
+#import "WPAccount.h"
+#import "WPImageSource.h"
 #import "WPXMLRPCDecoder.h"
-#import "PhotonImageURLHelper.h"
 
 @implementation MediaService
 
@@ -462,7 +463,7 @@
             NSString *remote = media.remoteURL;
             remoteURL = [NSURL URLWithString:remote];
             if (!media.blog.isPrivate) {
-                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
+                remoteURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:remoteURL];
             } else {
                 remoteURL = [WPImageURLHelper imageURLWithSize:size forImageURL:remoteURL];
             }
