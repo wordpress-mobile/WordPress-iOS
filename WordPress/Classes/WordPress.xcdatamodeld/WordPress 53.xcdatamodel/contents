@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16A323" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16B2555" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -362,22 +362,15 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menuLocations" inverseEntity="Blog" syncable="YES"/>
         <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Menu" inverseName="locations" inverseEntity="Menu" syncable="YES"/>
     </entity>
-    <entity name="Meta" representedClassName="Meta" syncable="YES">
-        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="last_seen" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="latest_note_time" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="Notification" representedClassName="Notification" syncable="YES">
         <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="header" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="read" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notificationHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notificationId" optional="YES" attributeType="String" elementID="simperiumKey" syncable="YES"/>
+        <attribute name="read" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
@@ -485,12 +478,12 @@
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="following" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="path" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="preserveForRestoration" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="showInMenu" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topics" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -531,7 +524,6 @@
         <attribute name="isLiked" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="isSaved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -551,9 +543,8 @@
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="crossPostMeta" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderCrossPostMeta" inverseName="post" inverseEntity="ReaderCrossPostMeta" syncable="YES"/>
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
-        <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
+        <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
-    <entity name="ReaderSavedPostsTopic" representedClassName="WordPress.ReaderSavedPostsTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderSearchSuggestion" representedClassName="WordPress.ReaderSearchSuggestion" syncable="YES">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="searchPhrase" attributeType="String" indexed="YES" syncable="YES"/>
@@ -639,8 +630,7 @@
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="240"/>
         <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
-        <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
-        <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
+        <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Person" positionX="18" positionY="153" width="128" height="30"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
@@ -653,8 +643,7 @@
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
-        <element name="ReaderSavedPostsTopic" positionX="36" positionY="162" width="128" height="45"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="645"/>
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>

@@ -43,7 +43,7 @@ PODS:
   - DTFoundation/UIKit (1.7.11):
     - DTFoundation/Core
   - Expecta (1.0.5)
-  - Fabric (1.6.10)
+  - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
   - FormatterKit (1.8.1):
     - FormatterKit/AddressFormatter (= 1.8.1)
@@ -134,17 +134,6 @@ PODS:
     - OHHTTPStubs/Core
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
-  - Simperium (0.8.17):
-    - Simperium/DiffMatchPach (= 0.8.17)
-    - Simperium/JRSwizzle (= 0.8.17)
-    - Simperium/SocketTrust (= 0.8.17)
-    - Simperium/SPReachability (= 0.8.17)
-    - Simperium/SSKeychain (= 0.8.17)
-  - Simperium/DiffMatchPach (0.8.17)
-  - Simperium/JRSwizzle (0.8.17)
-  - Simperium/SocketTrust (0.8.17)
-  - Simperium/SPReachability (0.8.17)
-  - Simperium/SSKeychain (0.8.17)
   - Specta (1.0.5)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
@@ -155,7 +144,7 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.6.3):
+  - WordPress-iOS-Shared (0.7.0):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.19)
   - WordPressCom-Stats-iOS (0.8.0):
@@ -193,14 +182,13 @@ DEPENDENCIES:
   - OHHTTPStubs (~> 4.6.0)
   - OHHTTPStubs/Swift (~> 4.6.0)
   - Reachability (= 3.2)
-  - Simperium (= 0.8.17)
   - Specta (= 1.0.5)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `7d02c77349245c6e4d3bcdf63a878f90eb4a4e39`)
   - WordPress-iOS-Editor (= 1.8.1)
-  - WordPress-iOS-Shared (= 0.6.3)
+  - WordPress-iOS-Shared (= 0.7.0)
   - WordPressCom-Analytics-iOS (= 0.1.19)
   - WordPressCom-Stats-iOS (= 0.8.0)
   - WordPressComKit (= 0.0.5)
@@ -246,7 +234,7 @@ SPEC CHECKSUMS:
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
   Gridicons: 5c33065054b19e56a47d252b52e321746b97a414
@@ -262,20 +250,19 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Simperium: 0111b16b6d72bc598a99e244ef87025ae433b27e
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
   WordPress-Aztec-iOS: 49c682caa55e69bfbe12545dc1f448207060f6f4
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
-  WordPress-iOS-Shared: 2496fba282efcdcb8182f8f282ca0eb56dc4eb32
+  WordPress-iOS-Shared: 4bec543bac6543480b10d904bea122dcba43cc37
   WordPressCom-Analytics-iOS: 1b01177ee3f588e984465b5b37ebcbb342836a8d
   WordPressCom-Stats-iOS: 7c961a7780a695f54db5431537c16615682cdf32
   WordPressComKit: 4dc52eebc508b8e056d8bf8e931a7be95d467e3b
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 677f892ccdea351964e26828a46125e68895bd4b
+PODFILE CHECKSUM: 2669a80a217e8227324502df4ac85e380a42a5b2
 
 COCOAPODS: 1.1.1

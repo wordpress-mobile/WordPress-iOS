@@ -437,7 +437,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topics.@count = 0 AND isSaved = false"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topics.@count = 0"];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
