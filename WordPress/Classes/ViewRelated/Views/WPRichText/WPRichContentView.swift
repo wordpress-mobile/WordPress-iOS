@@ -48,6 +48,13 @@ class WPRichContentView: UITextView
     }()
 
 
+    override var textContainerInset: UIEdgeInsets {
+        didSet {
+            attachmentManager.layoutAttachmentViews()
+        }
+    }
+
+
     /// Whether the view shows private content. Used when fetching images.
     ///
     var isPrivate = false
