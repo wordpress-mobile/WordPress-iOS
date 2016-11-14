@@ -63,19 +63,19 @@ class ReaderTopicSwiftTest : XCTestCase
         post1.postID = NSNumber(int:1)
         post1.postTitle = "post1"
         post1.content = "post1"
-        post1.topic = topic
+        post1.addTopicsObject(topic)
 
         let post2 = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
         post2.postID = NSNumber(int:2)
         post2.postTitle = "post2"
         post2.content = "post2"
-        post2.topic = topic
+        post2.addTopicsObject(topic)
 
         let post3 = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
         post3.postID = NSNumber(int:3)
         post3.postTitle = "post3"
         post3.content = "post3"
-        post3.topic = topic
+        post3.addTopicsObject(topic)
 
         do {
             try context.save()
@@ -346,18 +346,11 @@ class ReaderTopicSwiftTest : XCTestCase
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
 
-        let post = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
-        post.postID = NSNumber(int:1)
-        post.postTitle = "post1"
-        post.content = "post1"
-        post.isSaved = true
+        let topic = service.savedPostsTopic()
 
         try! context.save()
 
-        let topic = service.savedPostsTopic()
-
         XCTAssert(topic.type == "savedPosts")
-        XCTAssert(topic.posts.contains(post))
     }
 
     /**

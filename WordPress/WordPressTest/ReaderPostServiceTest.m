@@ -10,6 +10,7 @@
 #import "ReaderPostService.h"
 #import "RemoteReaderPost.h"
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface ReaderPostService()
 
@@ -31,7 +32,7 @@
     remotePost.content = @"";
     remotePost.postTitle = str;
     remotePost.summary = str;
-
+    remotePost.sortRank = @0;
     return remotePost;
 }
 
@@ -41,28 +42,26 @@
 
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    [[ContextManager sharedInstance] saveContext:context];
+    [[ContextManager sharedInstance] saveContextAndWait:context];
 
     [service deletePostsWithNoTopic];
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
 }
 
-- (void)testDontDeleteSavedPosts {
+- (void)testDoesntDeleteSavedPosts {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
 
+    ReaderAbstractTopic *savedTopic = [topicService savedPostsTopic];
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    post.isSaved = YES;
-    [[ContextManager sharedInstance] saveContext:context];
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:savedTopic];
 
     [service deletePostsWithNoTopic];
-    XCTAssertTrue(!post.isDeleted, @"The post should not have been deleted.");
 
-    // FIXME: Temporary workaround for core data issue
-    // The test data used here is somehow invalid but I can't figure out why...
-    // The error suggests an missing required attribute
-    [context deleteObject:post];
+    [[ContextManager sharedInstance] saveContextAndWait:context];
+
+    XCTAssertTrue(!post.isDeleted, @"The post should not have been deleted.");
 }
 
 @end
