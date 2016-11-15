@@ -2,19 +2,44 @@
 #import "ContextManager-Internals.h"
 #import "ALIterativeMigrator.h"
 
+
+// MARK: - Static Variables
+//
 static ContextManager *_instance;
 static ContextManager *_override;
 
+
+// MARK: - Private Properties
+//
 @interface ContextManager ()
 
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
 
 @end
 
+
+// MARK: - ContextManager
+//
 @implementation ContextManager
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self startListeningToMainContextNotifications];
+    }
+
+    return self;
+}
 
 + (instancetype)sharedInstance
 {
@@ -22,6 +47,7 @@ static ContextManager *_override;
     dispatch_once(&onceToken, ^{
         _instance = [[ContextManager alloc] init];
     });
+
     return _override ?: _instance;
 }
 
@@ -31,10 +57,6 @@ static ContextManager *_override;
     _override = contextManager;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 #pragma mark - Contexts
 
@@ -48,12 +70,26 @@ static ContextManager *_override;
     return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
 }
 
+- (NSManagedObjectContext *const)writerContext
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        context.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        _writerContext = context;
+    });
+
+    return _writerContext;
+}
+
 - (NSManagedObjectContext *const)mainContext
 {
-    if (_mainContext) {
-        return _mainContext;
-    }
-    _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        context.parentContext = self.writerContext;
+        _mainContext = context;
+    });
 
     return _mainContext;
 }
@@ -226,6 +262,24 @@ static ContextManager *_override;
 }
 
 
+#pragma mark - Notification Helpers
+
+- (void)startListeningToMainContextNotifications
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(mainContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:self.mainContext];
+}
+
+- (void)mainContextDidSave:(NSNotification *)notification
+{
+    // Defer I/O to a BG Writer Context. Simperium 4ever!
+    //
+    [self.writerContext performBlock:^{
+        [self internalSaveContext:self.writerContext];
+    }];
+}
+
+
 #pragma mark - Private Helpers
 
 - (void)internalSaveContext:(NSManagedObjectContext *)context
@@ -237,7 +291,7 @@ static ContextManager *_override;
         DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
     }
     
-    if (![context save:&error]) {
+    if ([context hasChanges] && ![context save:&error]) {
         DDLogError(@"Unresolved core data error\n%@:", error);
         @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                        reason:@"Unresolved Core Data save error"
