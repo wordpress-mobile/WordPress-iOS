@@ -14,6 +14,7 @@ class PostPostViewController: UIViewController {
     private(set) var post: Post?
     var revealPost = false
     @IBOutlet var titleLabel:UILabel!
+    @IBOutlet var postStatusLabel:UILabel!
     @IBOutlet var siteIconView:UIImageView!
     @IBOutlet var siteNameLabel:UILabel!
     @IBOutlet var siteUrlLabel:UILabel!
@@ -98,6 +99,11 @@ class PostPostViewController: UIViewController {
         self.post = post
 
         titleLabel.text = post.titleForDisplay()
+        if post.isScheduled() {let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was schedulde for.")
+            postStatusLabel.text = String(format: format, post.dateStringForDisplay())
+        } else {
+            postStatusLabel.text = NSLocalizedString("Published just now on", comment: "Precedes the name of the blog just posted on")
+        }
         siteNameLabel.text = blogSettings.name
         siteUrlLabel.text = post.blog.url
         if let icon = post.blog.icon {

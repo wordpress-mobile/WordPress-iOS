@@ -218,10 +218,13 @@ class EditPostViewController: UIViewController {
     }
 
     func shouldShowPostPost() -> Bool  {
-        if post != .None {
-            return true
+        guard let post = post else {
+            return false
         }
-        return false
+        if post.isDraft() {
+            return false
+        }
+        return true
     }
 
     func previewPost() {
