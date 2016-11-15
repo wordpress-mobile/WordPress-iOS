@@ -1131,8 +1131,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     if (remotePost.sourceAttribution) {
         post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
-    } else {
-        post.sourceAttribution = nil;
     }
 
     // assign the topic last.
