@@ -87,6 +87,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         return post != nil
     }
 
+    private var hasReadPost: Bool = false
 
     // MARK: - Convenience Factories
 
@@ -222,6 +223,10 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
         super.viewWillDisappear(animated)
 
         setBarsHidden(false)
+
+        if (hasReadPost) {
+            markPostAsRead()
+        }
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
@@ -924,6 +929,13 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
             }
         }
     }
+
+    func markPostAsRead() {
+        if let post = post, savedTopic = post.topics.filter(ReaderHelpers.isTopicSavedPostsTopic).first {
+            post.removeTopicsObject(savedTopic)
+            ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+        }
+    }
 }
 
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
@@ -1015,6 +1027,7 @@ extension ReaderDetailViewController : UIScrollViewDelegate
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if isScrollViewAtBottom() {
             setBarsHidden(false)
+            hasReadPost = true
         }
     }
 

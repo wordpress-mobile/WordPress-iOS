@@ -231,8 +231,17 @@ import WordPressComAnalytics
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        refreshTableViewIfNeeded()
+
         // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
         refreshTableHeaderIfNeeded()
+    }
+
+    func refreshTableViewIfNeeded() {
+        // For the saved post topic, posts could potentially be removed from the list on the details screen. This allows us to refresh the data when returning from that screen.
+        if let topic = readerTopic where ReaderHelpers.isTopicSavedPostsTopic(topic) {
+            tableViewHandler.refreshTableView()
+        }
     }
 
 
