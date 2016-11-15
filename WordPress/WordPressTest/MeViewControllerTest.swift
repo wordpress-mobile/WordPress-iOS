@@ -22,10 +22,10 @@ class MeViewControllerTest: XCTestCase {
             fatalError("init(coder:) has not been implemented")
         }
 
-        override func retrieveAccounts() -> [Account] {
-             return [Account.init(userId: 1, username: "user1", email: "some@thing.com"),
+        override func retrieveAccounts(completion: ([Account]) -> Void) {
+             let accounts = [Account.init(userId: 1, username: "user1", email: "some@thing.com"),
              Account.init(userId: 2, username: "user2", email: "some@thingelse.com")]
-
+            completion(accounts)
         }
     }
 
@@ -73,6 +73,5 @@ class MeViewControllerTest: XCTestCase {
         let accountHelper: AccountSelectionHelper = meViewController!.switchAccountHelper()
         let titleView = accountHelper.titleView
         XCTAssertNotNil(titleView)
-        XCTAssertEqual(2, accountHelper.accounts.count)
     }
 }

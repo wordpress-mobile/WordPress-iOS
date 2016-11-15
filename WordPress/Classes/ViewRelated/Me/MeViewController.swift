@@ -39,8 +39,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let accountHelper = switchAccountHelper()
-        self.navigationItem.titleView = accountHelper.titleView
+        self.accountHelper = switchAccountHelper()
+        self.navigationItem.titleView = self.accountHelper?.titleView
 
         // Preventing MultiTouch Scenarios
         view.exclusiveTouch = true
@@ -70,6 +70,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
         }
+        self.retrieveAccounts { (accounts: [Account]) in
+            self.accountHelper?.accounts = accounts
+        }
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -80,23 +83,30 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     func switchAccountHelper() -> AccountSelectionHelper {
-        let accounts: [Account] = self.retrieveAccounts()
-
         var navBarHeight = self.navigationController?.navigationBar.frame.size.height
         if (navBarHeight == nil) {
             navBarHeight = 44
         }
         let accountHelper = AccountSelectionHelper(parentView: self.view,
-                                                   accounts: accounts,
+                                                   accounts: [],
                                                    delegate: self,
                                                    height: navBarHeight!)
 
         accountHelper.delegate = self
+
+        self.retrieveAccounts { (accounts: [Account]) in
+            self.accountHelper?.accounts = accounts
+        }
+
         return accountHelper
     }
 
-    @objc private func accountDidChange() {
+    @objc private func accountDidChange(notification: NSNotification) {
         reloadViewModel()
+
+        self.retrieveAccounts { (accounts: [Account]) in
+            self.accountHelper?.accounts = accounts
+        }
 
         // Reload the detail pane if the split view isn't compact
         if let splitViewController = splitViewController as? WPSplitViewController,
@@ -342,7 +352,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 style: .Destructive,
                 handler: { [unowned self] _ in
                 self.logOut()
-                self.setDefaultAccountWithNextAccountIfAvailable()
             })
 
             alert.addAction(cancel)
@@ -400,30 +409,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Public for testing purposes
 
-    func retrieveAccounts() -> [Account] {
+    func retrieveAccounts(completion: ([Account]) -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        let accountsCoreData: [AnyObject] = service.retrieveAllAccounts()
-        var accounts: [Account] = []
-        for account in accountsCoreData {
-            let parsedAccount = account as! WPAccount
-            let accountStruct = Account.init(userId: parsedAccount.userID, username: parsedAccount.username, email: parsedAccount.email)
-            accounts.append(accountStruct)
+        service.retrieveAllAccountsWith { ( accounts: [AnyObject] ) in
+
+            let accountsParsed = accounts as! [WPAccount]
+            var accountsCompleted: [Account] = []
+            for account in accountsParsed {
+
+                let accountStruct = Account.init(userId: account.userID,
+                                                 username: account.username,
+                                                 email: account.email)
+                accountsCompleted.append(accountStruct)
+            }
+
+            completion(accountsCompleted)
         }
-        return accounts
     }
 
     func logOut() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        service.removeDefaultWordPressComAccount()
-    }
-
-    func setDefaultAccountWithNextAccountIfAvailable() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let accounts = service.retrieveAllAccounts()
-        service.setDefaultWordPressComAccount(accounts.first as! WPAccount)
+        let accountService = AccountServiceFacade()
+        accountService.removeAndReplaceWPAccountIfAvailable()
     }
 
     // MARK: - Private Properties

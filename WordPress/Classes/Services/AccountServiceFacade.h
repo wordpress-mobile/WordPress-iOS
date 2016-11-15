@@ -35,6 +35,13 @@
  */
 -(void)setDefaultWordPressComAccount:(WPAccount *)account;
 
+/**
+ * Removes current default WP account and replace it if there is another account available then notifies
+ * 
+ */
+
+- (void)removeAndReplaceWPAccountIfAvailable;
+
 @end
 
 /**

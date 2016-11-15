@@ -38,4 +38,20 @@
     [accountService setDefaultWordPressComAccount:account];
 }
 
+- (void)removeAndReplaceWPAccountIfAvailable
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    [accountService removeDefaultWordPressComAccount];
+
+    [accountService retrieveAllAccountsWith:^(NSArray * _Nonnull accounts) {
+        if (accounts.count > 0) {
+            [accountService setDefaultWordPressComAccount:accounts.firstObject];
+        }
+        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        }
+    }];
+}
+
 @end

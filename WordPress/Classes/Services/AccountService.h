@@ -82,11 +82,12 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
                                        authToken:(NSString *)authToken;
 
 /**
- Retrieves all the intances of Account
+ Retrieves all the intances of Account retrieve the complete information from the backend if necessary
  
- @return an Arrays of WPAccounts
+ @param completion the block where all the completed WPAccounts in the array will be returned
  */
-- (NSArray *)retrieveAllAccounts;
+typedef void (^WPAccountRetrieveCompletion)(NSArray* accounts);
+- (void)retrieveAllAccountsWith:(WPAccountRetrieveCompletion)completion;
 
 - (NSUInteger)numberOfAccounts;
 

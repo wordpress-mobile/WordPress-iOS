@@ -121,9 +121,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
     [WPAnalytics refreshMetadata];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
@@ -189,18 +187,47 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return account;
 }
 
-- (NSArray *)retrieveAllAccounts
+- (void)retrieveAllAccountsWith:(WPAccountRetrieveCompletion)completion
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Account"
-                                   inManagedObjectContext:context]];
-    [request setIncludesSubentities:NO];
-    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setIncludesSubentities:YES];
+    [request setReturnsObjectsAsFaults:NO];
     NSError *error;
     NSArray* accounts = [context executeFetchRequest:request error:&error];
-    
-    return accounts;
+
+    NSMutableArray *mutableCompletedAccounts = [NSMutableArray array];
+    __block NSInteger callbackCounter = 0;
+    for(WPAccount* account in accounts) {
+
+        if (account.email == nil) {
+
+            [self updateUserDetailsForAccount:account
+                                      success:^{
+                                          [mutableCompletedAccounts addObject:account];
+                                          callbackCounter++;
+                                          if (callbackCounter == accounts.count) {
+                                              completion(accounts);
+                                          }
+                                      } failure:^(NSError * _Nonnull error) {
+                                          callbackCounter++;
+                                          if (callbackCounter == accounts.count) {
+                                              completion(mutableCompletedAccounts);
+                                          }
+                                      }];
+        }
+        else {
+            [mutableCompletedAccounts addObject:account];
+            callbackCounter++;
+            if (callbackCounter == accounts.count) {
+                completion(mutableCompletedAccounts);
+            }
+        }
+    }
+
+    if (accounts.count == 0) {
+        completion(@[]);
+    }
 }
 
 - (NSUInteger)numberOfAccounts

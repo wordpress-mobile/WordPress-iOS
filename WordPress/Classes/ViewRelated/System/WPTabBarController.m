@@ -103,7 +103,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setTranslucent:NO];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-    
         // Create a background
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
@@ -336,7 +335,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
 
         _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
-        _meSplitViewController.tabBarItem.tag = 3;
     }
     
     return _meSplitViewController;

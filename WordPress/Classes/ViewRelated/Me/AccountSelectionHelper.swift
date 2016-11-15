@@ -30,16 +30,15 @@ class AccountSelectionHelper: NSObject {
     var titleView: UIView
     weak var delegate: AccountSelectionHelperDelegate?
     let parentView: UIView
-    let accounts: [Account]
+    var accounts: [Account]
     let height: CGFloat = 44.0
-    var widht: CGFloat = 250
 
     var tableViewController = UITableViewController()
     var handler: ImmuTableViewHandler!
 
     let chevronImageView: UIImageView = { () -> UIImageView in
-            let chevron = UIImage.init(named: "theme-type-chevron")
-            return UIImageView.init(image: chevron)
+        let chevron = UIImage.init(named: "theme-type-chevron")
+        return UIImageView.init(image: chevron)
     }()
 
     let disclosureChevronImageView: UIImageView = {
@@ -48,7 +47,7 @@ class AccountSelectionHelper: NSObject {
     }()
 
     var titleLabel: UILabel = {
-        let label = UILabel.init(frame: CGRectMake(0, 0, 300, 40))
+        let label = UILabel()
         label.text =  NSLocalizedString("Me", comment: "Me page title")
         label.font = UIFont.init(name: "Helvetica-Bold", size: 17)
         label.textColor = UIColor.whiteColor()
@@ -62,22 +61,10 @@ class AccountSelectionHelper: NSObject {
                   parentView: parentView,
                   accounts: accounts,
                   delegate: delegate)
-        titleLabel.frame = CGRectMake(0, 0, self.titleView.frame.size.width, 40)
 
-        if accounts.count == 1 {
-            return
-        }
-
+        setupTitleLabel()
         setupChevronFrames()
-
-        self.titleView.addSubview(self.disclosureChevronImageView)
-        self.titleView.addSubview(self.titleLabel)
-
-
-        let tapGestureRecognizer = UITapGestureRecognizer.init(target: self,
-                                                               action: #selector(AccountSelectionHelper.showAccountSelectionView))
-        self.titleLabel.addGestureRecognizer(tapGestureRecognizer)
-
+        setupSwitchButton()
         setupAccountTableView()
     }
 
@@ -86,7 +73,20 @@ class AccountSelectionHelper: NSObject {
         self.accounts = accounts
         self.delegate = delegate
         self.titleView = UIView.init(frame: frame)
+        super.init()
+    }
 
+    func setupSwitchButton() {
+        let showListButton = UIButton(frame: CGRectMake(0, 0, self.titleView.frame.size.width, height))
+        showListButton.addTarget(self,
+                                 action: #selector(AccountSelectionHelper.showAccountSelectionView),
+                                 forControlEvents: UIControlEvents.TouchUpInside)
+        self.titleView.addSubview(showListButton)
+    }
+
+    func setupTitleLabel() {
+        titleLabel.frame = CGRectMake(0, 0, self.titleView.frame.size.width, height)
+        self.titleView.addSubview(self.titleLabel)
     }
 
     func setupAccountTableView() {
@@ -110,6 +110,7 @@ class AccountSelectionHelper: NSObject {
                                                            self.titleLabel.frame.origin.y + 13,
                                                            self.disclosureChevronImageView.frame.size.width,
                                                            self.disclosureChevronImageView.frame.size.height)
+        self.titleView.addSubview(self.disclosureChevronImageView)
     }
 
     // MARK: - Account Selection
@@ -135,7 +136,7 @@ class AccountSelectionHelper: NSObject {
             self.disclosureChevronImageView.removeFromSuperview()
             self.titleView.addSubview(self.chevronImageView)
             accountLV.alpha = 1
-            })
+        })
     }
 
     func accountSelection() -> ImmuTableAction {
@@ -197,7 +198,7 @@ class AccountSelectionHelper: NSObject {
             )
             accountItemRows.append(accountItemRow)
         }
-
+        
         return ImmuTable( sections: [ImmuTableSection(rows: accountItemRows)])
     }
 }
