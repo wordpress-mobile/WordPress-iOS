@@ -257,7 +257,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
     topic.type = [ReaderSavedPostsTopic TopicType];
     topic.path = nil;
-    topic.title = @"Saved Posts"; // TODO: Extract this
+    topic.title = @"Saved For Later"; // TODO: Extract this
     topic.showInMenu = YES;
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
