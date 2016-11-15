@@ -36,8 +36,9 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     @IBOutlet private weak var footerViewHeightConstraint: NSLayoutConstraint!
 
     // Wrapper views
-    @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var contentStackView: UIStackView!
+    @IBOutlet private weak var textHeaderStackView: UIStackView!
+    @IBOutlet private weak var textFooterStackView: UIStackView!
+    private weak var textFooterTopConstraint: NSLayoutConstraint!
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
@@ -162,7 +163,9 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        scrollView.alpha = 0
+
+        composeViews()
+        textView.alpha = 0
         footerView.hidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
@@ -212,6 +215,9 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        coordinator.animateAlongsideTransition(nil) { (_) in
+            self.updateContentInsets()
+        }
 
         // Make sure that the bars are visible after switching from landscape
         // to portrait orientation.  The content might have been scrollable in landscape
@@ -268,6 +274,35 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     }
 
 
+    private func composeViews() {
+        textView.addSubview(textHeaderStackView)
+        textHeaderStackView.topAnchor.constraintEqualToAnchor(textView.topAnchor).active = true
+
+        textView.addSubview(textFooterStackView)
+        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView, attribute: .Top, relatedBy: .Equal, toItem: textView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        textView.addConstraint(textFooterTopConstraint)
+        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+        textView.setContentOffset(CGPoint.zero, animated: false)
+
+        updateContentInsets()
+        textView.setContentOffset(CGPoint.zero, animated: false)
+    }
+
+
+    private func updateContentInsets() {
+        var insets = textView.textContainerInset
+        insets.top = textHeaderStackView.frame.height
+        insets.bottom = textFooterStackView.frame.height
+
+        let margin = view.readableContentGuide.layoutFrame.origin.x
+        insets.left = margin
+        insets.right = margin
+        textView.textContainerInset = insets
+
+        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+    }
+
+
     private func setupNavBar() {
         configureNavTitle()
 
@@ -293,7 +328,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
 
     private func configureView() {
-        scrollView.alpha = 1
+        textView.alpha = 1
         configureNavTitle()
         configureShareButton()
         configureHeader()
@@ -406,6 +441,13 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     }
 
 
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        updateContentInsets()
+    }
+
+
     private func configureFeaturedImageWithImage(image: UIImage) {
         // Unhide the views
         featuredImageView.hidden = false
@@ -429,6 +471,9 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
+
+        view.layoutIfNeeded()
+        updateContentInsets()
     }
 
 
@@ -696,7 +741,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
             UIView.animateWithDuration(0.3,
                 delay: 0.0,
                 options: [.BeginFromCurrentState, .AllowUserInteraction],
-                animations: { () -> Void in
+                animations: {
                     self.view.layoutIfNeeded()
                 }, completion: nil)
 
@@ -712,8 +757,8 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
                 animations: {
                     self.view.layoutIfNeeded()
                     if pinToBottom {
-                        let y = self.scrollView.contentSize.height - self.scrollView.frame.height
-                        self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+                        let y = self.textView.contentSize.height - self.textView.frame.height
+                        self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                     }
 
                 }, completion: nil)
@@ -723,7 +768,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
 
     func isScrollViewAtBottom() -> Bool {
-        return scrollView.contentOffset.y + scrollView.frame.height == scrollView.contentSize.height
+        return textView.contentOffset.y + textView.frame.height == textView.contentSize.height
     }
 
     // MARK: - Analytics
@@ -946,6 +991,15 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 
 extension ReaderDetailViewController : UIScrollViewDelegate
 {
+
+    public func scrollViewDidScroll(scrollView: UIScrollView) {
+        let height = textView.contentSize.height - textFooterStackView.frame.size.height
+        if height != textFooterTopConstraint.constant {
+            textFooterTopConstraint.constant = height
+        }
+    }
+
+
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if UIDevice.isPad() || footerView.hidden || !isLoaded {
             return
