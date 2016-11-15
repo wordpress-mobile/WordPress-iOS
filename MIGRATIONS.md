@@ -3,6 +3,15 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 53
+- @jleandroperez 2016-10-27
+- `Notification` added `notificationHash` property.
+- @jleandroperez 2016-10-19
+- `Notification` removed `simperiumKey` property.
+- `Notification` removed `ghostData` property.
+- `Notification` added `notificationId` property.
+- Removed `Meta` entity.
+
 ## WordPress 52
 
 - @koke 2016-09-28

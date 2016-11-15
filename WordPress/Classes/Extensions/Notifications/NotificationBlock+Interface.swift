@@ -69,7 +69,7 @@ extension NotificationBlock
     /// Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell and NoteBlockCommentTableViewCell.
     ///
     var attributedRichText: NSAttributedString {
-        // Operations such as editing a comment cause a lag between the REST and Simperium update.
+        // Operations such as editing a comment may complete way before the Notification is updated.
         // TextOverride is a transient property meant to store, temporarily, the edited text
         if let textOverride = textOverride {
             return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
