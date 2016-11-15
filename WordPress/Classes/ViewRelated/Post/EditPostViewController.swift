@@ -230,6 +230,9 @@ class EditPostViewController: UIViewController {
         }
         let controller = PostPreviewViewController(post: post)
         controller.hidesBottomBarWhenPushed = true
+        controller.onClose = {
+            self.postPost.dismissViewControllerAnimated(true) {}
+        }
         let navWrapper = UINavigationController(rootViewController: controller)
         postPost.presentViewController(navWrapper, animated: true) {}
     }
