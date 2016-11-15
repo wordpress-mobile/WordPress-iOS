@@ -209,6 +209,7 @@
                         <outlet property="editButton" destination="wfC-rz-tLa" id="xSU-f1-aKT"/>
                         <outlet property="editButtonWidth" destination="mjG-Ox-i6I" id="a3y-wm-nY9"/>
                         <outlet property="navBar" destination="FQW-wc-apn" id="t2u-nV-BzI"/>
+                        <outlet property="postStatusLabel" destination="IEW-y3-Pzp" id="JYO-pb-LZ5"/>
                         <outlet property="shareButton" destination="Mew-dP-u74" id="nvc-l5-PtH"/>
                         <outlet property="shareButtonWidth" destination="5Oy-Ww-uC8" id="6Wi-jK-EMb"/>
                         <outlet property="siteIconView" destination="JVi-Ph-TTu" id="Nce-sR-5un"/>
