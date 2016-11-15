@@ -1,5 +1,5 @@
 {
-    "id": 1234,
+    "notificationId": "1234",
     "type": "best_followed_day_feat",
     "read": 1,
     "noticon": "\uf806",

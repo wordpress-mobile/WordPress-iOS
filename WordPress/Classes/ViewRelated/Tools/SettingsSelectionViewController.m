@@ -3,7 +3,6 @@
 #import "NSDictionary+SafeExpectations.h"
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 
 NSString * const SettingsSelectionTitleKey = @"Title";
 NSString * const SettingsSelectionTitlesKey = @"Titles";

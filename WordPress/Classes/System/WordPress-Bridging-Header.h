@@ -46,7 +46,6 @@
 #import "NavbarTitleDropdownButton.h"
 #import "SuggestionService.h"
 #import "StatsViewController.h"
-#import "Meta.h"
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
@@ -155,7 +154,6 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #import <FLAnimatedImage/FLAnimatedImage.h>

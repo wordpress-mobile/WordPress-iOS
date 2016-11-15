@@ -4,7 +4,6 @@
 @class BlogListViewController;
 @class NotificationsViewController;
 @class AbstractPost;
-@class Simperium;
 @class Blog;
 @class WPUserAgent;
 @class WPAppAnalytics;
@@ -17,10 +16,8 @@
 @property (nonatomic, strong,  readonly) WPLogger                       *logger;
 @property (nonatomic, strong,  readonly) Reachability                   *internetReachability;
 @property (nonatomic, strong,  readonly) Reachability                   *wpcomReachability;
-@property (nonatomic, strong,  readonly) Simperium                      *simperium;
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
 @property (nonatomic, strong,  readonly) WPUserAgent                    *userAgent;
-@property (nonatomic, assign, readonly) BOOL                            testSuiteIsRunning;
 
 + (WordPressAppDelegate *)sharedInstance;
 
