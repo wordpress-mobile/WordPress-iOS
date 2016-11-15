@@ -262,6 +262,18 @@ int ddLogLevel = DDLogLevelInfo;
                     }
                 }
             }
+        } else if ([[url host] isEqualToString:@"faq"]) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
+                NSString *faqID = [url lastPathComponent];
+
+                UIViewController *viewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+
+                HelpshiftPresenter *presenter = [HelpshiftPresenter new];
+                [presenter presentHelpshiftWindowForFAQ:faqID
+                                     fromViewController:viewController
+                                             completion:nil];
+                return YES;
+            }
         }
     }
 
