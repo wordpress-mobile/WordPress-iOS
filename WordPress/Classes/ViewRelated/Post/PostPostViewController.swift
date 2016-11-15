@@ -127,6 +127,7 @@ class PostPostViewController: UIViewController {
 
     @IBAction func viewTapped() {
         self.preview?()
+        revealPost = true
     }
 
     @IBAction func doneTapped() {

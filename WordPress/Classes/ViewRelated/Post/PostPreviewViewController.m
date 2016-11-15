@@ -9,7 +9,6 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-
 @interface PostPreviewViewController ()
 
 @property (nonatomic, strong) UIWebView *webView;
@@ -17,6 +16,7 @@
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
 
 @end
 
@@ -60,9 +60,14 @@
 {
     [super viewWillAppear:animated];
     [self refreshWebView];
-    if ([self.apost isKindOfClass:[Post class]]) {
-        [self.navigationItem setRightBarButtonItems:@[[self shareBarButtonItem]] animated:YES];
+    NSMutableArray *rightButtons = [NSMutableArray new];
+    if (self.isBeingPresented || self.navigationController.isBeingPresented) {
+        [rightButtons addObject:[self doneBarButtonItem]];
     }
+    if ([self.apost isKindOfClass:[Post class]]) {
+        [rightButtons addObject:[self shareBarButtonItem]];
+    }
+    [self.navigationItem setRightBarButtonItems:rightButtons animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -331,6 +336,16 @@
     return _shareBarButtonItem;
 }
 
+- (UIBarButtonItem *)doneBarButtonItem
+{
+    if (!_doneBarButtonItem) {
+        _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Label for button to dismiss post preview") style:UIBarButtonItemStyleDone target:self action:@selector(dismissPreview)];
+        _doneBarButtonItem.accessibilityIdentifier = @"Done";
+    }
+
+    return _doneBarButtonItem;
+}
+
 - (void)sharePost
 {
     if ([self.apost isKindOfClass:[Post class]]) {
@@ -339,6 +354,16 @@
         PostSharingController *sharingController = [[PostSharingController alloc] init];
         
         [sharingController sharePost:post fromBarButtonItem:[self shareBarButtonItem] inViewController:self];
+    }
+}
+
+- (void)dismissPreview
+{
+    if (self.onClose) {
+        self.onClose();
+        self.onClose = nil;
+    } else{
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
