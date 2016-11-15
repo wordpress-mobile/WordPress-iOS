@@ -84,10 +84,11 @@ import UIKit
             return
         }
 
-        attachmentView.view.frame = textView.frameForTextInRange(range)
-
-        // Always ensure layout after updating
+        // Make sure attachments are correctly laid out.
+        layoutManager.invalidateLayoutForCharacterRange(range, actualCharacterRange: nil)
         layoutManager.ensureLayoutForTextContainer(textView.textContainer)
+
+        attachmentView.view.frame = textView.frameForTextInRange(range)
     }
 
 
