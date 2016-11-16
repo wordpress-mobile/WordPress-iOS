@@ -266,12 +266,15 @@ int ddLogLevel = DDLogLevelInfo;
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 NSString *faqID = [url lastPathComponent];
 
-                UIViewController *viewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+                UIViewController *viewController = self.window.topmostPresentedViewController;
 
-                HelpshiftPresenter *presenter = [HelpshiftPresenter new];
-                [presenter presentHelpshiftWindowForFAQ:faqID
-                                     fromViewController:viewController
-                                             completion:nil];
+                if (viewController) {
+                    HelpshiftPresenter *presenter = [HelpshiftPresenter new];
+                    [presenter presentHelpshiftWindowForFAQ:faqID
+                                         fromViewController:viewController
+                                                 completion:nil];
+                }
+
                 return YES;
             }
         }
