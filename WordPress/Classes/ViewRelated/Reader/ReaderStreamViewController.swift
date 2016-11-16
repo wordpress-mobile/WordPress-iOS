@@ -436,7 +436,7 @@ import WordPressComAnalytics
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
         resultsStatusView.accessoryView = nil
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if topic.isFollowing {
             resultsStatusView.buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
             resultsStatusView.delegate = self
         } else {
@@ -512,7 +512,7 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = readerTopic where topic.isSearch {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
@@ -644,9 +644,9 @@ import WordPressComAnalytics
         }
         let title = topic.title ?? ""
         var key: String = "list"
-        if ReaderHelpers.isTopicTag(topic) {
+        if topic.isTag {
             key = "tag"
-        } else if ReaderHelpers.isTopicSite(topic) {
+        } else if topic.isSite {
             key = "site"
         }
         return [key : title]
@@ -658,7 +658,7 @@ import WordPressComAnalytics
             return false
         }
         if (isLoggedIn) {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
+            return topic.isTag || topic.isFreshlyPressed
         }
         return false
     }
@@ -692,7 +692,7 @@ import WordPressComAnalytics
         }
 
         // Following
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if topic.isFollowing {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
@@ -1012,7 +1012,7 @@ import WordPressComAnalytics
         }
 
         didBumpStats = true
-        ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+        topic.trackLoaded(withProperties: properties)
     }
 
 
@@ -1065,7 +1065,7 @@ import WordPressComAnalytics
             return
         }
 
-        if ReaderHelpers.isTopicSearchTopic(topic) && topic.posts.count > 0 {
+        if topic.isSearch && topic.posts.count > 0 {
             // We only perform an initial sync if the topic has no results.
             // The rest of the time it should just support infinite scroll.
             // Normal the newly added topic will have no existing posts. The
@@ -1151,7 +1151,7 @@ import WordPressComAnalytics
                 }
             }
 
-            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+            if topicInContext.isSearch {
                 service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: NSDate(), success: successBlock, failure: failureBlock)
@@ -1209,7 +1209,7 @@ import WordPressComAnalytics
                 }
             }
 
-            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+            if topicInContext.isSearch {
                 assertionFailure("Search topics should no have a gap to fill.")
                 service.fetchPostsForTopic(topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
             } else {
@@ -1254,7 +1254,7 @@ import WordPressComAnalytics
                 })
             }
 
-            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
+            if topicInContext.isSearch {
                 service.fetchPostsForTopic(topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPostsForTopic(topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
@@ -1326,7 +1326,7 @@ import WordPressComAnalytics
 
         postCell.delegate = self
         postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
+        postCell.headerBlogButtonIsEnabled = !readerTopic!.isSite
         postCell.configureCell(post)
     }
 
@@ -1415,7 +1415,7 @@ extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
         } else if let topic = readerTopic as? ReaderSiteTopic {
             toggleFollowingForSite(topic)
 
-        } else if let topic = readerTopic as? ReaderDefaultTopic where ReaderHelpers.topicIsFollowing(topic) {
+        } else if let topic = readerTopic as? ReaderDefaultTopic where topic.isFollowing {
             showManageSites()
         }
     }
@@ -1685,7 +1685,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = post.topic where topic.isSearch {
             WPAppAnalytics.track(.ReaderSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.

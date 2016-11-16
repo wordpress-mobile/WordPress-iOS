@@ -31,7 +31,7 @@ import WordPressShared.WPStyleGuide
     // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
-        assert(topic.isKindOfClass(ReaderListTopic))
+        assert(topic.isList)
 
         let listTopic = topic as! ReaderListTopic
 
