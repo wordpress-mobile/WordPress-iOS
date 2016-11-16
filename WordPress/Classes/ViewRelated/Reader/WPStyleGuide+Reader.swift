@@ -22,13 +22,13 @@ extension WPStyleGuide
 
     public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()
-        let font = WPFontManager.systemRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
         return [
             NSParagraphStyleAttributeName : paragraphStyle,
-            NSFontAttributeName : font,
+            NSFontAttributeName : font!,
         ]
     }
 
@@ -61,79 +61,79 @@ extension WPStyleGuide
 
     public class func readerCrossPostTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostTitleFontSize
-        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
+            NSFontAttributeName: font!,
             NSForegroundColorAttributeName: darkGrey()
         ]
     }
 
     public class func readerCrossPostBoldSubtitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
-        let font = WPFontManager.systemBoldFontOfSize(fontSize)
+        let font = WPFontManager.systemBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
+            NSFontAttributeName: font!,
             NSForegroundColorAttributeName: grey()
         ]
     }
 
     public class func readerCrossPostSubtitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
-        let font = WPFontManager.systemRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
+            NSFontAttributeName: font!,
             NSForegroundColorAttributeName: grey()
         ]
     }
 
     public class func readerCardTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.titleFontSize
-        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            NSFontAttributeName: font!
         ]
     }
 
     public class func readerCardSummaryAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
-        let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.contentLineSpacing
-        paragraphStyle.lineBreakMode = .ByTruncatingTail
+        paragraphStyle.lineBreakMode = .byTruncatingTail
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            NSFontAttributeName: font!
         ]
     }
 
     public class func readerCardReadingTimeAttributes() -> [String: AnyObject] {
         let fontSize:CGFloat = Cards.subtextFontSize
-        let font = WPFontManager.systemRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
         return [
-            NSFontAttributeName: font,
+            NSFontAttributeName: font!,
         ]
     }
 
@@ -141,7 +141,7 @@ extension WPStyleGuide
 
     public class func readerDetailTitleAttributes() -> [String: AnyObject] {
         let fontSize = Detail.titleFontSize
-        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
 
         let lineHeight = Detail.titleLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -150,7 +150,7 @@ extension WPStyleGuide
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            NSFontAttributeName: font!
         ]
     }
 
@@ -159,130 +159,130 @@ extension WPStyleGuide
 
     public class func readerStreamHeaderDescriptionAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
-        let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            NSFontAttributeName: font!
         ]
     }
 
 
     // MARK: - Apply Card Styles
 
-    public class func applyReaderCardSiteButtonStyle(button:UIButton) {
+    public class func applyReaderCardSiteButtonStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.titleLabel!.font = WPFontManager.systemRegularFontOfSize(fontSize)
-        button.setTitleColor(mediumBlue(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.setTitleColor(darkGrey(), forState: .Disabled)
+        button.titleLabel!.font = WPFontManager.systemRegularFont(ofSize: fontSize)
+        button.setTitleColor(mediumBlue(), for: UIControlState())
+        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.setTitleColor(darkGrey(), for: .disabled)
     }
 
-    public class func applyReaderCardBlogNameStyle(label:UILabel) {
+    public class func applyReaderCardBlogNameStyle(_ label:UILabel) {
         let fontSize = Cards.buttonFontSize
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = readerCardBlogNameLabelTextColor()
         label.highlightedTextColor = lightBlue()
     }
 
-    public class func applyReaderCardBylineLabelStyle(label:UILabel) {
+    public class func applyReaderCardBylineLabelStyle(_ label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderCardTitleLabelStyle(label:UILabel) {
+    public class func applyReaderCardTitleLabelStyle(_ label:UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardSummaryLabelStyle(label:UILabel) {
+    public class func applyReaderCardSummaryLabelStyle(_ label:UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardTagButtonStyle(button:UIButton) {
+    public class func applyReaderCardTagButtonStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(mediumBlue(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        button.setTitleColor(mediumBlue(), for: UIControlState())
+        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
-    public class func applyReaderCardActionButtonStyle(button:UIButton) {
+    public class func applyReaderCardActionButtonStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(greyDarken10(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.setTitleColor(jazzyOrange(), forState: .Selected)
-        button.setTitleColor(greyDarken10(), forState: .Disabled)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        button.setTitleColor(greyDarken10(), for: UIControlState())
+        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.setTitleColor(jazzyOrange(), for: .selected)
+        button.setTitleColor(greyDarken10(), for: .disabled)
+        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
 
     // MARK: - Apply Stream Header Styles
 
-    public class func applyReaderStreamHeaderTitleStyle(label:UILabel) {
+    public class func applyReaderStreamHeaderTitleStyle(_ label:UILabel) {
         let fontSize:CGFloat = 14.0
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderStreamHeaderDetailStyle(label:UILabel) {
+    public class func applyReaderStreamHeaderDetailStyle(_ label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderStreamHeaderFollowingStyle(button:UIButton) {
+    public class func applyReaderStreamHeaderFollowingStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
         let title = NSLocalizedString("Following", comment: "Gerund. A button label indicating the user is currently subscribed to a topic or site in ther eader. Tapping unsubscribes the user.")
 
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, for: UIControlState())
+        button.setTitle(title, for: .highlighted)
 
-        button.setTitleColor(validGreen(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        button.setTitleColor(validGreen(), for: UIControlState())
+        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
-        button.setImage(UIImage(named: "icon-reader-following"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
+        button.setImage(UIImage(named: "icon-reader-following"), for: UIControlState())
+        button.setImage(UIImage(named: "icon-reader-follow-highlight"), for: .highlighted)
     }
 
-    public class func applyReaderStreamHeaderNotFollowingStyle(button:UIButton) {
+    public class func applyReaderStreamHeaderNotFollowingStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
         let title = NSLocalizedString("Follow", comment: "Verb. A button label. Tapping subscribes the user to a topic or site in the reader")
 
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, for: UIControlState())
+        button.setTitle(title, for: .highlighted)
 
-        button.setTitleColor(greyLighten10(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        button.setTitleColor(greyLighten10(), for: UIControlState())
+        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
-        button.setImage(UIImage(named: "icon-reader-follow"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
+        button.setImage(UIImage(named: "icon-reader-follow"), for: UIControlState())
+        button.setImage(UIImage(named: "icon-reader-follow-highlight"), for: .highlighted)
     }
 
-    public class func applyReaderSiteStreamDescriptionStyle(label:UILabel) {
+    public class func applyReaderSiteStreamDescriptionStyle(_ label:UILabel) {
         let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        label.font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderSiteStreamCountStyle(label:UILabel) {
+    public class func applyReaderSiteStreamCountStyle(_ label:UILabel) {
         let fontSize:CGFloat = 12.0
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = grey()
     }
 
 
     // MARK: - Gap Marker Styles
 
-    public class func applyGapMarkerButtonStyle(button:UIButton) {
+    public class func applyGapMarkerButtonStyle(_ button:UIButton) {
         button.backgroundColor = gapMarkerButtonBackgroundColor()
-        button.titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(Cards.loadMoreButtonFontSize)
-        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: Cards.loadMoreButtonFontSize)
+        button.setTitleColor(UIColor.white, for: UIControlState())
     }
 
     public class func gapMarkerButtonBackgroundColor() -> UIColor {

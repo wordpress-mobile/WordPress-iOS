@@ -2,22 +2,22 @@ import Foundation
 import WordPressShared
 
 enum PlanListViewModel {
-    case Loading
-    case Ready(SitePricedPlans)
-    case Error(String)
+    case loading
+    case ready(SitePricedPlans)
+    case error(String)
 
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
-        case .Loading:
+        case .loading:
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
                 accessoryView: PlansLoadingIndicatorView()
         )
-        case .Ready(_):
+        case .ready(_):
             return nil
-        case .Error(_):
+        case .error(_):
             let appDelegate = WordPressAppDelegate.sharedInstance()
-            if appDelegate.connectionAvailable {
+            if (appDelegate?.connectionAvailable)! {
                 return WPNoResultsView.Model(
                     title: NSLocalizedString("Oops", comment: ""),
                     message: NSLocalizedString("There was an error loading plans", comment: ""),
@@ -32,14 +32,14 @@ enum PlanListViewModel {
         }
     }
 
-    func tableFooterViewModelWithPresenter(presenter: UIViewController) -> (title: String, action: () -> Void)? {
+    func tableFooterViewModelWithPresenter(_ presenter: UIViewController) -> (title: String, action: () -> Void)? {
         switch self {
-        case .Ready:
+        case .ready:
             // Currently unused as we've removed the terms and conditions footer until we re-add purchasing at a later date
             let _ = { [weak presenter] in
-                let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
-                let navController = UINavigationController(rootViewController: webViewController)
-                presenter?.presentViewController(navController, animated: true, completion: nil)
+                let webViewController = WPWebViewController(url: URL(string: WPAutomatticTermsOfServiceURL)!)
+                let navController = UINavigationController(rootViewController: webViewController!)
+                presenter?.present(navController, animated: true, completion: nil)
             }
 
             return (footerTitle, {})
@@ -49,32 +49,32 @@ enum PlanListViewModel {
     }
 
     // Currently unused until we re-add purchasing at a later date
-    private var termsAndConditionsFooterTitle: NSAttributedString {
+    fileprivate var termsAndConditionsFooterTitle: NSAttributedString {
         let bodyColor = WPStyleGuide.greyDarken10()
         let linkColor = WPStyleGuide.wordPressBlue()
 
         // Non-breaking space entity prevents an orphan word if the text wraps
         let tos = NSLocalizedString("By checking out, you agree to our <a>fascinating terms and&nbsp;conditions</a>.", comment: "Terms of Service link displayed when a user is making a purchase. Text inside <a> tags will be highlighted.")
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(12),
-                                                                   NSForegroundColorAttributeName: bodyColor ],
-                                                 .ATagAttribute: [ NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleNone.rawValue,
-                                                                   NSForegroundColorAttributeName: linkColor] ]
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 12),
+                                                                   NSForegroundColorAttributeName: bodyColor! ],
+                                                 .ATagAttribute: [ NSUnderlineStyleAttributeName: NSUnderlineStyle.styleNone.rawValue as AnyObject,
+                                                                   NSForegroundColorAttributeName: linkColor!] ]
 
         let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)
 
         return attributedTos
     }
 
-    private var footerTitle: String {
+    fileprivate var footerTitle: String {
         return NSLocalizedString("You can manage your current plan at WordPress.com/plans", comment: "Footer for Plans list")
     }
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
+    func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
         switch self {
-        case .Loading, .Error(_):
+        case .loading, .error(_):
             return ImmuTable.Empty
-        case .Ready(let siteID, let activePlan, let plans):
+        case .ready(let siteID, let activePlan, let plans):
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
                 let iconUrl = active ? plan.activeIconUrl : plan.iconUrl
@@ -103,12 +103,12 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(sitePricedPlans: SitePricedPlans, initialPlan: Plan, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(_ sitePricedPlans: SitePricedPlans, initialPlan: Plan, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
         return { row in
-            WPAppAnalytics.track(.OpenedPlansComparison)
+            WPAppAnalytics.track(.openedPlansComparison)
             let planVC = PlanComparisonViewController(sitePricedPlans: sitePricedPlans, initialPlan: initialPlan, service: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
-            navigationVC.modalPresentationStyle = .FormSheet
+            navigationVC.modalPresentationStyle = .formSheet
             return navigationVC
         }
     }

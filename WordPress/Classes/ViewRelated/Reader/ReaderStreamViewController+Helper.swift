@@ -18,29 +18,29 @@ extension ReaderStreamViewController
     ///
     /// - Returns: An unconfigured instance of a ReaderStreamHeader.
     ///
-    public class func headerForStream(topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+    public class func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
         if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
+            return Bundle.main.loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
         }
 
         // if tag
         if ReaderHelpers.isTopicTag(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
+            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
         }
 
         // if list
         if ReaderHelpers.isTopicList(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
+            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
         }
 
         // if site
         if ReaderHelpers.isTopicSite(topic) {
-            return NSBundle.mainBundle().loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
+            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
         }
 
         // if anything else return nil
@@ -53,7 +53,7 @@ extension ReaderStreamViewController
     ///
     /// - Returns: An NoResultsResponse instance.
     ///
-    public class func responseForNoResults(topic: ReaderAbstractTopic) -> NoResultsResponse {
+    public class func responseForNoResults(_ topic: ReaderAbstractTopic) -> NoResultsResponse {
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
@@ -99,7 +99,7 @@ extension ReaderStreamViewController
             let message = NSLocalizedString("No posts found matching %@ in your language.", comment:"Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase.")
             return NoResultsResponse(
                 title: NSLocalizedString("No posts found", comment:"A message title"),
-                message: NSString(format: message, topic.title) as String
+                message: NSString(format: message as NSString, topic.title) as String
             )
         }
 

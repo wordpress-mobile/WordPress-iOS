@@ -2,20 +2,20 @@ import Foundation
 import CoreData
 
 @objc enum DomainType: Int16 {
-    case Registered
-    case Mapped
-    case SiteRedirect
-    case WPCom
+    case registered
+    case mapped
+    case siteRedirect
+    case wpCom
 
     var description: String {
         switch self {
-        case .Registered:
+        case .registered:
             return NSLocalizedString("Registered Domain", comment: "Describes a domain that was registered with WordPress.com")
-        case .Mapped:
+        case .mapped:
             return NSLocalizedString("Mapped Domain", comment: "Describes a domain that was mapped to WordPress.com, but registered elsewhere")
-        case .SiteRedirect:
+        case .siteRedirect:
             return NSLocalizedString("Site Redirect", comment: "Describes a site redirect domain")
-        case .WPCom:
+        case .wpCom:
             return NSLocalizedString("Included with Site", comment: "Describes a standard *.wordpress.com site domain")
         }
     }
@@ -59,7 +59,7 @@ class ManagedDomain: NSManagedObject {
     @NSManaged var domainType: DomainType
     @NSManaged var blog: Blog
 
-    func updateWith(domain: Domain, blog: Blog) {
+    func updateWith(_ domain: Domain, blog: Blog) {
         self.domainName = domain.domainName
         self.isPrimary = domain.isPrimaryDomain
         self.domainType = domain.domainType

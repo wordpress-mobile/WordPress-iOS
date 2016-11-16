@@ -7,8 +7,8 @@ extension UITableView
     ///
     public func reloadSelectedRow() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
-            reloadRowsAtIndexPaths([selectedRowIndexPath], withRowAnimation: .None)
-            selectRowAtIndexPath(selectedRowIndexPath, animated: false, scrollPosition: .None)
+            reloadRows(at: [selectedRowIndexPath], with: .none)
+            selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
         }
     }
 
@@ -17,25 +17,25 @@ extension UITableView
     public func reloadDataPreservingSelection() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             reloadData()
-            selectRowAtIndexPath(selectedRowIndexPath, animated: false, scrollPosition: .None)
+            selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
         }
     }
 
     /// Deselects the currently selected row. If any
     ///
-    public func deselectSelectedRowWithAnimation(animated: Bool) {
+    public func deselectSelectedRowWithAnimation(_ animated: Bool) {
         if let selectedRowIndexPath = indexPathForSelectedRow {
-            deselectRowAtIndexPath(selectedRowIndexPath, animated: animated)
+            deselectRow(at: selectedRowIndexPath, animated: animated)
         }
     }
 
     /// Deselects the currently selected row, asynchronously
     ///
-    public func deselectSelectedRowWithAnimationAfterDelay(animated: Bool) {
+    public func deselectSelectedRowWithAnimationAfterDelay(_ animated: Bool) {
         // Note: due to a weird UITableView interaction between reloadData and deselectSelectedRow,
         // we'll introduce a slight delay before deselecting, to avoid getting the highlighted row flickering.
         //
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.deselectSelectedRowWithAnimation(animated)
         }
     }
@@ -50,8 +50,8 @@ extension UITableView
     ///     - scrollPosition:   The position in the table view to scroll the specified row. Use `.None` for no scrolling. Defaults to `.Middle`.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    public func flashRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition = .Middle, completion: (() -> Void)?) {
-        flashRowAtIndexPath(indexPath, scrollPosition: scrollPosition, flashLength: self.dynamicType.defaultFlashLength, completion: completion)
+    public func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, completion: (() -> Void)?) {
+        flashRowAtIndexPath(indexPath, scrollPosition: scrollPosition, flashLength: type(of: self).defaultFlashLength, completion: completion)
     }
 
     /// Flashes the specified row (selecting and then deselecting), and optionally scrolls to the specified position.
@@ -62,27 +62,27 @@ extension UITableView
     ///     - flashLength:      The length of time (in seconds) to wait between selecting and deselecting the row.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    func flashRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition = .Middle, flashLength: NSTimeInterval, completion: (() -> Void)?) {
-        selectRowAtIndexPath(indexPath, animated: true, scrollPosition: scrollPosition)
+    func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, flashLength: TimeInterval, completion: (() -> Void)?) {
+        selectRow(at: indexPath, animated: true, scrollPosition: scrollPosition)
 
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(flashLength * Double(NSEC_PER_SEC)))
+        let time = DispatchTime.now() + Double(Int64(flashLength * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
-        dispatch_after(time, dispatch_get_main_queue()) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: time) { [weak self] in
             self?.deselectSelectedRowWithAnimation(true)
             completion?()
         }
     }
 
-    private static let defaultFlashLength: NSTimeInterval = 0.7
+    fileprivate static let defaultFlashLength: TimeInterval = 0.7
 
     /// Disables Editing after a specified delay.
     ///
     /// -   Parameter delay: milliseconds to elapse before edition will be disabled.
     ///
-    public func disableEditionAfterDelay(delay: NSTimeInterval = defaultDelay) {
-        let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
-        dispatch_after(delay, dispatch_get_main_queue()) { [weak self] in
-            if self?.editing == true {
+    public func disableEditionAfterDelay(_ delay: TimeInterval = defaultDelay) {
+        let delay = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delay) { [weak self] in
+            if self?.isEditing == true {
                 self?.setEditing(false, animated: true)
             }
         }
@@ -90,5 +90,5 @@ extension UITableView
 
     /// Default Disable Edition Action Delay
     ///
-    private static let defaultDelay = NSTimeInterval(0.2)
+    fileprivate static let defaultDelay = TimeInterval(0.2)
 }

@@ -11,15 +11,15 @@ public let UIKitAttachmentAttributeName = "NSAttachment"
 
 extension NSAttributedString
 {
-    public func enumerateAttachments(block: (attachment: NSTextAttachment, range: NSRange) -> ()) {
+    public func enumerateAttachments(_ block: @escaping (_ attachment: NSTextAttachment, _ range: NSRange) -> ()) {
         let range = NSMakeRange(0, length)
 
-        enumerateAttribute(UIKitAttachmentAttributeName, inRange: range, options: .LongestEffectiveRangeNotRequired) {
+        enumerateAttribute(UIKitAttachmentAttributeName, in: range, options: .longestEffectiveRangeNotRequired) {
             (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let attachment = value as? NSTextAttachment {
                 block(attachment: attachment, range: range)
             }
-        }
+        } as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void
     }
 }

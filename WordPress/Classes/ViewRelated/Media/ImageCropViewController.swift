@@ -8,7 +8,7 @@ import UIKit
 class ImageCropViewController : UIViewController, UIScrollViewDelegate
 {
     // MARK: - Public Properties
-    var onCompletion: (UIImage -> Void)?
+    var onCompletion: ((UIImage) -> Void)?
 
 
     // MARK: - Public Initializers
@@ -31,7 +31,7 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
         // Setup: NavigationItem
         let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image as Gravatar")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: useButtonTitle,
-                                                            style: .Plain,
+                                                            style: .plain,
                                                             target: self,
                                                             action: #selector(btnCropWasPressed))
 
@@ -51,11 +51,11 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
 
     // MARK: - UIScrollViewDelegate Methods
 
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         // NO-OP:
         // Required to enable scrollView Zooming
     }
@@ -64,7 +64,7 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
     // MARK: - Action Handlers
     @IBAction func btnCropWasPressed() {
         // Calculations!
-        let screenScale     = UIScreen.mainScreen().scale
+        let screenScale     = UIScreen.main.scale
         let zoomScale       = scrollView.zoomScale
         let oldSize         = rawImage.size
         let resizeRect      = CGRect(x: 0, y: 0, width: oldSize.width * zoomScale, height: oldSize.height * zoomScale)
@@ -75,28 +75,28 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
 
         // Resize
         UIGraphicsBeginImageContextWithOptions(resizeRect.size, false, screenScale)
-        rawImage?.drawInRect(resizeRect)
+        rawImage?.draw(in: resizeRect)
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
         // Crop
-        guard let clippedImageRef = CGImageCreateWithImageInRect(scaledImage!.CGImage!, clippingRect.integral) else {
+        guard let clippedImageRef = scaledImage!.cgImage!.cropping(to: clippingRect.integral) else {
             return
         }
 
-        let clippedImage = UIImage(CGImage: clippedImageRef, scale: screenScale, orientation: .Up)
+        let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
         onCompletion?(clippedImage)
     }
 
 
     // MARK: - Private Constants
-    private let maximumScaleFactor  = CGFloat(3)
+    fileprivate let maximumScaleFactor  = CGFloat(3)
 
     // MARK: - Private Properties
-    private var rawImage                : UIImage!
+    fileprivate var rawImage                : UIImage!
 
     // MARK: - IBOutlets
-    @IBOutlet private var scrollView    : UIScrollView!
-    @IBOutlet private var imageView     : UIImageView!
-    @IBOutlet private var overlayView   : GravatarOverlayView!
+    @IBOutlet fileprivate var scrollView    : UIScrollView!
+    @IBOutlet fileprivate var imageView     : UIImageView!
+    @IBOutlet fileprivate var overlayView   : GravatarOverlayView!
 }

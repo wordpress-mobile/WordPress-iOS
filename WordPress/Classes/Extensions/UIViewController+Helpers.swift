@@ -16,13 +16,13 @@ extension UIViewController
     /// Determines if the current ViewController's View is horizontally Compact
     ///
     public func hasHorizontallyCompactView() -> Bool {
-        return traitCollection.horizontalSizeClass == .Compact
+        return traitCollection.horizontalSizeClass == .compact
     }
 
     /// Determines if the horizontal size class is specified or not.
     ///
     public func isHorizontalSizeClassUnspecified() -> Bool {
-        return traitCollection.horizontalSizeClass == .Unspecified
+        return traitCollection.horizontalSizeClass == .unspecified
     }
 
     /// Determines if the current ViewController is being presented modally

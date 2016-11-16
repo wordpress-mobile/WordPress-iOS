@@ -17,19 +17,19 @@ extension UITableViewController {
         precondition(clearsSelectionOnViewWillAppear == false, "Can't take over deselection unless clearsSelectionOnViewWillAppear is false")
 
         if let indexPath = tableView.indexPathForSelectedRow {
-            if let coordinator = transitionCoordinator() {
+            if let coordinator = transitionCoordinator {
                 let animationBlock: (UIViewControllerTransitionCoordinatorContext!) -> () = { [unowned self] _ in
-                    self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                    self.tableView.deselectRow(at: indexPath, animated: true)
                 }
                 let completionBlock: (UIViewControllerTransitionCoordinatorContext!) -> () = { [unowned self] context in
-                    if context.isCancelled() {
-                        self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .None)
+                    if context.isCancelled {
+                        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                     }
                 }
-                coordinator.animateAlongsideTransition(animationBlock, completion: completionBlock)
+                coordinator.animate(alongsideTransition: animationBlock, completion: completionBlock)
             }
             else {
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         }
 

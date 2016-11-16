@@ -3,9 +3,9 @@ import UIKit
 import WordPressShared
 import WordPressComAnalytics
 
-public class AppSettingsViewController: UITableViewController {
+open class AppSettingsViewController: UITableViewController {
 
-    private var handler: ImmuTableViewHandler!
+    fileprivate var handler: ImmuTableViewHandler!
     // MARK: - Initialization
 
     override init(style: UITableViewStyle) {
@@ -18,10 +18,10 @@ public class AppSettingsViewController: UITableViewController {
     }
 
     public required convenience init() {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
     }
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
@@ -33,7 +33,7 @@ public class AppSettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
 
@@ -62,7 +62,7 @@ public class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(visualEditor)
 
-        if FeatureFlag.NativeEditor.enabled && editorSettings.visualEditorEnabled {
+        if FeatureFlag.nativeEditor.enabled && editorSettings.visualEditorEnabled {
             let nativeEditor = SwitchRow(
                 title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
                 value: editorSettings.nativeEditorEnabled,
@@ -101,7 +101,7 @@ public class AppSettingsViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func mediaSizeChanged() -> Int -> Void {
+    func mediaSizeChanged() -> (Int) -> Void {
         return {
             value in
             MediaSettings().maxImageSizeSetting = value
@@ -109,27 +109,27 @@ public class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func mediaRemoveLocationChanged() -> Bool -> Void {
+    func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return {
             value in
             MediaSettings().removeLocationSetting = value
         }
     }
 
-    func visualEditorChanged() -> Bool -> Void {
+    func visualEditorChanged() -> (Bool) -> Void {
         return {
             enabled in
             if enabled {
-                WPAnalytics.track(.EditorToggledOn)
+                WPAnalytics.track(.editorToggledOn)
             } else {
-                WPAnalytics.track(.EditorToggledOff)
+                WPAnalytics.track(.editorToggledOff)
             }
             EditorSettings().visualEditorEnabled = enabled
             self.handler.viewModel = self.tableViewModel()
         }
     }
 
-    func nativeEditorChanged() -> Bool -> Void {
+    func nativeEditorChanged() -> (Bool) -> Void {
         return {
             enabled in
             EditorSettings().nativeEditorEnabled = enabled

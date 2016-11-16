@@ -1,13 +1,13 @@
 import Foundation
 
 @objc
-public class ShareExtensionService: NSObject
+open class ShareExtensionService: NSObject
 {
     /// Sets the OAuth Token that should be used by the Share Extension to hit the Dotcom Backend.
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    class func configureShareExtensionToken(oauth2Token: String) {
+    class func configureShareExtensionToken(_ oauth2Token: String) {
         do {
             try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainTokenKey,
                 andPassword: oauth2Token,
@@ -23,7 +23,7 @@ public class ShareExtensionService: NSObject
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    class func configureShareExtensionUsername(username: String) {
+    class func configureShareExtensionUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainUsernameKey,
                 andPassword: username,
@@ -41,13 +41,13 @@ public class ShareExtensionService: NSObject
     ///     - defaultSiteID: The ID of the Primary Site.
     ///     - defaultSiteName: The Primary Site's Name
     ///
-    class func configureShareExtensionDefaultSiteID(defaultSiteID: Int, defaultSiteName: String) {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+    class func configureShareExtensionDefaultSiteID(_ defaultSiteID: Int, defaultSiteName: String) {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
 
-        userDefaults.setObject(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
-        userDefaults.setObject(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
+        userDefaults.set(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
+        userDefaults.set(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
         userDefaults.synchronize()
     }
 
@@ -56,12 +56,12 @@ public class ShareExtensionService: NSObject
     ///
     /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
     ///
-    class func configureShareExtensionMaximumMediaDimension(maximumMediaDimension: Int) {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+    class func configureShareExtensionMaximumMediaDimension(_ maximumMediaDimension: Int) {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
 
-        userDefaults.setInteger(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
+        userDefaults.set(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
         userDefaults.synchronize()
     }
 
@@ -69,7 +69,7 @@ public class ShareExtensionService: NSObject
     ///
     class func removeShareExtensionConfiguration() {
         do {
-            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionKeychainTokenKey,
+            try SFHFKeychainUtils.deleteItem(forUsername: WPShareExtensionKeychainTokenKey,
                 andServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup)
         } catch {
@@ -77,17 +77,17 @@ public class ShareExtensionService: NSObject
         }
 
         do {
-            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionKeychainUsernameKey,
+            try SFHFKeychainUtils.deleteItem(forUsername: WPShareExtensionKeychainUsernameKey,
                 andServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup)
         } catch {
             print("Error while removing Share Extension Username: \(error)")
         }
 
-        if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
-            userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteID)
-            userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteName)
-            userDefaults.removeObjectForKey(WPShareExtensionMaximumMediaDimensionKey)
+        if let userDefaults = UserDefaults(suiteName: WPAppGroupName) {
+            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteID)
+            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteName)
+            userDefaults.removeObject(forKey: WPShareExtensionMaximumMediaDimensionKey)
             userDefaults.synchronize()
         }
     }
@@ -119,12 +119,12 @@ public class ShareExtensionService: NSObject
     /// Retrieves the Primary Site Details (ID + Name), if any.
     ///
     class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return nil
         }
 
-        guard let siteID = userDefaults.objectForKey(WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.objectForKey(WPShareExtensionUserDefaultsPrimarySiteName) as? String else
+        guard let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String else
         {
             return nil
         }
@@ -135,10 +135,10 @@ public class ShareExtensionService: NSObject
     /// Retrieves the Maximum Media Attachment Size
     ///
     class func retrieveShareExtensionMaximumMediaDimension() -> Int? {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return nil
         }
 
-        return userDefaults.objectForKey(WPShareExtensionMaximumMediaDimensionKey) as? Int
+        return userDefaults.object(forKey: WPShareExtensionMaximumMediaDimensionKey) as? Int
     }
 }

@@ -14,12 +14,12 @@ protocol SigninKeyboardResponder: class
     var verticalCenterConstraint: NSLayoutConstraint! {get}
 
     func signinFormVerticalOffset() -> CGFloat
-    func registerForKeyboardEvents(keyboardWillShowAction keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
+    func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
     func unregisterForKeyboardEvents()
-    func adjustViewForKeyboard(visibleKeyboard: Bool)
+    func adjustViewForKeyboard(_ visibleKeyboard: Bool)
 
-    func keyboardWillShow(notification: NSNotification)
-    func keyboardWillHide(notification: NSNotification)
+    func keyboardWillShow(_ notification: Foundation.Notification)
+    func keyboardWillHide(_ notification: Foundation.Notification)
 }
 
 extension SigninKeyboardResponder where Self: NUXAbstractViewController
@@ -33,17 +33,17 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///     - keyboardWillShowAction: A Selector to use for the UIKeyboardWillShowNotification observer.
     ///     - keyboardWillHideAction: A Selector to use for the UIKeyboardWillHideNotification observer.
     ///
-    func registerForKeyboardEvents(keyboardWillShowAction keyboardWillShowAction: Selector, keyboardWillHideAction: Selector) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: keyboardWillShowAction, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: keyboardWillHideAction, name: UIKeyboardWillHideNotification, object: nil)
+    func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector) {
+        NotificationCenter.default.addObserver(self, selector: keyboardWillShowAction, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: keyboardWillHideAction, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
 
     /// Unregisters the receiver from keyboard events.
     ///
     func unregisterForKeyboardEvents() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
 
@@ -60,7 +60,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///
     /// - Parameter visibleKeyboard: Whether to configure for a visible keyboard or without a keyboard.
     ///
-    func adjustViewForKeyboard(visibleKeyboard: Bool) {
+    func adjustViewForKeyboard(_ visibleKeyboard: Bool) {
         if visibleKeyboard && SigninEditingState.signinLastKeyboardHeightDelta > 0 {
             bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeightDelta
             verticalCenterConstraint.constant = 0
@@ -75,7 +75,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///
     /// - Parameter notification: the NSNotification object from a UIKeyboardWillShowNotification.
     ///
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
             return
         }
@@ -88,9 +88,9 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         }
 
         adjustViewForKeyboard(true)
-        UIView.animateWithDuration(keyboardInfo.animationDuration,
+        UIView.animate(withDuration: keyboardInfo.animationDuration,
                                    delay: 0,
-                                   options: .BeginFromCurrentState,
+                                   options: .beginFromCurrentState,
                                    animations: {
                                         self.view.layoutIfNeeded()
                                     },
@@ -102,7 +102,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///
     /// - Parameter notification: the NSNotification object from a UIKeyboardWillHideNotification.
     ///
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Foundation.Notification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
             return
         }
@@ -114,9 +114,9 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         }
 
         adjustViewForKeyboard(false)
-        UIView.animateWithDuration(keyboardInfo.animationDuration,
+        UIView.animate(withDuration: keyboardInfo.animationDuration,
                                    delay: 0,
-                                   options: .BeginFromCurrentState,
+                                   options: .beginFromCurrentState,
                                    animations: {
                                         self.view.layoutIfNeeded()
                                     },
@@ -131,10 +131,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///
     /// - Returns: An tupile optional containing the `keyboardFrame` and the `animationDuration`, or nil.
     ///
-    func keyboardFrameAndDurationFromNotification(notification: NSNotification) -> (keyboardFrame: CGRect, animationDuration: Double)? {
+    func keyboardFrameAndDurationFromNotification(_ notification: Foundation.Notification) -> (keyboardFrame: CGRect, animationDuration: Double)? {
 
         guard let userInfo = notification.userInfo,
-            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue(),
+            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let duration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
             else {
                 return nil
@@ -143,7 +143,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
-    func heightDeltaFromKeyboardFrame(keyboardFrame: CGRect) -> CGFloat {
+    func heightDeltaFromKeyboardFrame(_ keyboardFrame: CGRect) -> CGFloat {
         // If an external keyboard is connected, the ending keyboard frame's maxY
         // will exceed the height of the view controller's view.
         // There is no need to adjust the view in this case so just return 0.0.

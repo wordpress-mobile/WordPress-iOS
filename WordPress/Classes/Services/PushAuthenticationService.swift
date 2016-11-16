@@ -4,9 +4,9 @@ import Foundation
 /// The purpose of this service is to encapsulate the Restful API that performs Mobile 2FA
 /// Code Verification.
 ///
-@objc public class PushAuthenticationService : LocalCoreDataService {
+@objc open class PushAuthenticationService : LocalCoreDataService {
 
-    public var authenticationServiceRemote: PushAuthenticationServiceRemote?
+    open var authenticationServiceRemote: PushAuthenticationServiceRemote?
 
     /// Designated Initializer
     ///
@@ -24,7 +24,7 @@ import Foundation
     ///     - token: The Token sent over by the backend, via Push Notifications.
     ///     - completion: The completion block to be executed when the remote call finishes.
     ///
-    public func authorizeLogin(token: String, completion: ((Bool) -> ())) {
+    open func authorizeLogin(_ token: String, completion: @escaping ((Bool) -> ())) {
         if self.authenticationServiceRemote == nil {
             return
         }
@@ -43,12 +43,12 @@ import Foundation
     ///
     /// - Returns: WordPressComRestApi instance.  It can be an anonymous API instance if there are no credentials.
     ///
-    private func apiForRequest() -> WordPressComRestApi {
+    fileprivate func apiForRequest() -> WordPressComRestApi {
 
         var api : WordPressComRestApi? = nil
 
         let accountService = AccountService(managedObjectContext: managedObjectContext)
-        if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+        if let unwrappedRestApi = accountService?.defaultWordPressComAccount()?.wordPressComRestApi {
             if unwrappedRestApi.hasCredentials() {
                 api = unwrappedRestApi
             }

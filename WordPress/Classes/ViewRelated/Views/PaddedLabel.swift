@@ -22,6 +22,6 @@ class PaddedLabel: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        label.frame = CGRectInset(bounds, padding.horizontal, padding.vertical)
+        label.frame = bounds.insetBy(dx: padding.horizontal, dy: padding.vertical)
     }
 }
