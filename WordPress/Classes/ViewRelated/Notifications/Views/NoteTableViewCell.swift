@@ -92,7 +92,7 @@ class NoteTableViewCell: WPTableViewCell
     }
 
     func downloadIconWithURL(url: NSURL?) {
-        let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
+        let isGravatarURL = url.map { $0.isGravatarURL() } ?? false
         if isGravatarURL {
             downloadGravatarWithURL(url)
             return

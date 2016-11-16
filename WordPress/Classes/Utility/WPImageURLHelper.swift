@@ -76,6 +76,13 @@ extension NSString
 
 extension WPImageURLHelper
 {
+    private struct GravatarDefaults {
+        static let scheme = "https"
+        static let host = "secure.gravatar.com"
+        // unknownHash = md5("unknown@gravatar.com")
+        static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
+    }
+
     // MARK: Gravatar URLs
 
     /**
@@ -93,6 +100,54 @@ extension WPImageURLHelper
         return NSURL(string: targetURL)
     }
 
+    public class func gravatarURL(forURL url: NSURL) -> NSURL? {
+        guard url.isGravatarURL() else {
+            return nil
+        }
+
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+
+        components.scheme = GravatarDefaults.scheme
+        components.host = GravatarDefaults.host
+        components.query = nil
+
+        // Treat unknown@gravatar.com as a nil url
+        guard let hash = url.lastPathComponent
+            where hash != GravatarDefaults.unknownHash else {
+                return nil
+        }
+
+        guard let sanitizedURL = components.URL else {
+            return nil
+        }
+
+        return sanitizedURL
+    }
+}
+
+extension NSURL
+{
+    // MARK: Gravatar URLs
+
+    func isGravatarURL() -> Bool {
+        guard let components = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) else {
+            return false
+        }
+
+        guard let host = components.host
+            where host.hasSuffix(".gravatar.com") else {
+                return false
+        }
+
+        guard let path = self.path
+            where path.hasPrefix("/avatar/") else {
+                return false
+        }
+
+        return true
+    }
 }
 
 extension WPImageURLHelper
