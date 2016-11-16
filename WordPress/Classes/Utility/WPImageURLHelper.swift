@@ -53,6 +53,21 @@ extension WPImageURLHelper
 {
     // MARK: Avatar URLs
 
+    /**
+     Returns the Gravatar URL, for a given email, with the specified size + rating.
+
+     - Parameters:
+         - email: the user's email
+         - size: required download size
+         - rating: image rating filtering
+
+     - Returns: Gravatar's URL
+     */
+    public class func gravatarURL(forEmail email: String, size: NSInteger, rating: String) -> NSURL? {
+        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
+        return NSURL(string: targetURL)
+    }
+
     public class func siteIconURL(forContentProvider contentProvider: ReaderPostContentProvider, size: Int) -> NSURL? {
         if (contentProvider.siteIconURL() == nil || contentProvider.siteIconURL().characters.count == 0) {
             guard let blogURL = contentProvider.blogURL(), let hash = NSURL(string: blogURL)?.host?.md5() else {
