@@ -7,6 +7,8 @@ let photonImageQualityMin: UInt = 1
 /// Helper class to create a WordPress URL for various download needs, like specifying image size or using Photon.
 public class WPImageURLHelper: NSObject
 {
+    // FIXME: use base urls from constants.m and delete this one
+    static let GravatarBaseUrl = "http://gravatar.com"
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
@@ -46,6 +48,29 @@ public class WPImageURLHelper: NSObject
             return url
         }
         return resultURL
+    }
+}
+
+extension WPImageURLHelper
+{
+    // MARK: {G|Bl}avatar URLs
+
+    public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
+        var url = GravatarBaseUrl
+
+        switch type {
+        case .Blavatar:
+            url.appendContentsOf("/blavatar/")
+            break
+        case .Gravatar:
+            url.appendContentsOf("/avatar/")
+            break
+        case .Unknown:
+            break
+        }
+
+        url.appendContentsOf(String(format:"%@?s=%d&d=identicon", hash, Int(size.width * UIScreen.mainScreen().scale)))
+        return NSURL(string: url)
     }
 }
 

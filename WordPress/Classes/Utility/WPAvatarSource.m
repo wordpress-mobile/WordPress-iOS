@@ -1,11 +1,12 @@
+#import "WPAvatarSource.h"
+
 #import "NSString+Helpers.h"
 #import "UIImage+Resize.h"
-#import "WPAvatarSource.h"
+#import "WordPress-Swift.h"
 #import "WPImageSource.h"
 
 static CGSize BlavatarMaxSize = {60, 60};
 static CGSize GravatarMaxSize = {92, 92};
-static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
 @implementation WPAvatarSource {
     NSCache *_gravatarCache;
@@ -102,8 +103,8 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     NSParameterAssert(size.width > 0);
     NSParameterAssert(size.height > 0);
 
-    NSURL *url = [self URLWithHash:hash type:type];
     CGSize maxSize = [self maxSizeForType:type];
+    NSURL *url = [WPImageURLHelper avatarURLWithHash:hash type:type size:maxSize];
     [[WPImageSource sharedSource] downloadImageForURL:url
                                           withSuccess:^(UIImage *image) {
                                               [self setCachedImage:image forHash:hash type:type size:maxSize];
@@ -221,21 +222,6 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
     return [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:size interpolationQuality:kCGInterpolationHigh];
-}
-
-- (NSURL *)URLWithHash:(NSString *)hash type:(WPAvatarSourceType)type
-{
-    CGSize size = [self maxSizeForType:type];
-    NSString *url = GravatarBaseUrl;
-
-    if (type == WPAvatarSourceTypeGravatar) {
-        url = [url stringByAppendingString:@"/avatar/"];
-    } else if (type == WPAvatarSourceTypeBlavatar) {
-        url = [url stringByAppendingString:@"/blavatar/"];
-    }
-
-    url = [url stringByAppendingFormat:@"%@?s=%d&d=identicon", hash, (int)(size.width * [[UIScreen mainScreen] scale])];
-    return [NSURL URLWithString:url];
 }
 
 @end
