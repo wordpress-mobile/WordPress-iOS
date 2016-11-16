@@ -27,4 +27,30 @@ class MockWordPressComRestApi : WordPressComRestApi {
 
         return NSProgress()
     }
+
+    override func multipartPOST(URLString: String,
+                                parameters: [String : AnyObject]?,
+                                fileParts: [FilePart],
+                                success: SuccessResponseBlock,
+                                failure: FailureReponseBlock) -> NSProgress? {
+
+        postMethodCalled = true
+        URLStringPassedIn = URLString
+        parametersPassedIn = parameters
+        successBlockPassedIn = success
+        failureBlockPassedIn = failure
+        return NSProgress()
+    }
+
+    func methodCalled() -> String {
+
+        var method = "Unknown"
+        if getMethodCalled {
+            method = "GET"
+        } else if postMethodCalled {
+            method = "POST"
+        }
+
+        return method
+    }
 }
