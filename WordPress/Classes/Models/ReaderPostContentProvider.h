@@ -8,11 +8,12 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 };
 
 @protocol ReaderPostContentProvider <PostContentProvider>
-- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size;
 - (SourceAttributionStyle)sourceAttributionStyle;
 - (NSString *)sourceAuthorNameForDisplay;
 - (NSURL *)sourceAuthorURLForDisplay;
 - (NSURL *)sourceAvatarURLForDisplay;
+- (NSString *)siteIconURL;
+- (NSString *)blogURL;
 - (NSString *)sourceBlogNameForDisplay;
 - (NSURL *)sourceBlogURLForDisplay;
 

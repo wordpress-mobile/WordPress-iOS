@@ -2,6 +2,7 @@
 #import "ReaderPost.h"
 #import "NSString+Helpers.h"
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface ReaderPostTest : XCTestCase
 @end
@@ -15,6 +16,8 @@
                                          inManagedObjectContext:context];
 
     XCTAssertNil([post siteIconForDisplayOfSize:50]);
+    NSString *hash = [@"blog.example.com" md5];
+    NSURL *blavatarURL = [WPImageURLHelper siteIconURLForContentProvider:post size:50];
 
     NSString *iconURL = @"http://example.com/icon.png";
     post.siteIconURL = iconURL;

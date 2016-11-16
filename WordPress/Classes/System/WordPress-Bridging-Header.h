@@ -115,6 +115,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"

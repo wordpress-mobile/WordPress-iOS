@@ -51,6 +51,27 @@ public class WPImageURLHelper: NSObject
 
 extension WPImageURLHelper
 {
+    // MARK: Avatar URLs
+
+    public class func siteIconURL(forContentProvider contentProvider: ReaderPostContentProvider, size: Int) -> NSURL? {
+        if (contentProvider.siteIconURL() == nil || contentProvider.siteIconURL().characters.count == 0) {
+            guard let blogURL = contentProvider.blogURL(), let hash = NSURL(string: blogURL)?.host?.md5() else {
+                return nil
+            }
+
+            return NSURL(string: String(format: "https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size))
+        }
+
+        if contentProvider.siteIconURL().containsString("/blavatar/") {
+            return NSURL(string: contentProvider.siteIconURL())
+        }
+
+        return NSURL(string: String(format: "%@?s=%d&d=404", contentProvider.siteIconURL()))
+    }
+}
+
+extension WPImageURLHelper
+{
     // MARK: Photon URLs
 
     private static var photonRegex: NSRegularExpression? {

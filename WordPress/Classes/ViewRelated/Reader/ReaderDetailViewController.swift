@@ -405,7 +405,10 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
         if let url = post?.siteIconForDisplayOfSize(Int(size)) {
             blavatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+        } else {
+            blavatarImageView.image = placeholder
         }
+
         // Site name
         let blogName = post?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
