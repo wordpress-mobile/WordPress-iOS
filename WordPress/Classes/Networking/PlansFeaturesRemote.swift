@@ -2,8 +2,8 @@ import Foundation
 
 class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
-    enum Error: Error {
-        case decodeError
+    enum ResponseError: Error {
+        case decodingFailure
     }
 
     fileprivate var cacheDate: Date?
@@ -120,7 +120,7 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
 private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatures {
     guard let json = response as? [[String: AnyObject]] else {
-        throw PlansRemote.Error.decodeError
+        throw PlanFeaturesRemote.ResponseError.decodingFailure
     }
 
     var features = [PlanID: [PlanFeature]]()

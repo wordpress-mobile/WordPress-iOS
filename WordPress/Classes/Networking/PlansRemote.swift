@@ -2,8 +2,8 @@ import Foundation
 
 class PlansRemote: ServiceRemoteWordPressComREST {
     typealias SitePlans = (activePlan: Plan, availablePlans: [Plan])
-    enum Error: Error {
-        case decodeError
+    enum ResponseError: Error {
+        case decodingFailure
         case unsupportedPlan
         case noActivePlan
     }
@@ -37,7 +37,7 @@ class PlansRemote: ServiceRemoteWordPressComREST {
 
 private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan, availablePlans: [Plan]) {
     guard let json = response as? [[String: AnyObject]] else {
-        throw PlansRemote.Error.decodeError
+        throw PlansRemote.ResponseError.decodingFailure
     }
 
     let parsedResponse: (Plan?, [Plan]) = try json.reduce((nil, []), {
@@ -51,7 +51,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
             let activeIcon = planDetails["icon_active"] as? String,
             let activeIconUrl = URL(string: activeIcon),
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
-            throw PlansRemote.Error.decodeError
+            throw PlansRemote.ResponseError.decodingFailure
         }
 
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })
@@ -69,7 +69,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
     })
 
     guard let activePlan = parsedResponse.0 else {
-        throw PlansRemote.Error.noActivePlan
+        throw PlansRemote.ResponseError.noActivePlan
     }
     let availablePlans = parsedResponse.1
     return (activePlan, availablePlans)
