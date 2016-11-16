@@ -3,15 +3,15 @@ import Foundation
 @objc class PostListFilter: NSObject {
 
     enum Status: UInt {
-        case Published
-        case Draft
-        case Scheduled
-        case Trashed
+        case published
+        case draft
+        case scheduled
+        case trashed
     }
 
     var hasMore: Bool
     var filterType: Status
-    var oldestPostDate: NSDate?
+    var oldestPostDate: Date?
     var predicateForFetchRequest: NSPredicate
     var statuses: [String]
     var title: String
@@ -30,7 +30,7 @@ import Foundation
     }
 
     class func publishedFilter() -> PostListFilter {
-        let filterType: Status = .Published
+        let filterType: Status = .published
         let predicate = NSPredicate(format: "status IN %@", [PostStatusPublish, PostStatusPrivate])
         let statuses = [PostStatusPublish, PostStatusPrivate]
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
@@ -39,7 +39,7 @@ import Foundation
     }
 
     class func draftFilter() -> PostListFilter {
-        let filterType: Status = .Draft
+        let filterType: Status = .draft
         let predicate = NSPredicate(format: "NOT status IN %@", [PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusTrash])
         let statuses = [PostStatusDraft, PostStatusPending]
         let title = NSLocalizedString("Draft", comment: "Title of the draft filter.  This filter shows a list of draft posts.")
@@ -48,7 +48,7 @@ import Foundation
     }
 
     class func scheduledFilter() -> PostListFilter {
-        let filterType: Status = .Scheduled
+        let filterType: Status = .scheduled
         let predicate = NSPredicate(format: "status = %@", PostStatusScheduled)
         let statuses = [PostStatusScheduled]
         let title = NSLocalizedString("Scheduled", comment: "Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.")
@@ -57,7 +57,7 @@ import Foundation
     }
 
     class func trashedFilter() -> PostListFilter {
-        let filterType: Status = .Trashed
+        let filterType: Status = .trashed
         let predicate = NSPredicate(format: "status = %@", PostStatusTrash)
         let statuses = [PostStatusTrash]
         let title = NSLocalizedString("Trashed", comment: "Title of the trashed filter. This filter shows posts that have been moved to the trash bin.")

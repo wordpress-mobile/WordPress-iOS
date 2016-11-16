@@ -34,18 +34,18 @@ private struct Config {
     // The total duration of the animations, measured in seconds
     struct Duration {
         // Make this larger than 1 to slow down all animations
-        static let durationScale: NSTimeInterval = 1.2
-        static let free: NSTimeInterval     = 1.4
-        static let premium: NSTimeInterval  = 1
-        static let business: NSTimeInterval = 1.2
+        static let durationScale: TimeInterval = 1.2
+        static let free: TimeInterval     = 1.4
+        static let premium: TimeInterval  = 1
+        static let business: TimeInterval = 1.2
     }
 
     // The amount of time (measured in seconds) to wait before beginning the animations
     struct Delay {
-        static let initial: NSTimeInterval  = 0.3
-        static let free: NSTimeInterval     = 0.35
-        static let premium: NSTimeInterval  = 0.0
-        static let business: NSTimeInterval = 0.2
+        static let initial: TimeInterval  = 0.3
+        static let free: TimeInterval     = 0.35
+        static let premium: TimeInterval  = 0.0
+        static let business: TimeInterval = 0.2
     }
 
     // The damping ratio for the spring animation as it approaches its quiescent state.
@@ -82,8 +82,8 @@ private extension CGRect {
 }
 
 private extension CGSize {
-    func scaleBy(scale: CGFloat) -> CGSize {
-        return CGSizeApplyAffineTransform(self, CGAffineTransformMakeScale(scale, scale))
+    func scaleBy(_ scale: CGFloat) -> CGSize {
+        return self.applying(CGAffineTransform(scaleX: scale, y: scale))
     }
 }
 
@@ -94,10 +94,10 @@ private extension UIView {
 }
 
 class PlansLoadingIndicatorView: UIView {
-    private let freeView = UIImageView(image: UIImage(named: "plan-free-loading")!)
-    private let premiumView = UIImageView(image: UIImage(named: "plan-premium-loading")!)
-    private let businessView = UIImageView(image: UIImage(named: "plan-business-loading")!)
-    private let circleView = UIView()
+    fileprivate let freeView = UIImageView(image: UIImage(named: "plan-free-loading")!)
+    fileprivate let premiumView = UIImageView(image: UIImage(named: "plan-premium-loading")!)
+    fileprivate let businessView = UIImageView(image: UIImage(named: "plan-business-loading")!)
+    fileprivate let circleView = UIView()
 
     convenience init() {
         self.init(frame: CGRect(x: 0, y: 0, width: Config.DefaultSize.width, height: Config.DefaultSize.height))
@@ -121,31 +121,31 @@ class PlansLoadingIndicatorView: UIView {
         setInitialPositions()
     }
 
-    private var targetFreeFrame: CGRect {
-        let freeCenter = CGPointApplyAffineTransform(boundsCenter, CGAffineTransformMakeTranslation(Config.OffsetX.free, Config.OffsetY.free))
+    fileprivate var targetFreeFrame: CGRect {
+        let freeCenter = boundsCenter.applying(CGAffineTransform(translationX: Config.OffsetX.free, y: Config.OffsetY.free))
         let freeSize = freeView.sizeThatFits(bounds.size).scaleBy(Config.Scale.free)
         return CGRect(center: freeCenter, size: freeSize)
     }
 
-    private var targetPremiumFrame: CGRect {
-        let premiumCenter = CGPointApplyAffineTransform(boundsCenter, CGAffineTransformMakeTranslation(Config.OffsetX.premium, Config.OffsetY.premium))
+    fileprivate var targetPremiumFrame: CGRect {
+        let premiumCenter = boundsCenter.applying(CGAffineTransform(translationX: Config.OffsetX.premium, y: Config.OffsetY.premium))
         let premiumSize = premiumView.sizeThatFits(bounds.size).scaleBy(Config.Scale.premium)
         return CGRect(center: premiumCenter, size: premiumSize)
     }
 
-    private var targetBusinessFrame: CGRect {
-        let businessCenter = CGPointApplyAffineTransform(boundsCenter, CGAffineTransformMakeTranslation(Config.OffsetX.business, Config.OffsetY.business))
+    fileprivate var targetBusinessFrame: CGRect {
+        let businessCenter = boundsCenter.applying(CGAffineTransform(translationX: Config.OffsetX.business, y: Config.OffsetY.business))
         let businessSize = businessView.sizeThatFits(bounds.size).scaleBy(Config.Scale.business)
         return CGRect(center: businessCenter, size: businessSize)
     }
 
-    private func setInitialPositions() {
+    fileprivate func setInitialPositions() {
         let freeOffset = Config.InitialOffsetY.free + bounds.size.height - targetFreeFrame.origin.y
-        freeView.transform = CGAffineTransformMakeTranslation(0, freeOffset)
+        freeView.transform = CGAffineTransform(translationX: 0, y: freeOffset)
         let premiumOffset = Config.InitialOffsetY.premium + bounds.size.height - targetPremiumFrame.origin.y
-        premiumView.transform = CGAffineTransformMakeTranslation(0, premiumOffset)
+        premiumView.transform = CGAffineTransform(translationX: 0, y: premiumOffset)
         let businessOffset = Config.InitialOffsetY.business + bounds.size.height - targetBusinessFrame.origin.y
-        businessView.transform = CGAffineTransformMakeTranslation(0, businessOffset)
+        businessView.transform = CGAffineTransform(translationX: 0, y: businessOffset)
     }
 
     override func layoutSubviews() {
@@ -164,13 +164,9 @@ class PlansLoadingIndicatorView: UIView {
         animateAfterDelay(Config.Delay.initial)
     }
 
-    func animateAfterDelay(delay: NSTimeInterval) {
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), { [weak self] in self?.animate() }
+    func animateAfterDelay(_ delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { [weak self] in self?.animate() }
         )
     }
 
@@ -178,36 +174,36 @@ class PlansLoadingIndicatorView: UIView {
         UIView.performWithoutAnimation {
             self.setInitialPositions()
         }
-        UIView.animateWithDuration(
-            Config.Duration.free * Config.Duration.durationScale,
+        UIView.animate(
+            withDuration: Config.Duration.free * Config.Duration.durationScale,
             delay: Config.Delay.free * Config.Duration.durationScale,
             usingSpringWithDamping: Config.SpringDamping.free,
             initialSpringVelocity: Config.InitialSpringVelocity.free,
-            options: .CurveEaseOut,
+            options: .curveEaseOut,
             animations: { [unowned freeView] in
-                freeView.transform = CGAffineTransformIdentity
+                freeView.transform = CGAffineTransform.identity
             },
             completion: nil)
 
-        UIView.animateWithDuration(
-            Config.Duration.premium * Config.Duration.durationScale,
+        UIView.animate(
+            withDuration: Config.Duration.premium * Config.Duration.durationScale,
             delay: Config.Delay.premium * Config.Duration.durationScale,
             usingSpringWithDamping: Config.SpringDamping.premium,
             initialSpringVelocity: Config.InitialSpringVelocity.premium,
-            options: .CurveEaseOut,
+            options: .curveEaseOut,
             animations: { [unowned premiumView] in
-                premiumView.transform = CGAffineTransformIdentity
+                premiumView.transform = CGAffineTransform.identity
             },
             completion: nil)
 
-        UIView.animateWithDuration(
-            Config.Duration.business * Config.Duration.durationScale,
+        UIView.animate(
+            withDuration: Config.Duration.business * Config.Duration.durationScale,
             delay: Config.Delay.business * Config.Duration.durationScale,
             usingSpringWithDamping: Config.SpringDamping.business,
             initialSpringVelocity: Config.InitialSpringVelocity.business,
-            options: .CurveEaseOut,
+            options: .curveEaseOut,
             animations: { [unowned businessView] in
-                businessView.transform = CGAffineTransformIdentity
+                businessView.transform = CGAffineTransform.identity
             },
             completion: nil)
     }

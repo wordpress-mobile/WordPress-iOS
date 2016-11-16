@@ -28,7 +28,7 @@ extension Blog
 
     /// Returns true if a given capability is enabled. False otherwise
     ///
-    public func isUserCapableOf(capability: Capability) -> Bool {
+    public func isUserCapableOf(_ capability: Capability) -> Bool {
         return capabilities?[capability.rawValue] as? Bool ?? false
     }
 

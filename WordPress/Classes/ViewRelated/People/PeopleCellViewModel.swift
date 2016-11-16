@@ -6,14 +6,14 @@ struct PeopleCellViewModel {
     let username: String
     let role: Role
     let superAdmin: Bool
-    let avatarURL: NSURL?
+    let avatarURL: URL?
 
     init(person: Person) {
         self.displayName = person.displayName
         self.username = person.username
         self.role = person.role
         self.superAdmin = person.isSuperAdmin
-        self.avatarURL = person.avatarURL
+        self.avatarURL = person.avatarURL as URL?
     }
 
     var usernameText: String {

@@ -10,10 +10,10 @@ extension WPStyleGuide {
             public static let cornerRadius = CGFloat(2)
 
             // MARK: Typography
-            public static let font = WPFontManager.systemRegularFontOfSize(11)
+            public static let font = WPFontManager.systemRegularFont(ofSize: 11)
 
             // MARK: Colors
-            public static let textColor = UIColor.whiteColor()
+            public static let textColor = UIColor.white
         }
 
         // MARK: Colors

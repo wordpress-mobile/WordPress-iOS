@@ -22,11 +22,11 @@ final class KeychainTools: NSObject {
     /// - Attention: This is only enabled in debug builds.
     ///
     static func processKeychainDebugArguments() {
-        guard build(.Debug) else {
+        guard build(.debug) else {
             return
         }
 
-        guard let item = NSUserDefaults.standardUserDefaults().valueForKey(keychainDebugWipeArgument) as? String else {
+        guard let item = UserDefaults.standard.value(forKey: keychainDebugWipeArgument) as? String else {
             return
         }
 
@@ -38,7 +38,7 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static private func serviceForItem(item: String) -> String? {
+    static fileprivate func serviceForItem(_ item: String) -> String? {
         switch item {
         case "wordpress.com":
             return "public-api.wordpress.com"
@@ -49,12 +49,12 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static private func removeKeychainItem(forService service: String) {
+    static fileprivate func removeKeychainItem(forService service: String) {
         let query: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service
+            kSecAttrService: service as AnyObject
         ]
-        let status = SecItemDelete(query)
+        let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
             DDLogSwift.logWarn("🔑 Removed keychain entry for service \(service)")
@@ -65,11 +65,11 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static private func removeAllKeychainItems() {
+    static fileprivate func removeAllKeychainItems() {
         let query: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword
         ]
-        let status = SecItemDelete(query)
+        let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
             DDLogSwift.logWarn("🔑 Removed all keychain entries")

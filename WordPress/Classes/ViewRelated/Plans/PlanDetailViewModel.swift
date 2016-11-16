@@ -12,12 +12,12 @@ struct PlanDetailViewModel {
     let features: FeaturesViewModel
 
     enum FeaturesViewModel {
-        case Loading
-        case Error(String)
-        case Ready([PlanFeatureGroup])
+        case loading
+        case error(String)
+        case ready([PlanFeatureGroup])
     }
 
-    func withFeatures(features: FeaturesViewModel) -> PlanDetailViewModel {
+    func withFeatures(_ features: FeaturesViewModel) -> PlanDetailViewModel {
         return PlanDetailViewModel(
             plan: plan,
             siteID: siteID,
@@ -29,9 +29,9 @@ struct PlanDetailViewModel {
 
     var tableViewModel: ImmuTable {
         switch features {
-        case .Loading, .Error(_):
+        case .loading, .error(_):
             return ImmuTable.Empty
-        case .Ready(let groups):
+        case .ready(let groups):
             return ImmuTable(sections: groups.map { group in
                 let rows: [ImmuTableRow] = group.features.map({ feature in
                     return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
@@ -43,13 +43,13 @@ struct PlanDetailViewModel {
 
     var noResultsViewModel: WPNoResultsView.Model? {
         switch features {
-        case .Loading:
+        case .loading:
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
             )
-        case .Ready(_):
+        case .ready(_):
             return nil
-        case .Error(_):
+        case .error(_):
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Oops", comment: ""),
                 message: NSLocalizedString("There was an error loading the plan", comment: ""),
@@ -79,7 +79,7 @@ struct PlanDetailViewModel {
         return purchaseAvailability == .pending
     }
 
-    private var purchaseAvailability: PurchaseAvailability {
+    fileprivate var purchaseAvailability: PurchaseAvailability {
         return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
     }
 }

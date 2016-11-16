@@ -6,18 +6,18 @@ extension NSString
     /// Returns the string's hostname, if any
     ///
     public func hostname() -> String? {
-        return NSURLComponents(string: self as String)?.host
+        return URLComponents(string: self as String)?.host
     }
 
     /// Splits the lines contained in the current string, and returns the unique values in a NSSet instance
     ///
     public func uniqueStringComponentsSeparatedByNewline() -> NSSet {
-        let components = componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+        let components = self.components(separatedBy: CharacterSet.newlines)
 
         let filtered = components.filter { !$0.isEmpty }
 
         let uniqueSet = NSMutableSet()
-        uniqueSet.addObjectsFromArray(filtered)
+        uniqueSet.addObjects(from: filtered)
 
         return uniqueSet
     }
@@ -28,6 +28,6 @@ extension NSString
         let emailRegex = "^.+@.+$"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
 
-        return emailTest.evaluateWithObject(self)
+        return emailTest.evaluate(with: self)
     }
 }

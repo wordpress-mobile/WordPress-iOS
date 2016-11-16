@@ -10,13 +10,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 {
     @IBOutlet var searchBar: UISearchBar!
 
-    private var refreshControl: UIRefreshControl!
-    private var isSyncing = false
-    private var tableView: UITableView!
-    private var tableViewHandler: WPTableViewHandler!
-    private var tableViewController: UITableViewController!
+    fileprivate var refreshControl: UIRefreshControl!
+    fileprivate var isSyncing = false
+    fileprivate var tableView: UITableView!
+    fileprivate var tableViewHandler: WPTableViewHandler!
+    fileprivate var tableViewController: UITableViewController!
 
-    private let cellIdentifier = "CellIdentifier"
+    fileprivate let cellIdentifier = "CellIdentifier"
 
     lazy var noResultsView: WPNoResultsView = {
         let title = NSLocalizedString("No Sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
@@ -35,8 +35,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     /// - Returns: An instance of the controller
     ///
     class func controller() -> ReaderFollowedSitesViewController {
-        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderFollowedSitesViewController") as! ReaderFollowedSitesViewController
+        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderFollowedSitesViewController") as! ReaderFollowedSitesViewController
         return controller
     }
 
@@ -44,7 +44,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - State Restoration
 
 
-    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         return controller()
     }
 
@@ -52,15 +52,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - LifeCycle Methods
 
 
-    override func awakeAfterUsingCoder(aDecoder: NSCoder) -> AnyObject? {
-        restorationClass = self.dynamicType
+    override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+        restorationClass = type(of: self)
 
-        return super.awakeAfterUsingCoder(aDecoder)
+        return super.awakeAfter(using: aDecoder)
     }
 
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        tableViewController = segue.destinationViewController as? UITableViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        tableViewController = segue.destination as? UITableViewController
     }
 
 
@@ -71,11 +71,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableViewHandler()
         configureSearchBar()
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         syncSites()
@@ -86,17 +86,17 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - Setup
 
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
 
         refreshControl = tableViewController.refreshControl!
-        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
     }
 
 
-    private func setupTableViewHandler() {
+    fileprivate func setupTableViewHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         tableViewHandler = WPTableViewHandler(tableView: tableView)
@@ -111,25 +111,25 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
-        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
-        searchBar.autocapitalizationType = .None
-        searchBar.translucent = false
+        searchBar.autocapitalizationType = .none
+        searchBar.isTranslucent = false
         searchBar.tintColor = WPStyleGuide.grey()
         searchBar.barTintColor = WPStyleGuide.greyLighten30()
         searchBar.backgroundImage = UIImage()
-        searchBar.returnKeyType = .Done
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), forSearchBarIcon: .Clear, state: .Normal)
-        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), forSearchBarIcon: .Search, state: .Normal)
+        searchBar.returnKeyType = .done
+        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControlState())
+        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControlState())
     }
 
 
     func configureNoResultsView() {
         noResultsView.removeFromSuperview()
         loadingView.removeFromSuperview()
-        if let count = tableViewHandler.resultsController.fetchedObjects?.count where count > 0 {
+        if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
             return
         }
 
@@ -146,13 +146,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - Instance Methods
 
 
-    private func syncSites() {
+    fileprivate func syncSites() {
         if isSyncing {
             return
         }
         isSyncing = true
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.fetchFollowedSitesWithSuccess({[weak self] in
+        service?.fetchFollowedSites(success: {[weak self] in
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -166,36 +166,36 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func handleRefresh(sender: AnyObject) {
+    func handleRefresh(_ sender: AnyObject) {
         syncSites()
     }
 
 
     func refreshFollowedPosts() {
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.syncPostsForFollowedSites()
+        service?.syncPostsForFollowedSites()
     }
 
 
-    func unfollowSiteAtIndexPath(indexPath: NSIndexPath) {
-        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
+    func unfollowSiteAtIndexPath(_ indexPath: IndexPath) {
+        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleFollowingForSite(site, success: { [weak self] in
+        service?.toggleFollowing(forSite: site, success: { [weak self] in
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not unfollow site: \(error)")
             let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
-            let description = error.localizedDescription
-            self?.promptWithTitle(title, message: description)
+            let description = error?.localizedDescription
+            self?.promptWithTitle(title, message: description!)
         })
     }
 
 
-    func followSite(site: String) {
+    func followSite(_ site: String) {
         guard let url = urlFromString(site) else {
             let title = NSLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
             promptWithTitle(title, message: "")
@@ -203,48 +203,48 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.followSiteByURL(url, success: { [weak self] in
+        service?.followSite(by: url, success: { [weak self] in
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
-            SVProgressHUD.showSuccessWithStatus(success)
-            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+            SVProgressHUD.showSuccess(withStatus: success)
+            WPNotificationFeedbackGenerator.notificationOccurred(.success)
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
 
-            WPNotificationFeedbackGenerator.notificationOccurred(.Error)
+            WPNotificationFeedbackGenerator.notificationOccurred(.error)
 
             let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
-            let description = error.localizedDescription
-            self?.promptWithTitle(title, message: description)
+            let description = error?.localizedDescription
+            self?.promptWithTitle(title, message: description!)
         })
     }
 
 
     func refreshPostsForFollowedTopic() {
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
-        service.refreshPostsForFollowedTopic()
+        service?.refreshPostsForFollowedTopic()
     }
 
 
-    func urlFromString(str: String) -> NSURL? {
+    func urlFromString(_ str: String) -> URL? {
         // if the string contains space its not a URL
-        if str.containsString(" ") {
+        if str.contains(" ") {
             return nil
         }
 
         // if the string does not have either a dot or protocol its not a URL
-        if !str.containsString(".") && !str.containsString("://")  {
+        if !str.contains(".") && !str.contains("://")  {
             return nil
         }
 
         var urlStr = str
-        if !urlStr.containsString("://") {
+        if !urlStr.contains("://") {
             urlStr = "http://\(str)"
         }
 
-        if let url = NSURL(string: urlStr) where url.host != nil {
+        if let url = URL(string: urlStr), url.host != nil {
             return url
         }
 
@@ -252,15 +252,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func showPostListForSite(site: ReaderSiteTopic) {
+    func showPostListForSite(_ site: ReaderSiteTopic) {
         let controller = ReaderStreamViewController.controllerWithTopic(site)
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    func promptWithTitle(title: String, message: String) {
+    func promptWithTitle(_ title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
     }
@@ -275,8 +275,8 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func fetchRequest() -> NSFetchRequest {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderSiteTopic")
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSiteTopic")
         fetchRequest.predicate = NSPredicate(format: "following = YES")
 
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
@@ -286,16 +286,16 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
+    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
 
-        cell.accessoryType = .DisclosureIndicator
+        cell.accessoryType = .disclosureIndicator
         cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
 
         cell.textLabel?.text = site.title
-        cell.detailTextLabel?.text = NSURL(string: site.siteURL)?.host
+        cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
         cell.imageView?.setImageWithSiteIcon(site.siteBlavatar, placeholderImage: UIImage(named: "blavatar-default"))
 
 
@@ -304,19 +304,19 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
     }
 
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) ?? WPTableViewCell(style: .Subtitle, reuseIdentifier: cellIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? WPTableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
 
-        configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell, at: indexPath)
         return cell
     }
 
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54.0
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
@@ -324,35 +324,35 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
         return nil
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let site = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? ReaderSiteTopic else {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
         showPostListForSite(site)
     }
 
 
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
 
 
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return .Delete
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
     }
 
 
-    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
     }
 
 
-    func tableViewDidChangeContent(tableView: UITableView) {
+    func tableViewDidChangeContent(_ tableView: UITableView) {
         configureNoResultsView()
 
         // If we're not following any sites, reload the table view to ensure the
@@ -367,8 +367,8 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 
 extension ReaderFollowedSitesViewController : UISearchBarDelegate
 {
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if let site =  searchBar.text?.trim() where !site.isEmpty {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let site =  searchBar.text?.trim(), !site.isEmpty {
             followSite(site)
         }
         searchBar.text = nil

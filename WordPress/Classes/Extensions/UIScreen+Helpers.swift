@@ -4,12 +4,12 @@ import Foundation
 extension UIScreen
 {
     public func screenWidthAtCurrentOrientation() -> CGFloat {
-        let screenBounds = UIScreen.mainScreen().bounds
+        let screenBounds = UIScreen.main.bounds
         if UIDevice.isOS8() {
             return screenBounds.width
         }
 
-        let statusBarOrientation = UIApplication.sharedApplication().statusBarOrientation
+        let statusBarOrientation = UIApplication.shared.statusBarOrientation
         return statusBarOrientation.isPortrait ? screenBounds.width : screenBounds.height
     }
 }

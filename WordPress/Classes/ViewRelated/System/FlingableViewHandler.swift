@@ -2,9 +2,9 @@ import UIKit
 
 @objc
 protocol FlingableViewHandlerDelegate {
-    optional func flingableViewHandlerDidBeginRecognizingGesture(handler: FlingableViewHandler)
-    optional func flingableViewHandlerDidEndRecognizingGesture(handler: FlingableViewHandler)
-    optional func flingableViewHandlerWasCancelled(handler: FlingableViewHandler)
+    @objc optional func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler)
+    @objc optional func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler)
+    @objc optional func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler)
 }
 
 class FlingableViewHandler: NSObject {
@@ -23,18 +23,18 @@ class FlingableViewHandler: NSObject {
 
     var isActive = false {
         didSet {
-            panGestureRecognizer.enabled = isActive
+            panGestureRecognizer.isEnabled = isActive
         }
     }
 
     var delegate: FlingableViewHandlerDelegate?
 
-    private let animator: UIDynamicAnimator
-    private var attachmentBehavior: UIAttachmentBehavior!
-    private var panGestureRecognizer: UIPanGestureRecognizer!
+    fileprivate let animator: UIDynamicAnimator
+    fileprivate var attachmentBehavior: UIAttachmentBehavior!
+    fileprivate var panGestureRecognizer: UIPanGestureRecognizer!
 
     // Used to restore the target view to its original position if the gesture is cancelled
-    private var initialCenter: CGPoint? = nil
+    fileprivate var initialCenter: CGPoint? = nil
 
     /// - parameter targetView: The view that can be flung.
     init(targetView: UIView) {
@@ -50,13 +50,13 @@ class FlingableViewHandler: NSObject {
     }
 
     @objc
-    private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+    fileprivate func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
         guard isActive else { return }
         guard let view = recognizer.view,
               let referenceView = animator.referenceView else { return }
 
         switch recognizer.state {
-        case .Began:
+        case .began:
             delegate?.flingableViewHandlerDidBeginRecognizingGesture?(self)
 
             animator.removeAllBehaviors()
@@ -67,11 +67,11 @@ class FlingableViewHandler: NSObject {
             attachmentBehavior = makeAttachmentBehaviorForRecognizer(recognizer, inView: view)
             animator.addBehavior(attachmentBehavior)
             break
-        case .Changed:
-            let anchor = recognizer.locationInView(referenceView)
+        case .changed:
+            let anchor = recognizer.location(in: referenceView)
             attachmentBehavior.anchorPoint = anchor
             break
-        case .Ended, .Cancelled:
+        case .ended, .cancelled:
             animator.removeAllBehaviors()
 
             let magnitude = recognizer.magnitudeInView(referenceView)
@@ -91,42 +91,42 @@ class FlingableViewHandler: NSObject {
         }
     }
 
-    private func makeAttachmentBehaviorForRecognizer(recognizer: UIGestureRecognizer, inView view: UIView) -> UIAttachmentBehavior {
-        let location = recognizer.locationInView(view)
+    fileprivate func makeAttachmentBehaviorForRecognizer(_ recognizer: UIGestureRecognizer, inView view: UIView) -> UIAttachmentBehavior {
+        let location = recognizer.location(in: view)
 
         let (centerX, centerY) = (round(view.bounds.width / 2.0), round(view.bounds.height / 2.0))
         let offset = UIOffset(horizontal: location.x - centerX, vertical: location.y - centerY)
 
-        let anchor = recognizer.locationInView(animator.referenceView)
+        let anchor = recognizer.location(in: animator.referenceView)
 
         return UIAttachmentBehavior(item: view,
                                     offsetFromCenter: offset,
                                     attachedToAnchor: anchor)
     }
 
-    private func makeSnapBehaviorForView(view: UIView) -> UISnapBehavior {
-        let snap = UISnapBehavior(item: view, snapToPoint: initialCenter!)
+    fileprivate func makeSnapBehaviorForView(_ view: UIView) -> UISnapBehavior {
+        let snap = UISnapBehavior(item: view, snapTo: initialCenter!)
         snap.damping = snapDamping
 
         return snap
     }
 
-    private func makePushBehaviorForRecognizer(recognizer: UIPanGestureRecognizer, inView view: UIView) -> UIPushBehavior {
-        let velocity = recognizer.velocityInView(view)
+    fileprivate func makePushBehaviorForRecognizer(_ recognizer: UIPanGestureRecognizer, inView view: UIView) -> UIPushBehavior {
+        let velocity = recognizer.velocity(in: view)
         let magnitude = recognizer.magnitudeInView(view)
 
-        let pushBehavior = UIPushBehavior(items: [view], mode: .Instantaneous)
+        let pushBehavior = UIPushBehavior(items: [view], mode: .instantaneous)
 
         // Push in the same direction as the user was moving their touch
         let pushDirection = CGVector(dx: velocity.x, dy: velocity.y)
         pushBehavior.pushDirection = pushDirection
 
         // Scale down the magnitude for smaller display sizes
-        let horizontallyCompactTraits = UITraitCollection(horizontalSizeClass: .Compact)
-        let verticallyCompactTraits = UITraitCollection(verticalSizeClass: .Compact)
+        let horizontallyCompactTraits = UITraitCollection(horizontalSizeClass: .compact)
+        let verticallyCompactTraits = UITraitCollection(verticalSizeClass: .compact)
 
-        if view.traitCollection.containsTraitsInCollection(horizontallyCompactTraits) ||
-            view.traitCollection.containsTraitsInCollection(verticallyCompactTraits) {
+        if view.traitCollection.containsTraits(in: horizontallyCompactTraits) ||
+            view.traitCollection.containsTraits(in: verticallyCompactTraits) {
             pushBehavior.magnitude = magnitude / flingVelocityScaleFactorForCompactTraits
         } else {
             pushBehavior.magnitude = magnitude
@@ -134,17 +134,17 @@ class FlingableViewHandler: NSObject {
 
         // Apply the force at the same offset as the user's touch from the view's center
         let referenceView = animator.referenceView
-        let location = recognizer.locationInView(referenceView)
+        let location = recognizer.location(in: referenceView)
         let center = view.center
         let offset = UIOffset(horizontal: location.x - center.x, vertical: location.y - center.y)
-        pushBehavior.setTargetOffsetFromCenter(offset , forItem: view)
+        pushBehavior.setTargetOffsetFromCenter(offset , for: view)
 
         // Check for the view leaving the screen
         pushBehavior.action = { [weak self] in
             guard let strongSelf = self,
                   let referenceView = referenceView else { return }
 
-            if !CGRectIntersectsRect(view.frame, referenceView.bounds) {
+            if !view.frame.intersects(referenceView.bounds) {
                 strongSelf.animator.removeAllBehaviors()
                 view.removeFromSuperview()
 
@@ -157,8 +157,8 @@ class FlingableViewHandler: NSObject {
 }
 
 private extension UIPanGestureRecognizer {
-    func magnitudeInView(view: UIView) -> CGFloat {
-        let velocity = velocityInView(view)
+    func magnitudeInView(_ view: UIView) -> CGFloat {
+        let velocity = self.velocity(in: view)
         return sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
     }
 }

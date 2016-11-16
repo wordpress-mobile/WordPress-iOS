@@ -33,7 +33,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(url: NSURL?) {
+    func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {
             return
         }
@@ -49,7 +49,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
 
         backgroundColor = Style.blockBackgroundColor
         headerTitleLabel.font = Style.headerTitleBoldFont
@@ -60,27 +60,27 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
-            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.Width, constant: gravatarImageSizePad.height)
+            gravatarImageView.updateConstraint(.height, constant: gravatarImageSizePad.width)
+            gravatarImageView.updateConstraint(.width, constant: gravatarImageSizePad.height)
         }
     }
 
     // MARK: - Overriden Methods
     override func refreshSeparators() {
         separatorsView.bottomVisible = true
-        separatorsView.bottomInsets = UIEdgeInsetsZero
+        separatorsView.bottomInsets = UIEdgeInsets.zero
     }
 
 
     // MARK: - Private Alias
-    private typealias Style = WPStyleGuide.Notifications
+    fileprivate typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private
-    private let gravatarImageSizePad = CGSize(width: 36.0, height: 36.0)
-    private var gravatarURL: NSURL?
+    fileprivate let gravatarImageSizePad = CGSize(width: 36.0, height: 36.0)
+    fileprivate var gravatarURL: URL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var gravatarImageView: UIImageView!
-    @IBOutlet private weak var headerTitleLabel: UILabel!
-    @IBOutlet private weak var headerDetailsLabel: UILabel!
+    @IBOutlet fileprivate weak var gravatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var headerTitleLabel: UILabel!
+    @IBOutlet fileprivate weak var headerDetailsLabel: UILabel!
 }

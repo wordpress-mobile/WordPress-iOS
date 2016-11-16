@@ -11,7 +11,7 @@ extension NSAttributedString
     ///
     /// - Returns: An attributed string with all of the embeds specified, inlined.
     ///
-    func stringByEmbeddingImageAttachments(embeds: [NSValue: UIImage]?) -> NSAttributedString {
+    func stringByEmbeddingImageAttachments(_ embeds: [NSValue: UIImage]?) -> NSAttributedString {
         // Allow nil embeds: behave as a simple NO-OP
         if embeds == nil {
             return self
@@ -24,7 +24,7 @@ extension NSAttributedString
 
         for (value, image) in unwrappedEmbeds {
             let imageAttachment     = NSTextAttachment()
-            imageAttachment.bounds  = CGRect(origin: CGPointZero, size: image.size)
+            imageAttachment.bounds  = CGRect(origin: CGPoint.zero, size: image.size)
             imageAttachment.image   = image
 
             // Each embed is expected to add 1 char to the string. Compensate for that
@@ -35,7 +35,7 @@ extension NSAttributedString
             // Bounds Safety
             let lastPosition        = correctedRange.location + correctedRange.length
             if lastPosition <= theString.length {
-                theString.replaceCharactersInRange(correctedRange, withAttributedString: attachmentString)
+                theString.replaceCharacters(in: correctedRange, with: attachmentString)
             }
 
             rangeDelta += attachmentString.length
@@ -53,22 +53,22 @@ extension NSAttributedString
             return self
         }
 
-        let characterSet = NSCharacterSet.newlineCharacterSet()
+        let characterSet = CharacterSet.newlines
 
         // Trim: Leading
-        var range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet)
+        var range = (trimmed.string as NSString).rangeOfCharacter(from: characterSet)
 
         while range.length != 0 && range.location == 0 {
-            trimmed.replaceCharactersInRange(range, withString: String())
-            range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet)
+            trimmed.replaceCharacters(in: range, with: String())
+            range = (trimmed.string as NSString).rangeOfCharacter(from: characterSet)
         }
 
         // Trim Trailing
-        range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
+        range = (trimmed.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
 
         while range.length != 0 && NSMaxRange(range) == trimmed.length {
-            trimmed.replaceCharactersInRange(range, withString: String())
-            range = (trimmed.string as NSString).rangeOfCharacterFromSet(characterSet, options: .BackwardsSearch)
+            trimmed.replaceCharacters(in: range, with: String())
+            range = (trimmed.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
         }
 
         return trimmed

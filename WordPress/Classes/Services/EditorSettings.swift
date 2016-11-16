@@ -2,12 +2,12 @@ import Foundation
 
 class EditorSettings: NSObject {
     // MARK: - Constants
-    private let newEditorAvailableKey = "kUserDefaultsNewEditorAvailable"
-    private let newEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
-    private let nativeEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
+    fileprivate let newEditorAvailableKey = "kUserDefaultsNewEditorAvailable"
+    fileprivate let newEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
+    fileprivate let nativeEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
 
     // MARK: - Internal variables
-    private let database: KeyValueDatabase
+    fileprivate let database: KeyValueDatabase
 
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
@@ -16,7 +16,7 @@ class EditorSettings: NSObject {
     }
 
     convenience override init() {
-        self.init(database: NSUserDefaults())
+        self.init(database: UserDefaults() as! KeyValueDatabase)
     }
 
     // MARK: Public accessors
@@ -37,7 +37,7 @@ class EditorSettings: NSObject {
 
     var nativeEditorEnabled: Bool {
         get {
-            if !FeatureFlag.NativeEditor.enabled {
+            if !FeatureFlag.nativeEditor.enabled {
                 return false
             }
             if let nativeEditorEnabled = database.objectForKey(nativeEditorEnabledKey) as? Bool {
