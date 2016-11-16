@@ -17,7 +17,7 @@ struct PlanService<S: Store> {
         self.featuresRemote = featuresRemote
     }
 
-    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: (Error) -> Void) {
+    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in
@@ -42,7 +42,7 @@ extension PlanService {
         let manager = ContextManager.sharedInstance()
         let context = manager?.mainContext
         let service = BlogService(managedObjectContext: context)
-        guard let blog = service?.blog(byBlogId: NSNumber(siteID)) else {
+        guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
             let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
             DDLogSwift.logError(error)
@@ -70,14 +70,14 @@ struct PlanStorage {
         let context = manager?.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
         context?.performAndWait {
-            guard let blog = service?.blog(byBlogId: NSNumber(siteID)) else {
+            guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
                 DDLogSwift.logError(error)
                 return
             }
-            if blog.planID != planID {
-                blog.planID = planID
+            if blog.planID?.intValue != planID {
+                blog.planID = NSNumber(value: planID)
                 manager?.saveContextAndWait(context)
             }
         }
@@ -118,7 +118,7 @@ extension PlanService {
         })
     }
 
-    func updateAllPlanFeatures(success: @escaping (PlanFeatures) -> Void, failure: (Error) -> Void) {
+    func updateAllPlanFeatures(success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         featuresRemote.getPlanFeatures({
             success($0)
         }, failure: failure)
