@@ -210,6 +210,7 @@ class EditPostViewController: UIViewController {
             }
             dismissPostPostImmediately = false
         }
+
         self.postPost.dismissViewControllerAnimated(true) {
             if dismissPostPostImmediately {
                 self.closePostPost()
