@@ -22,7 +22,9 @@ class PostPostViewController: UIViewController {
     @IBOutlet var editButton:UIButton!
     @IBOutlet var viewButton:UIButton!
     @IBOutlet var navBar:UINavigationBar!
+    @IBOutlet var postInfoView:UIView!
     @IBOutlet var actionsStackView:UIStackView!
+    @IBOutlet var shadeView:UIView!
     @IBOutlet var shareButtonWidth:NSLayoutConstraint!
     @IBOutlet var editButtonWidth:NSLayoutConstraint!
     @IBOutlet var viewButtonWidth:NSLayoutConstraint!
@@ -57,9 +59,11 @@ class PostPostViewController: UIViewController {
         self.editButton.alpha = 0
         self.viewButton.alpha = 0
 
-        if (revealPost) {
-            showPostPost()
-            revealPost = false
+        if self.revealPost {
+            self.view.alpha = 1
+            self.shadeView.backgroundColor = UIColor.blackColor()
+            self.shadeView.alpha = 0.5
+            self.postInfoView.alpha = 0.0
         }
     }
 
@@ -67,29 +71,34 @@ class PostPostViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
-    func showPostPost() {
-        //actionsStackView.layer.transform = CATransform3DMakeTranslation(0, 10, 0)
+    func showPostPost(context: UIViewControllerTransitionCoordinatorContext) {
+        let animationDuration = context.transitionDuration()
         shareButtonWidth.constant = self.shareButton.frame.size.width * -0.75
         editButtonWidth.constant = self.shareButton.frame.size.width * -0.75
         viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
         view.layoutIfNeeded()
 
-        self.view.alpha = 1
-        UIView.animateWithDuration(0.33, delay: 0.25, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
+            self.shadeView.alpha = 0
+            }, completion: nil)
+        UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
+            self.postInfoView.alpha = 1
+            }, completion: nil)
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
             self.shareButton.alpha = 1
             self.shareButtonWidth.constant = 0
             self.view.layoutIfNeeded()
             }, completion: nil)
-        UIView.animateWithDuration(0.33, delay: 0.35, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.8, options: .CurveEaseOut, animations: {
             self.editButton.alpha = 1
             self.editButtonWidth.constant = 0
             self.view.layoutIfNeeded()
-            }, completion: nil)
-        UIView.animateWithDuration(0.33, delay: 0.45, options: .CurveEaseOut, animations: {
+        }, completion: nil)
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.9, options: .CurveEaseOut, animations: {
             self.viewButton.alpha = 1
             self.viewButtonWidth.constant = 0
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
 
     func setup(post post: Post) {
@@ -118,6 +127,7 @@ class PostPostViewController: UIViewController {
         if isPrivate {
             shareButton.hidden = true
         }
+
         revealPost = true
     }
 
@@ -140,11 +150,24 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func doneTapped() {
-
         UIView.animateWithDuration(0.66, animations: {
                 self.view.alpha = 0.0
             }) { (success) in
                 self.onClose?()
         }
+    }
+
+    override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
+        super.dismissViewControllerAnimated(flag, completion: completion)
+
+        let animationCoordinator = self.transitionCoordinator()
+        animationCoordinator?.animateAlongsideTransition({ (context) in
+                if self.revealPost {
+                    self.showPostPost(context)
+                    self.revealPost = false
+                }
+            }, completion: { (context) in
+
+        })
     }
 }
