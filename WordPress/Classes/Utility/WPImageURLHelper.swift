@@ -51,7 +51,32 @@ public class WPImageURLHelper: NSObject
 
 extension WPImageURLHelper
 {
-    // MARK: Avatar URLs
+    // MARK: Blavatar URLs
+
+    public class func blavatarURL(forHost host: String, size: NSInteger) -> NSURL? {
+        let urlString = String(format: "%@/%@?d=404&s=%d", WPBlavatarBaseURL, host.md5(), size)
+        return NSURL(string: urlString)
+    }
+
+    public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
+        guard let components = NSURLComponents(string: path) else { return nil }
+        components.query = String(format: "d=404&s=%d", size)
+        return components.URL
+    }
+}
+
+extension NSString
+{
+    // MARK: Blavatar URLs
+
+    func isBlavatarURL() -> Bool {
+        return self.containsString("gravatar.com/blavatar")
+    }
+}
+
+extension WPImageURLHelper
+{
+    // MARK: Gravatar URLs
 
     /**
      Returns the Gravatar URL, for a given email, with the specified size + rating.
@@ -66,6 +91,18 @@ extension WPImageURLHelper
     public class func gravatarURL(forEmail email: String, size: NSInteger, rating: String) -> NSURL? {
         let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
         return NSURL(string: targetURL)
+    }
+
+}
+
+extension WPImageURLHelper
+{
+    // MARK: Site icon URLs
+
+    public class func siteIconURL(forSiteIconURL path: String, size: NSInteger) -> NSURL? {
+        guard let components = NSURLComponents(string: path) else { return nil }
+        components.query = String(format: "w=%d&h=%d", size, size)
+        return components.URL
     }
 
     public class func siteIconURL(forContentProvider contentProvider: ReaderPostContentProvider, size: Int) -> NSURL? {
@@ -200,4 +237,14 @@ extension WPImageURLHelper
         return photonRegex?.numberOfMatchesInString(host, options: NSMatchingOptions(rawValue: UInt(0)), range: NSRange(location: 0, length: host.characters.count)) > 0
     }
 
+}
+
+extension NSString
+{
+    // MARK: Photon URLs
+
+    // Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
+    func isPhotonURL() -> Bool {
+        return self.containsString(".wp.com")
+    }
 }
